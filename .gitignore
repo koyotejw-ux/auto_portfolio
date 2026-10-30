@@ -1,0 +1,13 @@
+# Auto Portfolio Git Ignore
+*.log
+*.tmp
+__pycache__/
+.DS_Store
+Thumbs.db
+
+# Test Screenshots
+master_hub_screenshot.png
+ftmt_deck_screenshot.png
+ftmt_proto_desktop.png
+ftmt_proto_short_laptop.png
+ftmt/live_check_*.png
