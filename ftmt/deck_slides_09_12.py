@@ -6,7 +6,9 @@ from build_executive_ftmt_deck import (
     W, H, MOCKUP_DIR, get_font, get_num_font, wrap_text_by_words,
     draw_diamond, draw_arrow, draw_dashed_line, draw_dashed_arrow,
     draw_pill_badge, draw_dotted_callout,
-    create_cosmic_base, draw_slide_header, draw_slide_footer, save_slide
+    create_cosmic_base, draw_slide_header, draw_slide_footer, save_slide,
+    C_TITLE_WHITE, C_GOLD_HERO, C_GOLD_MUTED, C_TEXT_BODY, C_TEXT_MUTED,
+    C_CYAN_ACCENT, C_PURPLE_ACC, C_GREEN_ACC, C_RED_ACC, C_BORDER_GOLD
 )
 
 # ==============================================================
@@ -32,63 +34,63 @@ def make_slide_09():
     t1_b = "인연의 생년월일만 입력하면,"
     font_title = get_font(33, 'extrabold')
     w_t1_a = draw.textlength(t1_a, font=font_title)
-    draw.text((lx, 116), t1_a, font=font_title, fill=(244, 246, 252))
-    draw.text((lx + w_t1_a, 116), t1_b, font=font_title, fill=(255, 215, 0))
+    draw.text((lx, 116), t1_a, font=font_title, fill=C_TITLE_WHITE)
+    draw.text((lx + w_t1_a, 116), t1_b, font=font_title, fill=C_GOLD_HERO)
     
     t2_a = "92% 정밀 케미스트리와 "
-    t2_b = "조화도를 즉시 역산해요."
+    t2_b = "관계 조화도를 즉시 분석해요."
     w_t2_a = draw.textlength(t2_a, font=font_title)
-    draw.text((lx, 158), t2_a, font=font_title, fill=(0, 229, 255))
-    draw.text((lx + w_t2_a, 158), t2_b, font=font_title, fill=(244, 246, 252))
+    draw.text((lx, 158), t2_a, font=font_title, fill=C_CYAN_ACCENT)
+    draw.text((lx + w_t2_a, 158), t2_b, font=font_title, fill=C_TITLE_WHITE)
     
-    desc_text = "천간합(일간 합), 지지합충(삼합·육합·원진), 5대 오행 상생상극 결합 벡터를 융합하여 단순한 길흉 판단을 넘어 두 사람의 관계 역학을 수학적으로 온디바이스에서 0ms 오차 없이 즉각 도출합니다."
-    desc_lines = wrap_text_by_words(desc_text, get_font(12, 'regular'), lw, draw)
+    desc_text = "천간의 정신적 공감대와 지지의 생활 습관 일치도, 그리고 5대 오행 상생상극 결합 벡터를 융합하여 단순한 길흉 통보를 넘어 두 사람의 관계 역학과 대화 솔루션을 온디바이스에서 즉각 도출합니다."
+    desc_lines = wrap_text_by_words(desc_text, get_font(12, 'medium'), lw, draw)
     dy = 212
     for dl in desc_lines:
-        draw.text((lx, dy), dl, font=get_font(12, 'regular'), fill=(163, 176, 204))
+        draw.text((lx, dy), dl, font=get_font(12, 'medium'), fill=C_TEXT_BODY)
         dy += 19
         
-    # 1-B. Card 1: 다차원 인연 융합 수식 알고리즘
+    # 1-B. Card 1: 다차원 인연 융합 케미스트리 모델
     q1_y = 310
     q1_h = 230
     draw.rounded_rectangle([lx, q1_y, lx + lw, q1_y + q1_h], radius=16, fill=(14, 20, 36, 230), outline=(229, 192, 123, 70), width=1)
-    draw_pill_badge(draw, left_x=lx + 24, cy=q1_y + 30, text="MULTI-VECTOR SOLVER", font=get_font(10, 'bold'), theme='gold', has_dot=True, pad_x=10, height=24)
-    draw.text((lx + 215, q1_y + 20), "사주 일주론 & 별자리 융합 궁합 수식 (Zero-Latency)", font=get_font(15, 'bold'), fill=(244, 246, 252))
-    draw.line([(lx + 24, q1_y + 52), (lx + lw - 24, q1_y + 52)], fill=(229, 192, 123, 35), width=1)
+    draw_pill_badge(draw, left_x=lx + 24, cy=q1_y + 30, text="CHEMISTRY SOLVER", font=get_font(10, 'bold'), theme='gold', has_dot=True, pad_x=10, height=24)
+    draw.text((lx + 200, q1_y + 20), "사주 일주론 & 별자리 감성 융합 궁합 분석 모델", font=get_font(15, 'bold'), fill=C_TITLE_WHITE)
+    draw.line([(lx + 24, q1_y + 52), (lx + lw - 24, q1_y + 52)], fill=(229, 192, 123, 40), width=1)
     
     # Formula Box
     f_box_y = q1_y + 64
     draw.rounded_rectangle([lx + 24, f_box_y, lx + lw - 24, f_box_y + 54], radius=10, fill=(35, 30, 15), outline=(229, 192, 123, 80), width=1)
-    draw.text((lx + lw//2, f_box_y + 27), "Score = a·S_일간합 + b·S_지지육합 + c·(1 - ||E_A - E_B||) + d·S_별자리", font=get_num_font(13.5, 'bold'), fill=(255, 215, 0), anchor='mm')
+    draw.text((lx + lw//2, f_box_y + 27), "Score = a·정신적끌림 + b·생활패턴일치 + c·오행상생보완 + d·별자리감성", font=get_font(13.5, 'bold'), fill=C_GOLD_HERO, anchor='mm')
     
-    draw.text((lx + 24, f_box_y + 68), "단순한 점수 나열이 아닌, 천간의 정신적 끌림(a=0.35)과 지지의 생활 습관 일치도(b=0.25),\n상호 결핍 보완 벡터(c=0.25)를 종합하여 관계 케미스트리를 1.4ms 만에 정밀 산출합니다.", font=get_font(11.5, 'regular'), fill=(203, 213, 225), spacing=5)
+    draw.text((lx + 24, f_box_y + 68), "단순한 1회성 점수 통보가 아닌, 천간의 정신적 유대(35%)와 지지의 생활 습관 일치도(25%),\n상호 결핍 보완 시너지(25%)를 종합 분석하여 실생활에 유용한 관계 조율 팁을 전달합니다.", font=get_font(11.5, 'medium'), fill=C_TEXT_BODY, spacing=5)
     
     # 1-C. Card 2: 출생시 결측 사전 가드 & 태양시 보정
     q2_y = 560
     q2_h = 200
     draw.rounded_rectangle([lx, q2_y, lx + lw, q2_y + q2_h], radius=16, fill=(14, 20, 36, 230), outline=(229, 192, 123, 70), width=1)
-    draw_pill_badge(draw, left_x=lx + 24, cy=q2_y + 30, text="TIME BOUNDARY GUARD", font=get_font(10, 'bold'), theme='cyan', has_dot=True, pad_x=10, height=24)
-    draw.text((lx + 225, q2_y + 20), "출생시 결측 사전 가드 & 12시 태양시 보정", font=get_font(15, 'bold'), fill=(244, 246, 252))
-    draw.line([(lx + 24, q2_y + 52), (lx + lw - 24, q2_y + 52)], fill=(229, 192, 123, 35), width=1)
+    draw_pill_badge(draw, left_x=lx + 24, cy=q2_y + 30, text="UX BOUNDARY GUARD", font=get_font(10, 'bold'), theme='cyan', has_dot=True, pad_x=10, height=24)
+    draw.text((lx + 215, q2_y + 20), "출생시 모름 사전 가드 & 정오 태양시 보정", font=get_font(15, 'bold'), fill=C_TITLE_WHITE)
+    draw.line([(lx + 24, q2_y + 52), (lx + lw - 24, q2_y + 52)], fill=(229, 192, 123, 40), width=1)
     
-    draw.text((lx + 24, q2_y + 68), "상대방 태어난 시를 모르는 경우에도 앱이 멈추거나 왜곡되지 않도록 정오(12:00) 기준\n태양시 자동 보정 모드를 가동하여 일주 중심의 안전하고 신뢰할 수 있는 매칭을 유지합니다.", font=get_font(12, 'regular'), fill=(203, 213, 225), spacing=5)
+    draw.text((lx + 24, q2_y + 68), "상대방 태어난 시를 모르는 일반적인 데이트 상황에서도 입력 오류 없이 안전하게 분석되도록\n정오(12:00) 기준 태양시 보정 모드를 제공하여 일주 중심의 높은 신뢰도를 유지합니다.", font=get_font(11.5, 'medium'), fill=C_TEXT_BODY, spacing=5)
     
     # Safety Boundary Chips
     draw.rounded_rectangle([lx + 24, q2_y + 130, lx + lw//2 - 10, q2_y + 180], radius=8, fill=(35, 30, 15), outline=(229, 192, 123, 80), width=1)
-    draw.text((lx + 36, q2_y + 142), "출생시 미입력 사전 방어", font=get_font(10, 'bold'), fill=(255, 215, 0))
-    draw.text((lx + 36, q2_y + 160), "결측치 발생 시 즉각 스마트 Fallback", font=get_font(9.5, 'regular'), fill=(203, 213, 225))
+    draw.text((lx + 36, q2_y + 142), "출생시 미입력 사전 방어", font=get_font(10, 'bold'), fill=C_GOLD_HERO)
+    draw.text((lx + 36, q2_y + 160), "결측치 발생 시 스마트 Fallback 가이드", font=get_font(9.5, 'medium'), fill=C_TEXT_BODY)
     
     draw.rounded_rectangle([lx + lw//2 + 10, q2_y + 130, lx + lw - 24, q2_y + 180], radius=8, fill=(12, 42, 30), outline=(16, 185, 129, 100), width=1)
-    draw.text((lx + lw//2 + 22, q2_y + 142), "일주·월지 가중치 재조정", font=get_font(10, 'bold'), fill=(52, 211, 153))
-    draw.text((lx + lw//2 + 22, q2_y + 160), "사주 일주 핵심 기운으로 신뢰도 92% 보존", font=get_font(9.5, 'regular'), fill=(203, 213, 225))
+    draw.text((lx + lw//2 + 22, q2_y + 142), "일주·월지 가중치 재조정", font=get_font(10, 'bold'), fill=C_GREEN_ACC)
+    draw.text((lx + lw//2 + 22, q2_y + 160), "사주 일주 핵심 기운으로 신뢰도 92% 보존", font=get_font(9.5, 'medium'), fill=C_TEXT_BODY)
     
     # 1-D. Left Bottom Audit Pill
     draw.rounded_rectangle([lx, 780, lx + lw, 970], radius=14, fill=(24, 32, 54), outline=(229, 192, 123, 70), width=1)
-    draw.text((lx + 24, 796), "정밀 궁합 매칭 엔진의 3대 핵심 무결성 원칙:", font=get_font(11.5, 'bold'), fill=(255, 215, 0))
-    draw.text((lx + 24, 822), "1. Zero-Latency : 반복 루프 없는 닫힌 공식 대수 전개로 1.4ms 즉각 도출", font=get_font(10.5, 'medium'), fill=(203, 213, 225))
-    draw.text((lx + 24, 844), "2. Zero-Loss Vault : 산출된 궁합 리포트를 SQLite AES-256 로컬 암호화 무누수 저장", font=get_font(10.5, 'medium'), fill=(203, 213, 225))
-    draw.text((lx + 24, 866), "3. Dual-Perspective : 나의 관점과 상대방 관점의 상생상극 리포트 실시간 교차 전환", font=get_font(10.5, 'medium'), fill=(203, 213, 225))
-    draw.text((lx + 24, 892), "✓ Google Play 2026 프라이버시 가이드라인 통과 및 100% 온디바이스 검증 완료", font=get_font(10.5, 'bold'), fill=(0, 229, 255))
+    draw.text((lx + 24, 796), "정밀 궁합 매칭 서비스의 3대 핵심 UX 원칙:", font=get_font(11.5, 'bold'), fill=C_GOLD_HERO)
+    draw.text((lx + 24, 822), "1. Zero-Friction Input : 출생시 모름 토글 및 1-Tap 바텀시트로 빠른 상대방 프로필 추가", font=get_font(10.5, 'medium'), fill=C_TEXT_BODY)
+    draw.text((lx + 24, 844), "2. Zero-Loss Privacy : 민감한 인연 궁합 리포트를 외부 전송 없이 SQLite 암호화 보관", font=get_font(10.5, 'medium'), fill=C_TEXT_BODY)
+    draw.text((lx + 24, 866), "3. Dual-Perspective UX : 나의 관점과 상대방 관점의 상생상극 리포트 실시간 교차 전환", font=get_font(10.5, 'medium'), fill=C_TEXT_BODY)
+    draw.text((lx + 24, 892), "✓ 2030 세대 3,400명 실증 테스트 완료 · 인스타그램 스토리 자발적 바이럴 41.8%", font=get_font(10.5, 'bold'), fill=C_CYAN_ACCENT)
     
     # -------------------------------------------------------------
     # 2. Center Column: Grand Hero Phone Mockup (iphone_05_match)
@@ -160,32 +162,32 @@ def make_slide_09():
         
         # Step 1 Box
         s1_box_y = y_step_mock + 4
-        draw.rounded_rectangle([tx_step, s1_box_y, tx_step + tw_step, s1_box_y + 160], radius=10, fill=(24, 32, 54), outline=(229, 192, 123, 50), width=1)
+        draw.rounded_rectangle([tx_step, s1_box_y, tx_step + tw_step, s1_box_y + 160], radius=10, fill=(24, 32, 54), outline=(229, 192, 123, 70), width=1)
         draw_pill_badge(draw, left_x=tx_step + 14, cy=s1_box_y + 18, text="STEP 01", font=get_font(8.5, 'bold'), theme='gold', has_dot=False, pad_x=6, height=18, solid=True)
-        draw.text((tx_step + 80, s1_box_y + 11), "인연 생년월일 1-Tap 등록", font=get_font(12, 'bold'), fill=(244, 246, 252))
-        draw.text((tx_step + 14, s1_box_y + 40), "• 상대방 양력/음력 생년월일 원터치 지정\n• 출생시 모름 선택 시 태양시 보정 가드 작동\n• 이름 및 관계 태그(연인/동료) 지정", font=get_font(10, 'regular'), fill=(203, 213, 225), spacing=4)
-        draw.text((tx_step + 14, s1_box_y + 116), "✓ 인지 마찰 제로 1-Tap 바텀시트 전개", font=get_font(9.5, 'bold'), fill=(255, 215, 0))
+        draw.text((tx_step + 80, s1_box_y + 11), "인연 생년월일 1-Tap 등록", font=get_font(12, 'bold'), fill=C_TITLE_WHITE)
+        draw.text((tx_step + 14, s1_box_y + 40), "• 상대방 양력/음력 생년월일 원터치 지정\n• 출생시 모름 선택 시 태양시 보정 가드 작동\n• 이름 및 관계 태그(연인/동료) 지정", font=get_font(10, 'medium'), fill=C_TEXT_BODY, spacing=4)
+        draw.text((tx_step + 14, s1_box_y + 116), "✓ 인지 마찰 제로 1-Tap 바텀시트 전개", font=get_font(9.5, 'bold'), fill=C_GOLD_HERO)
         
         # Step 2 Box
         s2_box_y = s1_box_y + 176
         draw.rounded_rectangle([tx_step, s2_box_y, tx_step + tw_step, s2_box_y + 160], radius=10, fill=(30, 18, 48), outline=(168, 85, 247, 80), width=1)
         draw_pill_badge(draw, left_x=tx_step + 14, cy=s2_box_y + 18, text="STEP 02", font=get_font(8.5, 'bold'), theme='purple', has_dot=False, pad_x=6, height=18, solid=True)
-        draw.text((tx_step + 80, s2_box_y + 11), "오행 중첩 & 시크릿 볼트 저장", font=get_font(12, 'bold'), fill=(244, 246, 252))
-        draw.text((tx_step + 14, s2_box_y + 40), "• 두 사람의 5각형 오행 실시간 중첩 시각화\n• 상생 보완 시너지 및 갈등 예방 대화법 확인\n• SQLite AES-256 로컬 영구 암호화 보관", font=get_font(10, 'regular'), fill=(203, 213, 225), spacing=4)
-        draw.text((tx_step + 14, s2_box_y + 116), "✓ D1 리텐션 64.2% 견인 핵심 워크플로우", font=get_font(9.5, 'bold'), fill=(216, 180, 254))
+        draw.text((tx_step + 80, s2_box_y + 11), "오행 중첩 & 시크릿 볼트 저장", font=get_font(12, 'bold'), fill=C_TITLE_WHITE)
+        draw.text((tx_step + 14, s2_box_y + 40), "• 두 사람의 5각형 오행 실시간 중첩 시각화\n• 상생 보완 시너지 및 갈등 예방 대화법 확인\n• SQLite AES-256 로컬 영구 암호화 보관", font=get_font(10, 'medium'), fill=C_TEXT_BODY, spacing=4)
+        draw.text((tx_step + 14, s2_box_y + 116), "✓ D1 리텐션 64.2% 견인 핵심 워크플로우", font=get_font(9.5, 'bold'), fill=C_PURPLE_ACC)
         
         # Flow Summary Strip at bottom of Step Card
         strip_y = step_y + step_h - 44
         draw.rounded_rectangle([rx + 24, strip_y, rx + rw - 24, strip_y + 32], radius=6, fill=(35, 30, 15), outline=(229, 192, 123, 80), width=1)
-        draw.text((rx + rw // 2, strip_y + 16), "Workflow: 1-Tap Input → Realtime Vector Inversion → 92% Chemistry → SQLite AES-256 Vault", font=get_font(8.5, 'bold'), fill=(255, 215, 0), anchor='mm')
+        draw.text((rx + rw // 2, strip_y + 16), "Workflow: 1-Tap Input → Realtime Vector Inversion → 92% Chemistry → SQLite AES-256 Vault", font=get_font(8.5, 'bold'), fill=C_GOLD_HERO, anchor='mm')
         
     # 3-B. Zodiac Telemetry Report Card (Matching Smart DCA Quant Telemetry Card)
     tel_y = 724
     tel_h = 246
     draw.rounded_rectangle([rx, tel_y, rx + rw, tel_y + tel_h], radius=16, fill=(14, 20, 36, 230), outline=(229, 192, 123, 70), width=1)
     draw_pill_badge(draw, left_x=rx + 28, cy=tel_y + 28, text="CHEMISTRY TELEMETRY REPORT", font=get_font(9.5, 'bold'), theme='cyan', has_dot=True, pad_x=8, height=22)
-    draw.text((rx + 260, tel_y + 20), "인연 정밀 궁합 4대 진단 텔레메트리 지표", font=get_font(15, 'bold'), fill=(244, 246, 252))
-    draw.line([(rx + 28, tel_y + 48), (rx + rw - 28, tel_y + 48)], fill=(229, 192, 123, 30), width=1)
+    draw.text((rx + 260, tel_y + 20), "인연 정밀 궁합 4대 진단 텔레메트리 지표", font=get_font(15, 'bold'), fill=C_TITLE_WHITE)
+    draw.line([(rx + 28, tel_y + 48), (rx + rw - 28, tel_y + 48)], fill=(229, 192, 123, 40), width=1)
     
     # 4 Data Metrics Boxes inside Card
     m_w_sub = (rw - 56 - 36) // 4
@@ -199,14 +201,14 @@ def make_slide_09():
     for idx, (val, tag, title, desc, theme) in enumerate(sub_metrics):
         sm_x = rx + 28 + idx * (m_w_sub + 12)
         sm_y = tel_y + 60
-        draw.rounded_rectangle([sm_x, sm_y, sm_x + m_w_sub, sm_y + 115], radius=10, fill=(24, 32, 54), outline=(229, 192, 123, 40), width=1)
+        draw.rounded_rectangle([sm_x, sm_y, sm_x + m_w_sub, sm_y + 115], radius=10, fill=(24, 32, 54), outline=(229, 192, 123, 50), width=1)
         draw_pill_badge(draw, left_x=sm_x + 10, cy=sm_y + 18, text=tag, font=get_font(7.5, 'bold'), theme=theme, has_dot=False, pad_x=6, height=18)
-        draw.text((sm_x + 10, sm_y + 46), val, font=get_num_font(20, 'black'), fill=(255, 215, 0) if theme=='gold' else ((0, 229, 255) if theme=='cyan' else ((52, 211, 153) if theme=='green' else (216, 180, 254))))
-        draw.text((sm_x + 10, sm_y + 76), title, font=get_font(10.5, 'bold'), fill=(244, 246, 252))
-        draw.text((sm_x + 10, sm_y + 94), desc, font=get_font(8.5, 'regular'), fill=(163, 176, 204))
+        draw.text((sm_x + 10, sm_y + 46), val, font=get_num_font(20, 'black'), fill=C_GOLD_HERO if theme=='gold' else (C_CYAN_ACCENT if theme=='cyan' else (C_GREEN_ACC if theme=='green' else C_PURPLE_ACC)))
+        draw.text((sm_x + 10, sm_y + 76), title, font=get_font(10.5, 'bold'), fill=C_TITLE_WHITE)
+        draw.text((sm_x + 10, sm_y + 94), desc, font=get_font(8.5, 'medium'), fill=C_TEXT_BODY)
         
     draw.rounded_rectangle([rx + 28, tel_y + tel_h - 44, rx + rw - 28, tel_y + tel_h - 14], radius=6, fill=(35, 30, 15), outline=(229, 192, 123, 80), width=1)
-    draw.text((rx + rw // 2, tel_y + tel_h - 29), "✓ 2030 세대 3,400명 실사용 데이터 검증 통과 · 인스타그램 스토리 바이럴 공유율 41.8%", font=get_font(9.5, 'bold'), fill=(255, 215, 0), anchor='mm')
+    draw.text((rx + rw // 2, tel_y + tel_h - 29), "✓ 2030 세대 3,400명 실사용 데이터 검증 통과 · 인스타그램 스토리 바이럴 공유율 41.8%", font=get_font(9.5, 'bold'), fill=C_GOLD_HERO, anchor='mm')
     
     draw_slide_footer(draw, 9)
     save_slide(base, 9)
@@ -410,11 +412,11 @@ def make_slide_11():
     ]
     
     for badge, title, sub, body_txt, check_txt, theme_key, col in bottom_cards:
-        draw.rounded_rectangle([bx, b_y, bx + b_w, b_y + b_h], radius=14, fill=(14, 20, 36, 230), outline=(229, 192, 123, 60), width=1)
+        draw.rounded_rectangle([bx, b_y, bx + b_w, b_y + b_h], radius=14, fill=(14, 20, 36, 230), outline=(229, 192, 123, 70), width=1)
         draw_pill_badge(draw, left_x=bx + 20, cy=b_y + 22, text=badge, font=get_font(9, 'bold'), theme=theme_key, has_dot=True, pad_x=8, height=20)
-        draw.text((bx + 20, b_y + 50), title, font=get_font(14, 'bold'), fill=(244, 246, 252))
+        draw.text((bx + 20, b_y + 50), title, font=get_font(14, 'bold'), fill=C_TITLE_WHITE)
         draw.text((bx + 20, b_y + 72), sub, font=get_font(11, 'bold'), fill=col)
-        draw.line([(bx + 20, b_y + 92), (bx + b_w - 20, b_y + 92)], fill=(229, 192, 123, 30), width=1)
+        draw.line([(bx + 20, b_y + 92), (bx + b_w - 20, b_y + 92)], fill=(229, 192, 123, 40), width=1)
         
         py = b_y + 100
         for line in body_txt.split('\n'):
@@ -422,16 +424,16 @@ def make_slide_11():
             cur_line = ""
             for w in words:
                 test_line = (cur_line + " " + w).strip()
-                bbox = draw.textbbox((0, 0), test_line, font=get_font(10.5, 'regular'))
+                bbox = draw.textbbox((0, 0), test_line, font=get_font(10.5, 'medium'))
                 if bbox[2] - bbox[0] <= b_w - 40:
                     cur_line = test_line
                 else:
-                    draw.text((bx + 20, py), cur_line, font=get_font(10.5, 'regular'), fill=(203, 213, 225))
-                    py += 17
+                    draw.text((bx + 20, py), cur_line, font=get_font(10.5, 'medium'), fill=C_TEXT_BODY)
+                    py += 18
                     cur_line = w
             if cur_line:
-                draw.text((bx + 20, py), cur_line, font=get_font(10.5, 'regular'), fill=(203, 213, 225))
-                py += 17
+                draw.text((bx + 20, py), cur_line, font=get_font(10.5, 'medium'), fill=C_TEXT_BODY)
+                py += 18
                 
         draw.rounded_rectangle([bx + 16, b_y + b_h - 36, bx + b_w - 16, b_y + b_h - 12], radius=6, fill=(35, 30, 15), outline=(229, 192, 123, 80), width=1)
         draw.text((bx + 24, b_y + b_h - 24), check_txt, font=get_font(10, 'bold'), fill=col, anchor='lm')
@@ -567,12 +569,12 @@ def make_slide_12():
     
     for idx, (s_title, s_desc, s_theme) in enumerate(step_items):
         sy = step_y_start + idx * (step_card_h + sgap)
-        draw.rounded_rectangle([rx, sy, rx + rw, sy + step_card_h], radius=12, fill=(14, 20, 36, 230), outline=(229, 192, 123, 50), width=1)
+        draw.rounded_rectangle([rx, sy, rx + rw, sy + step_card_h], radius=12, fill=(14, 20, 36, 230), outline=(229, 192, 123, 70), width=1)
         draw.rounded_rectangle([rx, sy + 8, rx + 4, sy + step_card_h - 8], radius=2, fill=(229, 192, 123))
         
         draw_pill_badge(draw, left_x=rx + 20, cy=sy + 22, text=f"STEP {idx+1:02d}", font=get_font(8.5, 'bold'), theme=s_theme, has_dot=False, pad_x=6, height=18, solid=True)
-        draw.text((rx + 90, sy + 14), s_title, font=get_font(13, 'bold'), fill=(244, 246, 252))
-        draw.text((rx + 20, sy + 44), s_desc, font=get_font(10.5, 'regular'), fill=(163, 176, 204))
+        draw.text((rx + 90, sy + 14), s_title, font=get_font(13, 'bold'), fill=C_TITLE_WHITE)
+        draw.text((rx + 20, sy + 44), s_desc, font=get_font(10.5, 'medium'), fill=C_TEXT_BODY)
         
         # Ghost Button
         g_w = 110
@@ -580,7 +582,7 @@ def make_slide_12():
         g_x = rx + rw - g_w - 20
         g_y = sy + (step_card_h - g_h) // 2
         draw.rounded_rectangle([g_x, g_y, g_x + g_w, g_y + g_h], radius=6, fill=(24, 32, 54), outline=(229, 192, 123, 80), width=1)
-        draw.text((g_x + g_w // 2, g_y + g_h // 2), "체험하기 ↗", font=get_font(10.5, 'bold'), fill=(255, 215, 0), anchor='mm')
+        draw.text((g_x + g_w // 2, g_y + g_h // 2), "체험하기 ↗", font=get_font(10.5, 'bold'), fill=C_GOLD_HERO, anchor='mm')
         
     # 3. QR CODE & GITHUB LIVE REPOSITORY CARD (y=710 to 980, h=270)
     qr_card_y = 710
@@ -613,18 +615,18 @@ def make_slide_12():
     info_w = rw - (qr_size + 100)
     
     draw_pill_badge(draw, left_x=info_x, cy=qr_card_y + 36, text="MOBILE INSTANT SCAN & LIVE DEPLOY", font=get_font(9.5, 'bold'), theme='gold', has_dot=True, pad_x=10, height=22)
-    draw.text((info_x, qr_card_y + 70), "스마트폰 카메라로 QR 코드를 스캔하세요", font=get_font(18, 'bold'), fill=(244, 246, 252))
-    draw.text((info_x, qr_card_y + 98), "별도의 앱 설치 없이 스마트폰 브라우저에서 60fps 라이브 프로토타입이 즉시 구동됩니다.", font=get_font(11.5, 'regular'), fill=(163, 176, 204))
+    draw.text((info_x, qr_card_y + 70), "스마트폰 카메라로 QR 코드를 스캔하세요", font=get_font(18, 'bold'), fill=C_TITLE_WHITE)
+    draw.text((info_x, qr_card_y + 98), "별도의 앱 설치 없이 스마트폰 브라우저에서 60fps 라이브 프로토타입이 즉시 구동됩니다.", font=get_font(11.5, 'medium'), fill=C_TEXT_BODY)
     
     # URL Box
     url_box_y = qr_card_y + 130
     draw.rounded_rectangle([info_x, url_box_y, rx + rw - 30, url_box_y + 50], radius=8, fill=(24, 32, 54), outline=(229, 192, 123, 80), width=1)
-    draw.text((info_x + 16, url_box_y + 16), "🌐 Live URL :", font=get_font(10.5, 'bold'), fill=(255, 215, 0))
-    draw.text((info_x + 105, url_box_y + 16), proto_entry_url, font=get_font(11, 'bold'), fill=(0, 229, 255))
+    draw.text((info_x + 16, url_box_y + 16), "🌐 Live URL :", font=get_font(10.5, 'bold'), fill=C_GOLD_HERO)
+    draw.text((info_x + 105, url_box_y + 16), proto_entry_url, font=get_font(11, 'bold'), fill=C_CYAN_ACCENT)
     
     # Store & Engine Verification Badges
     b_row_y = url_box_y + 64
-    draw.text((info_x, b_row_y), "✓ Google Play (Android) 상용 출시 완료  ·  WCAG 2.1 AAA 무장애 준수  ·  AES-256 On-Device Vault", font=get_font(10.5, 'bold'), fill=(52, 211, 153))
+    draw.text((info_x, b_row_y), "✓ Google Play (Android) 상용 출시 완료  ·  WCAG 2.1 AAA 무장애 준수  ·  AES-256 On-Device Vault", font=get_font(10.5, 'bold'), fill=C_GREEN_ACC)
     
     draw_slide_footer(draw, 12)
     save_slide(base, 12)

@@ -5,7 +5,9 @@ from build_executive_ftmt_deck import (
     W, H, MOCKUP_DIR, get_font, get_num_font, get_material_icon_font, wrap_text_by_words,
     draw_diamond, draw_arrow, draw_dashed_line, draw_dashed_arrow,
     draw_pill_badge, draw_dotted_callout,
-    create_cosmic_base, draw_slide_header, draw_slide_footer, save_slide
+    create_cosmic_base, draw_slide_header, draw_slide_footer, save_slide,
+    C_TITLE_WHITE, C_GOLD_HERO, C_GOLD_MUTED, C_TEXT_BODY, C_TEXT_MUTED,
+    C_CYAN_ACCENT, C_PURPLE_ACC, C_GREEN_ACC, C_RED_ACC, C_BORDER_GOLD
 )
 
 # ==============================================================
@@ -913,12 +915,12 @@ def make_slide_08():
         draw = ImageDraw.Draw(base)
         by_s1 = y_screen + 28 + s_h + 16
         draw.rounded_rectangle([x_s1, by_s1, x_s1 + s_w, comp_y + comp_h - 18], radius=10, fill=(24, 32, 54), outline=(100, 116, 139), width=1)
-        draw.text((x_s1 + 10, by_s1 + 10), "고전 텍스트 사주 방식", font=get_font(10, 'bold'), fill=(163, 176, 204))
-        draw.text((x_s1 + 10, by_s1 + 28), "• 난해한 한자 텍스트 나열\n• 인지 부하 극심 (평균 이탈 74%)\n• 미신적 공포 마케팅 피로감", font=get_font(9.5, 'regular'), fill=(163, 176, 204), spacing=4)
+        draw.text((x_s1 + 10, by_s1 + 10), "고전 텍스트 사주 방식", font=get_font(10, 'bold'), fill=C_TEXT_BODY)
+        draw.text((x_s1 + 10, by_s1 + 28), "• 난해한 한자 텍스트 나열\n• 인지 부하 극심 (평균 이탈 74%)\n• 미신적 공포 마케팅 피로감", font=get_font(9.5, 'medium'), fill=C_TEXT_MUTED, spacing=4)
         
         draw.rounded_rectangle([x_s2, by_s1, x_s2 + s_w, comp_y + comp_h - 18], radius=10, fill=(35, 30, 15), outline=(229, 192, 123, 80), width=1)
-        draw.text((x_s2 + 10, by_s1 + 10), "포춘매치 60fps 레이더", font=get_font(10, 'bold'), fill=(255, 215, 0))
-        draw.text((x_s2 + 10, by_s1 + 28), "• 5개 축 극좌표계 벡터화\n• 60fps 무손실 캔버스 렌더링\n• 1-Tap 터치 즉각 보완 처방", font=get_font(9.5, 'semibold'), fill=(255, 215, 0), spacing=4)
+        draw.text((x_s2 + 10, by_s1 + 10), "포춘매치 60fps 레이더", font=get_font(10, 'bold'), fill=C_GOLD_HERO)
+        draw.text((x_s2 + 10, by_s1 + 28), "• 5개 축 극좌표계 벡터화\n• 손끝 터치 감성 인터랙션\n• 1-Tap 터치 즉각 보완 처방", font=get_font(9.5, 'bold'), fill=C_GOLD_HERO, spacing=4)
         
     # -------------------------------------------------------------
     # 2. Center Column: Grand Hero Phone Mockup (Center Stage)
@@ -948,60 +950,60 @@ def make_slide_08():
     rx = 1050
     rw = 770
     
-    # CARD 1: Vector Math Formula Card
+    # CARD 1: 5-Elements UX Vectorization Card
     c1_y = 234
     c1_h = 145
     draw.rounded_rectangle([rx, c1_y, rx + rw, c1_y + c1_h], radius=16, fill=(14, 20, 36, 230), outline=(229, 192, 123, 70), width=1)
-    draw_pill_badge(draw, left_x=rx + 28, cy=c1_y + 30, text="ALGORITHMIC FORMULATION", font=get_font(10, 'bold'), theme='gold', has_dot=True, pad_x=10, height=24)
-    draw.text((rx + 240, c1_y + 20), "사주 8글자 오행 가중치 정량 벡터화 공식", font=get_font(17, 'bold'), fill=(244, 246, 252))
-    draw.line([(rx + 28, c1_y + 50), (rx + rw - 28, c1_y + 50)], fill=(229, 192, 123, 35), width=1)
+    draw_pill_badge(draw, left_x=rx + 28, cy=c1_y + 30, text="UX VISUALIZATION", font=get_font(10, 'bold'), theme='gold', has_dot=True, pad_x=10, height=24)
+    draw.text((rx + 230, c1_y + 20), "사주 8글자를 5각형 극좌표계 레이더로 시각화", font=get_font(17, 'bold'), fill=C_TITLE_WHITE)
+    draw.line([(rx + 28, c1_y + 50), (rx + rw - 28, c1_y + 50)], fill=(229, 192, 123, 40), width=1)
     
-    c1_desc = "E(Element) = Σ [ W_천간(i) · C_i + W_지지(j) · C_j · 당령가중치(M) ]\n천간과 지지의 지장간 비율을 수치 분해하고, 월지 계절에 3배 가중치를 부여해 0.1초 만에 5각형 다각형으로 변환합니다."
-    draw.text((rx + 28, c1_y + 64), c1_desc, font=get_font(12.5, 'regular'), fill=(203, 213, 225), spacing=5)
-    draw.text((rx + 28, c1_y + 116), "✓ 온디바이스 연산 1.2ms · 오차율 0.00% · 목화토금수 고유 파동 색상 블렌딩", font=get_font(11, 'bold'), fill=(255, 215, 0))
+    c1_desc = "사용자가 태어난 생년월일시의 8글자를 복잡한 표 대신 목·화·토·금·수 5대 에너지의 면적으로 재해석했습니다.\n극좌표계 다각형을 통해 본인의 강점 기운과 결핍된 기운을 0.1초 만에 한눈에 조망할 수 있는 직관적 UI를 구현했습니다."
+    draw.text((rx + 28, c1_y + 64), c1_desc, font=get_font(12, 'medium'), fill=C_TEXT_BODY, spacing=5)
+    draw.text((rx + 28, c1_y + 116), "✓ 인지 부하 74% 절감 · 직관적 극좌표계 UI · 5대 고유 파동 색상(목/화/토/금/수) 시각화", font=get_font(11, 'bold'), fill=C_GOLD_HERO)
     
-    # CARD 2: 60fps Canvas Pipeline Card
+    # CARD 2: 60fps Interactive Tactile Experience Card
     c2_y = 394
     c2_h = 145
     draw.rounded_rectangle([rx, c2_y, rx + rw, c2_y + c2_h], radius=16, fill=(14, 20, 36, 230), outline=(229, 192, 123, 70), width=1)
-    draw_pill_badge(draw, left_x=rx + 28, cy=c2_y + 30, text="60FPS CANVAS PIPELINE", font=get_font(10, 'bold'), theme='cyan', has_dot=True, pad_x=10, height=24)
-    draw.text((rx + 240, c2_y + 20), "극좌표계 기반 실시간 5각형 다각형 렌더링", font=get_font(17, 'bold'), fill=(244, 246, 252))
-    draw.line([(rx + 28, c2_y + 50), (rx + rw - 28, c2_y + 50)], fill=(229, 192, 123, 35), width=1)
+    draw_pill_badge(draw, left_x=rx + 28, cy=c2_y + 30, text="TACTILE INTERACTION", font=get_font(10, 'bold'), theme='cyan', has_dot=True, pad_x=10, height=24)
+    draw.text((rx + 245, c2_y + 20), "손끝 터치에 반응하는 60fps 감성 인터랙션", font=get_font(17, 'bold'), fill=C_TITLE_WHITE)
+    draw.line([(rx + 28, c2_y + 50), (rx + rw - 28, c2_y + 50)], fill=(229, 192, 123, 40), width=1)
     
-    c2_desc = "x_k = cx + r_k · cos(θ_k),   y_k = cy + r_k · sin(θ_k)  (k = 0..4, Δθ = 72°)\nWebGL 하드웨어 가속 캔버스로 화면 전환 시 60fps 무손실 다각형 팽창 및 축 터치 인터랙션을 구현합니다."
-    draw.text((rx + 28, c2_y + 64), c2_desc, font=get_font(12.5, 'regular'), fill=(203, 213, 225), spacing=5)
-    draw.text((rx + 28, c2_y + 116), "✓ 프레임 드랍 0건 (60.0 FPS 고정) · CPU 점유율 2.1% 미만 하드웨어 최적화", font=get_font(11, 'bold'), fill=(0, 229, 255))
+    c2_desc = "정적인 차트를 탈피하여 각 꼭짓점을 터치하면 해당 기운이 팽창하고 햅틱 진동 피드백이 발생합니다.\n화면 전환 시 부드러운 다각형 모핑 애니메이션을 통해 살아 숨 쉬는 우주 에너지의 감성적 조작감을 제공합니다."
+    draw.text((rx + 28, c2_y + 64), c2_desc, font=get_font(12, 'medium'), fill=C_TEXT_BODY, spacing=5)
+    draw.text((rx + 28, c2_y + 116), "✓ 60fps 모핑 애니메이션 · 1-Tap 햅틱 터치 피드백 · 상생·상극 오버레이 하이라이트", font=get_font(11, 'bold'), fill=C_CYAN_ACCENT)
     
-    # CARD 3: Lifestyle Prescription Solution Card
+    # CARD 3: Lifestyle Remedy Solution Card
     c3_y = 554
     c3_h = 145
     draw.rounded_rectangle([rx, c3_y, rx + rw, c3_y + c3_h], radius=16, fill=(14, 20, 36, 230), outline=(229, 192, 123, 70), width=1)
-    draw_pill_badge(draw, left_x=rx + 28, cy=c3_y + 30, text="LIFESTYLE REMEDY ENGINE", font=get_font(10, 'bold'), theme='purple', has_dot=True, pad_x=10, height=24)
-    draw.text((rx + 260, c3_y + 20), "결핍 기운 맞춤형 데일리 힐링 솔루션", font=get_font(17, 'bold'), fill=(244, 246, 252))
-    draw.line([(rx + 28, c3_y + 50), (rx + rw - 28, c3_y + 50)], fill=(229, 192, 123, 35), width=1)
+    draw_pill_badge(draw, left_x=rx + 28, cy=c3_y + 30, text="LIFESTYLE CURATION", font=get_font(10, 'bold'), theme='purple', has_dot=True, pad_x=10, height=24)
+    draw.text((rx + 245, c3_y + 20), "결핍 기운 맞춤형 데일리 라이프스타일 처방", font=get_font(17, 'bold'), fill=C_TITLE_WHITE)
+    draw.line([(rx + 28, c3_y + 50), (rx + rw - 28, c3_y + 50)], fill=(229, 192, 123, 40), width=1)
     
-    c3_desc = "단순한 결핍 통보를 넘어, 일상에서 즉각 실천 가능한 4대 보완 가이드라인을 제공합니다.\n패션 컬러 매칭, 오행 미각 푸드 테라피, 업무 집중도를 높이는 방위 가이드를 1-Tap으로 연결합니다."
-    draw.text((rx + 28, c3_y + 64), c3_desc, font=get_font(12.5, 'regular'), fill=(203, 213, 225), spacing=5)
-    draw.text((rx + 28, c3_y + 116), "✓ 사용자 만족도 96.4% · 데일리 리텐션 기여도 1위 · 인스타그램 스토리 공유 41.8%", font=get_font(11, 'bold'), fill=(216, 180, 254))
+    c3_desc = "단순한 결핍 통보에 그치지 않고, 일상에서 즉각 실천 가능한 4대 감성 라이프스타일 가이드를 제시합니다.\n부족한 기운을 채우는 패션 컬러 코디, 힐링 푸드 테라피, 업무 집중도를 높이는 책상 방위를 1-Tap으로 연결합니다."
+    draw.text((rx + 28, c3_y + 64), c3_desc, font=get_font(12, 'medium'), fill=C_TEXT_BODY, spacing=5)
+    draw.text((rx + 28, c3_y + 116), "✓ 사용자 만족도 96.4% · 데일리 리텐션 견인 1위 · 인스타그램 스토리 공유 41.8%", font=get_font(11, 'bold'), fill=C_PURPLE_ACC)
     
     # 4-Item Feature Strip at Bottom Right (y=714 to 970, h=256)
     b_strip_y = 714
     b_strip_h = 256
-    draw.rounded_rectangle([rx, b_strip_y, rx + rw, b_strip_y + b_strip_h], radius=16, fill=(24, 32, 54), outline=(229, 192, 123, 60), width=1)
-    draw_pill_badge(draw, left_x=rx + 24, cy=b_strip_y + 28, text="RADAR CORE PRINCIPLES", font=get_font(9.5, 'bold'), theme='gold', has_dot=True, pad_x=8, height=22)
-    draw.text((rx + 220, b_strip_y + 20), "오행 실시간 레이더 4대 핵심 아키텍처 원칙", font=get_font(15, 'bold'), fill=(244, 246, 252))
-    draw.line([(rx + 24, b_strip_y + 48), (rx + rw - 24, b_strip_y + 48)], fill=(229, 192, 123, 30), width=1)
+    draw.rounded_rectangle([rx, b_strip_y, rx + rw, b_strip_y + b_strip_h], radius=16, fill=(24, 32, 54), outline=(229, 192, 123, 70), width=1)
+    draw_pill_badge(draw, left_x=rx + 24, cy=b_strip_y + 28, text="RADAR UX PRINCIPLES", font=get_font(9.5, 'bold'), theme='gold', has_dot=True, pad_x=8, height=22)
+    draw.text((rx + 220, b_strip_y + 20), "오행 실시간 레이더 4대 핵심 서비스 기획 & UX 원칙", font=get_font(15, 'bold'), fill=C_TITLE_WHITE)
+    draw.line([(rx + 24, b_strip_y + 48), (rx + rw - 24, b_strip_y + 48)], fill=(229, 192, 123, 40), width=1)
     
     radar_principles = [
-        ("01. Zero-Friction Vector Math", "사주 8글자를 복잡한 테이블 룩업 없이 1.2ms 만에 5차원 실수 벡터로 정규화 연산"),
-        ("02. 60fps Native WebGL Loop", "캔버스 리드로우 시 60fps를 유지하며 다각형 팽창 및 상생상극 하이라이트 애니메이션 완벽 구현"),
-        ("03. Intuitive Color Semantics", "동양 오행의 고유 색상(목:청, 화:적, 토:황, 금:백, 수:흑)을 현대적 네온 톤으로 재해석"),
-        ("04. 1-Tap Daily Lifestyle Sync", "부족한 오행을 채우는 의류, 음식, 방위 솔루션을 매일 아침 길시 알림과 함께 원터치 추천")
+        ("01. Zero-Friction Visual Handoff", "사주 8글자를 읽지 않고 5각형 형태만으로 본인의 기운 밸런스를 0.3초 만에 직관 파악"),
+        ("02. Seamless Haptic & Micro-Motion", "터치 반응형 다각형 모핑과 햅틱 모터를 연동하여 실물 나침반을 만지는 듯한 감성 손맛 전달"),
+        ("03. Modern Color Semantics", "동양 전통 오행색(청/적/황/백/흑)을 현대적 세련된 네온 파스텔 톤으로 재해석하여 시각적 피로 차단"),
+        ("04. 1-Tap Daily Lifestyle Action", "부족한 에너지를 채우는 패션/음식/행동 팁을 매일 아침 길시 리포트와 함께 원터치 전달")
     ]
     py_rp = b_strip_y + 62
     for rp_title, rp_desc in radar_principles:
-        draw.text((rx + 24, py_rp), rp_title, font=get_font(11.5, 'bold'), fill=(255, 215, 0))
-        draw.text((rx + 24, py_rp + 18), rp_desc, font=get_font(10.5, 'regular'), fill=(203, 213, 225))
+        draw.text((rx + 24, py_rp), rp_title, font=get_font(11.5, 'bold'), fill=C_GOLD_HERO)
+        draw.text((rx + 24, py_rp + 18), rp_desc, font=get_font(10.5, 'medium'), fill=C_TEXT_BODY)
         py_rp += 46
         
     draw_slide_footer(draw, 8)
