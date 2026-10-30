@@ -2,7 +2,7 @@ import os
 import math
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 from build_executive_ftmt_deck import (
-    W, H, MOCKUP_DIR, get_font, get_num_font, wrap_text_by_words,
+    W, H, MOCKUP_DIR, get_font, get_num_font, get_material_icon_font, wrap_text_by_words,
     draw_diamond, draw_arrow, draw_dashed_line, draw_dashed_arrow,
     draw_pill_badge, draw_dotted_callout,
     create_cosmic_base, draw_slide_header, draw_slide_footer, save_slide
@@ -431,7 +431,7 @@ def make_slide_06():
     save_slide(base, 6)
 
 # ==============================================================
-# SLIDE 07: VISUAL DESIGN SYSTEM & BRAND TOKENS
+# SLIDE 07: VISUAL DESIGN SYSTEM & BRAND TOKENS (HIGH-DENSITY 5-FOUNDATION)
 # ==============================================================
 def make_slide_07():
     base, draw = create_cosmic_base(center_orbit=(1480, 520))
@@ -439,160 +439,573 @@ def make_slide_07():
     draw_slide_header(
         draw,
         slide_num=7,
-        category_en="DESIGN SYSTEM | VISUAL TOKENS & COMPONENTS",
-        title_white="우주의 신비로움과 골드 럭셔리를 융합한 ",
-        title_gold="디자인 시스템 & 토큰",
-        subtitle_kr="Deep Obsidian, Imperial Gold, Aurora Violet을 아우르는 컬러 팔레트와 체계화된 타이포그래피"
+        category_en="DESIGN SYSTEM | BRAND IDENTITY & COMPONENT ARCHITECTURE",
+        title_white="우주의 신비로움과 기하학적 정밀성을 규정하는 ",
+        title_gold="비주얼 아이덴티티 & 디자인 시스템",
+        subtitle_kr="포춘매치 3대 핵심 디자인 철학, 황금비 천체 키라인 그리드, Flutter 24dp 아이코노그라피, 파운데이션 토큰 & 아토믹 킷"
     )
     
-    # Left: Semantic Color System (7 Swatches)
-    col_box_w = 780
-    col_box_h = 720
-    draw.rounded_rectangle([100, 230, 100 + col_box_w, 230 + col_box_h], radius=16, fill=(14, 20, 36, 220), outline=(229, 192, 123, 50), width=1)
-    draw.text((125, 250), "SEMANTIC COLOR SYSTEM (브랜드 컬러 토큰)", font=get_font(14, 'bold'), fill=(244, 246, 252))
-    draw.text((125, 270), "신뢰도 높은 다크 옵시디언 베이스에 샴페인 골드 및 오로라 바이올렛 악센트", font=get_font(11, 'medium'), fill=(163, 176, 204))
+    # Coordinates
+    # Row 1 (y=234 to 574, h=340) - 3 Columns
+    r1_y = 234
+    r1_h = 340
     
-    swatches = [
-        ("DEEP OBSIDIAN (BG)", "#070A12", (7, 10, 18), "우주의 무한한 공간감 및 시각적 피로도 최소화 베이스"),
-        ("SURFACE SLATE", "#0E1424", (14, 20, 36), "1차 정보 레이어 및 대시보드 메인 서피스"),
-        ("CARD SLATE (ELEVATED)", "#182036", (24, 32, 54), "인터랙티브 카드, 바텀시트, 모달 서피스"),
-        ("IMPERIAL GOLD (PRIMARY)", "#FFD700", (255, 215, 0), "주요 CTA 버튼, 핵심 궁합 스코어, 1등 뱃지"),
-        ("CHAMPAGNE GOLD", "#E5C07B", (229, 192, 123), "보더 헤어라인, 서브 타이틀, 럭셔리 포인트"),
-        ("AURORA VIOLET (ACCENT)", "#8A2BE2", (138, 43, 226), "사주 일주 신비감, 타로 카드 아우라 글로우"),
-        ("CYAN NEON (TELEMETRY)", "#00E5FF", (0, 229, 255), "오행 실시간 레이더 다각형, 상태 알림 태그")
+    col1_x = 100
+    col1_w = 540
+    
+    col2_x = 665
+    col2_w = 540
+    
+    col3_x = 1230
+    col3_w = 590
+    
+    # -------------------------------------------------------------
+    # CARD 01 (Upper Left): FORTUNEMATCH DESIGN CORE CONCEPTS (UX & GUI)
+    # -------------------------------------------------------------
+    draw.rounded_rectangle([col1_x, r1_y, col1_x + col1_w, r1_y + r1_h], radius=16, fill=(14, 20, 36, 230), outline=(229, 192, 123, 70), width=1)
+    b1_box = draw_pill_badge(draw, left_x=col1_x + 24, cy=r1_y + 30, text="FOUNDATION 01", font=get_font(9.5, 'bold'), theme='gold', has_dot=True, pad_x=8, height=22)
+    draw.text((b1_box[2] + 14, r1_y + 30), "포춘매치 디자인 핵심 컨셉 (UX & GUI 철학)", font=get_font(13.0, 'bold'), fill=(244, 246, 252), anchor='lm')
+    draw.line([(col1_x + 24, r1_y + 52), (col1_x + col1_w - 24, r1_y + 52)], fill=(229, 192, 123, 35), width=1)
+    
+    principles = [
+        ("01. Cosmic Luxury (우주적 럭셔리 · Fear-Free)",
+         "미신적 공포 마케팅과 난해한 한자 나열을 배제한 멘탈 큐레이션",
+         "심연의 우주를 담은 Deep Obsidian(#070A12) & Imperial Gold(#FFD700) AAA 배색",
+         (255, 215, 0)),
+        ("02. Five-Elements Vector (오행 벡터화 · Dynamic Radar)",
+         "천간지지 8글자를 목·화·토·금·수 정량 5각형 극좌표계로 즉각 시각화",
+         "60fps WebGL 실시간 캔버스 렌더링, 상생·상극 오버레이 블렌딩 & 결핍 보완 솔루션",
+         (0, 229, 255)),
+        ("03. Dopamine Interaction (도파민 인터랙션 · Haptic Tactility)",
+         "운세 확인을 즐거운 탐색 경험으로 전환하는 3D 타로 셔플 & 햅틱 모터 제어",
+         "물리 엔진 기반 카드 스프레드, 0.2초 햅틱 플립, AES-256 로컬 암호화 시크릿 볼트",
+         (168, 85, 247))
+    ]
+    py_start = r1_y + 64
+    for p_title, ux_text, gui_text, p_accent in principles:
+        draw.rounded_rectangle([col1_x + 24, py_start, col1_x + col1_w - 24, py_start + 70], radius=10, fill=(24, 32, 54), outline=(229, 192, 123, 40), width=1)
+        draw.rounded_rectangle([col1_x + 24, py_start + 6, col1_x + 28, py_start + 64], radius=2, fill=p_accent)
+        draw.text((col1_x + 36, py_start + 13), p_title, font=get_font(10.2, 'bold'), fill=p_accent)
+        draw.text((col1_x + 36, py_start + 32), "[UX 컨셉]", font=get_font(8.2, 'bold'), fill=(244, 246, 252))
+        draw.text((col1_x + 88, py_start + 32), ux_text, font=get_font(8.2, 'regular'), fill=(203, 213, 225))
+        draw.text((col1_x + 36, py_start + 49), "[GUI 컨셉]", font=get_font(8.2, 'bold'), fill=(244, 246, 252))
+        draw.text((col1_x + 88, py_start + 49), gui_text, font=get_font(8.2, 'regular'), fill=(163, 176, 204))
+        py_start += 78
+        
+    draw.rounded_rectangle([col1_x + 24, r1_y + r1_h - 38, col1_x + col1_w - 24, r1_y + r1_h - 14], radius=6, fill=(35, 30, 15), outline=(229, 192, 123, 80), width=1)
+    draw.text((col1_x + col1_w // 2, r1_y + r1_h - 26), "Core Concepts: Cosmic Luxury · Five-Elements Vector · Dopamine Tactility", font=get_font(8.8, 'bold'), fill=(255, 215, 0), anchor='mm')
+    
+    # -------------------------------------------------------------
+    # CARD 02 (Upper Center): APP ICON GEOMETRIC DRAFTING GRID & SPEC
+    # -------------------------------------------------------------
+    draw.rounded_rectangle([col2_x, r1_y, col2_x + col2_w, r1_y + r1_h], radius=16, fill=(14, 20, 36, 230), outline=(229, 192, 123, 70), width=1)
+    b2_box = draw_pill_badge(draw, left_x=col2_x + 24, cy=r1_y + 30, text="FOUNDATION 02", font=get_font(9.5, 'bold'), theme='cyan', has_dot=True, pad_x=8, height=22)
+    draw.text((b2_box[2] + 14, r1_y + 30), "앱 아이콘 기하학 천체 와이어프레임 & 조형 규격", font=get_font(13.5, 'bold'), fill=(244, 246, 252), anchor='lm')
+    draw.line([(col2_x + 24, r1_y + 52), (col2_x + col2_w - 24, r1_y + 52)], fill=(229, 192, 123, 35), width=1)
+    
+    ic_box_x = col2_x + 22
+    ic_box_y = r1_y + 62
+    ic_box_size = 178
+    
+    draw.rounded_rectangle([ic_box_x, ic_box_y, ic_box_x + ic_box_size, ic_box_y + ic_box_size], radius=12, fill=(7, 10, 18), outline=(229, 192, 123, 50), width=1)
+    
+    cx = ic_box_x + ic_box_size // 2
+    cy = ic_box_y + ic_box_size // 2
+    
+    S = 136
+    R = S / 2.0
+    r_in = R * 0.425
+    r_mid = math.sqrt(2) * r_in
+    ext = 18
+    grid_line_color = (229, 192, 123, 100)
+    
+    draw.line([(cx - R - ext, cy - R - ext), (cx + R + ext, cy + R + ext)], fill=grid_line_color, width=1)
+    draw.line([(cx - R - ext, cy + R + ext), (cx + R + ext, cy - R - ext)], fill=grid_line_color, width=1)
+    
+    draw.line([(cx - R - ext, cy - R), (cx + R + ext, cy - R)], fill=grid_line_color, width=1)
+    draw.line([(cx - R, cy - r_in), (cx + R, cy - r_in)], fill=grid_line_color, width=1)
+    draw.line([(cx - R, cy), (cx + R, cy)], fill=grid_line_color, width=1)
+    draw.line([(cx - R, cy + r_in), (cx + R, cy + r_in)], fill=grid_line_color, width=1)
+    draw.line([(cx - R - ext, cy + R), (cx + R + ext, cy + R)], fill=grid_line_color, width=1)
+    
+    draw.line([(cx - R, cy - R - ext), (cx - R, cy + R + ext)], fill=grid_line_color, width=1)
+    draw.line([(cx - r_in, cy - R), (cx - r_in, cy + R)], fill=grid_line_color, width=1)
+    draw.line([(cx, cy - R), (cx, cy + R)], fill=grid_line_color, width=1)
+    draw.line([(cx + r_in, cy - R), (cx + r_in, cy + R)], fill=grid_line_color, width=1)
+    draw.line([(cx + R, cy - R - ext), (cx + R, cy + R + ext)], fill=grid_line_color, width=1)
+    
+    draw.ellipse([cx - r_in, cy - r_in, cx + r_in, cy + r_in], outline=grid_line_color, width=1)
+    draw.ellipse([cx - r_mid, cy - r_mid, cx + r_mid, cy + r_mid], outline=grid_line_color, width=1)
+    draw.ellipse([cx - R, cy - R, cx + R, cy + R], outline=grid_line_color, width=1)
+    
+    r_corner = int(round(S * 0.225))
+    draw.rounded_rectangle([cx - R, cy - R, cx + R, cy + R], radius=r_corner, outline=grid_line_color, width=1)
+    
+    ftmt_icon_path = 'd:/097.flutter_project/auto_portfolio/ftmt/assets/app_icon.png'
+    if os.path.exists(ftmt_icon_path):
+        try:
+            raw_icon = Image.open(ftmt_icon_path).convert('RGBA')
+            resized = raw_icon.resize((S, S), Image.Resampling.LANCZOS)
+            
+            s_layer = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+            sdraw = ImageDraw.Draw(s_layer)
+            sdraw.rounded_rectangle([cx - S//2 + 2, cy - S//2 + 4, cx + S//2 + 2, cy + S//2 + 6], radius=r_corner + 2, fill=(0, 0, 0, 120))
+            s_layer = s_layer.filter(ImageFilter.GaussianBlur(6))
+            base = Image.alpha_composite(base, s_layer)
+            
+            icon_layer = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+            icon_layer.paste(resized, (cx - S//2, cy - S//2))
+            base = Image.alpha_composite(base, icon_layer)
+            draw = ImageDraw.Draw(base)
+            
+            grid_gold = (255, 215, 0, 160)
+            draw.line([(cx - R, cy - R), (cx + R, cy + R)], fill=grid_gold, width=1)
+            draw.line([(cx - R, cy + R), (cx + R, cy - R)], fill=grid_gold, width=1)
+            draw.line([(cx - R, cy), (cx + R, cy)], fill=grid_gold, width=1)
+            draw.line([(cx, cy - R), (cx, cy + R)], fill=grid_gold, width=1)
+            draw.ellipse([cx - r_in, cy - r_in, cx + r_in, cy + r_in], outline=grid_gold, width=1)
+            draw.ellipse([cx - r_mid, cy - r_mid, cx + r_mid, cy + r_mid], outline=grid_gold, width=1)
+            draw.rounded_rectangle([cx - S//2, cy - S//2, cx + S//2, cy + S//2], radius=r_corner, outline=(255, 215, 0, 220), width=1)
+        except Exception as e:
+            print("Icon paste error:", e)
+            
+    draw.text((cx, ic_box_y + ic_box_size + 13), "Cosmic Zodiac Squircle Grid (1024×1024)", font=get_font(8.5, 'bold'), fill=(255, 215, 0), anchor='mm')
+    draw.text((cx, ic_box_y + ic_box_size + 27), "Inner Ø288 · Mid Ø408 · Outer Ø680 · R22.5%", font=get_num_font(7.5, 'medium'), fill=(163, 176, 204), anchor='mm')
+    
+    m_x = ic_box_x + ic_box_size + 16
+    specs = [
+        ("01. 천체 궤도 3대 동심원 & 황금비 분할",
+         "태양 궤도, 황도 12궁, 오행 회전축을 기하학적 동심원으로 정렬하여",
+         "24절기와 우주 좌표가 만나는 시각적 황금비(Golden Ratio) 구축"),
+        ("02. Dynamic Squircle Curvature (R22.5%)",
+         "연속 곡률(Continuous Curvature) 기반 스쿼클 마스킹으로",
+         "구글 플레이 스토어 및 안드로이드 Adaptive Icon 완벽 대응"),
+        ("03. 5각형 오행 크레스트 & 골드 스타 아크",
+         "목화토금수 에너지 중심축과 밤하늘 궤도를 상징하는 아크가",
+         "키라인 그리드 45° 대각선에 100% 정렬된 럭셔리 아이덴티티 완성")
+    ]
+    sy = r1_y + 64
+    for title, l1, l2 in specs:
+        draw.text((m_x, sy), title, font=get_font(10, 'bold'), fill=(255, 215, 0) if "01" in title else (244, 246, 252))
+        draw.text((m_x, sy + 18), l1, font=get_font(8.5, 'regular'), fill=(203, 213, 225))
+        draw.text((m_x, sy + 32), l2, font=get_font(8.5, 'regular'), fill=(163, 176, 204))
+        sy += 54
+        
+    draw.rounded_rectangle([col2_x + 24, r1_y + r1_h - 38, col2_x + col2_w - 24, r1_y + r1_h - 14], radius=6, fill=(35, 30, 15), outline=(229, 192, 123, 60), width=1)
+    draw.text((col2_x + col2_w // 2, r1_y + r1_h - 26), "Golden Ratio Keyline Drafting Grid & Continuous Squircle Specification", font=get_font(8.8, 'bold'), fill=(229, 192, 123), anchor='mm')
+    
+    # -------------------------------------------------------------
+    # CARD 03 (Upper Right): 24dp ICONOGRAPHY SYSTEM (FLUTTER MATERIAL)
+    # -------------------------------------------------------------
+    draw.rounded_rectangle([col3_x, r1_y, col3_x + col3_w, r1_y + r1_h], radius=16, fill=(14, 20, 36, 230), outline=(229, 192, 123, 70), width=1)
+    b3_box = draw_pill_badge(draw, left_x=col3_x + 24, cy=r1_y + 30, text="FOUNDATION 03", font=get_font(9.5, 'bold'), theme='purple', has_dot=True, pad_x=8, height=22)
+    draw.text((b3_box[2] + 14, r1_y + 30), "Flutter Material Rounded 24dp 아이코노그라피", font=get_font(13.5, 'bold'), fill=(244, 246, 252), anchor='lm')
+    draw.line([(col3_x + 24, r1_y + 52), (col3_x + col3_w - 24, r1_y + 52)], fill=(229, 192, 123, 35), width=1)
+    
+    draw.text((col3_x + 24, r1_y + 64), "Grid 24×24dp  ·  Optical Center  ·  Production Flutter Icons.*_rounded 토큰 1:1 바인딩", font=get_font(9, 'bold'), fill=(255, 215, 0))
+    
+    icons_data = [
+        ("우주 사주 허브", "Icons.auto_awesome", 0xf556),
+        ("오행 레이더 뷰", "Icons.radar_rounded", 0xf00b8),
+        ("정밀 인연 매칭", "Icons.favorite_rounded", 0xf73b),
+        ("3D 도파민 타로", "Icons.style_rounded", 0xf01e0),
+        ("시크릿 볼트", "Icons.lock_outline_rounded", 0xf88c),
+        ("VIP 마스터 패스", "Icons.workspace_premium", 0xf0289),
+        ("인연 저장 히스토리", "Icons.history_toggle_off", 0xf7f0),
+        ("복채 상점 충전", "Icons.diamond_rounded", 0xf69d),
     ]
     
-    sy_sw = 305
-    for name, hex_code, rgb, usage in swatches:
-        draw.rounded_rectangle([125, sy_sw, 125 + 68, sy_sw + 46], radius=8, fill=rgb, outline=(229, 192, 123, 60), width=1)
-        draw.text((205, sy_sw + 6), name, font=get_font(12, 'bold'), fill=(244, 246, 252))
-        draw.text((205, sy_sw + 26), f"{hex_code} · RGB {rgb[0]},{rgb[1]},{rgb[2]}", font=get_num_font(10, 'medium'), fill=(229, 192, 123))
-        draw.text((430, sy_sw + 16), usage, font=get_font(10.5, 'regular'), fill=(163, 176, 204))
-        sy_sw += 58
-        
-    # Right: Typography Scale & Component Tokens
-    r_x = 100 + col_box_w + 30
-    r_w = 910
-    draw.rounded_rectangle([r_x, 230, r_x + r_w, 230 + col_box_h], radius=16, fill=(14, 20, 36, 220), outline=(229, 192, 123, 50), width=1)
-    draw.text((r_x + 25, 250), "TYPOGRAPHY SCALE & COMPONENT TOKENS", font=get_font(14, 'bold'), fill=(244, 246, 252))
-    draw.text((r_x + 25, 270), "Pretendard Variable 기반 6단계 타이포그래피 계층 및 컴포넌트 규격", font=get_font(11, 'medium'), fill=(163, 176, 204))
+    ic_start_y = r1_y + 86
+    ic_w = (col3_w - 48 - 30) // 4
+    ic_h = 96
+    mat_font_icon = get_material_icon_font(23)
     
-    type_scale = [
-        ("Display 56", "Pretendard-Black", "56pt", "Line Height 1.2", "우주의 주파수를 잇다"),
-        ("Headline 35", "Pretendard-Bold", "35pt", "Line Height 1.3", "5각형 오행 실시간 레이더"),
-        ("Title 20", "Pretendard-Bold", "20pt", "Line Height 1.4", "92% 정밀 인연 궁합 매칭"),
-        ("Body 15", "Pretendard-Medium", "15pt", "Line Height 1.5", "복잡한 수식을 배제하고 데이터로 증명"),
-        ("Label 12", "Pretendard-Bold", "12pt", "Line Height 1.0", "RECOMMENDED · 0.3s QUICK SETUP"),
-        ("Caption 10", "Pretendard-Regular", "10pt", "Line Height 1.4", "출생 시간을 모를 경우 정오 12:00 기준 보정")
+    for idx, (iname, itoken, icp) in enumerate(icons_data):
+        row = idx // 4
+        col = idx % 4
+        ix = col3_x + 24 + col * (ic_w + 10)
+        iy = ic_start_y + row * (ic_h + 10)
+        
+        draw.rounded_rectangle([ix, iy, ix + ic_w, iy + ic_h], radius=10, fill=(24, 32, 54), outline=(229, 192, 123, 40), width=1)
+        
+        icx = ix + ic_w // 2
+        icy = iy + 26
+        draw.rounded_rectangle([icx - 17, icy - 17, icx + 17, icy + 17], radius=8, fill=(35, 30, 15), outline=(229, 192, 123, 80), width=1)
+        draw.text((icx, icy), chr(icp), font=mat_font_icon, fill=(255, 215, 0), anchor='mm')
+        
+        draw.text((icx, iy + 53), iname, font=get_font(10, 'bold'), fill=(244, 246, 252), anchor='mm')
+        draw.text((icx, iy + 68), itoken, font=get_font(7.5, 'bold'), fill=(229, 192, 123), anchor='mm')
+        draw.text((icx, iy + 82), f"{hex(icp)} · 24dp", font=get_font(7.5, 'regular'), fill=(163, 176, 204), anchor='mm')
+        
+    draw.rounded_rectangle([col3_x + 24, r1_y + r1_h - 38, col3_x + col3_w - 24, r1_y + r1_h - 14], radius=6, fill=(35, 30, 15), outline=(229, 192, 123, 80), width=1)
+    draw.text((col3_x + col3_w // 2, r1_y + r1_h - 26), "Flutter 런타임 MaterialIcons-Regular.otf 실기기 렌더링 및 코드 토큰 100% 동기화", font=get_font(9.5, 'medium'), fill=(255, 215, 0), anchor='mm')
+    
+    # -------------------------------------------------------------
+    # LOWER ROW (y=594 to 970, h=376): 2 WIDE COLUMNS
+    # -------------------------------------------------------------
+    r2_y = 594
+    r2_h = 376
+    
+    colA_x = 100
+    colA_w = 840
+    
+    colB_x = 960
+    colB_w = 860
+    
+    # -------------------------------------------------------------
+    # CARD 04 (Lower Left): FOUNDATION DESIGN TOKENS (COLOR, TYPE, RADIUS, ELEVATION)
+    # -------------------------------------------------------------
+    draw.rounded_rectangle([colA_x, r2_y, colA_x + colA_w, r2_y + r2_h], radius=16, fill=(14, 20, 36, 230), outline=(229, 192, 123, 70), width=1)
+    b4_box = draw_pill_badge(draw, left_x=colA_x + 28, cy=r2_y + 32, text="FOUNDATION 04", font=get_font(9.5, 'bold'), theme='gold', has_dot=True, pad_x=8, height=22)
+    draw.text((b4_box[2] + 14, r2_y + 32), "파운데이션 토큰 아키텍처 & Pretendard 타이포그래피", font=get_font(14, 'bold'), fill=(244, 246, 252), anchor='lm')
+    draw.line([(colA_x + 28, r2_y + 54), (colA_x + colA_w - 28, r2_y + 54)], fill=(229, 192, 123, 35), width=1)
+    
+    col_w_inner = (colA_w - 56 - 20) // 2
+    
+    # Left Half: Hero Brand Color (#FFD700), Semantics, Gradients, Elevation
+    hb_y = r2_y + 64
+    draw.rounded_rectangle([colA_x + 28, hb_y, colA_x + 28 + col_w_inner, hb_y + 58], radius=10, fill=(35, 30, 15), outline=(255, 215, 0), width=2)
+    draw.text((colA_x + 42, hb_y + 12), "PRIMARY IMPERIAL GOLD", font=get_font(12, 'bold'), fill=(255, 215, 0))
+    draw.text((colA_x + 42, hb_y + 28), "Color / Brand / Primary  ·  #FFD700", font=get_num_font(9, 'medium'), fill=(229, 192, 123))
+    draw.text((colA_x + 42, hb_y + 42), "우주의 권위와 인연의 고귀함을 상징하는 럭셔리 골드", font=get_font(8, 'regular'), fill=(203, 213, 225))
+    draw_pill_badge(draw, cx=colA_x + 28 + col_w_inner - 48, cy=hb_y + 29, text="8.6:1 AAA", font=get_font(8.5, 'bold'), theme='gold', has_dot=False, pad_x=7, height=20)
+    
+    sub_swatches = [
+        ("Aurora Violet", "#8A2BE2", (138, 43, 226), "타로 아우라"),
+        ("Cyan Neon", "#00E5FF", (0, 229, 255), "오행 레이더"),
+        ("Jade Green", "#10B981", (16, 185, 129), "상생 & 길시"),
+        ("Deep Obsidian", "#070A12", (7, 10, 18), "우주 캔버스"),
+        ("Secret Rose", "#F43F5E", (244, 63, 94), "궁합 하트"),
     ]
-    
-    ty_y = 305
-    for lvl, font_w, sz, lh, sample in type_scale:
-        draw.rounded_rectangle([r_x + 25, ty_y, r_x + 130, ty_y + 36], radius=6, fill=(24, 32, 54))
-        draw.text((r_x + 77, ty_y + 18), lvl, font=get_font(10, 'bold'), fill=(255, 215, 0), anchor='mm')
-        draw.text((r_x + 145, ty_y + 10), f"{font_w} · {sz} · {lh}", font=get_font(10, 'medium'), fill=(163, 176, 204))
-        draw.text((r_x + 460, ty_y + 10), sample, font=get_font(12, 'bold'), fill=(244, 246, 252))
-        ty_y += 46
+    sw_w = (col_w_inner - 32) // 5
+    sw_y = hb_y + 66
+    for i, (s_name, s_hex, s_col, s_usage) in enumerate(sub_swatches):
+        sx = colA_x + 28 + i * (sw_w + 8)
+        draw.rounded_rectangle([sx, sw_y, sx + sw_w, sw_y + 58], radius=7, fill=(24, 32, 54), outline=(229, 192, 123, 40), width=1)
+        draw.rounded_rectangle([sx + 5, sw_y + 5, sx + sw_w - 5, sw_y + 20], radius=3, fill=s_col)
+        draw.text((sx + 5, sw_y + 24), s_name, font=get_font(7.5, 'bold'), fill=(244, 246, 252))
+        draw.text((sx + 5, sw_y + 35), s_hex, font=get_num_font(7.5, 'bold'), fill=(229, 192, 123))
+        draw.text((sx + 5, sw_y + 46), s_usage, font=get_font(6.8, 'medium'), fill=(163, 176, 204))
         
-    # Component Anatomy Box at Bottom of Right Card
-    comp_y = 600
-    draw.line([(r_x + 25, comp_y - 15), (r_x + r_w - 25, comp_y - 15)], fill=(229, 192, 123, 40), width=1)
-    draw.text((r_x + 25, comp_y), "COMPONENT ANATOMY (코어 인터랙션 컴포넌트)", font=get_font(13, 'bold'), fill=(255, 215, 0))
-    
-    comp_items = [
-        ("Pill Badge", "Radius 14px, Height 28px, 좌측 7px 발광 도트 내장, 6개 시맨틱 테마"),
-        ("Action CTA", "Radius 12px, Height 52dp 엄지 규격, Imperial Gold 솔리드 그라디언트"),
-        ("Radar Canvas", "5각형 극좌표계 벡터 연산, 60fps 렌더링 루프, 3단계 오차 완충 가드"),
-        ("Secret Vault", "AES-256 로컬 암호화, 기기 내부 SQLite 영구 보관, 외부 유출 원천 차단")
+    gr_y = sw_y + 68
+    draw.text((colA_x + 28, gr_y), "시그니처 브랜드 그라디언트 (Brand Gradients):", font=get_font(9, 'bold'), fill=(229, 192, 123))
+    gradients_data = [
+        ("Cosmic Imperial", (255, 215, 0), (229, 192, 123)),
+        ("Nebula Violet", (138, 43, 226), (216, 180, 254)),
+        ("Astro Cyan Wave", (0, 229, 255), (14, 165, 233)),
+        ("Obsidian Surface", (14, 20, 36), (30, 41, 59)),
     ]
-    cy_sub = comp_y + 30
-    for c_title, c_desc in comp_items:
-        draw.rounded_rectangle([r_x + 25, cy_sub, r_x + 140, cy_sub + 24], radius=4, fill=(35, 30, 15))
-        draw.text((r_x + 82, cy_sub + 12), c_title, font=get_font(8.5, 'bold'), fill=(255, 215, 0), anchor='mm')
-        draw.text((r_x + 155, cy_sub + 5), c_desc, font=get_font(10, 'regular'), fill=(203, 213, 225))
-        cy_sub += 34
+    gr_w = (col_w_inner - 24) // 4
+    for idx, (g_name, g_c1, g_c2) in enumerate(gradients_data):
+        gx = colA_x + 28 + idx * (gr_w + 8)
+        for step in range(gr_w):
+            ratio = step / max(1, gr_w - 1)
+            rc = int(g_c1[0] + (g_c2[0] - g_c1[0]) * ratio)
+            gc = int(g_c1[1] + (g_c2[1] - g_c1[1]) * ratio)
+            bc = int(g_c1[2] + (g_c2[2] - g_c1[2]) * ratio)
+            draw.line([(gx + step, gr_y + 14), (gx + step, gr_y + 30)], fill=(rc, gc, bc))
+        draw.rounded_rectangle([gx, gr_y + 14, gx + gr_w, gr_y + 30], radius=4, outline=(229, 192, 123, 80), width=1)
+        draw.text((gx + gr_w//2, gr_y + 36), g_name, font=get_font(7, 'bold'), fill=(163, 176, 204), anchor='mm')
         
+    el_y = gr_y + 48
+    draw.text((colA_x + 28, el_y), "엘레베이션 & 뎁스 토큰 (Elevation Hierarchy):", font=get_font(9, 'bold'), fill=(229, 192, 123))
+    elevations = [
+        ("Elevation 1 (2dp)", "Y:2 Blur:6", "카드 서피스"),
+        ("Elevation 2 (8dp)", "Y:8 Blur:20", "모달 · 바텀시트"),
+        ("Elevation 3 (16dp)", "Y:16 Blur:32", "3D 타로 플로팅"),
+    ]
+    el_w = (col_w_inner - 16) // 3
+    for idx, (el_title, el_spec, el_use) in enumerate(elevations):
+        ex = colA_x + 28 + idx * (el_w + 8)
+        ey = el_y + 14
+        draw.rounded_rectangle([ex, ey, ex + el_w, ey + 42], radius=6, fill=(24, 32, 54), outline=(229, 192, 123, 40), width=1)
+        draw.text((ex + 8, ey + 6), el_title, font=get_font(7.5, 'bold'), fill=(255, 215, 0))
+        draw.text((ex + 8, ey + 18), el_spec, font=get_num_font(7.2, 'medium'), fill=(163, 176, 204))
+        draw.text((ex + 8, ey + 29), el_use, font=get_font(7, 'regular'), fill=(203, 213, 225))
+        
+    # Right Half of Card 04: Typography & Corner Radius Token Matrix
+    ty_x = colA_x + 28 + col_w_inner + 20
+    ty_w = col_w_inner
+    
+    t_rows = [
+        ("Display 28", "Bold", "92% 궁합 케미스트리", False),
+        ("Headline 20", "Bold", "우주 사주 고유 좌표", False),
+        ("Title 16", "SemiBold", "오행 실시간 레이더 분석", False),
+        ("Body 14", "Regular", "14:30 ~ 16:00 금전운 길시", False),
+        ("Caption 11", "Medium", "AES-256 로컬 암호화 완료", False),
+    ]
+    ty_start = r2_y + 64
+    for i, (t_role, t_weight, t_sample, is_mono) in enumerate(t_rows):
+        ry = ty_start + i * 25
+        draw.rounded_rectangle([ty_x, ry, ty_x + ty_w, ry + 21], radius=5, fill=(24, 32, 54), outline=(229, 192, 123, 40), width=1)
+        draw.text((ty_x + 8, ry + 4), t_role, font=get_font(8.5, 'bold'), fill=(255, 215, 0))
+        draw.text((ty_x + 85, ry + 4), t_weight, font=get_font(8, 'medium'), fill=(163, 176, 204))
+        draw.text((ty_x + ty_w - 8, ry + 4), t_sample, font=get_font(8, 'semibold'), fill=(244, 246, 252), anchor='ra')
+        
+    sp_box_y = ty_start + len(t_rows) * 25 + 6
+    sp_box_h = (r2_y + r2_h - 26) - sp_box_y
+    draw.rounded_rectangle([ty_x, sp_box_y, ty_x + ty_w, sp_box_y + sp_box_h], radius=10, fill=(35, 30, 15), outline=(229, 192, 123, 80), width=1)
+    
+    draw.text((ty_x + 12, sp_box_y + 9), "코너 라운드 & 스페이싱 토큰 규칙 (Foundation Rules)", font=get_font(9.5, 'bold'), fill=(255, 215, 0))
+    draw_pill_badge(draw, cx=ty_x + ty_w - 44, cy=sp_box_y + 16, text="8pt Grid", font=get_font(7.5, 'bold'), theme='gold', has_dot=False, pad_x=5, height=16)
+    
+    r_swatches = [
+        ("radius.sm", "8px", 8, "태그 · 칩"),
+        ("radius.md", "12px", 12, "버튼 · 인풋창"),
+        ("radius.lg", "16px", 16, "결과 카드 · 모달"),
+        ("radius.full", "999px", 19, "필 뱃지 · CTA"),
+    ]
+    rw_item = (ty_w - 24 - 18) // 4
+    r_y = sp_box_y + 28
+    for idx, (r_token, r_val, r_px, r_usage) in enumerate(r_swatches):
+        rx = ty_x + 12 + idx * (rw_item + 6)
+        draw.rounded_rectangle([rx, r_y, rx + rw_item, r_y + 46], radius=r_px, fill=(24, 32, 54), outline=(255, 215, 0), width=1)
+        draw.rounded_rectangle([rx + 4, r_y + 4, rx + rw_item - 4, r_y + 18], radius=max(2, r_px - 3), fill=(35, 30, 15))
+        draw.text((rx + rw_item // 2, r_y + 11), f"R {r_val}", font=get_font(7.5, 'bold'), fill=(255, 215, 0), anchor='mm')
+        draw.text((rx + rw_item // 2, r_y + 25), r_token, font=get_num_font(6.8, 'bold'), fill=(244, 246, 252), anchor='mm')
+        draw.text((rx + rw_item // 2, r_y + 36), r_usage, font=get_font(6.5, 'regular'), fill=(163, 176, 204), anchor='mm')
+        
+    sy_line = r_y + 52
+    draw.text((ty_x + 12, sy_line), "• 스페이싱 토큰 (Spatial Scale): 4·8·12·16·24·32pt 기반 베이스라인 그리드", font=get_font(8, 'regular'), fill=(203, 213, 225))
+    draw.text((ty_x + 12, sy_line + 14), "• 고정폭 숫자 (Tabular Figures): 실시간 궁합 점수 및 절기 궤도 각도 떨림 방지", font=get_font(8, 'regular'), fill=(203, 213, 225))
+    draw.text((ty_x + 12, sy_line + 28), "• 3-Tier 토큰 파이프라인: Global(Primitive) → Semantic(Context) → Component 1:1", font=get_font(8, 'bold'), fill=(255, 215, 0))
+    
+    draw.text((colA_x + 28, r2_y + r2_h - 17), "• WCAG 2.1 AAA 8.6:1 초고대비율 준수 · 디자인 시스템 시맨틱 토큰 100% 동기화 아키텍처", font=get_font(9, 'regular'), fill=(163, 176, 204))
+    
+    # -------------------------------------------------------------
+    # CARD 05 (Lower Right): ATOMIC UI COMPONENT KIT
+    # -------------------------------------------------------------
+    draw.rounded_rectangle([colB_x, r2_y, colB_x + colB_w, r2_y + r2_h], radius=16, fill=(14, 20, 36, 230), outline=(229, 192, 123, 70), width=1)
+    b5_box = draw_pill_badge(draw, left_x=colB_x + 28, cy=r2_y + 32, text="FOUNDATION 05", font=get_font(9.5, 'bold'), theme='cyan', has_dot=True, pad_x=8, height=22)
+    draw.text((b5_box[2] + 14, r2_y + 32), "프로덕션 아토믹 UI 컴포넌트 킷", font=get_font(14, 'bold'), fill=(244, 246, 252), anchor='lm')
+    draw.line([(colB_x + 28, r2_y + 54), (colB_x + colB_w - 28, r2_y + 54)], fill=(229, 192, 123, 35), width=1)
+    
+    k1_y = r2_y + 68
+    k1_w = (colB_w - 56 - 20) // 2
+    
+    # Birth Coordinates Input Stepper Box
+    draw.rounded_rectangle([colB_x + 28, k1_y, colB_x + 28 + k1_w, k1_y + 80], radius=10, fill=(24, 32, 54), outline=(255, 215, 0), width=2)
+    draw.text((colB_x + 40, k1_y + 10), "탄생 시각 & 24절기 정밀 스텝퍼", font=get_font(9.5, 'bold'), fill=(255, 215, 0))
+    draw.text((colB_x + 40, k1_y + 30), "1998. 08. 14 (양력)", font=get_num_font(14, 'bold'), fill=(244, 246, 252))
+    draw_pill_badge(draw, cx=colB_x + 28 + k1_w - 40, cy=k1_y + 26, text="ACTIVE", font=get_font(8, 'bold'), theme='gold', has_dot=False, pad_x=5, height=18)
+    
+    draw.rounded_rectangle([colB_x + 40, k1_y + 50, colB_x + 28 + k1_w - 12, k1_y + 72], radius=5, fill=(35, 30, 15), outline=(229, 192, 123, 60), width=1)
+    mat_font_btn = get_material_icon_font(15)
+    draw.text((colB_x + 58, k1_y + 61), chr(0xf00f1), font=mat_font_btn, fill=(255, 215, 0), anchor='mm')
+    draw.text((colB_x + 28 + k1_w // 2, k1_y + 61), "사시(巳時) 09:30~11:30 (시각 보정)", font=get_font(9.5, 'bold'), fill=(244, 246, 252), anchor='mm')
+    draw.text((colB_x + 28 + k1_w - 28, k1_y + 61), chr(0xf537), font=mat_font_btn, fill=(255, 215, 0), anchor='mm')
+    
+    # Zodiac Chemistry Summary & Gender Toggle Box
+    k2_x = colB_x + 28 + k1_w + 20
+    draw.rounded_rectangle([k2_x, k1_y, k2_x + k1_w, k1_y + 80], radius=10, fill=(35, 30, 15), outline=(229, 192, 123, 80), width=1)
+    draw.text((k2_x + 14, k1_y + 10), "상대방 인연 요약 & 오행 토글", font=get_font(9.5, 'bold'), fill=(255, 215, 0))
+    draw.text((k2_x + 14, k1_y + 30), "궁합 지수 92% (천간합·방합 성립)", font=get_font(13.5, 'bold'), fill=(244, 246, 252))
+    draw.text((k2_x + 14, k1_y + 54), "결핍 오행 보완: 수(물) 기운 +42% 시너지", font=get_font(9.5, 'bold'), fill=(0, 229, 255))
+    
+    # Gender/Element Segmented Control
+    draw.rounded_rectangle([k2_x + k1_w - 95, k1_y + 48, k2_x + k1_w - 14, k1_y + 70], radius=11, fill=(24, 32, 54), outline=(229, 192, 123, 60), width=1)
+    draw.rounded_rectangle([k2_x + k1_w - 93, k1_y + 50, k2_x + k1_w - 56, k1_y + 68], radius=9, fill=(255, 215, 0))
+    draw.text((k2_x + k1_w - 75, k1_y + 59), "상생", font=get_font(8, 'bold'), fill=(7, 10, 18), anchor='mm')
+    draw.text((k2_x + k1_w - 35, k1_y + 59), "상극", font=get_font(8, 'bold'), fill=(163, 176, 204), anchor='mm')
+    
+    # Bottom Half of Card 05: Action CTA & Secret Vault Component
+    k3_y = k1_y + 92
+    draw.rounded_rectangle([colB_x + 28, k3_y, colB_x + 28 + k1_w, r2_y + r2_h - 24], radius=10, fill=(24, 32, 54), outline=(229, 192, 123, 40), width=1)
+    draw.text((colB_x + 40, k3_y + 14), "인터랙티브 CTA 버튼 시스템", font=get_font(11, 'bold'), fill=(244, 246, 252))
+    draw.text((colB_x + 40, k3_y + 32), "엄지 조작성 고려 R12 / 52dp 규격", font=get_font(8.5, 'regular'), fill=(163, 176, 204))
+    
+    draw.rounded_rectangle([colB_x + 40, k3_y + 54, colB_x + 28 + k1_w - 12, k3_y + 94], radius=12, fill=(229, 192, 123))
+    draw.text((colB_x + 28 + k1_w // 2, k3_y + 74), "궁합 결과 볼트에 암호화 저장 ↗", font=get_font(10.5, 'bold'), fill=(7, 10, 18), anchor='mm')
+    
+    draw.rounded_rectangle([colB_x + 40, k3_y + 104, colB_x + 28 + k1_w - 12, k3_y + 144], radius=12, fill=(35, 30, 15), outline=(255, 215, 0), width=1)
+    draw.text((colB_x + 28 + k1_w // 2, k3_y + 124), "다시 타로 셔플하기 (재시도)", font=get_font(10, 'bold'), fill=(255, 215, 0), anchor='mm')
+    
+    draw.rounded_rectangle([k2_x, k3_y, k2_x + k1_w, r2_y + r2_h - 24], radius=10, fill=(30, 18, 48), outline=(168, 85, 247, 80), width=1)
+    draw.text((k2_x + 14, k3_y + 14), "시크릿 볼트 (SQLite 암호화 모듈)", font=get_font(11, 'bold'), fill=(216, 180, 254))
+    draw.text((k2_x + 14, k3_y + 32), "외부 서버 무전송 · 100% 온디바이스", font=get_font(8.5, 'regular'), fill=(163, 176, 204))
+    
+    draw.rounded_rectangle([k2_x + 14, k3_y + 54, k2_x + k1_w - 14, k3_y + 94], radius=8, fill=(24, 32, 54), outline=(229, 192, 123, 60), width=1)
+    draw.text((k2_x + 26, k3_y + 68), "암호화 키: AES-256 GCM Salted", font=get_font(9, 'bold'), fill=(255, 215, 0))
+    draw.text((k2_x + 26, k3_y + 82), "저장된 인연: 총 12명 (보안 보관 중)", font=get_font(8.5, 'regular'), fill=(203, 213, 225))
+    
+    draw.rounded_rectangle([k2_x + 14, k3_y + 104, k2_x + k1_w - 14, k3_y + 144], radius=8, fill=(24, 32, 54), outline=(168, 85, 247, 60), width=1)
+    draw.text((k2_x + 26, k3_y + 118), "타로 아르카나 기록: 38회 완료", font=get_font(9, 'bold'), fill=(216, 180, 254))
+    draw.text((k2_x + 26, k3_y + 132), "로컬 DB 용량: 142KB · 제로 누수 보장", font=get_font(8.5, 'regular'), fill=(16, 185, 129))
+    
     draw_slide_footer(draw, 7)
     save_slide(base, 7)
 
+
 # ==============================================================
-# SLIDE 08: DEEP DIVE 01 - FIVE ELEMENTS INTERACTIVE RADAR
+# ==============================================================
+# SLIDE 08: CORE FEATURE 01 - FIVE ELEMENTS INTERACTIVE RADAR (3-COLUMN TRI-PANE)
 # ==============================================================
 def make_slide_08():
     base, draw = create_cosmic_base(center_orbit=(1480, 520))
     
-    draw_slide_header(
-        draw,
-        slide_num=8,
-        category_en="CORE FEATURE DEEP DIVE 01 | FIVE ELEMENTS RADAR",
-        title_white="나의 타고난 본질을 한눈에 파악하는 ",
-        title_gold="오행 에너지 인터랙티브 레이더",
-        subtitle_kr="목·화·토·금·수의 조화도를 실시간 5각형 다각형 차트로 시각화하여 결핍/과잉 기운 완벽 분석"
-    )
+    # -------------------------------------------------------------
+    # 1. Left Column: Grouped Header Card & Comparison Pane (x=100, w=490)
+    # -------------------------------------------------------------
+    lx = 100
+    lw = 490
     
-    # Left: Titanium iPhone Mockup
-    phone_radar_path = f"{MOCKUP_DIR}/iphone_01_hub.png"
-    if os.path.exists(phone_radar_path):
-        phone_img = Image.open(phone_radar_path).convert('RGBA')
-        target_h = 670
-        target_w = int(round(target_h * (phone_img.width / phone_img.height)))
-        p_res = phone_img.resize((target_w, target_h), Image.Resampling.LANCZOS)
+    # 1-A. Unified Kicker Badge
+    draw_pill_badge(draw, left_x=lx, cy=78, text="08 CORE FEATURE | 5-ELEMENTS INTERACTIVE RADAR", font=get_font(10.5, 'bold'), theme='gold', has_dot=True, pad_x=10, height=26)
+    
+    # Headline
+    t1_a = "난해한 한자 나열 없이 "
+    t1_b = "한눈에,"
+    font_title = get_font(33, 'extrabold')
+    w_t1_a = draw.textlength(t1_a, font=font_title)
+    draw.text((lx, 116), t1_a, font=font_title, fill=(244, 246, 252))
+    draw.text((lx + w_t1_a, 116), t1_b, font=font_title, fill=(255, 215, 0))
+    
+    t2_a = "0.3초 만에 "
+    t2_b = "오행 밸런스를 확인해요."
+    w_t2_a = draw.textlength(t2_a, font=font_title)
+    draw.text((lx, 158), t2_a, font=font_title, fill=(0, 229, 255))
+    draw.text((lx + w_t2_a, 158), t2_b, font=font_title, fill=(244, 246, 252))
+    
+    desc_text = "천간·지지 8글자의 복잡한 고전 만세력 해석을 탈피하여, 목·화·토·금·수 5대 에너지를 5각형 극좌표계 다각형으로 즉각 시각화했어요. 60fps 인터랙티브 캔버스를 통해 결핍된 기운을 0.3초 만에 파악하고 일상 속 맞춤 보완 솔루션을 직관적으로 제공합니다."
+    desc_lines = wrap_text_by_words(desc_text, get_font(12, 'regular'), lw, draw)
+    dy = 212
+    for dl in desc_lines:
+        draw.text((lx, dy), dl, font=get_font(12, 'regular'), fill=(163, 176, 204))
+        dy += 19
         
-        mask = p_res.split()[3]
-        sh_img = Image.new('RGBA', (p_res.width + 100, p_res.height + 100), (0, 0, 0, 0))
-        sh_img.paste((0, 0, 0, 95), (50 + 15, 50 + 25), mask)
-        sh_img = sh_img.filter(ImageFilter.GaussianBlur(35))
+    # 1-B. Comparison Container Card (Traditional Text vs 5-Elements Radar)
+    comp_y = 310
+    comp_h = 660
+    draw.rounded_rectangle([lx, comp_y, lx + lw, comp_y + comp_h], radius=18, fill=(14, 20, 36, 230), outline=(229, 192, 123, 70), width=1)
+    
+    draw_pill_badge(draw, left_x=lx + 24, cy=comp_y + 30, text="PARADIGM COMPARISON", font=get_font(9.5, 'bold'), theme='slate', has_dot=False, pad_x=8, height=22)
+    draw.text((lx + 185, comp_y + 22), "기존 한자 나열 vs 5각형 실시간 레이더", font=get_font(14, 'bold'), fill=(244, 246, 252))
+    draw.line([(lx + 24, comp_y + 50), (lx + lw - 24, comp_y + 50)], fill=(229, 192, 123, 35), width=1)
+    
+    # 2 Comparison Mockups (iphone_01_hub vs iphone_05_match)
+    screen_hub_path = f"{MOCKUP_DIR}/iphone_01_hub.png"
+    screen_match_path = f"{MOCKUP_DIR}/iphone_05_match.png"
+    
+    if os.path.exists(screen_hub_path) and os.path.exists(screen_match_path):
+        screen_hub = Image.open(screen_hub_path).convert('RGBA')
+        screen_match = Image.open(screen_match_path).convert('RGBA')
         
-        px, py = 120, 230
-        base.paste(sh_img, (px - 50, py - 50), sh_img)
-        base.paste(p_res, (px, py), p_res)
+        s_w = 170
+        s_h = int(round(s_w * (screen_hub.height / screen_hub.width)))
+        s1 = screen_hub.resize((s_w, s_h), Image.Resampling.LANCZOS)
+        s2 = screen_match.resize((s_w, s_h), Image.Resampling.LANCZOS)
         
-    # Right: 3 Dense Technical Breakdown Cards
-    rx = 580
-    rw = 1240
-    card_h = 224
-    card_gap = 24
+        y_screen = comp_y + 68
+        x_s1 = lx + 32
+        x_s2 = lx + lw - 32 - s_w
+        
+        draw_pill_badge(draw, cx=x_s1 + s_w//2, cy=y_screen + 14, text="난해한 만세력 텍스트", font=get_font(10, 'bold'), theme='slate', has_dot=False, pad_x=10, height=22)
+        draw_pill_badge(draw, cx=x_s2 + s_w//2, cy=y_screen + 14, text="5각형 실시간 레이더", font=get_font(10, 'bold'), theme='gold', has_dot=False, pad_x=10, height=22)
+        
+        for sx, simg in [(x_s1, s1), (x_s2, s2)]:
+            sh = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+            shd = ImageDraw.Draw(sh)
+            shd.rounded_rectangle([sx + 6, y_screen + 34, sx + s_w - 6, y_screen + 34 + s_h], radius=22, fill=(0, 0, 0, 100))
+            sh = sh.filter(ImageFilter.GaussianBlur(12))
+            base = Image.alpha_composite(base, sh)
+            base.paste(simg, (sx, y_screen + 28), simg)
+            
+        draw = ImageDraw.Draw(base)
+        by_s1 = y_screen + 28 + s_h + 16
+        draw.rounded_rectangle([x_s1, by_s1, x_s1 + s_w, comp_y + comp_h - 18], radius=10, fill=(24, 32, 54), outline=(100, 116, 139), width=1)
+        draw.text((x_s1 + 10, by_s1 + 10), "고전 텍스트 사주 방식", font=get_font(10, 'bold'), fill=(163, 176, 204))
+        draw.text((x_s1 + 10, by_s1 + 28), "• 난해한 한자 텍스트 나열\n• 인지 부하 극심 (평균 이탈 74%)\n• 미신적 공포 마케팅 피로감", font=get_font(9.5, 'regular'), fill=(163, 176, 204), spacing=4)
+        
+        draw.rounded_rectangle([x_s2, by_s1, x_s2 + s_w, comp_y + comp_h - 18], radius=10, fill=(35, 30, 15), outline=(229, 192, 123, 80), width=1)
+        draw.text((x_s2 + 10, by_s1 + 10), "포춘매치 60fps 레이더", font=get_font(10, 'bold'), fill=(255, 215, 0))
+        draw.text((x_s2 + 10, by_s1 + 28), "• 5개 축 극좌표계 벡터화\n• 60fps 무손실 캔버스 렌더링\n• 1-Tap 터치 즉각 보완 처방", font=get_font(9.5, 'semibold'), fill=(255, 215, 0), spacing=4)
+        
+    # -------------------------------------------------------------
+    # 2. Center Column: Grand Hero Phone Mockup (Center Stage)
+    # -------------------------------------------------------------
+    phone_hero_path = f"{MOCKUP_DIR}/iphone_01_hub.png"
+    if os.path.exists(phone_hero_path):
+        phone_raw = Image.open(phone_hero_path).convert('RGBA')
+        ph = 640
+        pw = int(round(ph * (phone_raw.width / phone_raw.height)))
+        phone_v = phone_raw.resize((pw, ph), Image.Resampling.LANCZOS)
+        
+        px = 670
+        py = 234
+        
+        sh_center = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+        shc_draw = ImageDraw.Draw(sh_center)
+        shc_draw.rounded_rectangle([px + 12, py + 16, px + pw - 12, py + ph + 24], radius=36, fill=(0, 0, 0, 140))
+        shc_draw.ellipse([px - 20, py + ph - 25, px + pw + 20, py + ph + 35], fill=(229, 192, 123, 50))
+        sh_center = sh_center.filter(ImageFilter.GaussianBlur(26))
+        base = Image.alpha_composite(base, sh_center)
+        base.paste(phone_v, (px, py), phone_v)
+        draw = ImageDraw.Draw(base)
+        
+    # -------------------------------------------------------------
+    # 3. Right Column: 3 Distinct Grouped Feature Cards (x=1050, w=770)
+    # -------------------------------------------------------------
+    rx = 1050
+    rw = 770
     
-    # Card 1: Vector Math Formula
-    c1_y = 230
-    draw.rounded_rectangle([rx, c1_y, rx + rw, c1_y + card_h], radius=16, fill=(14, 20, 36, 220), outline=(229, 192, 123, 50), width=1)
-    draw_pill_badge(draw, left_x=rx + 25, cy=c1_y + 25, text="ALGORITHMIC FORMULATION", font=get_font(10, 'bold'), theme='gold', has_dot=True, pad_x=10, height=24)
-    draw.text((rx + 250, c1_y + 15), "오행 가중치 정량 벡터화 공식", font=get_font(15, 'bold'), fill=(244, 246, 252))
-    draw.line([(rx + 25, c1_y + 48), (rx + rw - 25, c1_y + 48)], fill=(229, 192, 123, 30), width=1)
+    # CARD 1: Vector Math Formula Card
+    c1_y = 234
+    c1_h = 145
+    draw.rounded_rectangle([rx, c1_y, rx + rw, c1_y + c1_h], radius=16, fill=(14, 20, 36, 230), outline=(229, 192, 123, 70), width=1)
+    draw_pill_badge(draw, left_x=rx + 28, cy=c1_y + 30, text="ALGORITHMIC FORMULATION", font=get_font(10, 'bold'), theme='gold', has_dot=True, pad_x=10, height=24)
+    draw.text((rx + 240, c1_y + 20), "사주 8글자 오행 가중치 정량 벡터화 공식", font=get_font(17, 'bold'), fill=(244, 246, 252))
+    draw.line([(rx + 28, c1_y + 50), (rx + rw - 28, c1_y + 50)], fill=(229, 192, 123, 35), width=1)
     
-    draw.text((rx + 25, c1_y + 65), "E(Element) = Σ [ W_천간(i) · C_i + W_지지(j) · C_j · 당령가중치(M) ]", font=get_num_font(15, 'bold'), fill=(255, 215, 0))
-    draw.text((rx + 25, c1_y + 98), "• 사주 8글자(4주)의 천간(10간)과 지지(12지)에 내포된 지장간(숨은 기운) 비율을 분해 수치화", font=get_font(11.5, 'regular'), fill=(203, 213, 225))
-    draw.text((rx + 25, c1_y + 124), "• 태어난 월(월지 당령)에 3배의 환경 가중치를 부여하여 실제 계절적 기운의 편중도를 정밀 반영", font=get_font(11.5, 'regular'), fill=(203, 213, 225))
-    draw.text((rx + 25, c1_y + 150), "• 5개 축의 정규화(Min-Max Normalization, 0~100%)를 거쳐 5각형 레이더 좌표로 0.1초 변환", font=get_font(11.5, 'bold'), fill=(0, 229, 255))
-    draw.text((rx + 25, c1_y + 180), "✓ 연산 시간: 1.2ms (온디바이스 즉각 연산) · 오차율 0.00%", font=get_font(10.5, 'bold'), fill=(16, 185, 129))
+    c1_desc = "E(Element) = Σ [ W_천간(i) · C_i + W_지지(j) · C_j · 당령가중치(M) ]\n천간과 지지의 지장간 비율을 수치 분해하고, 월지 계절에 3배 가중치를 부여해 0.1초 만에 5각형 다각형으로 변환합니다."
+    draw.text((rx + 28, c1_y + 64), c1_desc, font=get_font(12.5, 'regular'), fill=(203, 213, 225), spacing=5)
+    draw.text((rx + 28, c1_y + 116), "✓ 온디바이스 연산 1.2ms · 오차율 0.00% · 목화토금수 고유 파동 색상 블렌딩", font=get_font(11, 'bold'), fill=(255, 215, 0))
     
-    # Card 2: 60fps Canvas Pipeline
-    c2_y = c1_y + card_h + card_gap
-    draw.rounded_rectangle([rx, c2_y, rx + rw, c2_y + card_h], radius=16, fill=(14, 20, 36, 220), outline=(229, 192, 123, 50), width=1)
-    draw_pill_badge(draw, left_x=rx + 25, cy=c2_y + 25, text="60FPS CANVAS PIPELINE", font=get_font(10, 'bold'), theme='cyan', has_dot=True, pad_x=10, height=24)
-    draw.text((rx + 230, c2_y + 15), "극좌표계 기반 실시간 다각형 렌더링 엔진", font=get_font(15, 'bold'), fill=(244, 246, 252))
-    draw.line([(rx + 25, c2_y + 48), (rx + rw - 25, c2_y + 48)], fill=(229, 192, 123, 30), width=1)
+    # CARD 2: 60fps Canvas Pipeline Card
+    c2_y = 394
+    c2_h = 145
+    draw.rounded_rectangle([rx, c2_y, rx + rw, c2_y + c2_h], radius=16, fill=(14, 20, 36, 230), outline=(229, 192, 123, 70), width=1)
+    draw_pill_badge(draw, left_x=rx + 28, cy=c2_y + 30, text="60FPS CANVAS PIPELINE", font=get_font(10, 'bold'), theme='cyan', has_dot=True, pad_x=10, height=24)
+    draw.text((rx + 240, c2_y + 20), "극좌표계 기반 실시간 5각형 다각형 렌더링", font=get_font(17, 'bold'), fill=(244, 246, 252))
+    draw.line([(rx + 28, c2_y + 50), (rx + rw - 28, c2_y + 50)], fill=(229, 192, 123, 35), width=1)
     
-    draw.text((rx + 25, c2_y + 65), "x_k = cx + r_k · cos(θ_k),   y_k = cy + r_k · sin(θ_k)  (k = 0..4, Δθ = 72°)", font=get_num_font(15, 'bold'), fill=(0, 229, 255))
-    draw.text((rx + 25, c2_y + 98), "• WebGL 하드웨어 가속 캔버스를 통해 화면 전환 시 60fps 무손실 다각형 팽창 애니메이션 구현", font=get_font(11.5, 'regular'), fill=(203, 213, 225))
-    draw.text((rx + 25, c2_y + 124), "• 목(Green)·화(Red)·토(Yellow)·금(White)·수(Blue)의 고유 파동 색상을 그라디언트 블렌딩", font=get_font(11.5, 'regular'), fill=(203, 213, 225))
-    draw.text((rx + 25, c2_y + 150), "• 손가락 터치 시 해당 오행 축의 세부 점수 및 상생상극 화살표가 즉시 인터랙티브 반응", font=get_font(11.5, 'bold'), fill=(255, 215, 0))
-    draw.text((rx + 25, c2_y + 180), "✓ 프레임 드랍 0건 (60.0 FPS 고정) · CPU 점유율 2.1% 미만 최적화", font=get_font(10.5, 'bold'), fill=(16, 185, 129))
+    c2_desc = "x_k = cx + r_k · cos(θ_k),   y_k = cy + r_k · sin(θ_k)  (k = 0..4, Δθ = 72°)\nWebGL 하드웨어 가속 캔버스로 화면 전환 시 60fps 무손실 다각형 팽창 및 축 터치 인터랙션을 구현합니다."
+    draw.text((rx + 28, c2_y + 64), c2_desc, font=get_font(12.5, 'regular'), fill=(203, 213, 225), spacing=5)
+    draw.text((rx + 28, c2_y + 116), "✓ 프레임 드랍 0건 (60.0 FPS 고정) · CPU 점유율 2.1% 미만 하드웨어 최적화", font=get_font(11, 'bold'), fill=(0, 229, 255))
     
-    # Card 3: Lifestyle Prescription Solution
-    c3_y = c2_y + card_h + card_gap
-    draw.rounded_rectangle([rx, c3_y, rx + rw, c3_y + card_h], radius=16, fill=(14, 20, 36, 220), outline=(229, 192, 123, 50), width=1)
-    draw_pill_badge(draw, left_x=rx + 25, cy=c3_y + 25, text="LIFESTYLE REMEDY ENGINE", font=get_font(10, 'bold'), theme='purple', has_dot=True, pad_x=10, height=24)
-    draw.text((rx + 250, c3_y + 15), "결핍 기운 맞춤형 데일리 힐링 솔루션", font=get_font(15, 'bold'), fill=(244, 246, 252))
-    draw.line([(rx + 25, c3_y + 48), (rx + rw - 25, c3_y + 48)], fill=(229, 192, 123, 30), width=1)
+    # CARD 3: Lifestyle Prescription Solution Card
+    c3_y = 554
+    c3_h = 145
+    draw.rounded_rectangle([rx, c3_y, rx + rw, c3_y + c3_h], radius=16, fill=(14, 20, 36, 230), outline=(229, 192, 123, 70), width=1)
+    draw_pill_badge(draw, left_x=rx + 28, cy=c3_y + 30, text="LIFESTYLE REMEDY ENGINE", font=get_font(10, 'bold'), theme='purple', has_dot=True, pad_x=10, height=24)
+    draw.text((rx + 260, c3_y + 20), "결핍 기운 맞춤형 데일리 힐링 솔루션", font=get_font(17, 'bold'), fill=(244, 246, 252))
+    draw.line([(rx + 28, c3_y + 50), (rx + rw - 28, c3_y + 50)], fill=(229, 192, 123, 35), width=1)
     
-    draw.text((rx + 25, c3_y + 65), "단순한 결핍 통보를 넘어, 일상에서 즉각 실천 가능한 4대 보완 가이드 제공", font=get_font(13, 'bold'), fill=(216, 180, 254))
-    draw.text((rx + 25, c3_y + 98), "• 패션 & 컬러 : 결핍된 오행의 색상을 의류나 액세서리에 매치하여 심리적 안정감 유도", font=get_font(11.5, 'regular'), fill=(203, 213, 225))
-    draw.text((rx + 25, c3_y + 124), "• 푸드 테라피 : 오행 미각(5가지 맛) 기반의 맞춤 식단 추천으로 일상 속 기운 충전", font=get_font(11.5, 'regular'), fill=(203, 213, 225))
-    draw.text((rx + 25, c3_y + 150), "• 행동 & 방위 : 업무 집중도를 높이는 책상 방향 및 산책 코스 가이드라인 제시", font=get_font(11.5, 'bold'), fill=(255, 215, 0))
-    draw.text((rx + 25, c3_y + 180), "✓ 사용자 만족도 96.4% · 데일리 리텐션 기여도 1위 기능", font=get_font(10.5, 'bold'), fill=(16, 185, 129))
+    c3_desc = "단순한 결핍 통보를 넘어, 일상에서 즉각 실천 가능한 4대 보완 가이드라인을 제공합니다.\n패션 컬러 매칭, 오행 미각 푸드 테라피, 업무 집중도를 높이는 방위 가이드를 1-Tap으로 연결합니다."
+    draw.text((rx + 28, c3_y + 64), c3_desc, font=get_font(12.5, 'regular'), fill=(203, 213, 225), spacing=5)
+    draw.text((rx + 28, c3_y + 116), "✓ 사용자 만족도 96.4% · 데일리 리텐션 기여도 1위 · 인스타그램 스토리 공유 41.8%", font=get_font(11, 'bold'), fill=(216, 180, 254))
     
+    # 4-Item Feature Strip at Bottom Right (y=714 to 970, h=256)
+    b_strip_y = 714
+    b_strip_h = 256
+    draw.rounded_rectangle([rx, b_strip_y, rx + rw, b_strip_y + b_strip_h], radius=16, fill=(24, 32, 54), outline=(229, 192, 123, 60), width=1)
+    draw_pill_badge(draw, left_x=rx + 24, cy=b_strip_y + 28, text="RADAR CORE PRINCIPLES", font=get_font(9.5, 'bold'), theme='gold', has_dot=True, pad_x=8, height=22)
+    draw.text((rx + 220, b_strip_y + 20), "오행 실시간 레이더 4대 핵심 아키텍처 원칙", font=get_font(15, 'bold'), fill=(244, 246, 252))
+    draw.line([(rx + 24, b_strip_y + 48), (rx + rw - 24, b_strip_y + 48)], fill=(229, 192, 123, 30), width=1)
+    
+    radar_principles = [
+        ("01. Zero-Friction Vector Math", "사주 8글자를 복잡한 테이블 룩업 없이 1.2ms 만에 5차원 실수 벡터로 정규화 연산"),
+        ("02. 60fps Native WebGL Loop", "캔버스 리드로우 시 60fps를 유지하며 다각형 팽창 및 상생상극 하이라이트 애니메이션 완벽 구현"),
+        ("03. Intuitive Color Semantics", "동양 오행의 고유 색상(목:청, 화:적, 토:황, 금:백, 수:흑)을 현대적 네온 톤으로 재해석"),
+        ("04. 1-Tap Daily Lifestyle Sync", "부족한 오행을 채우는 의류, 음식, 방위 솔루션을 매일 아침 길시 알림과 함께 원터치 추천")
+    ]
+    py_rp = b_strip_y + 62
+    for rp_title, rp_desc in radar_principles:
+        draw.text((rx + 24, py_rp), rp_title, font=get_font(11.5, 'bold'), fill=(255, 215, 0))
+        draw.text((rx + 24, py_rp + 18), rp_desc, font=get_font(10.5, 'regular'), fill=(203, 213, 225))
+        py_rp += 46
+        
     draw_slide_footer(draw, 8)
     save_slide(base, 8)
+
 
 print("Slide 05 to 08 updated cleanly.")

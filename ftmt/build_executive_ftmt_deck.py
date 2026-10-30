@@ -35,6 +35,16 @@ def get_font(size, weight='bold'):
 def get_num_font(size, weight='black'):
     return get_font(size, weight)
 
+FLUTTER_MATERIAL_FONT = r"C:\flutter\bin\cache\artifacts\material_fonts\MaterialIcons-Regular.otf"
+
+def get_material_icon_font(size):
+    if os.path.exists(FLUTTER_MATERIAL_FONT):
+        try:
+            return ImageFont.truetype(FLUTTER_MATERIAL_FONT, int(round(size)))
+        except:
+            pass
+    return get_font(size, 'bold')
+
 def wrap_text_by_words(text, font, max_width, draw):
     lines = []
     paragraphs = text.split('\n')
