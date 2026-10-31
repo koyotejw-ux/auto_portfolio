@@ -914,9 +914,9 @@ def make_slide_08():
     draw.text((lx + 185, comp_y + 22), "기존 한자 나열 vs 5각형 실시간 레이더", font=get_font(14, 'bold'), fill=(244, 246, 252))
     draw.line([(lx + 24, comp_y + 50), (lx + lw - 24, comp_y + 50)], fill=(229, 192, 123, 35), width=1)
     
-    # 2 Comparison Mockups (iphone_01_hub vs iphone_05_match)
+    # 2 Comparison Mockups (iphone_01_hub vs iphone_02_radar)
     screen_hub_path = f"{MOCKUP_DIR}/iphone_01_hub.png"
-    screen_match_path = f"{MOCKUP_DIR}/iphone_05_match.png"
+    screen_match_path = f"{MOCKUP_DIR}/iphone_02_radar.png"
     
     if os.path.exists(screen_hub_path) and os.path.exists(screen_match_path):
         screen_hub = Image.open(screen_hub_path).convert('RGBA')
@@ -955,7 +955,7 @@ def make_slide_08():
     # -------------------------------------------------------------
     # 2. Center Column: Grand Hero Phone Mockup (Center Stage)
     # -------------------------------------------------------------
-    phone_hero_path = f"{MOCKUP_DIR}/iphone_01_hub.png"
+    phone_hero_path = f"{MOCKUP_DIR}/iphone_02_radar.png"
     if os.path.exists(phone_hero_path):
         phone_raw = Image.open(phone_hero_path).convert('RGBA')
         ph = 640

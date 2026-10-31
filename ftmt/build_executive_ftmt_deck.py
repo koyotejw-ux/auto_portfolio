@@ -323,6 +323,13 @@ def draw_slide_footer(draw, slide_num, total_slides=12):
     draw.text((1820, 1018), page_str, font=get_num_font(11.5, 'black'), fill=C_TEXT_BODY, anchor='rt')
 
 def save_slide(img, num):
+    # Ensure 100% opaque slide without partial alpha that causes PDF viewers to blend against white canvas
+    if img.mode == 'RGBA':
+        bg = Image.new('RGBA', img.size, (7, 10, 18, 255))
+        final_img = Image.alpha_composite(bg, img).convert('RGB')
+    else:
+        final_img = img.convert('RGB')
+        
     for d in OUT_DIRS:
-        img.save(f"{d}/slide_{num:02d}.png")
-    print(f"Slide {num:02d} saved to all target directories.")
+        final_img.save(f"{d}/slide_{num:02d}.png", quality=100)
+    print(f"Slide {num:02d} saved to all target directories (100% solid RGB, 0% alpha leak).")
