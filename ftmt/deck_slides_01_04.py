@@ -42,7 +42,7 @@ def make_slide_01():
     # 4 Status Badges (Clean Theme)
     badges = [
         ("LEAD UX/UI ARCHITECT 100%", "gold"),
-        ("GOOGLE PLAY (ANDROID) LIVE", "green"),
+        ("GOOGLE PLAY CLOSED TEST (출시 임박)", "green"),
         ("60FPS TACTILE PROTOTYPE", "purple"),
         ("DESIGN SYSTEM & ATOMIC KIT", "cyan")
     ]
@@ -125,7 +125,7 @@ def make_slide_01():
         ("PROJECT ROLE", "Lead UX/UI Designer & Service Planner", "서비스 기획 · 브랜드 아이덴티티 · 디자인 시스템 · UI/UX 프로토타입"),
         ("PERIOD & SPRINT", "2026.06 - 2026.10 (5개월)", "사용자 리서치 -> 5-Elements UX 설계 -> 12-Slide 포트폴리오 완성"),
         ("DESIGN TOOL & SYSTEM", "Figma · Pretendard · Material OTF", "Cosmic Luxury 토큰 · R8/R12/R16 라운딩 체계 · 8pt 베이스라인"),
-        ("PLATFORM RELEASE", "Google Play Live (Android)", "Android 상용 출시 (실서비스 운영) & Web 60fps 인터랙티브 시뮬레이터")
+        ("PLATFORM RELEASE", "Google Play 비공개 테스트 (출시 임박)", "Android 최종 비공개 테스트 중 & Web 60fps 인터랙티브 시뮬레이터")
     ]
     
     for i, (cat, val_bold, val_desc) in enumerate(specs):

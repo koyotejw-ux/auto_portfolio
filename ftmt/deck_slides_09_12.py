@@ -363,10 +363,10 @@ def make_slide_11():
     tx = 100
     
     telemetry_data = [
-        ("64.2 %", "RETENTION", "D1 리텐션 업계 1위", "출시 첫 달 D1 리텐션 64.2% 달성 (업계 평균 대비 +28.2%p)", (52, 211, 153), "green"),
+        ("64.2 %", "RETENTION", "D1 리텐션 테스터 검증", "비공개 테스트 D1 리텐션 64.2% 달성 (업계 평균 대비 +28.2%p)", (52, 211, 153), "green"),
         ("8m 24s", "SESSION TIME", "평균 체류 시간 2.8배", "5각형 레이더 탐색 및 타로 인터랙션으로 평균 8분 24초 몰입", (255, 215, 0), "gold"),
         ("41.8 %", "VIRAL LOOP", "인스타그램 스토리 공유", "우주 좌표 카드 및 92% 궁합 리포트의 자발적 SNS 바이럴", (0, 229, 255), "cyan"),
-        ("4.9 ★", "STORE RATING", "실사용자 만족도 평점", "Google Play Store 실사용자 리뷰 기반 MZ 필수 인연 앱 찬사", (216, 180, 254), "purple")
+        ("4.9 ★", "TEST RATING", "비공개 테스트 평점", "Google Play 비공개 테스트 피드백 기반 4.9점 실사용자 찬사", (216, 180, 254), "purple")
     ]
     
     for val, badge, title, desc, col, theme_key in telemetry_data:
@@ -403,10 +403,10 @@ def make_slide_11():
         ),
         (
             "3-PHASE ROADMAP",
-            "지속 가능한 엔터프라이즈 진화",
-            "스토어 출시 완료 및 글로벌 확장",
-            "• Phase 1 (Live) : 우주 사주 허브 & 60fps 오행 레이더 Google Play 상용 출시\n• Phase 2 (Next) : 커플 캘린더 연동 및 데이트 길시 푸시 알림 고도화\n• Phase 3 (Future) : 서양 점성술 에페메리스 천체력 100년치 정밀 데이터 탑재",
-            "엔터프라이즈 로드맵 인증 통과 ✓",
+            "지속 가능한 엔터프라이즈 로드맵",
+            "최종 비공개 테스트 및 출시 임박",
+            "• Phase 1 (Testing) : 우주 사주 허브 & 60fps 오행 레이더 Google Play 최종 비공개 테스트 (출시 임박)\n• Phase 2 (Next) : 커플 캘린더 연동 및 데이트 길시 푸시 알림 고도화\n• Phase 3 (Future) : 서양 점성술 에페메리스 천체력 100년치 정밀 데이터 탑재",
+            "비공개 테스트 빌드 인증 통과 ✓",
             "purple", (216, 180, 254)
         )
     ]
@@ -626,7 +626,7 @@ def make_slide_12():
     
     # Store & Engine Verification Badges
     b_row_y = url_box_y + 64
-    draw.text((info_x, b_row_y), "✓ Google Play (Android) 상용 출시 완료  ·  WCAG 2.1 AAA 무장애 준수  ·  AES-256 On-Device Vault", font=get_font(10.5, 'bold'), fill=C_GREEN_ACC)
+    draw.text((info_x, b_row_y), "✓ Google Play (Android) 최종 비공개 테스트 (출시 임박)  ·  WCAG 2.1 AAA 무장애 준수  ·  AES-256 On-Device Vault", font=get_font(10.5, 'bold'), fill=C_GREEN_ACC)
     
     draw_slide_footer(draw, 12)
     save_slide(base, 12)

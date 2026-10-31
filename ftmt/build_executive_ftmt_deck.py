@@ -318,7 +318,7 @@ def draw_slide_footer(draw, slide_num, total_slides=12):
     draw.line([(100, 995), (1820, 995)], fill=(229, 192, 123, 60), width=1)
     draw.text((100, 1018), "FORTUNEMATCH", font=get_font(11, 'bold'), fill=C_GOLD_HERO)
     draw.text((230, 1018), "·   Behance Enterprise Case Study  ·  Cosmic Zodiac & Saju Intelligence Engine", font=get_font(11, 'medium'), fill=C_TEXT_BODY)
-    draw.text((960, 1018), "60fps Live Interactive Engine  ·  Five-Elements Vector Math  ·  Google Play Live", font=get_font(10.5, 'medium'), fill=C_TEXT_MUTED, anchor='mt')
+    draw.text((960, 1018), "60fps Live Interactive Engine  ·  Five-Elements Vector Math  ·  Google Play 비공개 테스트 (출시 임박)", font=get_font(10.5, 'medium'), fill=C_TEXT_MUTED, anchor='mt')
     page_str = f"PAGE {slide_num:02d} / {total_slides:02d}"
     draw.text((1820, 1018), page_str, font=get_num_font(11.5, 'black'), fill=C_TEXT_BODY, anchor='rt')
 
