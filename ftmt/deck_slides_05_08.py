@@ -25,6 +25,36 @@ def make_slide_05():
         subtitle_kr="탄생 좌표 입력부터 오행 분석, 궁합 매칭, 타로 솔루션으로 이어지는 논리적 상태 전이(State Machine)"
     )
     
+    # TOP-RIGHT: 서비스 UX 플로우차트 기호 범례 (Clean UX Flow Legend)
+    leg_x = 1220
+    leg_y = 68
+    leg_w = 600
+    leg_h = 80
+    draw.rounded_rectangle([leg_x, leg_y, leg_x + leg_w, leg_y + leg_h], radius=10, fill=(14, 20, 36, 220), outline=(229, 192, 123, 50), width=1)
+    draw_pill_badge(draw, left_x=leg_x + 14, cy=leg_y + 18, text="UX FLOW NOTATION", font=get_font(8, 'bold'), theme='gold', has_dot=True, pad_x=6, height=18)
+    draw.text((leg_x + 140, leg_y + 18), "플로우차트 기호 및 상태 전이 범례", font=get_font(11, 'bold'), fill=(244, 246, 252), anchor='lm')
+    
+    # 4 Clean UX Flowchart Legend Elements
+    # 1. 화면/UI (Screen)
+    draw.rounded_rectangle([leg_x + 14, leg_y + 44, leg_x + 64, leg_y + 68], radius=4, fill=(24, 32, 54), outline=(100, 116, 139), width=1)
+    draw.text((leg_x + 39, leg_y + 56), "Screen", font=get_font(8, 'bold'), fill=(203, 213, 225), anchor='mm')
+    draw.text((leg_x + 72, leg_y + 56), "화면/UI", font=get_font(9.5, 'medium'), fill=(163, 176, 204), anchor='lm')
+    
+    # 2. 사용자 행동 (Action)
+    draw.rounded_rectangle([leg_x + 138, leg_y + 44, leg_x + 188, leg_y + 68], radius=4, fill=(35, 30, 15), outline=(229, 192, 123), width=1)
+    draw.text((leg_x + 163, leg_y + 56), "Action", font=get_font(8, 'bold'), fill=(255, 215, 0), anchor='mm')
+    draw.text((leg_x + 196, leg_y + 56), "사용자 행동", font=get_font(9.5, 'medium'), fill=(163, 176, 204), anchor='lm')
+    
+    # 3. 분기 판단 (Decision)
+    draw.rounded_rectangle([leg_x + 282, leg_y + 44, leg_x + 342, leg_y + 68], radius=4, fill=(35, 30, 15), outline=(255, 215, 0), width=1)
+    draw.text((leg_x + 312, leg_y + 56), "Decision", font=get_font(7.5, 'bold'), fill=(255, 215, 0), anchor='mm')
+    draw.text((leg_x + 350, leg_y + 56), "가드 분기", font=get_font(9.5, 'medium'), fill=(163, 176, 204), anchor='lm')
+    
+    # 4. 시스템 피드백 (Feedback)
+    draw.rounded_rectangle([leg_x + 424, leg_y + 44, leg_x + 484, leg_y + 68], radius=4, fill=(12, 38, 28), outline=(16, 185, 129), width=1)
+    draw.text((leg_x + 454, leg_y + 56), "Feedback", font=get_font(7.5, 'bold'), fill=(52, 211, 153), anchor='mm')
+    draw.text((leg_x + 492, leg_y + 56), "피드백", font=get_font(9.5, 'medium'), fill=(163, 176, 204), anchor='lm')
+    
     cw = 328
     cgap = 20
     cols_x = [100 + i * (cw + cgap) for i in range(5)]
