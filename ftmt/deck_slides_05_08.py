@@ -21,7 +21,7 @@ def make_slide_05():
         slide_num=5,
         category_en="USER FLOW & EXPERIENCE LOGIC | STATE MACHINE",
         title_white="인지적 마찰을 제로화한 ",
-        title_gold="단계별 사용자 인터랙션 흐름도",
+        title_gold="사용자 경험 플로우차트 (UX Flowchart)",
         subtitle_kr="탄생 좌표 입력부터 오행 분석, 궁합 매칭, 타로 솔루션으로 이어지는 논리적 상태 전이(State Machine)"
     )
     
@@ -96,8 +96,8 @@ def make_slide_05():
     
     draw.rounded_rectangle([c0 - nw // 2, 626, c0 + nw // 2, 672], radius=6, fill=(12, 38, 28), outline=(16, 185, 129), width=1)
     draw_pill_badge(draw, left_x=c0 - 114, cy=640, text="FEEDBACK", font=get_font(6.5, 'bold'), theme='green', pad_x=4, height=14)
-    draw.text((c0 - 44, 640), "메인 좌표 세션 활성화", font=get_font(9, 'bold'), fill=(52, 211, 153), anchor='lm')
-    draw.text((c0, 656), "하단 독 네비게이션 4대 코어 탭 노출", font=get_font(7.5, 'medium'), fill=(16, 185, 129), anchor='mm')
+    draw.text((c0 - 44, 640), "메인 좌표 세션 활성화", font=get_font(9, 'bold'), fill=(255, 255, 255), anchor='lm')
+    draw.text((c0, 656), "하단 독 네비게이션 4대 코어 탭 노출", font=get_font(7.5, 'medium'), fill=(209, 250, 229), anchor='mm')
     
     # Handover to Stage 02
     draw_arrow(draw, (cols_x[0] + cw, 647), (cols_x[1], 647), col=(229, 192, 123), width=2, arrow_size=4)
@@ -138,8 +138,8 @@ def make_slide_05():
     
     draw.rounded_rectangle([c1 - nw // 2, 606, c1 + nw // 2, 652], radius=6, fill=(12, 38, 28), outline=(16, 185, 129), width=1)
     draw_pill_badge(draw, left_x=c1 - 114, cy=620, text="FEEDBACK", font=get_font(6.5, 'bold'), theme='green', pad_x=4, height=14)
-    draw.text((c1 - 44, 620), "오행 분석 모듈 파라미터 전달", font=get_font(9, 'bold'), fill=(52, 211, 153), anchor='lm')
-    draw.text((c1, 636), "천간/지지 8글자 오행 비율 0ms 파싱 완료", font=get_font(7.5, 'medium'), fill=(16, 185, 129), anchor='mm')
+    draw.text((c1 - 44, 620), "오행 분석 모듈 파라미터 전달", font=get_font(9, 'bold'), fill=(255, 255, 255), anchor='lm')
+    draw.text((c1, 636), "천간/지지 8글자 오행 비율 0ms 파싱 완료", font=get_font(7.5, 'medium'), fill=(209, 250, 229), anchor='mm')
     
     # Handover to Stage 03
     draw_arrow(draw, (cols_x[1] + cw, 629), (cols_x[2], 629), col=(229, 192, 123), width=2, arrow_size=4)
@@ -175,8 +175,8 @@ def make_slide_05():
     
     draw.rounded_rectangle([c2 - nw // 2, 580, c2 + nw // 2, 626], radius=6, fill=(12, 38, 28), outline=(16, 185, 129), width=1)
     draw_pill_badge(draw, left_x=c2 - 114, cy=594, text="FEEDBACK", font=get_font(6.5, 'bold'), theme='green', pad_x=4, height=14)
-    draw.text((c2 - 44, 594), "오행 데이터 캐싱 완료", font=get_font(9, 'bold'), fill=(52, 211, 153), anchor='lm')
-    draw.text((c2, 610), "상대방과의 궁합 연산 시 오행 중첩 준비", font=get_font(7.5, 'medium'), fill=(16, 185, 129), anchor='mm')
+    draw.text((c2 - 44, 594), "오행 데이터 캐싱 완료", font=get_font(9, 'bold'), fill=(255, 255, 255), anchor='lm')
+    draw.text((c2, 610), "상대방과의 궁합 연산 시 오행 중첩 준비", font=get_font(7.5, 'medium'), fill=(209, 250, 229), anchor='mm')
     
     # Handover to Stage 04
     draw_arrow(draw, (cols_x[2] + cw, 603), (cols_x[3], 603), col=(229, 192, 123), width=2, arrow_size=4)
@@ -211,8 +211,8 @@ def make_slide_05():
     
     draw.rounded_rectangle([c3 - nw // 2, 580, c3 + nw // 2, 626], radius=6, fill=(12, 38, 28), outline=(16, 185, 129), width=1)
     draw_pill_badge(draw, left_x=c3 - 114, cy=594, text="FEEDBACK", font=get_font(6.5, 'bold'), theme='green', pad_x=4, height=14)
-    draw.text((c3 - 44, 594), "인연 궁합 볼트 영구 저장", font=get_font(9, 'bold'), fill=(52, 211, 153), anchor='lm')
-    draw.text((c3, 610), "상대방과의 데이트 팁 및 조화 솔루션 완료", font=get_font(7.5, 'medium'), fill=(16, 185, 129), anchor='mm')
+    draw.text((c3 - 44, 594), "인연 궁합 볼트 영구 저장", font=get_font(9, 'bold'), fill=(255, 255, 255), anchor='lm')
+    draw.text((c3, 610), "상대방과의 데이트 팁 및 조화 솔루션 완료", font=get_font(7.5, 'medium'), fill=(209, 250, 229), anchor='mm')
     
     # Handover to Stage 05
     draw_arrow(draw, (cols_x[3] + cw, 603), (cols_x[4], 603), col=(229, 192, 123), width=2, arrow_size=4)
@@ -244,9 +244,9 @@ def make_slide_05():
     draw.text((c4, 515), "온디바이스 SQLite 보관 및 히스토리 누적", font=get_font(8, 'medium'), fill=(163, 176, 204), anchor='mm')
     draw_arrow(draw, (c4, 528), (c4, 546), col=(229, 192, 123), width=2, arrow_size=4)
     
-    # End Capsule
-    draw.rounded_rectangle([c4 - 75, 546, c4 + 75, 574], radius=14, fill=(16, 185, 129))
-    draw.text((c4, 560), "End : 리추얼 완료", font=get_font(9.5, 'bold'), fill=(255, 255, 255), anchor='mm')
+    # End Capsule (High contrast: Dark background with crisp gold outline & pure white text)
+    draw.rounded_rectangle([c4 - 80, 546, c4 + 80, 576], radius=15, fill=(16, 185, 129), outline=(52, 211, 153), width=2)
+    draw.text((c4, 561), "End : 리추얼 완료", font=get_font(10, 'bold'), fill=(7, 10, 18), anchor='mm')
     
     # Bottom: 4 Key Logic Architecture Cards
     bp_y = 785
