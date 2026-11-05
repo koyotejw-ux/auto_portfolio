@@ -10,7 +10,7 @@
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   
   <!-- Gate Page Dual Theme Design System Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=20261105_dual_theme_v3">
+  <link rel="stylesheet" href="style.css?v=20261106_fix_v4">
 
   <!-- Immediate Theme Initialization (Default: Light/White) -->
   <script>
@@ -30,7 +30,7 @@
   <div class="ambient-mesh" aria-hidden="true"></div>
 
   <!-- Interactive Particle Background Canvas (Flutter particle_background.dart adapted) -->
-  <canvas id="particleCanvas" aria-hidden="true"></canvas>
+  <canvas id="particleCanvas" aria-hidden="true" style="position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1;"></canvas>
 
   <!-- Sticky Glassmorphic Navbar -->
   <header class="gate-navbar">

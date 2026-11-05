@@ -26,8 +26,8 @@
   --ambient-glow-4: rgba(217, 119, 6, 0.05);
 
   /* Particle Canvas */
-  --particle-c1: rgba(0, 102, 255,;
-  --particle-c2: rgba(2, 132, 199,;
+  --particle-c1: #0066FF;
+  --particle-c2: #0284C7;
   --particle-line-rgb: 0, 102, 255;
   --particle-alpha-mult: 0.6;
 
@@ -99,8 +99,8 @@
   --ambient-glow-4: rgba(255, 215, 0, 0.06);
 
   /* Particle Canvas */
-  --particle-c1: rgba(0, 229, 255,;
-  --particle-c2: rgba(0, 132, 255,;
+  --particle-c1: #00E5FF;
+  --particle-c2: #0084FF;
   --particle-line-rgb: 0, 229, 255;
   --particle-alpha-mult: 1.0;
 
