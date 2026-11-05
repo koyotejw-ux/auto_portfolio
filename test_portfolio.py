@@ -5,12 +5,17 @@ async def main():
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True)
         
-        # 1. Test Master Hub
+        # 1. Test Portfolio Gate Page (Master Hub 1440x900)
         page = await browser.new_page(viewport={'width': 1440, 'height': 900})
         await page.goto("file:///d:/097.flutter_project/auto_portfolio/index.html")
         await page.wait_for_timeout(1000)
+        
+        # Verify rendered items
+        cards = await page.query_selector_all('.gate-card')
+        assert len(cards) >= 2, "At least 2 active portfolio cards must be rendered"
+        
         await page.screenshot(path="d:/097.flutter_project/auto_portfolio/master_hub_screenshot.png", full_page=False)
-        print("Master Hub Screenshot saved.")
+        print(f"Master Hub Gate Page verified. Rendered {len(cards)} cards.")
         
         # 2. Test FTMT Case Study
         page_ftmt = await browser.new_page(viewport={'width': 1440, 'height': 900})
@@ -36,6 +41,6 @@ async def main():
         print("FTMT Prototype Short Laptop Screenshot saved.")
         
         await browser.close()
-        print("All verification tests passed successfully!")
+        print("All gate page & prototype verification tests passed successfully!")
 
 asyncio.run(main())
