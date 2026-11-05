@@ -1,11 +1,88 @@
 /* ==========================================================================
-   AUTO PORTFOLIO STUDIO - ULTIMATE GATE PAGE DESIGN SYSTEM
-   Tone & Manner: Inspired by protfolio_admin (Enterprise Slate & Glassmorphism)
+   AUTO PORTFOLIO STUDIO - DUAL THEME GATE PAGE DESIGN SYSTEM
+   Tone & Manner: Inspired by protfolio_admin (Light Default / Dark Toggle)
    Author: Senior Product UX/UI Designer & Systems Architect
    ========================================================================== */
 
-:root {
-  /* Surface & Base Palette (Deep Slate / Obsidian) */
+/* --------------------------------------------------------------------------
+   THEME VARIABLES: LIGHT MODE (DEFAULT - CRISP LUXURY WHITE)
+   -------------------------------------------------------------------------- */
+:root,
+[data-theme="light"] {
+  /* Surfaces */
+  --bg-deep: #F8FAFC;
+  --bg-base: #F1F5F9;
+  --bg-surface: #FFFFFF;
+  --bg-surface-elevated: #F8FAFC;
+  --bg-glass: rgba(255, 255, 255, 0.88);
+  --bg-card: rgba(255, 255, 255, 0.95);
+  --bg-card-hover: #FFFFFF;
+  --navbar-bg: rgba(255, 255, 255, 0.88);
+
+  /* Ambient Glows */
+  --ambient-glow-1: rgba(0, 102, 255, 0.08);
+  --ambient-glow-2: rgba(139, 92, 246, 0.06);
+  --ambient-glow-3: rgba(2, 132, 199, 0.07);
+  --ambient-glow-4: rgba(217, 119, 6, 0.05);
+
+  /* Particle Canvas */
+  --particle-c1: rgba(0, 102, 255,;
+  --particle-c2: rgba(2, 132, 199,;
+  --particle-line-rgb: 0, 102, 255;
+  --particle-alpha-mult: 0.6;
+
+  /* Accent Neons / Brand Colors */
+  --neon-blue: #0066FF;
+  --neon-cyan: #0284C7;
+  --neon-emerald: #059669;
+  --neon-purple: #7C3AED;
+  --neon-gold: #D97706;
+  --neon-amber: #D97706;
+  --neon-rose: #E11D48;
+
+  /* Typography */
+  --text-white: #0F172A; /* Inverted for primary bold headlines */
+  --text-primary: #1E293B;
+  --text-secondary: #475569;
+  --text-muted: #64748B;
+  --text-dark: #94A3B8;
+
+  /* Borders & Shadows */
+  --border-subtle: rgba(15, 23, 42, 0.08);
+  --border-medium: rgba(15, 23, 42, 0.14);
+  --border-bright: rgba(15, 23, 42, 0.22);
+  --glass-blur: 24px;
+
+  --shadow-sm: 0 4px 16px rgba(15, 23, 42, 0.05);
+  --shadow-card: 0 10px 30px -5px rgba(15, 23, 42, 0.07), 0 4px 12px rgba(15, 23, 42, 0.03);
+  --shadow-card-hover: 0 25px 50px -10px rgba(15, 23, 42, 0.12), 0 0 35px rgba(0, 102, 255, 0.08);
+
+  /* Layout Specifics */
+  --gradient-title: linear-gradient(135deg, #0F172A 20%, #0284C7 60%, #0066FF 100%);
+  --info-strip-bg: rgba(255, 255, 255, 0.85);
+  --metrics-bg: rgba(241, 245, 249, 0.85);
+  --filter-btn-bg: rgba(255, 255, 255, 0.85);
+  --filter-btn-hover: #F1F5F9;
+  --filter-active-bg: linear-gradient(135deg, rgba(0, 102, 255, 0.12) 0%, rgba(2, 132, 199, 0.15) 100%);
+  --filter-active-border: #0284C7;
+  --filter-active-text: #0284C7;
+  --search-bg: rgba(255, 255, 255, 0.95);
+  --thumb-bg: #E2E8F0;
+  --thumb-overlay: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(248, 250, 252, 0.8) 100%);
+  --btn-sub-bg: rgba(15, 23, 42, 0.05);
+  --btn-sub-hover: rgba(15, 23, 42, 0.1);
+  --theme-toggle-bg: rgba(15, 23, 42, 0.06);
+  --theme-toggle-border: rgba(15, 23, 42, 0.12);
+  --theme-toggle-knob: #0066FF;
+
+  --card-ambient-default: rgba(0, 102, 255, 0.08);
+}
+
+/* --------------------------------------------------------------------------
+   THEME VARIABLES: DARK MODE (protfolio_admin DEEP SLATE & OBSIDIAN)
+   -------------------------------------------------------------------------- */
+[data-theme="dark"] {
+  /* Surfaces */
   --bg-deep: #070B14;
   --bg-base: #0B1120;
   --bg-surface: #0F172A;
@@ -13,8 +90,21 @@
   --bg-glass: rgba(15, 23, 42, 0.72);
   --bg-card: rgba(22, 32, 54, 0.7);
   --bg-card-hover: rgba(30, 45, 76, 0.85);
+  --navbar-bg: rgba(11, 17, 32, 0.85);
 
-  /* Brand & Accent Neons from protfolio_admin */
+  /* Ambient Glows */
+  --ambient-glow-1: rgba(0, 132, 255, 0.14);
+  --ambient-glow-2: rgba(139, 92, 246, 0.12);
+  --ambient-glow-3: rgba(0, 229, 255, 0.08);
+  --ambient-glow-4: rgba(255, 215, 0, 0.06);
+
+  /* Particle Canvas */
+  --particle-c1: rgba(0, 229, 255,;
+  --particle-c2: rgba(0, 132, 255,;
+  --particle-line-rgb: 0, 229, 255;
+  --particle-alpha-mult: 1.0;
+
+  /* Accent Neons / Brand Colors */
   --neon-blue: #0084FF;
   --neon-cyan: #00E5FF;
   --neon-emerald: #10B981;
@@ -23,30 +113,47 @@
   --neon-amber: #F59E0B;
   --neon-rose: #F43F5E;
 
-  /* Typography Colors */
+  /* Typography */
   --text-white: #FFFFFF;
   --text-primary: #F8FAFC;
   --text-secondary: #94A3B8;
   --text-muted: #64748B;
   --text-dark: #334155;
 
-  /* Borders & Glassmorphism */
+  /* Borders & Shadows */
   --border-subtle: rgba(255, 255, 255, 0.08);
   --border-medium: rgba(255, 255, 255, 0.14);
   --border-bright: rgba(255, 255, 255, 0.25);
   --glass-blur: 24px;
 
-  /* Elevation Shadows */
   --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.25);
   --shadow-card: 0 20px 45px -10px rgba(0, 0, 0, 0.6), 0 0 25px rgba(0, 132, 255, 0.05);
   --shadow-card-hover: 0 30px 60px -12px rgba(0, 0, 0, 0.8), 0 0 45px rgba(0, 229, 255, 0.15);
 
-  /* Font System */
-  --font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  /* Layout Specifics */
+  --gradient-title: linear-gradient(135deg, #FFFFFF 20%, #38BDF8 60%, #0084FF 100%);
+  --info-strip-bg: rgba(15, 23, 42, 0.65);
+  --metrics-bg: rgba(11, 17, 32, 0.6);
+  --filter-btn-bg: rgba(15, 23, 42, 0.7);
+  --filter-btn-hover: rgba(30, 45, 76, 0.7);
+  --filter-active-bg: linear-gradient(135deg, rgba(0, 132, 255, 0.25) 0%, rgba(0, 229, 255, 0.25) 100%);
+  --filter-active-border: var(--neon-cyan);
+  --filter-active-text: #FFFFFF;
+  --search-bg: rgba(15, 23, 42, 0.7);
+  --thumb-bg: #0B1120;
+  --thumb-overlay: linear-gradient(180deg, rgba(15, 23, 42, 0.1) 0%, rgba(15, 23, 42, 0.85) 100%);
+  --btn-sub-bg: rgba(255, 255, 255, 0.05);
+  --btn-sub-hover: rgba(255, 255, 255, 0.12);
+  --theme-toggle-bg: rgba(255, 255, 255, 0.08);
+  --theme-toggle-border: rgba(255, 255, 255, 0.15);
+  --theme-toggle-knob: #00E5FF;
+
+  --card-ambient-default: rgba(0, 132, 255, 0.12);
 }
 
-/* Reset & Box Sizing */
+/* --------------------------------------------------------------------------
+   GLOBAL RESET & TYPOGRAPHY
+   -------------------------------------------------------------------------- */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -61,13 +168,14 @@ html {
 body {
   background-color: var(--bg-deep);
   color: var(--text-primary);
-  font-family: var(--font-family);
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
   position: relative;
   min-height: 100vh;
+  transition: background-color 0.35s ease, color 0.35s ease;
 }
 
 /* Ambient Radial Mesh Glows */
@@ -77,13 +185,14 @@ body {
   pointer-events: none;
   z-index: 0;
   background: 
-    radial-gradient(circle at 15% 15%, rgba(0, 132, 255, 0.14) 0%, transparent 55%),
-    radial-gradient(circle at 85% 25%, rgba(139, 92, 246, 0.12) 0%, transparent 50%),
-    radial-gradient(circle at 50% 75%, rgba(0, 229, 255, 0.08) 0%, transparent 60%),
-    radial-gradient(circle at 75% 85%, rgba(255, 215, 0, 0.06) 0%, transparent 50%);
+    radial-gradient(circle at 15% 15%, var(--ambient-glow-1) 0%, transparent 55%),
+    radial-gradient(circle at 85% 25%, var(--ambient-glow-2) 0%, transparent 50%),
+    radial-gradient(circle at 50% 75%, var(--ambient-glow-3) 0%, transparent 60%),
+    radial-gradient(circle at 75% 85%, var(--ambient-glow-4) 0%, transparent 50%);
+  transition: background 0.4s ease;
 }
 
-/* Particle Canvas Background (from particle_background.dart) */
+/* Particle Canvas Background */
 #particleCanvas {
   position: fixed;
   inset: 0;
@@ -94,14 +203,14 @@ body {
 }
 
 /* ==========================================================================
-   NAVIGATION BAR (Glassmorphism & System Badges)
+   NAVIGATION BAR (Glassmorphism & System Badges & Theme Toggle)
    ========================================================================== */
 .gate-navbar {
   position: sticky;
   top: 0;
   width: 100%;
   height: 72px;
-  background: rgba(11, 17, 32, 0.85);
+  background: var(--navbar-bg);
   backdrop-filter: blur(var(--glass-blur));
   -webkit-backdrop-filter: blur(var(--glass-blur));
   border-bottom: 1px solid var(--border-subtle);
@@ -122,13 +231,13 @@ body {
 
 .brand-badge {
   background: linear-gradient(135deg, var(--neon-blue) 0%, var(--neon-cyan) 100%);
-  color: var(--text-white);
+  color: #FFFFFF;
   font-size: 11.5px;
   font-weight: 900;
   letter-spacing: 0.1em;
   padding: 5px 10px;
   border-radius: 8px;
-  box-shadow: 0 0 16px rgba(0, 229, 255, 0.4);
+  box-shadow: 0 0 16px rgba(0, 102, 255, 0.35);
 }
 
 .brand-title {
@@ -150,7 +259,7 @@ body {
   color: var(--text-secondary);
 }
 
-/* Status Badges Group (Inspired by protfolio_admin) */
+/* Status Badges Group & Controls */
 .nav-status-group {
   display: flex;
   align-items: center;
@@ -171,7 +280,7 @@ body {
 }
 
 .system-badge.online {
-  background: rgba(16, 185, 129, 0.1);
+  background: rgba(16, 185, 129, 0.12);
   border-color: rgba(16, 185, 129, 0.35);
   color: var(--neon-emerald);
 }
@@ -192,15 +301,42 @@ body {
 }
 
 .system-badge.cyber {
-  background: rgba(0, 229, 255, 0.08);
-  border-color: rgba(0, 229, 255, 0.3);
+  background: rgba(2, 132, 199, 0.1);
+  border-color: rgba(2, 132, 199, 0.3);
   color: var(--neon-cyan);
 }
 
 .system-badge.purple {
-  background: rgba(139, 92, 246, 0.08);
+  background: rgba(139, 92, 246, 0.1);
   border-color: rgba(139, 92, 246, 0.3);
-  color: #C4B5FD;
+  color: var(--neon-purple);
+}
+
+/* Theme Toggle Button (Light/Dark) */
+.theme-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  background: var(--theme-toggle-bg);
+  border: 1px solid var(--theme-toggle-border);
+  color: var(--text-primary);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  user-select: none;
+}
+
+.theme-toggle-btn:hover {
+  border-color: var(--neon-blue);
+  transform: translateY(-1px);
+}
+
+.theme-icon {
+  font-size: 14px;
+  line-height: 1;
 }
 
 .btn-nav-guide {
@@ -211,8 +347,8 @@ body {
   border-radius: 10px;
   font-size: 12px;
   font-weight: 700;
-  color: var(--text-white);
-  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-primary);
+  background: var(--theme-toggle-bg);
   border: 1px solid var(--border-medium);
   cursor: pointer;
   transition: all 0.2s ease;
@@ -220,8 +356,7 @@ body {
 }
 
 .btn-nav-guide:hover {
-  background: rgba(255, 255, 255, 0.16);
-  border-color: var(--text-white);
+  background: var(--border-medium);
   transform: translateY(-1px);
 }
 
@@ -249,14 +384,14 @@ body {
   gap: 8px;
   padding: 6px 18px;
   border-radius: 9999px;
-  background: rgba(0, 132, 255, 0.1);
-  border: 1px solid rgba(0, 229, 255, 0.35);
+  background: rgba(0, 102, 255, 0.08);
+  border: 1px solid rgba(2, 132, 199, 0.35);
   color: var(--neon-cyan);
   font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.1em;
   margin-bottom: 22px;
-  box-shadow: 0 0 20px rgba(0, 229, 255, 0.15);
+  box-shadow: 0 0 20px rgba(2, 132, 199, 0.12);
 }
 
 .hero-subtitle-top {
@@ -277,7 +412,7 @@ body {
 }
 
 .gradient-title-text {
-  background: linear-gradient(135deg, #FFFFFF 20%, #38BDF8 60%, #0084FF 100%);
+  background: var(--gradient-title);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   display: inline-block;
@@ -291,12 +426,12 @@ body {
   line-height: 1.7;
 }
 
-/* Executive Info Strip (Glass container from protfolio_admin header_section) */
+/* Executive Info Strip (Glass Container from protfolio_admin header_section) */
 .executive-info-strip {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba(15, 23, 42, 0.65);
+  background: var(--info-strip-bg);
   backdrop-filter: blur(var(--glass-blur));
   -webkit-backdrop-filter: blur(var(--glass-blur));
   border: 1px solid var(--border-medium);
@@ -319,7 +454,7 @@ body {
   font-weight: 800;
   letter-spacing: 0.12em;
   color: var(--neon-cyan);
-  font-family: var(--font-mono);
+  font-family: 'JetBrains Mono', monospace;
 }
 
 .info-value {
@@ -360,7 +495,7 @@ body {
   font-size: 13px;
   font-weight: 700;
   color: var(--text-secondary);
-  background: rgba(15, 23, 42, 0.7);
+  background: var(--filter-btn-bg);
   border: 1px solid var(--border-subtle);
   cursor: pointer;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
@@ -370,24 +505,24 @@ body {
 }
 
 .filter-pill:hover {
-  color: var(--text-white);
+  color: var(--text-primary);
   border-color: var(--border-medium);
-  background: rgba(30, 45, 76, 0.7);
+  background: var(--filter-btn-hover);
 }
 
 .filter-pill.active {
-  color: var(--text-white);
-  background: linear-gradient(135deg, rgba(0, 132, 255, 0.25) 0%, rgba(0, 229, 255, 0.25) 100%);
-  border-color: var(--neon-cyan);
-  box-shadow: 0 0 20px rgba(0, 229, 255, 0.2);
+  color: var(--filter-active-text);
+  background: var(--filter-active-bg);
+  border-color: var(--filter-active-border);
+  box-shadow: 0 0 20px rgba(0, 102, 255, 0.12);
 }
 
 .filter-count {
   font-size: 11px;
   padding: 2px 7px;
   border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.12);
-  color: var(--text-white);
+  background: var(--border-medium);
+  color: var(--text-primary);
 }
 
 .search-box-wrap {
@@ -408,9 +543,9 @@ body {
   width: 100%;
   padding: 10px 16px 10px 42px;
   border-radius: 12px;
-  background: rgba(15, 23, 42, 0.7);
+  background: var(--search-bg);
   border: 1px solid var(--border-subtle);
-  color: var(--text-white);
+  color: var(--text-primary);
   font-size: 13.5px;
   font-family: inherit;
   outline: none;
@@ -419,12 +554,11 @@ body {
 
 .search-input:focus {
   border-color: var(--neon-cyan);
-  box-shadow: 0 0 20px rgba(0, 229, 255, 0.2);
-  background: rgba(22, 32, 54, 0.9);
+  box-shadow: 0 0 20px rgba(0, 102, 255, 0.15);
 }
 
 /* ==========================================================================
-   GALLERY GRID (protfolio_admin gate_page.dart 380x480 ratio Card System)
+   GALLERY GRID (protfolio_admin gate_page.dart Card System)
    ========================================================================== */
 .portfolio-gallery-grid {
   display: grid;
@@ -445,7 +579,8 @@ body {
   box-shadow: var(--shadow-card);
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
               box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-              border-color 0.35s ease;
+              border-color 0.35s ease,
+              background 0.35s ease;
   display: flex;
   flex-direction: column;
 }
@@ -456,7 +591,7 @@ body {
   border-color: var(--card-border-glow, var(--neon-cyan));
 }
 
-/* Top-Right Ambient Glow Circle (Directly from gate_page.dart line 175) */
+/* Top-Right Ambient Glow Circle (gate_page.dart line 175) */
 .card-ambient-glow {
   position: absolute;
   top: -60px;
@@ -464,7 +599,7 @@ body {
   width: 220px;
   height: 220px;
   border-radius: 50%;
-  background: var(--card-glow-color, rgba(0, 132, 255, 0.12));
+  background: var(--card-glow-color, var(--card-ambient-default));
   filter: blur(35px);
   pointer-events: none;
   z-index: 1;
@@ -483,7 +618,7 @@ body {
   width: 100%;
   height: 230px;
   overflow: hidden;
-  background: #0B1120;
+  background: var(--thumb-bg);
 }
 
 .card-thumb-img {
@@ -501,7 +636,7 @@ body {
 .card-thumb-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(15, 23, 42, 0.1) 0%, rgba(15, 23, 42, 0.85) 100%);
+  background: var(--thumb-overlay);
   pointer-events: none;
 }
 
@@ -523,7 +658,7 @@ body {
   letter-spacing: 0.08em;
   padding: 4px 10px;
   border-radius: 8px;
-  background: rgba(11, 17, 32, 0.8);
+  background: var(--bg-glass);
   backdrop-filter: blur(12px);
   border: 1px solid var(--border-medium);
   color: var(--card-theme-color, var(--neon-cyan));
@@ -534,9 +669,9 @@ body {
   font-weight: 700;
   padding: 4px 10px;
   border-radius: 9999px;
-  background: rgba(16, 185, 129, 0.2);
-  border: 1px solid rgba(16, 185, 129, 0.5);
-  color: #34D399;
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  color: var(--neon-emerald);
   display: flex;
   align-items: center;
   gap: 5px;
@@ -545,7 +680,7 @@ body {
 .live-status-pill.upcoming {
   background: rgba(148, 163, 184, 0.15);
   border-color: rgba(148, 163, 184, 0.3);
-  color: #CBD5E1;
+  color: var(--text-muted);
 }
 
 /* Card Body Content */
@@ -570,12 +705,12 @@ body {
   width: 48px;
   height: 48px;
   border-radius: 16px;
-  background: var(--card-gradient, linear-gradient(135deg, #0084FF, #00E5FF));
+  background: var(--card-gradient, linear-gradient(135deg, #0066FF, #0284C7));
   display: flex;
   align-items: center;
   justify-content: center;
   color: #FFFFFF;
-  box-shadow: 0 4px 16px var(--card-glow-color, rgba(0, 132, 255, 0.3));
+  box-shadow: 0 4px 16px var(--card-glow-color, rgba(0, 102, 255, 0.25));
   flex-shrink: 0;
 }
 
@@ -618,7 +753,7 @@ body {
   grid-template-columns: 1fr 1fr;
   gap: 8px;
   margin-bottom: 24px;
-  background: rgba(11, 17, 32, 0.6);
+  background: var(--metrics-bg);
   padding: 12px;
   border-radius: 14px;
   border: 1px solid var(--border-subtle);
@@ -642,7 +777,7 @@ body {
   color: var(--text-white);
 }
 
-/* Card Action Button Hub (Enter Portfolio Button from gate_page.dart) */
+/* Card Action Button Hub (gate_page.dart Motif) */
 .card-action-hub {
   display: flex;
   flex-direction: column;
@@ -653,8 +788,8 @@ body {
 .btn-enter-portfolio {
   width: 100%;
   height: 48px;
-  background: var(--card-btn-bg, linear-gradient(135deg, #0084FF 0%, #00B4D8 100%));
-  color: #FFFFFF;
+  background: var(--card-btn-bg, linear-gradient(135deg, #0066FF 0%, #0284C7 100%));
+  color: #FFFFFF !important;
   border-radius: 14px;
   font-size: 14px;
   font-weight: 700;
@@ -664,14 +799,14 @@ body {
   gap: 8px;
   text-decoration: none;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
   border: none;
 }
 
 .btn-enter-portfolio:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px var(--card-glow-color, rgba(0, 132, 255, 0.4));
-  filter: brightness(1.1);
+  box-shadow: 0 8px 25px var(--card-glow-color, rgba(0, 102, 255, 0.35));
+  filter: brightness(1.08);
 }
 
 .btn-sub-actions-row {
@@ -682,7 +817,7 @@ body {
 .btn-sub-action {
   flex: 1;
   height: 38px;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--btn-sub-bg);
   border: 1px solid var(--border-subtle);
   border-radius: 10px;
   color: var(--text-secondary);
@@ -697,8 +832,8 @@ body {
 }
 
 .btn-sub-action:hover {
-  background: rgba(255, 255, 255, 0.12);
-  color: var(--text-white);
+  background: var(--btn-sub-hover);
+  color: var(--text-primary);
   border-color: var(--border-medium);
 }
 
@@ -706,13 +841,14 @@ body {
    PHILOSOPHY & SYSTEM ARCHITECTURE SECTION
    ========================================================================== */
 .philosophy-banner-wrap {
-  background: rgba(15, 23, 42, 0.5);
+  background: var(--info-strip-bg);
   border: 1px solid var(--border-subtle);
   border-radius: 24px;
   padding: 44px;
   margin-top: 40px;
   backdrop-filter: blur(var(--glass-blur));
   -webkit-backdrop-filter: blur(var(--glass-blur));
+  box-shadow: var(--shadow-sm);
 }
 
 .section-head-title {
@@ -737,7 +873,7 @@ body {
 
 .phil-col-card {
   padding: 24px;
-  background: rgba(11, 17, 32, 0.6);
+  background: var(--metrics-bg);
   border: 1px solid var(--border-subtle);
   border-radius: 16px;
   transition: all 0.25s ease;
@@ -746,21 +882,20 @@ body {
 .phil-col-card:hover {
   border-color: var(--border-medium);
   transform: translateY(-4px);
-  background: rgba(22, 32, 54, 0.6);
 }
 
 .phil-icon-pill {
   width: 40px;
   height: 40px;
   border-radius: 12px;
-  background: rgba(0, 229, 255, 0.1);
-  color: var(--neon-cyan);
+  background: rgba(0, 102, 255, 0.1);
+  color: var(--neon-blue);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 18px;
   margin-bottom: 16px;
-  border: 1px solid rgba(0, 229, 255, 0.2);
+  border: 1px solid rgba(0, 102, 255, 0.2);
 }
 
 .phil-col-title {
@@ -782,7 +917,7 @@ body {
 .guide-modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.75);
+  background: rgba(0, 0, 0, 0.65);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   display: none;
@@ -804,7 +939,7 @@ body {
   border: 1px solid var(--border-bright);
   border-radius: 28px;
   padding: 36px 40px;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 132, 255, 0.2);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4), 0 0 40px rgba(0, 102, 255, 0.15);
   position: relative;
   animation: modalPop 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -818,7 +953,7 @@ body {
   position: absolute;
   top: 24px;
   right: 24px;
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--theme-toggle-bg);
   border: 1px solid var(--border-subtle);
   color: var(--text-secondary);
   width: 36px;
@@ -833,14 +968,14 @@ body {
 }
 
 .modal-close-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-  color: #FFFFFF;
+  background: var(--border-medium);
+  color: var(--text-white);
 }
 
 .modal-header h3 {
   font-size: 22px;
   font-weight: 800;
-  color: #FFFFFF;
+  color: var(--text-white);
   margin-bottom: 8px;
 }
 
@@ -851,13 +986,13 @@ body {
 }
 
 .code-snippet-box {
-  background: #070B14;
+  background: var(--metrics-bg);
   border: 1px solid var(--border-medium);
   border-radius: 14px;
   padding: 18px 20px;
-  font-family: var(--font-mono);
+  font-family: 'JetBrains Mono', monospace;
   font-size: 12.5px;
-  color: #38BDF8;
+  color: var(--neon-cyan);
   overflow-x: auto;
   margin-bottom: 24px;
   line-height: 1.6;
@@ -891,7 +1026,7 @@ body {
 }
 
 .step-content strong {
-  color: #FFFFFF;
+  color: var(--text-white);
   font-size: 14px;
   display: block;
   margin-bottom: 2px;
@@ -917,7 +1052,7 @@ body {
    ========================================================================== */
 @media (max-width: 992px) {
   .gate-navbar {
-    padding: 0 24px;
+    padding: 0 20px;
   }
   .system-badge.cyber, .system-badge.purple {
     display: none;

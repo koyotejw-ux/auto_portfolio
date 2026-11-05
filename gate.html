@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,15 +9,27 @@
   <!-- Pretendard Variable Font -->
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   
-  <!-- Gate Page Design System Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=20261105_enterprise_gate_v2">
+  <!-- Gate Page Dual Theme Design System Stylesheet -->
+  <link rel="stylesheet" href="style.css?v=20261105_dual_theme_v3">
+
+  <!-- Immediate Theme Initialization (Default: Light/White) -->
+  <script>
+    (function() {
+      try {
+        const savedTheme = localStorage.getItem('gate_theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
 </head>
 <body>
 
   <!-- Ambient Radial Glows -->
   <div class="ambient-mesh" aria-hidden="true"></div>
 
-  <!-- Interactive Particle Background Canvas (Adapted from protfolio_admin particle_background.dart) -->
+  <!-- Interactive Particle Background Canvas (Flutter particle_background.dart adapted) -->
   <canvas id="particleCanvas" aria-hidden="true"></canvas>
 
   <!-- Sticky Glassmorphic Navbar -->
@@ -30,7 +42,7 @@
       </div>
     </a>
 
-    <!-- System Badges Group (protfolio_admin style) -->
+    <!-- Status Badges & Theme Toggle Group -->
     <div class="nav-status-group">
       <div class="system-badge online">
         <span class="pulse-dot"></span>
@@ -42,6 +54,14 @@
       <div class="system-badge purple">
         ENTERPRISE STRATEGY
       </div>
+
+      <!-- Theme Switcher (Default: White / Light Mode) -->
+      <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="라이트/다크 모드 전환" title="화이트/다크 테마 전환">
+        <span class="theme-icon" id="themeIcon">☀️</span>
+        <span id="themeText">라이트</span>
+      </button>
+
+      <!-- Guide Modal Trigger -->
       <button class="btn-nav-guide" id="openGuideBtn" title="신규 포트폴리오 등록 방법 안내">
         <span>+</span> 포폴 등록 가이드
       </button>
@@ -121,7 +141,7 @@
 
     <!-- Portfolio Gallery Grid (Dynamically Populated via JS Registry) -->
     <section class="portfolio-gallery-grid" id="portfolioGrid" aria-label="포트폴리오 갤러리 리스트">
-      <!-- Cards will be dynamically injected here -->
+      <!-- Cards dynamically rendered here -->
     </section>
 
     <!-- Design Architecture Philosophy Section -->
@@ -177,7 +197,7 @@
           <span class="step-num">2</span>
           <div class="step-content">
             <strong>index.html 내 PORTFOLIO_REGISTRY 배열에 객체 추가</strong>
-            <p>아래 코드 스니펫처럼 프로젝트 메타데이터, 브랜드 컬러, 링크를 한 줄로 등록하면 갤러리 카드와 필터링이 즉시 자동 생성됩니다.</p>
+            <p>프로젝트 메타데이터, 브랜드 컬러, 링크를 한 줄로 등록하면 갤러리 카드와 필터링이 즉시 자동 생성됩니다.</p>
           </div>
         </div>
 
@@ -223,11 +243,46 @@
   </footer>
 
   <!-- ==========================================================================
-       SCRIPTS: PARTICLE ENGINE & DYNAMIC PORTFOLIO REGISTRY
+       SCRIPTS: PARTICLE ENGINE & DYNAMIC PORTFOLIO REGISTRY & THEME CONTROLLER
        ========================================================================== -->
   <script>
     /* ==========================================================================
-       1. PORTFOLIO DATA REGISTRY (포폴 하나씩 등록할 때마다 확장되는 배열)
+       1. THEME CONTROLLER (DEFAULT: WHITE / LIGHT MODE)
+       ========================================================================== */
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    const themeIcon = document.getElementById('themeIcon');
+    const themeText = document.getElementById('themeText');
+
+    function updateThemeUI(theme) {
+      if (theme === 'dark') {
+        themeIcon.textContent = '🌙';
+        themeText.textContent = '다크';
+      } else {
+        themeIcon.textContent = '☀️';
+        themeText.textContent = '라이트';
+      }
+    }
+
+    // Set initial theme
+    const initialTheme = document.documentElement.getAttribute('data-theme') || 'light';
+    updateThemeUI(initialTheme);
+
+    themeToggleBtn.addEventListener('click', () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('gate_theme', newTheme);
+      updateThemeUI(newTheme);
+      
+      // Update particles on theme change
+      if (window.onThemeChanged) {
+        window.onThemeChanged(newTheme);
+      }
+    });
+
+    /* ==========================================================================
+       2. PORTFOLIO DATA REGISTRY (포폴 하나씩 등록할 때마다 확장되는 배열)
        ========================================================================== */
     const PORTFOLIO_REGISTRY = [
       {
@@ -237,11 +292,11 @@
         badge: "01 FINTECH & QUANT",
         status: "live",
         statusText: "60fps Live Online",
-        themeColor: "#00E5FF",
-        glowColor: "rgba(0, 229, 255, 0.28)",
-        borderGlow: "rgba(0, 229, 255, 0.6)",
-        gradient: "linear-gradient(135deg, #0084FF 0%, #00E5FF 100%)",
-        btnGradient: "linear-gradient(135deg, #0084FF 0%, #00B4D8 100%)",
+        themeColor: "#0284C7",
+        glowColor: "rgba(2, 132, 199, 0.25)",
+        borderGlow: "rgba(2, 132, 199, 0.6)",
+        gradient: "linear-gradient(135deg, #0066FF 0%, #0284C7 100%)",
+        btnGradient: "linear-gradient(135deg, #0066FF 0%, #0284C7 100%)",
         iconSvg: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"></rect><line x1="8" y1="6" x2="16" y2="6"></line><line x1="16" y1="14" x2="16" y2="18"></line><path d="M16 10h.01"></path><path d="M12 10h.01"></path><path d="M8 10h.01"></path><path d="M12 14h.01"></path><path d="M8 14h.01"></path><path d="M12 18h.01"></path><path d="M8 18h.01"></path></svg>`,
         subtitle: "MTS 컴패니언 정밀 퀀트 평단가 계산 & 0.2초 음성 도크",
         description: "국내 투자자의 비이성적 물타기를 방지하는 정밀 퀀트 평단가 계산 & 0.2초 음성 비서 플랫폼. 복잡한 수식 입력을 음성 도크와 역산 알고리즘으로 단순화하여 타이핑 인지 부하를 85% 감축시켰습니다.",
@@ -264,11 +319,11 @@
         badge: "02 COSMIC LUXURY & SAJU",
         status: "live",
         statusText: "60fps Live Online",
-        themeColor: "#FFD700",
-        glowColor: "rgba(255, 215, 0, 0.25)",
-        borderGlow: "rgba(229, 192, 123, 0.7)",
-        gradient: "linear-gradient(135deg, #FFD700 0%, #FFA500 100%)",
-        btnGradient: "linear-gradient(135deg, #D4AF37 0%, #AA771C 100%)",
+        themeColor: "#D97706",
+        glowColor: "rgba(217, 119, 6, 0.25)",
+        borderGlow: "rgba(217, 119, 6, 0.6)",
+        gradient: "linear-gradient(135deg, #D97706 0%, #B45309 100%)",
+        btnGradient: "linear-gradient(135deg, #D97706 0%, #B45309 100%)",
         iconSvg: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>`,
         subtitle: "사주 일주론 & 서양 점성술 융합 5각형 실시간 오행 레이더",
         description: "사주 일주론과 서양 점성술의 결합을 통한 MZ세대 맞춤형 고유 우주 좌표 & 인연 궁합 AI 솔루션. 난해한 한자 텍스트 나열을 배제하고 5각형 실시간 오행 레이더 차트와 도파민 타로 인터랙션으로 혁신했습니다.",
@@ -291,11 +346,11 @@
         badge: "03 GIS CLOUD ENTERPRISE",
         status: "upcoming",
         statusText: "Enterprise Archive",
-        themeColor: "#0CC760",
-        glowColor: "rgba(12, 199, 96, 0.22)",
-        borderGlow: "rgba(12, 199, 96, 0.5)",
-        gradient: "linear-gradient(135deg, #0CC760 0%, #059669 100%)",
-        btnGradient: "linear-gradient(135deg, #0CC760 0%, #047857 100%)",
+        themeColor: "#059669",
+        glowColor: "rgba(5, 150, 105, 0.22)",
+        borderGlow: "rgba(5, 150, 105, 0.5)",
+        gradient: "linear-gradient(135deg, #059669 0%, #047857 100%)",
+        btnGradient: "linear-gradient(135deg, #059669 0%, #047857 100%)",
         iconSvg: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>`,
         subtitle: "GIS 공간 지리정보 & 스마트팜 시뮬레이션 반응형 웹",
         description: "복잡한 토지 규제 인허가 분석과 농업 토양 시뮬레이션을 비전문가도 즉시 파악할 수 있도록 3단계 계층화 인터페이스로 재정의한 B2B GIS 엔터프라이즈 솔루션.",
@@ -318,11 +373,11 @@
         badge: "04 MES+ERP INTELLIGENT SUITE",
         status: "upcoming",
         statusText: "Enterprise Archive",
-        themeColor: "#6366F1",
-        glowColor: "rgba(99, 102, 241, 0.22)",
-        borderGlow: "rgba(99, 102, 241, 0.5)",
-        gradient: "linear-gradient(135deg, #6366F1 0%, #4338CA 100%)",
-        btnGradient: "linear-gradient(135deg, #6366F1 0%, #3730A3 100%)",
+        themeColor: "#7C3AED",
+        glowColor: "rgba(124, 58, 237, 0.22)",
+        borderGlow: "rgba(124, 58, 237, 0.5)",
+        gradient: "linear-gradient(135deg, #7C3AED 0%, #6D28D9 100%)",
+        btnGradient: "linear-gradient(135deg, #7C3AED 0%, #5B21B6 100%)",
         iconSvg: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>`,
         subtitle: "방화셔터 제조 혁신 MES+ERP 지능형 통합 플랫폼 & AI 디자인옵스",
         description: "생산 현장의 MES와 경영 관리 ERP를 단일 데이터 레이어로 결합하여 1인 기업 및 중소제조사의 경영 가시성을 100% 확보한 엔터프라이즈 DX 디자인 시스템 사례.",
@@ -341,7 +396,7 @@
     ];
 
     /* ==========================================================================
-       2. DYNAMIC CARD RENDERER
+       3. DYNAMIC CARD RENDERER
        ========================================================================== */
     const portfolioGrid = document.getElementById('portfolioGrid');
     const filterTabs = document.getElementById('filterTabs');
@@ -359,7 +414,7 @@
         return;
       }
 
-      portfolioGrid.innerHTML = items.map((item, index) => {
+      portfolioGrid.innerHTML = items.map((item) => {
         const isLive = item.status === 'live';
         const liveBadgeClass = isLive ? 'live-status-pill' : 'live-status-pill upcoming';
         const liveDot = isLive ? '<span class="pulse-dot"></span>' : '<span>⏳</span>';
@@ -463,12 +518,10 @@
 
     function applyFilterAndSearch() {
       let filtered = PORTFOLIO_REGISTRY.filter(item => {
-        // Category filter
         let matchFilter = true;
         if (currentFilter === 'live') matchFilter = item.status === 'live';
         else if (currentFilter !== 'all') matchFilter = item.category === currentFilter;
 
-        // Search filter
         let matchSearch = true;
         if (searchQuery.trim() !== '') {
           const q = searchQuery.toLowerCase();
@@ -498,7 +551,7 @@
     });
 
     /* ==========================================================================
-       3. MODAL LOGIC
+       4. MODAL LOGIC
        ========================================================================== */
     const openGuideBtn = document.getElementById('openGuideBtn');
     const closeGuideBtn = document.getElementById('closeGuideBtn');
@@ -523,8 +576,8 @@
     });
 
     /* ==========================================================================
-       4. INTERACTIVE PARTICLE CANVAS ENGINE
-       Adapted directly from protfolio_admin particle_background.dart (Flutter)
+       5. INTERACTIVE PARTICLE CANVAS ENGINE (DUAL THEME SUPPORT)
+       Adapted from protfolio_admin particle_background.dart (Flutter)
        ========================================================================== */
     (function initParticles() {
       const canvas = document.getElementById('particleCanvas');
@@ -538,6 +591,12 @@
         width = canvas.width = window.innerWidth;
         height = canvas.height = window.innerHeight;
       });
+
+      let currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+
+      window.onThemeChanged = function(theme) {
+        currentTheme = theme;
+      };
 
       // Mouse tracking
       const mouse = { x: null, y: null, radius: 120 };
@@ -558,10 +617,8 @@
           this.vx = (Math.random() - 0.5) * 0.45;
           this.vy = (Math.random() - 0.5) * 0.45;
           this.radius = Math.random() * 2 + 1;
-          this.baseAlpha = Math.random() * 0.4 + 0.2;
+          this.baseAlpha = Math.random() * 0.35 + 0.15;
           this.alpha = this.baseAlpha;
-          // Colors: Electric Blue or Neon Cyan
-          this.color = Math.random() > 0.4 ? 'rgba(0, 229, 255,' : 'rgba(0, 132, 255,';
         }
 
         update() {
@@ -571,7 +628,6 @@
           if (this.x < 0 || this.x > width) this.vx = -this.vx;
           if (this.y < 0 || this.y > height) this.vy = -this.vy;
 
-          // Mouse proximity reaction
           if (mouse.x !== null && mouse.y !== null) {
             const dx = this.x - mouse.x;
             const dy = this.y - mouse.y;
@@ -580,7 +636,7 @@
               const force = (mouse.radius - dist) / mouse.radius;
               this.x += (dx / dist) * force * 1.5;
               this.y += (dy / dist) * force * 1.5;
-              this.alpha = Math.min(0.9, this.baseAlpha + 0.5);
+              this.alpha = Math.min(0.8, this.baseAlpha + 0.4);
             } else {
               this.alpha = this.baseAlpha;
             }
@@ -590,7 +646,8 @@
         draw() {
           ctx.beginPath();
           ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-          ctx.fillStyle = `${this.color} ${this.alpha})`;
+          const colorPrefix = currentTheme === 'light' ? 'rgba(0, 102, 255,' : 'rgba(0, 229, 255,';
+          ctx.fillStyle = `${colorPrefix} ${this.alpha})`;
           ctx.fill();
         }
       }
@@ -601,6 +658,9 @@
       function animate() {
         ctx.clearRect(0, 0, width, height);
 
+        const lineRgb = currentTheme === 'light' ? '0, 102, 255' : '0, 229, 255';
+        const alphaFactor = currentTheme === 'light' ? 0.1 : 0.16;
+
         // Draw connections
         for (let i = 0; i < particles.length; i++) {
           for (let j = i + 1; j < particles.length; j++) {
@@ -609,18 +669,17 @@
             const dist = Math.sqrt(dx * dx + dy * dy);
 
             if (dist < 110) {
-              const alpha = (1 - dist / 110) * 0.16;
+              const alpha = (1 - dist / 110) * alphaFactor;
               ctx.beginPath();
               ctx.moveTo(particles[i].x, particles[i].y);
               ctx.lineTo(particles[j].x, particles[j].y);
-              ctx.strokeStyle = `rgba(0, 229, 255, ${alpha})`;
+              ctx.strokeStyle = `rgba(${lineRgb}, ${alpha})`;
               ctx.lineWidth = 0.8;
               ctx.stroke();
             }
           }
         }
 
-        // Draw particles
         particles.forEach(p => {
           p.update();
           p.draw();
