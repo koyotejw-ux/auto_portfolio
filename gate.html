@@ -804,17 +804,25 @@
 
       // Outer Cube Vertices (8 corners)
       const outerSize = 92;
-      const outerVertices = [
+      const rawVertices = [
         [-1, -1, -1], [1, -1, -1], [1, 1, -1], [-1, 1, -1],
         [-1, -1,  1], [1, -1,  1], [1, 1,  1], [-1, 1,  1]
-      ].map(v => v.map(c => c * outerSize));
+      ];
+      const outerVertices = rawVertices.map(v => v.map(c => c * outerSize));
 
       // Inner Cube Vertices (8 corners, 0.52 scale)
       const innerSize = outerSize * 0.52;
-      const innerVertices = [
-        [-1, -1, -1], [1, -1, -1], [1, 1, -1], [-1, 1, -1],
-        [-1, -1,  1], [1, -1,  1], [1, 1,  1], [-1, 1,  1]
-      ].map(v => v.map(c => c * innerSize));
+      const innerVertices = rawVertices.map(v => v.map(c => c * innerSize));
+
+      // 6 Faces of the 3D Solid Cube (풍부하고 다채로운 원본 브랜드 그라데이션 색상)
+      const cubeFaces = [
+        { indices: [0, 1, 2, 3], colorLight: ['#0066FF', '#00F0FF'], colorDark: ['#0066FF', '#00F0FF'], name: 'front' },
+        { indices: [5, 4, 7, 6], colorLight: ['#7C3AED', '#EC4899'], colorDark: ['#8B5CF6', '#F43F5E'], name: 'back' },
+        { indices: [4, 5, 1, 0], colorLight: ['#0284C7', '#38BDF8'], colorDark: ['#0284C7', '#38BDF8'], name: 'top' },
+        { indices: [3, 2, 6, 7], colorLight: ['#059669', '#10B981'], colorDark: ['#059669', '#10B981'], name: 'bottom' },
+        { indices: [4, 0, 3, 7], colorLight: ['#6366F1', '#A855F7'], colorDark: ['#6366F1', '#A855F7'], name: 'left' },
+        { indices: [1, 5, 6, 2], colorLight: ['#EC4899', '#FB7185'], colorDark: ['#EC4899', '#FB7185'], name: 'right' }
+      ];
 
       // Cube Edges (12 edges)
       const cubeEdges = [
@@ -904,7 +912,7 @@
         const projX = x3 * scale + width / 2;
         const projY = y3 * scale + height / 2 - 8;
 
-        return { x: projX, y: projY, z: z2, scale: scale };
+        return { x: projX, y: projY, z: z2, rx: x3, ry: y3, rz: z2, scale: scale };
       }
 
       function renderCube() {
@@ -920,12 +928,12 @@
         const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
         const isLight = currentTheme === 'light';
 
-        const primaryEdgeColor = isLight ? 'rgba(0, 102, 255,' : 'rgba(0, 229, 255,';
-        const innerEdgeColor = isLight ? 'rgba(2, 132, 199,' : 'rgba(56, 189, 248,';
-        const crossStrutColor = isLight ? 'rgba(124, 58, 237,' : 'rgba(168, 85, 247,';
-        const vertexNodeColor = isLight ? '#0066FF' : '#00E5FF';
-        const vertexCoreColor = '#FFFFFF';
-        const floorGlowColor = isLight ? 'rgba(0, 102, 255, 0.12)' : 'rgba(0, 229, 255, 0.22)';
+        // 🌟 사용자 핵심 요구사항:
+        // "도형을 구성하는 선은 화이트에선 검정색 계열, 다크모드에선 화이트계열로 나오게 해줘"
+        const outerLineColor = isLight ? 'rgba(15, 23, 42, 0.92)' : 'rgba(255, 255, 255, 0.96)';
+        const innerLineColor = isLight ? 'rgba(30, 41, 59, 0.78)' : 'rgba(255, 255, 255, 0.75)';
+        const strutLineColor = isLight ? 'rgba(51, 65, 85, 0.60)' : 'rgba(255, 255, 255, 0.50)';
+        const floorGlowColor = isLight ? 'rgba(0, 102, 255, 0.14)' : 'rgba(0, 229, 255, 0.24)';
 
         // 1. Perspective Shadow / Floor Ellipse
         ctx.save();
@@ -942,78 +950,138 @@
         const pOuter = outerVertices.map(v => project(v, rotX, rotY, rotZ));
         const pInner = innerVertices.map(v => project(v, rotX, rotY, rotZ));
 
-        // 3. Draw Connecting Cross Struts (Tesseract link)
+        // 🌟 3. 3D 입체 면(Faces) 렌더링 - 페인터 알고리즘 (가장 먼 면부터 순서대로 렌더링)
+        // 3-1. 이너 코어 프리즘 큐브 면 (빛나는 홀로그래픽 내부 코어)
+        const innerFaces = cubeFaces.map(face => {
+          const pts = face.indices.map(idx => pInner[idx]);
+          const avgZ = (pts[0].z + pts[1].z + pts[2].z + pts[3].z) / 4;
+          return { face, pts, avgZ };
+        }).sort((a, b) => b.avgZ - a.avgZ);
+
+        for (const { face, pts } of innerFaces) {
+          ctx.save();
+          ctx.beginPath();
+          ctx.moveTo(pts[0].x, pts[0].y);
+          ctx.lineTo(pts[1].x, pts[1].y);
+          ctx.lineTo(pts[2].x, pts[2].y);
+          ctx.lineTo(pts[3].x, pts[3].y);
+          ctx.closePath();
+
+          const [c1, c2] = isLight ? face.colorLight : face.colorDark;
+          const grad = ctx.createLinearGradient(pts[0].x, pts[0].y, pts[2].x, pts[2].y);
+          grad.addColorStop(0, c1);
+          grad.addColorStop(1, c2);
+          ctx.fillStyle = grad;
+          ctx.globalAlpha = isLight ? 0.36 : 0.42;
+          ctx.fill();
+          ctx.restore();
+        }
+
+        // 3-2. 아우터 큐브 면 (다채로운 입체 반투명 글래스 & 스페큘러 광택)
+        const outerFaces = cubeFaces.map(face => {
+          const pts = face.indices.map(idx => pOuter[idx]);
+          const avgZ = (pts[0].z + pts[1].z + pts[2].z + pts[3].z) / 4;
+          return { face, pts, avgZ };
+        }).sort((a, b) => b.avgZ - a.avgZ);
+
+        for (const { face, pts } of outerFaces) {
+          ctx.save();
+          ctx.beginPath();
+          ctx.moveTo(pts[0].x, pts[0].y);
+          ctx.lineTo(pts[1].x, pts[1].y);
+          ctx.lineTo(pts[2].x, pts[2].y);
+          ctx.lineTo(pts[3].x, pts[3].y);
+          ctx.closePath();
+
+          const [c1, c2] = isLight ? face.colorLight : face.colorDark;
+          const grad = ctx.createLinearGradient(pts[0].x, pts[0].y, pts[2].x, pts[2].y);
+          grad.addColorStop(0, c1);
+          grad.addColorStop(1, c2);
+          ctx.fillStyle = grad;
+          ctx.globalAlpha = isLight ? 0.28 : 0.32;
+          ctx.fill();
+
+          // 입체감 더하는 표면 글래스 광택 레이어
+          const sheen = ctx.createLinearGradient(pts[0].x, pts[0].y, pts[1].x, pts[3].y);
+          sheen.addColorStop(0, 'rgba(255, 255, 255, 0.28)');
+          sheen.addColorStop(1, 'rgba(255, 255, 255, 0.0)');
+          ctx.fillStyle = sheen;
+          ctx.globalAlpha = 0.30;
+          ctx.fill();
+          ctx.restore();
+        }
+
+        // 🌟 4. 도형을 구성하는 선 (화이트모드: 검정색 계열 / 다크모드: 화이트계열)
+        // 4-1. 테서랙트 연결 스트럿 선
         for (let i = 0; i < 8; i++) {
           const p1 = pOuter[i];
           const p2 = pInner[i];
-          const avgZ = (p1.z + p2.z) / 2;
-          const alpha = Math.max(0.12, Math.min(0.55, 0.35 + avgZ * 0.0018));
           ctx.beginPath();
           ctx.moveTo(p1.x, p1.y);
           ctx.lineTo(p2.x, p2.y);
-          ctx.strokeStyle = `${crossStrutColor} ${alpha})`;
-          ctx.lineWidth = 1.0;
-          ctx.stroke();
-        }
-
-        // 4. Draw Inner Cube Edges
-        for (const [i, j] of cubeEdges) {
-          const p1 = pInner[i];
-          const p2 = pInner[j];
-          const avgZ = (p1.z + p2.z) / 2;
-          const alpha = Math.max(0.18, Math.min(0.7, 0.42 + avgZ * 0.002));
-          ctx.beginPath();
-          ctx.moveTo(p1.x, p1.y);
-          ctx.lineTo(p2.x, p2.y);
-          ctx.strokeStyle = `${innerEdgeColor} ${alpha})`;
+          ctx.strokeStyle = strutLineColor;
           ctx.lineWidth = 1.2;
           ctx.stroke();
         }
 
-        // 5. Draw Outer Cube Edges
+        // 4-2. 내부 큐브 엣지 선
         for (const [i, j] of cubeEdges) {
-          const p1 = pOuter[i];
-          const p2 = pOuter[j];
-          const avgZ = (p1.z + p2.z) / 2;
-          const alpha = Math.max(0.25, Math.min(0.95, 0.6 + avgZ * 0.0025));
+          const p1 = pInner[i];
+          const p2 = pInner[j];
           ctx.beginPath();
           ctx.moveTo(p1.x, p1.y);
           ctx.lineTo(p2.x, p2.y);
-          ctx.strokeStyle = `${primaryEdgeColor} ${alpha})`;
-          ctx.lineWidth = 2.0;
+          ctx.strokeStyle = innerLineColor;
+          ctx.lineWidth = 1.4;
           ctx.stroke();
         }
 
-        // 6. Draw Glowing Vertex Nodes at all corners
+        // 4-3. 외부 메인 큐브 엣지 선 (화이트: 딥 블랙 / 다크: 발광 화이트)
+        for (const [i, j] of cubeEdges) {
+          const p1 = pOuter[i];
+          const p2 = pOuter[j];
+          ctx.beginPath();
+          ctx.moveTo(p1.x, p1.y);
+          ctx.lineTo(p2.x, p2.y);
+          ctx.strokeStyle = outerLineColor;
+          ctx.lineWidth = 2.2;
+          ctx.stroke();
+        }
+
+        // 🌟 5. 정점(Vertex Nodes) 렌더링 (16개 꼭짓점)
         const allProjected = [
           ...pInner.map(p => ({ ...p, isInner: true })),
           ...pOuter.map(p => ({ ...p, isInner: false }))
         ].sort((a, b) => a.z - b.z);
 
         for (const p of allProjected) {
-          const radius = p.isInner ? Math.max(2.5, 3.8 * p.scale) : Math.max(3.8, 5.8 * p.scale);
-          const glowRadius = radius * 3.2;
+          const radius = p.isInner ? Math.max(3.0, 4.2 * p.scale) : Math.max(4.5, 6.2 * p.scale);
 
-          // Radial Glow Halo
-          const haloGrad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, glowRadius);
-          haloGrad.addColorStop(0, p.isInner ? innerEdgeColor + ' 0.8)' : primaryEdgeColor + ' 0.9)');
+          // 외곽 후광 그라데이션
+          const haloGrad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, radius * 3.0);
+          haloGrad.addColorStop(0, isLight ? 'rgba(0, 102, 255, 0.45)' : 'rgba(0, 229, 255, 0.65)');
           haloGrad.addColorStop(1, 'transparent');
-
           ctx.beginPath();
-          ctx.arc(p.x, p.y, glowRadius, 0, Math.PI * 2);
+          ctx.arc(p.x, p.y, radius * 3.0, 0, Math.PI * 2);
           ctx.fillStyle = haloGrad;
           ctx.fill();
 
-          // Outer Vertex Node
+          // 정점 테두리 링 (화이트: 검정색 계열 / 다크모드: 화이트계열)
           ctx.beginPath();
           ctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
-          ctx.fillStyle = vertexNodeColor;
+          ctx.fillStyle = isLight ? '#0F172A' : '#FFFFFF';
           ctx.fill();
 
-          // Inner White Core Node
+          // 정점 원본 네온 컬러 코어
           ctx.beginPath();
-          ctx.arc(p.x, p.y, radius * 0.45, 0, Math.PI * 2);
-          ctx.fillStyle = vertexCoreColor;
+          ctx.arc(p.x, p.y, radius * 0.62, 0, Math.PI * 2);
+          ctx.fillStyle = p.isInner ? '#00E5FF' : '#0066FF';
+          ctx.fill();
+
+          // 중앙 하이라이트 핀
+          ctx.beginPath();
+          ctx.arc(p.x - radius * 0.2, p.y - radius * 0.2, radius * 0.25, 0, Math.PI * 2);
+          ctx.fillStyle = '#FFFFFF';
           ctx.fill();
         }
 
