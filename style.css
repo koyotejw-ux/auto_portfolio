@@ -735,16 +735,102 @@ body {
   margin-top: 2px;
 }
 
-.card-description {
-  font-size: 13.5px;
-  color: var(--text-secondary);
-  line-height: 1.6;
-  margin-bottom: 20px;
-  flex-grow: 1;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
+/* Card Executive Metadata Box (기간, 역할, 기여도, 플랫폼) */
+.card-meta-box {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 12px;
+  background: var(--metrics-bg);
+  border: 1px solid var(--border-subtle);
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+}
+
+.card-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.meta-key-label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--neon-cyan);
+}
+
+.meta-val-text {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text-white);
+  white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.meta-val-text.highlight {
+  color: var(--neon-emerald);
+  font-weight: 800;
+}
+
+/* 3 Core High-Impact UX Points Callouts (자잘한 글 대신 굵직한 핵심 포인트) */
+.card-ux-points {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 18px;
+  flex-grow: 1;
+}
+
+.ux-point-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.ux-tag {
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 6px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.ux-tag.problem {
+  background: rgba(239, 68, 68, 0.12);
+  color: #EF4444;
+  border: 1px solid rgba(239, 68, 68, 0.25);
+}
+
+.ux-tag.solution {
+  background: rgba(2, 132, 199, 0.12);
+  color: var(--neon-cyan);
+  border: 1px solid rgba(2, 132, 199, 0.25);
+}
+
+.ux-tag.outcome {
+  background: rgba(16, 185, 129, 0.12);
+  color: var(--neon-emerald);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+.ux-point-desc {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+.ux-point-desc strong {
+  color: var(--text-white);
+  font-weight: 700;
+}
+
+.card-description {
+  display: none; /* Replaced with high-impact UX points */
 }
 
 /* Metrics Pill Row */
