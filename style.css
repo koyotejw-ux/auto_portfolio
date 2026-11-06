@@ -479,8 +479,8 @@ body {
   position: relative;
   z-index: 2;
   width: 100%;
-  max-width: 560px;
-  height: 380px;
+  max-width: 640px;
+  height: 420px;
   border-radius: 24px;
   cursor: grab;
   touch-action: none;
@@ -1420,8 +1420,8 @@ a,
   }
 
   .hero-cube-canvas {
-    max-width: 340px;
-    height: 270px;
+    max-width: 360px;
+    height: 300px;
   }
 
   .hero-3d-caption {
@@ -1773,8 +1773,8 @@ a,
   }
 
   .hero-cube-canvas {
-    max-width: 290px;
-    height: 230px;
+    max-width: 320px;
+    height: 260px;
   }
 
   .executive-info-strip {

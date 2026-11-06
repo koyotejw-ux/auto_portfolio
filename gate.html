@@ -10,7 +10,7 @@
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   
   <!-- Gate Page Dual Theme Design System Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=20261106_luxury3d_appicon_v10">
+  <link rel="stylesheet" href="style.css?v=20261106_vertex_philosophy_v11">
 
   <!-- Immediate Theme Initialization (Default: Light/White) -->
   <script>
@@ -88,13 +88,13 @@
         사용자의 숨겨진 페인포인트를 정량 데이터로 도출하고, 복잡한 인지 부하를 직관적인 모바일 인터랙션과 체계적인 디자인 시스템으로 해결한 프로덕트 디자인 포트폴리오입니다.
       </p>
 
-      <!-- 🌟 3D 네모 버텍스 기하학 키비주얼 스테이지 (실시간 인터랙티브 캔버스) -->
+      <!-- 🌟 3D 네모 버텍스 기하학 키비주얼 스테이지 (실시간 인터랙티브 캔버스 & UX/UI 철학적 신념 엔진) -->
       <div class="hero-3d-stage">
         <div class="hero-3d-glow" aria-hidden="true"></div>
-        <canvas id="cubeVertexCanvas" width="600" height="400" class="hero-cube-canvas" aria-label="3D 네모 버텍스 인터랙션 키비주얼"></canvas>
+        <canvas id="cubeVertexCanvas" width="640" height="420" class="hero-cube-canvas" aria-label="UX/UI 철학적 신념 3D 큐브 버텍스 아키텍처"></canvas>
         <div class="hero-3d-caption">
-          <span class="caption-pill">✦ 3D 지오메트리 버텍스 아키텍처</span>
-          <span>실시간 3D 공간 인터랙션 · 구조적 디자인 시스템</span>
+          <span class="caption-pill">✦ UX/UI 철학적 신념 지오메트리</span>
+          <span>버텍스를 터치·드래그하여 시니어 UX 설계 철학을 탐색하세요</span>
         </div>
       </div>
 
@@ -718,14 +718,14 @@
       const ctx = canvas.getContext('2d');
       
       let dpr = window.devicePixelRatio || 1;
-      let width = 560;
-      let height = 380;
+      let width = 640;
+      let height = 420;
       
       function resize() {
         dpr = window.devicePixelRatio || 1;
         const rect = canvas.getBoundingClientRect();
-        width = rect.width > 0 ? rect.width : (canvas.clientWidth || 560);
-        height = rect.height > 0 ? rect.height : (canvas.clientHeight || 380);
+        width = rect.width > 0 ? rect.width : (canvas.clientWidth || 640);
+        height = rect.height > 0 ? rect.height : (canvas.clientHeight || 420);
         canvas.width = width * dpr;
         canvas.height = height * dpr;
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -733,6 +733,26 @@
       
       setTimeout(resize, 50);
       window.addEventListener('resize', resize);
+
+      // 🌟 UX/UI Architectural Philosophical Beliefs Pool (16 Senior UX Tenets)
+      const UX_PHILOSOPHIES = [
+        { ko: '사용자 본질주의', en: 'User Essence First', desc: '표면적 요구 이면의 본질적 결핍을 파악하고 해결합니다.' },
+        { ko: '인지 부하의 최소화', en: 'Cognitive Minimalism', desc: '생각하지 않아도 직관적으로 흐르는 인터랙션을 설계합니다.' },
+        { ko: '맥락적 공감 설계', en: 'Contextual Empathy', desc: '사용자의 순간과 감정의 맥락에 자연스레 동화됩니다.' },
+        { ko: '데이터 기반 직관', en: 'Data-Informed Intuition', desc: '정량 지표와 정성적 인간 이해를 유기적으로 융합합니다.' },
+        { ko: '원자적 일관성', en: 'Atomic System Consistency', desc: '디자인 토큰부터 전사 시스템까지 무결한 일관성을 구축합니다.' },
+        { ko: '마찰 없는 여정', en: 'Frictionless Task Flow', desc: '불필요한 과업 단계를 제거하여 매끄러운 완결을 지원합니다.' },
+        { ko: '심미적 사용성 효과', en: 'Aesthetic Usability Effect', desc: '세련된 비주얼 완성도가 기능적 신뢰와 몰입을 극대화합니다.' },
+        { ko: '가치 중심 경험', en: 'Value-Driven UX Impact', desc: '단순 편의를 넘어 비즈니스와 삶의 실질적 가치를 창출합니다.' },
+        { ko: '선제적 의도 예측', en: 'Anticipatory Intelligence', desc: '사용자가 탐색하기 전에 의도를 예측하여 선제 제안합니다.' },
+        { ko: '보편적 포용성', en: 'Universal Accessibility', desc: '누구도 소외되지 않는 배리어프리 포용적 경험을 보장합니다.' },
+        { ko: '점진적 정보 공개', en: 'Progressive Disclosure', desc: '과업의 맥락과 필요에 따라 알맞은 깊이로 정보를 안내합니다.' },
+        { ko: '즉각적 상태 피드백', en: 'Instant Affordance', desc: '모든 조작에 즉각적이고 명확한 반응으로 안도감을 부여합니다.' },
+        { ko: '인간 중심 AI UX', en: 'Human-Centered AI Flow', desc: 'AI의 불확실성을 친절한 설명성과 신뢰로 전환합니다.' },
+        { ko: '무결점 마이크로 모션', en: 'Micro-Motion Fidelity', desc: '0.1초의 섬세한 인터랙션 모션으로 프로덕트 생명력을 부여합니다.' },
+        { ko: '확장 가능한 거버넌스', en: 'Scalable UX Governance', desc: '제품 고도화와 조직 성장을 견인하는 체계적 디자인 시스템을 운영합니다.' },
+        { ko: '행동 유도 어포던스', en: 'Intuitive Affordance', desc: '별도의 학습 없이도 형태와 모션으로 조작 방식을 인지시킵니다.' }
+      ];
 
       // 3D Geometry: Solid Glass Crystal (Outer: 94px, Inner Core: 52px)
       const S_OUT = 94;
@@ -747,19 +767,30 @@
 
       // 6 Faces with 3D Surface Normals and Brand Hues
       const cubeFaces = [
-        { indices: [0, 1, 2, 3], norm: [ 0,  0, -1], h1: 215, h2: 195, name: 'front' },  // Neon Blue & Cyan
-        { indices: [5, 4, 7, 6], norm: [ 0,  0,  1], h1: 275, h2: 320, name: 'back' },   // Purple & Rose Pink
-        { indices: [4, 5, 1, 0], norm: [ 0, -1,  0], h1: 200, h2: 180, name: 'top' },    // Electric Sky
-        { indices: [3, 2, 6, 7], norm: [ 0,  1,  0], h1: 155, h2: 175, name: 'bottom' }, // Emerald & Mint
-        { indices: [4, 0, 3, 7], norm: [-1,  0,  0], h1: 240, h2: 280, name: 'left' },   // Deep Indigo
-        { indices: [1, 5, 6, 2], norm: [ 1,  0,  0], h1: 335, h2: 15,  name: 'right' }   // Cyber Coral
+        { indices: [0, 1, 2, 3], norm: [ 0,  0, -1], h1: 215, h2: 195, name: 'front' },
+        { indices: [5, 4, 7, 6], norm: [ 0,  0,  1], h1: 275, h2: 320, name: 'back' },
+        { indices: [4, 5, 1, 0], norm: [ 0, -1,  0], h1: 200, h2: 180, name: 'top' },
+        { indices: [3, 2, 6, 7], norm: [ 0,  1,  0], h1: 155, h2: 175, name: 'bottom' },
+        { indices: [4, 0, 3, 7], norm: [-1,  0,  0], h1: 240, h2: 280, name: 'left' },
+        { indices: [1, 5, 6, 2], norm: [ 1,  0,  0], h1: 335, h2: 15,  name: 'right' }
       ];
 
       const cubeEdges = [
-        [0, 1], [1, 2], [2, 3], [3, 0], // Bottom square
-        [4, 5], [5, 6], [6, 7], [7, 4], // Top square
-        [0, 4], [1, 5], [2, 6], [3, 7]  // Pillars
+        [0, 1], [1, 2], [2, 3], [3, 0],
+        [4, 5], [5, 6], [6, 7], [7, 4],
+        [0, 4], [1, 5], [2, 6], [3, 7]
       ];
+
+      // Vertex Philosophy States (8 Outer Vertices)
+      const vertexStates = Array.from({ length: 8 }, (_, i) => ({
+        philIndex: i % UX_PHILOSOPHIES.length,
+        fadeAlpha: 1.0,
+        isFadingOut: false,
+        cycleTimer: 1.2 + i * 0.9,
+        cycleInterval: 4.5 + (i % 3) * 0.9,
+        badgeBounds: null,
+        pulseScale: 1.0
+      }));
 
       let rotX = 0.45;
       let rotY = 0.72;
@@ -769,10 +800,12 @@
       let rotSpeedX = targetRotSpeedX;
       let rotSpeedY = targetRotSpeedY;
 
-      // Mouse / Touch Drag Interactivity
+      // Mouse / Touch Interactivity
       let isDragging = false;
       let lastMouseX = 0;
       let lastMouseY = 0;
+      let hoveredVertexIdx = -1;
+      let lastTime = performance.now();
 
       canvas.addEventListener('mousedown', (e) => {
         isDragging = true;
@@ -780,7 +813,11 @@
         lastMouseY = e.clientY;
       });
 
-      window.addEventListener('mousemove', (e) => {
+      canvas.addEventListener('mousemove', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+
         if (isDragging) {
           const dx = e.clientX - lastMouseX;
           const dy = e.clientY - lastMouseY;
@@ -790,19 +827,54 @@
           lastMouseY = e.clientY;
           rotSpeedX = dy * 0.002;
           rotSpeedY = dx * 0.002;
+        } else {
+          let found = -1;
+          for (let i = 0; i < 8; i++) {
+            const b = vertexStates[i].badgeBounds;
+            if (b && mouseX >= b.x && mouseX <= b.x + b.w && mouseY >= b.y && mouseY <= b.y + b.h) {
+              found = i;
+              break;
+            }
+          }
+          hoveredVertexIdx = found;
+          canvas.style.cursor = isDragging ? 'grabbing' : (found !== -1 ? 'pointer' : 'grab');
+        }
+      });
+
+      canvas.addEventListener('click', (e) => {
+        if (hoveredVertexIdx !== -1) {
+          const st = vertexStates[hoveredVertexIdx];
+          st.pulseScale = 1.22;
+          st.isFadingOut = true;
+          st.fadeAlpha = 0.1;
         }
       });
 
       window.addEventListener('mouseup', () => {
         isDragging = false;
+        canvas.style.cursor = hoveredVertexIdx !== -1 ? 'pointer' : 'grab';
       });
 
-      // Mobile Touch Drag
+      // Mobile Touch Drag & Tap
       canvas.addEventListener('touchstart', (e) => {
         if (e.touches.length === 1) {
           isDragging = true;
           lastMouseX = e.touches[0].clientX;
           lastMouseY = e.touches[0].clientY;
+
+          const rect = canvas.getBoundingClientRect();
+          const touchX = lastMouseX - rect.left;
+          const touchY = lastMouseY - rect.top;
+
+          let found = -1;
+          for (let i = 0; i < 8; i++) {
+            const b = vertexStates[i].badgeBounds;
+            if (b && touchX >= b.x && touchX <= b.x + b.w && touchY >= b.y && touchY <= b.y + b.h) {
+              found = i;
+              break;
+            }
+          }
+          hoveredVertexIdx = found;
         }
       }, { passive: true });
 
@@ -824,51 +896,102 @@
       // 3D Space Rotation Matrix
       function rotatePoint(v, rx, ry, rz) {
         let [x, y, z] = v;
-        // Rotate X
         let y1 = y * Math.cos(rx) - z * Math.sin(rx);
         let z1 = y * Math.sin(rx) + z * Math.cos(rx);
-        // Rotate Y
         let x2 = x * Math.cos(ry) + z1 * Math.sin(ry);
         let z2 = -x * Math.sin(ry) + z1 * Math.cos(ry);
-        // Rotate Z
         let x3 = x2 * Math.cos(rz) - y1 * Math.sin(rz);
         let y3 = x2 * Math.sin(rz) + y1 * Math.cos(rz);
         return [x3, y3, z2];
       }
 
       function project(v3) {
-        const fov = 380;
-        const cameraDist = 440;
+        const fov = 400;
+        const cameraDist = 450;
         const [x, y, z] = v3;
         const scale = fov / (z + cameraDist);
         return {
           x: x * scale + width / 2,
-          y: y * scale + height / 2 - 8,
+          y: y * scale + height / 2 - 10,
           z: z,
           scale: scale,
           raw: v3
         };
       }
 
+      function roundRect(ctx, x, y, w, h, r) {
+        ctx.beginPath();
+        ctx.moveTo(x + r, y);
+        ctx.lineTo(x + w - r, y);
+        ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+        ctx.lineTo(x + w, y + h - r);
+        ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+        ctx.lineTo(x + r, y + h);
+        ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+        ctx.lineTo(x, y + r);
+        ctx.quadraticCurveTo(x, y, x + r, y);
+        ctx.closePath();
+      }
+
       function renderCube() {
+        const now = performance.now();
+        const dt = Math.min(0.1, (now - lastTime) / 1000);
+        lastTime = now;
+
         ctx.clearRect(0, 0, width, height);
 
+        // Dynamic Random Cycling of UX/UI Philosophical Beliefs
+        for (let i = 0; i < 8; i++) {
+          const st = vertexStates[i];
+          st.cycleTimer -= dt;
+
+          if (st.pulseScale > 1.0) {
+            st.pulseScale = Math.max(1.0, st.pulseScale - dt * 1.5);
+          }
+
+          if (st.isFadingOut) {
+            st.fadeAlpha -= dt * 2.8;
+            if (st.fadeAlpha <= 0) {
+              st.fadeAlpha = 0;
+              st.isFadingOut = false;
+              const activeIndices = new Set(vertexStates.map(s => s.philIndex));
+              const available = [];
+              for (let k = 0; k < UX_PHILOSOPHIES.length; k++) {
+                if (!activeIndices.has(k)) available.push(k);
+              }
+              st.philIndex = available.length > 0 
+                ? available[Math.floor(Math.random() * available.length)] 
+                : Math.floor(Math.random() * UX_PHILOSOPHIES.length);
+            }
+          } else if (st.fadeAlpha < 1.0) {
+            st.fadeAlpha = Math.min(1.0, st.fadeAlpha + dt * 2.4);
+          } else if (st.cycleTimer <= 0) {
+            st.isFadingOut = true;
+            st.cycleTimer = st.cycleInterval + Math.random() * 2.0;
+          }
+        }
+
         if (!isDragging) {
+          if (hoveredVertexIdx !== -1) {
+            rotSpeedX += (0.001 - rotSpeedX) * 0.05;
+            rotSpeedY += (0.002 - rotSpeedY) * 0.05;
+          } else {
+            rotSpeedX += (targetRotSpeedX - rotSpeedX) * 0.04;
+            rotSpeedY += (targetRotSpeedY - rotSpeedY) * 0.04;
+          }
           rotX += rotSpeedX;
           rotY += rotSpeedY;
-          rotSpeedX += (targetRotSpeedX - rotSpeedX) * 0.04;
-          rotSpeedY += (targetRotSpeedY - rotSpeedY) * 0.04;
         }
 
         const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
         const isLight = currentTheme === 'light';
 
-        // 🌟 1. Dynamic 3D Perspective Ground Shadow (실제 물리 입체 그림자)
+        // 🌟 1. Dynamic 3D Perspective Ground Shadow
         const shadowAlpha = isLight ? 0.16 : 0.32;
         ctx.save();
         ctx.beginPath();
-        ctx.ellipse(width / 2, height / 2 + 138, 155, 34, 0, 0, Math.PI * 2);
-        const gradFloor = ctx.createRadialGradient(width / 2, height / 2 + 138, 0, width / 2, height / 2 + 138, 155);
+        ctx.ellipse(width / 2, height / 2 + 142, 160, 36, 0, 0, Math.PI * 2);
+        const gradFloor = ctx.createRadialGradient(width / 2, height / 2 + 142, 0, width / 2, height / 2 + 142, 160);
         gradFloor.addColorStop(0, isLight ? `rgba(0, 70, 200, ${shadowAlpha})` : `rgba(0, 229, 255, ${shadowAlpha})`);
         gradFloor.addColorStop(0.5, isLight ? 'rgba(0, 0, 0, 0.08)' : 'rgba(124, 58, 237, 0.14)');
         gradFloor.addColorStop(1, 'transparent');
@@ -883,12 +1006,12 @@
         const projOuter = rotOuter.map(project);
         const projInner = rotInner.map(project);
 
-        // Directional Light Source (Normalized vector: top-front-right)
+        // Directional Light Source
         const lx = 0.55, ly = -0.75, lz = -0.35;
         const lLen = Math.hypot(lx, ly, lz);
         const nlx = lx / lLen, nly = ly / lLen, nlz = lz / lLen;
 
-        // Depth-sort faces (가장 먼 면부터 순서대로 렌더링)
+        // Depth-sort faces
         const sortedOuterFaces = cubeFaces.map(face => {
           const rotN = rotatePoint(face.norm, rotX, rotY, rotZ);
           const dot = rotN[0] * nlx + rotN[1] * nly + rotN[2] * nlz;
@@ -907,7 +1030,7 @@
           return { face, rotN, dot, light, pts, avgZ };
         }).sort((a, b) => b.avgZ - a.avgZ);
 
-        // 🌟 2. Draw Inner Floating Crystal Core (빛나는 내부 고밀도 홀로그램)
+        // 🌟 2. Draw Inner Floating Crystal Core
         for (const f of sortedInnerFaces) {
           ctx.save();
           ctx.beginPath();
@@ -927,7 +1050,7 @@
           ctx.restore();
         }
 
-        // 🌟 3. Draw Connecting Struts (Tesseract link)
+        // 🌟 3. Draw Connecting Struts
         const lineDark = 'rgba(15, 23, 42,';
         const lineWhite = 'rgba(255, 255, 255,';
         const baseLine = isLight ? lineDark : lineWhite;
@@ -978,7 +1101,6 @@
           ctx.fillStyle = grad;
           ctx.fill();
 
-          // 3D 스페큘러 광택 레이어 (빛을 받는 각도에 따라 눈부신 반사 효과)
           if (f.dot > 0.15) {
             const glintGrad = ctx.createLinearGradient(f.pts[0].x, f.pts[0].y, f.pts[1].x, f.pts[3].y);
             glintGrad.addColorStop(0, `rgba(255, 255, 255, ${Math.min(0.65, f.dot * 0.85)})`);
@@ -991,12 +1113,11 @@
         }
 
         // 🌟 6. Draw Outer Cube Edges with Real 3D Depth Attenuation
-        // 화이트모드: 검정색 계열 / 다크모드: 화이트 계열
         for (const [i, j] of cubeEdges) {
           const p1 = projOuter[i];
           const p2 = projOuter[j];
           const avgZ = (p1.z + p2.z) / 2;
-          const zRatio = (avgZ + 150) / 300; // 앞쪽: 0, 뒤쪽: 1
+          const zRatio = (avgZ + 150) / 300;
           const alpha = Math.max(0.35, Math.min(0.98, 0.95 - zRatio * 0.45));
           const edgeWidth = Math.max(1.6, 2.8 - zRatio * 1.2);
 
@@ -1007,7 +1128,6 @@
           ctx.lineWidth = edgeWidth;
           ctx.stroke();
 
-          // 앞쪽 엣지 스페큘러 하이라이트 핀선
           if (zRatio < 0.4) {
             ctx.strokeStyle = isLight ? 'rgba(255, 255, 255, 0.7)' : 'rgba(255, 255, 255, 0.9)';
             ctx.lineWidth = 1.0;
@@ -1015,33 +1135,54 @@
           }
         }
 
-        // 🌟 7. Draw 3D Shaded Glowing Vertex Nodes (16 꼭짓점)
-        const allProjected = [
-          ...projInner.map(p => ({ ...p, isInner: true })),
-          ...projOuter.map(p => ({ ...p, isInner: false }))
-        ].sort((a, b) => a.z - b.z);
-
-        for (const p of allProjected) {
-          const radius = p.isInner ? Math.max(3.2, 4.5 * p.scale) : Math.max(4.8, 6.8 * p.scale);
+        // 🌟 7. Draw Inner Vertices (Back nodes)
+        for (const p of projInner) {
+          const radius = Math.max(3.2, 4.5 * p.scale);
           const rimColor = isLight ? '#0F172A' : '#FFFFFF';
-          const coreHue = p.isInner ? 190 : 220; // Cyan vs Electric Blue
-
-          // 광채 후광 (Halo)
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, radius * 2.8, 0, Math.PI * 2);
-          const halo = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, radius * 2.8);
-          halo.addColorStop(0, isLight ? `hsla(${coreHue}, 100%, 55%, 0.35)` : `hsla(${coreHue}, 100%, 65%, 0.5)`);
-          halo.addColorStop(1, 'transparent');
-          ctx.fillStyle = halo;
-          ctx.fill();
-
-          // 테두리 링 (화이트: 검정색 / 다크: 화이트)
           ctx.beginPath();
           ctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
           ctx.fillStyle = rimColor;
           ctx.fill();
 
-          // 3D 구체 음영 컬러 코어
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, radius * 0.65, 0, Math.PI * 2);
+          const nodeGrad = ctx.createRadialGradient(
+            p.x - radius * 0.35, p.y - radius * 0.35, radius * 0.1,
+            p.x, p.y, radius
+          );
+          nodeGrad.addColorStop(0, '#FFFFFF');
+          nodeGrad.addColorStop(0.3, 'hsl(190, 100%, 75%)');
+          nodeGrad.addColorStop(1, 'hsl(190, 90%, 45%)');
+          ctx.fillStyle = nodeGrad;
+          ctx.fill();
+        }
+
+        // 🌟 8. Draw Outer Vertices with 3D Spheres
+        for (let i = 0; i < 8; i++) {
+          const p = projOuter[i];
+          const isHovered = (hoveredVertexIdx === i);
+          const st = vertexStates[i];
+          const pulse = (st.pulseScale || 1.0);
+          const radius = Math.max(5.0, 7.2 * p.scale) * pulse * (isHovered ? 1.25 : 1.0);
+          const rimColor = isLight ? '#0F172A' : '#FFFFFF';
+          const coreHue = isHovered ? 195 : 220;
+
+          // Halo
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, radius * 2.8, 0, Math.PI * 2);
+          const halo = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, radius * 2.8);
+          halo.addColorStop(0, isLight ? `hsla(${coreHue}, 100%, 55%, 0.38)` : `hsla(${coreHue}, 100%, 65%, 0.55)`);
+          halo.addColorStop(1, 'transparent');
+          ctx.fillStyle = halo;
+          ctx.fill();
+
+          // Rim
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
+          ctx.fillStyle = rimColor;
+          ctx.fill();
+
+          // Core
           ctx.beginPath();
           ctx.arc(p.x, p.y, radius * 0.65, 0, Math.PI * 2);
           const nodeGrad = ctx.createRadialGradient(
@@ -1053,6 +1194,151 @@
           nodeGrad.addColorStop(1, `hsl(${coreHue}, 90%, 45%)`);
           ctx.fillStyle = nodeGrad;
           ctx.fill();
+        }
+
+        // 🌟 9. RENDER UX/UI PHILOSOPHICAL BELIEF BADGES (Senior UX Architecture)
+        const centerX = width / 2;
+        const centerY = height / 2 - 10;
+        const isMobile = width < 520;
+        const maxTags = isMobile ? 3 : 5;
+
+        // Sort indices by Z ascending (frontmost vertices first)
+        const sortedIndices = [0, 1, 2, 3, 4, 5, 6, 7].sort((a, b) => projOuter[a].z - projOuter[b].z);
+        const visibleIndices = sortedIndices.slice(0, maxTags);
+
+        // Reset badge bounds for all vertices
+        for (let i = 0; i < 8; i++) {
+          if (!visibleIndices.includes(i)) {
+            vertexStates[i].badgeBounds = null;
+          }
+        }
+
+        // Draw in reverse Z order so frontmost badges layer cleanly on top
+        for (let idx = visibleIndices.length - 1; idx >= 0; idx--) {
+          const i = visibleIndices[idx];
+          const p = projOuter[i];
+          const state = vertexStates[i];
+          const phil = UX_PHILOSOPHIES[state.philIndex];
+
+          const isHovered = (hoveredVertexIdx === i);
+          const zNorm = (p.z + 120) / 200;
+          const depthAlpha = Math.max(0.4, Math.min(1.0, 1.15 - zNorm * 0.8));
+          const finalAlpha = depthAlpha * state.fadeAlpha;
+          const tagScale = Math.max(0.82, Math.min(1.06, 1.05 - zNorm * 0.3)) * (isHovered ? 1.08 : 1.0);
+
+          // Vector radially outward from center
+          const vdx = p.x - centerX;
+          const vdy = p.y - centerY;
+          const vdist = Math.hypot(vdx, vdy) || 1;
+          const ndx = vdx / vdist;
+          const ndy = vdy / vdist;
+
+          const pinLen = (36 + (i % 3) * 10) * tagScale;
+          const badgeCenterX = p.x + ndx * pinLen;
+          const badgeCenterY = p.y + ndy * pinLen;
+
+          ctx.save();
+          ctx.globalAlpha = finalAlpha;
+
+          // Typography measurement
+          const titleText = phil.ko;
+          const enText = phil.en;
+          const descText = phil.desc;
+
+          ctx.font = `700 ${Math.round(11.5 * tagScale)}px Pretendard, -apple-system, sans-serif`;
+          const titleW = ctx.measureText(titleText).width;
+
+          ctx.font = `600 ${Math.round(9 * tagScale)}px Pretendard, -apple-system, sans-serif`;
+          const enW = ctx.measureText(enText).width;
+
+          let badgeW = Math.max(titleW, enW) + (26 * tagScale);
+          let badgeH = isHovered ? (48 * tagScale) : (33 * tagScale);
+
+          if (isHovered) {
+            ctx.font = `500 ${Math.round(9 * tagScale)}px Pretendard, sans-serif`;
+            const descW = ctx.measureText(descText).width;
+            badgeW = Math.max(badgeW, descW + (26 * tagScale));
+          }
+
+          // Strict canvas boundary clamping (NEVER clip outside canvas)
+          let badgeX = badgeCenterX - badgeW / 2;
+          let badgeY = badgeCenterY - badgeH / 2;
+          badgeX = Math.max(10, Math.min(width - badgeW - 10, badgeX));
+          badgeY = Math.max(10, Math.min(height - badgeH - 10, badgeY));
+
+          // Save bounding box for mouse interaction
+          state.badgeBounds = { x: badgeX, y: badgeY, w: badgeW, h: badgeH };
+
+          // Hairline connector pin from vertex to badge edge
+          const anchorX = Math.max(badgeX, Math.min(badgeX + badgeW, p.x));
+          const anchorY = Math.max(badgeY, Math.min(badgeY + badgeH, p.y));
+
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(anchorX, anchorY);
+          ctx.strokeStyle = isLight 
+            ? (isHovered ? 'rgba(0, 102, 255, 0.85)' : 'rgba(0, 102, 255, 0.45)') 
+            : (isHovered ? 'rgba(0, 229, 255, 0.95)' : 'rgba(0, 229, 255, 0.55)');
+          ctx.lineWidth = isHovered ? 1.6 : 1.2;
+          ctx.setLineDash([3, 3]);
+          ctx.stroke();
+          ctx.setLineDash([]);
+
+          // Anchor pin dot
+          ctx.beginPath();
+          ctx.arc(anchorX, anchorY, 2.5 * tagScale, 0, Math.PI * 2);
+          ctx.fillStyle = isLight ? '#0066FF' : '#00E5FF';
+          ctx.fill();
+
+          // Frosted Glass Pill Container
+          roundRect(ctx, badgeX, badgeY, badgeW, badgeH, 9 * tagScale);
+          ctx.shadowColor = isLight 
+            ? (isHovered ? 'rgba(0, 102, 255, 0.28)' : 'rgba(15, 23, 42, 0.12)') 
+            : (isHovered ? 'rgba(0, 229, 255, 0.45)' : 'rgba(0, 229, 255, 0.2)');
+          ctx.shadowBlur = (isHovered ? 16 : 10) * tagScale;
+          ctx.shadowOffsetY = 3 * tagScale;
+
+          ctx.fillStyle = isLight ? 'rgba(255, 255, 255, 0.94)' : 'rgba(15, 23, 42, 0.92)';
+          ctx.fill();
+
+          // Gradient Border
+          ctx.shadowBlur = 0;
+          ctx.shadowOffsetY = 0;
+          const bGrad = ctx.createLinearGradient(badgeX, badgeY, badgeX + badgeW, badgeY + badgeH);
+          bGrad.addColorStop(0, isLight ? 'rgba(0, 102, 255, 0.75)' : 'rgba(0, 229, 255, 0.85)');
+          bGrad.addColorStop(1, isLight ? 'rgba(124, 58, 237, 0.55)' : 'rgba(168, 85, 247, 0.75)');
+          ctx.strokeStyle = bGrad;
+          ctx.lineWidth = (isHovered ? 1.8 : 1.3) * tagScale;
+          ctx.stroke();
+
+          // Left Status Indicator Dot
+          ctx.beginPath();
+          ctx.arc(badgeX + (9 * tagScale), badgeY + (isHovered ? 14 : badgeH / 2), 3 * tagScale, 0, Math.PI * 2);
+          ctx.fillStyle = isHovered 
+            ? (isLight ? '#2563EB' : '#38BDF8') 
+            : (isLight ? '#0066FF' : '#00E5FF');
+          ctx.fill();
+
+          // Korean Title Text
+          ctx.font = `700 ${Math.round(11.5 * tagScale)}px Pretendard, -apple-system, sans-serif`;
+          ctx.fillStyle = isLight ? '#0F172A' : '#F8FAFC';
+          ctx.textAlign = 'left';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(titleText, badgeX + (17 * tagScale), badgeY + (isHovered ? 14 : 11 * tagScale));
+
+          // English Subtitle Text
+          ctx.font = `600 ${Math.round(8.5 * tagScale)}px Pretendard, -apple-system, sans-serif`;
+          ctx.fillStyle = isLight ? '#64748B' : '#94A3B8';
+          ctx.fillText(enText, badgeX + (17 * tagScale), badgeY + (isHovered ? 26 : 22 * tagScale));
+
+          // If Hovered: Philosophical Conviction Description Line
+          if (isHovered) {
+            ctx.font = `500 ${Math.round(9 * tagScale)}px Pretendard, sans-serif`;
+            ctx.fillStyle = isLight ? '#2563EB' : '#38BDF8';
+            ctx.fillText(descText, badgeX + (9 * tagScale), badgeY + (38 * tagScale));
+          }
+
+          ctx.restore();
         }
 
         requestAnimationFrame(renderCube);
