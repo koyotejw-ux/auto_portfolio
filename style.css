@@ -804,6 +804,28 @@ body {
   flex-shrink: 0;
 }
 
+/* 🌟 Card App Icon (실물 앱아이콘 스퀘어클 적용) */
+.card-app-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 13px;
+  object-fit: cover;
+  flex-shrink: 0;
+  box-shadow: 0 4px 14px var(--card-glow-color, rgba(0, 0, 0, 0.20)), 0 1px 3px rgba(0, 0, 0, 0.12);
+  border: 1px solid var(--border-medium);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gate-card:hover .card-app-icon {
+  transform: scale(1.08) rotate(-2deg);
+}
+
+/* 🌟 괄호 및 텍스트 쪼개짐 방지 클래스 */
+.nobr {
+  white-space: nowrap !important;
+  display: inline-block;
+}
+
 .card-title-group {
   display: flex;
   flex-direction: column;
