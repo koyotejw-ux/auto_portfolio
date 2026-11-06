@@ -10,7 +10,7 @@
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   
   <!-- Gate Page Dual Theme Design System Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=20261106_mobile_first_v7">
+  <link rel="stylesheet" href="style.css?v=20261106_cube3d_korean_v8">
 
   <!-- Immediate Theme Initialization (Default: Light/White) -->
   <script>
@@ -29,16 +29,16 @@
   <!-- Ambient Radial Glows -->
   <div class="ambient-mesh" aria-hidden="true"></div>
 
-  <!-- Interactive Particle Background Canvas (Flutter particle_background.dart adapted) -->
+  <!-- Interactive Particle Background Canvas -->
   <canvas id="particleCanvas" aria-hidden="true" style="position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1;"></canvas>
 
   <!-- Sticky Glassmorphic Navbar -->
   <header class="gate-navbar">
     <a href="index.html" class="nav-brand" title="포트폴리오 게이트웨이 홈">
-      <span class="brand-badge">STUDIO</span>
+      <span class="brand-badge">스튜디오</span>
       <div class="brand-title">
-        <span class="brand-title-main">PORTFOLIO GATEWAY</span>
-        <span class="brand-title-sub">ENTERPRISE UX/UI ARCHITECTURE</span>
+        <span class="brand-title-main">포트폴리오 게이트웨이</span>
+        <span class="brand-title-sub">프로덕트 UX/UI 디자인 아키텍처</span>
       </div>
     </a>
 
@@ -46,13 +46,13 @@
     <div class="nav-status-group">
       <div class="system-badge online" title="시스템 정상 가동 중">
         <span class="pulse-dot"></span>
-        <span class="badge-label-text">SYSTEM ONLINE</span>
+        <span class="badge-label-text">시스템 가동 중</span>
       </div>
       <div class="system-badge cyber">
-        AI UX ARCHITECTURE
+        AI UX 설계
       </div>
       <div class="system-badge purple">
-        ENTERPRISE STRATEGY
+        엔터프라이즈 전략
       </div>
 
       <!-- Theme Switcher (Default: White / Light Mode) -->
@@ -64,8 +64,8 @@
       <!-- Guide Modal Trigger -->
       <button class="btn-nav-guide" id="openGuideBtn" title="신규 포트폴리오 등록 방법 안내">
         <span>+</span>
-        <span class="guide-label-full">포폴 등록 가이드</span>
-        <span class="guide-label-short">가이드</span>
+        <span class="guide-label-full">프로젝트 등록 안내</span>
+        <span class="guide-label-short">등록 안내</span>
       </button>
     </div>
   </header>
@@ -73,50 +73,50 @@
   <!-- Main Gate Container -->
   <main class="gate-container">
 
-    <!-- Hero Section (Directly from protfolio_admin GatePage & HeaderSection with 3D Object) -->
+    <!-- Hero Section (3D Cube Vertex Key Visual & Architecture) -->
     <section class="hero-stack">
       <div class="hero-pill-badge">
-        <span>✦</span> SENIOR PRODUCT UX/UI DESIGNER ARCHIVE
+        <span>✦</span> 시니어 프로덕트 UX/UI 디자이너 아카이브
       </div>
       <div class="hero-subtitle-top">
         서비스 UX/UI 케이스 스터디 &amp; 60fps 라이브 프로토타입
       </div>
       <h1 class="hero-main-title">
-        <span class="gradient-title-text">Select UX/UI Case Study</span>
+        <span class="gradient-title-text">프로덕트 UX/UI 케이스 스터디</span>
       </h1>
       <p class="hero-description">
-        사용자의 숨겨진 페인포인트를 정량 데이터로 도출하고, 복잡한 인지 부하를 직관적인 모바일 인터랙션과 고도화된 디자인 시스템으로 해결한 프로덕트 디자인 포트폴리오입니다.
+        사용자의 숨겨진 페인포인트를 정량 데이터로 도출하고, 복잡한 인지 부하를 직관적인 모바일 인터랙션과 체계적인 디자인 시스템으로 해결한 프로덕트 디자인 포트폴리오입니다.
       </p>
 
-      <!-- 🌟 3D Device Showcase Stage (from protfolio_admin hero_mockup_f.png) -->
+      <!-- 🌟 3D 네모 버텍스 기하학 키비주얼 스테이지 (실시간 인터랙티브 캔버스) -->
       <div class="hero-3d-stage">
         <div class="hero-3d-glow" aria-hidden="true"></div>
-        <img src="assets/hero_mockup_3d.png" alt="Enterprise UX/UI 3D Multi-Device Platform Mockup" class="hero-3d-mockup-img" loading="eager" />
+        <canvas id="cubeVertexCanvas" width="600" height="400" class="hero-cube-canvas" aria-label="3D 네모 버텍스 인터랙션 키비주얼"></canvas>
         <div class="hero-3d-caption">
-          <span class="caption-pill">✦ MULTI-DEVICE UX ARCHITECTURE</span>
-          <span>Responsive Web · 60fps Native Mobile Interactive Experience</span>
+          <span class="caption-pill">✦ 3D 지오메트리 버텍스 아키텍처</span>
+          <span>실시간 3D 공간 인터랙션 · 60fps 구조적 디자인 시스템</span>
         </div>
       </div>
 
-      <!-- Executive Info Strip (Glass Container from header_section.dart with Ample Margins) -->
+      <!-- Executive Info Strip (Glass Container with Ample Margins) -->
       <div class="executive-info-strip">
         <div class="info-item">
-          <span class="info-label">PROFILE</span>
-          <span class="info-value">Senior Product UX/UI Designer</span>
+          <span class="info-label">담당 프로필</span>
+          <span class="info-value">시니어 프로덕트 UX/UI 디자이너</span>
         </div>
         <div class="info-divider"></div>
         <div class="info-item">
-          <span class="info-label">수행 형태 (EXECUTION)</span>
-          <span class="info-value" style="color: var(--neon-cyan);">1인 단독 풀사이클 (Solo Lead)</span>
+          <span class="info-label">수행 형태</span>
+          <span class="info-value" style="color: var(--neon-cyan);">1인 단독 전 과정 총괄 (기획·설계·구현)</span>
         </div>
         <div class="info-divider"></div>
         <div class="info-item">
-          <span class="info-label">설계 영역 (UX SCOPE)</span>
-          <span class="info-value">문제 정의 · IA &amp; 태스크플로우 · 60fps 프로토타입</span>
+          <span class="info-label">설계 영역</span>
+          <span class="info-value">문제 정의 · 정보구조(IA) · 60fps 프로토타입</span>
         </div>
         <div class="info-divider"></div>
         <div class="info-item">
-          <span class="info-label">검증 성과 (UX IMPACT)</span>
+          <span class="info-label">검증 성과</span>
           <span class="info-value" style="color: var(--neon-emerald);">D1 리텐션 64.2% · 입력 시간 85% 감축</span>
         </div>
       </div>
@@ -156,31 +156,31 @@
       <!-- Cards dynamically rendered here -->
     </section>
 
-    <!-- Design Architecture Philosophy Section (Scrubbed of "양산" wording) -->
+    <!-- Design Architecture Philosophy Section -->
     <section class="philosophy-banner-wrap">
-      <h2 class="section-head-title">DESIGN ARCHITECTURE &amp; ENGINEERING PHILOSOPHY</h2>
+      <h2 class="section-head-title">프로덕트 디자인 설계 원칙 및 아키텍처 철학</h2>
       <p class="section-head-sub">데이터 중심의 논리적 기획과 디테일한 인터랙션을 동시에 구현하는 4대 설계 원칙</p>
       
       <div class="philosophy-4col-grid">
         <div class="phil-col-card">
           <div class="phil-icon-pill">⚡</div>
-          <h3 class="phil-col-title">01. 인지 부하 제로화 (Zero Friction)</h3>
+          <h3 class="phil-col-title">01. 인지 부하 제로화 (최소한의 마찰)</h3>
           <p class="phil-col-desc">도메인 지식이 아무리 복잡하더라도 점진적 정보 노출(Progressive Disclosure) 원칙을 통해 3초 이내에 핵심 인사이트를 도출합니다.</p>
         </div>
         <div class="phil-col-card">
           <div class="phil-icon-pill">📱</div>
-          <h3 class="phil-col-title">02. 60fps 네이티브 감성 (Haptic Fidelity)</h3>
+          <h3 class="phil-col-title">02. 60fps 네이티브 감성 (부드러운 반응)</h3>
           <p class="phil-col-desc">정적 목업에 그치지 않고, 물리 제스처와 실시간 센서/애니메이션 반응을 지원하는 60fps 라이브 웹 시뮬레이터로 설득력을 증명합니다.</p>
         </div>
         <div class="phil-col-card">
           <div class="phil-icon-pill">📊</div>
-          <h3 class="phil-col-title">03. 정량적 성과 검증 (Data-Driven ROI)</h3>
+          <h3 class="phil-col-title">03. 데이터 기반 성과 검증</h3>
           <p class="phil-col-desc">STAR 기법 기반의 문제 해결 과정과 D1/D7 리텐션, 체류 시간, 바이럴 전환 등 측정 가능한 정량 지표를 통해 비즈니스 임팩트를 증명합니다.</p>
         </div>
         <div class="phil-col-card">
           <div class="phil-icon-pill">📐</div>
-          <h3 class="phil-col-title">04. 체계적인 디자인 시스템 (Design System Architecture)</h3>
-          <p class="phil-col-desc">Figma 디자인 토큰(Color, Typography, Elevation)과 실제 UI 컴포넌트 간 1:1 매핑 표준을 수립하여 기획-디자인-개발 간의 일관성을 극대화합니다.</p>
+          <h3 class="phil-col-title">04. 체계적인 디자인 시스템</h3>
+          <p class="phil-col-desc">Figma 디자인 토큰(색상, 타이포그래피, 고도)과 실제 UI 컴포넌트 간 1:1 매핑 표준을 수립하여 기획·디자인·개발 간의 일관성을 극대화합니다.</p>
         </div>
       </div>
     </section>
@@ -305,12 +305,12 @@
     const PORTFOLIO_REGISTRY = [
       {
         id: "smart_dca",
-        title: "스마트 물타기 계산기 (Smart DCA)",
-        domainTag: "FINTECH MTS COMPANION · 핀테크 투자 솔루션",
+        title: "스마트 물타기 계산기",
+        domainTag: "핀테크 MTS 컴패니언 · 주식·코인 분할 매수 솔루션",
         category: "fintech",
-        badge: "01 FINTECH & QUANT",
+        badge: "핀테크 & 퀀트",
         status: "live",
-        statusText: "60fps Live Online",
+        statusText: "60fps 실시간 체험 가능",
         themeColor: "#0284C7",
         glowColor: "rgba(2, 132, 199, 0.25)",
         borderGlow: "rgba(2, 132, 199, 0.6)",
@@ -318,7 +318,7 @@
         btnGradient: "linear-gradient(135deg, #0066FF 0%, #0284C7 100%)",
         iconSvg: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"></rect><line x1="8" y1="6" x2="16" y2="6"></line><line x1="16" y1="14" x2="16" y2="18"></line><path d="M16 10h.01"></path><path d="M12 10h.01"></path><path d="M8 10h.01"></path><path d="M12 14h.01"></path><path d="M8 14h.01"></path><path d="M12 18h.01"></path><path d="M8 18h.01"></path></svg>`,
         period: "2025.02 - 2025.03 (6주 완결)",
-        teamType: "1인 단독 프로젝트 (Solo)",
+        teamType: "1인 단독 프로젝트 (개인)",
         role: "1인 프로덕트 디자인 총괄",
         contribution: "100% (기획·설계·프로토타입 전 과정)",
         uxPoints: [
@@ -328,11 +328,11 @@
         ],
         metrics: [
           { label: "D1 리텐션", value: "62.4%" },
-          { label: "입력 시간", value: "85% 단축" },
-          { label: "인터랙션", value: "60fps Live" },
-          { label: "케이스 스터디", value: "12 Slides" }
+          { label: "입력 소요 시간", value: "85% 단축" },
+          { label: "인터랙션 감도", value: "60fps 실시간" },
+          { label: "케이스 스터디", value: "12개 슬라이드" }
         ],
-        thumbnail: "smart_dca/behance_slides/slide_01.png",
+        thumbnail: "smart_dca/behance_hero_composite.png",
         caseStudyUrl: "smart_dca/index.html",
         prototypeUrl: "smart_dca/prototype.html",
         pdfUrl: "smart_dca/Smart_DCA_Portfolio.pdf",
@@ -340,12 +340,12 @@
       },
       {
         id: "ftmt",
-        title: "포춘매치 (FortuneMatch)",
-        domainTag: "COSMIC LUXURY & ENTERTAINMENT · 사주·타로 융합",
+        title: "포춘매치",
+        domainTag: "코스믹 럭셔리 &amp; 엔터테인먼트 · 사주·타로 융합 플랫폼",
         category: "lifestyle",
-        badge: "02 COSMIC LUXURY & SAJU",
+        badge: "라이프스타일 & AI",
         status: "live",
-        statusText: "60fps Live Online",
+        statusText: "60fps 실시간 체험 가능",
         themeColor: "#D97706",
         glowColor: "rgba(217, 119, 6, 0.25)",
         borderGlow: "rgba(217, 119, 6, 0.6)",
@@ -353,7 +353,7 @@
         btnGradient: "linear-gradient(135deg, #D97706 0%, #B45309 100%)",
         iconSvg: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>`,
         period: "2025.01 - 2025.02 (7주 완결)",
-        teamType: "1인 단독 프로젝트 (Solo)",
+        teamType: "1인 단독 프로젝트 (개인)",
         role: "1인 프로덕트 디자인 총괄",
         contribution: "100% (기획·설계·프로토타입 전 과정)",
         uxPoints: [
@@ -363,11 +363,11 @@
         ],
         metrics: [
           { label: "D1 리텐션", value: "64.2%" },
-          { label: "체류 시간", value: "8m 24s (2.8배↑)" },
-          { label: "바이럴 루프", value: "인스타 41.8%" },
-          { label: "케이스 스터디", value: "12 Slides" }
+          { label: "평균 체류 시간", value: "8분 24초" },
+          { label: "바이럴 지표", value: "인스타 41.8%" },
+          { label: "케이스 스터디", value: "12개 슬라이드" }
         ],
-        thumbnail: "ftmt/behance_slides/slide_01.png",
+        thumbnail: "ftmt/ftmt_key_visual_clean.png",
         caseStudyUrl: "ftmt/index.html",
         prototypeUrl: "ftmt/prototype.html",
         pdfUrl: "ftmt/FortuneMatch_Portfolio.pdf",
@@ -375,12 +375,12 @@
       },
       {
         id: "farmingsys",
-        title: "토지개발분석플랫폼 (파밍시스)",
-        domainTag: "GIS CLOUD & PROP-TECH · 프롭테크 B2B",
+        title: "토지개발 분석 플랫폼 (파밍시스)",
+        domainTag: "GIS 공간 데이터 &amp; 프롭테크 B2B 클라우드",
         category: "enterprise",
-        badge: "03 GIS CLOUD ENTERPRISE",
+        badge: "B2B 엔터프라이즈",
         status: "upcoming",
-        statusText: "Enterprise Archive",
+        statusText: "엔터프라이즈 아카이브",
         themeColor: "#059669",
         glowColor: "rgba(5, 150, 105, 0.22)",
         borderGlow: "rgba(5, 150, 105, 0.5)",
@@ -388,21 +388,21 @@
         btnGradient: "linear-gradient(135deg, #059669 0%, #047857 100%)",
         iconSvg: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>`,
         period: "2024.12 - 2025.01 (8주 완결)",
-        teamType: "팀 프로젝트 (PO 1, Dev 3, UX Lead 1)",
-        role: "Lead UX Architect & Designer",
-        contribution: "100% (UX리서치 · IA · 화면설계)",
+        teamType: "팀 프로젝트 (기획 1, 개발 3, UX 리드 1)",
+        role: "리드 UX 아키텍트 & 디자이너",
+        contribution: "100% (UX 리서치 · 정보구조 · 화면 설계 주도)",
         uxPoints: [
           { tag: "problem", tagText: "UX 문제", text: "<strong>복잡한 토지 규제 인허가와 GIS 공간 데이터</strong>의 극심한 정보 과부하" },
           { tag: "solution", tagText: "UX 해결", text: "<strong>3단계 계층화 인터페이스(3-Tier Disclosure)</strong>로 핵심 의사결정 경로 압축" },
           { tag: "outcome", tagText: "성과 검증", text: "<strong>데이터 탐색 단계 60% 단축</strong> &amp; 비전문가 분석 완료 시간 70% 단축" }
         ],
         metrics: [
-          { label: "정보 구조", value: "3-Tier Depth" },
+          { label: "정보 깊이", value: "3단계 계층화" },
           { label: "탐색 경로", value: "60% 단축" },
-          { label: "반응형", value: "PC/MO 완비" },
-          { label: "수행 형태", value: "UX Lead 1인" }
+          { label: "반응형 설계", value: "PC / 모바일 완비" },
+          { label: "수행 형태", value: "UX 리드 1인" }
         ],
-        thumbnail: "smart_dca/behance_slides/slide_01.png",
+        thumbnail: "assets/farmingsys_key_visual.png",
         caseStudyUrl: "javascript:alert('파밍시스 엔터프라이즈 케이스 스터디 아카이브 모드입니다.');",
         prototypeUrl: "javascript:alert('파밍시스 GIS 시뮬레이터 로딩 준비 중입니다.');",
         pdfUrl: "#",
@@ -410,12 +410,12 @@
       },
       {
         id: "sam_mes",
-        title: "SAM (Smart Automation Management)",
-        domainTag: "MES+ERP INTELLIGENT SUITE · 스마트팩토리 DX",
+        title: "SAM 스마트 자동화 관리 시스템",
+        domainTag: "MES+ERP 제조 데이터 통합 · 스마트팩토리 DX",
         category: "enterprise",
-        badge: "04 MES+ERP INTELLIGENT SUITE",
+        badge: "B2B 엔터프라이즈",
         status: "upcoming",
-        statusText: "Enterprise Archive",
+        statusText: "엔터프라이즈 아카이브",
         themeColor: "#7C3AED",
         glowColor: "rgba(124, 58, 237, 0.22)",
         borderGlow: "rgba(124, 58, 237, 0.5)",
@@ -423,9 +423,9 @@
         btnGradient: "linear-gradient(135deg, #7C3AED 0%, #5B21B6 100%)",
         iconSvg: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>`,
         period: "2024.10 - 2024.12 (10주 완결)",
-        teamType: "팀 프로젝트 (PO 1, Eng 4, UX Lead 1)",
-        role: "Principal Product UX Designer",
-        contribution: "100% (대시보드 기획 · 시스템 구축)",
+        teamType: "팀 프로젝트 (기획 1, 개발 4, UX 리드 1)",
+        role: "수석 프로덕트 UX 디자이너",
+        contribution: "100% (대시보드 기획 · 디자인 시스템 구축)",
         uxPoints: [
           { tag: "problem", tagText: "UX 문제", text: "<strong>MES 현장 생산 데이터와 ERP 경영 수치 단절</strong>로 인한 커뮤니케이션 오차" },
           { tag: "solution", tagText: "UX 해결", text: "<strong>현장/관리자 맞춤형 싱글 뷰 인터랙션</strong> &amp; Figma 1:1 토큰 시스템" },
@@ -434,10 +434,10 @@
         metrics: [
           { label: "경영 가시성", value: "100% 확보" },
           { label: "클릭 뎁스", value: "45% 최적화" },
-          { label: "디자인 표준", value: "Figma Tokens" },
-          { label: "수행 형태", value: "UX Lead 1인" }
+          { label: "디자인 표준", value: "피그마 1:1 토큰" },
+          { label: "수행 형태", value: "UX 리드 1인" }
         ],
-        thumbnail: "ftmt/behance_slides/slide_01.png",
+        thumbnail: "assets/sam_key_visual.png",
         caseStudyUrl: "javascript:alert('SAM MES+ERP 엔터프라이즈 케이스 스터디 준비 중입니다.');",
         prototypeUrl: "javascript:alert('SAM 대시보드 시뮬레이터 준비 중입니다.');",
         pdfUrl: "#",
@@ -446,7 +446,7 @@
     ];
 
     /* ==========================================================================
-       3. DYNAMIC CARD RENDERER (진행기간·수행형태·담당역할·기여도 & 3대 UX 포인트)
+       3. DYNAMIC CARD RENDERER (오직 순수 키 이미지만 표시 & 컬럼별 여백 & 말줄임 제거)
        ========================================================================== */
     const portfolioGrid = document.getElementById('portfolioGrid');
     const filterTabs = document.getElementById('filterTabs');
@@ -480,20 +480,21 @@
             <!-- Top Right Ambient Glow Circle -->
             <div class="card-ambient-glow" aria-hidden="true"></div>
 
-            <!-- Thumbnail Visual -->
+            <!-- Thumbnail Visual (오직 순수 메인 키 이미지만 표시 - 텍스트/뱃지 오버레이 제거) -->
             <div class="card-thumb-area">
-              <img src="${item.thumbnail}" alt="${item.title} Preview" class="card-thumb-img" loading="lazy" />
-              <div class="card-thumb-overlay"></div>
-              <div class="card-top-badges">
+              <img src="${item.thumbnail}" alt="${item.title}" class="card-thumb-img" loading="lazy" />
+            </div>
+
+            <!-- Card Body Content with Generous Horizontal Margins -->
+            <div class="card-body">
+              <!-- Category Pill & Live Status Pill (카드 본문 상단 배치) -->
+              <div class="card-top-pills-row">
                 <span class="category-tag-pill">${item.badge}</span>
                 <span class="${liveBadgeClass}">
                   ${liveDot} ${item.statusText}
                 </span>
               </div>
-            </div>
 
-            <!-- Card Body Content with Generous Horizontal Margins -->
-            <div class="card-body">
               <div class="card-header-row">
                 <div class="card-icon-box">
                   ${item.iconSvg}
@@ -504,23 +505,23 @@
                 </div>
               </div>
 
-              <!-- 🌟 1. Executive Metadata Box (가장 궁금해할 기간, 수행형태, 역할, 기여도) -->
+              <!-- 🌟 1. Executive Metadata Box (컬럼별 넉넉한 좌우 마진 & 말줄임 ... 제거) -->
               <div class="card-meta-box">
                 <div class="card-meta-item">
                   <span class="meta-key-label">⏱ 진행 기간</span>
-                  <span class="meta-val-text" title="${item.period}">${item.period}</span>
+                  <span class="meta-val-text">${item.period}</span>
                 </div>
                 <div class="card-meta-item">
                   <span class="meta-key-label">👥 수행 형태</span>
-                  <span class="meta-val-text highlight" title="${item.teamType}">${item.teamType}</span>
+                  <span class="meta-val-text highlight">${item.teamType}</span>
                 </div>
                 <div class="card-meta-item">
                   <span class="meta-key-label">👤 담당 역할</span>
-                  <span class="meta-val-text" title="${item.role}">${item.role}</span>
+                  <span class="meta-val-text">${item.role}</span>
                 </div>
                 <div class="card-meta-item">
                   <span class="meta-key-label">🎯 기여도</span>
-                  <span class="meta-val-text highlight" title="${item.contribution}">${item.contribution}</span>
+                  <span class="meta-val-text highlight">${item.contribution}</span>
                 </div>
               </div>
 
@@ -546,8 +547,8 @@
 
               <!-- Action Button Hub -->
               <div class="card-action-hub">
-                <a href="${item.caseStudyUrl}" class="btn-enter-portfolio" title="${item.title} 케이스 스터디 입장">
-                  <span>Enter Portfolio (케이스 스터디)</span>
+                <a href="${item.caseStudyUrl}" class="btn-enter-portfolio" title="${item.title} 케이스 스터디 열람">
+                  <span>포트폴리오 케이스 스터디 보기</span>
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="5" y1="12" x2="19" y2="12"></line>
                     <polyline points="12 5 19 12 12 19"></polyline>
@@ -565,13 +566,13 @@
                     </span>
                   `}
                   ${item.pdfUrl && item.pdfUrl !== '#' ? `
-                    <a href="${item.pdfUrl}" class="btn-sub-action" title="12슬라이드 고해상도 PDF 다운로드" target="_blank">
-                      <span>📄 PDF 덱</span>
+                    <a href="${item.pdfUrl}" class="btn-sub-action" title="고해상도 PDF 다운로드" target="_blank">
+                      <span>📄 PDF 문서</span>
                     </a>
                   ` : ''}
                   ${item.githubUrl && item.githubUrl !== '#' ? `
-                    <a href="${item.githubUrl}" class="btn-sub-action" title="GitHub Pages 라이브 배포 확인" target="_blank">
-                      <span>🌐 Live</span>
+                    <a href="${item.githubUrl}" class="btn-sub-action" title="GitHub Pages 실시간 웹 배포 확인" target="_blank">
+                      <span>🌐 실시간 웹</span>
                     </a>
                   ` : ''}
                 </div>
@@ -773,6 +774,253 @@
       }
 
       animate();
+    })();
+
+    /* ==========================================================================
+       6. 3D GEOMETRIC CUBE VERTEX ENGINE (3D 네모 버텍스 인터랙션 키비주얼)
+       ========================================================================== */
+    (function initCubeVertexEngine() {
+      const canvas = document.getElementById('cubeVertexCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      
+      let dpr = window.devicePixelRatio || 1;
+      let width = 560;
+      let height = 380;
+      
+      function resize() {
+        dpr = window.devicePixelRatio || 1;
+        const rect = canvas.getBoundingClientRect();
+        width = rect.width > 0 ? rect.width : (canvas.clientWidth || 560);
+        height = rect.height > 0 ? rect.height : (canvas.clientHeight || 380);
+        canvas.width = width * dpr;
+        canvas.height = height * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+      
+      // Initial sizing
+      setTimeout(resize, 50);
+      window.addEventListener('resize', resize);
+
+      // Outer Cube Vertices (8 corners)
+      const outerSize = 92;
+      const outerVertices = [
+        [-1, -1, -1], [1, -1, -1], [1, 1, -1], [-1, 1, -1],
+        [-1, -1,  1], [1, -1,  1], [1, 1,  1], [-1, 1,  1]
+      ].map(v => v.map(c => c * outerSize));
+
+      // Inner Cube Vertices (8 corners, 0.52 scale)
+      const innerSize = outerSize * 0.52;
+      const innerVertices = [
+        [-1, -1, -1], [1, -1, -1], [1, 1, -1], [-1, 1, -1],
+        [-1, -1,  1], [1, -1,  1], [1, 1,  1], [-1, 1,  1]
+      ].map(v => v.map(c => c * innerSize));
+
+      // Cube Edges (12 edges)
+      const cubeEdges = [
+        [0, 1], [1, 2], [2, 3], [3, 0], // Bottom square
+        [4, 5], [5, 6], [6, 7], [7, 4], // Top square
+        [0, 4], [1, 5], [2, 6], [3, 7]  // Pillars
+      ];
+
+      let rotX = 0.42;
+      let rotY = 0.65;
+      let rotZ = 0.12;
+      let targetRotSpeedX = 0.005;
+      let targetRotSpeedY = 0.008;
+      let rotSpeedX = targetRotSpeedX;
+      let rotSpeedY = targetRotSpeedY;
+
+      // Mouse / Touch Drag Interactivity
+      let isDragging = false;
+      let lastMouseX = 0;
+      let lastMouseY = 0;
+
+      canvas.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        lastMouseX = e.clientX;
+        lastMouseY = e.clientY;
+      });
+
+      window.addEventListener('mousemove', (e) => {
+        if (isDragging) {
+          const dx = e.clientX - lastMouseX;
+          const dy = e.clientY - lastMouseY;
+          rotY += dx * 0.009;
+          rotX += dy * 0.009;
+          lastMouseX = e.clientX;
+          lastMouseY = e.clientY;
+          rotSpeedX = dy * 0.002;
+          rotSpeedY = dx * 0.002;
+        }
+      });
+
+      window.addEventListener('mouseup', () => {
+        isDragging = false;
+      });
+
+      // Mobile Touch Drag
+      canvas.addEventListener('touchstart', (e) => {
+        if (e.touches.length === 1) {
+          isDragging = true;
+          lastMouseX = e.touches[0].clientX;
+          lastMouseY = e.touches[0].clientY;
+        }
+      }, { passive: true });
+
+      window.addEventListener('touchmove', (e) => {
+        if (isDragging && e.touches.length === 1) {
+          const dx = e.touches[0].clientX - lastMouseX;
+          const dy = e.touches[0].clientY - lastMouseY;
+          rotY += dx * 0.01;
+          rotX += dy * 0.01;
+          lastMouseX = e.touches[0].clientX;
+          lastMouseY = e.touches[0].clientY;
+        }
+      }, { passive: true });
+
+      window.addEventListener('touchend', () => {
+        isDragging = false;
+      });
+
+      function project(vertex, angleX, angleY, angleZ) {
+        let [x, y, z] = vertex;
+
+        // Rotate X
+        let y1 = y * Math.cos(angleX) - z * Math.sin(angleX);
+        let z1 = y * Math.sin(angleX) + z * Math.cos(angleX);
+
+        // Rotate Y
+        let x2 = x * Math.cos(angleY) + z1 * Math.sin(angleY);
+        let z2 = -x * Math.sin(angleY) + z1 * Math.cos(angleY);
+
+        // Rotate Z
+        let x3 = x2 * Math.cos(angleZ) - y1 * Math.sin(angleZ);
+        let y3 = x2 * Math.sin(angleZ) + y1 * Math.cos(angleZ);
+
+        const fov = 340;
+        const cameraDist = 420;
+        const scale = fov / (z2 + cameraDist);
+        const projX = x3 * scale + width / 2;
+        const projY = y3 * scale + height / 2 - 8;
+
+        return { x: projX, y: projY, z: z2, scale: scale };
+      }
+
+      function renderCube() {
+        ctx.clearRect(0, 0, width, height);
+
+        if (!isDragging) {
+          rotX += rotSpeedX;
+          rotY += rotSpeedY;
+          rotSpeedX += (targetRotSpeedX - rotSpeedX) * 0.04;
+          rotSpeedY += (targetRotSpeedY - rotSpeedY) * 0.04;
+        }
+
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+        const isLight = currentTheme === 'light';
+
+        const primaryEdgeColor = isLight ? 'rgba(0, 102, 255,' : 'rgba(0, 229, 255,';
+        const innerEdgeColor = isLight ? 'rgba(2, 132, 199,' : 'rgba(56, 189, 248,';
+        const crossStrutColor = isLight ? 'rgba(124, 58, 237,' : 'rgba(168, 85, 247,';
+        const vertexNodeColor = isLight ? '#0066FF' : '#00E5FF';
+        const vertexCoreColor = '#FFFFFF';
+        const floorGlowColor = isLight ? 'rgba(0, 102, 255, 0.12)' : 'rgba(0, 229, 255, 0.22)';
+
+        // 1. Perspective Shadow / Floor Ellipse
+        ctx.save();
+        ctx.beginPath();
+        ctx.ellipse(width / 2, height / 2 + 135, Math.min(width * 0.35, 150), 38, 0, 0, Math.PI * 2);
+        const gradFloor = ctx.createRadialGradient(width / 2, height / 2 + 135, 0, width / 2, height / 2 + 135, Math.min(width * 0.35, 150));
+        gradFloor.addColorStop(0, floorGlowColor);
+        gradFloor.addColorStop(1, 'transparent');
+        ctx.fillStyle = gradFloor;
+        ctx.fill();
+        ctx.restore();
+
+        // 2. Project Vertices
+        const pOuter = outerVertices.map(v => project(v, rotX, rotY, rotZ));
+        const pInner = innerVertices.map(v => project(v, rotX, rotY, rotZ));
+
+        // 3. Draw Connecting Cross Struts (Tesseract link)
+        for (let i = 0; i < 8; i++) {
+          const p1 = pOuter[i];
+          const p2 = pInner[i];
+          const avgZ = (p1.z + p2.z) / 2;
+          const alpha = Math.max(0.12, Math.min(0.55, 0.35 + avgZ * 0.0018));
+          ctx.beginPath();
+          ctx.moveTo(p1.x, p1.y);
+          ctx.lineTo(p2.x, p2.y);
+          ctx.strokeStyle = `${crossStrutColor} ${alpha})`;
+          ctx.lineWidth = 1.0;
+          ctx.stroke();
+        }
+
+        // 4. Draw Inner Cube Edges
+        for (const [i, j] of cubeEdges) {
+          const p1 = pInner[i];
+          const p2 = pInner[j];
+          const avgZ = (p1.z + p2.z) / 2;
+          const alpha = Math.max(0.18, Math.min(0.7, 0.42 + avgZ * 0.002));
+          ctx.beginPath();
+          ctx.moveTo(p1.x, p1.y);
+          ctx.lineTo(p2.x, p2.y);
+          ctx.strokeStyle = `${innerEdgeColor} ${alpha})`;
+          ctx.lineWidth = 1.2;
+          ctx.stroke();
+        }
+
+        // 5. Draw Outer Cube Edges
+        for (const [i, j] of cubeEdges) {
+          const p1 = pOuter[i];
+          const p2 = pOuter[j];
+          const avgZ = (p1.z + p2.z) / 2;
+          const alpha = Math.max(0.25, Math.min(0.95, 0.6 + avgZ * 0.0025));
+          ctx.beginPath();
+          ctx.moveTo(p1.x, p1.y);
+          ctx.lineTo(p2.x, p2.y);
+          ctx.strokeStyle = `${primaryEdgeColor} ${alpha})`;
+          ctx.lineWidth = 2.0;
+          ctx.stroke();
+        }
+
+        // 6. Draw Glowing Vertex Nodes at all corners
+        const allProjected = [
+          ...pInner.map(p => ({ ...p, isInner: true })),
+          ...pOuter.map(p => ({ ...p, isInner: false }))
+        ].sort((a, b) => a.z - b.z);
+
+        for (const p of allProjected) {
+          const radius = p.isInner ? Math.max(2.5, 3.8 * p.scale) : Math.max(3.8, 5.8 * p.scale);
+          const glowRadius = radius * 3.2;
+
+          // Radial Glow Halo
+          const haloGrad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, glowRadius);
+          haloGrad.addColorStop(0, p.isInner ? innerEdgeColor + ' 0.8)' : primaryEdgeColor + ' 0.9)');
+          haloGrad.addColorStop(1, 'transparent');
+
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, glowRadius, 0, Math.PI * 2);
+          ctx.fillStyle = haloGrad;
+          ctx.fill();
+
+          // Outer Vertex Node
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
+          ctx.fillStyle = vertexNodeColor;
+          ctx.fill();
+
+          // Inner White Core Node
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, radius * 0.45, 0, Math.PI * 2);
+          ctx.fillStyle = vertexCoreColor;
+          ctx.fill();
+        }
+
+        requestAnimationFrame(renderCube);
+      }
+
+      requestAnimationFrame(renderCube);
     })();
 
     // Mobile Scroll-to-Top Controller
