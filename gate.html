@@ -10,7 +10,7 @@
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   
   <!-- Gate Page Dual Theme Design System Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=20261106_vertex_philosophy_v11">
+  <link rel="stylesheet" href="style.css?v=20261106_store_status_v12">
 
   <!-- Immediate Theme Initialization (Default: Light/White) -->
   <script>
@@ -319,8 +319,11 @@
         appIcon: "assets/smart_dca_app_icon.png",
         period: "2025.02 - 2025.03 <span class=\"nobr\">(6주)</span>",
         teamType: "1인 단독 프로젝트 <span class=\"nobr\">(총 1명)</span>",
-        role: "프로덕트 UX/UI 디자인 총괄",
+        role: "프로덕트 UX/UI 총괄",
         contribution: "기여도 100%",
+        storeStatus: "정식 출시 완료 <span class=\"nobr\">(Google Play)</span>",
+        storeStatusType: "launched",
+        storeBadge: "Google Play 정식 출시",
         desc: "급변하는 금융 시장 속에서 손실 공포를 줄이고, 한 손으로 즉각적인 분할매수 시나리오를 시뮬레이션하는 모바일 핀테크 프로덕트입니다.",
         thumbnail: "assets/smart_dca_clean_devices.png",
         caseStudyUrl: "smart_dca/index.html",
@@ -344,8 +347,11 @@
         appIcon: "assets/ftmt_app_icon.png",
         period: "2025.01 - 2025.02 <span class=\"nobr\">(7주)</span>",
         teamType: "1인 단독 프로젝트 <span class=\"nobr\">(총 1명)</span>",
-        role: "프로덕트 UX/UI 디자인 총괄",
+        role: "프로덕트 UX/UI 총괄",
         contribution: "기여도 100%",
+        storeStatus: "비공개 테스트 중 <span class=\"nobr\">(출시 준비)</span>",
+        storeStatusType: "testing",
+        storeBadge: "Google Play 비공개 테스트",
         desc: "난해한 전통 사주명리학과 타로 알고리즘을 감각적인 마이크로 인터랙션과 직관적인 궁합 차트로 풀어낸 모바일 매칭 플랫폼입니다.",
         thumbnail: "assets/ftmt_clean_devices.png",
         caseStudyUrl: "ftmt/index.html",
@@ -369,8 +375,11 @@
         appIcon: "assets/farmingsys_app_icon.png",
         period: "2024.12 - 2025.01 <span class=\"nobr\">(8주)</span>",
         teamType: "팀 프로젝트 <span class=\"nobr\">(총 5명: 기획 1 · 디자인 1 · 개발 3)</span>",
-        role: "리드 UX/UI 아키텍처",
-        contribution: "디자인 기여도 100%",
+        role: "수석 UX/UI 아키텍처",
+        contribution: "기여도 100%",
+        storeStatus: "B2B 엔터프라이즈 전용 배포",
+        storeStatusType: "enterprise",
+        storeBadge: "B2B 엔터프라이즈 솔루션",
         desc: "복잡한 토지 규제 인허가와 GIS 공간 빅데이터를 3단계 계층 구조로 시각화하여 빠른 의사결정을 지원하는 B2B 플랫폼입니다.",
         thumbnail: "assets/farmingsys_clean_devices.png",
         caseStudyUrl: "javascript:alert('파밍시스 엔터프라이즈 케이스 스터디 아카이브 모드입니다.');",
@@ -395,7 +404,10 @@
         period: "2024.10 - 2024.12 <span class=\"nobr\">(10주)</span>",
         teamType: "팀 프로젝트 <span class=\"nobr\">(총 6명: 기획 1 · 디자인 1 · 개발 4)</span>",
         role: "수석 프로덕트 UX/UI 디자인",
-        contribution: "디자인 기여도 100%",
+        contribution: "기여도 100%",
+        storeStatus: "엔터프라이즈 인트라넷 전용 배포",
+        storeStatusType: "enterprise",
+        storeBadge: "사내 인트라넷 전용 배포",
         desc: "제조 현장의 MES 생산 설비와 ERP 경영 데이터를 실시간 통합 제어하는 차세대 스마트 팩토리 대시보드 솔루션입니다.",
         thumbnail: "assets/sam_clean_devices.png",
         caseStudyUrl: "javascript:alert('SAM MES+ERP 엔터프라이즈 케이스 스터디 준비 중입니다.');",
@@ -447,9 +459,12 @@
 
             <!-- Card Body Content with Simple Basic Information -->
             <div class="card-body">
-              <!-- Category Pill & Live Status Pill -->
+              <!-- Category Pill, Store Launch Pill & Live Status Pill -->
               <div class="card-top-pills-row">
                 <span class="category-tag-pill">${item.badge}</span>
+                <span class="store-pill ${item.storeStatusType}">
+                  ${item.storeStatusType === 'launched' ? '✦' : (item.storeStatusType === 'testing' ? '✦' : '🏢')} ${item.storeBadge}
+                </span>
                 <span class="${liveBadgeClass}">
                   ${liveDot} ${item.statusText}
                 </span>
@@ -464,7 +479,7 @@
                 </div>
               </div>
 
-              <!-- 🌟 1. Essential Basic Info Box (진행 기간, 수행 형태 및 인원수, 담당 역할 및 기여도) -->
+              <!-- 🌟 1. Essential Basic Info Box (진행 기간, 수행 형태/인원, 담당 역할, 구글 스토어 런칭) -->
               <div class="card-meta-box">
                 <div class="card-meta-item">
                   <span class="meta-key-label">⏱ 진행 기간</span>
@@ -474,9 +489,13 @@
                   <span class="meta-key-label">👥 수행 형태 및 인원</span>
                   <span class="meta-val-text highlight">${item.teamType}</span>
                 </div>
-                <div class="card-meta-item" style="grid-column: 1 / -1;">
+                <div class="card-meta-item">
                   <span class="meta-key-label">👤 담당 역할 및 기여도</span>
                   <span class="meta-val-text">${item.role} · <span class="highlight">${item.contribution}</span></span>
+                </div>
+                <div class="card-meta-item">
+                  <span class="meta-key-label">🚀 구글 스토어 런칭 여부</span>
+                  <span class="meta-val-text store-${item.storeStatusType}">${item.storeStatus}</span>
                 </div>
               </div>
 

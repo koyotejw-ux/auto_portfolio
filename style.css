@@ -746,8 +746,9 @@ body {
 .card-top-pills-row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 10px;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 8px 10px;
   margin-bottom: 16px;
 }
 
@@ -763,6 +764,51 @@ body {
   word-break: keep-all;
 }
 
+/* Store Launch Status Pill */
+.store-pill {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 5px 11px;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  word-break: keep-all;
+}
+
+.store-pill.launched {
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.45);
+  color: #059669;
+}
+[data-theme="dark"] .store-pill.launched {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: rgba(16, 185, 129, 0.6);
+  color: #34D399;
+}
+
+.store-pill.testing {
+  background: rgba(217, 119, 6, 0.12);
+  border: 1px solid rgba(217, 119, 6, 0.45);
+  color: #D97706;
+}
+[data-theme="dark"] .store-pill.testing {
+  background: rgba(217, 119, 6, 0.2);
+  border-color: rgba(217, 119, 6, 0.6);
+  color: #FBBF24;
+}
+
+.store-pill.enterprise {
+  background: rgba(99, 102, 241, 0.12);
+  border: 1px solid rgba(99, 102, 241, 0.45);
+  color: #6366F1;
+}
+[data-theme="dark"] .store-pill.enterprise {
+  background: rgba(99, 102, 241, 0.2);
+  border-color: rgba(99, 102, 241, 0.6);
+  color: #818CF8;
+}
+
 .live-status-pill {
   font-size: 11px;
   font-weight: 700;
@@ -775,6 +821,7 @@ body {
   align-items: center;
   gap: 6px;
   word-break: keep-all;
+  margin-left: auto;
 }
 
 .live-status-pill.upcoming {
@@ -889,6 +936,30 @@ body {
 .meta-val-text.highlight {
   color: var(--neon-emerald);
   font-weight: 800;
+}
+
+.meta-val-text.store-launched {
+  color: #059669;
+  font-weight: 800;
+}
+[data-theme="dark"] .meta-val-text.store-launched {
+  color: #34D399;
+}
+
+.meta-val-text.store-testing {
+  color: #D97706;
+  font-weight: 800;
+}
+[data-theme="dark"] .meta-val-text.store-testing {
+  color: #FBBF24;
+}
+
+.meta-val-text.store-enterprise {
+  color: #6366F1;
+  font-weight: 800;
+}
+[data-theme="dark"] .meta-val-text.store-enterprise {
+  color: #818CF8;
 }
 
 /* 🌟 Card Brief Summary Description (들어가서 보기 전 핵심 한 줄 요약) */
