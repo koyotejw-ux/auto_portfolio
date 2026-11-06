@@ -16,6 +16,24 @@ async def main():
         
         await page.screenshot(path="d:/097.flutter_project/auto_portfolio/master_hub_screenshot.png", full_page=False)
         print(f"Master Hub Gate Page verified. Rendered {len(cards)} cards.")
+
+        # 1-1. Test Mobile Gate Page (iPhone 14 Pro 393x852)
+        page_mobile = await browser.new_page(viewport={'width': 393, 'height': 852})
+        await page_mobile.goto("file:///d:/097.flutter_project/auto_portfolio/index.html")
+        await page_mobile.wait_for_timeout(800)
+        sw_m = await page_mobile.evaluate('document.documentElement.scrollWidth')
+        cw_m = await page_mobile.evaluate('document.documentElement.clientWidth')
+        assert sw_m <= cw_m, f"Mobile overflow on iPhone 14 Pro: {sw_m} > {cw_m}"
+        print(f"Mobile Gate Page verified (iPhone 14 Pro 393px): 0px overflow (scrollWidth: {sw_m})")
+
+        # 1-2. Test Compact Mobile (Galaxy S24 360x780)
+        page_galaxy = await browser.new_page(viewport={'width': 360, 'height': 780})
+        await page_galaxy.goto("file:///d:/097.flutter_project/auto_portfolio/index.html")
+        await page_galaxy.wait_for_timeout(800)
+        sw_g = await page_galaxy.evaluate('document.documentElement.scrollWidth')
+        cw_g = await page_galaxy.evaluate('document.documentElement.clientWidth')
+        assert sw_g <= cw_g, f"Mobile overflow on Galaxy S24: {sw_g} > {cw_g}"
+        print(f"Mobile Gate Page verified (Galaxy S24 360px): 0px overflow (scrollWidth: {sw_g})")
         
         # 2. Test FTMT Case Study
         page_ftmt = await browser.new_page(viewport={'width': 1440, 'height': 900})

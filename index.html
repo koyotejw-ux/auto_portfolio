@@ -2,7 +2,7 @@
 <html lang="ko" data-theme="light">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
   <title>ENTERPRISE PORTFOLIO GATEWAY | Senior Product UX/UI Designer & Architect</title>
   <meta name="description" content="데이터 중심의 정량적 UX 분석과 60fps 라이브 인터랙티브 프로토타이핑을 구현하는 시니어 프로덕트 디자이너 포트폴리오 게이트웨이">
   
@@ -10,7 +10,7 @@
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   
   <!-- Gate Page Dual Theme Design System Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=20261106_hero3d_solo_v6">
+  <link rel="stylesheet" href="style.css?v=20261106_mobile_first_v7">
 
   <!-- Immediate Theme Initialization (Default: Light/White) -->
   <script>
@@ -44,9 +44,9 @@
 
     <!-- Status Badges & Theme Toggle Group -->
     <div class="nav-status-group">
-      <div class="system-badge online">
+      <div class="system-badge online" title="시스템 정상 가동 중">
         <span class="pulse-dot"></span>
-        SYSTEM ONLINE
+        <span class="badge-label-text">SYSTEM ONLINE</span>
       </div>
       <div class="system-badge cyber">
         AI UX ARCHITECTURE
@@ -63,7 +63,9 @@
 
       <!-- Guide Modal Trigger -->
       <button class="btn-nav-guide" id="openGuideBtn" title="신규 포트폴리오 등록 방법 안내">
-        <span>+</span> 포폴 등록 가이드
+        <span>+</span>
+        <span class="guide-label-full">포폴 등록 가이드</span>
+        <span class="guide-label-short">가이드</span>
       </button>
     </div>
   </header>
@@ -388,7 +390,7 @@
         period: "2024.12 - 2025.01 (8주 완결)",
         teamType: "팀 프로젝트 (PO 1, Dev 3, UX Lead 1)",
         role: "Lead UX Architect & Designer",
-        contribution: "100% (UX 리서치 · IA · 화면 설계 주도)",
+        contribution: "100% (UX리서치 · IA · 화면설계)",
         uxPoints: [
           { tag: "problem", tagText: "UX 문제", text: "<strong>복잡한 토지 규제 인허가와 GIS 공간 데이터</strong>의 극심한 정보 과부하" },
           { tag: "solution", tagText: "UX 해결", text: "<strong>3단계 계층화 인터페이스(3-Tier Disclosure)</strong>로 핵심 의사결정 경로 압축" },
@@ -423,7 +425,7 @@
         period: "2024.10 - 2024.12 (10주 완결)",
         teamType: "팀 프로젝트 (PO 1, Eng 4, UX Lead 1)",
         role: "Principal Product UX Designer",
-        contribution: "100% (대시보드 기획 · 디자인 시스템 구축)",
+        contribution: "100% (대시보드 기획 · 시스템 구축)",
         uxPoints: [
           { tag: "problem", tagText: "UX 문제", text: "<strong>MES 현장 생산 데이터와 ERP 경영 수치 단절</strong>로 인한 커뮤니케이션 오차" },
           { tag: "solution", tagText: "UX 해결", text: "<strong>현장/관리자 맞춤형 싱글 뷰 인터랙션</strong> &amp; Figma 1:1 토큰 시스템" },
@@ -681,6 +683,18 @@
         mouse.y = null;
       });
 
+      // Mobile Touch Interaction for Particle Waves
+      window.addEventListener('touchmove', (e) => {
+        if (e.touches && e.touches.length > 0) {
+          mouse.x = e.touches[0].clientX;
+          mouse.y = e.touches[0].clientY;
+        }
+      }, { passive: true });
+      window.addEventListener('touchend', () => {
+        mouse.x = null;
+        mouse.y = null;
+      }, { passive: true });
+
       class Particle {
         constructor() {
           this.x = Math.random() * width;
@@ -761,7 +775,29 @@
       animate();
     })();
 
+    // Mobile Scroll-to-Top Controller
+    const mobileTopBtn = document.getElementById('mobileTopBtn');
+    if (mobileTopBtn) {
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 350) {
+          mobileTopBtn.classList.add('visible');
+        } else {
+          mobileTopBtn.classList.remove('visible');
+        }
+      }, { passive: true });
+      mobileTopBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+
     document.addEventListener('DOMContentLoaded', initGallery);
   </script>
+
+  <!-- Floating Mobile Quick Scroll-to-Top Button -->
+  <button class="mobile-top-btn" id="mobileTopBtn" aria-label="맨 위로 이동" title="맨 위로 스크롤">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
 </body>
 </html>
