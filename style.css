@@ -871,70 +871,38 @@ body {
   word-break: keep-all;
 }
 
-/* 🌟 Executive Metadata Box (기본 정보 중심의 심플한 구성) */
-.card-meta-box {
+/* 🌟 Simple 4-Spec Grid (기간, 역할, 기여도, 플랫폼) */
+.card-specs-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px 24px;
+  gap: 10px 18px;
   background: var(--metrics-bg);
   border: 1px solid var(--border-subtle);
-  border-radius: 14px;
-  padding: 14px 18px;
+  border-radius: 12px;
+  padding: 12px 16px;
   margin-bottom: 16px;
 }
 
-.card-meta-item {
+.spec-col {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 2px;
   min-width: 0;
 }
 
-.meta-key-label {
-  font-size: 10.5px;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  color: var(--neon-cyan);
-  word-break: keep-all;
+.spec-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: -0.01em;
 }
 
-.meta-val-text {
-  font-size: 13px;
+.spec-value {
+  font-size: 12.5px;
   font-weight: 700;
   color: var(--text-white);
-  line-height: 1.45;
+  line-height: 1.4;
   word-break: keep-all;
-  overflow-wrap: break-word;
-  white-space: normal; /* 말줄임 ... 완전 제거 & 줄바꿈 지원 */
-}
-
-.meta-val-text.highlight {
-  color: var(--neon-emerald);
-  font-weight: 800;
-}
-
-.meta-val-text.store-launched {
-  color: #059669;
-  font-weight: 800;
-}
-[data-theme="dark"] .meta-val-text.store-launched {
-  color: #34D399;
-}
-
-.meta-val-text.store-testing {
-  color: #D97706;
-  font-weight: 800;
-}
-[data-theme="dark"] .meta-val-text.store-testing {
-  color: #FBBF24;
-}
-
-.meta-val-text.store-enterprise {
-  color: #6366F1;
-  font-weight: 800;
-}
-[data-theme="dark"] .meta-val-text.store-enterprise {
-  color: #818CF8;
 }
 
 /* 🌟 Card Brief Summary Description (들어가서 보기 전 핵심 한 줄 요약) */
@@ -1598,20 +1566,20 @@ a,
     font-size: 11px;
   }
 
-  /* 2x2 Meta Box in Mobile */
-  .card-meta-box {
+  /* 2x2 Specs Grid in Mobile */
+  .card-specs-grid {
     grid-template-columns: 1fr 1fr;
     gap: 8px 12px;
     padding: 10px 14px;
-    border-radius: 12px;
-    margin-bottom: 16px;
+    border-radius: 10px;
+    margin-bottom: 14px;
   }
 
-  .meta-key-label {
-    font-size: 9.5px;
+  .spec-label {
+    font-size: 10px;
   }
 
-  .meta-val-text {
+  .spec-value {
     font-size: 11.5px;
   }
 
@@ -1834,21 +1802,20 @@ a,
     word-break: keep-all;
   }
 
-  .card-meta-box {
-    gap: 8px 18px;
+  .card-specs-grid {
+    gap: 8px 14px;
     padding: 10px 12px;
   }
 
-  .meta-key-label {
-    font-size: 9px;
+  .spec-label {
+    font-size: 9.5px;
     word-break: keep-all;
   }
 
-  .meta-val-text {
-    font-size: 11.5px;
+  .spec-value {
+    font-size: 11px;
     line-height: 1.4;
     word-break: keep-all;
-    white-space: normal;
   }
 
   .ux-point-desc {
