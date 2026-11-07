@@ -1866,7 +1866,7 @@ a,
 }
 
 /* ==========================================================================
-   CJW OFFICIAL GEOMETRIC BRAND LOGO & EXACT HERO SECTION (HeroSection + _Rectilinear3DBoxPainter)
+   CJW OFFICIAL GEOMETRIC BRAND LOGO & EXACT HERO SECTION
    ========================================================================== */
 
 [data-theme="dark"] {
@@ -1875,12 +1875,12 @@ a,
   --bg-surface: #0A101A;
   --bg-surface-elevated: #151A25;
   --navbar-bg: rgba(2, 2, 5, 0.86);
-  --bg-card: rgba(13, 19, 31, 0.78);
-  --bg-card-hover: rgba(20, 29, 46, 0.92);
+  --bg-card: rgba(10, 16, 26, 0.82);
+  --bg-card-hover: rgba(16, 26, 44, 0.94);
 }
 
 .cjw-logo-svg {
-  height: 26px;
+  height: 28px;
   width: auto;
   display: block;
   flex-shrink: 0;
@@ -1888,27 +1888,12 @@ a,
 }
 
 .nav-brand:hover .cjw-logo-svg {
-  transform: scale(1.03);
+  transform: scale(1.04);
 }
 
 .cjw-logo-primary {
   fill: var(--text-white);
   transition: fill 0.35s ease;
-}
-
-.nav-brand-divider {
-  width: 1px;
-  height: 20px;
-  background: var(--border-medium);
-  flex-shrink: 0;
-}
-
-.nav-brand-tag {
-  font-family: 'Outfit', 'Pretendard', sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  color: var(--text-secondary);
 }
 
 .nav-quick-link {
@@ -1917,27 +1902,27 @@ a,
   font-weight: 600;
   color: var(--text-secondary);
   text-decoration: none;
-  padding: 6px 12px;
+  padding: 6px 14px;
   border-radius: 8px;
   transition: color 0.2s ease, background 0.2s ease;
 }
 
 .nav-quick-link:hover {
   color: var(--text-white);
-  background: rgba(0, 157, 220, 0.08);
+  background: rgba(0, 157, 220, 0.1);
 }
 
 /* --------------------------------------------------------------------------
-   SPLIT HERO SECTION (Desktop/Tablet 2-Col Split, Mobile 3D-Top Stack)
+   SPLIT HERO SECTION (No duplicate header info, clean essential hierarchy)
    -------------------------------------------------------------------------- */
 .hero-split-section {
   display: grid;
-  grid-template-columns: 1.12fr 0.88fr;
+  grid-template-columns: 1.15fr 0.85fr;
   align-items: center;
-  gap: 36px;
-  min-height: 540px;
-  padding: 28px 8px 56px;
-  margin-bottom: 28px;
+  gap: 40px;
+  min-height: 520px;
+  padding: 36px 8px 60px;
+  margin-bottom: 24px;
   position: relative;
 }
 
@@ -1950,37 +1935,18 @@ a,
   z-index: 3;
 }
 
-.hero-brand-top-row {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 14px;
-  margin-bottom: 24px;
+.hero-badge-wrap {
+  margin-bottom: 22px;
 }
 
-.hero-cjw-mark {
-  display: inline-flex;
-  align-items: center;
-  padding: 8px 14px;
-  border-radius: 12px;
-  background: rgba(0, 104, 179, 0.08);
-  border: 1px solid rgba(0, 157, 220, 0.24);
-}
-
-.hero-cjw-mark .cjw-logo-svg {
-  height: 22px;
-  width: auto;
-}
-
-/* Exact Glassmorphic Role Badge from HeroSection */
 .hero-role-badge {
   display: inline-flex;
   align-items: center;
-  padding: 8px 20px;
+  padding: 8px 22px;
   border-radius: 30px;
   background: rgba(255, 255, 255, 0.02);
-  border: 1.5px solid rgba(0, 104, 179, 0.32);
-  box-shadow: 0 0 12px 1px rgba(0, 104, 179, 0.08);
+  border: 1.5px solid rgba(0, 104, 179, 0.35);
+  box-shadow: 0 0 16px 2px rgba(0, 104, 179, 0.1);
   font-family: 'Outfit', 'Pretendard', sans-serif;
   font-size: 13.5px;
   font-weight: 600;
@@ -1995,14 +1961,13 @@ a,
   color: #0068B3;
 }
 
-/* Exact Outfit w900 Neon Gradient Display Name from HeroSection */
 .hero-display-name {
   font-family: 'Outfit', 'Pretendard', sans-serif;
-  font-size: clamp(46px, 5.8vw, 84px);
+  font-size: clamp(48px, 6vw, 86px);
   font-weight: 900;
-  line-height: 0.96;
+  line-height: 0.94;
   letter-spacing: -2.0px;
-  margin: 0 0 26px 0;
+  margin: 0 0 24px 0;
 }
 
 .hero-neon-gradient {
@@ -2020,12 +1985,11 @@ a,
   -webkit-text-fill-color: transparent;
 }
 
-/* Animated Skill/Role Ticker (Exact Outfit 18px w400, letter-spacing 2.0px) */
 .hero-ticker-stage {
-  min-height: 36px;
+  min-height: 34px;
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 22px;
   overflow: hidden;
 }
 
@@ -2054,17 +2018,15 @@ a,
   transform: translateX(24px);
 }
 
-/* Unified Single Korean Overview Description */
 .hero-unified-desc {
   font-size: 16px;
   font-weight: 400;
   color: var(--text-secondary);
-  line-height: 1.72;
+  line-height: 1.74;
   max-width: 600px;
   margin-bottom: 28px;
 }
 
-/* Compact Executive Metrics Chips */
 .hero-metrics-row {
   display: flex;
   flex-wrap: wrap;
@@ -2112,7 +2074,6 @@ a,
   color: #059669;
 }
 
-/* Right Column: Interactive 3D Rectilinear Box Stage */
 .hero-right-col {
   display: flex;
   align-items: center;
@@ -2141,57 +2102,338 @@ a,
   filter: none;
 }
 
-.btn-enter-portfolio svg {
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+/* ==========================================================================
+   CJW GEOMETRIC DESIGN SYSTEM CARDS (.gate-card)
+   - Inspired by CJW geometric logo block structure (25.6875px square grid)
+   - Rectilinear geometric corner brackets & HUD top strip
+   - Elegant, high-tech, and structured information hierarchy
+   ========================================================================== */
+.portfolio-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  gap: 36px;
+  margin-bottom: 72px;
 }
 
-.btn-enter-portfolio:hover svg {
+.gate-card {
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid rgba(0, 104, 179, 0.22);
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.3s ease,
+              box-shadow 0.3s ease;
+  box-shadow: 0 10px 30px -8px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="light"] .gate-card {
+  background: #FFFFFF;
+  border-color: rgba(15, 23, 42, 0.12);
+  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.06);
+}
+
+.gate-card:hover {
+  transform: translateY(-7px);
+  border-color: var(--item-accent, #009DDC);
+  box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.7),
+              0 0 25px rgba(0, 157, 220, 0.18);
+}
+
+[data-theme="light"] .gate-card:hover {
+  box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.12),
+              0 0 20px rgba(0, 104, 179, 0.14);
+}
+
+/* CJW Geometric Corner Accent Blocks (4 corners) */
+.geo-corner-tl, .geo-corner-tr, .geo-corner-bl, .geo-corner-br {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
+  z-index: 5;
+  transition: all 0.3s ease;
+}
+
+.geo-corner-tl {
+  top: 0;
+  left: 0;
+  border-top: 2.5px solid var(--item-accent, #009DDC);
+  border-left: 2.5px solid var(--item-accent, #009DDC);
+}
+
+.geo-corner-tr {
+  top: 0;
+  right: 0;
+  border-top: 2.5px solid var(--item-accent, #009DDC);
+  border-right: 2.5px solid var(--item-accent, #009DDC);
+}
+
+.geo-corner-bl {
+  bottom: 0;
+  left: 0;
+  border-bottom: 2.5px solid var(--item-accent, #009DDC);
+  border-left: 2.5px solid var(--item-accent, #009DDC);
+}
+
+.geo-corner-br {
+  bottom: 0;
+  right: 0;
+  border-bottom: 2.5px solid var(--item-accent, #009DDC);
+  border-right: 2.5px solid var(--item-accent, #009DDC);
+}
+
+.gate-card:hover .geo-corner-tl,
+.gate-card:hover .geo-corner-tr,
+.gate-card:hover .geo-corner-bl,
+.gate-card:hover .geo-corner-br {
+  width: 20px;
+  height: 20px;
+  border-color: #C1D72E;
+}
+
+/* Top Bracket Bar */
+.card-bracket-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  background: rgba(0, 104, 179, 0.06);
+  border-bottom: 1px solid rgba(0, 104, 179, 0.16);
+}
+
+[data-theme="light"] .card-bracket-bar {
+  background: rgba(0, 104, 179, 0.04);
+  border-bottom-color: rgba(15, 23, 42, 0.08);
+}
+
+.bracket-code {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--item-accent, #009DDC);
+}
+
+.geo-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--item-accent, #009DDC);
+  border-radius: 1px;
+}
+
+.category-tag-pill {
+  font-family: 'Pretendard', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-medium);
+  padding: 3px 10px;
+  border-radius: 6px;
+}
+
+[data-theme="light"] .category-tag-pill {
+  background: #F1F5F9;
+}
+
+/* Card Visual Thumbnail Area */
+.gate-card .card-thumb-area {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  background: #050810;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+[data-theme="light"] .gate-card .card-thumb-area {
+  background: #E2E8F0;
+}
+
+.gate-card .card-thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gate-card:hover .card-thumb-img {
+  transform: scale(1.04);
+}
+
+/* Card Body */
+.gate-card .card-body {
+  padding: 24px 24px 28px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.gate-card .card-header-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.gate-card .card-app-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  border: 1px solid var(--border-medium);
+  flex-shrink: 0;
+  object-fit: cover;
+}
+
+.gate-card .card-title {
+  font-family: 'Pretendard', sans-serif;
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-white);
+  line-height: 1.3;
+}
+
+.gate-card .card-subtitle-en {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  display: block;
+  margin-top: 2px;
+}
+
+/* Specs 4-Column Grid */
+.gate-card .card-specs-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px 16px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  background: rgba(0, 104, 179, 0.04);
+  border: 1px solid rgba(0, 104, 179, 0.12);
+  margin-bottom: 18px;
+}
+
+[data-theme="light"] .gate-card .card-specs-grid {
+  background: #F8FAFC;
+  border-color: rgba(15, 23, 42, 0.08);
+}
+
+.spec-col {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.spec-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--item-accent, #009DDC);
+}
+
+.spec-value {
+  font-family: 'Pretendard', sans-serif;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-white);
+  line-height: 1.35;
+}
+
+.card-desc-text {
+  font-size: 13.5px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 24px;
+  flex: 1;
+}
+
+/* Primary Action Button (Geometric CJW Block Style) */
+.btn-geo-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 48px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #0068B3 0%, #009DDC 100%);
+  color: #FFFFFF;
+  text-decoration: none;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 15px rgba(0, 104, 179, 0.3);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-geo-action:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 157, 220, 0.45);
+  background: linear-gradient(135deg, #009DDC 0%, #0068B3 100%);
+}
+
+.btn-geo-action svg {
+  transition: transform 0.25s ease;
+}
+
+.btn-geo-action:hover svg {
   transform: translateX(4px);
 }
 
+/* Footer Brand */
 .footer-brand-row {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 12px;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .footer-brand-row .cjw-logo-svg {
-  height: 18px;
+  height: 20px;
   opacity: 0.85;
 }
 
 /* --------------------------------------------------------------------------
-   RESPONSIVE BREAKPOINTS (Mobile: 3D Object on Top, Centered Content Below)
+   RESPONSIVE BREAKPOINTS
    -------------------------------------------------------------------------- */
 @media (max-width: 1024px) {
   .hero-split-section {
     grid-template-columns: 1fr 0.9fr;
     gap: 20px;
-    min-height: 460px;
   }
-  .hero-right-col .hero-cube-canvas {
-    max-width: 400px;
+  .portfolio-gallery-grid {
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
   }
 }
 
 @media (max-width: 768px) {
   .cjw-logo-svg {
-    height: 21px;
+    height: 22px;
   }
-  .nav-brand-divider,
-  .nav-brand-tag,
   .nav-quick-link {
     display: none;
   }
 
-  /* Match HeroSection Mobile Layout: 3D Object on Top, Centered Typography Below */
   .hero-split-section {
     grid-template-columns: 1fr;
     gap: 12px;
-    min-height: auto;
-    padding: 12px 0 36px;
+    padding: 16px 0 32px;
     text-align: center;
   }
 
@@ -2209,48 +2451,30 @@ a,
     text-align: center;
   }
 
-  .hero-brand-top-row {
-    justify-content: center;
-    gap: 10px;
+  .hero-badge-wrap {
     margin-bottom: 16px;
   }
 
-  .hero-cjw-mark {
-    padding: 6px 11px;
-  }
-
-  .hero-cjw-mark .cjw-logo-svg {
-    height: 17px;
-  }
-
-  .hero-role-badge {
-    padding: 6px 14px;
-    font-size: 11.5px;
-    letter-spacing: 2.0px;
-  }
-
   .hero-display-name {
-    font-size: 40px;
+    font-size: 42px;
     letter-spacing: -1.0px;
-    line-height: 1.04;
     margin-bottom: 16px;
   }
 
   .hero-ticker-stage {
     justify-content: center;
-    min-height: 42px;
+    min-height: 38px;
     margin-bottom: 14px;
   }
 
   .hero-ticker-text {
-    font-size: 13.5px;
-    letter-spacing: 1.4px;
+    font-size: 14px;
+    letter-spacing: 1.5px;
   }
 
   .hero-unified-desc {
     font-size: 14px;
-    margin-bottom: 20px;
-    padding: 0 4px;
+    margin-bottom: 22px;
   }
 
   .hero-metrics-row {
@@ -2261,23 +2485,23 @@ a,
   .hero-metric-chip {
     width: 100%;
     justify-content: center;
-    padding: 9px 12px;
   }
 
-  .metric-chip-val {
-    font-size: 12px;
+  .portfolio-gallery-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
   }
 }
 
 @media (max-width: 480px) {
   .cjw-logo-svg {
-    height: 19px;
+    height: 20px;
   }
   .hero-right-col .hero-cube-canvas {
     max-width: 250px;
     height: 250px;
   }
   .hero-display-name {
-    font-size: 34px;
+    font-size: 36px;
   }
 }
