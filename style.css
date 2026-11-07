@@ -1896,6 +1896,11 @@ a,
   transition: fill 0.35s ease;
 }
 
+.theme-svg-icon {
+  display: block;
+  stroke: currentColor;
+}
+
 .nav-quick-link {
   font-family: 'Pretendard', sans-serif;
   font-size: 14.5px;
@@ -2027,51 +2032,61 @@ a,
   margin-bottom: 28px;
 }
 
-.hero-metrics-row {
+/* --------------------------------------------------------------------------
+   COMMON DESIGNER PROFILE & CONTACT STRIP (Email & Phone & Career)
+   -------------------------------------------------------------------------- */
+.hero-contact-strip {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 12px;
 }
 
-.hero-metric-chip {
+.contact-pill-item {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 9px;
   padding: 10px 16px;
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid var(--border-medium);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-}
-
-[data-theme="light"] .hero-metric-chip {
-  background: rgba(255, 255, 255, 0.85);
-}
-
-.metric-chip-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10.5px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  color: #009DDC;
-  padding: 2px 7px;
-  border-radius: 6px;
-  background: rgba(0, 157, 220, 0.12);
-}
-
-.metric-chip-val {
-  font-size: 13px;
-  font-weight: 700;
   color: var(--text-white);
+  text-decoration: none;
+  transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
 }
 
-.metric-chip-val.accent-lime {
-  color: #C1D72E;
+[data-theme="light"] .contact-pill-item {
+  background: rgba(255, 255, 255, 0.9);
 }
 
-[data-theme="light"] .metric-chip-val.accent-lime {
-  color: #059669;
+.contact-pill-link:hover {
+  border-color: #009DDC;
+  background: rgba(0, 157, 220, 0.08);
+  transform: translateY(-2px);
+}
+
+.contact-pill-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #009DDC;
+}
+
+.contact-pill-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+}
+
+.contact-pill-val {
+  font-family: 'Pretendard', sans-serif;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-white);
 }
 
 .hero-right-col {
@@ -2103,10 +2118,23 @@ a,
 }
 
 /* ==========================================================================
-   CJW GEOMETRIC DESIGN SYSTEM CARDS (.gate-card)
-   - Inspired by CJW geometric logo block structure (25.6875px square grid)
-   - Rectilinear geometric corner brackets & HUD top strip
-   - Elegant, high-tech, and structured information hierarchy
+   PHILOSOPHY VECTOR ICONS
+   ========================================================================== */
+.phil-icon-pill {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(0, 104, 179, 0.1);
+  border: 1px solid rgba(0, 157, 220, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  color: #009DDC;
+}
+
+/* ==========================================================================
+   CJW GEOMETRIC DESIGN SYSTEM CARDS (.gate-card.cjw-geo-card)
    ========================================================================== */
 .portfolio-gallery-grid {
   display: grid;
@@ -2115,7 +2143,7 @@ a,
   margin-bottom: 72px;
 }
 
-.gate-card {
+.gate-card.cjw-geo-card {
   position: relative;
   background: var(--bg-card);
   border: 1px solid rgba(0, 104, 179, 0.22);
@@ -2129,25 +2157,24 @@ a,
   box-shadow: 0 10px 30px -8px rgba(0, 0, 0, 0.5);
 }
 
-[data-theme="light"] .gate-card {
+[data-theme="light"] .gate-card.cjw-geo-card {
   background: #FFFFFF;
   border-color: rgba(15, 23, 42, 0.12);
   box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.06);
 }
 
-.gate-card:hover {
+.gate-card.cjw-geo-card:hover {
   transform: translateY(-7px);
   border-color: var(--item-accent, #009DDC);
   box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.7),
               0 0 25px rgba(0, 157, 220, 0.18);
 }
 
-[data-theme="light"] .gate-card:hover {
+[data-theme="light"] .gate-card.cjw-geo-card:hover {
   box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.12),
               0 0 20px rgba(0, 104, 179, 0.14);
 }
 
-/* CJW Geometric Corner Accent Blocks (4 corners) */
 .geo-corner-tl, .geo-corner-tr, .geo-corner-bl, .geo-corner-br {
   position: absolute;
   width: 14px;
@@ -2185,16 +2212,15 @@ a,
   border-right: 2.5px solid var(--item-accent, #009DDC);
 }
 
-.gate-card:hover .geo-corner-tl,
-.gate-card:hover .geo-corner-tr,
-.gate-card:hover .geo-corner-bl,
-.gate-card:hover .geo-corner-br {
+.gate-card.cjw-geo-card:hover .geo-corner-tl,
+.gate-card.cjw-geo-card:hover .geo-corner-tr,
+.gate-card.cjw-geo-card:hover .geo-corner-bl,
+.gate-card.cjw-geo-card:hover .geo-corner-br {
   width: 20px;
   height: 20px;
   border-color: #C1D72E;
 }
 
-/* Top Bracket Bar */
 .card-bracket-bar {
   display: flex;
   align-items: center;
@@ -2242,8 +2268,7 @@ a,
   background: #F1F5F9;
 }
 
-/* Card Visual Thumbnail Area */
-.gate-card .card-thumb-area {
+.gate-card.cjw-geo-card .card-thumb-area {
   position: relative;
   width: 100%;
   height: 220px;
@@ -2255,37 +2280,36 @@ a,
   border-bottom: 1px solid var(--border-subtle);
 }
 
-[data-theme="light"] .gate-card .card-thumb-area {
+[data-theme="light"] .gate-card.cjw-geo-card .card-thumb-area {
   background: #E2E8F0;
 }
 
-.gate-card .card-thumb-img {
+.gate-card.cjw-geo-card .card-thumb-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.gate-card:hover .card-thumb-img {
+.gate-card.cjw-geo-card:hover .card-thumb-img {
   transform: scale(1.04);
 }
 
-/* Card Body */
-.gate-card .card-body {
+.gate-card.cjw-geo-card .card-body {
   padding: 24px 24px 28px;
   display: flex;
   flex-direction: column;
   flex: 1;
 }
 
-.gate-card .card-header-row {
+.gate-card.cjw-geo-card .card-header-row {
   display: flex;
   align-items: center;
   gap: 14px;
   margin-bottom: 18px;
 }
 
-.gate-card .card-app-icon {
+.gate-card.cjw-geo-card .card-app-icon {
   width: 44px;
   height: 44px;
   border-radius: 10px;
@@ -2294,7 +2318,7 @@ a,
   object-fit: cover;
 }
 
-.gate-card .card-title {
+.gate-card.cjw-geo-card .card-title {
   font-family: 'Pretendard', sans-serif;
   font-size: 19px;
   font-weight: 800;
@@ -2303,7 +2327,7 @@ a,
   line-height: 1.3;
 }
 
-.gate-card .card-subtitle-en {
+.gate-card.cjw-geo-card .card-subtitle-en {
   font-size: 12px;
   font-weight: 500;
   color: var(--text-secondary);
@@ -2312,8 +2336,7 @@ a,
   margin-top: 2px;
 }
 
-/* Specs 4-Column Grid */
-.gate-card .card-specs-grid {
+.gate-card.cjw-geo-card .card-specs-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 10px 16px;
@@ -2324,7 +2347,7 @@ a,
   margin-bottom: 18px;
 }
 
-[data-theme="light"] .gate-card .card-specs-grid {
+[data-theme="light"] .gate-card.cjw-geo-card .card-specs-grid {
   background: #F8FAFC;
   border-color: rgba(15, 23, 42, 0.08);
 }
@@ -2360,7 +2383,6 @@ a,
   flex: 1;
 }
 
-/* Primary Action Button (Geometric CJW Block Style) */
 .btn-geo-action {
   display: flex;
   align-items: center;
@@ -2395,7 +2417,6 @@ a,
   transform: translateX(4px);
 }
 
-/* Footer Brand */
 .footer-brand-row {
   display: inline-flex;
   align-items: center;
@@ -2477,12 +2498,12 @@ a,
     margin-bottom: 22px;
   }
 
-  .hero-metrics-row {
+  .hero-contact-strip {
     justify-content: center;
     width: 100%;
   }
 
-  .hero-metric-chip {
+  .contact-pill-item {
     width: 100%;
     justify-content: center;
   }
