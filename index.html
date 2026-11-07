@@ -13,7 +13,7 @@
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   
   <!-- Portfolio Hub Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=20261108_business_desc_v1">
+  <link rel="stylesheet" href="style.css?v=20261108_transparent_header_v1">
 
   <!-- Immediate Theme Initialization (Default: Dark Mode) -->
   <script>
@@ -1055,8 +1055,9 @@
     })();
 
     
-    /* 7. Sticky Header Logo Click & Scroll-to-Top FAB Controller */
+    /* 7. Sticky Header Dynamic Background & Scroll-to-Top FAB Controller */
     function initScrollTopController() {
+      const headerEl = document.querySelector('.gate-navbar');
       const brandLogo = document.getElementById('navBrandLogo');
       if (brandLogo) {
         brandLogo.addEventListener('click', (e) => {
@@ -1066,19 +1067,33 @@
       }
 
       const fabBtn = document.getElementById('fabScrollTop');
-      if (fabBtn) {
-        const handleScroll = () => {
-          const scrollPos = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+      const handleScroll = () => {
+        const scrollPos = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+        
+        // Header background toggle: transparent at top, frosted glass when scrolled
+        if (headerEl) {
+          if (scrollPos > 20) {
+            headerEl.classList.add('scrolled');
+          } else {
+            headerEl.classList.remove('scrolled');
+          }
+        }
+
+        // FAB scroll-to-top button
+        if (fabBtn) {
           if (scrollPos > 280) {
             fabBtn.classList.add('visible');
           } else {
             fabBtn.classList.remove('visible');
           }
-        };
-        window.addEventListener('scroll', handleScroll, { passive: true });
-        window.addEventListener('resize', handleScroll, { passive: true });
-        handleScroll();
+        }
+      };
 
+      window.addEventListener('scroll', handleScroll, { passive: true });
+      window.addEventListener('resize', handleScroll, { passive: true });
+      handleScroll();
+
+      if (fabBtn) {
         fabBtn.addEventListener('click', () => {
           window.scrollTo({ top: 0, behavior: 'smooth' });
         });
