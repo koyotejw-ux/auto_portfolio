@@ -2526,3 +2526,127 @@ a,
     font-size: 36px;
   }
 }
+
+
+/* ==========================================================================
+   STICKY HEADER REFINEMENTS, FAB SCROLL-TO-TOP & MINIMAL FOOTER
+   ========================================================================== */
+.gate-navbar {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 1000 !important;
+}
+
+.nav-brand {
+  cursor: pointer;
+}
+
+/* Floating Action Button (FAB) */
+.fab-scroll-top {
+  position: fixed;
+  bottom: calc(28px + var(--sab));
+  right: calc(28px + var(--sar));
+  width: 50px;
+  height: 50px;
+  border-radius: 14px;
+  background: var(--bg-surface-elevated, #151A25);
+  border: 1.5px solid rgba(0, 157, 220, 0.45);
+  color: #009DDC;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(16px) scale(0.92);
+  transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              visibility 0.28s ease,
+              border-color 0.2s ease,
+              box-shadow 0.2s ease,
+              background 0.2s ease;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 16px rgba(0, 157, 220, 0.2);
+  touch-action: manipulation;
+  outline: none;
+}
+
+[data-theme="light"] .fab-scroll-top {
+  background: #FFFFFF;
+  border-color: rgba(0, 104, 179, 0.35);
+  color: #0068B3;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12), 0 0 14px rgba(0, 104, 179, 0.15);
+}
+
+.fab-scroll-top.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+.fab-scroll-top:hover {
+  transform: translateY(-3px) scale(1.05);
+  border-color: #C1D72E;
+  color: #C1D72E;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.6), 0 0 24px rgba(193, 215, 46, 0.35);
+}
+
+[data-theme="light"] .fab-scroll-top:hover {
+  border-color: #0068B3;
+  color: #0068B3;
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.18), 0 0 20px rgba(0, 104, 179, 0.25);
+}
+
+.fab-scroll-top:active {
+  transform: scale(0.94) !important;
+}
+
+.fab-scroll-top svg {
+  display: block;
+  stroke: currentColor;
+  transition: transform 0.2s ease;
+}
+
+.fab-scroll-top:hover svg {
+  transform: translateY(-2px);
+}
+
+/* Minimal Footer (Copyright Only) */
+.gate-footer {
+  text-align: center;
+  padding: 48px 20px 40px;
+  border-top: 1px solid var(--border-subtle);
+  margin-top: 40px;
+}
+
+.footer-copyright {
+  font-family: 'JetBrains Mono', 'Pretendard', monospace;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+}
+
+[data-theme="light"] .footer-copyright {
+  color: #64748B;
+}
+
+@media (max-width: 768px) {
+  .gate-navbar {
+    padding: 0 20px;
+    height: 64px;
+  }
+  .fab-scroll-top {
+    width: 44px;
+    height: 44px;
+    bottom: calc(20px + var(--sab));
+    right: calc(18px + var(--sar));
+    border-radius: 12px;
+  }
+  .gate-footer {
+    padding: 36px 16px 32px;
+  }
+  .footer-copyright {
+    font-size: 11.5px;
+  }
+}
