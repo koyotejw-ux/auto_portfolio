@@ -1865,10 +1865,20 @@ a,
   }
 }
 
-
 /* ==========================================================================
-   CJW OFFICIAL GEOMETRIC BRAND LOGO & LUXURY REFINEMENTS
+   CJW OFFICIAL GEOMETRIC BRAND LOGO & EXACT HERO SECTION (HeroSection + _Rectilinear3DBoxPainter)
    ========================================================================== */
+
+[data-theme="dark"] {
+  --bg-deep: #020205;
+  --bg-base: #050810;
+  --bg-surface: #0A101A;
+  --bg-surface-elevated: #151A25;
+  --navbar-bg: rgba(2, 2, 5, 0.86);
+  --bg-card: rgba(13, 19, 31, 0.78);
+  --bg-card-hover: rgba(20, 29, 46, 0.92);
+}
+
 .cjw-logo-svg {
   height: 26px;
   width: auto;
@@ -1888,71 +1898,247 @@ a,
 
 .nav-brand-divider {
   width: 1px;
-  height: 24px;
+  height: 20px;
   background: var(--border-medium);
   flex-shrink: 0;
 }
 
-.hero-cjw-emblem {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  padding: 7px 18px;
-  border-radius: 9999px;
-  background: var(--info-strip-bg);
-  border: 1px solid var(--border-medium);
-  box-shadow: var(--shadow-sm);
-  margin-bottom: 20px;
-}
-
-.hero-cjw-emblem .cjw-logo-svg {
-  height: 18px;
-}
-
-.hero-cjw-emblem-div {
-  width: 1px;
-  height: 14px;
-  background: var(--border-medium);
-}
-
-.hero-cjw-emblem-text {
-  font-size: 11.5px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  color: var(--neon-cyan);
-}
-
-.hero-3d-caption {
-  position: relative;
-  z-index: 3;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 8px 12px;
-  margin-top: 6px;
-  padding: 7px 18px;
-  border-radius: 9999px;
-  background: var(--info-strip-bg);
-  border: 1px solid var(--border-subtle);
+.nav-brand-tag {
+  font-family: 'Outfit', 'Pretendard', sans-serif;
   font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--text-secondary);
+}
+
+.nav-quick-link {
+  font-family: 'Pretendard', sans-serif;
+  font-size: 14.5px;
   font-weight: 600;
   color: var(--text-secondary);
-  box-shadow: var(--shadow-sm);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  transition: color 0.2s ease, background 0.2s ease;
 }
 
-.caption-pill {
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.06em;
+.nav-quick-link:hover {
+  color: var(--text-white);
+  background: rgba(0, 157, 220, 0.08);
+}
+
+/* --------------------------------------------------------------------------
+   SPLIT HERO SECTION (Desktop/Tablet 2-Col Split, Mobile 3D-Top Stack)
+   -------------------------------------------------------------------------- */
+.hero-split-section {
+  display: grid;
+  grid-template-columns: 1.12fr 0.88fr;
+  align-items: center;
+  gap: 36px;
+  min-height: 540px;
+  padding: 28px 8px 56px;
+  margin-bottom: 28px;
+  position: relative;
+}
+
+.hero-left-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  text-align: left;
+  z-index: 3;
+}
+
+.hero-brand-top-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.hero-cjw-mark {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  border-radius: 12px;
+  background: rgba(0, 104, 179, 0.08);
+  border: 1px solid rgba(0, 157, 220, 0.24);
+}
+
+.hero-cjw-mark .cjw-logo-svg {
+  height: 22px;
+  width: auto;
+}
+
+/* Exact Glassmorphic Role Badge from HeroSection */
+.hero-role-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 20px;
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1.5px solid rgba(0, 104, 179, 0.32);
+  box-shadow: 0 0 12px 1px rgba(0, 104, 179, 0.08);
+  font-family: 'Outfit', 'Pretendard', sans-serif;
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: 3.0px;
+  color: #009DDC;
+  text-transform: uppercase;
+}
+
+[data-theme="light"] .hero-role-badge {
+  background: rgba(0, 104, 179, 0.05);
+  border-color: rgba(0, 104, 179, 0.35);
   color: #0068B3;
 }
 
-[data-theme="dark"] .caption-pill {
+/* Exact Outfit w900 Neon Gradient Display Name from HeroSection */
+.hero-display-name {
+  font-family: 'Outfit', 'Pretendard', sans-serif;
+  font-size: clamp(46px, 5.8vw, 84px);
+  font-weight: 900;
+  line-height: 0.96;
+  letter-spacing: -2.0px;
+  margin: 0 0 26px 0;
+}
+
+.hero-neon-gradient {
+  background: linear-gradient(135deg, #FFFFFF 0%, #009DDC 40%, #0068B3 75%, #FF007F 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+[data-theme="light"] .hero-neon-gradient {
+  background: linear-gradient(135deg, #0A0E1A 0%, #0068B3 42%, #009DDC 75%, #FF007F 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Animated Skill/Role Ticker (Exact Outfit 18px w400, letter-spacing 2.0px) */
+.hero-ticker-stage {
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.hero-ticker-text {
+  font-family: 'Outfit', 'Pretendard', sans-serif;
+  font-size: 17.5px;
+  font-weight: 500;
+  color: #9EA4B0;
+  letter-spacing: 2.0px;
+  line-height: 1.4;
+  display: inline-block;
+  transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1), transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-theme="light"] .hero-ticker-text {
+  color: #475569;
+}
+
+.hero-ticker-text.ticker-exit {
+  opacity: 0;
+  transform: translateX(-16px);
+}
+
+.hero-ticker-text.ticker-enter {
+  opacity: 0;
+  transform: translateX(24px);
+}
+
+/* Unified Single Korean Overview Description */
+.hero-unified-desc {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  line-height: 1.72;
+  max-width: 600px;
+  margin-bottom: 28px;
+}
+
+/* Compact Executive Metrics Chips */
+.hero-metrics-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.hero-metric-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-medium);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+[data-theme="light"] .hero-metric-chip {
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.metric-chip-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
   color: #009DDC;
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: rgba(0, 157, 220, 0.12);
+}
+
+.metric-chip-val {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-white);
+}
+
+.metric-chip-val.accent-lime {
+  color: #C1D72E;
+}
+
+[data-theme="light"] .metric-chip-val.accent-lime {
+  color: #059669;
+}
+
+/* Right Column: Interactive 3D Rectilinear Box Stage */
+.hero-right-col {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-right-col .hero-3d-stage {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-right-col .hero-cube-canvas {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  border-radius: 0;
+  filter: none;
 }
 
 .btn-enter-portfolio svg {
@@ -1976,28 +2162,110 @@ a,
   opacity: 0.85;
 }
 
+/* --------------------------------------------------------------------------
+   RESPONSIVE BREAKPOINTS (Mobile: 3D Object on Top, Centered Content Below)
+   -------------------------------------------------------------------------- */
+@media (max-width: 1024px) {
+  .hero-split-section {
+    grid-template-columns: 1fr 0.9fr;
+    gap: 20px;
+    min-height: 460px;
+  }
+  .hero-right-col .hero-cube-canvas {
+    max-width: 400px;
+  }
+}
+
 @media (max-width: 768px) {
   .cjw-logo-svg {
     height: 21px;
   }
-  .nav-brand-divider {
-    height: 18px;
+  .nav-brand-divider,
+  .nav-brand-tag,
+  .nav-quick-link {
+    display: none;
   }
-  .hero-cjw-emblem {
+
+  /* Match HeroSection Mobile Layout: 3D Object on Top, Centered Typography Below */
+  .hero-split-section {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    min-height: auto;
+    padding: 12px 0 36px;
+    text-align: center;
+  }
+
+  .hero-right-col {
+    order: -1;
+  }
+
+  .hero-right-col .hero-cube-canvas {
+    max-width: 290px;
+    height: 290px;
+  }
+
+  .hero-left-col {
+    align-items: center;
+    text-align: center;
+  }
+
+  .hero-brand-top-row {
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .hero-cjw-mark {
+    padding: 6px 11px;
+  }
+
+  .hero-cjw-mark .cjw-logo-svg {
+    height: 17px;
+  }
+
+  .hero-role-badge {
     padding: 6px 14px;
-    gap: 9px;
+    font-size: 11.5px;
+    letter-spacing: 2.0px;
+  }
+
+  .hero-display-name {
+    font-size: 40px;
+    letter-spacing: -1.0px;
+    line-height: 1.04;
+    margin-bottom: 16px;
+  }
+
+  .hero-ticker-stage {
+    justify-content: center;
+    min-height: 42px;
     margin-bottom: 14px;
   }
-  .hero-cjw-emblem .cjw-logo-svg {
-    height: 15px;
+
+  .hero-ticker-text {
+    font-size: 13.5px;
+    letter-spacing: 1.4px;
   }
-  .hero-cjw-emblem-text {
-    font-size: 10.5px;
+
+  .hero-unified-desc {
+    font-size: 14px;
+    margin-bottom: 20px;
+    padding: 0 4px;
   }
-  .hero-3d-caption {
-    font-size: 11px;
-    padding: 6px 14px;
-    gap: 6px;
+
+  .hero-metrics-row {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .hero-metric-chip {
+    width: 100%;
+    justify-content: center;
+    padding: 9px 12px;
+  }
+
+  .metric-chip-val {
+    font-size: 12px;
   }
 }
 
@@ -2005,16 +2273,11 @@ a,
   .cjw-logo-svg {
     height: 19px;
   }
-  .nav-brand-divider {
-    height: 16px;
+  .hero-right-col .hero-cube-canvas {
+    max-width: 250px;
+    height: 250px;
   }
-}
-
-@media (max-width: 360px) {
-  .cjw-logo-svg {
-    height: 17px;
-  }
-  .nav-brand-divider {
-    display: none;
+  .hero-display-name {
+    font-size: 34px;
   }
 }

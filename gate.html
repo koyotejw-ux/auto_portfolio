@@ -1,25 +1,28 @@
 <!DOCTYPE html>
-<html lang="ko" data-theme="light">
+<html lang="ko" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
-  <title>CJW PORTFOLIO GATEWAY | Senior Product UX/UI Designer &amp; Architect</title>
-  <meta name="description" content="데이터 중심의 정량적 UX 분석과 체계적인 디자인 시스템을 구현하는 CJW 시니어 프로덕트 디자이너 포트폴리오 게이트웨이">
+  <title>JAEWOONG JUNG (CJW) | Senior Product Designer Portfolio Hub</title>
+  <meta name="description" content="데이터 중심의 정량적 UX 분석과 체계적인 디자인 시스템을 구현하는 시니어 프로덕트 디자이너 정재웅(CJW) 포트폴리오 허브">
   
-  <!-- Pretendard Variable Font -->
+  <!-- Google Fonts: Outfit & JetBrains Mono + Pretendard Variable Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   
-  <!-- Gate Page Dual Theme Design System Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=20261107_cjw_cube3d_v14">
+  <!-- Portfolio Hub Stylesheet -->
+  <link rel="stylesheet" href="style.css?v=20261107_cjw_exact_hero_v15">
 
-  <!-- Immediate Theme Initialization (Default: Light/White) -->
+  <!-- Immediate Theme Initialization (Default: Dark Mode matching Reference Hero Section) -->
   <script>
     (function() {
       try {
-        const savedTheme = localStorage.getItem('gate_theme') || 'light';
+        const savedTheme = localStorage.getItem('cjw_hub_theme_v2') || 'dark';
         document.documentElement.setAttribute('data-theme', savedTheme);
       } catch (e) {
-        document.documentElement.setAttribute('data-theme', 'light');
+        document.documentElement.setAttribute('data-theme', 'dark');
       }
     })();
   </script>
@@ -29,60 +32,60 @@
   <!-- Ambient Radial Glows -->
   <div class="ambient-mesh" aria-hidden="true"></div>
 
-  <!-- Interactive Particle Background Canvas -->
+  <!-- Geometric Network + Magical Pixel Rain + Floating Pixel Dots Background Canvas -->
   <canvas id="particleCanvas" aria-hidden="true" style="position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1;"></canvas>
 
-  <!-- Sticky Glassmorphic Navbar with Official CJW Geometric Logo -->
+  <!-- Sticky Glassmorphic Header with Official CJW Geometric Logo -->
   <header class="gate-navbar">
-    <a href="index.html" class="nav-brand" title="CJW 포트폴리오 게이트웨이 홈">
-      <svg class="cjw-logo-svg" width="411" height="129" viewBox="0 0 411 129" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="CJW 로고">
-        <path class="cjw-logo-primary" d="M0 25.6872C0 11.5005 11.5005 0 25.6872 0V25.6872H0Z"/>
-        <rect class="cjw-logo-primary" x="25.6875" width="25.6872" height="25.6872"/>
-        <rect class="cjw-logo-primary" x="51.3828" width="25.6872" height="25.6872"/>
-        <path d="M77.0547 0C91.2413 0 102.742 11.5005 102.742 25.6872H77.0547V0Z" fill="#0068B3"/>
-        <rect class="cjw-logo-primary" y="25.6865" width="25.6872" height="25.6872"/>
-        <rect class="cjw-logo-primary" y="51.375" width="25.6872" height="25.6872"/>
-        <rect class="cjw-logo-primary" y="77.0615" width="25.6872" height="25.6872"/>
-        <path class="cjw-logo-primary" d="M0 102.749H25.6872V128.436C11.5005 128.436 0 116.936 0 102.749Z"/>
-        <rect class="cjw-logo-primary" x="25.6875" y="102.749" width="25.6872" height="25.6872"/>
-        <rect class="cjw-logo-primary" x="51.3828" y="102.749" width="25.6872" height="25.6872"/>
-        <path d="M77.0547 102.749H102.742C102.742 116.936 91.2413 128.436 77.0547 128.436V102.749Z" fill="#0068B3"/>
-        <rect class="cjw-logo-primary" x="179.812" y="102.749" width="25.6872" height="25.6872"/>
-        <rect class="cjw-logo-primary" x="154.125" y="102.749" width="25.6872" height="25.6872"/>
-        <path class="cjw-logo-primary" d="M128.438 102.749H154.125V128.436C139.938 128.436 128.438 116.936 128.438 102.749Z"/>
-        <path d="M128.438 77.0615C142.624 77.0615 154.125 88.5621 154.125 102.749H128.438V77.0615Z" fill="#009DDC"/>
-        <rect class="cjw-logo-primary" x="205.492" y="25.6875" width="25.6872" height="25.6872"/>
-        <path class="cjw-logo-primary" d="M205.492 25.6872C205.492 11.5005 216.993 0 231.179 0V25.6872H205.492Z"/>
-        <path d="M231.188 0H256.875C256.875 14.1866 245.374 25.6872 231.188 25.6872V0Z" fill="#009DDC"/>
-        <rect class="cjw-logo-primary" x="205.492" y="51.375" width="25.6872" height="25.6872"/>
-        <rect class="cjw-logo-primary" x="205.492" y="77.0615" width="25.6872" height="25.6872"/>
-        <path class="cjw-logo-primary" d="M205.492 102.749H231.179C231.179 116.936 219.679 128.436 205.492 128.436V102.749Z"/>
-        <path class="cjw-logo-primary" d="M385.312 25.6872C385.312 11.5005 396.813 0 411 0V25.6872H385.312Z"/>
-        <rect class="cjw-logo-primary" x="385.312" y="25.6875" width="25.6872" height="25.6872"/>
-        <path class="cjw-logo-primary" d="M282.562 0C296.749 0 308.25 11.5005 308.25 25.6872H282.562V0Z"/>
-        <rect class="cjw-logo-primary" x="282.562" y="77.0615" width="25.6872" height="25.6872"/>
-        <rect class="cjw-logo-primary" x="282.562" y="51.374" width="25.6872" height="25.6872"/>
-        <rect class="cjw-logo-primary" x="282.562" y="25.6875" width="25.6872" height="25.6872"/>
-        <rect class="cjw-logo-primary" x="385.312" y="51.375" width="25.6872" height="25.6872"/>
-        <rect class="cjw-logo-primary" x="385.312" y="77.0615" width="25.6872" height="25.6872"/>
-        <path class="cjw-logo-primary" d="M282.562 102.749H308.25V128.436C294.063 128.436 282.562 116.936 282.562 102.749Z"/>
-        <path class="cjw-logo-primary" d="M385.312 102.749H411C411 116.936 399.499 128.436 385.312 128.436V102.749Z"/>
-        <path class="cjw-logo-primary" d="M308.25 102.749C322.437 102.749 333.937 114.25 333.937 128.436H308.25V102.749Z"/>
-        <path class="cjw-logo-primary" d="M359.625 128.436C359.625 114.25 371.126 102.749 385.312 102.749V128.436H359.625Z"/>
-        <path d="M333.945 64.2186C333.945 57.1253 339.696 51.375 346.789 51.375C353.882 51.375 359.632 57.1253 359.632 64.2186C359.632 71.3119 353.882 77.0622 346.789 77.0622C339.696 77.0622 333.945 71.3119 333.945 64.2186Z" fill="#C1D72E"/>
-      </svg>
+    <a href="index.html" class="nav-brand" title="CJW 포트폴리오 홈">
+      <svg class="cjw-logo-svg" aria-label="CJW 로고" width="411" height="129" viewBox="0 0 411 129" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 25.6872C0 11.5005 11.5005 0 25.6872 0V0V25.6872H0V25.6872Z" class="cjw-logo-primary"/>
+<rect x="25.6875" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<rect x="51.3828" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<rect x="51.3828" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<path d="M77.0547 0V0C91.2413 0 102.742 11.5005 102.742 25.6872V25.6872H77.0547V0Z" fill="#0068B3"/>
+<rect y="25.6865" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<rect y="51.375" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<rect y="77.0615" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<path d="M0 102.749H25.6872V128.436V128.436C11.5005 128.436 0 116.936 0 102.749V102.749Z" class="cjw-logo-primary"/>
+<rect x="25.6875" y="102.749" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<rect x="51.3828" y="102.749" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<path d="M77.0547 102.749H102.742V102.749C102.742 116.936 91.2413 128.436 77.0547 128.436V128.436V102.749Z" fill="#0068B3"/>
+<rect x="51.375" y="102.749" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<rect x="179.812" y="102.749" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<rect x="154.125" y="102.749" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<path d="M128.438 102.749H154.125V128.436V128.436C139.938 128.436 128.438 116.936 128.438 102.749V102.749Z" class="cjw-logo-primary"/>
+<path d="M128.438 77.0615V77.0615C142.624 77.0615 154.125 88.5621 154.125 102.749V102.749H128.438V77.0615Z" fill="#009DDC"/>
+<rect x="205.492" y="25.6875" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<path d="M205.492 25.6872C205.492 11.5005 216.993 0 231.179 0V0V25.6872H205.492V25.6872Z" class="cjw-logo-primary"/>
+<path d="M231.188 0H256.875V0C256.875 14.1866 245.374 25.6872 231.188 25.6872V25.6872V0Z" fill="#009DDC"/>
+<rect x="205.492" y="51.375" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<rect x="205.492" y="77.0615" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<path d="M205.492 102.749H231.179V102.749C231.179 116.936 219.679 128.436 205.492 128.436V128.436V102.749Z" class="cjw-logo-primary"/>
+<path d="M385.312 25.6872C385.312 11.5005 396.813 0 411 0V0V25.6872H385.312V25.6872Z" class="cjw-logo-primary"/>
+<rect x="385.312" y="25.6875" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<path d="M282.562 0V0C296.749 0 308.25 11.5005 308.25 25.6872V25.6872H282.562V0Z" class="cjw-logo-primary"/>
+<rect x="282.562" y="77.0615" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<rect x="282.562" y="51.374" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<rect x="282.562" y="25.6875" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<rect x="385.312" y="51.375" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<rect x="385.312" y="77.0615" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<path d="M282.562 102.749H308.25V128.436V128.436C294.063 128.436 282.562 116.936 282.562 102.749V102.749Z" class="cjw-logo-primary"/>
+<path d="M385.312 102.749H411V102.749C411 116.936 399.499 128.436 385.312 128.436V128.436V102.749Z" class="cjw-logo-primary"/>
+<path d="M308.25 102.749V102.749C322.437 102.749 333.937 114.25 333.937 128.436V128.436H308.25V102.749Z" class="cjw-logo-primary"/>
+<path d="M359.625 128.436C359.625 114.25 371.126 102.749 385.312 102.749V102.749V128.436H359.625V128.436Z" class="cjw-logo-primary"/>
+<path d="M333.945 64.2186C333.945 57.1253 339.696 51.375 346.789 51.375V51.375C353.882 51.375 359.632 57.1253 359.632 64.2186V64.2186C359.632 71.3119 353.882 77.0622 346.789 77.0622V77.0622C339.696 77.0622 333.945 71.3119 333.945 64.2186V64.2186Z" fill="#C1D72E"/>
+</svg>
       <div class="nav-brand-divider" aria-hidden="true"></div>
-      <div class="brand-title">
-        <span class="brand-title-main">PORTFOLIO GATEWAY</span>
-        <span class="brand-title-sub">프로덕트 UX/UI 디자인 아키텍처</span>
-      </div>
+      <span class="nav-brand-tag">PORTFOLIO ARCHIVE</span>
     </a>
 
-    <!-- Theme Switcher (Minimal & Luxury) -->
     <div class="nav-status-group">
-      <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="라이트/다크 모드 전환" title="화이트/다크 테마 전환">
-        <span class="theme-icon" id="themeIcon">☀️</span>
-        <span id="themeText">라이트</span>
+      <a href="#portfolioSection" class="nav-quick-link">Projects</a>
+      <a href="#philosophySection" class="nav-quick-link">Philosophy</a>
+      <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="라이트/다크 모드 전환" title="다크/라이트 테마 전환">
+        <span class="theme-icon" id="themeIcon">🌙</span>
+        <span id="themeText">다크</span>
       </button>
     </div>
   </header>
@@ -90,94 +93,92 @@
   <!-- Main Gate Container -->
   <main class="gate-container">
 
-    <!-- Hero Section (CJW Identity & 3D Square Cube Object Key Visual) -->
-    <section class="hero-stack">
-      <div class="hero-cjw-emblem">
-        <svg class="cjw-logo-svg" width="411" height="129" viewBox="0 0 411 129" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="CJW 로고">
-        <path class="cjw-logo-primary" d="M0 25.6872C0 11.5005 11.5005 0 25.6872 0V25.6872H0Z"/>
-        <rect class="cjw-logo-primary" x="25.6875" width="25.6872" height="25.6872"/>
-        <rect class="cjw-logo-primary" x="51.3828" width="25.6872" height="25.6872"/>
-        <path d="M77.0547 0C91.2413 0 102.742 11.5005 102.742 25.6872H77.0547V0Z" fill="#0068B3"/>
-        <rect class="cjw-logo-primary" y="25.6865" width="25.6872" height="25.6872"/>
-        <rect class="cjw-logo-primary" y="51.375" width="25.6872" height="25.6872"/>
-        <rect class="cjw-logo-primary" y="77.0615" width="25.6872" height="25.6872"/>
-        <path class="cjw-logo-primary" d="M0 102.749H25.6872V128.436C11.5005 128.436 0 116.936 0 102.749Z"/>
-        <rect class="cjw-logo-primary" x="25.6875" y="102.749" width="25.6872" height="25.6872"/>
-        <rect class="cjw-logo-primary" x="51.3828" y="102.749" width="25.6872" height="25.6872"/>
-        <path d="M77.0547 102.749H102.742C102.742 116.936 91.2413 128.436 77.0547 128.436V102.749Z" fill="#0068B3"/>
-        <rect class="cjw-logo-primary" x="179.812" y="102.749" width="25.6872" height="25.6872"/>
-        <rect class="cjw-logo-primary" x="154.125" y="102.749" width="25.6872" height="25.6872"/>
-        <path class="cjw-logo-primary" d="M128.438 102.749H154.125V128.436C139.938 128.436 128.438 116.936 128.438 102.749Z"/>
-        <path d="M128.438 77.0615C142.624 77.0615 154.125 88.5621 154.125 102.749H128.438V77.0615Z" fill="#009DDC"/>
-        <rect class="cjw-logo-primary" x="205.492" y="25.6875" width="25.6872" height="25.6872"/>
-        <path class="cjw-logo-primary" d="M205.492 25.6872C205.492 11.5005 216.993 0 231.179 0V25.6872H205.492Z"/>
-        <path d="M231.188 0H256.875C256.875 14.1866 245.374 25.6872 231.188 25.6872V0Z" fill="#009DDC"/>
-        <rect class="cjw-logo-primary" x="205.492" y="51.375" width="25.6872" height="25.6872"/>
-        <rect class="cjw-logo-primary" x="205.492" y="77.0615" width="25.6872" height="25.6872"/>
-        <path class="cjw-logo-primary" d="M205.492 102.749H231.179C231.179 116.936 219.679 128.436 205.492 128.436V102.749Z"/>
-        <path class="cjw-logo-primary" d="M385.312 25.6872C385.312 11.5005 396.813 0 411 0V25.6872H385.312Z"/>
-        <rect class="cjw-logo-primary" x="385.312" y="25.6875" width="25.6872" height="25.6872"/>
-        <path class="cjw-logo-primary" d="M282.562 0C296.749 0 308.25 11.5005 308.25 25.6872H282.562V0Z"/>
-        <rect class="cjw-logo-primary" x="282.562" y="77.0615" width="25.6872" height="25.6872"/>
-        <rect class="cjw-logo-primary" x="282.562" y="51.374" width="25.6872" height="25.6872"/>
-        <rect class="cjw-logo-primary" x="282.562" y="25.6875" width="25.6872" height="25.6872"/>
-        <rect class="cjw-logo-primary" x="385.312" y="51.375" width="25.6872" height="25.6872"/>
-        <rect class="cjw-logo-primary" x="385.312" y="77.0615" width="25.6872" height="25.6872"/>
-        <path class="cjw-logo-primary" d="M282.562 102.749H308.25V128.436C294.063 128.436 282.562 116.936 282.562 102.749Z"/>
-        <path class="cjw-logo-primary" d="M385.312 102.749H411C411 116.936 399.499 128.436 385.312 128.436V102.749Z"/>
-        <path class="cjw-logo-primary" d="M308.25 102.749C322.437 102.749 333.937 114.25 333.937 128.436H308.25V102.749Z"/>
-        <path class="cjw-logo-primary" d="M359.625 128.436C359.625 114.25 371.126 102.749 385.312 102.749V128.436H359.625Z"/>
-        <path d="M333.945 64.2186C333.945 57.1253 339.696 51.375 346.789 51.375C353.882 51.375 359.632 57.1253 359.632 64.2186C359.632 71.3119 353.882 77.0622 346.789 77.0622C339.696 77.0622 333.945 71.3119 333.945 64.2186Z" fill="#C1D72E"/>
-      </svg>
-        <span class="hero-cjw-emblem-div" aria-hidden="true"></span>
-        <span class="hero-cjw-emblem-text">SENIOR PRODUCT UX/UI ARCHIVE</span>
-      </div>
-      <div class="hero-subtitle-top">
-        서비스 UX/UI 케이스 스터디 &amp; 프로덕트 디자인 아키텍처
-      </div>
-      <h1 class="hero-main-title">
-        <span class="gradient-title-text">프로덕트 UX/UI 케이스 스터디</span>
-      </h1>
-      <p class="hero-description">
-        사용자의 숨겨진 페인포인트를 정량 데이터로 도출하고, 복잡한 인지 부하를 직관적인 인터랙션과 체계적인 디자인 시스템으로 해결한 프로덕트 디자인 포트폴리오입니다.
-      </p>
+    <!-- 🌟 HERO SECTION: Exact Match to Reference HeroSection + InteractiveGeometricShape (_Rectilinear3DBoxPainter) -->
+    <section class="hero-split-section" aria-label="히어로 섹션">
+      <!-- Left Column: Consolidated Brand & Typography + Animated Ticker -->
+      <div class="hero-left-col">
+        <div class="hero-brand-top-row">
+          <div class="hero-cjw-mark" aria-hidden="true">
+            <svg class="cjw-logo-svg" aria-label="CJW 로고" width="411" height="129" viewBox="0 0 411 129" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 25.6872C0 11.5005 11.5005 0 25.6872 0V0V25.6872H0V25.6872Z" class="cjw-logo-primary"/>
+<rect x="25.6875" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<rect x="51.3828" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<rect x="51.3828" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<path d="M77.0547 0V0C91.2413 0 102.742 11.5005 102.742 25.6872V25.6872H77.0547V0Z" fill="#0068B3"/>
+<rect y="25.6865" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<rect y="51.375" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<rect y="77.0615" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<path d="M0 102.749H25.6872V128.436V128.436C11.5005 128.436 0 116.936 0 102.749V102.749Z" class="cjw-logo-primary"/>
+<rect x="25.6875" y="102.749" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<rect x="51.3828" y="102.749" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<path d="M77.0547 102.749H102.742V102.749C102.742 116.936 91.2413 128.436 77.0547 128.436V128.436V102.749Z" fill="#0068B3"/>
+<rect x="51.375" y="102.749" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<rect x="179.812" y="102.749" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<rect x="154.125" y="102.749" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<path d="M128.438 102.749H154.125V128.436V128.436C139.938 128.436 128.438 116.936 128.438 102.749V102.749Z" class="cjw-logo-primary"/>
+<path d="M128.438 77.0615V77.0615C142.624 77.0615 154.125 88.5621 154.125 102.749V102.749H128.438V77.0615Z" fill="#009DDC"/>
+<rect x="205.492" y="25.6875" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<path d="M205.492 25.6872C205.492 11.5005 216.993 0 231.179 0V0V25.6872H205.492V25.6872Z" class="cjw-logo-primary"/>
+<path d="M231.188 0H256.875V0C256.875 14.1866 245.374 25.6872 231.188 25.6872V25.6872V0Z" fill="#009DDC"/>
+<rect x="205.492" y="51.375" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<rect x="205.492" y="77.0615" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<path d="M205.492 102.749H231.179V102.749C231.179 116.936 219.679 128.436 205.492 128.436V128.436V102.749Z" class="cjw-logo-primary"/>
+<path d="M385.312 25.6872C385.312 11.5005 396.813 0 411 0V0V25.6872H385.312V25.6872Z" class="cjw-logo-primary"/>
+<rect x="385.312" y="25.6875" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<path d="M282.562 0V0C296.749 0 308.25 11.5005 308.25 25.6872V25.6872H282.562V0Z" class="cjw-logo-primary"/>
+<rect x="282.562" y="77.0615" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<rect x="282.562" y="51.374" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<rect x="282.562" y="25.6875" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<rect x="385.312" y="51.375" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<rect x="385.312" y="77.0615" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<path d="M282.562 102.749H308.25V128.436V128.436C294.063 128.436 282.562 116.936 282.562 102.749V102.749Z" class="cjw-logo-primary"/>
+<path d="M385.312 102.749H411V102.749C411 116.936 399.499 128.436 385.312 128.436V128.436V102.749Z" class="cjw-logo-primary"/>
+<path d="M308.25 102.749V102.749C322.437 102.749 333.937 114.25 333.937 128.436V128.436H308.25V102.749Z" class="cjw-logo-primary"/>
+<path d="M359.625 128.436C359.625 114.25 371.126 102.749 385.312 102.749V102.749V128.436H359.625V128.436Z" class="cjw-logo-primary"/>
+<path d="M333.945 64.2186C333.945 57.1253 339.696 51.375 346.789 51.375V51.375C353.882 51.375 359.632 57.1253 359.632 64.2186V64.2186C359.632 71.3119 353.882 77.0622 346.789 77.0622V77.0622C339.696 77.0622 333.945 71.3119 333.945 64.2186V64.2186Z" fill="#C1D72E"/>
+</svg>
+          </div>
+          <div class="hero-role-badge">SENIOR PRODUCT DESIGNER</div>
+        </div>
 
-      <!-- 🌟 3D 정사각형 오브젝트 (3D Square Cube Architecture) 히어로 스테이지 -->
-      <div class="hero-3d-stage">
-        <div class="hero-3d-glow" aria-hidden="true"></div>
-        <canvas id="cubeVertexCanvas" width="600" height="390" class="hero-cube-canvas" aria-label="3D 정사각형 큐브 오브젝트 키비주얼"></canvas>
-        <div class="hero-3d-caption">
-          <span class="caption-pill">✦ 3D CUBE ARCHITECTURE</span>
-          <span>인터랙티브 3D 정사각형 오브젝트 · 구조적 디자인 시스템</span>
+        <h1 class="hero-display-name">
+          <span class="hero-neon-gradient">JAEWOONG<br>JUNG</span>
+        </h1>
+
+        <!-- Animated Skill/Role Ticker (Exact 5 items from HeroSection) -->
+        <div class="hero-ticker-stage" aria-live="polite">
+          <span id="heroTickerText" class="hero-ticker-text">PRODUCT STRATEGY &amp; UX/UI DESIGN</span>
+        </div>
+
+        <!-- Consolidated Single Korean Overview (Eliminated Duplicate Titles) -->
+        <p class="hero-unified-desc">
+          정량적 데이터 기반의 페인포인트 도출부터 엔터프라이즈·모바일 디자인 시스템 구축까지, 복잡한 비즈니스 문제를 직관적인 프로덕트 경험으로 해결합니다.
+        </p>
+
+        <!-- Compact Executive Metrics Row -->
+        <div class="hero-metrics-row">
+          <div class="hero-metric-chip">
+            <span class="metric-chip-label">ROLE</span>
+            <span class="metric-chip-val">1인 전 과정 총괄 (기획·UX/UI·구현)</span>
+          </div>
+          <div class="hero-metric-chip">
+            <span class="metric-chip-label">IMPACT</span>
+            <span class="metric-chip-val accent-lime">D1 리텐션 64.2% · 과업 시간 85% 단축</span>
+          </div>
         </div>
       </div>
 
-      <!-- Executive Info Strip (Glass Container with Ample Margins) -->
-      <div class="executive-info-strip">
-        <div class="info-item">
-          <span class="info-label">담당 프로필</span>
-          <span class="info-value">시니어 프로덕트 UX/UI 디자이너</span>
-        </div>
-        <div class="info-divider"></div>
-        <div class="info-item">
-          <span class="info-label">수행 형태</span>
-          <span class="info-value" style="color: var(--neon-cyan);">1인 단독 전 과정 총괄 (기획·설계·구현)</span>
-        </div>
-        <div class="info-divider"></div>
-        <div class="info-item">
-          <span class="info-label">설계 영역</span>
-          <span class="info-value">문제 정의 · 정보구조(IA) · 디자인 시스템</span>
-        </div>
-        <div class="info-divider"></div>
-        <div class="info-item">
-          <span class="info-label">검증 성과</span>
-          <span class="info-value" style="color: var(--neon-emerald);">D1 리텐션 64.2% · 입력 시간 85% 감축</span>
+      <!-- Right Column: Exact Interactive 3D Rectilinear Box (_Rectilinear3DBoxPainter) -->
+      <div class="hero-right-col">
+        <div class="hero-3d-stage">
+          <div class="hero-3d-glow" aria-hidden="true"></div>
+          <canvas id="cubeVertexCanvas" width="520" height="520" class="hero-cube-canvas" aria-label="인터랙티브 3D 정사각형 큐브 네트워크 오브젝트"></canvas>
         </div>
       </div>
     </section>
 
     <!-- Filter & Search Controls Bar (Simple & Clean) -->
-    <section class="gallery-controls-bar">
+    <section id="portfolioSection" class="gallery-controls-bar">
       <div class="filter-pills-wrap" id="filterTabs">
         <button class="filter-pill active" data-filter="all">
           전체 보기 <span class="filter-count" id="countAll">0</span>
@@ -208,7 +209,7 @@
     </section>
 
     <!-- Design Architecture Philosophy Section -->
-    <section class="philosophy-banner-wrap">
+    <section id="philosophySection" class="philosophy-banner-wrap">
       <h2 class="section-head-title">프로덕트 디자인 설계 원칙 및 아키텍처 철학</h2>
       <p class="section-head-sub">데이터 중심의 논리적 기획과 디테일한 인터랙션을 동시에 구현하는 4대 설계 원칙</p>
       
@@ -241,52 +242,54 @@
   <!-- Gate Footer -->
   <footer class="gate-footer">
     <div class="footer-brand-row">
-      <svg class="cjw-logo-svg" width="411" height="129" viewBox="0 0 411 129" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="CJW 로고">
-        <path class="cjw-logo-primary" d="M0 25.6872C0 11.5005 11.5005 0 25.6872 0V25.6872H0Z"/>
-        <rect class="cjw-logo-primary" x="25.6875" width="25.6872" height="25.6872"/>
-        <rect class="cjw-logo-primary" x="51.3828" width="25.6872" height="25.6872"/>
-        <path d="M77.0547 0C91.2413 0 102.742 11.5005 102.742 25.6872H77.0547V0Z" fill="#0068B3"/>
-        <rect class="cjw-logo-primary" y="25.6865" width="25.6872" height="25.6872"/>
-        <rect class="cjw-logo-primary" y="51.375" width="25.6872" height="25.6872"/>
-        <rect class="cjw-logo-primary" y="77.0615" width="25.6872" height="25.6872"/>
-        <path class="cjw-logo-primary" d="M0 102.749H25.6872V128.436C11.5005 128.436 0 116.936 0 102.749Z"/>
-        <rect class="cjw-logo-primary" x="25.6875" y="102.749" width="25.6872" height="25.6872"/>
-        <rect class="cjw-logo-primary" x="51.3828" y="102.749" width="25.6872" height="25.6872"/>
-        <path d="M77.0547 102.749H102.742C102.742 116.936 91.2413 128.436 77.0547 128.436V102.749Z" fill="#0068B3"/>
-        <rect class="cjw-logo-primary" x="179.812" y="102.749" width="25.6872" height="25.6872"/>
-        <rect class="cjw-logo-primary" x="154.125" y="102.749" width="25.6872" height="25.6872"/>
-        <path class="cjw-logo-primary" d="M128.438 102.749H154.125V128.436C139.938 128.436 128.438 116.936 128.438 102.749Z"/>
-        <path d="M128.438 77.0615C142.624 77.0615 154.125 88.5621 154.125 102.749H128.438V77.0615Z" fill="#009DDC"/>
-        <rect class="cjw-logo-primary" x="205.492" y="25.6875" width="25.6872" height="25.6872"/>
-        <path class="cjw-logo-primary" d="M205.492 25.6872C205.492 11.5005 216.993 0 231.179 0V25.6872H205.492Z"/>
-        <path d="M231.188 0H256.875C256.875 14.1866 245.374 25.6872 231.188 25.6872V0Z" fill="#009DDC"/>
-        <rect class="cjw-logo-primary" x="205.492" y="51.375" width="25.6872" height="25.6872"/>
-        <rect class="cjw-logo-primary" x="205.492" y="77.0615" width="25.6872" height="25.6872"/>
-        <path class="cjw-logo-primary" d="M205.492 102.749H231.179C231.179 116.936 219.679 128.436 205.492 128.436V102.749Z"/>
-        <path class="cjw-logo-primary" d="M385.312 25.6872C385.312 11.5005 396.813 0 411 0V25.6872H385.312Z"/>
-        <rect class="cjw-logo-primary" x="385.312" y="25.6875" width="25.6872" height="25.6872"/>
-        <path class="cjw-logo-primary" d="M282.562 0C296.749 0 308.25 11.5005 308.25 25.6872H282.562V0Z"/>
-        <rect class="cjw-logo-primary" x="282.562" y="77.0615" width="25.6872" height="25.6872"/>
-        <rect class="cjw-logo-primary" x="282.562" y="51.374" width="25.6872" height="25.6872"/>
-        <rect class="cjw-logo-primary" x="282.562" y="25.6875" width="25.6872" height="25.6872"/>
-        <rect class="cjw-logo-primary" x="385.312" y="51.375" width="25.6872" height="25.6872"/>
-        <rect class="cjw-logo-primary" x="385.312" y="77.0615" width="25.6872" height="25.6872"/>
-        <path class="cjw-logo-primary" d="M282.562 102.749H308.25V128.436C294.063 128.436 282.562 116.936 282.562 102.749Z"/>
-        <path class="cjw-logo-primary" d="M385.312 102.749H411C411 116.936 399.499 128.436 385.312 128.436V102.749Z"/>
-        <path class="cjw-logo-primary" d="M308.25 102.749C322.437 102.749 333.937 114.25 333.937 128.436H308.25V102.749Z"/>
-        <path class="cjw-logo-primary" d="M359.625 128.436C359.625 114.25 371.126 102.749 385.312 102.749V128.436H359.625Z"/>
-        <path d="M333.945 64.2186C333.945 57.1253 339.696 51.375 346.789 51.375C353.882 51.375 359.632 57.1253 359.632 64.2186C359.632 71.3119 353.882 77.0622 346.789 77.0622C339.696 77.0622 333.945 71.3119 333.945 64.2186Z" fill="#C1D72E"/>
-      </svg>
+      <svg class="cjw-logo-svg" aria-label="CJW 로고" width="411" height="129" viewBox="0 0 411 129" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 25.6872C0 11.5005 11.5005 0 25.6872 0V0V25.6872H0V25.6872Z" class="cjw-logo-primary"/>
+<rect x="25.6875" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<rect x="51.3828" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<rect x="51.3828" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<path d="M77.0547 0V0C91.2413 0 102.742 11.5005 102.742 25.6872V25.6872H77.0547V0Z" fill="#0068B3"/>
+<rect y="25.6865" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<rect y="51.375" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<rect y="77.0615" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<path d="M0 102.749H25.6872V128.436V128.436C11.5005 128.436 0 116.936 0 102.749V102.749Z" class="cjw-logo-primary"/>
+<rect x="25.6875" y="102.749" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<rect x="51.3828" y="102.749" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<path d="M77.0547 102.749H102.742V102.749C102.742 116.936 91.2413 128.436 77.0547 128.436V128.436V102.749Z" fill="#0068B3"/>
+<rect x="51.375" y="102.749" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<rect x="179.812" y="102.749" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<rect x="154.125" y="102.749" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<path d="M128.438 102.749H154.125V128.436V128.436C139.938 128.436 128.438 116.936 128.438 102.749V102.749Z" class="cjw-logo-primary"/>
+<path d="M128.438 77.0615V77.0615C142.624 77.0615 154.125 88.5621 154.125 102.749V102.749H128.438V77.0615Z" fill="#009DDC"/>
+<rect x="205.492" y="25.6875" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<path d="M205.492 25.6872C205.492 11.5005 216.993 0 231.179 0V0V25.6872H205.492V25.6872Z" class="cjw-logo-primary"/>
+<path d="M231.188 0H256.875V0C256.875 14.1866 245.374 25.6872 231.188 25.6872V25.6872V0Z" fill="#009DDC"/>
+<rect x="205.492" y="51.375" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<rect x="205.492" y="77.0615" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<path d="M205.492 102.749H231.179V102.749C231.179 116.936 219.679 128.436 205.492 128.436V128.436V102.749Z" class="cjw-logo-primary"/>
+<path d="M385.312 25.6872C385.312 11.5005 396.813 0 411 0V0V25.6872H385.312V25.6872Z" class="cjw-logo-primary"/>
+<rect x="385.312" y="25.6875" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<path d="M282.562 0V0C296.749 0 308.25 11.5005 308.25 25.6872V25.6872H282.562V0Z" class="cjw-logo-primary"/>
+<rect x="282.562" y="77.0615" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<rect x="282.562" y="51.374" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<rect x="282.562" y="25.6875" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<rect x="385.312" y="51.375" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<rect x="385.312" y="77.0615" width="25.6872" height="25.6872" class="cjw-logo-primary"/>
+<path d="M282.562 102.749H308.25V128.436V128.436C294.063 128.436 282.562 116.936 282.562 102.749V102.749Z" class="cjw-logo-primary"/>
+<path d="M385.312 102.749H411V102.749C411 116.936 399.499 128.436 385.312 128.436V128.436V102.749Z" class="cjw-logo-primary"/>
+<path d="M308.25 102.749V102.749C322.437 102.749 333.937 114.25 333.937 128.436V128.436H308.25V102.749Z" class="cjw-logo-primary"/>
+<path d="M359.625 128.436C359.625 114.25 371.126 102.749 385.312 102.749V102.749V128.436H359.625V128.436Z" class="cjw-logo-primary"/>
+<path d="M333.945 64.2186C333.945 57.1253 339.696 51.375 346.789 51.375V51.375C353.882 51.375 359.632 57.1253 359.632 64.2186V64.2186C359.632 71.3119 353.882 77.0622 346.789 77.0622V77.0622C339.696 77.0622 333.945 71.3119 333.945 64.2186V64.2186Z" fill="#C1D72E"/>
+</svg>
     </div>
-    <p>© 2026 CJW PORTFOLIO STUDIO · Product UX/UI Design Architecture · All Rights Reserved.</p>
+    <p>© 2026 JAEWOONG JUNG (CJW) · Senior Product UX/UI Design Architecture · All Rights Reserved.</p>
   </footer>
 
   <!-- ==========================================================================
-       SCRIPTS: THEME CONTROLLER, PORTFOLIO REGISTRY & 3D SQUARE CUBE ENGINE
+       SCRIPTS: THEME CONTROLLER, HERO TICKER, PORTFOLIO REGISTRY & 3D ENGINE
        ========================================================================== -->
   <script>
     /* ==========================================================================
-       1. THEME CONTROLLER (DEFAULT: WHITE / LIGHT MODE)
+       1. THEME CONTROLLER (DEFAULT: DARK MODE MATCHING HERO SECTION)
        ========================================================================== */
     const themeToggleBtn = document.getElementById('themeToggleBtn');
     const themeIcon = document.getElementById('themeIcon');
@@ -302,15 +305,15 @@
       }
     }
 
-    const initialTheme = document.documentElement.getAttribute('data-theme') || 'light';
+    const initialTheme = document.documentElement.getAttribute('data-theme') || 'dark';
     updateThemeUI(initialTheme);
 
     themeToggleBtn.addEventListener('click', () => {
-      const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+      const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
       const newTheme = currentTheme === 'light' ? 'dark' : 'light';
       
       document.documentElement.setAttribute('data-theme', newTheme);
-      localStorage.setItem('gate_theme', newTheme);
+      localStorage.setItem('cjw_hub_theme_v2', newTheme);
       updateThemeUI(newTheme);
       
       if (window.onThemeChanged) {
@@ -319,7 +322,39 @@
     });
 
     /* ==========================================================================
-       2. PORTFOLIO DATA REGISTRY (핵심 기본정보 중심의 심플하고 고급스러운 구성)
+       2. HERO ANIMATED SKILL/ROLE TICKER (Exact match to HeroSection._tickerItems)
+       ========================================================================== */
+    (function initHeroTicker() {
+      const tickerEl = document.getElementById('heroTickerText');
+      if (!tickerEl) return;
+
+      const tickerItems = [
+        "PRODUCT STRATEGY & UX/UI DESIGN",
+        "ENTERPRISE MES & ERP SYSTEM DESIGN",
+        "AI WORKFLOW INTEGRATION & FIGMA STANDARD",
+        "CROSS-PLATFORM INTERACTION ARCHITECTURE",
+        "B2B & B2C PRODUCT ARCHITECTURE"
+      ];
+      let currentIdx = 0;
+
+      setInterval(() => {
+        tickerEl.classList.add('ticker-exit');
+        setTimeout(() => {
+          currentIdx = (currentIdx + 1) % tickerItems.length;
+          tickerEl.textContent = tickerItems[currentIdx];
+          tickerEl.classList.remove('ticker-exit');
+          tickerEl.classList.add('ticker-enter');
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              tickerEl.classList.remove('ticker-enter');
+            });
+          });
+        }, 280);
+      }, 3000);
+    })();
+
+    /* ==========================================================================
+       3. PORTFOLIO DATA REGISTRY (핵심 기본정보 중심의 심플하고 고급스러운 구성)
        ========================================================================== */
     const PORTFOLIO_REGISTRY = [
       {
@@ -380,7 +415,7 @@
         platform: "Web & Cloud (SaaS)",
         desc: "복잡한 토지 규제 인허가와 GIS 공간 빅데이터를 3단계 계층 구조로 시각화하여 빠른 의사결정을 지원하는 B2B 플랫폼입니다.",
         thumbnail: "assets/farmingsys_clean_devices.png",
-        caseStudyUrl: "javascript:alert('파밍시스 엔터프라이즈 케이스 스터디 아카이브 모드입니다.');"
+        caseStudyUrl: "javascript:alert('파밍시스 엔터프라이즈 구축 프로젝트 아카이브입니다.');"
       },
       {
         id: "sam_mes",
@@ -400,12 +435,12 @@
         platform: "Web & Tablet (DX)",
         desc: "제조 현장의 MES 생산 설비와 ERP 경영 데이터를 실시간 통합 제어하는 차세대 스마트 팩토리 대시보드 솔루션입니다.",
         thumbnail: "assets/sam_clean_devices.png",
-        caseStudyUrl: "javascript:alert('SAM MES+ERP 엔터프라이즈 케이스 스터디 준비 중입니다.');"
+        caseStudyUrl: "javascript:alert('SAM MES+ERP 엔터프라이즈 구축 프로젝트 아카이브입니다.');"
       }
     ];
 
     /* ==========================================================================
-       3. DYNAMIC CARD RENDERER (심플하고 깔끔한 4대 스펙 그리드 & 단일 CTA)
+       4. DYNAMIC CARD RENDERER (심플하고 깔끔한 4대 스펙 그리드 & 단일 CTA)
        ========================================================================== */
     const portfolioGrid = document.getElementById('portfolioGrid');
     const filterTabs = document.getElementById('filterTabs');
@@ -432,22 +467,17 @@
             --card-gradient: ${item.gradient};
             --card-btn-bg: ${item.btnGradient};
           ">
-            <!-- Top Right Ambient Glow Circle -->
             <div class="card-ambient-glow" aria-hidden="true"></div>
 
-            <!-- Thumbnail Visual (순수 디바이스 목업) -->
             <div class="card-thumb-area">
               <img src="${item.thumbnail}" alt="${item.title}" class="card-thumb-img" loading="lazy" />
             </div>
 
-            <!-- Card Body Content with Simple & Luxury Information Hierarchy -->
             <div class="card-body">
-              <!-- Category Pill -->
               <div class="card-top-pills-row">
                 <span class="category-tag-pill">${item.badge}</span>
               </div>
 
-              <!-- Title & App Icon -->
               <div class="card-header-row">
                 <img src="${item.appIcon}" alt="${item.title} 앱 아이콘" class="card-app-icon" loading="lazy" />
                 <div class="card-title-group">
@@ -456,7 +486,6 @@
                 </div>
               </div>
 
-              <!-- 🌟 Simple 4-Spec Grid (기간, 역할, 기여도, 플랫폼) -->
               <div class="card-specs-grid">
                 <div class="spec-col">
                   <span class="spec-label">기간</span>
@@ -476,10 +505,8 @@
                 </div>
               </div>
 
-              <!-- Concise Core Summary -->
               <p class="card-desc-text">${item.desc}</p>
 
-              <!-- Single Clean Primary CTA -->
               <div class="card-action-hub">
                 <a href="${item.caseStudyUrl}" class="btn-enter-portfolio" title="${item.title} 포트폴리오 열람">
                   <span>포트폴리오 보러가기</span>
@@ -489,7 +516,6 @@
                   </svg>
                 </a>
               </div>
-
             </div>
           </article>
         `;
@@ -539,9 +565,10 @@
     });
 
     /* ==========================================================================
-       4. INTERACTIVE PARTICLE CANVAS ENGINE (DUAL THEME SUPPORT)
+       5. BACKGROUND ENGINE: GeometricNetworkBackground + FloatingDotsBackground
+          (Stars, Parallax Pixel Squares & Magical Pixel Rain on Scroll)
        ========================================================================== */
-    (function initParticles() {
+    (function initSpaceAndPixelBackground() {
       const canvas = document.getElementById('particleCanvas');
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
@@ -554,453 +581,571 @@
         height = canvas.height = window.innerHeight;
       });
 
-      let currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
-
+      let currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
       window.onThemeChanged = function(theme) {
         currentTheme = theme;
       };
 
-      const mouse = { x: null, y: null, radius: 120 };
+      let mouseX = width / 2;
+      let mouseY = height / 2;
       window.addEventListener('mousemove', (e) => {
-        mouse.x = e.clientX;
-        mouse.y = e.clientY;
-      });
-      window.addEventListener('mouseleave', () => {
-        mouse.x = null;
-        mouse.y = null;
+        mouseX = e.clientX;
+        mouseY = e.clientY;
       });
 
-      window.addEventListener('touchmove', (e) => {
-        if (e.touches && e.touches.length > 0) {
-          mouse.x = e.touches[0].clientX;
-          mouse.y = e.touches[0].clientY;
-        }
-      }, { passive: true });
-      window.addEventListener('touchend', () => {
-        mouse.x = null;
-        mouse.y = null;
-      }, { passive: true });
+      // 1. Background Stars (_Star from GeometricNetworkBackground)
+      const starColors = ['#FFFFFF', '#0068B3', '#C1D72E', '#9D00FF'];
+      const stars = Array.from({ length: 110 }, () => ({
+        x: Math.random() * 2000,
+        y: Math.random() * 3000,
+        brightness: Math.random() * 0.65 + 0.2,
+        size: Math.random() * 2.0 + 0.8,
+        color: starColors[Math.floor(Math.random() * starColors.length)]
+      }));
 
-      class Particle {
-        constructor() {
-          this.x = Math.random() * width;
-          this.y = Math.random() * height;
-          this.vx = (Math.random() - 0.5) * 0.45;
-          this.vy = (Math.random() - 0.5) * 0.45;
-          this.radius = Math.random() * 2 + 1;
-          this.baseAlpha = Math.random() * 0.35 + 0.15;
-          this.alpha = this.baseAlpha;
-        }
-
-        update() {
-          this.x += this.vx;
-          this.y += this.vy;
-
-          if (this.x < 0 || this.x > width) this.vx = -this.vx;
-          if (this.y < 0 || this.y > height) this.vy = -this.vy;
-
-          if (mouse.x !== null && mouse.y !== null) {
-            const dx = this.x - mouse.x;
-            const dy = this.y - mouse.y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist < mouse.radius) {
-              const force = (mouse.radius - dist) / mouse.radius;
-              this.x += (dx / dist) * force * 1.5;
-              this.y += (dy / dist) * force * 1.5;
-              this.alpha = Math.min(0.8, this.baseAlpha + 0.4);
-            } else {
-              this.alpha = this.baseAlpha;
-            }
-          }
-        }
-
-        draw() {
-          ctx.beginPath();
-          ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-          const colorPrefix = currentTheme === 'light' ? 'rgba(0, 104, 179,' : 'rgba(0, 157, 220,';
-          ctx.fillStyle = `${colorPrefix} ${this.alpha})`;
-          ctx.fill();
-        }
-      }
-
-      const count = Math.min(48, Math.floor(window.innerWidth / 30));
-      const particles = Array.from({ length: count }, () => new Particle());
-
-      function animate() {
-        ctx.clearRect(0, 0, width, height);
-
-        const lineRgb = currentTheme === 'light' ? '0, 104, 179' : '0, 157, 220';
-        const alphaFactor = currentTheme === 'light' ? 0.1 : 0.16;
-
-        for (let i = 0; i < particles.length; i++) {
-          for (let j = i + 1; j < particles.length; j++) {
-            const dx = particles[i].x - particles[j].x;
-            const dy = particles[i].y - particles[j].y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-
-            if (dist < 110) {
-              const alpha = (1 - dist / 110) * alphaFactor;
-              ctx.beginPath();
-              ctx.moveTo(particles[i].x, particles[i].y);
-              ctx.lineTo(particles[j].x, particles[j].y);
-              ctx.strokeStyle = `rgba(${lineRgb}, ${alpha})`;
-              ctx.lineWidth = 0.8;
-              ctx.stroke();
-            }
-          }
-        }
-
-        particles.forEach(p => {
-          p.update();
-          p.draw();
+      // 2. Floating Pixel Squares (_Dot from FloatingDotsBackground)
+      const dotColors = ['#0068B3', '#009DDC', '#C1D72E', '#9D00FF'];
+      const floatingDots = [];
+      floatingDots.push({ xPct: 0.08, yPct: 0.25, size: 32, color: '#0068B3', parallax: 0.18, speed: 0.5 });
+      floatingDots.push({ xPct: 0.88, yPct: 0.35, size: 38, color: '#009DDC', parallax: 0.25, speed: 0.7 });
+      floatingDots.push({ xPct: 0.18, yPct: 0.75, size: 26, color: '#C1D72E', parallax: 0.15, speed: 0.4 });
+      floatingDots.push({ xPct: 0.90, yPct: 0.82, size: 34, color: '#9D00FF', parallax: 0.22, speed: 0.6 });
+      for (let i = 0; i < 24; i++) {
+        floatingDots.push({
+          xPct: Math.random(),
+          yPct: Math.random() * 2.5,
+          size: i < 8 ? (12 + Math.random() * 12) : (4 + Math.random() * 7),
+          color: dotColors[i % dotColors.length],
+          parallax: 0.12 + Math.random() * 0.28,
+          speed: 0.5 + Math.random() * 1.2
         });
-
-        requestAnimationFrame(animate);
       }
 
-      animate();
+      // 3. Magical Pixel Rain on Scroll (_PixelRain from GeometricNetworkBackground)
+      const rainParticles = [];
+      let scrollOffset = window.scrollY || 0;
+      let lastScrollOffset = scrollOffset;
+
+      window.addEventListener('scroll', () => {
+        const current = window.scrollY || 0;
+        const delta = current - lastScrollOffset;
+        lastScrollOffset = current;
+        scrollOffset = current;
+
+        if (Math.abs(delta) > 1.5) {
+          const count = Math.min(6, Math.max(1, Math.floor(Math.abs(delta) / 4)));
+          for (let i = 0; i < count; i++) {
+            rainParticles.push({
+              x: Math.random() * width,
+              y: delta > 0 ? height + 16 : -16,
+              vx: (Math.random() - 0.5) * 1.0,
+              vy: -delta * (0.18 + Math.random() * 0.25),
+              size: Math.random() * 7 + 4,
+              color: dotColors[Math.floor(Math.random() * dotColors.length)],
+              life: 1.0
+            });
+          }
+        }
+      }, { passive: true });
+
+      function animateBg(now) {
+        ctx.clearRect(0, 0, width, height);
+        const isDark = currentTheme === 'dark';
+        const animVal = (now / 20000) % 1.0;
+
+        const mouseOffsetX = mouseX - width / 2;
+        const mouseOffsetY = mouseY - height / 2;
+
+        // Draw Subtle Distant Stars
+        for (const s of stars) {
+          const px = ((s.x + mouseOffsetX * 0.01) % width + width) % width;
+          const py = ((s.y - scrollOffset * 0.03 + mouseOffsetY * 0.01) % height + height) % height;
+          ctx.save();
+          ctx.globalAlpha = s.brightness * (isDark ? 0.55 : 0.25);
+          ctx.fillStyle = s.color;
+          ctx.beginPath();
+          ctx.arc(px, py, s.size * 0.65, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+        }
+
+        // Draw Floating Pixel Squares
+        const loopH = height * 2.5;
+        for (const d of floatingDots) {
+          const baseX = width * d.xPct;
+          const baseY = height * d.yPct;
+          const floatY = Math.sin(animVal * d.speed * Math.PI * 2) * 15;
+          const parallaxY = scrollOffset * d.parallax;
+          let effY = ((baseY - parallaxY) % loopH + loopH) % loopH;
+          const cy = effY + floatY;
+
+          if (cy < -60 || cy > height + 60) continue;
+
+          ctx.save();
+          if (d.size > 18) {
+            ctx.globalAlpha = isDark ? 0.12 : 0.06;
+            ctx.fillStyle = d.color;
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = d.color;
+            ctx.fillRect(baseX - (d.size + 4) / 2, cy - (d.size + 4) / 2, d.size + 4, d.size + 4);
+          }
+          ctx.shadowBlur = 0;
+          ctx.globalAlpha = isDark ? 0.28 : 0.16;
+          ctx.fillStyle = d.color;
+          ctx.fillRect(baseX - d.size / 2, cy - d.size / 2, d.size, d.size);
+
+          if (d.size > 10) {
+            ctx.globalAlpha = isDark ? 0.12 : 0.22;
+            ctx.fillStyle = '#FFFFFF';
+            const innerS = d.size * 0.58;
+            ctx.fillRect(baseX - innerS / 2, cy - innerS / 2, innerS, innerS);
+          }
+          ctx.restore();
+        }
+
+        // Update & Draw Magical Pixel Rain
+        for (let i = rainParticles.length - 1; i >= 0; i--) {
+          const p = rainParticles[i];
+          p.x += p.vx;
+          p.y += p.vy;
+          p.life -= 0.016;
+          if (p.life <= 0) {
+            rainParticles.splice(i, 1);
+            continue;
+          }
+          ctx.save();
+          ctx.globalAlpha = p.life * (isDark ? 0.75 : 0.45);
+          ctx.fillStyle = p.color;
+          ctx.shadowBlur = 8;
+          ctx.shadowColor = p.color;
+          ctx.fillRect(p.x - p.size / 2, p.y - p.size / 2, p.size, p.size);
+          ctx.restore();
+        }
+
+        requestAnimationFrame(animateBg);
+      }
+
+      requestAnimationFrame(animateBg);
     })();
 
     /* ==========================================================================
-       5. 3D SQUARE CUBE OBJECT ENGINE (히어로 3D 정사각형 오브젝트 아키텍처)
+       6. EXACT 1:1 PORT OF InteractiveGeometricShape (_Rectilinear3DBoxPainter)
        ========================================================================== */
-    (function initCubeVertexEngine() {
+    (function initRectilinear3DBoxEngine() {
       const canvas = document.getElementById('cubeVertexCanvas');
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
-      
+
       let dpr = window.devicePixelRatio || 1;
-      let width = 600;
-      let height = 390;
-      
+      let width = 520;
+      let height = 520;
+
       function resize() {
         dpr = window.devicePixelRatio || 1;
         const rect = canvas.getBoundingClientRect();
-        width = rect.width > 0 ? rect.width : (canvas.clientWidth || 600);
-        height = rect.height > 0 ? rect.height : (canvas.clientHeight || 390);
+        width = rect.width > 0 ? rect.width : (canvas.clientWidth || 520);
+        height = rect.height > 0 ? rect.height : (canvas.clientHeight || 520);
         canvas.width = width * dpr;
         canvas.height = height * dpr;
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       }
-      
-      setTimeout(resize, 50);
+
+      setTimeout(resize, 30);
       window.addEventListener('resize', resize);
 
-      // 3D Square Cube Geometry (Outer Square Cube: 98px, Inner Square Cube Core: 54px)
-      const S_OUT = 98;
-      const S_IN = 54;
-
-      const rawVertices = [
-        [-1, -1, -1], [1, -1, -1], [1, 1, -1], [-1, 1, -1],
-        [-1, -1,  1], [1, -1,  1], [1, 1,  1], [-1, 1,  1]
+      const PRIMARY_BLUE = '#0068B3';
+      const ACCENT_CYAN = '#009DDC';
+      const HIGHLIGHT_GREEN = '#C1D72E';
+      const NEON_PINK = '#FF007F';
+      const PARTICLE_COLORS = [PRIMARY_BLUE, HIGHLIGHT_GREEN, ACCENT_CYAN, NEON_PINK];
+      const NODE_COLORS = [ACCENT_CYAN, HIGHLIGHT_GREEN, NEON_PINK, PRIMARY_BLUE];
+      const VERTEX_LABELS = [
+        "SYS.MES",
+        "UX.STRAT",
+        "AI.FLOW",
+        "FIGMA.SYS",
+        "B2B.ERP",
+        "CROSS.INT",
+        "UI.PROTO",
+        "IoT.INTEG"
       ];
-      const outerVertices = rawVertices.map(v => v.map(c => c * S_OUT));
-      const innerVertices = rawVertices.map(v => v.map(c => c * S_IN));
 
-      // 6 Square Faces with 3D Surface Normals and CJW Brand Hues (#0068B3, #009DDC, #C1D72E, Indigo)
-      const cubeFaces = [
-        { indices: [0, 1, 2, 3], norm: [ 0,  0, -1], h1: 205, h2: 195, name: 'front' },  // CJW Blue (#0068B3) & Cyan (#009DDC)
-        { indices: [5, 4, 7, 6], norm: [ 0,  0,  1], h1: 225, h2: 265, name: 'back' },   // Royal Indigo & Deep Violet
-        { indices: [4, 5, 1, 0], norm: [ 0, -1,  0], h1: 195, h2: 180, name: 'top' },    // Electric Sky Cyan
-        { indices: [3, 2, 6, 7], norm: [ 0,  1,  0], h1: 160, h2: 85,  name: 'bottom' }, // Emerald & CJW Lime (#C1D72E)
-        { indices: [4, 0, 3, 7], norm: [-1,  0,  0], h1: 215, h2: 245, name: 'left' },   // Deep Architectural Blue
-        { indices: [1, 5, 6, 2], norm: [ 1,  0,  0], h1: 190, h2: 210, name: 'right' }   // Bright Azure
+      const cubeVertices = [
+        [-1, -1, -1],
+        [ 1, -1, -1],
+        [ 1,  1, -1],
+        [-1,  1, -1],
+        [-1, -1,  1],
+        [ 1, -1,  1],
+        [ 1,  1,  1],
+        [-1,  1,  1]
       ];
 
       const cubeEdges = [
-        [0, 1], [1, 2], [2, 3], [3, 0], // Front/Bottom square
-        [4, 5], [5, 6], [6, 7], [7, 4], // Back/Top square
-        [0, 4], [1, 5], [2, 6], [3, 7]  // Connecting square pillars
+        [0, 1], [1, 2], [2, 3], [3, 0],
+        [4, 5], [5, 6], [6, 7], [7, 4],
+        [0, 4], [1, 5], [2, 6], [3, 7]
       ];
 
-      let rotX = 0.44;
-      let rotY = 0.70;
-      let rotZ = 0.14;
-      let targetRotSpeedX = 0.0045;
-      let targetRotSpeedY = 0.0075;
-      let rotSpeedX = targetRotSpeedX;
-      let rotSpeedY = targetRotSpeedY;
+      let rotationX = 0.3;
+      let rotationY = 0.5;
+      let autoRotationSpeed = 0.005;
 
-      // Mouse / Touch Drag Interactivity
+      let targetHoverX = 0;
+      let targetHoverY = 0;
+      let currentHoverX = 0;
+      let currentHoverY = 0;
+
       let isDragging = false;
-      let lastMouseX = 0;
-      let lastMouseY = 0;
+      let lastPanX = 0;
+      let lastPanY = 0;
 
-      canvas.addEventListener('mousedown', (e) => {
-        isDragging = true;
-        lastMouseX = e.clientX;
-        lastMouseY = e.clientY;
-      });
+      const particles = [];
 
-      window.addEventListener('mousemove', (e) => {
+      function spawnParticles(px, py, vxBase, vyBase) {
+        for (let i = 0; i < 3; i++) {
+          particles.push({
+            x: px,
+            y: py,
+            vx: vxBase * 0.2 + (Math.random() - 0.5) * 2.2,
+            vy: vyBase * 0.2 + (Math.random() - 0.5) * 2.2,
+            color: PARTICLE_COLORS[Math.floor(Math.random() * PARTICLE_COLORS.length)],
+            size: Math.random() * 4 + 2,
+            life: 1.0
+          });
+        }
+      }
+
+      function updateParticles() {
+        for (let i = particles.length - 1; i >= 0; i--) {
+          const p = particles[i];
+          p.x += p.vx;
+          p.y += p.vy;
+          p.life -= 0.018;
+          p.vx *= 0.95;
+          p.vy *= 0.95;
+          p.size *= 0.96;
+          if (p.life <= 0) {
+            particles.splice(i, 1);
+          }
+        }
+      }
+
+      function getLocalCoords(clientX, clientY) {
+        const rect = canvas.getBoundingClientRect();
+        return {
+          x: clientX - rect.left,
+          y: clientY - rect.top
+        };
+      }
+
+      canvas.addEventListener('mousemove', (e) => {
+        const pos = getLocalCoords(e.clientX, e.clientY);
+        const cx = width / 2;
+        const cy = height / 2;
+
         if (isDragging) {
-          const dx = e.clientX - lastMouseX;
-          const dy = e.clientY - lastMouseY;
-          rotY += dx * 0.009;
-          rotX += dy * 0.009;
-          lastMouseX = e.clientX;
-          lastMouseY = e.clientY;
-          rotSpeedX = dy * 0.002;
-          rotSpeedY = dx * 0.002;
+          const dx = pos.x - lastPanX;
+          const dy = pos.y - lastPanY;
+          spawnParticles(pos.x, pos.y, dx, dy);
+          rotationY += dx * 0.008;
+          rotationX -= dy * 0.008;
+          lastPanX = pos.x;
+          lastPanY = pos.y;
+        } else {
+          targetHoverY = Math.max(-1, Math.min(1, (pos.x - cx) / cx)) * 0.5;
+          targetHoverX = -Math.max(-1, Math.min(1, (pos.y - cy) / cy)) * 0.5;
+          if (Math.random() < 0.22) {
+            spawnParticles(pos.x, pos.y, (Math.random() - 0.5) * 3, (Math.random() - 0.5) * 3);
+          }
         }
       });
 
-      window.addEventListener('mouseup', () => {
+      canvas.addEventListener('mouseleave', () => {
+        targetHoverX = 0;
+        targetHoverY = 0;
         isDragging = false;
+        autoRotationSpeed = 0.005;
+      });
+
+      canvas.addEventListener('mousedown', (e) => {
+        const pos = getLocalCoords(e.clientX, e.clientY);
+        isDragging = true;
+        lastPanX = pos.x;
+        lastPanY = pos.y;
+        autoRotationSpeed = 0;
+      });
+
+      window.addEventListener('mouseup', () => {
+        if (isDragging) {
+          isDragging = false;
+          autoRotationSpeed = 0.005;
+        }
       });
 
       canvas.addEventListener('touchstart', (e) => {
         if (e.touches.length === 1) {
+          const pos = getLocalCoords(e.touches[0].clientX, e.touches[0].clientY);
           isDragging = true;
-          lastMouseX = e.touches[0].clientX;
-          lastMouseY = e.touches[0].clientY;
+          lastPanX = pos.x;
+          lastPanY = pos.y;
+          autoRotationSpeed = 0;
         }
       }, { passive: true });
 
-      window.addEventListener('touchmove', (e) => {
+      canvas.addEventListener('touchmove', (e) => {
         if (isDragging && e.touches.length === 1) {
-          const dx = e.touches[0].clientX - lastMouseX;
-          const dy = e.touches[0].clientY - lastMouseY;
-          rotY += dx * 0.01;
-          rotX += dy * 0.01;
-          lastMouseX = e.touches[0].clientX;
-          lastMouseY = e.touches[0].clientY;
+          const pos = getLocalCoords(e.touches[0].clientX, e.touches[0].clientY);
+          const dx = pos.x - lastPanX;
+          const dy = pos.y - lastPanY;
+          spawnParticles(pos.x, pos.y, dx, dy);
+          rotationY += dx * 0.008;
+          rotationX -= dy * 0.008;
+          lastPanX = pos.x;
+          lastPanY = pos.y;
         }
       }, { passive: true });
 
       window.addEventListener('touchend', () => {
-        isDragging = false;
+        if (isDragging) {
+          isDragging = false;
+          autoRotationSpeed = 0.005;
+        }
       });
 
-      function rotatePoint(v, rx, ry, rz) {
-        let [x, y, z] = v;
-        let y1 = y * Math.cos(rx) - z * Math.sin(rx);
-        let z1 = y * Math.sin(rx) + z * Math.cos(rx);
-        let x2 = x * Math.cos(ry) + z1 * Math.sin(ry);
-        let z2 = -x * Math.sin(ry) + z1 * Math.cos(ry);
-        let x3 = x2 * Math.cos(rz) - y1 * Math.sin(rz);
-        let y3 = x2 * Math.sin(rz) + y1 * Math.cos(rz);
-        return [x3, y3, z2];
-      }
+      function transformVertex(v, rx, ry, radius) {
+        const [x, y, z] = v;
+        const cosY = Math.cos(ry), sinY = Math.sin(ry);
+        const cosX = Math.cos(rx), sinX = Math.sin(rx);
 
-      function project(v3) {
-        const fov = 390;
-        const cameraDist = 440;
-        const [x, y, z] = v3;
-        const scale = fov / (z + cameraDist);
+        const x1 = x * cosY + z * sinY;
+        const y1 = y;
+        const z1 = -x * sinY + z * cosY;
+
+        const x2 = x1;
+        const y2 = y1 * cosX - z1 * sinX;
+        const z2 = y1 * sinX + z1 * cosX;
+
+        const len = Math.hypot(x2, y2, z2) || 1;
         return {
-          x: x * scale + width / 2,
-          y: y * scale + height / 2 - 8,
-          z: z,
-          scale: scale,
-          raw: v3
+          x: (x2 / len) * radius,
+          y: (y2 / len) * radius,
+          z: (z2 / len) * radius
         };
       }
 
-      function renderCube() {
+      function render(now) {
         ctx.clearRect(0, 0, width, height);
 
-        if (!isDragging) {
-          rotX += rotSpeedX;
-          rotY += rotSpeedY;
-          rotSpeedX += (targetRotSpeedX - rotSpeedX) * 0.04;
-          rotSpeedY += (targetRotSpeedY - rotSpeedY) * 0.04;
+        rotationY += autoRotationSpeed;
+        rotationX += autoRotationSpeed * 0.3;
+
+        currentHoverX += (targetHoverX - currentHoverX) * 0.08;
+        currentHoverY += (targetHoverY - currentHoverY) * 0.08;
+
+        updateParticles();
+
+        const pulsePhase = (now % 5000) / 5000;
+        const pulseScale = 1.0 + 0.03 * Math.sin(pulsePhase * Math.PI * 2);
+
+        const minDim = Math.min(width, height);
+        const center = { x: width / 2, y: height / 2 };
+        const outerRadius = (minDim * 0.33) * pulseScale;
+        const innerRadius = outerRadius * 0.52;
+
+        const effRotX = rotationX + currentHoverX;
+        const effRotY = rotationY + currentHoverY;
+
+        const transOuter = cubeVertices.map(v => transformVertex(v, effRotX, effRotY, outerRadius));
+        const transInner = cubeVertices.map(v => transformVertex(v, -effRotX * 1.3, -effRotY * 1.5, innerRadius));
+
+        const isLight = (document.documentElement.getAttribute('data-theme') === 'light');
+
+        // 1. Draw interactive pixel particles
+        for (const p of particles) {
+          ctx.save();
+          ctx.globalAlpha = Math.max(0, p.life);
+          ctx.fillStyle = p.color;
+          ctx.fillRect(p.x - p.size / 2, p.y - p.size / 2, p.size, p.size);
+          ctx.restore();
         }
 
-        const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
-        const isLight = currentTheme === 'light';
+        // 2. Draw Outer Cube Edges & Animated Data Packets
+        for (const edge of cubeEdges) {
+          const v1 = transOuter[edge[0]];
+          const v2 = transOuter[edge[1]];
+          const p1 = { x: center.x + v1.x, y: center.y + v1.y };
+          const p2 = { x: center.x + v2.x, y: center.y + v2.y };
 
-        // 🌟 1. Perspective Floor Shadow & Refractive Glow
-        const shadowAlpha = isLight ? 0.16 : 0.32;
+          const avgZ = (v1.z + v2.z) / 2;
+          const depthScale = Math.max(0.2, (avgZ + outerRadius * 2) / (outerRadius * 2));
+
+          ctx.save();
+          ctx.beginPath();
+          ctx.moveTo(p1.x, p1.y);
+          ctx.lineTo(p2.x, p2.y);
+          ctx.strokeStyle = PRIMARY_BLUE;
+          ctx.globalAlpha = Math.min(1, (isLight ? 0.45 : 0.32) * depthScale);
+          ctx.lineWidth = 1.15;
+          ctx.stroke();
+          ctx.restore();
+
+          // Animated Flowing Data Packet along Outer Edge
+          const packetT = (pulsePhase + edge[0] * 0.15) % 1.0;
+          const pktX = p1.x + (p2.x - p1.x) * packetT;
+          const pktY = p1.y + (p2.y - p1.y) * packetT;
+          const packetColor = (edge[0] % 2 === 0) ? ACCENT_CYAN : HIGHLIGHT_GREEN;
+
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(pktX, pktY, 3.6 * depthScale, 0, Math.PI * 2);
+          ctx.fillStyle = packetColor;
+          ctx.globalAlpha = Math.min(1, 0.82 * depthScale);
+          ctx.shadowBlur = 6;
+          ctx.shadowColor = packetColor;
+          ctx.fill();
+
+          ctx.shadowBlur = 0;
+          ctx.beginPath();
+          ctx.arc(pktX, pktY, 1.3 * depthScale, 0, Math.PI * 2);
+          ctx.fillStyle = '#FFFFFF';
+          ctx.globalAlpha = 0.95;
+          ctx.fill();
+          ctx.restore();
+        }
+
+        // 3. Draw Inner Cube Edges & Animated Pink Data Packets
+        for (const edge of cubeEdges) {
+          const v1 = transInner[edge[0]];
+          const v2 = transInner[edge[1]];
+          const p1 = { x: center.x + v1.x, y: center.y + v1.y };
+          const p2 = { x: center.x + v2.x, y: center.y + v2.y };
+
+          const avgZ = (v1.z + v2.z) / 2;
+          const depthScale = Math.max(0.2, (avgZ + innerRadius * 2) / (innerRadius * 2));
+
+          ctx.save();
+          ctx.beginPath();
+          ctx.moveTo(p1.x, p1.y);
+          ctx.lineTo(p2.x, p2.y);
+          ctx.strokeStyle = NEON_PINK;
+          ctx.globalAlpha = Math.min(1, (isLight ? 0.35 : 0.24) * depthScale);
+          ctx.lineWidth = 0.9;
+          ctx.stroke();
+
+          const packetT = (pulsePhase * 1.5 + edge[1] * 0.12) % 1.0;
+          const pktX = p1.x + (p2.x - p1.x) * packetT;
+          const pktY = p1.y + (p2.y - p1.y) * packetT;
+
+          ctx.beginPath();
+          ctx.arc(pktX, pktY, 2.6 * depthScale, 0, Math.PI * 2);
+          ctx.fillStyle = NEON_PINK;
+          ctx.globalAlpha = Math.min(1, 0.72 * depthScale);
+          ctx.shadowBlur = 5;
+          ctx.shadowColor = NEON_PINK;
+          ctx.fill();
+          ctx.restore();
+        }
+
+        // 4. Inter-Cube Target Connectors (Outer[i] <-> Inner[i])
         ctx.save();
-        ctx.beginPath();
-        ctx.ellipse(width / 2, height / 2 + 140, 155, 34, 0, 0, Math.PI * 2);
-        const gradFloor = ctx.createRadialGradient(width / 2, height / 2 + 140, 0, width / 2, height / 2 + 140, 155);
-        gradFloor.addColorStop(0, isLight ? `rgba(0, 104, 179, ${shadowAlpha})` : `rgba(0, 157, 220, ${shadowAlpha})`);
-        gradFloor.addColorStop(0.5, isLight ? 'rgba(15, 23, 42, 0.07)' : 'rgba(0, 104, 179, 0.14)');
-        gradFloor.addColorStop(1, 'transparent');
-        ctx.fillStyle = gradFloor;
-        ctx.fill();
+        ctx.strokeStyle = ACCENT_CYAN;
+        ctx.globalAlpha = isLight ? 0.18 : 0.12;
+        ctx.lineWidth = 0.7;
+        for (let i = 0; i < 8; i++) {
+          ctx.beginPath();
+          ctx.moveTo(center.x + transOuter[i].x, center.y + transOuter[i].y);
+          ctx.lineTo(center.x + transInner[i].x, center.y + transInner[i].y);
+          ctx.stroke();
+        }
         ctx.restore();
 
-        // Rotate & Project Outer and Inner Square Cubes
-        const rotOuter = outerVertices.map(v => rotatePoint(v, rotX, rotY, rotZ));
-        const rotInner = innerVertices.map(v => rotatePoint(v, rotX, rotY, rotZ));
+        // 5. Draw Glowing Square Nodes + Crosshair Target Rects + Sci-Fi Typing Labels (Outer Vertices)
+        for (let i = 0; i < transOuter.length; i++) {
+          const v = transOuter[i];
+          const ox = center.x + v.x;
+          const oy = center.y + v.y;
+          const scale = Math.max(0.25, (v.z + outerRadius * 2) / (outerRadius * 2));
+          const nodeSize = 10.0 * scale;
+          const nodeColor = NODE_COLORS[i % 4];
 
-        const projOuter = rotOuter.map(project);
-        const projInner = rotInner.map(project);
-
-        // Directional Light Source (Top-Right-Front)
-        const lx = 0.55, ly = -0.75, lz = -0.35;
-        const lLen = Math.hypot(lx, ly, lz);
-        const nlx = lx / lLen, nly = ly / lLen, nlz = lz / lLen;
-
-        // Depth-sort square faces (Painter's Algorithm)
-        const sortedOuterFaces = cubeFaces.map(face => {
-          const rotN = rotatePoint(face.norm, rotX, rotY, rotZ);
-          const dot = rotN[0] * nlx + rotN[1] * nly + rotN[2] * nlz;
-          const light = Math.max(0.28, Math.min(1.0, 0.62 + dot * 0.38));
-          const pts = face.indices.map(i => projOuter[i]);
-          const avgZ = pts.reduce((s, p) => s + p.z, 0) / 4;
-          return { face, rotN, dot, light, pts, avgZ };
-        }).sort((a, b) => b.avgZ - a.avgZ);
-
-        const sortedInnerFaces = cubeFaces.map(face => {
-          const rotN = rotatePoint(face.norm, rotX, rotY, rotZ);
-          const dot = rotN[0] * nlx + rotN[1] * nly + rotN[2] * nlz;
-          const light = Math.max(0.32, Math.min(1.0, 0.66 + dot * 0.34));
-          const pts = face.indices.map(i => projInner[i]);
-          const avgZ = pts.reduce((s, p) => s + p.z, 0) / 4;
-          return { face, rotN, dot, light, pts, avgZ };
-        }).sort((a, b) => b.avgZ - a.avgZ);
-
-        // 🌟 2. Render Inner Square Cube Core (고밀도 정사각형 코어)
-        for (const f of sortedInnerFaces) {
           ctx.save();
-          ctx.beginPath();
-          ctx.moveTo(f.pts[0].x, f.pts[0].y);
-          for (let i = 1; i < f.pts.length; i++) ctx.lineTo(f.pts[i].x, f.pts[i].y);
-          ctx.closePath();
+          const rectW = nodeSize * 2.2;
+          ctx.strokeStyle = nodeColor;
+          ctx.globalAlpha = Math.min(1, (isLight ? 0.45 : 0.32) * scale);
+          ctx.lineWidth = 1.0;
+          ctx.strokeRect(ox - rectW / 2, oy - rectW / 2, rectW, rectW);
 
-          const sat = isLight ? '84%' : '88%';
-          const lit1 = `${Math.round(46 * f.light)}%`;
-          const lit2 = `${Math.round(62 * f.light)}%`;
+          ctx.fillStyle = nodeColor;
+          ctx.globalAlpha = 0.92;
+          ctx.shadowBlur = 8;
+          ctx.shadowColor = nodeColor;
+          ctx.fillRect(ox - nodeSize / 2, oy - nodeSize / 2, nodeSize, nodeSize);
 
-          const grad = ctx.createLinearGradient(f.pts[0].x, f.pts[0].y, f.pts[2].x, f.pts[2].y);
-          grad.addColorStop(0, `hsla(${f.face.h1}, ${sat}, ${lit1}, ${isLight ? 0.44 : 0.50})`);
-          grad.addColorStop(1, `hsla(${f.face.h2}, ${sat}, ${lit2}, ${isLight ? 0.56 : 0.64})`);
-          ctx.fillStyle = grad;
-          ctx.fill();
-          ctx.restore();
-        }
+          ctx.shadowBlur = 0;
+          ctx.fillStyle = '#FFFFFF';
+          ctx.globalAlpha = 1.0;
+          const glintS = nodeSize * 0.3;
+          ctx.fillRect(ox - nodeSize * 0.15 - glintS / 2, oy - nodeSize * 0.15 - glintS / 2, glintS, glintS);
 
-        // 🌟 3. Render Tesseract Architectural Struts (정사각형 코너 연결선)
-        const lineDark = 'rgba(15, 23, 42,';
-        const lineWhite = 'rgba(255, 255, 255,';
-        const baseLine = isLight ? lineDark : lineWhite;
+          const label = VERTEX_LABELS[i];
+          const textPhase = (pulsePhase * 2.0 + i * 0.25) % 2.0;
+          let opacity = 0.0;
+          let visibleText = "";
 
-        for (let i = 0; i < 8; i++) {
-          const p1 = projOuter[i];
-          const p2 = projInner[i];
-          const avgZ = (p1.z + p2.z) / 2;
-          const alpha = Math.max(0.22, Math.min(0.65, 0.48 - avgZ * 0.002));
-          ctx.beginPath();
-          ctx.moveTo(p1.x, p1.y);
-          ctx.lineTo(p2.x, p2.y);
-          ctx.strokeStyle = `${baseLine} ${alpha})`;
-          ctx.lineWidth = 1.25;
-          ctx.stroke();
-        }
+          if (textPhase < 0.5) {
+            const progress = textPhase / 0.5;
+            const len = Math.round(label.length * progress);
+            visibleText = label.substring(0, len);
+            opacity = 0.85;
+          } else if (textPhase < 1.3) {
+            visibleText = label;
+            opacity = 0.85;
+          } else if (textPhase < 1.8) {
+            const progress = (textPhase - 1.3) / 0.5;
+            visibleText = label;
+            opacity = (1.0 - progress) * 0.85;
+          }
 
-        // 🌟 4. Render Inner Square Cube Edges
-        for (const [i, j] of cubeEdges) {
-          const p1 = projInner[i];
-          const p2 = projInner[j];
-          const avgZ = (p1.z + p2.z) / 2;
-          const alpha = Math.max(0.32, Math.min(0.85, 0.58 - avgZ * 0.0025));
-          ctx.beginPath();
-          ctx.moveTo(p1.x, p1.y);
-          ctx.lineTo(p2.x, p2.y);
-          ctx.strokeStyle = `${baseLine} ${alpha})`;
-          ctx.lineWidth = 1.5;
-          ctx.stroke();
-        }
-
-        // 🌟 5. Render Outer Square Cube Glass Faces with Specular Sheen
-        for (const f of sortedOuterFaces) {
-          ctx.save();
-          ctx.beginPath();
-          ctx.moveTo(f.pts[0].x, f.pts[0].y);
-          for (let i = 1; i < f.pts.length; i++) ctx.lineTo(f.pts[i].x, f.pts[i].y);
-          ctx.closePath();
-
-          const sat = isLight ? '84%' : '90%';
-          const lit1 = `${Math.round(42 * f.light)}%`;
-          const lit2 = `${Math.round(58 * f.light)}%`;
-          const faceAlpha = isLight ? (0.22 + f.light * 0.14) : (0.24 + f.light * 0.16);
-
-          const grad = ctx.createLinearGradient(f.pts[0].x, f.pts[0].y, f.pts[2].x, f.pts[2].y);
-          grad.addColorStop(0, `hsla(${f.face.h1}, ${sat}, ${lit1}, ${faceAlpha})`);
-          grad.addColorStop(1, `hsla(${f.face.h2}, ${sat}, ${lit2}, ${faceAlpha * 1.25})`);
-          ctx.fillStyle = grad;
-          ctx.fill();
-
-          if (f.dot > 0.15) {
-            const glintGrad = ctx.createLinearGradient(f.pts[0].x, f.pts[0].y, f.pts[1].x, f.pts[3].y);
-            glintGrad.addColorStop(0, `rgba(255, 255, 255, ${Math.min(0.68, f.dot * 0.88)})`);
-            glintGrad.addColorStop(0.4, 'rgba(255, 255, 255, 0.12)');
-            glintGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
-            ctx.fillStyle = glintGrad;
-            ctx.fill();
+          if (visibleText.length > 0 && opacity > 0.05) {
+            ctx.font = '700 9.5px "JetBrains Mono", monospace';
+            ctx.fillStyle = nodeColor;
+            ctx.globalAlpha = Math.min(1, opacity * scale);
+            ctx.fillText(visibleText, ox + 12, oy - 6);
           }
           ctx.restore();
         }
 
-        // 🌟 6. Render Outer Square Cube Edges with Real 3D Depth Attenuation
-        for (const [i, j] of cubeEdges) {
-          const p1 = projOuter[i];
-          const p2 = projOuter[j];
-          const avgZ = (p1.z + p2.z) / 2;
-          const zRatio = (avgZ + 150) / 300;
-          const alpha = Math.max(0.38, Math.min(0.98, 0.96 - zRatio * 0.45));
-          const edgeWidth = Math.max(1.7, 2.9 - zRatio * 1.2);
+        // 6. Draw Glowing Inner Vertices
+        for (let i = 0; i < transInner.length; i++) {
+          const v = transInner[i];
+          const ix = center.x + v.x;
+          const iy = center.y + v.y;
+          const scale = Math.max(0.25, (v.z + innerRadius * 2) / (innerRadius * 2));
+          const nodeSize = 6.0 * scale;
 
+          ctx.save();
           ctx.beginPath();
-          ctx.moveTo(p1.x, p1.y);
-          ctx.lineTo(p2.x, p2.y);
-          ctx.strokeStyle = `${baseLine} ${alpha})`;
-          ctx.lineWidth = edgeWidth;
-          ctx.stroke();
+          ctx.arc(ix, iy, nodeSize * 1.5, 0, Math.PI * 2);
+          ctx.fillStyle = NEON_PINK;
+          ctx.globalAlpha = Math.min(1, 0.28 * scale);
+          ctx.shadowBlur = 6;
+          ctx.shadowColor = NEON_PINK;
+          ctx.fill();
 
-          if (zRatio < 0.42) {
-            ctx.strokeStyle = isLight ? 'rgba(255, 255, 255, 0.72)' : 'rgba(255, 255, 255, 0.92)';
-            ctx.lineWidth = 1.0;
-            ctx.stroke();
-          }
+          ctx.shadowBlur = 0;
+          ctx.beginPath();
+          ctx.arc(ix, iy, nodeSize * 0.5, 0, Math.PI * 2);
+          ctx.fillStyle = isLight ? '#0F172A' : '#FFFFFF';
+          ctx.globalAlpha = 0.95;
+          ctx.fill();
+          ctx.restore();
         }
 
-        // 🌟 7. Render 16 3D Shaded Vertex Nodes (정사각형 꼭짓점)
-        const allProjected = [
-          ...projInner.map((p, idx) => ({ ...p, isInner: true, idx })),
-          ...projOuter.map((p, idx) => ({ ...p, isInner: false, idx }))
-        ].sort((a, b) => a.z - b.z);
-
-        for (const p of allProjected) {
-          const radius = p.isInner ? Math.max(3.2, 4.5 * p.scale) : Math.max(5.0, 6.8 * p.scale);
-          const rimColor = isLight ? '#0F172A' : '#FFFFFF';
-          // Accent vertex #6 with CJW signature lime (#C1D72E -> hue 72), others CJW Cyan/Blue
-          const coreHue = (!p.isInner && p.idx === 6) ? 72 : (p.isInner ? 195 : 205);
-
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, radius * 2.8, 0, Math.PI * 2);
-          const halo = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, radius * 2.8);
-          halo.addColorStop(0, isLight ? `hsla(${coreHue}, 95%, 50%, 0.35)` : `hsla(${coreHue}, 95%, 60%, 0.52)`);
-          halo.addColorStop(1, 'transparent');
-          ctx.fillStyle = halo;
-          ctx.fill();
-
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
-          ctx.fillStyle = rimColor;
-          ctx.fill();
-
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, radius * 0.66, 0, Math.PI * 2);
-          const nodeGrad = ctx.createRadialGradient(
-            p.x - radius * 0.35, p.y - radius * 0.35, radius * 0.1,
-            p.x, p.y, radius
-          );
-          nodeGrad.addColorStop(0, '#FFFFFF');
-          nodeGrad.addColorStop(0.32, `hsl(${coreHue}, 95%, 72%)`);
-          nodeGrad.addColorStop(1, `hsl(${coreHue}, 90%, 42%)`);
-          ctx.fillStyle = nodeGrad;
-          ctx.fill();
-        }
-
-        requestAnimationFrame(renderCube);
+        requestAnimationFrame(render);
       }
 
-      requestAnimationFrame(renderCube);
+      requestAnimationFrame(render);
     })();
 
     // Mobile Scroll-to-Top Controller
