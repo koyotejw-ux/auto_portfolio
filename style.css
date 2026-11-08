@@ -2223,10 +2223,17 @@ a,
 }
 
 .geo-dot {
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
   background: var(--item-accent, #009DDC);
-  border-radius: 1px;
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--item-accent, #009DDC);
+  animation: liveDotPulse 2.4s infinite ease-in-out;
+}
+
+@keyframes liveDotPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.45; transform: scale(0.85); }
 }
 
 .category-tag-pill {
@@ -2366,23 +2373,42 @@ a,
   gap: 8px;
   width: 100%;
   height: 48px;
-  border-radius: 10px;
-  background: linear-gradient(135deg, #0068B3 0%, #009DDC 100%);
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--item-hue, #0068B3) 0%, var(--item-accent, #009DDC) 100%);
   color: #FFFFFF;
   text-decoration: none;
   font-family: 'Pretendard', sans-serif;
   font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.02em;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 4px 15px rgba(0, 104, 179, 0.3);
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25), 0 0 16px var(--item-hue, rgba(0, 104, 179, 0.25));
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.btn-geo-action::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+  transition: 0.5s ease;
+}
+
+.btn-geo-action:hover::after {
+  left: 100%;
 }
 
 .btn-geo-action:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 157, 220, 0.45);
-  background: linear-gradient(135deg, #009DDC 0%, #0068B3 100%);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35), 0 0 28px var(--item-accent, rgba(0, 157, 220, 0.5));
+  border-color: rgba(255, 255, 255, 0.45);
+  color: #FFFFFF;
 }
 
 .btn-geo-action svg {
@@ -2638,4 +2664,175 @@ body {
   .footer-copyright {
     font-size: 11.5px;
   }
+}
+
+
+/* ==========================================================================
+   ULTRA-CRAFT ELEVATION: INTERACTIVE SPOTLIGHT, TELEMETRY & TOAST
+   ========================================================================== */
+
+/* 1. Dynamic Mouse-Follow Spotlight Border on Cards */
+.gate-card.cjw-geo-card {
+  position: relative;
+}
+
+.gate-card.cjw-geo-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 28px;
+  padding: 1.5px;
+  background: radial-gradient(
+    420px circle at var(--mouse-x, 50%) var(--mouse-y, 0px),
+    var(--item-accent, rgba(0, 157, 220, 0.45)),
+    transparent 50%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  z-index: 5;
+}
+
+.gate-card.cjw-geo-card:hover::before {
+  opacity: 1;
+}
+
+.gate-card.cjw-geo-card:hover {
+  border-color: var(--item-accent, var(--neon-cyan));
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5), 0 0 30px var(--item-hue, rgba(0, 104, 179, 0.15));
+}
+
+/* 2. Thumbnail Ambient Backlight */
+.gate-card.cjw-geo-card .card-thumb-area::before {
+  content: '';
+  position: absolute;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--item-accent, #009DDC) 0%, transparent 70%);
+  opacity: 0.16;
+  filter: blur(40px);
+  pointer-events: none;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  z-index: 1;
+}
+
+.gate-card.cjw-geo-card:hover .card-thumb-area::before {
+  opacity: 0.35;
+  transform: scale(1.15);
+}
+
+.gate-card.cjw-geo-card .card-thumb-img {
+  position: relative;
+  z-index: 2;
+}
+
+/* 3. Search Bar Shortcut Hint (<kbd>) */
+.search-box-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-kbd-hint {
+  position: absolute;
+  right: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 5px;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+[data-theme="light"] .search-kbd-hint {
+  background: #F1F5F9;
+  border-color: #CBD5E1;
+}
+
+.search-box-wrap:focus-within .search-kbd-hint {
+  opacity: 0;
+}
+
+@media (max-width: 768px) {
+  .search-kbd-hint {
+    display: none;
+  }
+}
+
+/* 4. Luxury Floating Toast Notification */
+.hub-toast-notification {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%) translateY(24px);
+  background: rgba(15, 23, 42, 0.94);
+  border: 1px solid rgba(0, 157, 220, 0.45);
+  color: #F8FAFC;
+  padding: 11px 24px;
+  border-radius: 9999px;
+  font-size: 13.5px;
+  font-weight: 600;
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 157, 220, 0.25);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 10001;
+}
+
+[data-theme="light"] .hub-toast-notification {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(0, 104, 179, 0.35);
+  color: #0F172A;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12), 0 0 20px rgba(0, 104, 179, 0.15);
+}
+
+.hub-toast-notification.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* 5. Contact Pills Hover Elevate */
+.contact-pill-item {
+  cursor: pointer;
+  position: relative;
+}
+
+.contact-pill-item:hover {
+  transform: translateY(-2px);
+  border-color: rgba(0, 157, 220, 0.45);
+  background: rgba(0, 157, 220, 0.1);
+  box-shadow: 0 0 20px rgba(0, 157, 220, 0.25);
+}
+
+/* 6. Philosophy Cards Polish */
+.phil-col-card {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.3s ease,
+              box-shadow 0.3s ease;
+}
+
+.phil-col-card:hover {
+  border-color: rgba(0, 157, 220, 0.35);
+  transform: translateY(-4px);
+  box-shadow: 0 14px 32px -10px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 157, 220, 0.12);
 }

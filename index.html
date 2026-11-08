@@ -13,7 +13,7 @@
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   
   <!-- Portfolio Hub Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=20261108_clean_cards_v1">
+  <link rel="stylesheet" href="style.css?v=20261108_craft_delight_v1">
 
   <!-- Immediate Theme Initialization (Default: Dark Mode) -->
   <script>
@@ -159,6 +159,7 @@
           <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
         <input type="text" id="searchInput" class="search-input" placeholder="프로젝트명, 키워드, 도메인 검색..." aria-label="포트폴리오 검색" />
+        <kbd class="search-kbd-hint" title="단축키: / 키를 누르면 검색창으로 이동">/</kbd>
       </div>
     </section>
 
@@ -1050,6 +1051,80 @@
     })();
 
     
+        /* Toast Notification Controller */
+    function showToast(message) {
+      let toast = document.getElementById('hubToast');
+      if (!toast) return;
+      toast.innerHTML = `
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        <span>${message}</span>
+      `;
+      toast.classList.add('show');
+      clearTimeout(toast._timeout);
+      toast._timeout = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2600);
+    }
+    window.showToast = showToast;
+
+    /* Interactive Spotlight & Contact Actions Controller */
+    function initCraftDetails() {
+      // 1. Mouse Spotlight tracking on cards
+      const grid = document.getElementById('portfolioGrid');
+      if (grid) {
+        grid.addEventListener('mousemove', (e) => {
+          const cards = grid.querySelectorAll('.gate-card');
+          cards.forEach(card => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            card.style.setProperty('--mouse-x', `${x}px`);
+            card.style.setProperty('--mouse-y', `${y}px`);
+          });
+        });
+      }
+
+      // 2. Keyboard shortcut (/) for search
+      const searchInput = document.getElementById('searchInput');
+      if (searchInput) {
+        window.addEventListener('keydown', (e) => {
+          if (e.key === '/' && document.activeElement !== searchInput) {
+            e.preventDefault();
+            searchInput.focus();
+          } else if (e.key === 'Escape' && document.activeElement === searchInput) {
+            searchInput.blur();
+          }
+        });
+      }
+
+      // 3. Contact pill copy to clipboard
+      const emailLink = document.querySelector('a[href^="mailto:"]');
+      if (emailLink) {
+        emailLink.addEventListener('click', (e) => {
+          if (navigator.clipboard) {
+            navigator.clipboard.writeText('coyotejw@naver.com').then(() => {
+              showToast('이메일 주소(coyotejw@naver.com)가 복사되었습니다');
+            }).catch(() => {});
+          }
+        });
+      }
+
+      const phoneLink = document.querySelector('a[href^="tel:"]');
+      if (phoneLink) {
+        phoneLink.addEventListener('click', (e) => {
+          const isDesktop = window.matchMedia('(min-width: 769px)').matches;
+          if (isDesktop && navigator.clipboard) {
+            e.preventDefault();
+            navigator.clipboard.writeText('010-4375-3599').then(() => {
+              showToast('연락처(010-4375-3599)가 복사되었습니다');
+            }).catch(() => {});
+          }
+        });
+      }
+    }
+
     /* 7. Sticky Header Dynamic Background & Scroll-to-Top FAB Controller */
     function initScrollTopController() {
       const headerEl = document.querySelector('.gate-navbar');
@@ -1098,7 +1173,9 @@
     document.addEventListener('DOMContentLoaded', () => {
       initGallery();
       initScrollTopController();
+      initCraftDetails();
     });
   </script>
+<div id="hubToast" class="hub-toast-notification" aria-live="polite"></div>
 </body>
 </html>
