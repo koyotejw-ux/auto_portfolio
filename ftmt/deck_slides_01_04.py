@@ -39,22 +39,10 @@ def make_slide_01():
     draw.text((100, 290), sub1, font=get_font(16.5, 'medium'), fill=C_TEXT_BODY)
     draw.text((100, 318), sub2, font=get_font(16.5, 'semibold'), fill=C_GOLD_MUTED)
     
-    # 4 Status Badges (Clean Theme)
-    badges = [
-        ("LEAD UX/UI ARCHITECT 100%", "gold"),
-        ("GOOGLE PLAY CLOSED TEST (출시 임박)", "green"),
-        ("60FPS TACTILE PROTOTYPE", "purple"),
-        ("DESIGN SYSTEM & ATOMIC KIT", "cyan")
-    ]
-    bx = 100
-    for b_text, b_theme in badges:
-        _, _, b_end, _ = draw_pill_badge(draw, left_x=bx, cy=385, text=b_text, font=get_font(11, 'bold'), theme=b_theme, has_dot=True, pad_x=12, height=30)
-        bx = b_end + 12
-        
-    # Core Highlights Card (Clean Left Box matching Smart DCA)
-    h_box_y = 445
+    # Core Highlights Card (Cleaned & Spacious - Zero Redundant Badges)
+    h_box_y = 396
     h_box_w = 680
-    h_box_h = 365
+    h_box_h = 418
     draw.rounded_rectangle([100, h_box_y, 100 + h_box_w, h_box_y + h_box_h], radius=16, fill=(14, 20, 36, 220), outline=(229, 192, 123, 70), width=1)
     
     # Card Header
@@ -69,13 +57,13 @@ def make_slide_01():
         ("04", "물리 엔진 햅틱 타로 (Dopamine Tarot)", "3D 카드 셔플 및 햅틱 뒤집기를 통한 오감 만족형 데일리 리추얼 제공")
     ]
     
-    k_y = h_box_y + 78
+    k_y = h_box_y + 82
     for num, k_title, k_desc in key_points:
         draw.rounded_rectangle([128, k_y, 160, k_y + 26], radius=6, fill=(24, 32, 54, 255), outline=(229, 192, 123, 70), width=1)
         draw.text((144, k_y + 13), num, font=get_font(11, 'bold'), fill=C_GOLD_HERO, anchor='mm')
         draw.text((172, k_y + 3), k_title, font=get_font(13.5, 'bold'), fill=C_TITLE_WHITE)
         draw.text((172, k_y + 25), k_desc, font=get_font(11.5, 'medium'), fill=C_TEXT_BODY)
-        k_y += 66
+        k_y += 76
         
     # Dual Angled 19.5:9 Smartphone Mockups (Centered-Right, Clean & Elegant)
     phone_hub_path = f"{MOCKUP_DIR}/iphone_01_hub.png"
@@ -122,7 +110,7 @@ def make_slide_01():
     
     col_w = 1720 // 4
     specs = [
-        ("PROJECT ROLE", "Lead UX/UI Designer & Service Planner", "서비스 기획 · 브랜드 아이덴티티 · 디자인 시스템 · UI/UX 프로토타입"),
+        ("PROJECT ROLE", "UX/UI Designer & Service Planner", "서비스 기획 · 브랜드 아이덴티티 · 디자인 시스템 · UI/UX 프로토타입"),
         ("PERIOD & SPRINT", "2026.06 - 2026.10 (5개월)", "사용자 리서치 -> 5-Elements UX 설계 -> 12-Slide 포트폴리오 완성"),
         ("DESIGN TOOL & SYSTEM", "Figma · Pretendard · Material OTF", "Cosmic Luxury 토큰 · R8/R12/R16 라운딩 체계 · 8pt 베이스라인"),
         ("PLATFORM RELEASE", "Google Play 비공개 테스트 (출시 임박)", "Android 최종 비공개 테스트 중 & Web 60fps 인터랙티브 시뮬레이터")
