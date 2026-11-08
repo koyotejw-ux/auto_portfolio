@@ -2195,51 +2195,7 @@ a,
               0 0 20px rgba(0, 104, 179, 0.14);
 }
 
-.geo-corner-tl, .geo-corner-tr, .geo-corner-bl, .geo-corner-br {
-  position: absolute;
-  width: 14px;
-  height: 14px;
-  pointer-events: none;
-  z-index: 5;
-  transition: all 0.3s ease;
-}
 
-.geo-corner-tl {
-  top: 0;
-  left: 0;
-  border-top: 2.5px solid var(--item-accent, #009DDC);
-  border-left: 2.5px solid var(--item-accent, #009DDC);
-}
-
-.geo-corner-tr {
-  top: 0;
-  right: 0;
-  border-top: 2.5px solid var(--item-accent, #009DDC);
-  border-right: 2.5px solid var(--item-accent, #009DDC);
-}
-
-.geo-corner-bl {
-  bottom: 0;
-  left: 0;
-  border-bottom: 2.5px solid var(--item-accent, #009DDC);
-  border-left: 2.5px solid var(--item-accent, #009DDC);
-}
-
-.geo-corner-br {
-  bottom: 0;
-  right: 0;
-  border-bottom: 2.5px solid var(--item-accent, #009DDC);
-  border-right: 2.5px solid var(--item-accent, #009DDC);
-}
-
-.gate-card.cjw-geo-card:hover .geo-corner-tl,
-.gate-card.cjw-geo-card:hover .geo-corner-tr,
-.gate-card.cjw-geo-card:hover .geo-corner-bl,
-.gate-card.cjw-geo-card:hover .geo-corner-br {
-  width: 20px;
-  height: 20px;
-  border-color: #C1D72E;
-}
 
 .card-bracket-bar {
   display: flex;
