@@ -17,39 +17,56 @@ def make_slide_01():
     base, draw = create_cosmic_base(center_orbit=(1480, 520))
     
     # Top Kicker & Metadata
-    draw_pill_badge(draw, left_x=100, cy=78, text="COSMIC ASTRO LAB · 2026 CASE STUDY", font=get_font(11.5, 'bold'), theme='gold', has_dot=True, pad_x=12, height=28)
+    draw_pill_badge(draw, left_x=100, cy=76, text="COSMIC ASTRO LAB · 2026 CASE STUDY", font=get_font(11.5, 'bold'), theme='gold', has_dot=True, pad_x=12, height=28)
     
-    meta_txt = "Lead UX/UI Designer & Service Planner · Android App Live · Cosmic Design System"
+    meta_txt = "UX/UI Designer & Service Planner · Android App Live · Cosmic Design System"
     w_meta = draw.textlength(meta_txt, font=get_font(13.5, 'medium'))
-    draw.text((1820 - w_meta, 70), meta_txt, font=get_font(13.5, 'medium'), fill=C_TEXT_BODY)
+    draw.text((1820 - w_meta, 68), meta_txt, font=get_font(13.5, 'medium'), fill=C_TEXT_BODY)
     
-    # 2. Main Title (Centered-Left, Simple, Clean, Impactful)
-    draw.text((100, 170), "FORTUNEMATCH SERVICE & UX/UI DESIGN", font=get_font(15, 'bold'), fill=C_GOLD_HERO)
+    # 2. Main Title (Centered-Left, Compact & Punchy)
+    draw.text((100, 155), "FORTUNEMATCH SERVICE & UX/UI DESIGN", font=get_font(14, 'bold'), fill=C_GOLD_HERO)
     
-    # Big Clean Headline (56pt Black)
+    # Big Clean Headline (58pt Black)
     title_p1 = "우주의 주파수를 잇다, "
     title_p2 = "운명의 인연을 찾다."
-    w_p1 = draw.textlength(title_p1, font=get_font(56, 'black'))
-    draw.text((100, 206), title_p1, font=get_font(56, 'black'), fill=C_TITLE_WHITE)
-    draw.text((100 + w_p1, 206), title_p2, font=get_font(56, 'black'), fill=C_GOLD_HERO)
+    w_p1 = draw.textlength(title_p1, font=get_font(58, 'black'))
+    draw.text((100, 188), title_p1, font=get_font(58, 'black'), fill=C_TITLE_WHITE)
+    draw.text((100 + w_p1, 188), title_p2, font=get_font(58, 'black'), fill=C_GOLD_HERO)
     
     # Clean Subtitle (1-2 sentences)
     sub1 = "낡은 한자와 미신을 걷어낸 감각적인 우주 사주 솔루션,"
     sub2 = "0.3초 고유 우주 좌표와 5각형 오행 실시간 레이더로 92% 정밀 궁합을 증명합니다."
-    draw.text((100, 290), sub1, font=get_font(16.5, 'medium'), fill=C_TEXT_BODY)
-    draw.text((100, 318), sub2, font=get_font(16.5, 'semibold'), fill=C_GOLD_MUTED)
+    draw.text((100, 272), sub1, font=get_font(16.5, 'medium'), fill=C_TEXT_BODY)
+    draw.text((100, 300), sub2, font=get_font(16.5, 'semibold'), fill=C_GOLD_MUTED)
     
-    # Core Highlights Card (Cleaned & Spacious - Zero Redundant Badges)
-    h_box_y = 396
-    h_box_w = 680
-    h_box_h = 418
-    draw.rounded_rectangle([100, h_box_y, 100 + h_box_w, h_box_y + h_box_h], radius=16, fill=(14, 20, 36, 220), outline=(229, 192, 123, 70), width=1)
+    # Core Highlights Card (Expanded Width & Zero-Void Layout)
+    h_box_y = 356
+    h_box_w = 760
+    h_box_h = 460
+    draw.rounded_rectangle([100, h_box_y, 100 + h_box_w, h_box_y + h_box_h], radius=16, fill=(14, 20, 36, 230), outline=(229, 192, 123, 85), width=1)
     
     # Card Header
-    draw_pill_badge(draw, left_x=128, cy=h_box_y + 36, text="SERVICE MISSION", font=get_font(10.5, 'bold'), theme='gold', has_dot=False, pad_x=10, height=24)
-    draw.text((270, h_box_y + 26), "미신을 걷어내고 데이터 기반의 관계 케미스트리를 풀다", font=get_font(15.5, 'bold'), fill=C_TITLE_WHITE)
-    draw.line([(128, h_box_y + 60), (100 + h_box_w - 28, h_box_y + 60)], fill=(229, 192, 123, 50), width=1)
+    draw_pill_badge(draw, left_x=126, cy=h_box_y + 30, text="SERVICE MISSION", font=get_font(10.5, 'bold'), theme='gold', has_dot=False, pad_x=10, height=24)
+    draw.text((264, h_box_y + 20), "미신을 걷어내고 데이터 기반의 관계 케미스트리를 풀다", font=get_font(15.5, 'bold'), fill=C_TITLE_WHITE)
+    draw.line([(126, h_box_y + 54), (100 + h_box_w - 26, h_box_y + 54)], fill=(229, 192, 123, 40), width=1)
     
+    # UX Performance Metric Ribbon (High-Density Context)
+    metrics = [
+        ("0.3s", "우주 좌표 맵핑"),
+        ("92%", "오행 궁합 정밀도"),
+        ("60fps", "햅틱 인터랙션")
+    ]
+    m_w = (h_box_w - 52 - 24) // 3
+    for m_i, (m_val, m_lbl) in enumerate(metrics):
+        mx = 126 + m_i * (m_w + 12)
+        my = h_box_y + 66
+        draw.rounded_rectangle([mx, my, mx + m_w, my + 34], radius=8, fill=(24, 32, 54, 200), outline=(229, 192, 123, 60), width=1)
+        draw.text((mx + 14, my + 8), m_val, font=get_font(13.5, 'black'), fill=C_GOLD_HERO)
+        draw.text((mx + 66, my + 10), m_lbl, font=get_font(11, 'medium'), fill=C_TEXT_BODY)
+        
+    draw.line([(126, h_box_y + 112), (100 + h_box_w - 26, h_box_y + 112)], fill=(229, 192, 123, 40), width=1)
+    
+    # 4 Service Pillars (Structured & Rich)
     key_points = [
         ("01", "0.3초 고유 우주 좌표 (Astro-Coordinate)", "생년월일시 입력 즉시 4주 8글자를 우주 주파수 메타포로 치환하여 1초 조망"),
         ("02", "5각형 오행 실시간 레이더 (Five-Elements)", "목화토금수 에너지 밸런스를 5각형 레이더 다각형으로 0.1초 만에 시각화"),
@@ -57,15 +74,15 @@ def make_slide_01():
         ("04", "물리 엔진 햅틱 타로 (Dopamine Tarot)", "3D 카드 셔플 및 햅틱 뒤집기를 통한 오감 만족형 데일리 리추얼 제공")
     ]
     
-    k_y = h_box_y + 82
+    k_y = h_box_y + 128
     for num, k_title, k_desc in key_points:
-        draw.rounded_rectangle([128, k_y, 160, k_y + 26], radius=6, fill=(24, 32, 54, 255), outline=(229, 192, 123, 70), width=1)
-        draw.text((144, k_y + 13), num, font=get_font(11, 'bold'), fill=C_GOLD_HERO, anchor='mm')
-        draw.text((172, k_y + 3), k_title, font=get_font(13.5, 'bold'), fill=C_TITLE_WHITE)
-        draw.text((172, k_y + 25), k_desc, font=get_font(11.5, 'medium'), fill=C_TEXT_BODY)
-        k_y += 76
+        draw.rounded_rectangle([126, k_y, 160, k_y + 26], radius=6, fill=(24, 32, 54, 255), outline=(229, 192, 123, 70), width=1)
+        draw.text((143, k_y + 13), num, font=get_font(11, 'bold'), fill=C_GOLD_HERO, anchor='mm')
+        draw.text((174, k_y + 3), k_title, font=get_font(13.5, 'bold'), fill=C_TITLE_WHITE)
+        draw.text((174, k_y + 27), k_desc, font=get_font(11.5, 'medium'), fill=C_TEXT_BODY)
+        k_y += 74
         
-    # Dual Angled 19.5:9 Smartphone Mockups (Centered-Right, Clean & Elegant)
+    # Dual Angled 19.5:9 Smartphone Mockups (Enlarged & Flawlessly Positioned)
     phone_hub_path = f"{MOCKUP_DIR}/iphone_01_hub.png"
     phone_match_path = f"{MOCKUP_DIR}/iphone_05_match.png"
     
@@ -73,7 +90,7 @@ def make_slide_01():
         phone_hub = Image.open(phone_hub_path).convert('RGBA')
         phone_match = Image.open(phone_match_path).convert('RGBA')
         
-        target_h = 640
+        target_h = 680
         target_w = int(round(target_h * (phone_hub.width / phone_hub.height)))
         p_front = phone_hub.resize((target_w, target_h), Image.Resampling.LANCZOS)
         p_back = phone_match.resize((target_w, target_h), Image.Resampling.LANCZOS)
@@ -82,30 +99,33 @@ def make_slide_01():
         rot_front = p_front.rotate(angle, expand=True, resample=Image.Resampling.BICUBIC)
         rot_back = p_back.rotate(angle, expand=True, resample=Image.Resampling.BICUBIC)
         
-        def make_shadow(img, blur=44, offset=(22, 40), alpha=85):
+        def make_shadow(img, blur=46, offset=(22, 42), alpha=85):
             mask = img.split()[3]
             sh_img = Image.new('RGBA', (img.width + 120, img.height + 120), (0, 0, 0, 0))
             black = Image.new('RGBA', img.size, (0, 0, 0, alpha))
             sh_img.paste(black, (60 + offset[0], 60 + offset[1]), mask)
             return sh_img.filter(ImageFilter.GaussianBlur(blur)), (60, 60)
             
-        sh_back, pad_b = make_shadow(rot_back, blur=38, offset=(18, 32), alpha=70)
-        sh_front, pad_f = make_shadow(rot_front, blur=44, offset=(22, 40), alpha=90)
+        sh_back, pad_b = make_shadow(rot_back, blur=40, offset=(18, 34), alpha=70)
+        sh_front, pad_f = make_shadow(rot_front, blur=48, offset=(24, 44), alpha=90)
         
-        p_back_x, p_back_y = 1310, 145
-        p_front_x, p_front_y = 1010, 200
+        p_back_x, p_back_y = 1250, 115
+        p_front_x, p_front_y = 940, 170
         
-        # 1. Back phone shadow and image
         base.paste(sh_back, (p_back_x - pad_b[0], p_back_y - pad_b[1]), sh_back)
         base.paste(rot_back, (p_back_x, p_back_y), rot_back)
         
-        # 2. Front phone shadow and image (layered on top)
         base.paste(sh_front, (p_front_x - pad_f[0], p_front_y - pad_f[1]), sh_front)
         base.paste(rot_front, (p_front_x, p_front_y), rot_front)
         
-    # Project Spec Bar at Bottom
-    bar_y = 856
-    bar_h = 108
+        # Screen Mockup Context Tags (Anchoring the top space)
+        draw = ImageDraw.Draw(base)
+        draw_pill_badge(draw, left_x=1320, cy=94, text="SCREEN 02 · 5-ELEMENTS RADAR", font=get_font(10, 'bold'), theme='gold', has_dot=True, pad_x=10, height=22, solid=True)
+        draw_pill_badge(draw, left_x=1010, cy=148, text="SCREEN 01 · COSMIC HUB DASHBOARD", font=get_font(10, 'bold'), theme='cyan', has_dot=True, pad_x=10, height=22, solid=True)
+        
+    # Project Spec Bar at Bottom (Spanning x=100 to 1820)
+    bar_y = 850
+    bar_h = 114
     draw.rounded_rectangle([100, bar_y, 1820, bar_y + bar_h], radius=16, fill=(14, 20, 36, 230), outline=(229, 192, 123, 80), width=1)
     
     col_w = 1720 // 4
@@ -121,15 +141,11 @@ def make_slide_01():
         if i > 0:
             draw.line([(cx, bar_y + 18), (cx, bar_y + bar_h - 18)], fill=(229, 192, 123, 50), width=1)
         draw.text((cx + 28, bar_y + 18), cat, font=get_font(11, 'bold'), fill=C_GOLD_HERO)
-        draw.text((cx + 28, bar_y + 40), val_bold, font=get_font(15, 'bold'), fill=C_TITLE_WHITE)
-        draw.text((cx + 28, bar_y + 66), val_desc, font=get_font(11.5, 'medium'), fill=C_TEXT_BODY)
+        draw.text((cx + 28, bar_y + 42), val_bold, font=get_font(15, 'bold'), fill=C_TITLE_WHITE)
+        draw.text((cx + 28, bar_y + 70), val_desc, font=get_font(11.5, 'medium'), fill=C_TEXT_BODY)
         
     draw_slide_footer(draw, 1)
     save_slide(base, 1)
-
-# ==============================================================
-# SLIDE 02: DESK RESEARCH & MARKET STUDY
-# ==============================================================
 def make_slide_02():
     base, draw = create_cosmic_base(center_orbit=(1480, 520))
     
