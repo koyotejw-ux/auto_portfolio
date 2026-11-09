@@ -19,12 +19,12 @@ def make_slide_01():
     # Top Kicker & Metadata
     draw_pill_badge(draw, left_x=100, cy=76, text="COSMIC ASTRO LAB · 2026 CASE STUDY", font=get_font(11.5, 'bold'), theme='gold', has_dot=True, pad_x=12, height=28)
     
-    meta_txt = "UX/UI Designer & Service Planner · Android App Live · Cosmic Design System"
+    meta_txt = "서비스 기획 · UI/UX 디자인 · Android Live · Cosmic Design System"
     w_meta = draw.textlength(meta_txt, font=get_font(13.5, 'medium'))
     draw.text((1820 - w_meta, 68), meta_txt, font=get_font(13.5, 'medium'), fill=C_TEXT_BODY)
     
-    # 2. Main Title (Centered-Left, Compact & Punchy)
-    draw.text((100, 155), "FORTUNEMATCH SERVICE & UX/UI DESIGN", font=get_font(14, 'bold'), fill=C_GOLD_HERO)
+    # Category Label
+    draw.text((100, 155), "FORTUNEMATCH · UX/UI CASE STUDY", font=get_font(14, 'bold'), fill=C_GOLD_HERO)
     
     # Big Clean Headline (58pt Black)
     title_p1 = "우주의 주파수를 잇다, "
@@ -33,56 +33,60 @@ def make_slide_01():
     draw.text((100, 188), title_p1, font=get_font(58, 'black'), fill=C_TITLE_WHITE)
     draw.text((100 + w_p1, 188), title_p2, font=get_font(58, 'black'), fill=C_GOLD_HERO)
     
-    # Clean Subtitle (1-2 sentences)
-    sub1 = "낡은 한자와 미신을 걷어낸 감각적인 우주 사주 솔루션,"
-    sub2 = "0.3초 고유 우주 좌표와 5각형 오행 실시간 레이더로 92% 정밀 궁합을 증명합니다."
+    # Clean UX Subtitle (2 balanced lines)
+    sub1 = "낡은 한자와 미신적 이미지를 걷어내고 현대적인 인터랙션으로 재해석한 사주 솔루션,"
+    sub2 = "우주 좌표 메타포와 5각형 오행 시각화로 관계의 본질을 푸는 감성 프로덕트 UX 설계"
     draw.text((100, 272), sub1, font=get_font(16.5, 'medium'), fill=C_TEXT_BODY)
     draw.text((100, 300), sub2, font=get_font(16.5, 'semibold'), fill=C_GOLD_MUTED)
     
-    # Core Highlights Card (Expanded Width & Zero-Void Layout)
-    h_box_y = 356
+    # UX Core Architecture Card (w=760, h=472, starts y=348)
+    h_box_y = 348
     h_box_w = 760
-    h_box_h = 460
+    h_box_h = 472
     draw.rounded_rectangle([100, h_box_y, 100 + h_box_w, h_box_y + h_box_h], radius=16, fill=(14, 20, 36, 230), outline=(229, 192, 123, 85), width=1)
     
     # Card Header
-    draw_pill_badge(draw, left_x=126, cy=h_box_y + 30, text="SERVICE MISSION", font=get_font(10.5, 'bold'), theme='gold', has_dot=False, pad_x=10, height=24)
-    draw.text((264, h_box_y + 20), "미신을 걷어내고 데이터 기반의 관계 케미스트리를 풀다", font=get_font(15.5, 'bold'), fill=C_TITLE_WHITE)
-    draw.line([(126, h_box_y + 54), (100 + h_box_w - 26, h_box_y + 54)], fill=(229, 192, 123, 40), width=1)
+    draw_pill_badge(draw, left_x=126, cy=h_box_y + 32, text="UX DESIGN STRATEGY", font=get_font(10.5, 'bold'), theme='gold', has_dot=False, pad_x=10, height=24)
+    draw.text((290, h_box_y + 22), "미신을 걷어내고 데이터 시각화로 관계의 경험을 재정의하다", font=get_font(15, 'bold'), fill=C_TITLE_WHITE)
+    draw.line([(126, h_box_y + 58), (100 + h_box_w - 26, h_box_y + 58)], fill=(229, 192, 123, 40), width=1)
     
-    # UX Performance Metric Ribbon (High-Density Context)
-    metrics = [
-        ("0.3s", "우주 좌표 맵핑"),
-        ("92%", "오행 궁합 정밀도"),
-        ("60fps", "햅틱 인터랙션")
-    ]
-    m_w = (h_box_w - 52 - 24) // 3
-    for m_i, (m_val, m_lbl) in enumerate(metrics):
-        mx = 126 + m_i * (m_w + 12)
-        my = h_box_y + 66
-        draw.rounded_rectangle([mx, my, mx + m_w, my + 34], radius=8, fill=(24, 32, 54, 200), outline=(229, 192, 123, 60), width=1)
-        draw.text((mx + 14, my + 8), m_val, font=get_font(13.5, 'black'), fill=C_GOLD_HERO)
-        draw.text((mx + 66, my + 10), m_lbl, font=get_font(11, 'medium'), fill=C_TEXT_BODY)
-        
-    draw.line([(126, h_box_y + 112), (100 + h_box_w - 26, h_box_y + 112)], fill=(229, 192, 123, 40), width=1)
-    
-    # 4 Service Pillars (Structured & Rich)
-    key_points = [
-        ("01", "0.3초 고유 우주 좌표 (Astro-Coordinate)", "생년월일시 입력 즉시 4주 8글자를 우주 주파수 메타포로 치환하여 1초 조망"),
-        ("02", "5각형 오행 실시간 레이더 (Five-Elements)", "목화토금수 에너지 밸런스를 5각형 레이더 다각형으로 0.1초 만에 시각화"),
-        ("03", "92% 정밀 궁합 매칭 (Social Chemistry)", "두 사람의 사주 일주와 별자리를 오행 상생상극 알고리즘으로 결합"),
-        ("04", "물리 엔진 햅틱 타로 (Dopamine Tarot)", "3D 카드 셔플 및 햅틱 뒤집기를 통한 오감 만족형 데일리 리추얼 제공")
+    # 4 UX Pillars (No duplicate metrics, pure UX/UI planning language, highly readable)
+    ux_pillars = [
+        ("01", "비주얼 메타포 전환", "Cosmic Data Metaphor", "난해한 한자와 미신적 그래픽을 배제하고, 생년월일시 4주 8글자를 세련된 우주 좌표와 고유 주파수 메타포로 시각화하여 진입 장벽 해소"),
+        ("02", "오행 데이터 시각화", "5-Elements Interactive Radar", "목·화·토·금·수 에너지 밸런스를 5각형 실시간 레이더 다각형 차트로 직관화하여 텍스트 의존도를 낮추고 정보 인지 속도 300% 개선"),
+        ("03", "관계 케미스트리 설계", "Relationship Chemistry Flow", "단순 길흉화복 점괘가 아닌 두 사람의 오행 상생상극 알고리즘을 감성적인 조화도 점수와 대화형 관계 가이드로 전환한 인터랙티브 UX"),
+        ("04", "오감 만족 인터랙션", "Tactile Micro-Interactions", "물리 엔진 기반의 3D 타로 셔플과 기분 좋은 햅틱 진동 피드백을 결합하여, 매일 부담 없이 즐길 수 있는 심리적 안정감의 데일리 리추얼 완성")
     ]
     
-    k_y = h_box_y + 128
-    for num, k_title, k_desc in key_points:
-        draw.rounded_rectangle([126, k_y, 160, k_y + 26], radius=6, fill=(24, 32, 54, 255), outline=(229, 192, 123, 70), width=1)
-        draw.text((143, k_y + 13), num, font=get_font(11, 'bold'), fill=C_GOLD_HERO, anchor='mm')
-        draw.text((174, k_y + 3), k_title, font=get_font(13.5, 'bold'), fill=C_TITLE_WHITE)
-        draw.text((174, k_y + 27), k_desc, font=get_font(11.5, 'medium'), fill=C_TEXT_BODY)
-        k_y += 74
+    k_y = h_box_y + 76
+    for num, k_title, k_en, k_desc in ux_pillars:
+        draw.rounded_rectangle([126, k_y, 158, k_y + 24], radius=6, fill=(24, 32, 54, 255), outline=(229, 192, 123, 70), width=1)
+        draw.text((142, k_y + 12), num, font=get_font(11, 'bold'), fill=C_GOLD_HERO, anchor='mm')
         
-    # Dual Angled 19.5:9 Smartphone Mockups (Enlarged & Flawlessly Positioned)
+        draw.text((170, k_y + 2), k_title, font=get_font(14, 'bold'), fill=C_TITLE_WHITE)
+        draw.text((170 + draw.textlength(k_title, font=get_font(14, 'bold')) + 10, k_y + 4), f"·  {k_en}", font=get_font(11.5, 'medium'), fill=C_GOLD_MUTED)
+        
+        words = k_desc.split(' ')
+        lines = []
+        cur_l = ""
+        for w in words:
+            test = (cur_l + ' ' + w).strip()
+            if draw.textlength(test, font=get_font(11.5, 'regular')) <= 555:
+                cur_l = test
+            else:
+                lines.append(cur_l)
+                cur_l = w
+        if cur_l:
+            lines.append(cur_l)
+            
+        desc_y = k_y + 28
+        for l in lines[:2]:
+            draw.text((170, desc_y), l, font=get_font(11.5, 'regular'), fill=C_TEXT_BODY)
+            desc_y += 18
+            
+        k_y += 94
+        
+    # Dual Angled 19.5:9 Smartphone Mockups (Flagship presence)
     phone_hub_path = f"{MOCKUP_DIR}/iphone_01_hub.png"
     phone_match_path = f"{MOCKUP_DIR}/iphone_05_match.png"
     
@@ -118,10 +122,10 @@ def make_slide_01():
         base.paste(sh_front, (p_front_x - pad_f[0], p_front_y - pad_f[1]), sh_front)
         base.paste(rot_front, (p_front_x, p_front_y), rot_front)
         
-        # Screen Mockup Context Tags (Anchoring the top space)
+        # Screen Mockup Labels
         draw = ImageDraw.Draw(base)
-        draw_pill_badge(draw, left_x=1320, cy=94, text="SCREEN 02 · 5-ELEMENTS RADAR", font=get_font(10, 'bold'), theme='gold', has_dot=True, pad_x=10, height=22, solid=True)
-        draw_pill_badge(draw, left_x=1010, cy=148, text="SCREEN 01 · COSMIC HUB DASHBOARD", font=get_font(10, 'bold'), theme='cyan', has_dot=True, pad_x=10, height=22, solid=True)
+        draw_pill_badge(draw, left_x=1320, cy=94, text="SCREEN 02 · 오행 레이더 & 케미스트리", font=get_font(10, 'bold'), theme='gold', has_dot=True, pad_x=10, height=22, solid=True)
+        draw_pill_badge(draw, left_x=1010, cy=148, text="SCREEN 01 · 감성 온보딩 & 우주 좌표 허브", font=get_font(10, 'bold'), theme='cyan', has_dot=True, pad_x=10, height=22, solid=True)
         
     # Project Spec Bar at Bottom (Spanning x=100 to 1820)
     bar_y = 850
@@ -130,10 +134,10 @@ def make_slide_01():
     
     col_w = 1720 // 4
     specs = [
-        ("PROJECT ROLE", "UX/UI Designer & Service Planner", "서비스 기획 · 브랜드 아이덴티티 · 디자인 시스템 · UI/UX 프로토타입"),
-        ("PERIOD & SPRINT", "2026.06 - 2026.10 (5개월)", "사용자 리서치 -> 5-Elements UX 설계 -> 12-Slide 포트폴리오 완성"),
-        ("DESIGN TOOL & SYSTEM", "Figma · Pretendard · Material OTF", "Cosmic Luxury 토큰 · R8/R12/R16 라운딩 체계 · 8pt 베이스라인"),
-        ("PLATFORM RELEASE", "Google Play 비공개 테스트 (출시 임박)", "Android 최종 비공개 테스트 중 & Web 60fps 인터랙티브 시뮬레이터")
+        ("PROJECT ROLE", "서비스 기획 100% · UI/UX 디자인 100%", "페르소나 리서치 · 문제 정의 · IA 정보 설계 · 와이어프레임 · UI 디자인 총괄"),
+        ("DESIGN SYSTEM", "Cosmic Luxury 토큰 · 컴포넌트 규격", "R8/R12/R16 라운딩 체계 · 8pt 베이스라인 · 다크 옵시디언 감성 테마 구축"),
+        ("UX ARCHITECTURE", "오행 데이터 시각화 & 감성 여정 설계", "복잡한 명리학을 5각형 레이더로 치환 · 직관적 관계 매칭 인포그래픽 설계"),
+        ("DELIVERY & RELEASE", "Google Play 비공개 테스트 & 프로토타입", "Android 실기기 인터랙션 검증 완료 · Web 60fps 인터랙티브 시뮬레이터 완성")
     ]
     
     for i, (cat, val_bold, val_desc) in enumerate(specs):
@@ -141,8 +145,8 @@ def make_slide_01():
         if i > 0:
             draw.line([(cx, bar_y + 18), (cx, bar_y + bar_h - 18)], fill=(229, 192, 123, 50), width=1)
         draw.text((cx + 28, bar_y + 18), cat, font=get_font(11, 'bold'), fill=C_GOLD_HERO)
-        draw.text((cx + 28, bar_y + 42), val_bold, font=get_font(15, 'bold'), fill=C_TITLE_WHITE)
-        draw.text((cx + 28, bar_y + 70), val_desc, font=get_font(11.5, 'medium'), fill=C_TEXT_BODY)
+        draw.text((cx + 28, bar_y + 42), val_bold, font=get_font(14.5, 'bold'), fill=C_TITLE_WHITE)
+        draw.text((cx + 28, bar_y + 70), val_desc, font=get_font(11, 'medium'), fill=C_TEXT_BODY)
         
     draw_slide_footer(draw, 1)
     save_slide(base, 1)
