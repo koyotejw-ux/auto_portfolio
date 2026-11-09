@@ -16,6 +16,9 @@ from build_executive_ftmt_deck import (
 def make_slide_01():
     base, draw = create_cosmic_base(center_orbit=(1480, 520))
     
+    # Hairline Top Boundary
+    draw.line([(100, 52), (1820, 52)], fill=(229, 192, 123, 40), width=1)
+    
     # Top Kicker & Metadata
     draw_pill_badge(draw, left_x=100, cy=76, text="COSMIC ASTRO LAB · 2026 CASE STUDY", font=get_font(11.5, 'bold'), theme='gold', has_dot=True, pad_x=12, height=28)
     
@@ -24,54 +27,63 @@ def make_slide_01():
     draw.text((1820 - w_meta, 68), meta_txt, font=get_font(13.5, 'medium'), fill=C_TEXT_BODY)
     
     # Category Label
-    draw.text((100, 155), "FORTUNEMATCH · UX/UI CASE STUDY", font=get_font(14, 'bold'), fill=C_GOLD_HERO)
+    draw.text((100, 146), "FORTUNEMATCH · UX/UI CASE STUDY", font=get_font(14, 'bold'), fill=C_GOLD_HERO)
     
-    # Big Clean Headline (58pt Black)
+    # Big Clean Headline (56pt Black)
     title_p1 = "우주의 주파수를 잇다, "
     title_p2 = "운명의 인연을 찾다."
-    w_p1 = draw.textlength(title_p1, font=get_font(58, 'black'))
-    draw.text((100, 188), title_p1, font=get_font(58, 'black'), fill=C_TITLE_WHITE)
-    draw.text((100 + w_p1, 188), title_p2, font=get_font(58, 'black'), fill=C_GOLD_HERO)
+    w_p1 = draw.textlength(title_p1, font=get_font(56, 'black'))
+    draw.text((100, 178), title_p1, font=get_font(56, 'black'), fill=C_TITLE_WHITE)
+    draw.text((100 + w_p1, 178), title_p2, font=get_font(56, 'black'), fill=C_GOLD_HERO)
     
     # Clean UX Subtitle (2 balanced lines)
     sub1 = "낡은 한자와 미신적 이미지를 걷어내고 현대적인 인터랙션으로 재해석한 사주 솔루션,"
     sub2 = "우주 좌표 메타포와 5각형 오행 시각화로 관계의 본질을 푸는 감성 프로덕트 UX 설계"
-    draw.text((100, 272), sub1, font=get_font(16.5, 'medium'), fill=C_TEXT_BODY)
-    draw.text((100, 300), sub2, font=get_font(16.5, 'semibold'), fill=C_GOLD_MUTED)
+    draw.text((100, 260), sub1, font=get_font(16.5, 'medium'), fill=C_TEXT_BODY)
+    draw.text((100, 288), sub2, font=get_font(16.5, 'semibold'), fill=C_GOLD_MUTED)
     
-    # UX Core Architecture Card (w=760, h=472, starts y=348)
-    h_box_y = 348
-    h_box_w = 760
-    h_box_h = 472
-    draw.rounded_rectangle([100, h_box_y, 100 + h_box_w, h_box_y + h_box_h], radius=16, fill=(14, 20, 36, 230), outline=(229, 192, 123, 85), width=1)
-    
-    # Card Header
-    draw_pill_badge(draw, left_x=126, cy=h_box_y + 32, text="UX DESIGN STRATEGY", font=get_font(10.5, 'bold'), theme='gold', has_dot=False, pad_x=10, height=24)
-    draw.text((290, h_box_y + 22), "미신을 걷어내고 데이터 시각화로 관계의 경험을 재정의하다", font=get_font(15, 'bold'), fill=C_TITLE_WHITE)
-    draw.line([(126, h_box_y + 58), (100 + h_box_w - 26, h_box_y + 58)], fill=(229, 192, 123, 40), width=1)
-    
-    # 4 UX Pillars (No duplicate metrics, pure UX/UI planning language, highly readable)
-    ux_pillars = [
-        ("01", "비주얼 메타포 전환", "Cosmic Data Metaphor", "난해한 한자와 미신적 그래픽을 배제하고, 생년월일시 4주 8글자를 세련된 우주 좌표와 고유 주파수 메타포로 시각화하여 진입 장벽 해소"),
-        ("02", "오행 데이터 시각화", "5-Elements Interactive Radar", "목·화·토·금·수 에너지 밸런스를 5각형 실시간 레이더 다각형 차트로 직관화하여 텍스트 의존도를 낮추고 정보 인지 속도 300% 개선"),
-        ("03", "관계 케미스트리 설계", "Relationship Chemistry Flow", "단순 길흉화복 점괘가 아닌 두 사람의 오행 상생상극 알고리즘을 감성적인 조화도 점수와 대화형 관계 가이드로 전환한 인터랙티브 UX"),
-        ("04", "오감 만족 인터랙션", "Tactile Micro-Interactions", "물리 엔진 기반의 3D 타로 셔플과 기분 좋은 햅틱 진동 피드백을 결합하여, 매일 부담 없이 즐길 수 있는 심리적 안정감의 데일리 리추얼 완성")
+    # 2x2 Modular Bento Grid (x=100 to 940, w=840 total, y=345 to 805)
+    bento_pillars = [
+        (0, 0, "01", "비주얼 메타포", "우주 좌표 메타포 전환", "Cosmic Data Metaphor",
+         "난해한 한자와 미신적 그래픽을 배제하고, 생년월일시 4주 8글자를 세련된 우주 좌표와 고유 주파수로 시각화하여 진입 장벽 해소"),
+        (1, 0, "02", "오행 데이터 시각화", "5각형 실시간 레이더 차트", "5-Elements Interactive Radar",
+         "목·화·토·금·수 에너지 밸런스를 5각형 실시간 레이더 차트로 직관화하여 텍스트 의존도를 낮추고 정보 인지 속도 300% 개선"),
+        (0, 1, "03", "관계 케미스트리", "감성 관계 시너지 설계", "Relationship Chemistry Flow",
+         "단순 길흉화복 점괘가 아닌 두 사람의 상생상극 알고리즘을 감성적인 조화도 점수와 대화형 관계 가이드로 전환한 인터랙티브 UX"),
+        (1, 1, "04", "마이크로 인터랙션", "오감 만족 데일리 리추얼", "Tactile Micro-Interactions",
+         "물리 엔진 기반의 3D 타로 셔플과 기분 좋은 햅틱 진동 피드백을 결합하여 매일 부담 없이 즐기는 심리적 안정감의 리추얼 완성")
     ]
     
-    k_y = h_box_y + 76
-    for num, k_title, k_en, k_desc in ux_pillars:
-        draw.rounded_rectangle([126, k_y, 158, k_y + 24], radius=6, fill=(24, 32, 54, 255), outline=(229, 192, 123, 70), width=1)
-        draw.text((142, k_y + 12), num, font=get_font(11, 'bold'), fill=C_GOLD_HERO, anchor='mm')
+    col_xs = [100, 535]
+    row_ys = [345, 585]
+    card_w = 405
+    card_h = 220
+    
+    for c_i, r_i, num, tag, title_ko, sub_en, desc in bento_pillars:
+        x0 = col_xs[c_i]
+        y0 = row_ys[r_i]
+        x1 = x0 + card_w
+        y1 = y0 + card_h
         
-        draw.text((170, k_y + 2), k_title, font=get_font(14, 'bold'), fill=C_TITLE_WHITE)
-        draw.text((170 + draw.textlength(k_title, font=get_font(14, 'bold')) + 10, k_y + 4), f"·  {k_en}", font=get_font(11.5, 'medium'), fill=C_GOLD_MUTED)
+        draw.rounded_rectangle([x0, y0, x1, y1], radius=16, fill=(14, 20, 36, 220), outline=(229, 192, 123, 75), width=1)
         
-        words = k_desc.split(' ')
+        draw.rounded_rectangle([x0 + 20, y0 + 20, x0 + 52, y0 + 44], radius=6, fill=(24, 32, 54, 255), outline=(229, 192, 123, 70), width=1)
+        draw.text((x0 + 36, y0 + 32), num, font=get_font(11, 'bold'), fill=C_GOLD_HERO, anchor='mm')
+        
+        draw_pill_badge(draw, left_x=x0 + 60, cy=y0 + 32, text=tag, font=get_font(10, 'bold'), theme='gold', has_dot=False, pad_x=8, height=22)
+        
+        w_sub = draw.textlength(sub_en, font=get_font(10, 'medium'))
+        draw.text((x1 - 20 - w_sub, y0 + 26), sub_en, font=get_font(10, 'medium'), fill=(148, 163, 184))
+        
+        draw.text((x0 + 20, y0 + 64), title_ko, font=get_font(15.5, 'bold'), fill=C_TITLE_WHITE)
+        draw.line([(x0 + 20, y0 + 94), (x1 - 20, y0 + 94)], fill=(229, 192, 123, 35), width=1)
+        
+        words = desc.split(' ')
         lines = []
         cur_l = ""
         for w in words:
             test = (cur_l + ' ' + w).strip()
-            if draw.textlength(test, font=get_font(11.5, 'regular')) <= 555:
+            if draw.textlength(test, font=get_font(11.5, 'regular')) <= 365:
                 cur_l = test
             else:
                 lines.append(cur_l)
@@ -79,14 +91,12 @@ def make_slide_01():
         if cur_l:
             lines.append(cur_l)
             
-        desc_y = k_y + 28
-        for l in lines[:2]:
-            draw.text((170, desc_y), l, font=get_font(11.5, 'regular'), fill=C_TEXT_BODY)
-            desc_y += 18
+        desc_y = y0 + 110
+        for l in lines[:3]:
+            draw.text((x0 + 20, desc_y), l, font=get_font(11.5, 'regular'), fill=C_TEXT_BODY)
+            desc_y += 21
             
-        k_y += 94
-        
-    # Dual Angled 19.5:9 Smartphone Mockups (Flagship presence)
+    # Right Side: Dual Smartphone Mockups (Sleek Flagship Positioning)
     phone_hub_path = f"{MOCKUP_DIR}/iphone_01_hub.png"
     phone_match_path = f"{MOCKUP_DIR}/iphone_05_match.png"
     
@@ -94,7 +104,7 @@ def make_slide_01():
         phone_hub = Image.open(phone_hub_path).convert('RGBA')
         phone_match = Image.open(phone_match_path).convert('RGBA')
         
-        target_h = 680
+        target_h = 670
         target_w = int(round(target_h * (phone_hub.width / phone_hub.height)))
         p_front = phone_hub.resize((target_w, target_h), Image.Resampling.LANCZOS)
         p_back = phone_match.resize((target_w, target_h), Image.Resampling.LANCZOS)
@@ -113,8 +123,8 @@ def make_slide_01():
         sh_back, pad_b = make_shadow(rot_back, blur=40, offset=(18, 34), alpha=70)
         sh_front, pad_f = make_shadow(rot_front, blur=48, offset=(24, 44), alpha=90)
         
-        p_back_x, p_back_y = 1250, 115
-        p_front_x, p_front_y = 940, 170
+        p_back_x, p_back_y = 1270, 115
+        p_front_x, p_front_y = 970, 170
         
         base.paste(sh_back, (p_back_x - pad_b[0], p_back_y - pad_b[1]), sh_back)
         base.paste(rot_back, (p_back_x, p_back_y), rot_back)
@@ -122,14 +132,13 @@ def make_slide_01():
         base.paste(sh_front, (p_front_x - pad_f[0], p_front_y - pad_f[1]), sh_front)
         base.paste(rot_front, (p_front_x, p_front_y), rot_front)
         
-        # Screen Mockup Labels
         draw = ImageDraw.Draw(base)
-        draw_pill_badge(draw, left_x=1320, cy=94, text="SCREEN 02 · 오행 레이더 & 케미스트리", font=get_font(10, 'bold'), theme='gold', has_dot=True, pad_x=10, height=22, solid=True)
-        draw_pill_badge(draw, left_x=1010, cy=148, text="SCREEN 01 · 감성 온보딩 & 우주 좌표 허브", font=get_font(10, 'bold'), theme='cyan', has_dot=True, pad_x=10, height=22, solid=True)
+        draw_pill_badge(draw, left_x=1340, cy=94, text="SCREEN 02 · 오행 레이더 & 케미스트리", font=get_font(10, 'bold'), theme='gold', has_dot=True, pad_x=10, height=22, solid=True)
+        draw_pill_badge(draw, left_x=1040, cy=148, text="SCREEN 01 · 감성 온보딩 & 우주 좌표 허브", font=get_font(10, 'bold'), theme='cyan', has_dot=True, pad_x=10, height=22, solid=True)
         
-    # Project Spec Bar at Bottom (Spanning x=100 to 1820)
-    bar_y = 850
-    bar_h = 114
+    # Bottom 4-Column Specification Strip (Spanning x=100 to 1820, y=840 to 956)
+    bar_y = 840
+    bar_h = 116
     draw.rounded_rectangle([100, bar_y, 1820, bar_y + bar_h], radius=16, fill=(14, 20, 36, 230), outline=(229, 192, 123, 80), width=1)
     
     col_w = 1720 // 4
