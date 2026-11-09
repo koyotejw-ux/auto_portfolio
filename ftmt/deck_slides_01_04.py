@@ -36,54 +36,45 @@ def make_slide_01():
     draw.text((100, 178), title_p1, font=get_font(56, 'black'), fill=C_TITLE_WHITE)
     draw.text((100 + w_p1, 178), title_p2, font=get_font(56, 'black'), fill=C_GOLD_HERO)
     
-    # Clean UX Subtitle (2 balanced lines)
+        # Clean UX Subtitle (2 balanced lines)
     sub1 = "낡은 한자와 미신적 이미지를 걷어내고 현대적인 인터랙션으로 재해석한 사주 솔루션,"
     sub2 = "우주 좌표 메타포와 5각형 오행 시각화로 관계의 본질을 푸는 감성 프로덕트 UX 설계"
     draw.text((100, 260), sub1, font=get_font(16.5, 'medium'), fill=C_TEXT_BODY)
     draw.text((100, 288), sub2, font=get_font(16.5, 'semibold'), fill=C_GOLD_MUTED)
     
-    # 2x2 Modular Bento Grid (x=100 to 940, w=840 total, y=345 to 805)
-    bento_pillars = [
-        (0, 0, "01", "비주얼 메타포", "우주 좌표 메타포 전환", "Cosmic Data Metaphor",
-         "난해한 한자와 미신적 그래픽을 배제하고, 생년월일시 4주 8글자를 세련된 우주 좌표와 고유 주파수로 시각화하여 진입 장벽 해소"),
-        (1, 0, "02", "오행 데이터 시각화", "5각형 실시간 레이더 차트", "5-Elements Interactive Radar",
-         "목·화·토·금·수 에너지 밸런스를 5각형 실시간 레이더 차트로 직관화하여 텍스트 의존도를 낮추고 정보 인지 속도 300% 개선"),
-        (0, 1, "03", "관계 케미스트리", "감성 관계 시너지 설계", "Relationship Chemistry Flow",
-         "단순 길흉화복 점괘가 아닌 두 사람의 상생상극 알고리즘을 감성적인 조화도 점수와 대화형 관계 가이드로 전환한 인터랙티브 UX"),
-        (1, 1, "04", "마이크로 인터랙션", "오감 만족 데일리 리추얼", "Tactile Micro-Interactions",
-         "물리 엔진 기반의 3D 타로 셔플과 기분 좋은 햅틱 진동 피드백을 결합하여 매일 부담 없이 즐기는 심리적 안정감의 리추얼 완성")
+    # OPEN STORYLINE: Key Strengths (Open layout with zero enclosing boxes as requested)
+    strengths = [
+        ("01", "비주얼 메타포", "우주 좌표 메타포 전환", "Cosmic Data Metaphor",
+         "난해한 한자와 미신적 그래픽을 배제하고 생년월일시 4주 8글자를 현대적인 우주 좌표와 고유 주파수로 시각화하여 진입 장벽을 해소했습니다."),
+        ("02", "오행 데이터 시각화", "5각형 실시간 레이더 차트", "5-Elements Interactive Radar",
+         "목·화·토·금·수 에너지 밸런스를 5각형 실시간 레이더 차트로 직관화하여 텍스트 의존도를 낮추고 정보 인지 속도를 대폭 개선했습니다."),
+        ("03", "관계 케미스트리", "감성 관계 시너지 설계", "Relationship Chemistry Flow",
+         "단순 길흉화복 점괘가 아닌 두 사람의 상생상극 알고리즘을 감성적인 조화도 점수와 대화형 관계 가이드로 전환한 인터랙티브 UX를 구축했습니다."),
+        ("04", "마이크로 인터랙션", "오감 만족 데일리 리추얼", "Tactile Micro-Interactions",
+         "물리 엔진 기반의 3D 타로 셔플과 기분 좋은 햅틱 진동 피드백을 결합하여 매일 부담 없이 즐길 수 있는 심리적 안정감의 리추얼을 완성했습니다.")
     ]
     
-    col_xs = [100, 535]
-    row_ys = [345, 585]
-    card_w = 405
-    card_h = 220
-    
-    for c_i, r_i, num, tag, title_ko, sub_en, desc in bento_pillars:
-        x0 = col_xs[c_i]
-        y0 = row_ys[r_i]
-        x1 = x0 + card_w
-        y1 = y0 + card_h
+    k_y = 358
+    for idx, (num, tag, title_ko, sub_en, desc) in enumerate(strengths):
+        # Open number pill
+        draw.rounded_rectangle([100, k_y + 2, 136, k_y + 28], radius=6, fill=(24, 32, 54, 255), outline=(229, 192, 123, 70), width=1)
+        draw.text((118, k_y + 15), num, font=get_font(11, 'bold'), fill=C_GOLD_HERO, anchor='mm')
         
-        draw.rounded_rectangle([x0, y0, x1, y1], radius=16, fill=(14, 20, 36, 220), outline=(229, 192, 123, 75), width=1)
+        # Tag & Title & EN Subtitle
+        draw_pill_badge(draw, left_x=144, cy=k_y + 15, text=tag, font=get_font(10, 'bold'), theme='gold', has_dot=False, pad_x=8, height=22)
         
-        draw.rounded_rectangle([x0 + 20, y0 + 20, x0 + 52, y0 + 44], radius=6, fill=(24, 32, 54, 255), outline=(229, 192, 123, 70), width=1)
-        draw.text((x0 + 36, y0 + 32), num, font=get_font(11, 'bold'), fill=C_GOLD_HERO, anchor='mm')
+        draw.text((226, k_y + 4), title_ko, font=get_font(15.5, 'bold'), fill=C_TITLE_WHITE)
         
-        draw_pill_badge(draw, left_x=x0 + 60, cy=y0 + 32, text=tag, font=get_font(10, 'bold'), theme='gold', has_dot=False, pad_x=8, height=22)
+        w_title = draw.textlength(title_ko, font=get_font(15.5, 'bold'))
+        draw.text((226 + w_title + 12, k_y + 6), f"·  {sub_en}", font=get_font(12, 'medium'), fill=(148, 163, 184))
         
-        w_sub = draw.textlength(sub_en, font=get_font(10, 'medium'))
-        draw.text((x1 - 20 - w_sub, y0 + 26), sub_en, font=get_font(10, 'medium'), fill=(148, 163, 184))
-        
-        draw.text((x0 + 20, y0 + 64), title_ko, font=get_font(15.5, 'bold'), fill=C_TITLE_WHITE)
-        draw.line([(x0 + 20, y0 + 94), (x1 - 20, y0 + 94)], fill=(229, 192, 123, 35), width=1)
-        
+        # 2-line description with comfortable width (up to 780px)
         words = desc.split(' ')
         lines = []
         cur_l = ""
         for w in words:
             test = (cur_l + ' ' + w).strip()
-            if draw.textlength(test, font=get_font(11.5, 'regular')) <= 365:
+            if draw.textlength(test, font=get_font(12, 'regular')) <= 780:
                 cur_l = test
             else:
                 lines.append(cur_l)
@@ -91,11 +82,17 @@ def make_slide_01():
         if cur_l:
             lines.append(cur_l)
             
-        desc_y = y0 + 110
-        for l in lines[:3]:
-            draw.text((x0 + 20, desc_y), l, font=get_font(11.5, 'regular'), fill=C_TEXT_BODY)
-            desc_y += 21
+        desc_y = k_y + 36
+        for l in lines[:2]:
+            draw.text((144, desc_y), l, font=get_font(12, 'regular'), fill=C_TEXT_BODY)
+            desc_y += 20
             
+        # Subtle hairline divider between items
+        if idx < 3:
+            draw.line([(100, k_y + 92), (900, k_y + 92)], fill=(229, 192, 123, 30), width=1)
+            
+        k_y += 114
+        
     # Right Side: Dual Smartphone Mockups (Sleek Flagship Positioning)
     phone_hub_path = f"{MOCKUP_DIR}/iphone_01_hub.png"
     phone_match_path = f"{MOCKUP_DIR}/iphone_05_match.png"
@@ -144,8 +141,8 @@ def make_slide_01():
     col_w = 1720 // 4
     specs = [
         ("PROJECT ROLE", "서비스 기획 100% · UI/UX 디자인 100%", "페르소나 리서치 · 문제 정의 · IA 정보 설계 · 와이어프레임 · UI 디자인 총괄"),
+        ("PERIOD & TIMELINE", "2026.06 - 2026.10 (5개월 완결)", "사용자 인터뷰 -> 오행 UX 인터랙션 설계 -> 디자인 시스템 구축 -> 실기기 검증"),
         ("DESIGN SYSTEM", "Cosmic Luxury 토큰 · 컴포넌트 규격", "R8/R12/R16 라운딩 체계 · 8pt 베이스라인 · 다크 옵시디언 감성 테마 구축"),
-        ("UX ARCHITECTURE", "오행 데이터 시각화 & 감성 여정 설계", "복잡한 명리학을 5각형 레이더로 치환 · 직관적 관계 매칭 인포그래픽 설계"),
         ("DELIVERY & RELEASE", "Google Play 비공개 테스트 & 프로토타입", "Android 실기기 인터랙션 검증 완료 · Web 60fps 인터랙티브 시뮬레이터 완성")
     ]
     
