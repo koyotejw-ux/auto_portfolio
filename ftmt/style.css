@@ -479,3 +479,11 @@ body.fit-window .slide-frame img {
   border-color: #E5C07B;
   color: #FFD700;
 }
+
+
+/* Global Badge Dot Removal - Simple & Clean Design Standard */
+.status-dot,
+.geo-dot,
+.pulse-dot {
+  display: none !important;
+}

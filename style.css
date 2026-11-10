@@ -2836,3 +2836,11 @@ body {
   transform: translateY(-4px);
   box-shadow: 0 14px 32px -10px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 157, 220, 0.12);
 }
+
+
+/* Global Badge Dot Removal - Simple & Clean Design Standard */
+.status-dot,
+.geo-dot,
+.pulse-dot {
+  display: none !important;
+}
