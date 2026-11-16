@@ -67,60 +67,67 @@ def wrap_text_by_words(text, font, max_width, draw):
             lines.append(current_line)
     return lines
 
-def draw_pill_badge(draw, cx=None, cy=0, text="", font=None, theme='blue', has_dot=False, dark_mode=False, pad_x=14, height=30, left_x=None, solid=False):
+def draw_pill_badge(draw, left_x=None, cx=None, cy=None, text="", font=None, theme='blue', has_dot=False, dark_mode=False, solid=False, pad_x=10, height=24, radius=None):
     if font is None:
-        font = get_font(10.5, 'bold')
+        font = get_font(11, 'bold')
+    if radius is None:
+        radius = height // 2
         
-    color_schemes_dark = {
-        'blue':   {'bg': (16, 42, 86, 255),  'border': (0, 140, 255, 255),  'text': (0, 215, 255, 255)},
-        'cyan':   {'bg': (8, 48, 64, 255),   'border': (0, 210, 255, 255),  'text': (0, 230, 255, 255)},
-        'green':  {'bg': (12, 48, 36, 255),  'border': (16, 185, 129, 255), 'text': (52, 211, 153, 255)},
-        'red':    {'bg': (58, 20, 24, 255),  'border': (239, 68, 68, 255),  'text': (255, 140, 140, 255)},
-        'amber':  {'bg': (54, 38, 12, 255),  'border': (245, 158, 11, 255), 'text': (251, 191, 36, 255)},
-        'slate':  {'bg': (30, 41, 59, 255),  'border': (100, 116, 139, 255),'text': (226, 232, 240, 255)},
-    }
-    color_schemes_light = {
-        'blue':   {'bg': (239, 246, 255, 255), 'border': (191, 219, 254, 255), 'text': (0, 82, 255, 255)},
-        'cyan':   {'bg': (236, 254, 255, 255), 'border': (165, 243, 252, 255), 'text': (8, 145, 178, 255)},
-        'green':  {'bg': (236, 253, 245, 255), 'border': (167, 243, 208, 255), 'text': (5, 150, 105, 255)},
-        'red':    {'bg': (254, 242, 242, 255), 'border': (254, 202, 202, 255), 'text': (220, 38, 38, 255)},
-        'amber':  {'bg': (254, 243, 199, 255), 'border': (253, 230, 138, 255), 'text': (180, 83, 9, 255)},
-        'slate':  {'bg': (241, 245, 249, 255), 'border': (203, 213, 225, 255), 'text': (51, 65, 85, 255)},
-    }
-    color_schemes_solid = {
-        'blue':   {'bg': (0, 82, 255, 255),   'border': (0, 82, 255, 255),   'text': (255, 255, 255, 255)},
-        'cyan':   {'bg': (8, 145, 178, 255),  'border': (8, 145, 178, 255),  'text': (255, 255, 255, 255)},
-        'green':  {'bg': (16, 185, 129, 255), 'border': (16, 185, 129, 255), 'text': (255, 255, 255, 255)},
-        'red':    {'bg': (239, 68, 68, 255),  'border': (239, 68, 68, 255),  'text': (255, 255, 255, 255)},
-        'amber':  {'bg': (217, 119, 6, 255),  'border': (217, 119, 6, 255),  'text': (255, 255, 255, 255)},
-        'slate':  {'bg': (71, 85, 105, 255),  'border': (71, 85, 105, 255),  'text': (255, 255, 255, 255)},
+    COLOR_THEMES_LIGHT = {
+        'blue':   {'bg': (239, 246, 255), 'border': (191, 219, 254), 'text': (0, 81, 255),   'dot': (0, 81, 255)},
+        'cyan':   {'bg': (236, 254, 255), 'border': (165, 243, 252), 'text': (8, 145, 178),  'dot': (8, 145, 178)},
+        'green':  {'bg': (236, 253, 245), 'border': (167, 243, 208), 'text': (16, 185, 129), 'dot': (16, 185, 129)},
+        'amber':  {'bg': (254, 243, 199), 'border': (253, 230, 138), 'text': (217, 119, 6),  'dot': (217, 119, 6)},
+        'red':    {'bg': (254, 242, 242), 'border': (254, 202, 202), 'text': (220, 38, 38),  'dot': (220, 38, 38)},
+        'slate':  {'bg': (241, 245, 249), 'border': (203, 213, 225), 'text': (71, 85, 105),  'dot': (71, 85, 105)},
     }
     
-    if solid:
-        scheme = color_schemes_solid.get(theme, color_schemes_solid['blue'])
-    elif dark_mode:
-        scheme = color_schemes_dark.get(theme, color_schemes_dark['blue'])
-    else:
-        scheme = color_schemes_light.get(theme, color_schemes_light['blue'])
-        
-    tw = draw.textlength(text, font=font)
-    bw = int(round(tw + pad_x * 2))
-    bh = int(round(height))
-    radius = bh // 2
+    COLOR_THEMES_DARK = {
+        'blue':   {'bg': (18, 38, 77),    'border': (30, 58, 110),   'text': (56, 189, 248),  'dot': (56, 189, 248)},
+        'cyan':   {'bg': (12, 44, 58),    'border': (18, 68, 88),    'text': (34, 211, 238),  'dot': (34, 211, 238)},
+        'green':  {'bg': (10, 46, 32),    'border': (16, 75, 48),    'text': (52, 211, 153),  'dot': (52, 211, 153)},
+        'amber':  {'bg': (45, 34, 12),    'border': (72, 54, 18),    'text': (251, 191, 36),  'dot': (251, 191, 36)},
+        'red':    {'bg': (48, 18, 18),    'border': (78, 28, 28),    'text': (248, 113, 113), 'dot': (248, 113, 113)},
+        'slate':  {'bg': (26, 34, 48),    'border': (38, 50, 70),    'text': (148, 163, 184), 'dot': (148, 163, 184)},
+    }
     
-    if left_x is not None:
-        bx1 = int(round(left_x))
-        bx2 = bx1 + bw
-        cx = (bx1 + bx2) / 2.0
+    themes = COLOR_THEMES_DARK if dark_mode else COLOR_THEMES_LIGHT
+    scheme = themes.get(theme, themes['blue'])
+    
+    bbox = draw.textbbox((0, 0), text, font=font)
+    tw = bbox[2] - bbox[0]
+    th = bbox[3] - bbox[1]
+    
+    dot_w = 12 if has_dot else 0
+    bw = tw + pad_x * 2 + dot_w
+    bh = height
+    
+    if cx is not None:
+        bx1 = cx - bw // 2
     else:
-        bx1 = int(round(cx - bw / 2.0))
-        bx2 = bx1 + bw
-        
-    by1 = int(round(cy - bh / 2.0))
+        bx1 = left_x
+    bx2 = bx1 + bw
+    by1 = cy - bh // 2
     by2 = by1 + bh
     
-    draw.rounded_rectangle([bx1, by1, bx2, by2], radius=radius, fill=scheme['bg'], outline=scheme['border'], width=1)
-    draw.text((cx, cy), text, font=font, anchor='mm', fill=scheme['text'])
+    bg_col = scheme['text'] if solid else scheme['bg']
+    border_col = scheme['text'] if solid else scheme['border']
+    text_col = (255, 255, 255) if solid else scheme['text']
+    
+    draw.rounded_rectangle([bx1, by1, bx2, by2], radius=radius, fill=bg_col, outline=border_col, width=1)
+    
+    tx = bx1 + pad_x + dot_w
+    if cx is not None:
+        draw.text((cx + dot_w // 2, cy), text, font=font, anchor='mm', fill=text_col)
+    else:
+        target_top = by1 + (bh - th) / 2.0
+        draw.text((tx - bbox[0], target_top - bbox[1]), text, font=font, fill=text_col)
+        
+    if has_dot:
+        dot_x = bx1 + pad_x + 4
+        dot_y = cy
+        draw.ellipse([dot_x - 3, dot_y - 3, dot_x + 3, dot_y + 3], fill=scheme['dot'])
+        
     return bx1, by1, bx2, by2
 
 def draw_slide_header(draw, slide_num, category_en, title_black, title_blue, subtitle_kr, right_badge=None, dark_mode=False):
@@ -157,6 +164,90 @@ def draw_slide_footer(draw, slide_num, total_slides=12, dark_mode=False):
     page_col = (148, 163, 184) if dark_mode else (100, 116, 139)
     page_str = f"PAGE {slide_num:02d} / {total_slides:02d}"
     draw.text((1820, 1018), page_str, font=get_num_font(11.5, 'black'), fill=page_col, anchor='rt')
+
+def draw_donut_chart_on_base(base, cx, cy, r_outer, r_inner, percentage, col_fill=(220, 38, 38), col_track=(241, 245, 249)):
+    """Renders a super-sampled anti-aliased radial donut chart onto the base image."""
+    scale = 4
+    size_ss = int((r_outer * 2 + 16) * scale)
+    chart_ss = Image.new('RGBA', (size_ss, size_ss), (0, 0, 0, 0))
+    d_ss = ImageDraw.Draw(chart_ss)
+    
+    center_ss = size_ss // 2
+    ro_ss = r_outer * scale
+    ri_ss = r_inner * scale
+    
+    box_outer = [center_ss - ro_ss, center_ss - ro_ss, center_ss + ro_ss, center_ss + ro_ss]
+    d_ss.ellipse(box_outer, fill=col_track)
+    
+    start_angle = -90
+    sweep_angle = (percentage / 100.0) * 360.0
+    end_angle = start_angle + sweep_angle
+    d_ss.pieslice(box_outer, start=start_angle, end=end_angle, fill=col_fill)
+    
+    box_inner = [center_ss - ri_ss, center_ss - ri_ss, center_ss + ri_ss, center_ss + ri_ss]
+    d_ss.ellipse(box_inner, fill=(0, 0, 0, 0))
+    
+    chart = chart_ss.resize((int(r_outer * 2 + 16), int(r_outer * 2 + 16)), Image.Resampling.LANCZOS)
+    paste_x = int(round(cx - (r_outer * 2 + 16) / 2))
+    paste_y = int(round(cy - (r_outer * 2 + 16) / 2))
+    base.paste(chart, (paste_x, paste_y), chart)
+
+def draw_diamond(draw, cx, cy, w, h, fill, outline, width=2):
+    pts = [
+        (cx, cy - h // 2),
+        (cx + w // 2, cy),
+        (cx, cy + h // 2),
+        (cx - w // 2, cy)
+    ]
+    draw.polygon(pts, fill=fill, outline=outline)
+
+def draw_arrow(draw, p1, p2, col=(100, 116, 139), width=2, arrow_size=6):
+    x1, y1 = p1
+    x2, y2 = p2
+    draw.line([(x1, y1), (x2, y2)], fill=col, width=width)
+    if x1 == x2: # Vertical
+        if y2 > y1: # Down
+            draw.polygon([(x2 - arrow_size, y2 - arrow_size * 1.5), (x2 + arrow_size, y2 - arrow_size * 1.5), (x2, y2)], fill=col)
+        else: # Up
+            draw.polygon([(x2 - arrow_size, y2 + arrow_size * 1.5), (x2 + arrow_size, y2 + arrow_size * 1.5), (x2, y2)], fill=col)
+    elif y1 == y2: # Horizontal
+        if x2 > x1: # Right
+            draw.polygon([(x2 - arrow_size * 1.5, y2 - arrow_size), (x2 - arrow_size * 1.5, y2 + arrow_size), (x2, y2)], fill=col)
+        else: # Left
+            draw.polygon([(x2 + arrow_size * 1.5, y2 - arrow_size), (x2 + arrow_size * 1.5, y2 + arrow_size), (x2, y2)], fill=col)
+
+def draw_dashed_line(draw, p1, p2, col=(0, 82, 255), width=2, dash_len=4, gap_len=3):
+    width = int(round(width))
+    x1, y1 = p1
+    x2, y2 = p2
+    dist = math.hypot(x2 - x1, y2 - y1)
+    if dist == 0:
+        return
+    step = dash_len + gap_len
+    num_steps = int(dist // step)
+    for i in range(num_steps):
+        s = i * step
+        e = s + dash_len
+        sx = x1 + (x2 - x1) * (s / dist)
+        sy = y1 + (y2 - y1) * (s / dist)
+        ex = x1 + (x2 - x1) * (min(e, dist) / dist)
+        ey = y1 + (y2 - y1) * (min(e, dist) / dist)
+        draw.line([(sx, sy), (ex, ey)], fill=col, width=width)
+
+def draw_dashed_arrow(draw, p1, p2, col=(0, 82, 255), width=2, dash_len=4, gap_len=3, arrow_size=5):
+    draw_dashed_line(draw, p1, p2, col, width, dash_len, gap_len)
+    x1, y1 = p1
+    x2, y2 = p2
+    if x1 == x2:
+        if y2 > y1:
+            draw.polygon([(x2 - arrow_size, y2 - arrow_size * 1.5), (x2 + arrow_size, y2 - arrow_size * 1.5), (x2, y2)], fill=col)
+        else:
+            draw.polygon([(x2 - arrow_size, y2 + arrow_size * 1.5), (x2 + arrow_size, y2 + arrow_size * 1.5), (x2, y2)], fill=col)
+    elif y1 == y2:
+        if x2 > x1:
+            draw.polygon([(x2 - arrow_size * 1.5, y2 - arrow_size), (x2 - arrow_size * 1.5, y2 + arrow_size), (x2, y2)], fill=col)
+        else:
+            draw.polygon([(x2 + arrow_size * 1.5, y2 - arrow_size), (x2 + arrow_size * 1.5, y2 + arrow_size), (x2, y2)], fill=col)
 
 def save_slide(img, num):
     for d in OUT_DIRS:

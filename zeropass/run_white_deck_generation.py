@@ -46,3 +46,4 @@ print("=== Compiling ZeroPass_Portfolio.pdf with PyMuPDF ===")
 build_pdf()
 
 print("=== All 12 White-Theme Slides & PDF Successfully Generated! ===")
+
