@@ -160,3 +160,4 @@ def save_slide(img, num):
     for d in OUT_DIRS:
         final_img.save(f"{d}/slide_{num:02d}.png", quality=100)
     print(f"Slide {num:02d} saved to all target directories.")
+

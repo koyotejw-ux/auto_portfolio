@@ -110,3 +110,4 @@ for out_name, src_path in SRC_SCREENS.items():
         dev.save(save_p, "PNG")
         print(f"Saved: {save_p}")
 print("Mockup generation complete!")
+
