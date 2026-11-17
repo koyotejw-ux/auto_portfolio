@@ -139,6 +139,36 @@ def make_slide_01():
     base.paste(sh_front, (p_front_x - pad_f[0], p_front_y - pad_f[1]), sh_front)
     base.paste(rot_front, (p_front_x, p_front_y), rot_front)
     
+    # 🌟 Mascot "Passy" (패시) Cute Greeting Placement
+    mascot_p = 'd:/097.flutter_project/auto_portfolio/zeropass/assets/mascot/passy_clean_body.png'
+    if os.path.exists(mascot_p):
+        im_m = Image.open(mascot_p).convert('RGBA')
+        mh = 240
+        mw = int(round(mh * (im_m.width / im_m.height)))
+        m_scaled = im_m.resize((mw, mh), Image.Resampling.LANCZOS)
+        
+        # Ground Shadow for Mascot
+        m_sh = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+        m_sh_d = ImageDraw.Draw(m_sh)
+        mx_pos = 1530
+        my_pos = 580
+        m_sh_d.ellipse([mx_pos + 25, my_pos + mh - 25, mx_pos + mw - 15, my_pos + mh + 15], fill=(0, 50, 150, 70))
+        m_sh = m_sh.filter(ImageFilter.GaussianBlur(14))
+        base = Image.alpha_composite(base, m_sh)
+        base.paste(m_scaled, (mx_pos, my_pos), m_scaled)
+        
+        # Mascot Speech Bubble (Cute Welcoming Message)
+        draw = ImageDraw.Draw(base)
+        sb_x = mx_pos - 80
+        sb_y = my_pos - 45
+        sb_w = 260
+        sb_h = 42
+        draw.rounded_rectangle([sb_x, sb_y, sb_x + sb_w, sb_y + sb_h], radius=12, fill=(255, 255, 255), outline=(0, 82, 255), width=2)
+        # Tail
+        draw.polygon([(sb_x + 130, sb_y + sb_h), (sb_x + 150, sb_y + sb_h), (sb_x + 145, sb_y + sb_h + 10)], fill=(0, 82, 255))
+        draw.polygon([(sb_x + 132, sb_y + sb_h - 1), (sb_x + 148, sb_y + sb_h - 1), (sb_x + 145, sb_y + sb_h + 8)], fill=(255, 255, 255))
+        draw.text((sb_x + sb_w // 2, sb_y + sb_h // 2 - 1), "안녕! 난 체크앤페이 마스코트 패시야 🐧", font=get_font(10.5, 'bold'), fill=(0, 82, 255), anchor='mm')
+    
     draw = ImageDraw.Draw(base)
     
     # Bottom 4-Column Specification Strip (Spanning x=100 to 1820, y=840 to 956)
@@ -531,12 +561,25 @@ def make_slide_04():
         subtitle_kr="원터치 출결부터 수납 장부, 원생 디렉터리, 보안 볼트까지 필요한 기능을 한눈에 찾을 수 있는 쉬운 계층 구조"
     )
     
-    top_badge_x = 1480
+    top_badge_x = 1450
     top_badge_y = 65
-    draw.rounded_rectangle([top_badge_x, top_badge_y, top_badge_x + 340, top_badge_y + 60], radius=10, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-    draw_pill_badge(draw, left_x=top_badge_x + 16, cy=top_badge_y + 30, text="서비스 구성", font=get_font(9.5, 'bold'), theme='blue', pad_x=8, height=24)
-    draw.text((top_badge_x + 110, top_badge_y + 20), "5대 메인 탭 구조", font=get_font(12, 'bold'), fill=(15, 23, 42))
-    draw.text((top_badge_x + 110, top_badge_y + 39), "총 25개 직관적 세부 화면 설계", font=get_font(10.5, 'medium'), fill=(100, 116, 139))
+    draw.rounded_rectangle([top_badge_x, top_badge_y, top_badge_x + 370, top_badge_y + 60], radius=10, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+    
+    mascot_p = 'd:/097.flutter_project/auto_portfolio/zeropass/assets/mascot/passy_clean_body.png'
+    if os.path.exists(mascot_p):
+        im_m = Image.open(mascot_p).convert('RGBA')
+        mh = 50
+        mw = int(round(mh * (im_m.width / im_m.height)))
+        m_scaled = im_m.resize((mw, mh), Image.Resampling.LANCZOS)
+        base.paste(m_scaled, (top_badge_x + 12, top_badge_y + 5), m_scaled)
+        draw = ImageDraw.Draw(base)
+        text_x = top_badge_x + mw + 20
+    else:
+        draw_pill_badge(draw, left_x=top_badge_x + 16, cy=top_badge_y + 30, text="서비스 구성", font=get_font(9.5, 'bold'), theme='blue', pad_x=8, height=24)
+        text_x = top_badge_x + 110
+        
+    draw.text((text_x, top_badge_y + 18), "5대 메인 탭 구조 (IA)", font=get_font(12.5, 'bold'), fill=(15, 23, 42))
+    draw.text((text_x, top_badge_y + 38), "총 25개 직관적 화면 · 패시 안내 탑재", font=get_font(10.5, 'medium'), fill=(0, 82, 255))
     
     # Root Node
     root_x1, root_y1, root_x2, root_y2 = 730, 226, 1190, 286

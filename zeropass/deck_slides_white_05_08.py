@@ -68,8 +68,21 @@ def make_slide_05():
     draw_pill_badge(draw, left_x=leg_x + 16, cy=leg_y + 20, text="NOTATION", font=get_font(8, 'bold'), theme='blue', has_dot=True, pad_x=6, height=18)
     draw.text((leg_x + 105, leg_y + 20), "플로우차트 기호 범례", font=get_font(11, 'bold'), fill=(15, 23, 42), anchor='lm')
     
-    # 4 compact legend items
-    draw.rounded_rectangle([leg_x + 16, leg_y + 44, leg_x + 70, leg_y + 68], radius=10, fill=(0, 82, 255))
+    # Mascot Passy Mascot in Flowchart Legend
+    mascot_p = 'd:/097.flutter_project/auto_portfolio/zeropass/assets/mascot/passy_clean_body.png'
+    if os.path.exists(mascot_p):
+        im_m = Image.open(mascot_p).convert('RGBA')
+        mh = 62
+        mw = int(round(mh * (im_m.width / im_m.height)))
+        m_scaled = im_m.resize((mw, mh), Image.Resampling.LANCZOS)
+        base.paste(m_scaled, (leg_x - mw - 12, leg_y + 8), m_scaled)
+        draw = ImageDraw.Draw(base)
+        
+        # Tiny thought bubble
+        tb_x = leg_x - mw - 95
+        tb_y = leg_y + 12
+        draw.rounded_rectangle([tb_x, tb_y, tb_x + 85, tb_y + 32], radius=8, fill=(255, 255, 255), outline=(0, 82, 255), width=1)
+        draw.text((tb_x + 42, tb_y + 16), "0.8초 플로우! 🐧", font=get_font(8.5, 'bold'), fill=(0, 82, 255), anchor='mm')
     draw.text((leg_x + 43, leg_y + 56), "Start/End", font=get_font(7, 'bold'), fill=(255, 255, 255), anchor='mm')
     draw.text((leg_x + 76, leg_y + 56), "시작/종료", font=get_font(9.5, 'medium'), fill=(71, 85, 105), anchor='lm')
     
@@ -498,11 +511,23 @@ def make_slide_06():
     # -----------------------------------------------------------------
     draw_wireframe_chassis(draw, p1_x, "① SCR-01 · 키오스크 다이얼", "blue")
     
-    # Kiosk Header Banner Mockup
+    # Kiosk Header Banner Mockup with Passy Mini Badge
     v_y = sec_y + 54
-    draw.rounded_rectangle([p1_x + 14, v_y, p1_x + pw - 14, v_y + 24], radius=6, fill=(240, 246, 255), outline=(191, 219, 254), width=1)
-    draw.text((p1_x + 24, v_y + 6), "⚡ 체크앤페이 키오스크 가동 중", font=get_font(8.5, 'bold'), fill=(0, 81, 255))
-    draw.text((p1_x + pw - 24, v_y + 6), "15:30:24", font=get_num_font(8.5, 'bold'), fill=(100, 116, 139), anchor='ra')
+    draw.rounded_rectangle([p1_x + 14, v_y, p1_x + pw - 14, v_y + 26], radius=6, fill=(240, 246, 255), outline=(191, 219, 254), width=1)
+    
+    mascot_p = 'd:/097.flutter_project/auto_portfolio/zeropass/assets/mascot/passy_clean_body.png'
+    if os.path.exists(mascot_p):
+        im_m = Image.open(mascot_p).convert('RGBA')
+        mh = 22
+        mw = int(round(mh * (im_m.width / im_m.height)))
+        m_scaled = im_m.resize((mw, mh), Image.Resampling.LANCZOS)
+        base.paste(m_scaled, (p1_x + 20, v_y + 2), m_scaled)
+        draw = ImageDraw.Draw(base)
+        draw.text((p1_x + 24 + mw + 4, v_y + 7), "체크앤페이 패시 키오스크", font=get_font(8.5, 'bold'), fill=(0, 81, 255))
+    else:
+        draw.text((p1_x + 24, v_y + 6), "⚡ 체크앤페이 키오스크 가동 중", font=get_font(8.5, 'bold'), fill=(0, 81, 255))
+        
+    draw.text((p1_x + pw - 24, v_y + 7), "15:30:24", font=get_num_font(8.5, 'bold'), fill=(100, 116, 139), anchor='ra')
     
     # Phone Number Input Box
     sc_y = v_y + 32
@@ -940,50 +965,67 @@ def make_slide_07():
     draw.text((col2_x + col2_w // 2, r1_y + r1_h - 26), "Golden Ratio Keyline Drafting Grid & Continuous Squircle Specification", font=get_font(8.8, 'bold'), fill=(71, 85, 105), anchor='mm')
     
     # -------------------------------------------------------------
-    # CARD 03 (Upper Right): 24dp ICONOGRAPHY SYSTEM (FLUTTER MATERIAL)
+    # CARD 03 (Upper Right): BRAND MASCOT SYSTEM & 24dp ICONOGRAPHY
     # -------------------------------------------------------------
     draw.rounded_rectangle([col3_x, r1_y, col3_x + col3_w, r1_y + r1_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
     b3_box = draw_pill_badge(draw, left_x=col3_x + 24, cy=r1_y + 30, text="FOUNDATION 03", font=get_font(9.5, 'bold'), theme='cyan', has_dot=True, pad_x=8, height=22)
-    draw.text((b3_box[2] + 14, r1_y + 30), "Flutter Material Rounded 24dp 아이코노그라피", font=get_font(13.5, 'bold'), fill=(15, 23, 42), anchor='lm')
+    draw.text((b3_box[2] + 14, r1_y + 30), "브랜드 캐릭터 '패시(Passy)' & 24dp 아이콘", font=get_font(13.5, 'bold'), fill=(15, 23, 42), anchor='lm')
     draw.line([(col3_x + 24, r1_y + 52), (col3_x + col3_w - 24, r1_y + 52)], fill=(241, 245, 249), width=1)
     
-    draw.text((col3_x + 24, r1_y + 64), "Grid 24×24dp  ·  Optical Center  ·  Production Flutter Icons.*_rounded 토큰 1:1 바인딩", font=get_font(9, 'bold'), fill=(0, 82, 255))
+    # 3 Mascot Expressions Plate (Top Half of Card 03)
+    mascot_exp_y = r1_y + 60
+    m_avatars = [
+        ("mascot_profile_round.png", "기본 안내 패시", "출결 및 일반 안내"),
+        ("mascot_profile_laughing_round.png", "성공/환영 패시", "출결 완료·수납 완결"),
+        ("mascot_profile_crying_round.png", "주의/연체 패시", "D-Day 연체·만료 임박")
+    ]
+    ma_w = (col3_w - 48 - 20) // 3
+    ma_h = 100
+    for ma_idx, (m_file, m_label, m_desc) in enumerate(m_avatars):
+        ma_x = col3_x + 24 + ma_idx * (ma_w + 10)
+        draw.rounded_rectangle([ma_x, mascot_exp_y, ma_x + ma_w, mascot_exp_y + ma_h], radius=10, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
+        
+        m_img_p = f"d:/097.flutter_project/auto_portfolio/zeropass/assets/mascot/{m_file}"
+        if os.path.exists(m_img_p):
+            im_av = Image.open(m_img_p).convert('RGBA').resize((46, 46), Image.Resampling.LANCZOS)
+            base.paste(im_av, (ma_x + 10, mascot_exp_y + 12), im_av)
+            draw = ImageDraw.Draw(base)
+            
+        draw.text((ma_x + 64, mascot_exp_y + 16), m_label, font=get_font(10, 'bold'), fill=(15, 23, 42))
+        draw.text((ma_x + 64, mascot_exp_y + 34), m_desc, font=get_font(8.2, 'medium'), fill=(0, 82, 255) if ma_idx==1 else ((220, 38, 38) if ma_idx==2 else (100, 116, 139)))
+        draw.rounded_rectangle([ma_x + 10, mascot_exp_y + 66, ma_x + ma_w - 10, mascot_exp_y + 90], radius=5, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+        draw.text((ma_x + ma_w // 2, mascot_exp_y + 78), f"상태 연동 인터랙션 #{ma_idx+1}", font=get_font(7.5, 'bold'), fill=(71, 85, 105), anchor='mm')
+    
+    # 24dp Iconography (Bottom Half of Card 03)
+    draw.line([(col3_x + 24, mascot_exp_y + ma_h + 10), (col3_x + col3_w - 24, mascot_exp_y + ma_h + 10)], fill=(241, 245, 249), width=1)
+    draw.text((col3_x + 24, mascot_exp_y + ma_h + 18), "24dp Material Rounded 프로덕션 아이콘 킷 (Icons.*_rounded)", font=get_font(8.8, 'bold'), fill=(0, 82, 255))
     
     icons_data = [
-        ("출결 체크패스", "Icons.fact_check_rounded", 0xf735),
-        ("수납 청구장부", "Icons.receipt_long_rounded", 0xf00b6),
-        ("지출 세무장부", "Icons.account_balance_wallet_rounded", 0xf520),
-        ("원생 디렉터리", "Icons.groups_rounded", 0xf0dc),
-        ("환경설정 볼트", "Icons.tune_rounded", 0xf0244),
-        ("카카오 알림톡", "Icons.chat_bubble_rounded", 0xf635),
-        ("스튜디오 보안", "Icons.lock_rounded", 0xf878),
-        ("프로 라이선스", "Icons.workspace_premium_rounded", 0xf0289),
+        ("출결체크", 0xf735),
+        ("수납장부", 0xf00b6),
+        ("원생관리", 0xf0dc),
+        ("안심볼트", 0xf0244),
+        ("카톡알림", 0xf635),
+        ("보안인증", 0xf878),
     ]
+    ic_start_y = mascot_exp_y + ma_h + 34
+    ic_w = (col3_w - 48 - 25) // 6
+    ic_h = 78
+    mat_font_icon = get_material_icon_font(20)
     
-    ic_start_y = r1_y + 86
-    ic_w = (col3_w - 48 - 30) // 4
-    ic_h = 96
-    mat_font_icon = get_material_icon_font(23)
-    
-    for idx, (iname, itoken, icp) in enumerate(icons_data):
-        row = idx // 4
-        col = idx % 4
-        ix = col3_x + 24 + col * (ic_w + 10)
-        iy = ic_start_y + row * (ic_h + 10)
-        
-        draw.rounded_rectangle([ix, iy, ix + ic_w, iy + ic_h], radius=10, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
-        
+    for idx, (iname, icp) in enumerate(icons_data):
+        ix = col3_x + 24 + idx * (ic_w + 5)
+        iy = ic_start_y
+        draw.rounded_rectangle([ix, iy, ix + ic_w, iy + ic_h], radius=8, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
         icx = ix + ic_w // 2
-        icy = iy + 26
-        draw.rounded_rectangle([icx - 17, icy - 17, icx + 17, icy + 17], radius=8, fill=(240, 246, 255), outline=(191, 219, 254), width=1)
+        icy = iy + 22
+        draw.rounded_rectangle([icx - 14, icy - 14, icx + 14, icy + 14], radius=6, fill=(240, 246, 255), outline=(191, 219, 254), width=1)
         draw.text((icx, icy), chr(icp), font=mat_font_icon, fill=(0, 82, 255), anchor='mm')
-        
-        draw.text((icx, iy + 53), iname, font=get_font(10, 'bold'), fill=(15, 23, 42), anchor='mm')
-        draw.text((icx, iy + 68), itoken, font=get_font(7.5, 'bold'), fill=(0, 82, 255), anchor='mm')
-        draw.text((icx, iy + 82), f"{hex(icp)} · 24dp", font=get_font(7.5, 'regular'), fill=(100, 116, 139), anchor='mm')
+        draw.text((icx, iy + 48), iname, font=get_font(9, 'bold'), fill=(15, 23, 42), anchor='mm')
+        draw.text((icx, iy + 64), "24dp", font=get_font(7, 'regular'), fill=(100, 116, 139), anchor='mm')
         
     draw.rounded_rectangle([col3_x + 24, r1_y + r1_h - 38, col3_x + col3_w - 24, r1_y + r1_h - 14], radius=6, fill=(240, 246, 255), outline=(191, 219, 254), width=1)
-    draw.text((col3_x + col3_w // 2, r1_y + r1_h - 26), "Flutter 런타임 MaterialIcons-Regular.otf 실기기 렌더링 및 코드 토큰 100% 동기화", font=get_font(9.5, 'medium'), fill=(0, 82, 255), anchor='mm')
+    draw.text((col3_x + col3_w // 2, r1_y + r1_h - 26), "친근한 펭귄 패시 캐릭터 & 프로덕션 24dp 아이코노그라피 100% 동기화", font=get_font(9.5, 'medium'), fill=(0, 82, 255), anchor='mm')
 
     # -------------------------------------------------------------
     # LOWER ROW (y=594 to 970, h=376): 2 WIDE COLUMNS
@@ -1314,6 +1356,14 @@ def make_slide_08():
     draw.rounded_rectangle([rx + 24, tel_y, rx + rw - 24, comp_y + comp_h - 24], radius=12, fill=(240, 246, 255), outline=(191, 219, 254), width=1)
     draw.text((rx + 40, tel_y + 20), "CORE ENGINE TELEMETRY METRICS", font=get_font(10.5, 'bold'), fill=(0, 82, 255))
     
+    # Passy mini badge in Telemetry Header
+    mascot_laugh_p = 'd:/097.flutter_project/auto_portfolio/zeropass/assets/mascot/mascot_profile_laughing_round.png'
+    if os.path.exists(mascot_laugh_p):
+        im_l = Image.open(mascot_laugh_p).convert('RGBA').resize((28, 28), Image.Resampling.LANCZOS)
+        base.paste(im_l, (rx + rw - 185, tel_y + 12), im_l)
+        draw = ImageDraw.Draw(base)
+        draw.text((rx + rw - 150, tel_y + 20), "패시 인증 보증 🐧", font=get_font(9.5, 'bold'), fill=(0, 82, 255), anchor='lm')
+
     kpis = [
         ("출결 인증 속도", "0.8초", "기존 45초 대비 98% 단축"),
         ("원생 식별 지연", "10ms", "실시간 초고속 매칭"),
