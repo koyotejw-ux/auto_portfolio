@@ -54,7 +54,7 @@ def make_slide_01():
     
     # Clean UX Subtitle (2 balanced lines)
     sub1 = "학원·교습소·스튜디오 원장님의 매일 반복되는 출결 체크와 미수금 독촉 스트레스를,"
-    sub2 = "단 한 번의 터치와 오프라인 SQLite 볼트 아키텍처로 완전 무결하게 해결하는 엔터프라이즈 모바일 솔루션"
+    sub2 = "단 한 번의 터치와 오프라인 안심 저장 구조로 완전 무결하게 해결하는 엔터프라이즈 모바일 솔루션"
     draw.text((100, 260), sub1, font=get_font(16.5, 'regular'), fill=(71, 85, 105))
     draw.text((100, 288), sub2, font=get_font(16.5, 'semibold'), fill=(30, 41, 59))
     
@@ -66,8 +66,8 @@ def make_slide_01():
          "정기 결제일과 잔여 회차를 실시간 계산하여 만료 7일 전부터 3단계 색상(Green/Amber/Red)으로 수납 우선순위를 직관적으로 분류합니다."),
         ("03", "감정 소모 해소", "원클릭 모바일 청구서", "Frictionless Billing Share",
          "회원별 계좌번호와 청구 금액이 자동 치환된 정중한 카카오톡 청구서 템플릿을 터치 한 번으로 전송하여 불편한 대면 독촉을 없앴습니다."),
-        ("04", "데이터 신뢰 보장", "Zero-Latency 로컬 보안 볼트", "On-Device SQLite Vault",
-         "외부 유료 서버 의존 없이 100% 온디바이스 SQLite 암호화 보관으로 월 유지비 0원과 인터넷 끊김 없는 완전한 연속성을 실현했습니다.")
+        ("04", "안심 프라이버시", "100% 로컬 오프라인 볼트", "Safe Local-First Vault",
+         "외부 유료 서버 없이 기기 내부 로컬 안심 저장소에 암호화 보관하여 월 유지비 0원과 인터넷 끊김 없는 완전한 연속성을 실현했습니다.")
     ]
     
     max_badge_w = max(draw.textlength(tag, font=get_font(10, 'bold')) + 16 for _, tag, _, _, _ in strengths)
@@ -151,7 +151,7 @@ def make_slide_01():
         ("PROJECT ROLE", "서비스 기획 100% · UI/UX 디자인 100%", "소상공인 리서치 · 문제 정의 · IA 정보 설계 · 와이어프레임 · UI 디자인 총괄"),
         ("PERIOD & TIMELINE", "2026.08 - 현재 (v1.0 프로덕션 운영)", "1인 학원·스튜디오 현장 인터뷰 기반 설계 및 실기기 검증 후 지속 고도화"),
         ("DESIGN SYSTEM", "Enterprise Trust 토큰 · 컴포넌트 규격", "8pt 베이스라인 · 브랜드 일렉트릭 블루(#0052FF) · 라이트 테마 고대비 12.8:1"),
-        ("DELIVERY & RELEASE", "Android 상용 출시 & 60fps 웹 프로토타입", "SQLite ACID 온디바이스 볼트 탑재 · 실제 뷰포트 인터랙티브 허브 완성")
+        ("DELIVERY & RELEASE", "Android 상용 출시 & 60fps 웹 프로토타입", "안심 로컬 보관 아키텍처 탑재 · 실제 뷰포트 인터랙티브 허브 완성")
     ]
     
     for i, (cat, val_bold, val_desc) in enumerate(specs):
@@ -239,7 +239,7 @@ def make_slide_02():
     draw.text((c3_x + 24, sy + 58), "온디바이스 로컬 독립 보안 부재", font=get_font(16.5, 'bold'), fill=(15, 23, 42))
     draw.text((c3_x + 24, sy + 88), "기존 모든 학원 관리 프로그램은 외부 클라우드 의존으로\n인터넷 장애 시 출결 중단 및 개인정보 유출 위험 노출.", font=get_font(11.5, 'regular'), fill=(100, 116, 139), spacing=4)
     draw.text((c3_x + 24, sy + 144), "100%", font=get_num_font(38, 'black'), fill=(0, 82, 255))
-    draw.text((c3_x + 24, sy + 188), "오프라인 연속 가동률 (SQLite 볼트)", font=get_font(11, 'bold'), fill=(100, 116, 139))
+    draw.text((c3_x + 24, sy + 188), "오프라인 연속 가동률 (로컬 안심 볼트)", font=get_font(11, 'bold'), fill=(100, 116, 139))
     
     draw_pill_badge(draw, cx=c3_x + card_w - 90, cy=sy + 32, text="서버 독립성", font=get_font(9, 'bold'), theme='blue', pad_x=8, height=20)
     base_v_y = sy + 160
@@ -325,7 +325,7 @@ def make_slide_02():
         ("STRATEGY 02", "스마트 D-Day 수납 장부", "미수금 누수 원천 차단 (Zero-Leakage)",
          "매달 말일에 몰아보던 수동 장부 대신, 만료 7일 전(Amber)부터 당일/연체(Red)를 3단계 색상으로 자동 정렬하여 수납 우선순위 실시간 파악."),
         ("STRATEGY 03", "Zero-Latency 로컬 보안 볼트", "월 서버비 0원 & 100% 로컬 암호화",
-         "외부 유료 클라우드 의존 없이 기기 내부 SQLite FFI에 암호화 보관하여 인터넷 장애 시에도 키오스크가 멈추지 않는 연속성과 개인정보 완벽 보호 실현.")
+         "외부 유료 서버 의존 없이 기기 내부 로컬 안전 저장소에 암호화 보관하여 인터넷 장애 시에도 키오스크가 멈추지 않는 연속성과 개인정보 완벽 보호 실현.")
     ]
     py = b_y + 65
     for p_tag, p_tit, p_sub, p_desc in pillars:
@@ -571,7 +571,7 @@ def make_slide_04():
             ("상점 설정", "스튜디오 상호 & 계좌", "청구서에 자동 입력될 계좌 지정", False),
             ("알림 템플릿", "문자/카톡 문구 커스텀", "출결 완료 및 회비 안내 문구", False),
             ("다국어 전환", "글로벌 6개 국어 지원", "한국어/영어/일어/중국어/베트남어/스페인어", True),
-            ("보안 볼트", "SQLite 로컬 백업/복구", "외부 서버 전송 없는 암호화 파일", True)
+            ("보안 볼트", "로컬 안심 백업/복구", "외부 서버 전송 없는 암호화 파일", True)
         ])
     ]
     
@@ -595,7 +595,7 @@ def make_slide_04():
             draw.text((cx + 80, sy + 11), s_name, font=get_font(13, 'bold'), fill=(15, 23, 42))
             draw.text((cx + 12, sy + 42), s_desc, font=get_font(11, 'regular'), fill=(71, 85, 105))
             draw.line([(cx + 12, sy + 74), (cx + cw - 12, sy + 74)], fill=(226, 232, 240), width=1)
-            draw.text((cx + 12, sy + 88), "Native Flutter + SQLite Sync", font=get_font(9.5, 'medium'), fill=(0, 82, 255) if is_key else (148, 163, 184))
+            draw.text((cx + 12, sy + 88), "Zero-Latency Local UX Sync", font=get_font(9.5, 'medium'), fill=(0, 82, 255) if is_key else (148, 163, 184))
             sy += 128
 
     draw_slide_footer(draw, 4)

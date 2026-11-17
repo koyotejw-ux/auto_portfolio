@@ -186,7 +186,7 @@ def make_slide_09():
     draw.rounded_rectangle([d2_x, r3_y, d2_x + d2_w, r3_y + t_h], radius=8, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
     draw.text((d2_x + 10, r3_y + 8), "스튜디오 볼트", font=get_font(9.5, 'bold'), fill=(15, 23, 42))
     draw.text((d2_x + 10, r3_y + 28), "100% 로컬", font=get_font(14, 'bold'), fill=(122, 34, 255))
-    draw.text((d2_x + 10, r3_y + 54), "SQLite ACID 암호화", font=get_font(8.5, 'medium'), fill=(148, 163, 184))
+    draw.text((d2_x + 10, r3_y + 54), "오프라인 안심 암호화", font=get_font(8.5, 'medium'), fill=(148, 163, 184))
     
     # 3-B. Financial Telemetry & Recovery Report Card
     rep_y = step_y + step_h + 16
@@ -200,7 +200,7 @@ def make_slide_09():
     draw.rounded_rectangle([rx + 28, sol_y, rx + rw - 28, sol_y + 68], radius=12, fill=(240, 246, 255), outline=(191, 219, 254), width=1)
     draw_pill_badge(draw, left_x=rx + 48, cy=sol_y + 22, text="VERIFIED 92.4% RECOVERY", font=get_font(9.5, 'bold'), theme='green', has_dot=True, pad_x=8, height=22)
     draw.text((rx + 295, sol_y + 12), "D-Day 사전 알림 도입 후 미수금 회수 소요 14일 ➔ 2일 단축", font=get_font(14.5, 'bold'), fill=(0, 82, 255))
-    draw.text((rx + 48, sol_y + 44), "100% 온디바이스 SQLite 트랜잭션 연동으로 수납 누수 및 장부 오차율 0.00% 달성", font=get_font(10.5, 'regular'), fill=(71, 85, 105))
+    draw.text((rx + 48, sol_y + 44), "100% 로컬 안심 저장 연동으로 수납 누수 및 장부 오차율 0.00% 달성", font=get_font(10.5, 'regular'), fill=(71, 85, 105))
     
     rep_chips = [
         ("월 총 예상 매출", "₩ 6,800,000", (100, 116, 139)),
@@ -240,7 +240,7 @@ def make_slide_10():
         ('mockup_02_ledger.png', '02. 수납 장부', 'D-Day 미수금 자동 정렬', '& 원클릭 청구서 전송'),
         ('mockup_03_members.png', '03. 원생 디렉터리', '수강권 및 이력 관리', '& 결제자(학부모) 연동'),
         ('mockup_04_pro.png', '04. 프로 멤버십', '평생 소장 라이선스', '& 무제한 원생 등록 해제'),
-        ('mockup_05_vault.png', '05. 스튜디오 볼트', 'SQLite 로컬 백업', '& 글로벌 6개 다국어')
+        ('mockup_05_vault.png', '05. 스튜디오 볼트', '로컬 안심 백업', '& 글로벌 6개 다국어')
     ]
     
     scale_h = 630
@@ -316,7 +316,7 @@ def make_slide_11():
         ("출결 0.8초 완료", "뒷번호 4자리 터치 즉시 출결 및 잔여 횟수 자동 차감 (98% 단축)"),
         ("D-Day 정렬 장부", "만료 7일 전부터 3단계 색상 정렬로 미수금 적기 회수율 92% 달성"),
         ("원클릭 청구서 발송", "카카오톡/SMS 청구서 템플릿 원터치 공유로 감정 소모 제로화"),
-        ("서버비 0원 평생 소장", "온디바이스 SQLite FFI 볼트 아키텍처로 인터넷 끊김 없이 평생 무료")
+        ("서버비 0원 평생 소장", "온디바이스 안심 보관 구조로 인터넷 끊김 없이 평생 무료")
     ]
     ay = card_y + 90
     for a_tit, a_desc in a_items:
@@ -333,7 +333,7 @@ def make_slide_11():
     star_items = [
         ("S", "Situation (상황)", "소규모 학원과 스튜디오는 매달 나가는 프로그램 구독료가 부담스러워 종이 출석부나 엑셀로 출결을 관리했습니다. 이로 인해 수업 시작 전 20분이 출결 확인에 소모되고 매달 말일마다 미수금 독촉으로 학부모와 감정 소모가 발생했습니다."),
         ("T", "Task (과제)", "월 유지비 0원이면서도 학생들이 1초 만에 스스로 등하원을 찍을 수 있는 직관적 키오스크와, 원장님이 원클릭으로 미수금을 확인하고 청구서를 보내는 올인원 모바일 ERP를 1인 단독으로 기획·디자인하는 목표를 세웠습니다."),
-        ("A", "Action (조치)", "첫째, 4자리 번호 기반 초고속 키오스크 UI를 설계해 인지 부하를 없앴습니다. 둘째, D-Day 위험도 분류 장부를 구축해 수납 우선순위를 3단계 컬러로 시각화했습니다. 셋째, 인터넷 없이 동작하는 로컬 SQLite 볼트와 CSV 백업 엔진을 구축했습니다."),
+        ("A", "Action (조치)", "첫째, 4자리 번호 기반 초고속 키오스크 UI를 설계해 인지 부하를 없앴습니다. 둘째, D-Day 위험도 분류 장부를 구축해 수납 우선순위를 3단계 컬러로 시각화했습니다. 셋째, 인터넷 없이 동작하는 로컬 안전 볼트와 간편 백업 기능을 구축했습니다."),
         ("R", "Result (성과)", "실제 60명 정원 파일럿 테스트 결과, 출결 소요 시간이 0.8초로 단축되어 수업 준비 효율이 92% 개선되었고, D-Day 알림을 통해 미수금 회수 기간이 14일에서 2일로 단축되었습니다. 사용자의 현장 마찰을 줄이는 것이 프로덕트 디자인의 본질임을 입증했습니다.")
     ]
     
@@ -395,7 +395,7 @@ def make_slide_12():
     draw = ImageDraw.Draw(base)
     draw_pill_badge(draw, left_x=120, cy=880, text="FLUTTER WEB PRODUCTION ENGINE", font=get_font(9, 'bold'), theme='blue', dark_mode=True, pad_x=8, height=20)
     draw.text((120, 908), "ZeroPass Web Interactive Prototype", font=get_font(13, 'bold'), fill=(255, 255, 255))
-    draw.text((120, 930), "60fps 하드웨어 가속 · 실제 터치 이벤트 및 SQLite 트랜잭션 시뮬레이션 지원", font=get_font(10.5, 'regular'), fill=(100, 116, 139))
+    draw.text((120, 930), "60fps 부드러운 인터랙션 · 실제 터치 반응 및 오프라인 안심 저장 시뮬레이션 지원", font=get_font(10.5, 'regular'), fill=(100, 116, 139))
 
     rx = 780
     rw = 1040

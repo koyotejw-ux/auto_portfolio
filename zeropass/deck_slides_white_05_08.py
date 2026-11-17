@@ -56,7 +56,7 @@ def make_slide_05():
         category_en="USER FLOW | SERVICE INTERACTION FLOWCHART", 
         title_black="사용자 행동과 판단을 이끄는 ", 
         title_blue="5단계 서비스 UX 플로우차트", 
-        subtitle_kr="원생 등원 인증부터 로컬 트랜잭션 차감, D-Day 수납 정렬, 카카오톡 청구서 발송 및 데이터 동기화까지의 핵심 여정"
+        subtitle_kr="원생 등원 인증부터 잔여 횟수 즉시 차감, D-Day 수납 정렬, 카카오톡 청구서 발송 및 안심 보관까지의 핵심 여정"
     )
     
     # Top-Right Legend: Diagram Notation (w=540, h=78)
@@ -93,7 +93,7 @@ def make_slide_05():
     
     stages_info = [
         ("STAGE 01", "키오스크 등원 인증", "0.8s Quick Attendance"),
-        ("STAGE 02", "로컬 DB 트랜잭션", "SQLite Atomic Commit"),
+        ("STAGE 02", "출결 데이터 자동 차감", "Instant Balance Update"),
         ("STAGE 03", "수납 장부 D-Day", "Ledger Auto Sorting"),
         ("STAGE 04", "원클릭 청구서 발송", "Kakao Notification"),
         ("STAGE 05", "보안 볼트 & 백업", "Local Vault & Sync")
@@ -177,11 +177,11 @@ def make_slide_05():
     # =============================================================
     c1 = col_centers[1]
     
-    # 1. Process: SQLite 트랜잭션 개시
+    # 1. Process: 원생 데이터 안전 차감 개시
     draw.rounded_rectangle([c1 - nw // 2, 300, c1 + nw // 2, 344], radius=6, fill=(255, 255, 255), outline=(203, 213, 225), width=1)
     draw_pill_badge(draw, left_x=c1 - 114, cy=314, text="ENGINE", font=get_font(6.5, 'bold'), theme='slate', pad_x=4, height=14)
-    draw.text((c1 - 54, 314), "SQLite 트랜잭션 개시", font=get_font(9, 'bold'), fill=(15, 23, 42), anchor='lm')
-    draw.text((c1, 331), "ACID 트랜잭션 시작 (BEGIN TRANSACTION)", font=get_font(8, 'medium'), fill=(100, 116, 139), anchor='mm')
+    draw.text((c1 - 54, 314), "출결 데이터 자동 차감 개시", font=get_font(9, 'bold'), fill=(15, 23, 42), anchor='lm')
+    draw.text((c1, 331), "무결성 보증 안심 처리 (Atomic Process)", font=get_font(8, 'medium'), fill=(100, 116, 139), anchor='mm')
     draw_arrow(draw, (c1, 344), (c1, 360), col=(0, 82, 255), width=2, arrow_size=4)
     
     # 2. Decision Container: 수강권 차감 방식 분기
@@ -226,10 +226,10 @@ def make_slide_05():
     draw_arrow(draw, (c1, 592), (c1, 626), col=(0, 82, 255), width=2, arrow_size=4)
     draw.text((c1 + 32, 609), "No (잔여)", font=get_font(7.5, 'bold'), fill=(5, 150, 105), anchor='mm')
     
-    # 5. Feedback: 로컬 볼트 커밋 완료
+    # 5. Feedback: 로컬 볼트 저장 완료
     draw.rounded_rectangle([c1 - nw // 2, 626, c1 + nw // 2, 672], radius=6, fill=(240, 253, 244), outline=(187, 247, 208), width=1)
     draw_pill_badge(draw, left_x=c1 - 114, cy=640, text="COMMIT", font=get_font(6.5, 'bold'), theme='green', pad_x=4, height=14)
-    draw.text((c1 - 44, 640), "SQLite 트랜잭션 영구 커밋", font=get_font(9, 'bold'), fill=(22, 101, 52), anchor='lm')
+    draw.text((c1 - 44, 640), "안심 영구 저장 완료", font=get_font(9, 'bold'), fill=(22, 101, 52), anchor='lm')
     draw.text((c1, 656), "네트워크 없이도 0ms 완벽 보존 및 장부 갱신", font=get_font(7.5, 'medium'), fill=(21, 128, 61), anchor='mm')
     
     draw_arrow(draw, (cols_x[1] + cw, 649), (cols_x[2], 649), col=(0, 82, 255), width=2, arrow_size=4)
@@ -332,11 +332,11 @@ def make_slide_05():
     # =============================================================
     c4 = col_centers[4]
     
-    # 1. Action: SQLite 백업 & 내보내기
+    # 1. Action: 안심 백업 & 내보내기
     draw.rounded_rectangle([c4 - nw // 2, 300, c4 + nw // 2, 344], radius=6, fill=(239, 246, 255), outline=(0, 82, 255), width=2)
     draw_pill_badge(draw, left_x=c4 - 114, cy=314, text="ACTION", font=get_font(6.5, 'bold'), theme='blue', pad_x=4, height=14)
     draw.text((c4 - 54, 314), "1-Tap 스튜디오 볼트 백업", font=get_font(9, 'bold'), fill=(0, 82, 255), anchor='lm')
-    draw.text((c4, 331), "암호화된 SQLite DB 파일 또는 CSV 즉시 추출", font=get_font(7.5, 'medium'), fill=(15, 23, 42), anchor='mm')
+    draw.text((c4, 331), "암호화된 안전 백업 파일 또는 CSV 즉시 추출", font=get_font(7.5, 'medium'), fill=(15, 23, 42), anchor='mm')
     draw_arrow(draw, (c4, 344), (c4, 362), col=(0, 82, 255), width=2, arrow_size=4)
     
     # 2. Feedback: 로컬 볼트 보관 완료
@@ -411,7 +411,7 @@ def make_slide_05():
         ("출결 소요 시간", "0.8초 완료", "기존 대비 98% 단축", "blue"),
         ("미수금 회수율", "92.4% 달성", "D-Day 청구서 연동", "green"),
         ("월간 운영비용", "₩ 0원 (무료)", "SaaS 구독료 완전 탈피", "blue"),
-        ("데이터 무결성", "100% 로컬", "SQLite 온디바이스 볼트", "slate")
+        ("데이터 무결성", "100% 안심", "로컬 오프라인 볼트", "slate")
     ]
     kw = (bar_w - 938 - 24) // 4
     for kidx, (klabel, kval, ksub, kcol) in enumerate(kpis):
@@ -681,7 +681,7 @@ def make_slide_06():
     # INTERACTION FLOW STEP CONNECTORS (Between 4 phones)
     # -----------------------------------------------------------------
     flow_connectors = [
-        (p1_x + pw, p2_x, "01 → 02 등원 차감", "0.8s 트랜잭션", "blue"),
+        (p1_x + pw, p2_x, "01 → 02 등원 차감", "0.8초 실시간", "blue"),
         (p2_x + pw, p3_x, "02 → 03 장부 정렬", "D-Day 실시간", "amber"),
         (p3_x + pw, p4_x, "03 → 04 청구서 연동", "1초 카톡 발송", "green")
     ]
@@ -810,7 +810,7 @@ def make_slide_07():
          "1초 스캔 가능 빅 넘버 통계 카드, 상태별 스쿼클 뱃지, 미수금 0원 설계", 
          (217, 119, 6)),
         ("03. Autonomous Local Vault (100% 온디바이스 볼트)", 
-         "학원 인터넷 단절에도 멈춤 없는 SQLite ACID 로컬 암호화 저장",
+         "학원 인터넷 단절에도 멈춤 없는 무결점 로컬 안전 암호화 저장",
          "외부 유출 없는 1-Tap 백업, 모달 시트 기반 직관적 다국어 스위처", 
          (122, 34, 255))
     ]
@@ -1077,7 +1077,7 @@ def make_slide_07():
         ("Title 20", "Bold", "김도윤 원생 출결 완료", False),
         ("Subhead 16", "SemiBold", "수납 잔여 8회 · 만료 D-3", False),
         ("Body 14", "Regular", "학부모 카카오톡 청구서 발송", False),
-        ("Caption 11", "Medium", "SQLite 로컬 볼트 ACID 커밋 완료", False),
+        ("Caption 11", "Medium", "로컬 안심 안전 저장 완료", False),
     ]
     ty_start = r2_y + 64
     for i, (t_role, t_weight, t_sample, is_mono) in enumerate(t_rows):
@@ -1265,7 +1265,7 @@ def make_slide_08():
     draw.rounded_rectangle([lx + 24, comp_y + 305, lx + lw - 24, comp_y + 645], radius=12, fill=(239, 246, 255), outline=(191, 219, 254), width=1)
     draw.text((lx + 40, comp_y + 325), "체크앤페이 1초 원터치 키오스크 혁신", font=get_font(13.5, 'bold'), fill=(0, 82, 255))
     z_bullets = [
-        ("4자리 번호 인덱스 매칭", "SQLite 번호 역색인으로 입력 즉시 10ms 내 원생 자동 감지"),
+        ("4자리 번호 인덱스 매칭", "고속 뒷번호 매칭으로 입력 즉시 10ms 내 원생 자동 감지"),
         ("등원 / 하원 원터치 분기", "오늘 이미 등원한 원생은 하원 버튼으로 자동 스위칭"),
         ("오늘 출결 타임라인", "우측 화면에 실시간 등원 로그가 순차 렌더링되어 교차 검증"),
         ("학부모 알림 연동", "출결 즉시 등록된 연락처로 안전 도착 확인 메시지 전송")
@@ -1295,10 +1295,10 @@ def make_slide_08():
     draw.text((rx + 24, comp_y + 58), "초고속 출결 엔진의 기술적 무결성 지표", font=get_font(15, 'bold'), fill=(15, 23, 42))
     
     flow_cards = [
-        ("0.8s 초고속 인증 속도", "터치 입력부터 SQLite 커밋 완료 및 화면 피드백까지 전 과정 0.8초 완료"),
+        ("0.8s 초고속 인증 속도", "터치 입력부터 안전 저장 완료 및 화면 피드백까지 전 과정 0.8초 완료"),
         ("오인증 방지 2차 확인 모달", "동일한 뒷번호 4자리 보유 원생 감지 시 즉시 이름 선택 모달 팝업"),
-        ("하원 잔여 수업 회차 자동 차감", "수강권 종류(월정기/회차)에 맞춘 실시간 자동 차감 트랜잭션"),
-        ("100% 오프라인 동작 보증", "학원 인터넷 장애 시에도 멈춤 없이 SQLite 로컬 볼트에 무손실 커밋")
+        ("하원 잔여 수업 회차 자동 차감", "수강권 종류(월정기/회차)에 맞춘 실시간 자동 차감 처리"),
+        ("100% 오프라인 동작 보증", "학원 인터넷 장애 시에도 멈춤 없이 로컬 안전 볼트에 무손실 저장")
     ]
     
     f_y = comp_y + 95
@@ -1316,8 +1316,8 @@ def make_slide_08():
     
     kpis = [
         ("출결 인증 속도", "0.8초", "기존 45초 대비 98% 단축"),
-        ("원생 식별 지연", "10ms", "SQLite B-Tree 인덱싱"),
-        ("오프라인 보존율", "100%", "ACID 트랜잭션 보장"),
+        ("원생 식별 지연", "10ms", "실시간 초고속 매칭"),
+        ("오프라인 보존율", "100%", "무손실 로컬 안심 저장"),
         ("UI 렌더링 레이턴시", "16.6ms", "Flutter 60fps 유지")
     ]
     tkw = (rw - 48 - 30) // 4
