@@ -950,14 +950,14 @@ def make_slide_07():
     draw.text((col3_x + 24, r1_y + 64), "Grid 24×24dp  ·  Optical Center  ·  Production Flutter Icons.*_rounded 토큰 1:1 바인딩", font=get_font(9, 'bold'), fill=(0, 82, 255))
     
     icons_data = [
-        ("출결 키오스크", "Icons.dialpad_rounded", 0xf6be),
-        ("D-Day 수납장부", "Icons.payments_rounded", 0xf002a),
-        ("원생 디렉터리", "Icons.people_rounded", 0xf0062),
-        ("원클릭 청구서", "Icons.send_rounded", 0xf0161),
-        ("로컬 보안볼트", "Icons.lock_rounded", 0xf878),
-        ("프로 라이선스", "Icons.stars_rounded", 0xf01d5),
-        ("출결 타임라인", "Icons.history_rounded", 0xf7f0),
-        ("출석 인증 완료", "Icons.fact_check_rounded", 0xf735),
+        ("출결 체크패스", "Icons.fact_check_rounded", 0xf735),
+        ("수납 청구장부", "Icons.receipt_long_rounded", 0xf00b6),
+        ("지출 세무장부", "Icons.account_balance_wallet_rounded", 0xf520),
+        ("원생 디렉터리", "Icons.groups_rounded", 0xf0dc),
+        ("환경설정 볼트", "Icons.tune_rounded", 0xf0244),
+        ("카카오 알림톡", "Icons.chat_bubble_rounded", 0xf635),
+        ("스튜디오 보안", "Icons.lock_rounded", 0xf878),
+        ("프로 라이선스", "Icons.workspace_premium_rounded", 0xf0289),
     ]
     
     ic_start_y = r1_y + 86
@@ -1136,7 +1136,7 @@ def make_slide_07():
     
     draw.rounded_rectangle([colB_x + 40, k1_y + 50, colB_x + 28 + k1_w - 12, k1_y + 72], radius=5, fill=(255, 255, 255), outline=(203, 213, 225), width=1)
     mat_font_btn = get_material_icon_font(15)
-    draw.text((colB_x + 58, k1_y + 61), chr(0xf6be), font=mat_font_btn, fill=(0, 82, 255), anchor='mm')
+    draw.text((colB_x + 58, k1_y + 61), chr(0xf735), font=mat_font_btn, fill=(0, 82, 255), anchor='mm')
     draw.text((colB_x + 28 + k1_w // 2, k1_y + 61), "김도윤 원생 (매칭 완료)", font=get_font(9.5, 'bold'), fill=(15, 23, 42), anchor='mm')
     draw.text((colB_x + 28 + k1_w - 28, k1_y + 61), chr(0xe156), font=mat_font_btn, fill=(16, 185, 129), anchor='mm')
     
@@ -1176,7 +1176,7 @@ def make_slide_07():
     mat_font_cta = get_material_icon_font(15)
     
     draw.rounded_rectangle([colB_x + 28, cta_y, colB_x + 230, cta_y + 40], radius=10, fill=(0, 82, 255))
-    draw.text((colB_x + 50, cta_y + 20), chr(0xe156), font=mat_font_cta, fill=(255, 255, 255), anchor='mm')
+    draw.text((colB_x + 50, cta_y + 20), chr(0xf735), font=mat_font_cta, fill=(255, 255, 255), anchor='mm')
     draw.text((colB_x + 138, cta_y + 20), "0.8초 등원 인증", font=get_font(11, 'bold'), fill=(255, 255, 255), anchor='mm')
     
     draw.rounded_rectangle([colB_x + 242, cta_y, colB_x + 432, cta_y + 40], radius=10, fill=(240, 246, 255), outline=(0, 82, 255), width=1)

@@ -22,6 +22,7 @@ def make_shadow(img, blur=44, offset=(22, 40), alpha=80):
 def make_slide_01():
     base = Image.new('RGBA', (W, H), (250, 252, 255, 255))
     
+    # 1. Subtle Ambient Radial Glow
     glow = Image.new('RGBA', (W, H), (0, 0, 0, 0))
     g_draw = ImageDraw.Draw(glow)
     g_draw.ellipse([800, 100, 1850, 850], fill=(0, 82, 255, 18))
@@ -30,27 +31,34 @@ def make_slide_01():
     base = Image.alpha_composite(base, glow)
     
     draw = ImageDraw.Draw(base)
+    
+    # Hairline Top Boundary
     draw.line([(100, 52), (1820, 52)], fill=(226, 232, 240), width=1)
     
-    draw_pill_badge(draw, left_x=100, cy=76, text="2026 CASE STUDY", font=get_font(11.5, 'bold'), theme='blue', has_dot=False, pad_x=12, height=28)
+    # Top Kicker & Metadata
+    draw_pill_badge(draw, left_x=100, cy=76, text="2026 CASE STUDY", font=get_font(11.5, 'bold'), theme='blue', has_dot=True, pad_x=12, height=28)
     
-    meta_txt = "기획(PM) · UI/UX 디자인 · Android Live (v1.0) · Tablet Kiosk & ERP"
+    meta_txt = "기획(PM) · UI/UX 디자인 · Android Live (v1.0) · Web Prototype"
     w_meta = draw.textlength(meta_txt, font=get_font(13.5, 'medium'))
     draw.text((1820 - w_meta, 68), meta_txt, font=get_font(13.5, 'medium'), fill=(100, 116, 139))
     
+    # Category Label
     draw.text((100, 146), "CHECK & PAY · ZEROPASS", font=get_font(14, 'bold'), fill=(0, 82, 255))
     
+    # Big Clean Headline
     title_p1 = "1초 원터치 출결, "
     title_p2 = "완벽한 수납 자동화."
     w_p1 = draw.textlength(title_p1, font=get_font(56, 'black'))
     draw.text((100, 178), title_p1, font=get_font(56, 'black'), fill=(15, 23, 42))
     draw.text((100 + w_p1, 178), title_p2, font=get_font(56, 'black'), fill=(0, 82, 255))
     
+    # Clean UX Subtitle (2 balanced lines)
     sub1 = "학원·교습소·스튜디오 원장님의 매일 반복되는 출결 체크와 미수금 독촉 스트레스를,"
     sub2 = "단 한 번의 터치와 오프라인 SQLite 볼트 아키텍처로 완전 무결하게 해결하는 엔터프라이즈 모바일 솔루션"
     draw.text((100, 260), sub1, font=get_font(16.5, 'regular'), fill=(71, 85, 105))
     draw.text((100, 288), sub2, font=get_font(16.5, 'semibold'), fill=(30, 41, 59))
     
+    # OPEN STORYLINE: Key Strengths
     strengths = [
         ("01", "출결 마찰 제로", "1초 원터치 키오스크 UI", "Zero-Friction Kiosk Dial",
          "원생이 본인 전화번호 뒤 4자리만 터치하면 0.8초 내에 등·하원 처리 및 잔여 횟수가 즉시 차감되어 대기 줄을 원천 제거합니다."),
@@ -71,53 +79,92 @@ def make_slide_01():
         draw.text((118, k_y + 15), num, font=get_font(11, 'bold'), fill=(0, 82, 255), anchor='mm')
         
         draw_pill_badge(draw, left_x=144, cy=k_y + 15, text=tag, font=get_font(10, 'bold'), theme='blue', has_dot=False, pad_x=8, height=22)
-        draw.text((title_x, k_y + 4), title_ko, font=get_font(16.5, 'bold'), fill=(15, 23, 42))
+        draw.text((title_x, k_y + 4), title_ko, font=get_font(15.5, 'bold'), fill=(15, 23, 42))
         
-        w_t = draw.textlength(title_ko, font=get_font(16.5, 'bold'))
-        draw.text((title_x + w_t + 14, k_y + 6), sub_en, font=get_font(11.5, 'medium'), fill=(148, 163, 184))
+        w_title = draw.textlength(title_ko, font=get_font(15.5, 'bold'))
+        draw.text((title_x + w_title + 12, k_y + 6), f"·  {sub_en}", font=get_font(12, 'medium'), fill=(100, 116, 139))
         
-        lines = wrap_text_by_words(desc, get_font(12.5, 'regular'), 740, draw)
-        d_y = k_y + 36
-        for l in lines:
-            draw.text((title_x, d_y), l, font=get_font(12.5, 'regular'), fill=(71, 85, 105))
-            d_y += 21
+        words = desc.split(' ')
+        lines = []
+        cur_l = ""
+        for w in words:
+            test = (cur_l + ' ' + w).strip()
+            if draw.textlength(test, font=get_font(12, 'regular')) <= 780:
+                cur_l = test
+            else:
+                lines.append(cur_l)
+                cur_l = w
+        if cur_l:
+            lines.append(cur_l)
+            
+        desc_y = k_y + 36
+        for l in lines[:2]:
+            draw.text((144, desc_y), l, font=get_font(12, 'regular'), fill=(71, 85, 105))
+            desc_y += 20
             
         if idx < 3:
-            draw.line([(100, k_y + 112), (900, k_y + 112)], fill=(241, 245, 249), width=1)
+            draw.line([(100, k_y + 92), (900, k_y + 92)], fill=(226, 232, 240), width=1)
             
-        k_y += 134
+        k_y += 114
 
-    # 3 Layered Device Mockup (Mockup 01, Mockup 02, Mockup 03)
-    m1 = Image.open(f"{MOCKUP_DIR}/mockup_01_pass.png").convert('RGBA')
-    m2 = Image.open(f"{MOCKUP_DIR}/mockup_02_ledger.png").convert('RGBA')
-    m3 = Image.open(f"{MOCKUP_DIR}/mockup_03_members.png").convert('RGBA')
+    # Right Side: Dual Flagship iPhone Mockups (-11 deg Angled & Ultra-Natural Shadow)
+    phone_pass = Image.open(f"{MOCKUP_DIR}/mockup_01_pass.png").convert('RGBA')
+    phone_ledger = Image.open(f"{MOCKUP_DIR}/mockup_02_ledger.png").convert('RGBA')
     
-    target_h_c = 720
-    target_h_s = 640
+    target_h = 670
+    target_w = int(round(target_h * (phone_pass.width / phone_pass.height)))
+    p_front = phone_pass.resize((target_w, target_h), Image.Resampling.LANCZOS)
+    p_back = phone_ledger.resize((target_w, target_h), Image.Resampling.LANCZOS)
     
-    dev_c = m1.resize((int(m1.width * (target_h_c / m1.height)), target_h_c), Image.Resampling.LANCZOS)
-    dev_l = m2.resize((int(m2.width * (target_h_s / m2.height)), target_h_s), Image.Resampling.LANCZOS)
-    dev_r = m3.resize((int(m3.width * (target_h_s / m3.height)), target_h_s), Image.Resampling.LANCZOS)
+    angle = -11.0
+    rot_front = p_front.rotate(angle, expand=True, resample=Image.Resampling.BICUBIC)
+    rot_back = p_back.rotate(angle, expand=True, resample=Image.Resampling.BICUBIC)
     
-    pos_l = (980, 240)
-    pos_r = (1480, 240)
-    pos_c = (1210, 180)
+    def make_shadow_angled(img, blur=44, offset=(22, 40), alpha=80):
+        mask = img.split()[3]
+        sh_img = Image.new('RGBA', (img.width + 120, img.height + 120), (0, 0, 0, 0))
+        black = Image.new('RGBA', img.size, (15, 23, 42, alpha))
+        sh_img.paste(black, (60 + offset[0], 60 + offset[1]), mask)
+        return sh_img.filter(ImageFilter.GaussianBlur(blur)), (60, 60)
+        
+    sh_back, pad_b = make_shadow_angled(rot_back, blur=40, offset=(18, 34), alpha=65)
+    sh_front, pad_f = make_shadow_angled(rot_front, blur=48, offset=(24, 44), alpha=88)
     
-    sh_l, pad_l = make_shadow(dev_l, blur=40, alpha=70)
-    base.paste(sh_l, (pos_l[0] - pad_l[0], pos_l[1] - pad_l[1]), sh_l)
-    base.paste(dev_l, pos_l, dev_l)
+    p_back_x, p_back_y = 1270, 115
+    p_front_x, p_front_y = 970, 170
     
-    sh_r, pad_r = make_shadow(dev_r, blur=40, alpha=70)
-    base.paste(sh_r, (pos_r[0] - pad_r[0], pos_r[1] - pad_r[1]), sh_r)
-    base.paste(dev_r, pos_r, dev_r)
+    base.paste(sh_back, (p_back_x - pad_b[0], p_back_y - pad_b[1]), sh_back)
+    base.paste(rot_back, (p_back_x, p_back_y), rot_back)
     
-    sh_c, pad_c = make_shadow(dev_c, blur=48, alpha=90)
-    base.paste(sh_c, (pos_c[0] - pad_c[0], pos_c[1] - pad_c[1]), sh_c)
-    base.paste(dev_c, pos_c, dev_c)
+    base.paste(sh_front, (p_front_x - pad_f[0], p_front_y - pad_f[1]), sh_front)
+    base.paste(rot_front, (p_front_x, p_front_y), rot_front)
     
     draw = ImageDraw.Draw(base)
+    
+    # Bottom 4-Column Specification Strip (Spanning x=100 to 1820, y=840 to 956)
+    bar_y = 840
+    bar_h = 116
+    draw.rounded_rectangle([100, bar_y, 1820, bar_y + bar_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+    
+    col_w = 1720 // 4
+    specs = [
+        ("PROJECT ROLE", "서비스 기획 100% · UI/UX 디자인 100%", "소상공인 리서치 · 문제 정의 · IA 정보 설계 · 와이어프레임 · UI 디자인 총괄"),
+        ("PERIOD & TIMELINE", "2026.08 - 현재 (v1.0 프로덕션 운영)", "1인 학원·스튜디오 현장 인터뷰 기반 설계 및 실기기 검증 후 지속 고도화"),
+        ("DESIGN SYSTEM", "Enterprise Trust 토큰 · 컴포넌트 규격", "8pt 베이스라인 · 브랜드 일렉트릭 블루(#0052FF) · 라이트 테마 고대비 12.8:1"),
+        ("DELIVERY & RELEASE", "Android 상용 출시 & 60fps 웹 프로토타입", "SQLite ACID 온디바이스 볼트 탑재 · 실제 뷰포트 인터랙티브 허브 완성")
+    ]
+    
+    for i, (cat, val_bold, val_desc) in enumerate(specs):
+        cx = 100 + i * col_w
+        if i > 0:
+            draw.line([(cx, bar_y + 18), (cx, bar_y + bar_h - 18)], fill=(226, 232, 240), width=1)
+        draw.text((cx + 28, bar_y + 18), cat, font=get_font(11, 'bold'), fill=(0, 82, 255))
+        draw.text((cx + 28, bar_y + 42), val_bold, font=get_font(14.5, 'bold'), fill=(15, 23, 42))
+        draw.text((cx + 28, bar_y + 70), val_desc, font=get_font(11, 'regular'), fill=(100, 116, 139))
+        
     draw_slide_footer(draw, 1)
     save_slide(base.convert('RGB'), 1)
+
 
 # ==============================================================
 # SLIDE 02: USER RESEARCH | DESK RESEARCH & MARKET STUDY
