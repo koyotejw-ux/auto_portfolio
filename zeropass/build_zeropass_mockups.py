@@ -14,6 +14,7 @@ SRC_SCREENS = {
     'mockup_03_members.png': 'd:/097.flutter_project/zeropass/test_tab3.png',
     'mockup_04_pro.png': 'd:/097.flutter_project/zeropass/test_tab4.png',
     'mockup_05_vault.png': 'd:/097.flutter_project/zeropass/test_tab5.png',
+    'mockup_06_en.png': 'd:/097.flutter_project/zeropass/en_test_tab1.png',
 }
 
 def make_clean_iphone_mockup(screen_path, target_screen_w=720):

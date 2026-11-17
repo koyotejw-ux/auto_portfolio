@@ -451,51 +451,66 @@ def make_slide_03():
             tx += c_w
         ry += 48
 
-    # 3. Bottom Persona Profiles (Primary & Secondary)
-    p_y = 635
+    # 3. Bottom Persona Profiles (Primary & Secondary with Persona Behavioral Spectrums)
+    p_y = 625
     pw = 840
-    ph = 330
+    ph = 345
     
     # Persona 1: 이지은 원장 (1인 음악학원)
     draw.rounded_rectangle([100, p_y, 100 + pw, p_y + ph], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-    draw_pill_badge(draw, left_x=125, cy=p_y + 26, text="PRIMARY PERSONA 01", font=get_font(10, 'bold'), theme='blue', pad_x=10, height=24)
-    draw.text((125, p_y + 58), "이지은 (34세 · 피아노 교습소 1인 원장)", font=get_font(16.5, 'bold'), fill=(15, 23, 42))
-    draw.text((125, p_y + 86), "• 운영 환경: 원생 38명 · 강사 없이 1인 운영 · 주 5일 레슨", font=get_font(12.5, 'medium'), fill=(71, 85, 105))
+    draw_pill_badge(draw, left_x=125, cy=p_y + 24, text="PRIMARY PERSONA 01", font=get_font(10, 'bold'), theme='blue', pad_x=10, height=24)
+    draw.text((125, p_y + 52), "이지은 (34세 · 피아노 교습소 1인 원장)", font=get_font(16, 'bold'), fill=(15, 23, 42))
+    draw.text((125, p_y + 76), "• 운영 환경: 원생 38명 · 강사 없이 1인 운영 · 주 5일 수업", font=get_font(12, 'medium'), fill=(71, 85, 105))
     
     p1_cols = [
-        ("Pain Points (핵심 고통)", "• 레슨 도중 원생이 올 때마다 출석체크하느라 흐름 단절\n• 회비 납부일이 제각각이라 카톡으로 독촉 문자 보내기 민망함\n• 대형 ERP는 월 8만원이나 해서 소규모에 비효율적"),
-        ("Needs & Goals (해결 목표)", "• 아이들이 문 열고 들어와 스스로 1초 만에 번호 누르는 키오스크\n• 만료일 다가온 원생만 콕 집어 정중한 청구서 템플릿 원클릭 전송\n• 복잡한 교육 없이 공기계 태블릿에 바로 깔아 쓰는 단순함")
+        ("Pain Points (핵심 고통)", "• 레슨 도중 원생 올 때마다 출석체크로 수업 단절\n• 회비 납부일이 제각각이라 카톡 독촉 민망함\n• 대형 ERP는 월 8만원이나 해서 소규모에 비효율"),
+        ("Needs & Goals (해결 목표)", "• 아이들이 들어와 스스로 0.8초 만에 찍는 키오스크\n• 만료 임박 회원 정중한 청구서 템플릿 원클릭 전송\n• 복잡한 교육 없이 공기계에 깔아 쓰는 단순함")
     ]
     p_cx = 125
     for c_tit, c_desc in p1_cols:
-        draw.rounded_rectangle([p_cx, p_y + 120, p_cx + 380, p_y + ph - 25], radius=10, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
-        draw.text((p_cx + 18, p_y + 140), c_tit, font=get_font(13, 'bold'), fill=(0, 82, 255))
-        d_y = p_y + 168
+        draw.rounded_rectangle([p_cx, p_y + 102, p_cx + 380, p_y + 234], radius=10, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
+        draw.text((p_cx + 14, p_y + 116), c_tit, font=get_font(12, 'bold'), fill=(0, 82, 255))
+        d_y = p_y + 140
         for dl in c_desc.split('\n'):
-            draw.text((p_cx + 18, d_y), dl, font=get_font(11.5, 'regular'), fill=(71, 85, 105))
-            d_y += 22
+            draw.text((p_cx + 14, d_y), dl, font=get_font(11, 'regular'), fill=(71, 85, 105))
+            d_y += 20
         p_cx += 405
+        
+    draw.line([(125, p_y + 248), (100 + pw - 25, p_y + 248)], fill=(241, 245, 249), width=1)
+    draw.text((125, p_y + 258), "BEHAVIOR SPECTRUM (운영 성향 지표)", font=get_font(10, 'bold'), fill=(100, 116, 139))
+    from build_zeropass_white_common import draw_behavior_slider
+    draw_behavior_slider(draw, 125, p_y + 282, 380, "운영 형태", "1인 단독", "전담 직원", 0.15, theme='blue')
+    draw_behavior_slider(draw, 530, p_y + 282, 380, "출결 방식", "0.8초 키오스크", "수기 장부", 0.10, theme='blue')
+    draw_behavior_slider(draw, 125, p_y + 316, 380, "수납 관리", "D-Day 자동", "월말 정산", 0.20, theme='blue')
+    draw_behavior_slider(draw, 530, p_y + 316, 380, "서버 의존", "오프라인 안심", "클라우드", 0.10, theme='blue')
 
     # Persona 2: 박진우 대표 (1인 PT/필라테스 스튜디오)
     p2_x = 980
     draw.rounded_rectangle([p2_x, p_y, p2_x + pw, p_y + ph], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-    draw_pill_badge(draw, left_x=p2_x + 25, cy=p_y + 26, text="SECONDARY PERSONA 02", font=get_font(10, 'bold'), theme='green', pad_x=10, height=24)
-    draw.text((p2_x + 25, p_y + 58), "박진우 (39세 · 1인 기구필라테스 스튜디오 운영)", font=get_font(16.5, 'bold'), fill=(15, 23, 42))
-    draw.text((p2_x + 25, p_y + 86), "• 운영 환경: 회원 55명 · 10회/20회/30회 세션제 · 예약제 운영", font=get_font(12.5, 'medium'), fill=(71, 85, 105))
+    draw_pill_badge(draw, left_x=p2_x + 25, cy=p_y + 24, text="SECONDARY PERSONA 02", font=get_font(10, 'bold'), theme='green', pad_x=10, height=24)
+    draw.text((p2_x + 25, p_y + 52), "박진우 (39세 · 1인 기구필라테스 스튜디오 운영)", font=get_font(16, 'bold'), fill=(15, 23, 42))
+    draw.text((p2_x + 25, p_y + 76), "• 운영 환경: 회원 55명 · 10회/20회/30회 세션제 · 예약제 운영", font=get_font(12, 'medium'), fill=(71, 85, 105))
     
     p2_cols = [
-        ("Pain Points (핵심 고통)", "• 회원별 잔여 세션 횟수 차감이 누락되어 분쟁 발생\n• 운동 후 지친 회원에게 재등록 결제 요청할 때 어색한 대면 마찰\n• 인터넷 장애 시 헬스장 전산 먹통으로 출결 파악 불가"),
-        ("Needs & Goals (해결 목표)", "• 입장 시 4자리 터치 즉시 잔여 횟수(-1) 자동 차감 및 표기\n• 세션 3회 이하 남은 회원 자동 분류 및 카카오톡 리마인더 전송\n• 오프라인 100% 작동으로 통신 장애에도 멈추지 않는 연속성")
+        ("Pain Points (핵심 고통)", "• 회원별 잔여 횟수 차감 누락되어 정산 시 분쟁 발생\n• 운동 후 지친 회원에게 재등록 요청하기 어색함\n• 인터넷 장애 시 헬스장 전산 먹통으로 출결 중단"),
+        ("Needs & Goals (해결 목표)", "• 입장 시 4자리 터치 즉시 잔여 횟수(-1) 자동 차감\n• 잔여 3회 이하 회원 자동 분류 및 알림톡 전송\n• 100% 로컬 작동으로 통신 장애에도 멈추지 않는 연속성")
     ]
     p_cx2 = p2_x + 25
     for c_tit, c_desc in p2_cols:
-        draw.rounded_rectangle([p_cx2, p_y + 120, p_cx2 + 380, p_y + ph - 25], radius=10, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
-        draw.text((p_cx2 + 18, p_y + 140), c_tit, font=get_font(13, 'bold'), fill=(16, 185, 129))
-        d_y = p_y + 168
+        draw.rounded_rectangle([p_cx2, p_y + 102, p_cx2 + 380, p_y + 234], radius=10, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
+        draw.text((p_cx2 + 14, p_y + 116), c_tit, font=get_font(12, 'bold'), fill=(16, 185, 129))
+        d_y = p_y + 140
         for dl in c_desc.split('\n'):
-            draw.text((p_cx2 + 18, d_y), dl, font=get_font(11.5, 'regular'), fill=(71, 85, 105))
-            d_y += 22
+            draw.text((p_cx2 + 14, d_y), dl, font=get_font(11, 'regular'), fill=(71, 85, 105))
+            d_y += 20
         p_cx2 += 405
+        
+    draw.line([(p2_x + 25, p_y + 248), (p2_x + pw - 25, p_y + 248)], fill=(241, 245, 249), width=1)
+    draw.text((p2_x + 25, p_y + 258), "BEHAVIOR SPECTRUM (운영 성향 지표)", font=get_font(10, 'bold'), fill=(100, 116, 139))
+    draw_behavior_slider(draw, p2_x + 25, p_y + 282, 380, "세션 차감", "원터치 자동", "수동 체크", 0.10, theme='green')
+    draw_behavior_slider(draw, p2_x + 430, p_y + 282, 380, "회수 주기", "D-3 사전예방", "연체 후 독촉", 0.25, theme='green')
+    draw_behavior_slider(draw, p2_x + 25, p_y + 316, 380, "기기 활용", "공기계 태블릿", "고가 키오스크", 0.20, theme='green')
+    draw_behavior_slider(draw, p2_x + 430, p_y + 316, 380, "프라이버시", "온디바이스", "외부 서버", 0.15, theme='green')
 
     draw_slide_footer(draw, 3)
     save_slide(base.convert('RGB'), 3)

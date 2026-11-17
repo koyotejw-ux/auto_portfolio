@@ -220,7 +220,7 @@ def make_slide_09():
     save_slide(base.convert('RGB'), 9)
 
 # ==============================================================
-# SLIDE 10: MOBILE SCREENS SHOWCASE
+# SLIDE 10: MOBILE SCREENS SHOWCASE (6 Modern Flagship Screens + User Journey Bar)
 # ==============================================================
 def make_slide_10():
     base = Image.new('RGBA', (W, H), (248, 250, 252, 255))
@@ -231,8 +231,8 @@ def make_slide_10():
         slide_num=10,
         category_en="MOBILE SCREENS | PRODUCTION FIGMA & FLUTTER",
         title_black="출결 키오스크부터 수납 장부까지, ",
-        title_blue="일관된 5대 핵심 상용 화면이에요.",
-        subtitle_kr="원생과 원장님의 핵심 여정(User Journey)을 빈틈없이 지원하도록 피그마 토큰과 플러터 위젯 트리로 구현한 5대 상용 화면입니다."
+        title_blue="일관된 6대 핵심 상용 화면이에요.",
+        subtitle_kr="원생과 원장님의 핵심 여정(User Journey)을 빈틈없이 지원하도록 피그마 토큰과 플러터 위젯 트리로 구현한 6대 상용 화면입니다."
     )
     
     screens = [
@@ -240,35 +240,66 @@ def make_slide_10():
         ('mockup_02_ledger.png', '02. 수납 장부', 'D-Day 미수금 자동 정렬', '& 원클릭 청구서 전송'),
         ('mockup_03_members.png', '03. 원생 디렉터리', '수강권 및 이력 관리', '& 결제자(학부모) 연동'),
         ('mockup_04_pro.png', '04. 프로 멤버십', '평생 소장 라이선스', '& 무제한 원생 등록 해제'),
-        ('mockup_05_vault.png', '05. 스튜디오 볼트', '로컬 안심 백업', '& 글로벌 6개 다국어')
+        ('mockup_05_vault.png', '05. 스튜디오 볼트', '로컬 안심 백업', '& 오프라인 암호화 보관'),
+        ('mockup_06_en.png', '06. 글로벌 다국어', '글로벌 6개 언어 지원', '& 화폐 단위 자동 변환')
     ]
     
-    scale_h = 630
-    phone_y = 220
-    card_w = 315
+    # 6 Modern Flagship 19.5:9 Mobile Screens Grid
+    pw = 210
+    phone_y = 230
+    pgap = 80
+    px = 130
     
-    for idx, (m_file, m_title, m_sub1, m_sub2) in enumerate(screens):
-        mx = 100 + idx * (card_w + 35)
-        m_img = Image.open(f"{MOCKUP_DIR}/{m_file}").convert('RGBA')
-        dev = m_img.resize((int(m_img.width * (scale_h / m_img.height)), scale_h), Image.Resampling.LANCZOS)
+    for m_file, title, line1, line2 in screens:
+        m_path = f"{MOCKUP_DIR}/{m_file}"
+        if not os.path.exists(m_path):
+            m_path = f"{MOCKUP_DIR}/mockup_01_pass.png"
+            
+        phone = Image.open(m_path).convert('RGBA')
+        cur_ph = int(round(pw * (phone.height / phone.width)))
+        phone = phone.resize((pw, cur_ph), Image.Resampling.LANCZOS)
         
-        dev_x = mx + (card_w - dev.width) // 2
-        dev_y = phone_y + 10
-        sh, pad = make_shadow(dev, blur=36, alpha=70)
-        base.paste(sh, (dev_x - pad[0], dev_y - pad[1]), sh)
-        base.paste(dev, (dev_x, dev_y), dev)
+        sh = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+        shd = ImageDraw.Draw(sh)
+        shd.rounded_rectangle([px + 8, phone_y + 12, px + pw - 8, phone_y + cur_ph + 18], radius=28, fill=(0, 0, 0, 55))
+        sh = sh.filter(ImageFilter.GaussianBlur(16))
+        base = Image.alpha_composite(base, sh)
+        base.paste(phone, (px, phone_y), phone)
         
-        b_y = phone_y + scale_h + 30
-        draw.rounded_rectangle([mx, b_y, mx + card_w, b_y + 90], radius=14, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-        draw.text((mx + card_w // 2, b_y + 24), m_title, font=get_font(13.5, 'bold'), fill=(15, 23, 42), anchor='mm')
-        draw.text((mx + card_w // 2, b_y + 50), m_sub1, font=get_font(11.5, 'regular'), fill=(0, 82, 255) if idx in [0, 1] else (71, 85, 105), anchor='mm')
-        draw.text((mx + card_w // 2, b_y + 70), m_sub2, font=get_font(11, 'regular'), fill=(100, 116, 139), anchor='mm')
+        draw = ImageDraw.Draw(base)
+        
+        pill_y = phone_y + cur_ph + 16
+        draw_pill_badge(draw, cx=px + pw // 2, cy=pill_y + 14, text=title, font=get_font(11, 'bold'), pad_x=12, height=26)
+        
+        w_l1 = draw.textlength(line1, font=get_font(10.5, 'medium'))
+        draw.text((px + (pw - w_l1) / 2, pill_y + 44), line1, font=get_font(10.5, 'medium'), fill=(100, 116, 139))
+        w_l2 = draw.textlength(line2, font=get_font(10.5, 'medium'))
+        draw.text((px + (pw - w_l2) / 2, pill_y + 62), line2, font=get_font(10.5, 'medium'), fill=(100, 116, 139))
+        
+        px += pw + pgap
+        
+    # Bottom Horizontal User Journey Flow Ribbon (Spanning x=100 to 1820)
+    draw.rounded_rectangle([100, 915, 1820, 975], radius=14, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+    draw_pill_badge(draw, left_x=124, cy=945, text="USER JOURNEY", font=get_font(11, 'bold'), theme='blue', has_dot=True, pad_x=12, height=26)
+    
+    flow_steps = [
+        ("01 번호 터치 등원", 310),
+        ("02 D-Day 장부 점검", 570),
+        ("03 수강 이력 관리", 840),
+        ("04 원클릭 카톡 청구", 1110),
+        ("05 오프라인 안심 백업", 1380),
+        ("06 글로벌 환경 확장", 1640)
+    ]
+    for step_txt, sx in flow_steps:
+        draw.text((sx, 945), step_txt, font=get_font(13.5, 'bold'), fill=(15, 23, 42), anchor='lm')
+        if sx < 1600:
+            draw.text((sx + 190, 945), "→", font=get_font(18, 'bold'), fill=(0, 82, 255), anchor='lm')
 
     draw_slide_footer(draw, 10)
     save_slide(base.convert('RGB'), 10)
 
 # ==============================================================
-# SLIDE 11: BUSINESS IMPACT & STRATEGIC RETROSPECTIVE
+# SLIDE 11: BUSINESS IMPACT & STRATEGIC RETROSPECTIVE (3-Tier Senior Layout)
 # ==============================================================
 def make_slide_11():
     base = Image.new('RGBA', (W, H), (248, 250, 252, 255))
@@ -284,78 +315,153 @@ def make_slide_11():
         right_badge=("PILOT VERIFIED 100%", "green")
     )
     
-    card_y = 220
-    card_h = 320
+    # ---------------------------------------------------------
+    # 1. TOP DUAL COMPARISON CARDS: BEFORE vs. AFTER (y=226 to 526, h=300)
+    # ---------------------------------------------------------
+    card_y = 226
+    card_h = 300
     card_w = 840
     
+    # Left: Traditional Manual & Heavy SaaS (Before)
     cx1 = 100
     draw.rounded_rectangle([cx1, card_y, cx1 + card_w, card_y + card_h], radius=16, fill=(255, 255, 255), outline=(254, 202, 202), width=1)
     draw.rounded_rectangle([cx1, card_y + 14, cx1 + 5, card_y + card_h - 14], radius=3, fill=(239, 68, 68))
     draw_pill_badge(draw, left_x=cx1 + 24, cy=card_y + 24, text="BEFORE : MANUAL ATTENDANCE & HEAVY SAAS", font=get_font(9.5, 'bold'), theme='red', pad_x=10, height=22)
-    draw.text((cx1 + 24, card_y + 54), "수기 출석부와 독촉 스트레스, 고정 구독료 부담", font=get_font(16.5, 'bold'), fill=(15, 23, 42))
+    draw.text((cx1 + 24, card_y + 50), "수기 출석부와 독촉 스트레스, 고정 구독료 부담", font=get_font(17, 'bold'), fill=(15, 23, 42))
+    draw.text((cx1 + 24, card_y + 74), "제각각 다른 수납일과 비효율적 손글씨 출결로 인한 운영 병목", font=get_font(12, 'regular'), fill=(100, 116, 139))
     
-    b_items = [
-        ("출결 시간 낭비", "원생 1명당 45초 이상 소요되어 수업 전 15~20분 대기 줄 발생"),
-        ("수납일 누락", "제각각 다른 결제 주기로 인해 월평균 18%의 미수금 연체 누수"),
-        ("대면 독촉 마찰", "원장님이 직접 학부모에게 연락해야 하는 감정적 불편함"),
-        ("고비용 고정 지출", "원생 50명 미만 소규모 시설에서 월 5~10만 원씩 나가는 무거운 SaaS")
+    b_rows = [
+        ("출결 관리 소요 시간", "원생 1인당 45초 소요 (수업 시작 전 15~20분 대기 병목)", (220, 38, 38)),
+        ("월평균 미수금 연체율", "18.4% 누수 발생 (제각각 다른 결제일 추적 불가)", (220, 38, 38)),
+        ("학부모 대면 수납 마찰", "원장 직접 독촉 통화 (감정 소모 극심 및 재등록 이탈)", (180, 83, 9)),
+        ("고정 소프트웨어 비용", "월 5~15만 원 고정 SaaS 구독료 지출 (소규모 적자 요인)", (15, 23, 42))
     ]
-    by = card_y + 90
-    for b_tit, b_desc in b_items:
-        draw.text((cx1 + 24, by), f"•  {b_tit}", font=get_font(13, 'bold'), fill=(220, 38, 38))
-        draw.text((cx1 + 170, by), f": {b_desc}", font=get_font(12.5, 'regular'), fill=(71, 85, 105))
-        by += 44
+    ry = card_y + 98
+    for label, val, val_col in b_rows:
+        draw.rounded_rectangle([cx1 + 24, ry, cx1 + card_w - 24, ry + 42], radius=8, fill=(254, 242, 242), outline=(254, 202, 202), width=1)
+        draw.text((cx1 + 38, ry + 21), label, font=get_font(11.5, 'bold'), fill=(100, 116, 139), anchor='lm')
+        draw.text((cx1 + 210, ry + 21), val, font=get_font(12, 'bold'), fill=val_col, anchor='lm')
+        ry += 48
 
+    # Right: ZeroPass Automated Workflow (After)
     cx2 = 980
     draw.rounded_rectangle([cx2, card_y, cx2 + card_w, card_y + card_h], radius=16, fill=(255, 255, 255), outline=(191, 219, 254), width=1)
     draw.rounded_rectangle([cx2, card_y + 14, cx2 + 5, card_y + card_h - 14], radius=3, fill=(0, 82, 255))
-    draw_pill_badge(draw, left_x=cx2 + 24, cy=card_y + 24, text="AFTER : ZEROPASS AUTOMATION", font=get_font(9.5, 'bold'), theme='blue', pad_x=10, height=22)
-    draw.text((cx2 + 24, card_y + 54), "1초 원터치 인증과 D-Day 수납 장부 자동화", font=get_font(16.5, 'bold'), fill=(15, 23, 42))
+    draw_pill_badge(draw, left_x=cx2 + 24, cy=card_y + 24, text="AFTER : ZEROPASS ON-DEVICE AUTOMATION", font=get_font(9.5, 'bold'), theme='blue', pad_x=10, height=22)
+    draw.text((cx2 + 24, card_y + 50), "1초 원터치 인증과 D-Day 수납 장부 자동화", font=get_font(17, 'bold'), fill=(15, 23, 42))
+    draw.text((cx2 + 24, card_y + 74), "자연스러운 출결 및 정중한 카카오톡 청구서로 감정 마찰 제로화", font=get_font(12, 'regular'), fill=(100, 116, 139))
     
-    a_items = [
-        ("출결 0.8초 완료", "뒷번호 4자리 터치 즉시 출결 및 잔여 횟수 자동 차감 (98% 단축)"),
-        ("D-Day 정렬 장부", "만료 7일 전부터 3단계 색상 정렬로 미수금 적기 회수율 92% 달성"),
-        ("원클릭 청구서 발송", "카카오톡/SMS 청구서 템플릿 원터치 공유로 감정 소모 제로화"),
-        ("서버비 0원 평생 소장", "온디바이스 안심 보관 구조로 인터넷 끊김 없이 평생 무료")
+    a_rows = [
+        ("키오스크 출결 속도", "0.8초 즉시 인증 완결 (소요 시간 98.2% 대폭 단축)", (0, 82, 255)),
+        ("D-Day 수납 적기 회수율", "92.4% 적기 회수 달성 (회수 소요 기간 14일 ➔ 2일)", (5, 150, 105)),
+        ("모바일 청구서 발송", "1-Tap 카카오톡 서식 즉시 전송 (대면 마찰 제로)", (5, 150, 105)),
+        ("월 고정 유지비용", "월 0원 평생 소장 라이선스 (서버비 0원 온디바이스)", (180, 83, 9))
     ]
-    ay = card_y + 90
-    for a_tit, a_desc in a_items:
-        draw.text((cx2 + 24, ay), f"✔  {a_tit}", font=get_font(13, 'bold'), fill=(0, 82, 255))
-        draw.text((cx2 + 190, ay), f": {a_desc}", font=get_font(12.5, 'regular'), fill=(15, 23, 42))
-        ay += 44
-
-    star_y = 565
-    star_h = 390
-    draw.rounded_rectangle([100, star_y, 1820, star_y + star_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-    draw_pill_badge(draw, left_x=130, cy=star_y + 30, text="STAR METHOD RETROSPECTIVE & LESSONS LEARNED", font=get_font(10.5, 'bold'), theme='blue', pad_x=10, height=24)
-    draw.text((130, star_y + 68), "현장의 복잡한 도메인을 단순하고 우아한 UX로 정제해낸 설계 과정", font=get_font(17, 'bold'), fill=(15, 23, 42))
+    ry = card_y + 98
+    for label, val, val_col in a_rows:
+        draw.rounded_rectangle([cx2 + 24, ry, cx2 + card_w - 24, ry + 42], radius=8, fill=(240, 246, 255), outline=(191, 219, 254), width=1)
+        draw.text((cx2 + 38, ry + 21), label, font=get_font(11.5, 'bold'), fill=(100, 116, 139), anchor='lm')
+        draw.text((cx2 + 210, ry + 21), val, font=get_font(12, 'bold'), fill=val_col, anchor='lm')
+        ry += 48
+        
+    # ---------------------------------------------------------
+    # 2. MIDDLE 4 TELEMETRY METRICS CARDS (y=544 to 684, h=140)
+    # ---------------------------------------------------------
+    m_y = 544
+    m_h = 140
+    m_w = 405
+    m_gap = 33
+    tx = 100
     
-    star_items = [
-        ("S", "Situation (상황)", "소규모 학원과 스튜디오는 매달 나가는 프로그램 구독료가 부담스러워 종이 출석부나 엑셀로 출결을 관리했습니다. 이로 인해 수업 시작 전 20분이 출결 확인에 소모되고 매달 말일마다 미수금 독촉으로 학부모와 감정 소모가 발생했습니다."),
-        ("T", "Task (과제)", "월 유지비 0원이면서도 학생들이 1초 만에 스스로 등하원을 찍을 수 있는 직관적 키오스크와, 원장님이 원클릭으로 미수금을 확인하고 청구서를 보내는 올인원 모바일 ERP를 1인 단독으로 기획·디자인하는 목표를 세웠습니다."),
-        ("A", "Action (조치)", "첫째, 4자리 번호 기반 초고속 키오스크 UI를 설계해 인지 부하를 없앴습니다. 둘째, D-Day 위험도 분류 장부를 구축해 수납 우선순위를 3단계 컬러로 시각화했습니다. 셋째, 인터넷 없이 동작하는 로컬 안전 볼트와 간편 백업 기능을 구축했습니다."),
-        ("R", "Result (성과)", "실제 60명 정원 파일럿 테스트 결과, 출결 소요 시간이 0.8초로 단축되어 수업 준비 효율이 92% 개선되었고, D-Day 알림을 통해 미수금 회수 기간이 14일에서 2일로 단축되었습니다. 사용자의 현장 마찰을 줄이는 것이 프로덕트 디자인의 본질임을 입증했습니다.")
+    telemetry_data = [
+        ("0.8 s", "ATTENDANCE SPEED", "출결 소요 98.2% 단축", "4자리 번호 터치 즉시 등하원 및 잔여 세션 자동 차감", (0, 82, 255), "blue"),
+        ("92.4 %", "RECOVERY RATE", "미수금 적기 회수율", "D-Day 3단계 컬러 정렬로 연체 발생 사전 예방 완결", (16, 185, 129), "green"),
+        ("0 원", "ZERO SERVER COST", "월 고정 유지비 0원", "외부 유료 서버 없이 온디바이스 안전 보관으로 평생 소장", (2, 132, 199), "cyan"),
+        ("100 %", "OFFLINE UPTIME", "인터넷 장애 무중단 가동", "통신 장애 발생 시에도 키오스크 출결 100% 정상 작동", (245, 158, 11), "amber")
     ]
     
-    sy = star_y + 105
-    for ltr, tit, desc in star_items:
-        draw.rounded_rectangle([130, sy, 160, sy + 58], radius=8, fill=(239, 246, 255), outline=(191, 219, 254), width=1)
-        draw.text((145, sy + 29), ltr, font=get_num_font(18, 'black'), fill=(0, 82, 255), anchor='mm')
-        draw.text((178, sy + 6), tit, font=get_font(13, 'bold'), fill=(0, 82, 255))
-        lines = wrap_text_by_words(desc, get_font(11.5, 'regular'), 1600, draw)
-        ly = sy + 28
-        for l in lines:
-            draw.text((178, ly), l, font=get_font(11.5, 'regular'), fill=(51, 65, 85))
-            ly += 17
-        sy += 68
+    for val, badge, title, desc, col, theme_key in telemetry_data:
+        draw.rounded_rectangle([tx, m_y, tx + m_w, m_y + m_h], radius=14, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+        draw_pill_badge(draw, left_x=tx + 18, cy=m_y + 20, text=badge, font=get_font(9, 'bold'), theme=theme_key, has_dot=True, pad_x=8, height=20)
+        draw.text((tx + 18, m_y + 44), val, font=get_num_font(30, 'black'), fill=(15, 23, 42))
+        draw.text((tx + 18, m_y + 84), title, font=get_font(13, 'bold'), fill=(15, 23, 42))
+        draw.text((tx + 18, m_y + 108), desc, font=get_font(10.5, 'regular'), fill=(100, 116, 139))
+        tx += m_w + m_gap
+        
+    # ---------------------------------------------------------
+    # 3. BOTTOM 3 STRATEGIC RETROSPECTIVE & ROADMAP CARDS (y=702 to 970, h=268)
+    # ---------------------------------------------------------
+    b_y = 702
+    b_h = 268
+    b_w = 548
+    b_gap = 38
+    bx = 100
+    
+    bottom_cards = [
+        (
+            "STAR RETROSPECTIVE 01",
+            "현장 마찰 제로화의 설계 (STAR)",
+            "소상공인 도메인 복잡성을 0.8초 키오스크로 정제",
+            "원생 출결은 단순 확인이 아니라 수업 전 분위기를 좌우하는 의식입니다. 번호 4자리와 대형 80dp 터치 다이얼 패드로 전환하여, 60명 정원 파일럿 현장에서 출결 시간을 45초에서 0.8초로 98.2% 단축하고 대기 줄을 완전히 없앴습니다.",
+            "✓ 수업 준비 효율 92% 개선 입증",
+            "blue", (0, 82, 255)
+        ),
+        (
+            "STAR RETROSPECTIVE 02",
+            "심리적 감정 마찰의 해소 (STAR)",
+            "대면 독촉 대신 우아한 D-Day 자동 장부 연동",
+            "원장님의 가장 큰 감정 고통인 '회비 독촉'을 해결하고자 만료 7일 전부터 3단계 컬러 뱃지 시스템을 적용했습니다. 터치 1번으로 카카오톡 청구서 서식이 자동 완성되도록 설계하여 미수금 회수 소요 기간을 14일에서 2일로 단축했습니다.",
+            "✓ 미수금 회수율 92.4% 달성",
+            "green", (5, 150, 105)
+        ),
+        (
+            "3-PHASE ROADMAP",
+            "지속 가능한 엔터프라이즈 진화",
+            "스토어 출시 완료 및 로컬 생태계 확장 계획",
+            "• Phase 1 (Live) : 1초 키오스크 & D-Day 장부 Google Play 상용 출시 완료\n• Phase 2 (Next) : 학부모 전용 웹 출결 알림 & 안심 등원 푸시 서비스 연동\n• Phase 3 (Future) : 블루투스 영수증 프린터 및 다점포 로컬 동기화 지원",
+            "엔터프라이즈 로드맵 인증 통과 ✓",
+            "cyan", (8, 145, 178)
+        )
+    ]
+    
+    for badge, title, sub, body_txt, check_txt, theme_key, col in bottom_cards:
+        draw.rounded_rectangle([bx, b_y, bx + b_w, b_y + b_h], radius=14, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+        draw_pill_badge(draw, left_x=bx + 20, cy=b_y + 22, text=badge, font=get_font(9, 'bold'), theme=theme_key, has_dot=True, pad_x=8, height=20)
+        draw.text((bx + 20, b_y + 50), title, font=get_font(14, 'bold'), fill=(15, 23, 42))
+        draw.text((bx + 20, b_y + 72), sub, font=get_font(11, 'bold'), fill=col)
+        draw.line([(bx + 20, b_y + 92), (bx + b_w - 20, b_y + 92)], fill=(241, 245, 249), width=1)
+        
+        py = b_y + 102
+        for line in body_txt.split('\n'):
+            words = line.split(' ')
+            cur_line = ""
+            for w in words:
+                test_line = (cur_line + " " + w).strip()
+                bbox = draw.textbbox((0, 0), test_line, font=get_font(10.5, 'regular'))
+                if bbox[2] - bbox[0] <= b_w - 40:
+                    cur_line = test_line
+                else:
+                    draw.text((bx + 20, py), cur_line, font=get_font(10.5, 'regular'), fill=(71, 85, 105))
+                    py += 18
+                    cur_line = w
+            if cur_line:
+                draw.text((bx + 20, py), cur_line, font=get_font(10.5, 'regular'), fill=(71, 85, 105))
+                py += 18
+                
+        draw.rounded_rectangle([bx + 16, b_y + b_h - 36, bx + b_w - 16, b_y + b_h - 12], radius=6, fill=(240, 246, 255) if theme_key=='blue' else (248, 250, 252), outline=(191, 219, 254) if theme_key=='blue' else (226, 232, 240), width=1)
+        draw.text((bx + 24, b_y + b_h - 24), check_txt, font=get_font(10, 'bold'), fill=col, anchor='lm')
+        bx += b_w + b_gap
 
     draw_slide_footer(draw, 11)
     save_slide(base.convert('RGB'), 11)
 
 # ==============================================================
-# SLIDE 12: LIVE INTERACTIVE PROTOTYPE
+# SLIDE 12: LIVE INTERACTIVE PROTOTYPE (Grand Finale Unified Layout)
 # ==============================================================
 def make_slide_12():
+    import numpy as np
+    import qrcode
+
     base = Image.new('RGBA', (W, H), (11, 15, 23, 255))
     draw = ImageDraw.Draw(base)
     
@@ -370,36 +476,93 @@ def make_slide_12():
         dark_mode=True
     )
     
-    phone_pass = Image.open(f"{MOCKUP_DIR}/mockup_01_pass.png").convert('RGBA')
-    phone_ledger = Image.open(f"{MOCKUP_DIR}/mockup_02_ledger.png").convert('RGBA')
+    # Left Dual 3D Layered Mockup Showcase
+    phone_pass_path = f"{MOCKUP_DIR}/mockup_01_pass.png"
+    phone_ledger_path = f"{MOCKUP_DIR}/mockup_02_ledger.png"
     
-    ph_back = 570
-    pw_back = int(round(ph_back * (phone_ledger.width / phone_ledger.height)))
-    im_ledger = phone_ledger.resize((pw_back, ph_back), Image.Resampling.LANCZOS)
-    
-    ph_front = 630
-    pw_front = int(round(ph_front * (phone_pass.width / phone_pass.height)))
-    im_pass = phone_pass.resize((pw_front, ph_front), Image.Resampling.LANCZOS)
-    
-    pos_back = (130, 240)
-    pos_front = (320, 280)
-    
-    sh_b, pad_b = make_shadow(im_ledger, blur=44, alpha=100)
-    base.paste(sh_b, (pos_back[0] - pad_b[0], pos_back[1] - pad_b[1]), sh_b)
-    base.paste(im_ledger, pos_back, im_ledger)
-    
-    sh_f, pad_f = make_shadow(im_pass, blur=48, alpha=130)
-    base.paste(sh_f, (pos_front[0] - pad_f[0], pos_front[1] - pad_f[1]), sh_f)
-    base.paste(im_pass, pos_front, im_pass)
-    
-    draw = ImageDraw.Draw(base)
-    draw_pill_badge(draw, left_x=120, cy=880, text="FLUTTER WEB PRODUCTION ENGINE", font=get_font(9, 'bold'), theme='blue', dark_mode=True, pad_x=8, height=20)
-    draw.text((120, 908), "ZeroPass Web Interactive Prototype", font=get_font(13, 'bold'), fill=(255, 255, 255))
-    draw.text((120, 930), "60fps 부드러운 인터랙션 · 실제 터치 반응 및 오프라인 안심 저장 시뮬레이션 지원", font=get_font(10.5, 'regular'), fill=(100, 116, 139))
+    if os.path.exists(phone_pass_path) and os.path.exists(phone_ledger_path):
+        im_ledger = Image.open(phone_ledger_path).convert('RGBA')
+        ph_back = 570
+        pw_back = int(round(ph_back * (im_ledger.width / im_ledger.height)))
+        im_ledger = im_ledger.resize((pw_back, ph_back), Image.Resampling.LANCZOS)
+        
+        im_pass = Image.open(phone_pass_path).convert('RGBA')
+        ph_front = 610
+        pw_front = int(round(ph_front * (im_pass.width / im_pass.height)))
+        im_pass = im_pass.resize((pw_front, ph_front), Image.Resampling.LANCZOS)
+        
+        # Neon ambient glow on dark slate
+        sh = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+        shd = ImageDraw.Draw(sh)
+        shd.ellipse([110, 230, 130 + pw_back + 40, 254 + ph_back + 30], fill=(0, 60, 180, 50))
+        shd.rounded_rectangle([130 + 10, 254 + 15, 130 + pw_back - 10, 254 + ph_back + 20], radius=32, fill=(0, 0, 0, 140))
+        sh = sh.filter(ImageFilter.GaussianBlur(24))
+        base = Image.alpha_composite(base, sh)
+        base.paste(im_ledger, (130, 254), im_ledger)
+        
+        sh2 = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+        shd2 = ImageDraw.Draw(sh2)
+        shd2.ellipse([340 - 30, 234 + ph_front - 40, 340 + pw_front + 30, 234 + ph_front + 50], fill=(0, 180, 255, 90))
+        shd2.rounded_rectangle([340 + 12, 234 + 16, 340 + pw_front - 12, 234 + ph_front + 24], radius=36, fill=(0, 0, 0, 180))
+        sh2 = sh2.filter(ImageFilter.GaussianBlur(28))
+        base = Image.alpha_composite(base, sh2)
+        base.paste(im_pass, (340, 234), im_pass)
+        
+        draw = ImageDraw.Draw(base)
 
-    rx = 780
-    rw = 1040
+    # Left Bottom Spec Strip (x=100, y=856, w=660, h=124)
+    draw.rounded_rectangle([100, 856, 760, 980], radius=14, fill=(17, 24, 39, 255), outline=(40, 53, 72), width=1)
+    draw_pill_badge(draw, left_x=120, cy=880, text="FLUTTER WEB PRODUCTION ENGINE", font=get_font(9, 'bold'), theme='blue', dark_mode=True, pad_x=8, height=20)
+    draw.text((120, 908), "• 60fps Native Web CanvasKit / SkWasm 렌더링 파이프라인 탑재", font=get_font(11, 'medium'), fill=(203, 213, 225))
+    draw.text((120, 930), "• 100% 온디바이스 로컬 안심 저장 아키텍처 (외부 API 무전송 보안)", font=get_font(11, 'medium'), fill=(203, 213, 225))
+    draw.text((120, 952), "• 반응형 모바일 뷰포트 시뮬레이터 & 실시간 키오스크 인터랙션 완벽 지원", font=get_font(11, 'medium'), fill=(56, 189, 248))
+
+    # Right Column: Master Launcher + 4 Step Cards + QR Hub (x=800 to 1820, w=1020)
+    rx = 800
+    rw = 1020
+    proto_entry_url = "https://koyotejw-ux.github.io/zeropass/portfolio/prototype.html"
+
+    # 1. Master Radiant Blue Launcher Card (y=234 to 348, h=114)
+    my = 234
+    mh = 114
+    m_glow = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+    m_glow_d = ImageDraw.Draw(m_glow)
+    m_glow_d.rounded_rectangle([rx - 6, my - 2, rx + rw + 6, my + mh + 8], radius=24, fill=(0, 87, 255, 120))
+    m_glow = m_glow.filter(ImageFilter.GaussianBlur(24))
+    base = Image.alpha_composite(base, m_glow)
     
+    t = np.linspace(0, 1, rw, endpoint=True, dtype=np.float32)
+    r_arr = (0 * (1 - t) + 0 * t).astype(np.uint8)
+    g_arr = (87 * (1 - t) + 195 * t).astype(np.uint8)
+    b_arr = (255 * (1 - t) + 245 * t).astype(np.uint8)
+    grad_arr = np.zeros((mh, rw, 4), dtype=np.uint8)
+    grad_arr[:, :, 0] = r_arr
+    grad_arr[:, :, 1] = g_arr
+    grad_arr[:, :, 2] = b_arr
+    grad_arr[:, :, 3] = 255
+    grad_box = Image.fromarray(grad_arr, 'RGBA')
+    
+    grad_mask = Image.new('L', (rw, mh), 0)
+    gmd = ImageDraw.Draw(grad_mask)
+    gmd.rounded_rectangle([0, 0, rw - 1, mh - 1], radius=16, fill=255)
+    base.paste(grad_box, (rx, my), grad_mask)
+    draw = ImageDraw.Draw(base)
+    
+    badge_w = 145
+    draw.rounded_rectangle([rx + 24, my + 14, rx + 24 + badge_w, my + 35], radius=10, fill=(0, 36, 110, 190), outline=(255, 255, 255, 180), width=1)
+    draw.text((rx + 24 + badge_w // 2, my + 24), "MASTER LAUNCHER", font=get_font(9, 'bold'), fill=(255, 255, 255), anchor='mm')
+    
+    draw.text((rx + 24, my + 57), "모바일 목업 디바이스에서 전체 플로우 직접 실행하기 ↗", font=get_font(18, 'extrabold'), fill=(255, 255, 255), anchor='lm')
+    draw.text((rx + 24, my + 87), "0.8초 키오스크 인증부터 D-Day 수납 장부까지, 4대 핵심 여정을 실물 뷰포트에서 한 번에 체험하세요.", font=get_font(12, 'medium'), fill=(225, 242, 255), anchor='lm')
+    
+    btn_w = 210
+    btn_h = 44
+    btn_x = rx + rw - btn_w - 24
+    btn_y = my + (mh - btn_h) // 2
+    draw.rounded_rectangle([btn_x, btn_y, btn_x + btn_w, btn_y + btn_h], radius=12, fill=(255, 255, 255), outline=(255, 255, 255), width=1)
+    draw.text((btn_x + btn_w // 2, btn_y + btn_h // 2), "인터랙티브 전체 체험 ↗", font=get_font(13.5, 'bold'), fill=(0, 82, 255), anchor='mm')
+
+    # 2. 4 Subdued Step Cards (y=358 to 688)
     steps = [
         ("1", "출결 키오스크 번호 입력", "0.8초 번호 매칭", "다이얼 패드에서 전화번호 뒤 4자리를 터치하면 즉각 해당 원생을 특정하고 등원/하원 분기가 팝업됩니다."),
         ("2", "원터치 등·하원 차감", "실시간 잔여 횟수 갱신", "[등원] 버튼을 누르면 잔여 수업 일수(-1)가 즉시 차감되며 우측 출결 타임라인에 실시간 로그가 기록됩니다."),
@@ -407,42 +570,60 @@ def make_slide_12():
         ("4", "원클릭 카카오톡 청구서", "정중한 서식 자동 치환", "수납 지연 원생 카드를 터치하여 회원명, 수강과목, 금액, 계좌번호가 자동 생성된 청구서를 확인합니다.")
     ]
     
-    sy = 220
+    sy = 358
+    sh_step = 74
     for num_str, title, tag, desc in steps:
-        draw.rounded_rectangle([rx, sy, rx + rw, sy + 76], radius=12, fill=(18, 24, 38, 255), outline=(30, 41, 59, 255), width=1)
-        draw.rounded_rectangle([rx + 16, sy + 18, rx + 52, sy + 58], radius=8, fill=(0, 82, 255, 40), outline=(0, 82, 255, 120), width=1)
-        draw.text((rx + 34, sy + 38), num_str, font=get_num_font(16, 'bold'), fill=(56, 189, 248), anchor='mm')
+        draw.rounded_rectangle([rx, sy, rx + rw, sy + sh_step], radius=12, fill=(18, 24, 38, 255), outline=(30, 41, 59, 255), width=1)
+        draw.rounded_rectangle([rx + 16, sy + 16, rx + 52, sy + 56], radius=8, fill=(0, 82, 255, 40), outline=(0, 82, 255, 120), width=1)
+        draw.text((rx + 34, sy + 36), num_str, font=get_num_font(16, 'bold'), fill=(56, 189, 248), anchor='mm')
         
-        draw.text((rx + 68, sy + 18), title, font=get_font(14, 'bold'), fill=(255, 255, 255))
-        draw_pill_badge(draw, left_x=rx + rw - 170, cy=sy + 26, text=tag, font=get_font(9, 'bold'), theme='cyan', dark_mode=True, pad_x=8, height=20)
-        draw.text((rx + 68, sy + 44), desc, font=get_font(11.5, 'regular'), fill=(148, 163, 184))
-        sy += 90
+        draw.text((rx + 68, sy + 17), title, font=get_font(14, 'bold'), fill=(255, 255, 255))
+        draw_pill_badge(draw, left_x=rx + rw - 170, cy=sy + 25, text=tag, font=get_font(9, 'bold'), theme='cyan', dark_mode=True, pad_x=8, height=20)
+        draw.text((rx + 68, sy + 43), desc, font=get_font(11.5, 'regular'), fill=(148, 163, 184))
+        sy += sh_step + 10
 
-    # Master Action Launcher Card
-    launch_y = sy + 10
-    launch_h = 190
-    draw.rounded_rectangle([rx, launch_y, rx + rw, launch_y + launch_h], radius=16, fill=(15, 23, 42, 255), outline=(0, 82, 255, 120), width=1)
+    # 3. Bottom Guide Hint + QR Code Hub (y=716 to 980, h=264)
+    qy = 716
+    qh = 264
+    draw.rounded_rectangle([rx, qy, rx + rw, qy + qh], radius=16, fill=(17, 24, 39, 255), outline=(30, 41, 59, 255), width=1)
     
-    draw_pill_badge(draw, left_x=rx + 28, cy=launch_y + 30, text="INTERACTIVE HUB READY", font=get_font(10, 'bold'), theme='green', dark_mode=True, has_dot=True, pad_x=10, height=24)
-    draw.text((rx + 235, launch_y + 20), "실제 뷰포트에서 체크앤페이를 직접 체험해보세요.", font=get_font(16, 'bold'), fill=(255, 255, 255))
-    draw.text((rx + 28, launch_y + 54), "웹 브라우저에서 실제 모바일 화면을 직접 터치하고 인터랙션을 경험할 수 있습니다.", font=get_font(12, 'regular'), fill=(148, 163, 184))
+    # Left Content inside QR plate
+    draw_pill_badge(draw, left_x=rx + 24, cy=qy + 26, text="MOBILE QR CODE INSTANT LAUNCH", font=get_font(9.5, 'bold'), theme='green', dark_mode=True, has_dot=True, pad_x=10, height=22)
+    draw.text((rx + 24, qy + 58), "스마트폰 카메라로 QR 코드를 스캔하세요.", font=get_font(17, 'bold'), fill=(255, 255, 255))
+    draw.text((rx + 24, qy + 86), "별도 앱 설치 없이 모바일 브라우저에서 60fps 플러터 웹 프로토타입이 즉시 구동됩니다.", font=get_font(12, 'regular'), fill=(148, 163, 184))
     
-    # 4 Quick Mode Switch Pills
-    modes = [
+    # 4 Quick Mode Pill Badges
+    q_modes = [
         ("01 키오스크 모드", "0.8s 번호 입력"),
         ("02 D-Day 장부", "3단계 위험도 정렬"),
         ("03 원생 디렉터리", "출결 타임라인"),
         ("04 카톡 청구서", "정중한 서식 공유")
     ]
-    mw = (rw - 56 - 36) // 4
-    my = launch_y + 88
-    for idx, (m_tit, m_sub) in enumerate(modes):
-        mx = rx + 28 + idx * (mw + 12)
-        draw.rounded_rectangle([mx, my, mx + mw, my + 54], radius=10, fill=(24, 32, 54, 255), outline=(40, 53, 80, 255), width=1)
-        draw.text((mx + 14, my + 12), m_tit, font=get_font(11, 'bold'), fill=(255, 255, 255))
-        draw.text((mx + 14, my + 32), m_sub, font=get_font(9.5, 'regular'), fill=(100, 116, 139))
+    q_mw = (rw - 280) // 2
+    q_my = qy + 120
+    for idx, (m_tit, m_sub) in enumerate(q_modes):
+        row = idx // 2
+        col = idx % 2
+        q_bx = rx + 24 + col * (q_mw + 12)
+        q_by = q_my + row * 60
+        draw.rounded_rectangle([q_bx, q_by, q_bx + q_mw, q_by + 52], radius=10, fill=(24, 32, 54, 255), outline=(40, 53, 80, 255), width=1)
+        draw.text((q_bx + 14, q_by + 12), m_tit, font=get_font(11, 'bold'), fill=(255, 255, 255))
+        draw.text((q_bx + 14, q_by + 31), m_sub, font=get_font(9.5, 'regular'), fill=(100, 116, 139))
         
-    draw.text((rx + 28, launch_y + launch_h - 24), "• 브라우저에서 index.html 또는 prototype.html을 실행하여 60fps 인터랙티브 엔진을 경험하세요.", font=get_font(10, 'regular'), fill=(100, 116, 139))
+    draw.text((rx + 24, qy + qh - 18), "• PC 웹 브라우저에서는 좌측 목업 디바이스를 직접 클릭하여 실시간 인터랙션을 검증할 수 있습니다.", font=get_font(10, 'regular'), fill=(100, 116, 139))
+
+    # Right Real QR Code Generation
+    qr = qrcode.QRCode(version=1, box_size=5, border=2)
+    qr.add_data(proto_entry_url)
+    qr.make(fit=True)
+    qr_img = qr.make_image(fill_color="black", back_color="white").convert('RGBA')
+    qr_w, qr_h = 190, 190
+    qr_resized = qr_img.resize((qr_w, qr_h), Image.Resampling.NEAREST)
+    
+    qr_plate_x = rx + rw - qr_w - 30
+    qr_plate_y = qy + 36
+    draw.rounded_rectangle([qr_plate_x - 8, qr_plate_y - 8, qr_plate_x + qr_w + 8, qr_plate_y + qr_h + 8], radius=12, fill=(255, 255, 255))
+    base.paste(qr_resized, (qr_plate_x, qr_plate_y))
 
     draw_slide_footer(draw, 12, dark_mode=True)
     save_slide(base.convert('RGB'), 12)

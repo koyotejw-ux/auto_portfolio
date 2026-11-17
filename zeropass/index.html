@@ -6,6 +6,17 @@
   <title>ZeroPass (체크앤페이) - Behance Enterprise Case Study & UX/UI Architecture</title>
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <link rel="stylesheet" href="style.css?v=20261116_zeropass_v1">
+  <style>
+    .slide12-click-overlay {
+      cursor: pointer;
+      transition: background-color 0.18s ease, outline 0.18s ease;
+      outline: 2px solid transparent;
+    }
+    .slide12-click-overlay:hover {
+      background-color: rgba(0, 132, 255, 0.08);
+      outline: 2px solid rgba(0, 132, 255, 0.6);
+    }
+  </style>
 </head>
 <body>
 
@@ -110,8 +121,18 @@
       <img src="behance_slides/slide_11.png" alt="Slide 11 - Business Impact & STAR Retrospective" loading="lazy" />
     </section>
 
-    <section class="slide-frame" id="slide-12" data-index="12" data-title="12. Interactive Hub">
-      <img src="behance_slides/slide_12.png" alt="Slide 12 - Interactive Experience Hub" loading="lazy" />
+    <!-- Slide 12: Live Interactive Prototype Finale (Unified Obsidian Dark Hub) -->
+    <section class="slide-frame" id="slide-12" data-index="12" data-title="12. Interactive Hub" style="position: relative; overflow: hidden; background-color: #0b0f17;">
+      <img src="behance_slides/slide_12.png" alt="Slide 12 - Interactive Experience Hub" loading="lazy" style="display: block; width: 100%; height: auto;" />
+      
+      <!-- Interactive Click Overlays (Mapped 1:1 to 1920x1080 Design Coordinates) -->
+      <a href="prototype.html" target="_blank" rel="noopener noreferrer" class="slide12-click-overlay" style="position: absolute; left: 41.67%; top: 21.67%; width: 53.13%; height: 10.56%; border-radius: 16px;" title="🚀 모바일 목업 디바이스에서 전체 플로우 직접 실행하기 ↗"></a>
+      <a href="prototype.html?flow=kiosk" target="_blank" rel="noopener noreferrer" class="slide12-click-overlay" style="position: absolute; left: 41.67%; top: 33.15%; width: 53.13%; height: 6.85%; border-radius: 12px;" title="STEP 01. 0.8초 키오스크 번호 매칭 & 등원 새 창 실행 ↗"></a>
+      <a href="prototype.html?flow=pass" target="_blank" rel="noopener noreferrer" class="slide12-click-overlay" style="position: absolute; left: 41.67%; top: 40.74%; width: 53.13%; height: 6.85%; border-radius: 12px;" title="STEP 02. 원터치 등·하원 차감 & 타임라인 새 창 실행 ↗"></a>
+      <a href="prototype.html?flow=ledger" target="_blank" rel="noopener noreferrer" class="slide12-click-overlay" style="position: absolute; left: 41.67%; top: 48.33%; width: 53.13%; height: 6.85%; border-radius: 12px;" title="STEP 03. D-Day 수납 장부 3단계 필터링 새 창 실행 ↗"></a>
+      <a href="prototype.html?flow=bill" target="_blank" rel="noopener noreferrer" class="slide12-click-overlay" style="position: absolute; left: 41.67%; top: 55.93%; width: 53.13%; height: 6.85%; border-radius: 12px;" title="STEP 04. 원클릭 카카오톡 청구서 발송 새 창 실행 ↗"></a>
+      <a href="prototype.html" target="_blank" rel="noopener noreferrer" class="slide12-click-overlay" style="position: absolute; left: 41.67%; top: 66.30%; width: 53.13%; height: 23.52%; border-radius: 14px;" title="📱 모바일 QR 코드 스캔 및 프로토타입 직접 실행 ↗"></a>
+      <a href="prototype.html" target="_blank" rel="noopener noreferrer" class="slide12-click-overlay" style="position: absolute; left: 5.21%; top: 21.67%; width: 34.38%; height: 69.07%; border-radius: 36px;" title="📱 모바일 스마트폰 뷰포트 시뮬레이터 직접 조작하기 ↗"></a>
     </section>
   </main>
 

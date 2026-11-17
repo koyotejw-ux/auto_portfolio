@@ -249,6 +249,39 @@ def draw_dashed_arrow(draw, p1, p2, col=(0, 82, 255), width=2, dash_len=4, gap_l
         else:
             draw.polygon([(x2 + arrow_size * 1.5, y2 - arrow_size), (x2 + arrow_size * 1.5, y2 + arrow_size), (x2, y2)], fill=col)
 
+def draw_behavior_slider(draw, x, y, w, label, left_txt, right_txt, ratio, theme='blue'):
+    """
+    Renders an editorial behavior spectrum slider track with active segment and circular marker dot.
+    """
+    theme_colors = {
+        'blue': {'active': (0, 82, 255), 'dot': (0, 82, 255)},
+        'amber': {'active': (217, 119, 6), 'dot': (217, 119, 6)},
+        'green': {'active': (16, 185, 129), 'dot': (16, 185, 129)},
+        'cyan': {'active': (6, 182, 212), 'dot': (6, 182, 212)},
+        'purple': {'active': (124, 58, 237), 'dot': (124, 58, 237)},
+    }
+    col = theme_colors.get(theme, theme_colors['blue'])
+    
+    draw.text((x, y), label, font=get_font(10.5, 'bold'), fill=(15, 23, 42))
+    draw.text((x + 75, y + 1), left_txt, font=get_font(9, 'medium'), fill=(100, 116, 139))
+    r_bbox = draw.textbbox((0, 0), right_txt, font=get_font(9, 'medium'))
+    r_w = r_bbox[2] - r_bbox[0]
+    draw.text((x + w - r_w, y + 1), right_txt, font=get_font(9, 'medium'), fill=(100, 116, 139))
+    
+    track_x = x + 125
+    track_w = w - 135 - r_w
+    track_y = y + 7
+    
+    draw.rounded_rectangle([track_x, track_y, track_x + track_w, track_y + 4], radius=2, fill=(226, 232, 240))
+    active_w = int(round(track_w * max(0.0, min(1.0, ratio))))
+    draw.rounded_rectangle([track_x, track_y, track_x + active_w, track_y + 4], radius=2, fill=col['active'])
+    
+    dot_cx = track_x + active_w
+    dot_cy = track_y + 2
+    r = 5
+    draw.ellipse([dot_cx - r - 1, dot_cy - r - 1, dot_cx + r + 1, dot_cy + r + 1], fill=(255, 255, 255))
+    draw.ellipse([dot_cx - r, dot_cy - r, dot_cx + r, dot_cy + r], fill=col['dot'])
+
 def save_slide(img, num):
     for d in OUT_DIRS:
         img.save(f"{d}/slide_{num:02d}.png", quality=100)
