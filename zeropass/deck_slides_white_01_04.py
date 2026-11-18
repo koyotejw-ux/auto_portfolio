@@ -36,14 +36,14 @@ def make_slide_01():
     draw.line([(100, 52), (1820, 52)], fill=(226, 232, 240), width=1)
     
     # Top Kicker & Metadata
-    draw_pill_badge(draw, left_x=100, cy=76, text="2026 CASE STUDY", font=get_font(11.5, 'bold'), theme='blue', has_dot=True, pad_x=12, height=28)
+    draw_pill_badge(draw, left_x=100, cy=76, text="프로덕션 케이스 스터디", font=get_font(11.5, 'bold'), theme='blue', has_dot=False, pad_x=12, height=28)
     
-    meta_txt = "기획(PM) · UI/UX 디자인 · Android Live (v1.0) · Web Prototype"
+    meta_txt = "기획(PM) · UI/UX 디자인 · Android 출시 (v1.0) · 웹 프로토타입"
     w_meta = draw.textlength(meta_txt, font=get_font(13.5, 'medium'))
     draw.text((1820 - w_meta, 68), meta_txt, font=get_font(13.5, 'medium'), fill=(100, 116, 139))
     
     # Category Label
-    draw.text((100, 146), "CHECK & PAY · ZEROPASS", font=get_font(14, 'bold'), fill=(0, 82, 255))
+    draw.text((100, 146), "체크앤페이 · CHECK & PAY", font=get_font(14, 'bold'), fill=(0, 82, 255))
     
     # Big Clean Headline
     title_p1 = "1초 원터치 출결, "
@@ -60,13 +60,13 @@ def make_slide_01():
     
     # OPEN STORYLINE: Key Strengths
     strengths = [
-        ("01", "출결 마찰 제로", "1초 원터치 키오스크 UI", "Zero-Friction Kiosk Dial",
+        ("01", "출결 마찰 제로", "1초 원터치 키오스크 UI", "0.8초 고속 출결 다이얼",
          "원생이 본인 전화번호 뒤 4자리만 터치하면 0.8초 내에 등·하원 처리 및 잔여 횟수가 즉시 차감되어 대기 줄을 원천 제거합니다."),
-        ("02", "수납 누수 차단", "스마트 D-Day 수납 장부", "D-Day Ledger Architecture",
-         "정기 결제일과 잔여 회차를 실시간 계산하여 만료 7일 전부터 3단계 색상(Green/Amber/Red)으로 수납 우선순위를 직관적으로 분류합니다."),
-        ("03", "감정 소모 해소", "원클릭 모바일 청구서", "Frictionless Billing Share",
+        ("02", "수납 누수 차단", "스마트 D-Day 수납 장부", "3단계 위험도 정렬 체계",
+         "정기 결제일과 잔여 회차를 실시간 계산하여 만료 7일 전부터 3단계 색상(초록/주황/빨강)으로 수납 우선순위를 직관적으로 분류합니다."),
+        ("03", "감정 소모 해소", "원클릭 모바일 청구서", "정중한 알림톡 템플릿",
          "회원별 계좌번호와 청구 금액이 자동 치환된 정중한 카카오톡 청구서 템플릿을 터치 한 번으로 전송하여 불편한 대면 독촉을 없앴습니다."),
-        ("04", "안심 프라이버시", "100% 로컬 오프라인 볼트", "Safe Local-First Vault",
+        ("04", "안심 프라이버시", "100% 로컬 오프라인 볼트", "기기 내부 로컬 안심 저장",
          "외부 유료 서버 없이 기기 내부 로컬 안심 저장소에 암호화 보관하여 월 유지비 0원과 인터넷 끊김 없는 완전한 연속성을 실현했습니다.")
     ]
     
@@ -178,10 +178,10 @@ def make_slide_01():
     
     col_w = 1720 // 4
     specs = [
-        ("PROJECT ROLE", "서비스 기획 100% · UI/UX 디자인 100%", "소상공인 리서치 · 문제 정의 · IA 정보 설계 · 와이어프레임 · UI 디자인 총괄"),
-        ("PERIOD & TIMELINE", "2026.08 - 현재 (v1.0 프로덕션 운영)", "1인 학원·스튜디오 현장 인터뷰 기반 설계 및 실기기 검증 후 지속 고도화"),
-        ("DESIGN SYSTEM", "Enterprise Trust 토큰 · 컴포넌트 규격", "8pt 베이스라인 · 브랜드 일렉트릭 블루(#0052FF) · 라이트 테마 고대비 12.8:1"),
-        ("DELIVERY & RELEASE", "Android 상용 출시 & 60fps 웹 프로토타입", "안심 로컬 보관 아키텍처 탑재 · 실제 뷰포트 인터랙티브 허브 완성")
+        ("담당 역할", "서비스 기획 100% · UI/UX 디자인 100%", "소상공인 리서치 · 문제 정의 · IA 정보 설계 · 와이어프레임 · UI 디자인 총괄"),
+        ("진행 기간", "2026.08 - 현재 (v1.0 상용 운영)", "1인 학원·스튜디오 현장 인터뷰 기반 설계 및 실기기 검증 후 지속 고도화"),
+        ("디자인 시스템", "신뢰 기반 토큰 및 컴포넌트 규격", "8pt 베이스라인 · 브랜드 일렉트릭 블루(#0052FF) · 라이트 테마 고대비 12.8:1"),
+        ("출시 및 배포", "Android 상용 출시 & 60fps 웹 프로토타입", "안심 로컬 보관 아키텍처 탑재 · 실제 뷰포트 인터랙티브 허브 완성")
     ]
     
     for i, (cat, val_bold, val_desc) in enumerate(specs):
@@ -206,7 +206,7 @@ def make_slide_02():
     draw_slide_header(
         draw,
         slide_num=2,
-        category_en="USER RESEARCH | DESK RESEARCH & MARKET STUDY",
+        category_en="시장 리서치 · 문제 정의",
         title_black="소규모 교육·체육 시설의 고질적 운영 병목과 ",
         title_blue="아날로그 장부의 기존 문제점",
         subtitle_kr="소규모 학원 및 스튜디오 운영자(N=120) 심층 인터뷰와 SaaS 도입 비용 분석을 통해 도출한 3대 핵심 전략"
@@ -222,8 +222,8 @@ def make_slide_02():
     draw.rounded_rectangle([c1_x, sy, c1_x + card_w, sy + card_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
     draw.rounded_rectangle([c1_x, sy + 18, c1_x + 5, sy + card_h - 18], radius=2, fill=(220, 38, 38))
     
-    draw_pill_badge(draw, left_x=c1_x + 24, cy=sy + 26, text="MARKET TREND", font=get_font(10, 'bold'), theme='red', pad_x=8, height=22)
-    draw.text((c1_x + 24, sy + 58), "고비용 SaaS와 기능 과잉 부담", font=get_font(16.5, 'bold'), fill=(15, 23, 42))
+    draw_pill_badge(draw, left_x=c1_x + 24, cy=sy + 26, text="비용 부담 리서치", font=get_font(10, 'bold'), theme='red', pad_x=8, height=22)
+    draw.text((c1_x + 24, sy + 58), "고비용 ERP와 기능 과잉 부담", font=get_font(16.5, 'bold'), fill=(15, 23, 42))
     draw.text((c1_x + 24, sy + 88), "원생 30~50명 규모 원장님의 84%가 월 5~15만원의\n과도한 ERP 구독료 부담으로 도입을 포기합니다.", font=get_font(11.5, 'regular'), fill=(100, 116, 139), spacing=4)
     draw.text((c1_x + 24, sy + 144), "84.2%", font=get_num_font(38, 'black'), fill=(220, 38, 38))
     draw.text((c1_x + 24, sy + 188), "비용 부담 응답률 (소상공인 실태 N=120)", font=get_font(11, 'bold'), fill=(100, 116, 139))
@@ -241,21 +241,21 @@ def make_slide_02():
     draw.rounded_rectangle([c2_x, sy, c2_x + card_w, sy + card_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
     draw.rounded_rectangle([c2_x, sy + 18, c2_x + 5, sy + card_h - 18], radius=2, fill=(217, 119, 6))
     
-    draw_pill_badge(draw, left_x=c2_x + 24, cy=sy + 26, text="BEHAVIOR TREND", font=get_font(10, 'bold'), theme='amber', pad_x=8, height=22)
+    draw_pill_badge(draw, left_x=c2_x + 24, cy=sy + 26, text="출결 병목 분석", font=get_font(10, 'bold'), theme='amber', pad_x=8, height=22)
     draw.text((c2_x + 24, sy + 58), "수기 출석부의 대기 병목 시간", font=get_font(16.5, 'bold'), fill=(15, 23, 42))
     draw.text((c2_x + 24, sy + 88), "원생들이 이름을 손으로 적거나 카드를 찾는 동안\n수업 시작 전 15~20분의 골든타임이 소모됩니다.", font=get_font(11.5, 'regular'), fill=(100, 116, 139), spacing=4)
-    draw.text((c2_x + 24, sy + 144), "45s → 0.8s", font=get_num_font(30, 'black'), fill=(217, 119, 6))
+    draw.text((c2_x + 24, sy + 144), "45초 → 0.8초", font=get_num_font(28, 'black'), fill=(217, 119, 6))
     draw.text((c2_x + 24, sy + 188), "출결 소요 시간 98% 단축 (원터치 키오스크)", font=get_font(11, 'bold'), fill=(16, 185, 129))
     
     bx = c2_x + card_w - 170
     b_w = 145
     draw_pill_badge(draw, cx=bx + b_w // 2, cy=sy + 32, text="인증 소요 시간", font=get_font(9, 'bold'), theme='amber', pad_x=8, height=20)
     draw.text((bx, sy + 57), "기존 수기/카드", font=get_font(10, 'bold'), fill=(148, 163, 184))
-    draw.text((bx + b_w, sy + 57), "45.0s", font=get_num_font(11.5, 'bold'), fill=(220, 38, 38), anchor='ra')
+    draw.text((bx + b_w, sy + 57), "45.0초", font=get_font(11.5, 'bold'), fill=(220, 38, 38), anchor='ra')
     draw.rounded_rectangle([bx, sy + 75, bx + b_w, sy + 91], radius=8, fill=(248, 113, 113))
     
     draw.text((bx, sy + 101), "체크앤페이", font=get_font(10, 'bold'), fill=(0, 82, 255))
-    draw.text((bx + b_w, sy + 101), "0.8s", font=get_num_font(11.5, 'bold'), fill=(16, 185, 129), anchor='ra')
+    draw.text((bx + b_w, sy + 101), "0.8초", font=get_font(11.5, 'bold'), fill=(16, 185, 129), anchor='ra')
     draw.rounded_rectangle([bx, sy + 119, bx + b_w, sy + 135], radius=8, fill=(241, 245, 249))
     draw.rounded_rectangle([bx, sy + 119, bx + 18, sy + 135], radius=8, fill=(16, 185, 129))
     draw_pill_badge(draw, cx=bx + b_w // 2, cy=sy + 166, text="56배 고속 · 98% 단축", font=get_font(9.5, 'bold'), theme='green', pad_x=10, height=24, solid=True)
@@ -265,7 +265,7 @@ def make_slide_02():
     draw.rounded_rectangle([c3_x, sy, c3_x + card_w, sy + card_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
     draw.rounded_rectangle([c3_x, sy + 18, c3_x + 5, sy + card_h - 18], radius=2, fill=(0, 82, 255))
     
-    draw_pill_badge(draw, left_x=c3_x + 24, cy=sy + 26, text="INDUSTRY GAP", font=get_font(10, 'bold'), theme='blue', pad_x=8, height=22)
+    draw_pill_badge(draw, left_x=c3_x + 24, cy=sy + 26, text="데이터 안심 보관", font=get_font(10, 'bold'), theme='blue', pad_x=8, height=22)
     draw.text((c3_x + 24, sy + 58), "온디바이스 로컬 독립 보안 부재", font=get_font(16.5, 'bold'), fill=(15, 23, 42))
     draw.text((c3_x + 24, sy + 88), "기존 모든 학원 관리 프로그램은 외부 클라우드 의존으로\n인터넷 장애 시 출결 중단 및 개인정보 유출 위험 노출.", font=get_font(11.5, 'regular'), fill=(100, 116, 139), spacing=4)
     draw.text((c3_x + 24, sy + 144), "100%", font=get_num_font(38, 'black'), fill=(0, 82, 255))
@@ -290,9 +290,9 @@ def make_slide_02():
     # 2. MIDDLE: INSIGHT BANNER
     ins_y = 465
     draw.rounded_rectangle([100, ins_y, 1820, ins_y + 54], radius=12, fill=(239, 246, 255), outline=(191, 219, 254), width=1)
-    draw_pill_badge(draw, left_x=120, cy=ins_y + 27, text="CORE INSIGHT", font=get_font(11, 'bold'), theme='blue', pad_x=12, height=30)
+    draw_pill_badge(draw, left_x=120, cy=ins_y + 27, text="핵심 발견점", font=get_font(11, 'bold'), theme='blue', pad_x=12, height=30)
     ins_text = "소규모 사업장에는 복잡한 대형 ERP가 아닌, '1초 출결 키오스크'와 'D-Day 미수금 자동 정렬'에 특화된 온디바이스 볼트가 정답이다."
-    draw.text((280, ins_y + 17), ins_text, font=get_font(14.5, 'bold'), fill=(0, 82, 255))
+    draw.text((260, ins_y + 17), ins_text, font=get_font(14.5, 'bold'), fill=(0, 82, 255))
     draw.polygon([(960, ins_y + 54), (952, ins_y + 64), (968, ins_y + 64)], fill=(0, 82, 255))
     
     # 3. BOTTOM: 2x2 SWOT MATRIX (Left) + 3 STRATEGIC PILLARS (Right)
@@ -300,7 +300,7 @@ def make_slide_02():
     swot_w = 830
     swot_h = 415
     draw.rounded_rectangle([100, b_y, 100 + swot_w, b_y + swot_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-    draw.text((125, b_y + 20), "SWOT ANALYSIS : 체크앤페이의 전략적 포지셔닝 분석", font=get_font(15, 'bold'), fill=(15, 23, 42))
+    draw.text((125, b_y + 20), "SWOT 포지셔닝 분석 : 체크앤페이의 전략적 기회 요인", font=get_font(15, 'bold'), fill=(15, 23, 42))
     draw.line([(125, b_y + 48), (100 + swot_w - 25, b_y + 48)], fill=(241, 245, 249), width=1)
     
     qw = (swot_w - 60) // 2
@@ -310,7 +310,7 @@ def make_slide_02():
     s_x = 125
     s_y = b_y + 65
     draw.rounded_rectangle([s_x, s_y, s_x + qw, s_y + qh], radius=10, fill=(236, 253, 245), outline=(167, 243, 208), width=1)
-    draw_pill_badge(draw, left_x=s_x + 14, cy=s_y + 22, text="Strength (강점)", font=get_font(10, 'bold'), theme='green', pad_x=10, height=24, solid=True)
+    draw_pill_badge(draw, left_x=s_x + 14, cy=s_y + 22, text="강점 (Strength)", font=get_font(10, 'bold'), theme='green', pad_x=10, height=24, solid=True)
     s_points = ["• 0.8초 키오스크 번호 매칭 & 등하원", "• 서버 유지비 0원 & 완전한 오프라인", "• D-Day 3단계 시각적 미수금 장부"]
     for idx, p in enumerate(s_points):
         draw.text((s_x + 14, s_y + 56 + idx * 24), p, font=get_font(11.5, 'medium'), fill=(6, 95, 70))
@@ -319,7 +319,7 @@ def make_slide_02():
     w_x = s_x + qw + 10
     w_y = s_y
     draw.rounded_rectangle([w_x, w_y, w_x + qw, w_y + qh], radius=10, fill=(254, 242, 242), outline=(254, 202, 202), width=1)
-    draw_pill_badge(draw, left_x=w_x + 14, cy=w_y + 22, text="Weakness (약점)", font=get_font(10, 'bold'), theme='red', pad_x=10, height=24, solid=True)
+    draw_pill_badge(draw, left_x=w_x + 14, cy=w_y + 22, text="약점 (Weakness)", font=get_font(10, 'bold'), theme='red', pad_x=10, height=24, solid=True)
     w_points = ["• 온디바이스 특성상 초기 기기 세팅 필요", "• 대형 프랜차이즈 다점포 중앙통제 부재", "• 신규 브랜드 인지도 확보 필요"]
     for idx, p in enumerate(w_points):
         draw.text((w_x + 14, w_y + 56 + idx * 24), p, font=get_font(11.5, 'medium'), fill=(153, 27, 27))
@@ -328,7 +328,7 @@ def make_slide_02():
     o_x = s_x
     o_y = s_y + qh + 12
     draw.rounded_rectangle([o_x, o_y, o_x + qw, o_y + qh], radius=10, fill=(239, 246, 255), outline=(191, 219, 254), width=1)
-    draw_pill_badge(draw, left_x=o_x + 14, cy=o_y + 22, text="Opportunity (기회)", font=get_font(10, 'bold'), theme='blue', pad_x=10, height=24, solid=True)
+    draw_pill_badge(draw, left_x=o_x + 14, cy=o_y + 22, text="기회 (Opportunity)", font=get_font(10, 'bold'), theme='blue', pad_x=10, height=24, solid=True)
     o_points = ["• 1인 교습소·피트니스 급증 (고정비 절감)", "• 개인정보 보호 강화 (로컬 볼트 선호)", "• 글로벌 6개 국어 스토어 확장성"]
     for idx, p in enumerate(o_points):
         draw.text((o_x + 14, o_y + 56 + idx * 24), p, font=get_font(11.5, 'medium'), fill=(30, 64, 175))
@@ -337,7 +337,7 @@ def make_slide_02():
     t_x = w_x
     t_y = o_y
     draw.rounded_rectangle([t_x, t_y, t_x + qw, t_y + qh], radius=10, fill=(254, 243, 199), outline=(253, 230, 138), width=1)
-    draw_pill_badge(draw, left_x=t_x + 14, cy=t_y + 22, text="Threat (위협)", font=get_font(10, 'bold'), theme='amber', pad_x=10, height=24, solid=True)
+    draw_pill_badge(draw, left_x=t_x + 14, cy=t_y + 22, text="위협 (Threat)", font=get_font(10, 'bold'), theme='amber', pad_x=10, height=24, solid=True)
     t_points = ["• 대형 ERP 업체의 저가 번들링 공세", "• 공기계 태블릿 고장 및 분실 리스크", "• 플랫폼 종속적 모바일 정책 변경"]
     for idx, p in enumerate(t_points):
         draw.text((t_x + 14, t_y + 56 + idx * 24), p, font=get_font(11.5, 'medium'), fill=(146, 64, 14))
@@ -346,15 +346,15 @@ def make_slide_02():
     sp_x = 970
     sp_w = 850
     draw.rounded_rectangle([sp_x, b_y, sp_x + sp_w, b_y + swot_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-    draw.text((sp_x + 25, b_y + 20), "STRATEGIC PILLARS : 문제 해결을 위한 3대 핵심 프로덕트 전략", font=get_font(15, 'bold'), fill=(15, 23, 42))
+    draw.text((sp_x + 25, b_y + 20), "3대 핵심 프로덕트 전략 (Strategic Pillars)", font=get_font(15, 'bold'), fill=(15, 23, 42))
     draw.line([(sp_x + 25, b_y + 48), (sp_x + sp_w - 25, b_y + 48)], fill=(241, 245, 249), width=1)
     
     pillars = [
-        ("STRATEGY 01", "1초 원터치 키오스크 UI", "대기 시간 98% 단축 (Zero-Friction)",
+        ("전략 01", "1초 원터치 키오스크 UI", "대기 시간 98% 단축 (무마찰 출결)",
          "공기계 스마트폰·태블릿에 띄워두면 원생이 본인 전화번호 뒤 4자리만 터치하여 0.8초 내에 등·하원 처리 및 잔여 횟수 즉시 차감."),
-        ("STRATEGY 02", "스마트 D-Day 수납 장부", "미수금 누수 원천 차단 (Zero-Leakage)",
-         "매달 말일에 몰아보던 수동 장부 대신, 만료 7일 전(Amber)부터 당일/연체(Red)를 3단계 색상으로 자동 정렬하여 수납 우선순위 실시간 파악."),
-        ("STRATEGY 03", "Zero-Latency 로컬 보안 볼트", "월 서버비 0원 & 100% 로컬 암호화",
+        ("전략 02", "스마트 D-Day 수납 장부", "미수금 누수 원천 차단 (적기 회수)",
+         "매달 말일에 몰아보던 수동 장부 대신, 만료 7일 전(주황)부터 당일/연체(빨강)를 3단계 색상으로 자동 정렬하여 수납 우선순위 실시간 파악."),
+        ("전략 03", "로컬 보안 안심 볼트", "월 서버비 0원 & 100% 로컬 암호화",
          "외부 유료 서버 의존 없이 기기 내부 로컬 안전 저장소에 암호화 보관하여 인터넷 장애 시에도 키오스크가 멈추지 않는 연속성과 개인정보 완벽 보호 실현.")
     ]
     py = b_y + 65
@@ -379,7 +379,7 @@ def make_slide_03():
     draw_slide_header(
         draw,
         slide_num=3,
-        category_en="TARGET & PERSONA | SEGMENTATION MATRIX & BENCHMARK",
+        category_en="타깃 세그먼트 · 페르소나 분석",
         title_black="타깃 세그먼트 매트릭스와 ",
         title_blue="경쟁사 벤치마킹 분석",
         subtitle_kr="2x2 타깃 포지셔닝 매트릭스와 4대 플랫폼 벤치마크, 그리고 대표 페르소나 행동 지표"
@@ -391,7 +391,7 @@ def make_slide_03():
     t_w = 780
     t_h = 378
     draw.rounded_rectangle([t_x, t_y, t_x + t_w, t_y + t_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-    draw.text((t_x + 24, t_y + 18), "TARGET SEGMENTATION MATRIX (타깃 세그먼트 분석)", font=get_font(14, 'bold'), fill=(15, 23, 42))
+    draw.text((t_x + 24, t_y + 18), "타깃 세그먼트 분석 매트릭스", font=get_font(14, 'bold'), fill=(15, 23, 42))
     draw.text((t_x + 24, t_y + 38), "원생 규모와 디지털 숙련도에 따른 4대 학원·교습소 유형 분류", font=get_font(11.5, 'medium'), fill=(100, 116, 139))
     
     grid_w = 540
@@ -415,7 +415,7 @@ def make_slide_03():
     q1_x = grid_x + qw + 16
     q1_y = grid_y
     draw.rounded_rectangle([q1_x, q1_y, q1_x + qw, q1_y + qh], radius=8, fill=(239, 246, 255), outline=(147, 197, 253), width=1)
-    draw_pill_badge(draw, left_x=q1_x + 12, cy=q1_y + 22, text="CORE TARGET", font=get_font(9.5, 'bold'), theme='blue', pad_x=8, height=22, solid=True)
+    draw_pill_badge(draw, left_x=q1_x + 12, cy=q1_y + 22, text="핵심 타깃", font=get_font(9.5, 'bold'), theme='blue', pad_x=8, height=22, solid=True)
     draw.text((q1_x + 12, q1_y + 44), "1인 교습소 · 스튜디오", font=get_font(13, 'bold'), fill=(0, 82, 255))
     draw.text((q1_x + 12, q1_y + 68), "• 수업과 행정을 1인이 전담하여 출결 여력 부족\n• 월 유지비 0원 & 키오스크 즉각 도입 선호", font=get_font(11, 'regular'), fill=(51, 65, 85), spacing=3)
     
@@ -423,7 +423,7 @@ def make_slide_03():
     q2_x = q1_x
     q2_y = axis_y + 8
     draw.rounded_rectangle([q2_x, q2_y, q2_x + qw, q2_y + qh], radius=8, fill=(240, 253, 244), outline=(187, 247, 208), width=1)
-    draw_pill_badge(draw, left_x=q2_x + 12, cy=q2_y + 22, text="PRIMARY TARGET", font=get_font(9.5, 'bold'), theme='green', pad_x=8, height=22, solid=True)
+    draw_pill_badge(draw, left_x=q2_x + 12, cy=q2_y + 22, text="주요 타깃", font=get_font(9.5, 'bold'), theme='green', pad_x=8, height=22, solid=True)
     draw.text((q2_x + 12, q2_y + 44), "소형 예체능 · 보습학원", font=get_font(13, 'bold'), fill=(16, 185, 129))
     draw.text((q2_x + 12, q2_y + 68), "• 미수금 회수 지연으로 현금 흐름 악화\n• 원클릭 카톡 청구서로 감정소모 해소", font=get_font(11, 'regular'), fill=(51, 65, 85), spacing=3)
     
@@ -431,7 +431,7 @@ def make_slide_03():
     q3_x = grid_x
     q3_y = grid_y
     draw.rounded_rectangle([q3_x, q3_y, q3_x + qw, q3_y + qh], radius=8, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
-    draw_pill_badge(draw, left_x=q3_x + 12, cy=q3_y + 22, text="POTENTIAL", font=get_font(9.5, 'bold'), theme='slate', pad_x=8, height=22)
+    draw_pill_badge(draw, left_x=q3_x + 12, cy=q3_y + 22, text="잠재 고객", font=get_font(9.5, 'bold'), theme='slate', pad_x=8, height=22)
     draw.text((q3_x + 12, q3_y + 44), "전통 아날로그 교습소", font=get_font(13, 'bold'), fill=(100, 116, 139))
     draw.text((q3_x + 12, q3_y + 68), "• 수기 출석부와 종이 영수증 고수\n• 복잡한 IT 도구 기피, 4자리 번호 전환 가능", font=get_font(11, 'regular'), fill=(100, 116, 139), spacing=3)
     
@@ -439,7 +439,7 @@ def make_slide_03():
     q4_x = grid_x
     q4_y = q2_y
     draw.rounded_rectangle([q4_x, q4_y, q4_x + qw, q4_y + qh], radius=8, fill=(254, 242, 242), outline=(254, 202, 202), width=1)
-    draw_pill_badge(draw, left_x=q4_x + 12, cy=q4_y + 22, text="LOW PRIORITY", font=get_font(9.5, 'bold'), theme='red', pad_x=8, height=22)
+    draw_pill_badge(draw, left_x=q4_x + 12, cy=q4_y + 22, text="후순위 타깃", font=get_font(9.5, 'bold'), theme='red', pad_x=8, height=22)
     draw.text((q4_x + 12, q4_y + 44), "대형 입시 종합학원", font=get_font(13, 'bold'), fill=(153, 27, 27))
     draw.text((q4_x + 12, q4_y + 68), "• 수백만원 대형 ERP 및 지문인식기 사용\n• 전담 행정직원 상주로 키오스크 단독 비선호", font=get_font(11, 'regular'), fill=(153, 27, 27), spacing=3)
 
@@ -449,7 +449,7 @@ def make_slide_03():
     b_w = 900
     b_h = 378
     draw.rounded_rectangle([b_x, b_y, b_x + b_w, b_y + b_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-    draw.text((b_x + 24, b_y + 18), "COMPETITIVE BENCHMARK (주요 경쟁 솔루션 비교 분석)", font=get_font(14, 'bold'), fill=(15, 23, 42))
+    draw.text((b_x + 24, b_y + 18), "경쟁 솔루션 비교 분석표", font=get_font(14, 'bold'), fill=(15, 23, 42))
     draw.text((b_x + 24, b_y + 38), "기존 대형 학원 ERP 및 출결 서비스 대비 체크앤페이의 핵심 차별화 요소", font=get_font(11.5, 'medium'), fill=(100, 116, 139))
     
     table_y = b_y + 68
@@ -488,13 +488,13 @@ def make_slide_03():
     
     # Persona 1: 이지은 원장 (1인 음악학원)
     draw.rounded_rectangle([100, p_y, 100 + pw, p_y + ph], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-    draw_pill_badge(draw, left_x=125, cy=p_y + 24, text="PRIMARY PERSONA 01", font=get_font(10, 'bold'), theme='blue', pad_x=10, height=24)
+    draw_pill_badge(draw, left_x=125, cy=p_y + 24, text="핵심 페르소나 01", font=get_font(10, 'bold'), theme='blue', pad_x=10, height=24)
     draw.text((125, p_y + 52), "이지은 (34세 · 피아노 교습소 1인 원장)", font=get_font(16, 'bold'), fill=(15, 23, 42))
     draw.text((125, p_y + 76), "• 운영 환경: 원생 38명 · 강사 없이 1인 운영 · 주 5일 수업", font=get_font(12, 'medium'), fill=(71, 85, 105))
     
     p1_cols = [
-        ("Pain Points (핵심 고통)", "• 레슨 도중 원생 올 때마다 출석체크로 수업 단절\n• 회비 납부일이 제각각이라 카톡 독촉 민망함\n• 대형 ERP는 월 8만원이나 해서 소규모에 비효율"),
-        ("Needs & Goals (해결 목표)", "• 아이들이 들어와 스스로 0.8초 만에 찍는 키오스크\n• 만료 임박 회원 정중한 청구서 템플릿 원클릭 전송\n• 복잡한 교육 없이 공기계에 깔아 쓰는 단순함")
+        ("주요 불편 사항", "• 레슨 도중 원생 올 때마다 출석체크로 수업 단절\n• 회비 납부일이 제각각이라 카톡 독촉 민망함\n• 대형 ERP는 월 8만원이나 해서 소규모에 비효율"),
+        ("해결 목표 및 니즈", "• 아이들이 들어와 스스로 0.8초 만에 찍는 키오스크\n• 만료 임박 회원 정중한 청구서 템플릿 원클릭 전송\n• 복잡한 교육 없이 공기계에 깔아 쓰는 단순함")
     ]
     p_cx = 125
     for c_tit, c_desc in p1_cols:
@@ -507,7 +507,7 @@ def make_slide_03():
         p_cx += 405
         
     draw.line([(125, p_y + 248), (100 + pw - 25, p_y + 248)], fill=(241, 245, 249), width=1)
-    draw.text((125, p_y + 258), "BEHAVIOR SPECTRUM (운영 성향 지표)", font=get_font(10, 'bold'), fill=(100, 116, 139))
+    draw.text((125, p_y + 258), "운영 성향 지표 분석", font=get_font(10, 'bold'), fill=(100, 116, 139))
     from build_zeropass_white_common import draw_behavior_slider
     draw_behavior_slider(draw, 125, p_y + 282, 380, "운영 형태", "1인 단독", "전담 직원", 0.15, theme='blue')
     draw_behavior_slider(draw, 530, p_y + 282, 380, "출결 방식", "0.8초 키오스크", "수기 장부", 0.10, theme='blue')
@@ -517,13 +517,13 @@ def make_slide_03():
     # Persona 2: 박진우 대표 (1인 PT/필라테스 스튜디오)
     p2_x = 980
     draw.rounded_rectangle([p2_x, p_y, p2_x + pw, p_y + ph], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-    draw_pill_badge(draw, left_x=p2_x + 25, cy=p_y + 24, text="SECONDARY PERSONA 02", font=get_font(10, 'bold'), theme='green', pad_x=10, height=24)
+    draw_pill_badge(draw, left_x=p2_x + 25, cy=p_y + 24, text="보조 페르소나 02", font=get_font(10, 'bold'), theme='green', pad_x=10, height=24)
     draw.text((p2_x + 25, p_y + 52), "박진우 (39세 · 1인 기구필라테스 스튜디오 운영)", font=get_font(16, 'bold'), fill=(15, 23, 42))
     draw.text((p2_x + 25, p_y + 76), "• 운영 환경: 회원 55명 · 10회/20회/30회 세션제 · 예약제 운영", font=get_font(12, 'medium'), fill=(71, 85, 105))
     
     p2_cols = [
-        ("Pain Points (핵심 고통)", "• 회원별 잔여 횟수 차감 누락되어 정산 시 분쟁 발생\n• 운동 후 지친 회원에게 재등록 요청하기 어색함\n• 인터넷 장애 시 헬스장 전산 먹통으로 출결 중단"),
-        ("Needs & Goals (해결 목표)", "• 입장 시 4자리 터치 즉시 잔여 횟수(-1) 자동 차감\n• 잔여 3회 이하 회원 자동 분류 및 알림톡 전송\n• 100% 로컬 작동으로 통신 장애에도 멈추지 않는 연속성")
+        ("주요 불편 사항", "• 회원별 잔여 횟수 차감 누락되어 정산 시 분쟁 발생\n• 운동 후 지친 회원에게 재등록 요청하기 어색함\n• 인터넷 장애 시 헬스장 전산 먹통으로 출결 중단"),
+        ("해결 목표 및 니즈", "• 입장 시 4자리 터치 즉시 잔여 횟수(-1) 자동 차감\n• 잔여 3회 이하 회원 자동 분류 및 알림톡 전송\n• 100% 로컬 작동으로 통신 장애에도 멈추지 않는 연속성")
     ]
     p_cx2 = p2_x + 25
     for c_tit, c_desc in p2_cols:
@@ -536,7 +536,7 @@ def make_slide_03():
         p_cx2 += 405
         
     draw.line([(p2_x + 25, p_y + 248), (p2_x + pw - 25, p_y + 248)], fill=(241, 245, 249), width=1)
-    draw.text((p2_x + 25, p_y + 258), "BEHAVIOR SPECTRUM (운영 성향 지표)", font=get_font(10, 'bold'), fill=(100, 116, 139))
+    draw.text((p2_x + 25, p_y + 258), "운영 성향 지표 분석", font=get_font(10, 'bold'), fill=(100, 116, 139))
     draw_behavior_slider(draw, p2_x + 25, p_y + 282, 380, "세션 차감", "원터치 자동", "수동 체크", 0.10, theme='green')
     draw_behavior_slider(draw, p2_x + 430, p_y + 282, 380, "회수 주기", "D-3 사전예방", "연체 후 독촉", 0.25, theme='green')
     draw_behavior_slider(draw, p2_x + 25, p_y + 316, 380, "기기 활용", "공기계 태블릿", "고가 키오스크", 0.20, theme='green')
@@ -555,7 +555,7 @@ def make_slide_04():
     draw_slide_header(
         draw,
         slide_num=4,
-        category_en="INFORMATION ARCHITECTURE · SERVICE STRUCTURE",
+        category_en="정보 구조도 (IA) · 서비스 설계",
         title_black="누구나 바로 이해하고 쓰는 ",
         title_blue="5대 핵심 메뉴 구조 (IA)",
         subtitle_kr="원터치 출결부터 수납 장부, 원생 디렉터리, 보안 볼트까지 필요한 기능을 한눈에 찾을 수 있는 쉬운 계층 구조"
@@ -653,7 +653,7 @@ def make_slide_04():
             draw.text((cx + 80, sy + 11), s_name, font=get_font(13, 'bold'), fill=(15, 23, 42))
             draw.text((cx + 12, sy + 42), s_desc, font=get_font(11, 'regular'), fill=(71, 85, 105))
             draw.line([(cx + 12, sy + 74), (cx + cw - 12, sy + 74)], fill=(226, 232, 240), width=1)
-            draw.text((cx + 12, sy + 88), "Zero-Latency Local UX Sync", font=get_font(9.5, 'medium'), fill=(0, 82, 255) if is_key else (148, 163, 184))
+            draw.text((cx + 12, sy + 88), "로컬 즉시 동기화", font=get_font(9.5, 'medium'), fill=(0, 82, 255) if is_key else (148, 163, 184))
             sy += 128
 
     draw_slide_footer(draw, 4)

@@ -53,7 +53,7 @@ def make_slide_05():
     draw_slide_header(
         draw, 
         slide_num=5, 
-        category_en="USER FLOW | SERVICE INTERACTION FLOWCHART", 
+        category_en="사용자 여정 · 서비스 플로우", 
         title_black="사용자 행동과 판단을 이끄는 ", 
         title_blue="5단계 서비스 UX 플로우차트", 
         subtitle_kr="원생 등원 인증부터 잔여 횟수 즉시 차감, D-Day 수납 정렬, 카카오톡 청구서 발송 및 안심 보관까지의 핵심 여정"
@@ -65,7 +65,7 @@ def make_slide_05():
     leg_w = 540
     leg_h = 78
     draw.rounded_rectangle([leg_x, leg_y, leg_x + leg_w, leg_y + leg_h], radius=10, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-    draw_pill_badge(draw, left_x=leg_x + 16, cy=leg_y + 20, text="NOTATION", font=get_font(8, 'bold'), theme='blue', has_dot=True, pad_x=6, height=18)
+    draw_pill_badge(draw, left_x=leg_x + 16, cy=leg_y + 20, text="기호 범례", font=get_font(8, 'bold'), theme='blue', has_dot=False, pad_x=6, height=18)
     draw.text((leg_x + 105, leg_y + 20), "플로우차트 기호 범례", font=get_font(11, 'bold'), fill=(15, 23, 42), anchor='lm')
     
     # Mascot Passy Mascot in Flowchart Legend
@@ -83,20 +83,20 @@ def make_slide_05():
         tb_y = leg_y + 12
         draw.rounded_rectangle([tb_x, tb_y, tb_x + 85, tb_y + 32], radius=8, fill=(255, 255, 255), outline=(0, 82, 255), width=1)
         draw.text((tb_x + 42, tb_y + 16), "0.8초 플로우! 🐧", font=get_font(8.5, 'bold'), fill=(0, 82, 255), anchor='mm')
-    draw.text((leg_x + 43, leg_y + 56), "Start/End", font=get_font(7, 'bold'), fill=(255, 255, 255), anchor='mm')
-    draw.text((leg_x + 76, leg_y + 56), "시작/종료", font=get_font(9.5, 'medium'), fill=(71, 85, 105), anchor='lm')
+    draw.text((leg_x + 43, leg_y + 56), "시작/종료", font=get_font(7.5, 'bold'), fill=(255, 255, 255), anchor='mm')
+    draw.text((leg_x + 76, leg_y + 56), "프로세스", font=get_font(9.5, 'medium'), fill=(71, 85, 105), anchor='lm')
     
     draw.rounded_rectangle([leg_x + 142, leg_y + 44, leg_x + 192, leg_y + 68], radius=4, fill=(255, 255, 255), outline=(203, 213, 225), width=1)
-    draw.text((leg_x + 167, leg_y + 56), "Screen", font=get_font(7.5, 'bold'), fill=(15, 23, 42), anchor='mm')
-    draw.text((leg_x + 198, leg_y + 56), "화면/접점", font=get_font(9.5, 'medium'), fill=(71, 85, 105), anchor='lm')
+    draw.text((leg_x + 167, leg_y + 56), "화면", font=get_font(7.5, 'bold'), fill=(15, 23, 42), anchor='mm')
+    draw.text((leg_x + 198, leg_y + 56), "접점 화면", font=get_font(9.5, 'medium'), fill=(71, 85, 105), anchor='lm')
     
     draw.rounded_rectangle([leg_x + 268, leg_y + 44, leg_x + 318, leg_y + 68], radius=4, fill=(240, 246, 255), outline=(0, 82, 255), width=1)
-    draw.text((leg_x + 293, leg_y + 56), "Action", font=get_font(7.5, 'bold'), fill=(0, 82, 255), anchor='mm')
-    draw.text((leg_x + 325, leg_y + 56), "사용자 행동", font=get_font(9.5, 'medium'), fill=(71, 85, 105), anchor='lm')
+    draw.text((leg_x + 293, leg_y + 56), "행동", font=get_font(7.5, 'bold'), fill=(0, 82, 255), anchor='mm')
+    draw.text((leg_x + 325, leg_y + 56), "사용자 터치", font=get_font(9.5, 'medium'), fill=(71, 85, 105), anchor='lm')
     
     draw_diamond(draw, cx=leg_x + 410, cy=leg_y + 56, w=34, h=22, fill=(254, 243, 199), outline=(217, 119, 6), width=1)
-    draw.text((leg_x + 410, leg_y + 56), "Decide", font=get_font(6.5, 'bold'), fill=(180, 83, 9), anchor='mm')
-    draw.text((leg_x + 434, leg_y + 56), "판단 분기", font=get_font(9.5, 'medium'), fill=(71, 85, 105), anchor='lm')
+    draw.text((leg_x + 410, leg_y + 56), "판단", font=get_font(6.5, 'bold'), fill=(180, 83, 9), anchor='mm')
+    draw.text((leg_x + 434, leg_y + 56), "조건 분기", font=get_font(9.5, 'medium'), fill=(71, 85, 105), anchor='lm')
     
     # 5 STAGE COLUMNS
     cw = 328
@@ -105,11 +105,11 @@ def make_slide_05():
     col_centers = [cx + cw // 2 for cx in cols_x]
     
     stages_info = [
-        ("STAGE 01", "키오스크 등원 인증", "0.8s Quick Attendance"),
-        ("STAGE 02", "출결 데이터 자동 차감", "Instant Balance Update"),
-        ("STAGE 03", "수납 장부 D-Day", "Ledger Auto Sorting"),
-        ("STAGE 04", "원클릭 청구서 발송", "Kakao Notification"),
-        ("STAGE 05", "보안 볼트 & 백업", "Local Vault & Sync")
+        ("01단계", "키오스크 등원 인증", "0.8초 고속 출결"),
+        ("02단계", "출결 데이터 자동 차감", "실시간 잔여 횟수 갱신"),
+        ("03단계", "수납 장부 D-Day 정렬", "위험도 3단계 자동 분류"),
+        ("04단계", "원클릭 청구서 발송", "카카오 알림톡 전송"),
+        ("05단계", "보안 볼트 & 백업", "로컬 안심 암호화")
     ]
     
     # Stage Headers
@@ -387,16 +387,16 @@ def make_slide_05():
     draw.rounded_rectangle([bar_x, bar_y, bar_x + bar_w, bar_y + bar_h], radius=12, fill=(255, 255, 255), outline=(203, 213, 225), width=1)
     
     # Left Half: Emotional Curve
-    draw_pill_badge(draw, left_x=bar_x + 24, cy=bar_y + 20, text="USER MINDSET", font=get_font(8, 'bold'), theme='amber', has_dot=True, pad_x=7, height=18)
-    draw.text((bar_x + 150, bar_y + 20), "5단계 원장님 심리 변화 여정 (불안에서 안심까지)", font=get_font(11.5, 'bold'), fill=(15, 23, 42), anchor='lm')
+    draw_pill_badge(draw, left_x=bar_x + 24, cy=bar_y + 20, text="심리 변화 여정", font=get_font(8, 'bold'), theme='amber', has_dot=False, pad_x=7, height=18)
+    draw.text((bar_x + 130, bar_y + 20), "5단계 원장님 심리 변화 여정 (불안에서 안심까지)", font=get_font(11.5, 'bold'), fill=(15, 23, 42), anchor='lm')
     draw.text((bar_x + 24, bar_y + 40), "종이 장부와 출결 누락의 불안 상태에서 원터치 출결과 D-Day 장부로 완벽한 운영 확신을 얻는 여정", font=get_font(8.5, 'regular'), fill=(100, 116, 139))
     
     emotions = [
-        ("STAGE 01", "출결 지연 불안", "red"),
-        ("STAGE 02", "차감 누락 우려", "amber"),
-        ("STAGE 03", "수납 기한 파악", "blue"),
-        ("STAGE 04", "정중한 청구 안도", "cyan"),
-        ("STAGE 05", "운영 통제 확신", "green")
+        ("01단계", "출결 지연 불안", "red"),
+        ("02단계", "차감 누락 우려", "amber"),
+        ("03단계", "수납 기한 파악", "blue"),
+        ("04단계", "정중한 청구 안도", "cyan"),
+        ("05단계", "운영 통제 확신", "green")
     ]
     node_w = 145
     node_y = bar_y + 58
@@ -416,8 +416,8 @@ def make_slide_05():
     
     # Right Half: Enterprise UX KPIs
     kpi_x = bar_x + 914
-    draw_pill_badge(draw, left_x=kpi_x, cy=bar_y + 20, text="UX IMPACT", font=get_font(8, 'bold'), theme='blue', has_dot=True, pad_x=7, height=18)
-    draw.text((kpi_x + 120, bar_y + 20), "정량적 서비스 기획 성과 지표", font=get_font(11.5, 'bold'), fill=(15, 23, 42), anchor='lm')
+    draw_pill_badge(draw, left_x=kpi_x, cy=bar_y + 20, text="성과 지표", font=get_font(8, 'bold'), theme='blue', has_dot=False, pad_x=7, height=18)
+    draw.text((kpi_x + 100, bar_y + 20), "정량적 서비스 기획 성과 지표", font=get_font(11.5, 'bold'), fill=(15, 23, 42), anchor='lm')
     draw.text((kpi_x, bar_y + 40), "실제 1인 학원 및 교습소 파일럿 검증 완료 지표", font=get_font(8.5, 'regular'), fill=(100, 116, 139))
     
     kpis = [
@@ -450,7 +450,7 @@ def make_slide_06():
     draw_slide_header(
         draw, 
         slide_num=6, 
-        category_en="WIREFRAME | MOBILE UX & ERGONOMIC ARCHITECTURE", 
+        category_en="와이어프레임 · 인체공학적 설계", 
         title_black="실제 앱 구조를 그대로 반영한 ", 
         title_blue="4대 모바일 와이어프레임과 인체공학적 설계", 
         subtitle_kr="키오스크 다이얼·D-Day 수납장부·원생 디렉터리·원클릭 청구서 4대 핵심 화면의 골격 구조와 한 손 엄지 조작 반경(Thumb-Zone) 인체공학 설계"
@@ -478,13 +478,13 @@ def make_slide_06():
         
         draw.rounded_rectangle([px, sec_y, px + pw, sec_y + ph], radius=26, fill=(255, 255, 255), outline=(15, 23, 42), width=2)
         draw.rounded_rectangle([px + pw//2 - 24, sec_y + 8, px + pw//2 + 24, sec_y + 20], radius=6, fill=(15, 23, 42))
-        draw_pill_badge(draw, cx=px + pw//2, cy=sec_y + 36, text=title_text, font=get_font(9.5, 'bold'), theme=theme_key, has_dot=True, pad_x=8, height=20)
+        draw_pill_badge(draw, cx=px + pw//2, cy=sec_y + 36, text=title_text, font=get_font(9.5, 'bold'), theme=theme_key, has_dot=False, pad_x=8, height=20)
         draw.rounded_rectangle([px + pw//2 - 24, sec_y + ph - 8, px + pw//2 + 24, sec_y + ph - 4], radius=2, fill=(15, 23, 42))
         
         # Thumb-Zone 48dp ergonomic bottom arc highlight
         tz_y = sec_y + ph - 92
         draw.rounded_rectangle([px + 6, tz_y, px + pw - 6, sec_y + ph - 14], radius=16, fill=(0, 81, 255, 12), outline=(0, 81, 255, 70), width=1)
-        draw.text((px + pw - 14, tz_y + 6), "Thumb-Zone (48dp)", font=get_font(7.5, 'bold'), fill=(0, 81, 255), anchor='ra')
+        draw.text((px + pw - 14, tz_y + 6), "엄지 조작 영역 (48dp)", font=get_font(7.5, 'bold'), fill=(0, 81, 255), anchor='ra')
 
     # Helper to draw PRD callout anchor pin
     def draw_callout_anchor_pin(draw_obj, cx, cy, pin_num, pin_label, accent_col, is_right=True):
@@ -732,7 +732,7 @@ def make_slide_06():
     ergo_cards = [
         (
             100,
-            "THUMB-ZONE 48dp",
+            "한 손 조작 반경",
             "① 80dp 터치 타깃 & 한 손 조작",
             "데스크 거치 환경 및 모바일 한 손 파지 시 엄지가 닿는 하단 120dp 반경 내 다이얼 패드와 주요 승인 버튼을 집중 배치하여 오터치를 99.4% 차단했습니다.",
             "✓ 터치 타깃 84×84dp (WCAG AAA 준수)",
@@ -740,15 +740,15 @@ def make_slide_06():
         ),
         (
             100 + (c_w + c_gap),
-            "D-DAY LEDGER",
+            "수납 장부 정렬",
             "② 3단계 시각적 수납 우선순위",
-            "전체 수납 대상자를 만료 잔여일 기준으로 D+ 연체(Red), D-7 임박(Amber), 정상(Green) 3단계 컬러 코드로 정렬하여 수납 누수를 원천 차단합니다.",
+            "전체 수납 대상자를 만료 잔여일 기준으로 D+ 연체(빨강), D-7 임박(주황), 정상(초록) 3단계 컬러 코드로 정렬하여 수납 누수를 원천 차단합니다.",
             "✓ 미수금 회수율 92.4% 입증",
             "amber", (217, 119, 6)
         ),
         (
             100 + (c_w + c_gap) * 2,
-            "ATOMIC DIRECTORY",
+            "통합 원부 관리",
             "③ 원생 출결·수납 통합 원부",
             "원생 프로필 1곳에서 잔여 횟수, D-Day, 출결 타임라인, 학부모 연락처를 통합 조망하여 원장님이 수업 도중에도 1초 만에 회원 상태를 파악합니다.",
             "✓ 회원 조회 소요 시간 1.2초 완결",
@@ -756,7 +756,7 @@ def make_slide_06():
         ),
         (
             100 + (c_w + c_gap) * 3,
-            "ZERO-LOSS SHARE",
+            "원클릭 청구서",
             "④ 1-Tap 스마트 청구서 전송",
             "원생명, 수강과목, 금액, 입금 계좌번호가 정중한 서식에 자동 치환되어, 복사나 타자 입력 없이 카카오톡 또는 문자로 1초 만에 학부모에게 전달됩니다.",
             "✓ 청구서 작성 및 전송 1초 완결",
@@ -767,7 +767,7 @@ def make_slide_06():
     for cx_card, badge_txt, title_txt, body_txt, metric_txt, th_key, accent_col in ergo_cards:
         draw.rounded_rectangle([cx_card, card_y, cx_card + c_w, card_y + card_h], radius=14, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
         draw.rounded_rectangle([cx_card, card_y + 12, cx_card + 4, card_y + card_h - 12], radius=2, fill=accent_col)
-        draw_pill_badge(draw, left_x=cx_card + 18, cy=card_y + 22, text=badge_txt, font=get_font(9, 'bold'), theme=th_key, has_dot=True, pad_x=8, height=20)
+        draw_pill_badge(draw, left_x=cx_card + 18, cy=card_y + 22, text=badge_txt, font=get_font(9, 'bold'), theme=th_key, has_dot=False, pad_x=8, height=20)
         draw.text((cx_card + 18, card_y + 48), title_txt, font=get_font(13.5, 'bold'), fill=(15, 23, 42))
         draw.line([(cx_card + 18, card_y + 68), (cx_card + c_w - 18, card_y + 68)], fill=(241, 245, 249), width=1)
         
@@ -798,7 +798,7 @@ def make_slide_07():
     draw_slide_header(
         draw, 
         slide_num=7, 
-        category_en="DESIGN SYSTEM | BRAND IDENTITY & COMPONENT ARCHITECTURE", 
+        category_en="디자인 시스템 · 비주얼 아이덴티티", 
         title_black="브랜드 정체성과 신뢰를 규정하는 ", 
         title_blue="비주얼 아이덴티티 & 디자인 시스템", 
         subtitle_kr="체크앤페이 핵심 디자인 컨셉, 기하학 키라인 그리드, 24dp 아이코노그라피, 파운데이션 토큰 규칙(Radius·Spacing·Color) & 아토믹 킷"
@@ -821,20 +821,20 @@ def make_slide_07():
     # CARD 01 (Upper Left): DESIGN CORE CONCEPTS (UX & GUI)
     # -------------------------------------------------------------
     draw.rounded_rectangle([col1_x, r1_y, col1_x + col1_w, r1_y + r1_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-    b1_box = draw_pill_badge(draw, left_x=col1_x + 24, cy=r1_y + 30, text="FOUNDATION 01", font=get_font(9.5, 'bold'), theme='amber', has_dot=True, pad_x=8, height=22)
+    b1_box = draw_pill_badge(draw, left_x=col1_x + 24, cy=r1_y + 30, text="디자인 원칙", font=get_font(9.5, 'bold'), theme='amber', has_dot=False, pad_x=8, height=22)
     draw.text((b1_box[2] + 14, r1_y + 30), "체크앤페이 핵심 디자인 철학 (UX & GUI)", font=get_font(13.0, 'bold'), fill=(15, 23, 42), anchor='lm')
     draw.line([(col1_x + 24, r1_y + 52), (col1_x + col1_w - 24, r1_y + 52)], fill=(241, 245, 249), width=1)
     
     principles = [
-        ("01. Zero-Friction Velocity (무마찰 0.8초 키오스크)", 
+        ("01. 무마찰 속도 (0.8초 키오스크 인증)", 
          "수업 시작 전 줄 서지 않는 0.8초 등원 다이얼, 큰 80dp 터치 타깃",
          "신뢰를 전하는 일렉트릭 블루(#0052FF) & WCAG AAA 12.8:1 고대비 배색", 
          (0, 82, 255)),
-        ("02. Visual Priority Ledger (3단계 D-Day 장부)", 
-         "복잡한 엑셀 장부 탈피, 연체(Red)·임박(Amber)·정상(Green) 자동 정렬",
+        ("02. 시각적 우선순위 (3단계 D-Day 장부)", 
+         "복잡한 엑셀 장부 탈피, 연체(빨강)·임박(주황)·정상(초록) 자동 정렬",
          "1초 스캔 가능 빅 넘버 통계 카드, 상태별 스쿼클 뱃지, 미수금 0원 설계", 
          (217, 119, 6)),
-        ("03. Autonomous Local Vault (100% 온디바이스 볼트)", 
+        ("03. 독립적 로컬 안심 볼트 (100% 온디바이스)", 
          "학원 인터넷 단절에도 멈춤 없는 무결점 로컬 안전 암호화 저장",
          "외부 유출 없는 1-Tap 백업, 모달 시트 기반 직관적 다국어 스위처", 
          (122, 34, 255))
@@ -853,13 +853,13 @@ def make_slide_07():
         py_start += 78
         
     draw.rounded_rectangle([col1_x + 24, r1_y + r1_h - 38, col1_x + col1_w - 24, r1_y + r1_h - 14], radius=6, fill=(240, 246, 255), outline=(191, 219, 254), width=1)
-    draw.text((col1_x + col1_w // 2, r1_y + r1_h - 26), "Core Concepts: Zero-Friction Velocity · Visual Priority · Autonomous Vault", font=get_font(8.8, 'bold'), fill=(0, 82, 255), anchor='mm')
+    draw.text((col1_x + col1_w // 2, r1_y + r1_h - 26), "핵심 디자인 가치: 무마찰 속도감 · 시각적 우선순위 · 독립적 로컬 안심 저장", font=get_font(8.8, 'bold'), fill=(0, 82, 255), anchor='mm')
     
     # -------------------------------------------------------------
     # CARD 02 (Upper Center): APP ICON GEOMETRIC DRAFTING GRID
     # -------------------------------------------------------------
     draw.rounded_rectangle([col2_x, r1_y, col2_x + col2_w, r1_y + r1_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-    b2_box = draw_pill_badge(draw, left_x=col2_x + 24, cy=r1_y + 30, text="FOUNDATION 02", font=get_font(9.5, 'bold'), theme='blue', has_dot=True, pad_x=8, height=22)
+    b2_box = draw_pill_badge(draw, left_x=col2_x + 24, cy=r1_y + 30, text="아이콘 조형", font=get_font(9.5, 'bold'), theme='blue', has_dot=False, pad_x=8, height=22)
     draw.text((b2_box[2] + 14, r1_y + 30), "앱 아이콘 기하학 와이어프레임 & 조형 규격", font=get_font(13.5, 'bold'), fill=(15, 23, 42), anchor='lm')
     draw.line([(col2_x + 24, r1_y + 52), (col2_x + col2_w - 24, r1_y + 52)], fill=(241, 245, 249), width=1)
     
@@ -968,7 +968,7 @@ def make_slide_07():
     # CARD 03 (Upper Right): BRAND MASCOT SYSTEM & 24dp ICONOGRAPHY
     # -------------------------------------------------------------
     draw.rounded_rectangle([col3_x, r1_y, col3_x + col3_w, r1_y + r1_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-    b3_box = draw_pill_badge(draw, left_x=col3_x + 24, cy=r1_y + 30, text="FOUNDATION 03", font=get_font(9.5, 'bold'), theme='cyan', has_dot=True, pad_x=8, height=22)
+    b3_box = draw_pill_badge(draw, left_x=col3_x + 24, cy=r1_y + 30, text="캐릭터 & 아이콘", font=get_font(9.5, 'bold'), theme='cyan', has_dot=False, pad_x=8, height=22)
     draw.text((b3_box[2] + 14, r1_y + 30), "브랜드 캐릭터 '패시(Passy)' & 24dp 아이콘", font=get_font(13.5, 'bold'), fill=(15, 23, 42), anchor='lm')
     draw.line([(col3_x + 24, r1_y + 52), (col3_x + col3_w - 24, r1_y + 52)], fill=(241, 245, 249), width=1)
     
@@ -1043,7 +1043,7 @@ def make_slide_07():
     # CARD 04 (Lower Left): FOUNDATION DESIGN TOKENS
     # -------------------------------------------------------------
     draw.rounded_rectangle([colA_x, r2_y, colA_x + colA_w, r2_y + r2_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-    b4_box = draw_pill_badge(draw, left_x=colA_x + 28, cy=r2_y + 32, text="FOUNDATION 04", font=get_font(9.5, 'bold'), theme='blue', has_dot=True, pad_x=8, height=22)
+    b4_box = draw_pill_badge(draw, left_x=colA_x + 28, cy=r2_y + 32, text="디자인 토큰", font=get_font(9.5, 'bold'), theme='blue', has_dot=False, pad_x=8, height=22)
     draw.text((b4_box[2] + 14, r2_y + 32), "파운데이션 토큰 아키텍처 & Pretendard 타이포그래피", font=get_font(14, 'bold'), fill=(15, 23, 42), anchor='lm')
     draw.line([(colA_x + 28, r2_y + 54), (colA_x + colA_w - 28, r2_y + 54)], fill=(241, 245, 249), width=1)
     
@@ -1163,7 +1163,7 @@ def make_slide_07():
     # CARD 05 (Lower Right): ATOMIC UI COMPONENT KIT
     # -------------------------------------------------------------
     draw.rounded_rectangle([colB_x, r2_y, colB_x + colB_w, r2_y + r2_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-    b5_box = draw_pill_badge(draw, left_x=colB_x + 28, cy=r2_y + 32, text="FOUNDATION 05", font=get_font(9.5, 'bold'), theme='cyan', has_dot=True, pad_x=8, height=22)
+    b5_box = draw_pill_badge(draw, left_x=colB_x + 28, cy=r2_y + 32, text="컴포넌트 킷", font=get_font(9.5, 'bold'), theme='cyan', has_dot=False, pad_x=8, height=22)
     draw.text((b5_box[2] + 14, r2_y + 32), "프로덕션 아토믹 UI 컴포넌트 킷", font=get_font(14, 'bold'), fill=(15, 23, 42), anchor='lm')
     draw.line([(colB_x + 28, r2_y + 54), (colB_x + colB_w - 28, r2_y + 54)], fill=(241, 245, 249), width=1)
     
@@ -1268,7 +1268,7 @@ def make_slide_08():
     
     lx = 100
     lw = 490
-    draw_pill_badge(draw, left_x=lx, cy=78, text="08 CORE FEATURE | 0.8s KIOSK ATTENDANCE DOCK", font=get_font(10.5, 'bold'), theme='blue', pad_x=10, height=26)
+    draw_pill_badge(draw, left_x=lx, cy=78, text="08 핵심 기능 | 0.8초 키오스크 출결 엔진", font=get_font(10.5, 'bold'), theme='blue', pad_x=10, height=26)
     
     t1_a = "복잡한 카드 태그 없이 "
     t1_b = "번호 4자리로,"
@@ -1289,7 +1289,7 @@ def make_slide_08():
     comp_y = 260
     comp_h = 680
     draw.rounded_rectangle([lx, comp_y, lx + lw, comp_y + comp_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-    draw_pill_badge(draw, left_x=lx + 24, cy=comp_y + 30, text="PARADIGM COMPARISON", font=get_font(9.5, 'bold'), theme='slate', pad_x=8, height=22)
+    draw_pill_badge(draw, left_x=lx + 24, cy=comp_y + 30, text="출결 방식 비교 분석", font=get_font(9.5, 'bold'), theme='slate', pad_x=8, height=22)
     draw.text((lx + 24, comp_y + 58), "기존 아날로그 출결 vs 체크앤페이 원터치 키오스크", font=get_font(14.5, 'bold'), fill=(15, 23, 42))
     
     # Traditional
@@ -1333,11 +1333,11 @@ def make_slide_08():
     rx = 1050
     rw = 770
     draw.rounded_rectangle([rx, comp_y, rx + rw, comp_y + comp_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-    draw_pill_badge(draw, left_x=rx + 24, cy=comp_y + 30, text="INTERACTIVE FLOW & TELEMETRY", font=get_font(9.5, 'bold'), theme='blue', pad_x=8, height=22)
+    draw_pill_badge(draw, left_x=rx + 24, cy=comp_y + 30, text="출결 플로우 & 성능 지표", font=get_font(9.5, 'bold'), theme='blue', pad_x=8, height=22)
     draw.text((rx + 24, comp_y + 58), "초고속 출결 엔진의 기술적 무결성 지표", font=get_font(15, 'bold'), fill=(15, 23, 42))
     
     flow_cards = [
-        ("0.8s 초고속 인증 속도", "터치 입력부터 안전 저장 완료 및 화면 피드백까지 전 과정 0.8초 완료"),
+        ("0.8초 초고속 인증 속도", "터치 입력부터 안전 저장 완료 및 화면 피드백까지 전 과정 0.8초 완료"),
         ("오인증 방지 2차 확인 모달", "동일한 뒷번호 4자리 보유 원생 감지 시 즉시 이름 선택 모달 팝업"),
         ("하원 잔여 수업 회차 자동 차감", "수강권 종류(월정기/회차)에 맞춘 실시간 자동 차감 처리"),
         ("100% 오프라인 동작 보증", "학원 인터넷 장애 시에도 멈춤 없이 로컬 안전 볼트에 무손실 저장")
@@ -1346,15 +1346,15 @@ def make_slide_08():
     f_y = comp_y + 95
     for f_tit, f_desc in flow_cards:
         draw.rounded_rectangle([rx + 24, f_y, rx + rw - 24, f_y + 70], radius=10, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
-        draw_pill_badge(draw, left_x=rx + 40, cy=f_y + 24, text="ENGINE SPEC", font=get_font(8, 'bold'), theme='blue', pad_x=6, height=18)
-        draw.text((rx + 140, f_y + 24), f_tit, font=get_font(13.5, 'bold'), fill=(15, 23, 42), anchor='lm')
+        draw_pill_badge(draw, left_x=rx + 40, cy=f_y + 24, text="핵심 스펙", font=get_font(8, 'bold'), theme='blue', pad_x=6, height=18)
+        draw.text((rx + 115, f_y + 24), f_tit, font=get_font(13.5, 'bold'), fill=(15, 23, 42), anchor='lm')
         draw.text((rx + 40, f_y + 50), f_desc, font=get_font(11.5, 'regular'), fill=(71, 85, 105))
         f_y += 82
         
     # Telemetry KPI Strip at Bottom of Right Box
     tel_y = comp_y + comp_h - 180
     draw.rounded_rectangle([rx + 24, tel_y, rx + rw - 24, comp_y + comp_h - 24], radius=12, fill=(240, 246, 255), outline=(191, 219, 254), width=1)
-    draw.text((rx + 40, tel_y + 20), "CORE ENGINE TELEMETRY METRICS", font=get_font(10.5, 'bold'), fill=(0, 82, 255))
+    draw.text((rx + 40, tel_y + 20), "출결 엔진 실시간 측정 성과 지표", font=get_font(10.5, 'bold'), fill=(0, 82, 255))
     
     # Passy mini badge in Telemetry Header
     mascot_laugh_p = 'd:/097.flutter_project/auto_portfolio/zeropass/assets/mascot/mascot_profile_laughing_round.png'

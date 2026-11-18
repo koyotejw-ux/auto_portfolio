@@ -74,21 +74,21 @@ def draw_pill_badge(draw, left_x=None, cx=None, cy=None, text="", font=None, the
         radius = height // 2
         
     COLOR_THEMES_LIGHT = {
-        'blue':   {'bg': (239, 246, 255), 'border': (191, 219, 254), 'text': (0, 81, 255),   'dot': (0, 81, 255)},
-        'cyan':   {'bg': (236, 254, 255), 'border': (165, 243, 252), 'text': (8, 145, 178),  'dot': (8, 145, 178)},
-        'green':  {'bg': (236, 253, 245), 'border': (167, 243, 208), 'text': (16, 185, 129), 'dot': (16, 185, 129)},
-        'amber':  {'bg': (254, 243, 199), 'border': (253, 230, 138), 'text': (217, 119, 6),  'dot': (217, 119, 6)},
-        'red':    {'bg': (254, 242, 242), 'border': (254, 202, 202), 'text': (220, 38, 38),  'dot': (220, 38, 38)},
-        'slate':  {'bg': (241, 245, 249), 'border': (203, 213, 225), 'text': (71, 85, 105),  'dot': (71, 85, 105)},
+        'blue':   {'bg': (239, 246, 255), 'border': (191, 219, 254), 'text': (0, 81, 255)},
+        'cyan':   {'bg': (236, 254, 255), 'border': (165, 243, 252), 'text': (8, 145, 178)},
+        'green':  {'bg': (236, 253, 245), 'border': (167, 243, 208), 'text': (16, 185, 129)},
+        'amber':  {'bg': (254, 243, 199), 'border': (253, 230, 138), 'text': (217, 119, 6)},
+        'red':    {'bg': (254, 242, 242), 'border': (254, 202, 202), 'text': (220, 38, 38)},
+        'slate':  {'bg': (241, 245, 249), 'border': (203, 213, 225), 'text': (71, 85, 105)},
     }
     
     COLOR_THEMES_DARK = {
-        'blue':   {'bg': (18, 38, 77),    'border': (30, 58, 110),   'text': (56, 189, 248),  'dot': (56, 189, 248)},
-        'cyan':   {'bg': (12, 44, 58),    'border': (18, 68, 88),    'text': (34, 211, 238),  'dot': (34, 211, 238)},
-        'green':  {'bg': (10, 46, 32),    'border': (16, 75, 48),    'text': (52, 211, 153),  'dot': (52, 211, 153)},
-        'amber':  {'bg': (45, 34, 12),    'border': (72, 54, 18),    'text': (251, 191, 36),  'dot': (251, 191, 36)},
-        'red':    {'bg': (48, 18, 18),    'border': (78, 28, 28),    'text': (248, 113, 113), 'dot': (248, 113, 113)},
-        'slate':  {'bg': (26, 34, 48),    'border': (38, 50, 70),    'text': (148, 163, 184), 'dot': (148, 163, 184)},
+        'blue':   {'bg': (18, 38, 77),    'border': (30, 58, 110),   'text': (56, 189, 248)},
+        'cyan':   {'bg': (12, 44, 58),    'border': (18, 68, 88),    'text': (34, 211, 238)},
+        'green':  {'bg': (10, 46, 32),    'border': (16, 75, 48),    'text': (52, 211, 153)},
+        'amber':  {'bg': (45, 34, 12),    'border': (72, 54, 18),    'text': (251, 191, 36)},
+        'red':    {'bg': (48, 18, 18),    'border': (78, 28, 28),    'text': (248, 113, 113)},
+        'slate':  {'bg': (26, 34, 48),    'border': (38, 50, 70),    'text': (148, 163, 184)},
     }
     
     themes = COLOR_THEMES_DARK if dark_mode else COLOR_THEMES_LIGHT
@@ -98,8 +98,7 @@ def draw_pill_badge(draw, left_x=None, cx=None, cy=None, text="", font=None, the
     tw = bbox[2] - bbox[0]
     th = bbox[3] - bbox[1]
     
-    dot_w = 12 if has_dot else 0
-    bw = tw + pad_x * 2 + dot_w
+    bw = tw + pad_x * 2
     bh = height
     
     if cx is not None:
@@ -116,25 +115,21 @@ def draw_pill_badge(draw, left_x=None, cx=None, cy=None, text="", font=None, the
     
     draw.rounded_rectangle([bx1, by1, bx2, by2], radius=radius, fill=bg_col, outline=border_col, width=1)
     
-    tx = bx1 + pad_x + dot_w
+    tx = bx1 + pad_x
     if cx is not None:
-        draw.text((cx + dot_w // 2, cy), text, font=font, anchor='mm', fill=text_col)
+        draw.text((cx, cy), text, font=font, anchor='mm', fill=text_col)
     else:
         target_top = by1 + (bh - th) / 2.0
         draw.text((tx - bbox[0], target_top - bbox[1]), text, font=font, fill=text_col)
         
-    if has_dot:
-        dot_x = bx1 + pad_x + 4
-        dot_y = cy
-        draw.ellipse([dot_x - 3, dot_y - 3, dot_x + 3, dot_y + 3], fill=scheme['dot'])
-        
     return bx1, by1, bx2, by2
 
-def draw_slide_header(draw, slide_num, category_en, title_black, title_blue, subtitle_kr, right_badge=None, dark_mode=False):
+def draw_slide_header(draw, slide_num, category_en=None, title_black="", title_blue="", subtitle_kr="", right_badge=None, dark_mode=False, category_ko=None):
+    category = category_ko or category_en or ""
     line_col = (40, 53, 72) if dark_mode else (226, 232, 240)
     draw.line([(100, 52), (1820, 52)], fill=line_col, width=1)
     
-    badge_text = f"{slide_num:02d} {category_en.upper()}"
+    badge_text = f"{slide_num:02d} {category}"
     draw_pill_badge(draw, left_x=100, cy=78, text=badge_text, font=get_font(10.5, 'bold'), theme='blue', has_dot=False, dark_mode=dark_mode, pad_x=10, height=26)
     
     if right_badge:
@@ -156,13 +151,13 @@ def draw_slide_footer(draw, slide_num, total_slides=12, dark_mode=False):
     draw.line([(100, 995), (1820, 995)], fill=line_col, width=1)
     
     brand_col = (56, 189, 248) if dark_mode else (0, 81, 255)
-    draw.text((100, 1018), "CHECK & PAY (ZEROPASS)", font=get_font(11, 'bold'), fill=brand_col)
+    draw.text((100, 1018), "체크앤페이 (ZeroPass)", font=get_font(11, 'bold'), fill=brand_col)
     meta_col = (100, 116, 139) if dark_mode else (148, 163, 184)
-    draw.text((270, 1018), "·   Behance Enterprise Case Study  ·  Smart Attendance & Ledger Vault", font=get_font(11, 'medium'), fill=meta_col)
-    draw.text((960, 1018), "Flutter Mobile & Tablet  ·  100% On-Device SQLite  ·  Google Play Live", font=get_font(10.5, 'medium'), fill=meta_col, anchor='mt')
+    draw.text((270, 1018), "·   스마트 출결 & D-Day 수납 관리 솔루션", font=get_font(11, 'medium'), fill=meta_col)
+    draw.text((960, 1018), "모바일 & 태블릿 지원  ·  100% 로컬 안심 저장  ·  구글 플레이 출시", font=get_font(10.5, 'medium'), fill=meta_col, anchor='mt')
     
     page_col = (148, 163, 184) if dark_mode else (100, 116, 139)
-    page_str = f"PAGE {slide_num:02d} / {total_slides:02d}"
+    page_str = f"{slide_num:02d} / {total_slides:02d}"
     draw.text((1820, 1018), page_str, font=get_num_font(11.5, 'black'), fill=page_col, anchor='rt')
 
 def draw_donut_chart_on_base(base, cx, cy, r_outer, r_inner, percentage, col_fill=(220, 38, 38), col_track=(241, 245, 249)):
