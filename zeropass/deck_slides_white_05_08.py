@@ -972,66 +972,69 @@ def make_slide_07():
     # CARD 03 (Upper Right): BRAND MASCOT SYSTEM & 24dp ICONOGRAPHY
     # -------------------------------------------------------------
     draw.rounded_rectangle([col3_x, r1_y, col3_x + col3_w, r1_y + r1_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-    b3_box = draw_pill_badge(draw, left_x=col3_x + 24, cy=r1_y + 30, text="캐릭터 & 아이콘", font=get_font(9.5, 'bold'), theme='cyan', has_dot=False, pad_x=8, height=22)
-    draw.text((b3_box[2] + 14, r1_y + 30), "브랜드 캐릭터 '패시(Passy)' & 24dp 아이콘", font=get_font(13.5, 'bold'), fill=(15, 23, 42), anchor='lm')
+    b3_box = draw_pill_badge(draw, left_x=col3_x + 24, cy=r1_y + 30, text="출석값 연동 캐릭터", font=get_font(9.5, 'bold'), theme='cyan', has_dot=False, pad_x=8, height=22)
+    draw.text((b3_box[2] + 14, r1_y + 30), "출석률 연동 마스코트 '패시' & 실앱 24dp 아이콘", font=get_font(13.5, 'bold'), fill=(15, 23, 42), anchor='lm')
     draw.line([(col3_x + 24, r1_y + 52), (col3_x + col3_w - 24, r1_y + 52)], fill=(241, 245, 249), width=1)
     
-    # 4 Mascot Expression & Action System Plate (Top Half of Card 03)
+    # 3 Attendance-Rate-Linked Expressions (MascotExpression enum from mascot_avatar.dart)
     mascot_exp_y = r1_y + 60
     m_avatars = [
-        ("passy_cheer.png", "환영/등원 패시", "출결 터치 & 시작"),
-        ("passy_success_check.png", "인증완결 패시", "출결 완료·수납 완결"),
-        ("passy_alert_crying.png", "주의/연체 패시", "D-Day 연체·만료 임박"),
-        ("passy_vault_security.png", "보안관 패시", "오프라인 안심 암호화")
+        ("mascot_profile_laughing.png", "활짝 웃는 패시", "출석률 70% 이상 (우수)", "출결 완료 · 완벽 출석", (5, 150, 105), (236, 253, 245), (167, 243, 208)),
+        ("mascot_profile.png", "잔잔한 미소 패시", "출석률 35% ~ 69% (보통)", "성실 출석 · 유지 관리", (0, 82, 255), (239, 246, 255), (191, 219, 254)),
+        ("mascot_profile_crying.png", "눈물 글썽 패시", "출석률 35% 미만 (저조)", "D-Day 연체 · 집중 케어", (220, 38, 38), (254, 242, 242), (254, 202, 202)),
     ]
-    ma_w = (col3_w - 48 - 18) // 4
-    ma_h = 100
-    for ma_idx, (m_file, m_label, m_desc) in enumerate(m_avatars):
-        ma_x = col3_x + 24 + ma_idx * (ma_w + 6)
-        draw.rounded_rectangle([ma_x, mascot_exp_y, ma_x + ma_w, mascot_exp_y + ma_h], radius=10, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
+    ma_w = (col3_w - 48 - 16) // 3
+    ma_h = 104
+    for ma_idx, (m_file, m_label, m_rate, m_desc, t_col, bg_col, br_col) in enumerate(m_avatars):
+        ma_x = col3_x + 24 + ma_idx * (ma_w + 8)
+        draw.rounded_rectangle([ma_x, mascot_exp_y, ma_x + ma_w, mascot_exp_y + ma_h], radius=10, fill=bg_col, outline=br_col, width=1)
         
-        m_img_p = f"d:/097.flutter_project/auto_portfolio/zeropass/assets/mascot_poses/{m_file}"
+        # Load profile icon
+        m_img_p = f"d:/097.flutter_project/zeropass/assets/icons/{m_file}"
         if not os.path.exists(m_img_p):
             m_img_p = f"d:/097.flutter_project/auto_portfolio/zeropass/assets/mascot/{m_file}"
         if os.path.exists(m_img_p):
-            im_av = Image.open(m_img_p).convert('RGBA').resize((46, 46), Image.Resampling.LANCZOS)
-            base.paste(im_av, (ma_x + (ma_w - 46) // 2, mascot_exp_y + 8), im_av)
+            im_av = Image.open(m_img_p).convert('RGBA').resize((48, 48), Image.Resampling.LANCZOS)
+            base.paste(im_av, (ma_x + 12, mascot_exp_y + 10), im_av)
             draw = ImageDraw.Draw(base)
             
-        draw.text((ma_x + ma_w // 2, mascot_exp_y + 58), m_label, font=get_font(9.5, 'bold'), fill=(15, 23, 42), anchor='mm')
-        draw.text((ma_x + ma_w // 2, mascot_exp_y + 74), m_desc, font=get_font(7.5, 'medium'), fill=(0, 82, 255) if ma_idx in [0, 1] else ((220, 38, 38) if ma_idx==2 else (122, 34, 255)), anchor='mm')
-        draw.text((ma_x + ma_w // 2, mascot_exp_y + 88), f"인터랙션 #{ma_idx+1}", font=get_font(7, 'bold'), fill=(100, 116, 139), anchor='mm')
+        draw.text((ma_x + 68, mascot_exp_y + 16), m_label, font=get_font(10.5, 'bold'), fill=(15, 23, 42))
+        draw.text((ma_x + 68, mascot_exp_y + 34), m_rate, font=get_font(8.5, 'bold'), fill=t_col)
+        draw.line([(ma_x + 12, mascot_exp_y + 64), (ma_x + ma_w - 12, mascot_exp_y + 64)], fill=(255, 255, 255), width=1)
+        draw.text((ma_x + 12, mascot_exp_y + 74), f"• {m_desc}", font=get_font(8, 'medium'), fill=(71, 85, 105))
+        draw.text((ma_x + 12, mascot_exp_y + 88), "ZeroPassMascotAvatar 실앱 바인딩", font=get_font(7.5, 'regular'), fill=(100, 116, 139))
     
-    # 24dp Iconography (Bottom Half of Card 03)
+    # 24dp Iconography (Bottom Half of Card 03) - Exact HomeNavigationBar & App Icons
     draw.line([(col3_x + 24, mascot_exp_y + ma_h + 10), (col3_x + col3_w - 24, mascot_exp_y + ma_h + 10)], fill=(241, 245, 249), width=1)
-    draw.text((col3_x + 24, mascot_exp_y + ma_h + 18), "24dp Material Rounded 프로덕션 아이콘 킷 (Icons.*_rounded)", font=get_font(8.8, 'bold'), fill=(0, 82, 255))
+    draw.text((col3_x + 24, mascot_exp_y + ma_h + 16), "실제 앱에 탑재된 5대 핵심 탭 & 시스템 24dp 아이콘 (Icons.*_rounded)", font=get_font(9.0, 'bold'), fill=(0, 82, 255))
     
     icons_data = [
-        ("출결체크", 0xf735),
-        ("수납장부", 0xf00b6),
-        ("원생관리", 0xf0dc),
-        ("안심볼트", 0xf0244),
-        ("카톡알림", 0xf635),
-        ("보안인증", 0xf878),
+        ("출결체크", 0xf732, "Icons.fact_check_rounded", "홈 네비 1번"),
+        ("수납장부", 0xf00e1, "Icons.receipt_long_rounded", "홈 네비 2번"),
+        ("지출/세무", 0xe041, "Icons.account_balance_wallet", "홈 네비 3번"),
+        ("원생관리", 0xf7c8, "Icons.groups_rounded", "홈 네비 4번"),
+        ("설정볼트", 0xf0258, "Icons.tune_rounded", "홈 네비 5번"),
+        ("인증완결", 0xf635, "Icons.check_circle_rounded", "0.8초 키오스크"),
     ]
-    ic_start_y = mascot_exp_y + ma_h + 34
+    ic_start_y = mascot_exp_y + ma_h + 32
     ic_w = (col3_w - 48 - 25) // 6
-    ic_h = 78
-    mat_font_icon = get_material_icon_font(20)
+    ic_h = 82
+    mat_font_icon = get_material_icon_font(21)
     
-    for idx, (iname, icp) in enumerate(icons_data):
+    for idx, (iname, icp, ic_code, ic_role) in enumerate(icons_data):
         ix = col3_x + 24 + idx * (ic_w + 5)
         iy = ic_start_y
         draw.rounded_rectangle([ix, iy, ix + ic_w, iy + ic_h], radius=8, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
         icx = ix + ic_w // 2
         icy = iy + 22
-        draw.rounded_rectangle([icx - 14, icy - 14, icx + 14, icy + 14], radius=6, fill=(240, 246, 255), outline=(191, 219, 254), width=1)
+        draw.rounded_rectangle([icx - 15, icy - 15, icx + 15, icy + 15], radius=6, fill=(240, 246, 255), outline=(191, 219, 254), width=1)
         draw.text((icx, icy), chr(icp), font=mat_font_icon, fill=(0, 82, 255), anchor='mm')
-        draw.text((icx, iy + 48), iname, font=get_font(9, 'bold'), fill=(15, 23, 42), anchor='mm')
-        draw.text((icx, iy + 64), "24dp", font=get_font(7, 'regular'), fill=(100, 116, 139), anchor='mm')
+        draw.text((icx, iy + 47), iname, font=get_font(9, 'bold'), fill=(15, 23, 42), anchor='mm')
+        draw.text((icx, iy + 60), ic_role, font=get_font(7, 'medium'), fill=(0, 82, 255), anchor='mm')
+        draw.text((icx, iy + 72), "24dp", font=get_font(6.5, 'regular'), fill=(100, 116, 139), anchor='mm')
         
-    draw.rounded_rectangle([col3_x + 24, r1_y + r1_h - 38, col3_x + col3_w - 24, r1_y + r1_h - 14], radius=6, fill=(240, 246, 255), outline=(191, 219, 254), width=1)
-    draw.text((col3_x + col3_w // 2, r1_y + r1_h - 26), "친근한 펭귄 패시 캐릭터 & 프로덕션 24dp 아이코노그라피 100% 동기화", font=get_font(9.5, 'medium'), fill=(0, 82, 255), anchor='mm')
+    draw.rounded_rectangle([col3_x + 24, r1_y + r1_h - 36, col3_x + col3_w - 24, r1_y + r1_h - 12], radius=6, fill=(240, 246, 255), outline=(191, 219, 254), width=1)
+    draw.text((col3_x + col3_w // 2, r1_y + r1_h - 24), "출석률 3단계 감정 상태 바인딩 & 실제 상용 앱 5대 탭 아이콘 100% 동기화", font=get_font(9.5, 'bold'), fill=(0, 82, 255), anchor='mm')
 
     # -------------------------------------------------------------
     # LOWER ROW (y=594 to 970, h=376): 2 WIDE COLUMNS
@@ -1221,22 +1224,22 @@ def make_slide_07():
         
     # 4. CTAs Button Row
     cta_y = ch_y + 38
-    mat_font_cta = get_material_icon_font(15)
+    mat_font_cta = get_material_icon_font(16)
     
     draw.rounded_rectangle([colB_x + 28, cta_y, colB_x + 230, cta_y + 40], radius=10, fill=(0, 82, 255))
-    draw.text((colB_x + 50, cta_y + 20), chr(0xf735), font=mat_font_cta, fill=(255, 255, 255), anchor='mm')
+    draw.text((colB_x + 50, cta_y + 20), chr(0xf732), font=mat_font_cta, fill=(255, 255, 255), anchor='mm')
     draw.text((colB_x + 138, cta_y + 20), "0.8초 등원 인증", font=get_font(11, 'bold'), fill=(255, 255, 255), anchor='mm')
     
     draw.rounded_rectangle([colB_x + 242, cta_y, colB_x + 432, cta_y + 40], radius=10, fill=(240, 246, 255), outline=(0, 82, 255), width=1)
-    draw.text((colB_x + 264, cta_y + 20), chr(0xf0161), font=mat_font_cta, fill=(0, 82, 255), anchor='mm')
+    draw.text((colB_x + 264, cta_y + 20), chr(0xf630), font=mat_font_cta, fill=(0, 82, 255), anchor='mm')
     draw.text((colB_x + 347, cta_y + 20), "원클릭 카톡 청구", font=get_font(11, 'bold'), fill=(0, 82, 255), anchor='mm')
     
     draw.rounded_rectangle([colB_x + 444, cta_y, colB_x + 614, cta_y + 40], radius=10, fill=(248, 250, 252), outline=(203, 213, 225), width=1)
-    draw.text((colB_x + 466, cta_y + 20), chr(0xf878), font=mat_font_cta, fill=(51, 65, 85), anchor='mm')
+    draw.text((colB_x + 466, cta_y + 20), chr(0xf013e), font=mat_font_cta, fill=(51, 65, 85), anchor='mm')
     draw.text((colB_x + 538, cta_y + 20), "1-Tap 볼트 백업", font=get_font(10.5, 'bold'), fill=(51, 65, 85), anchor='mm')
     
     draw.rounded_rectangle([colB_x + 626, cta_y, colB_x + colB_w - 28, cta_y + 40], radius=10, fill=(254, 243, 199), outline=(253, 230, 138), width=1)
-    draw.text((colB_x + 648, cta_y + 20), chr(0xf01d5), font=get_material_icon_font(18), fill=(217, 119, 6), anchor='mm')
+    draw.text((colB_x + 648, cta_y + 20), chr(0xf5ca), font=get_material_icon_font(18), fill=(217, 119, 6), anchor='mm')
     draw.text((colB_x + 664 + (colB_w - 28 - 664)//2, cta_y + 12), "체크앤페이 프로 멤버십", font=get_font(8.5, 'bold'), fill=(180, 83, 9), anchor='mm')
     draw.text((colB_x + 664 + (colB_w - 28 - 664)//2, cta_y + 26), "평생 소장 라이선스 활성화", font=get_font(8.5, 'bold'), fill=(217, 119, 6), anchor='mm')
     
