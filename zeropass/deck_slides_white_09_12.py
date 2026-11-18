@@ -540,7 +540,7 @@ def make_slide_12():
     # Right Column: Master Launcher + 4 Step Cards + QR Hub (x=800 to 1820, w=1020)
     rx = 800
     rw = 1020
-    proto_entry_url = "https://koyotejw-ux.github.io/zeropass/portfolio/prototype.html"
+    proto_entry_url = "https://koyotejw-ux.github.io/auto_portfolio/zeropass/prototype.html"
 
     # 1. Master Radiant Blue Launcher Card (y=234 to 348, h=114)
     my = 234
