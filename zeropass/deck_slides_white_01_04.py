@@ -139,11 +139,13 @@ def make_slide_01():
     base.paste(sh_front, (p_front_x - pad_f[0], p_front_y - pad_f[1]), sh_front)
     base.paste(rot_front, (p_front_x, p_front_y), rot_front)
     
-    # 🌟 Mascot "Passy" (패시) Cute Greeting Placement
-    mascot_p = 'd:/097.flutter_project/auto_portfolio/zeropass/assets/mascot/passy_clean_body.png'
+    # 🌟 Mascot "Passy" (패시) Cheerful Greeting Placement
+    mascot_p = 'd:/097.flutter_project/auto_portfolio/zeropass/assets/mascot_poses/passy_cheer.png'
+    if not os.path.exists(mascot_p):
+        mascot_p = 'd:/097.flutter_project/auto_portfolio/zeropass/assets/mascot/passy_clean_body.png'
     if os.path.exists(mascot_p):
         im_m = Image.open(mascot_p).convert('RGBA')
-        mh = 240
+        mh = 248
         mw = int(round(mh * (im_m.width / im_m.height)))
         m_scaled = im_m.resize((mw, mh), Image.Resampling.LANCZOS)
         
@@ -151,7 +153,7 @@ def make_slide_01():
         m_sh = Image.new('RGBA', (W, H), (0, 0, 0, 0))
         m_sh_d = ImageDraw.Draw(m_sh)
         mx_pos = 1530
-        my_pos = 580
+        my_pos = 575
         m_sh_d.ellipse([mx_pos + 25, my_pos + mh - 25, mx_pos + mw - 15, my_pos + mh + 15], fill=(0, 50, 150, 70))
         m_sh = m_sh.filter(ImageFilter.GaussianBlur(14))
         base = Image.alpha_composite(base, m_sh)
@@ -160,14 +162,14 @@ def make_slide_01():
         # Mascot Speech Bubble (Cute Welcoming Message)
         draw = ImageDraw.Draw(base)
         sb_x = mx_pos - 80
-        sb_y = my_pos - 45
-        sb_w = 260
-        sb_h = 42
+        sb_y = my_pos - 48
+        sb_w = 270
+        sb_h = 44
         draw.rounded_rectangle([sb_x, sb_y, sb_x + sb_w, sb_y + sb_h], radius=12, fill=(255, 255, 255), outline=(0, 82, 255), width=2)
         # Tail
         draw.polygon([(sb_x + 130, sb_y + sb_h), (sb_x + 150, sb_y + sb_h), (sb_x + 145, sb_y + sb_h + 10)], fill=(0, 82, 255))
         draw.polygon([(sb_x + 132, sb_y + sb_h - 1), (sb_x + 148, sb_y + sb_h - 1), (sb_x + 145, sb_y + sb_h + 8)], fill=(255, 255, 255))
-        draw.text((sb_x + sb_w // 2, sb_y + sb_h // 2 - 1), "안녕! 난 체크앤페이 마스코트 패시야 🐧", font=get_font(10.5, 'bold'), fill=(0, 82, 255), anchor='mm')
+        draw.text((sb_x + sb_w // 2, sb_y + sb_h // 2 - 1), "안녕! 체크앤페이 마스코트 패시야 🐧✨", font=get_font(11, 'bold'), fill=(0, 82, 255), anchor='mm')
     
     draw = ImageDraw.Draw(base)
     
@@ -565,21 +567,24 @@ def make_slide_04():
     top_badge_y = 65
     draw.rounded_rectangle([top_badge_x, top_badge_y, top_badge_x + 370, top_badge_y + 60], radius=10, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
     
-    mascot_p = 'd:/097.flutter_project/auto_portfolio/zeropass/assets/mascot/passy_clean_body.png'
+    # 🌟 Passy Pointer Mascot for IA Guide
+    mascot_p = 'd:/097.flutter_project/auto_portfolio/zeropass/assets/mascot_poses/passy_guide_pointing.png'
+    if not os.path.exists(mascot_p):
+        mascot_p = 'd:/097.flutter_project/auto_portfolio/zeropass/assets/mascot/passy_clean_body.png'
     if os.path.exists(mascot_p):
         im_m = Image.open(mascot_p).convert('RGBA')
-        mh = 50
+        mh = 54
         mw = int(round(mh * (im_m.width / im_m.height)))
         m_scaled = im_m.resize((mw, mh), Image.Resampling.LANCZOS)
-        base.paste(m_scaled, (top_badge_x + 12, top_badge_y + 5), m_scaled)
+        base.paste(m_scaled, (top_badge_x + 10, top_badge_y + 3), m_scaled)
         draw = ImageDraw.Draw(base)
-        text_x = top_badge_x + mw + 20
+        text_x = top_badge_x + mw + 18
     else:
         draw_pill_badge(draw, left_x=top_badge_x + 16, cy=top_badge_y + 30, text="서비스 구성", font=get_font(9.5, 'bold'), theme='blue', pad_x=8, height=24)
         text_x = top_badge_x + 110
         
-    draw.text((text_x, top_badge_y + 18), "5대 메인 탭 구조 (IA)", font=get_font(12.5, 'bold'), fill=(15, 23, 42))
-    draw.text((text_x, top_badge_y + 38), "총 25개 직관적 화면 · 패시 안내 탑재", font=get_font(10.5, 'medium'), fill=(0, 82, 255))
+    draw.text((text_x, top_badge_y + 16), "5대 핵심 메뉴 구조 (IA)", font=get_font(12.5, 'bold'), fill=(15, 23, 42))
+    draw.text((text_x, top_badge_y + 37), "패시가 안내하는 25개 직관적 화면 ✨", font=get_font(10.5, 'medium'), fill=(0, 82, 255))
     
     # Root Node
     root_x1, root_y1, root_x2, root_y2 = 730, 226, 1190, 286

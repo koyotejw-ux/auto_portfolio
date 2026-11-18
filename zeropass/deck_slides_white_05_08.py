@@ -68,21 +68,23 @@ def make_slide_05():
     draw_pill_badge(draw, left_x=leg_x + 16, cy=leg_y + 20, text="기호 범례", font=get_font(8, 'bold'), theme='blue', has_dot=False, pad_x=6, height=18)
     draw.text((leg_x + 105, leg_y + 20), "플로우차트 기호 범례", font=get_font(11, 'bold'), fill=(15, 23, 42), anchor='lm')
     
-    # Mascot Passy Mascot in Flowchart Legend
-    mascot_p = 'd:/097.flutter_project/auto_portfolio/zeropass/assets/mascot/passy_clean_body.png'
+    # Mascot Passy Mascot in Flowchart Legend (Pointer Pose)
+    mascot_p = 'd:/097.flutter_project/auto_portfolio/zeropass/assets/mascot_poses/passy_guide_pointing.png'
+    if not os.path.exists(mascot_p):
+        mascot_p = 'd:/097.flutter_project/auto_portfolio/zeropass/assets/mascot/passy_clean_body.png'
     if os.path.exists(mascot_p):
         im_m = Image.open(mascot_p).convert('RGBA')
-        mh = 62
+        mh = 68
         mw = int(round(mh * (im_m.width / im_m.height)))
         m_scaled = im_m.resize((mw, mh), Image.Resampling.LANCZOS)
-        base.paste(m_scaled, (leg_x - mw - 12, leg_y + 8), m_scaled)
+        base.paste(m_scaled, (leg_x - mw - 14, leg_y + 4), m_scaled)
         draw = ImageDraw.Draw(base)
         
-        # Tiny thought bubble
-        tb_x = leg_x - mw - 95
+        # Thought bubble
+        tb_x = leg_x - mw - 118
         tb_y = leg_y + 12
-        draw.rounded_rectangle([tb_x, tb_y, tb_x + 85, tb_y + 32], radius=8, fill=(255, 255, 255), outline=(0, 82, 255), width=1)
-        draw.text((tb_x + 42, tb_y + 16), "0.8초 플로우! 🐧", font=get_font(8.5, 'bold'), fill=(0, 82, 255), anchor='mm')
+        draw.rounded_rectangle([tb_x, tb_y, tb_x + 104, tb_y + 34], radius=8, fill=(255, 255, 255), outline=(0, 82, 255), width=1)
+        draw.text((tb_x + 52, tb_y + 17), "0.8초 플로우 안내! 🐧", font=get_font(9, 'bold'), fill=(0, 82, 255), anchor='mm')
     draw.text((leg_x + 43, leg_y + 56), "시작/종료", font=get_font(7.5, 'bold'), fill=(255, 255, 255), anchor='mm')
     draw.text((leg_x + 76, leg_y + 56), "프로세스", font=get_font(9.5, 'medium'), fill=(71, 85, 105), anchor='lm')
     
@@ -515,17 +517,19 @@ def make_slide_06():
     v_y = sec_y + 54
     draw.rounded_rectangle([p1_x + 14, v_y, p1_x + pw - 14, v_y + 26], radius=6, fill=(240, 246, 255), outline=(191, 219, 254), width=1)
     
-    mascot_p = 'd:/097.flutter_project/auto_portfolio/zeropass/assets/mascot/passy_clean_body.png'
+    mascot_p = 'd:/097.flutter_project/auto_portfolio/zeropass/assets/mascot_poses/passy_normal.png'
+    if not os.path.exists(mascot_p):
+        mascot_p = 'd:/097.flutter_project/auto_portfolio/zeropass/assets/mascot/passy_clean_body.png'
     if os.path.exists(mascot_p):
         im_m = Image.open(mascot_p).convert('RGBA')
-        mh = 22
+        mh = 24
         mw = int(round(mh * (im_m.width / im_m.height)))
         m_scaled = im_m.resize((mw, mh), Image.Resampling.LANCZOS)
-        base.paste(m_scaled, (p1_x + 20, v_y + 2), m_scaled)
+        base.paste(m_scaled, (p1_x + 18, v_y + 1), m_scaled)
         draw = ImageDraw.Draw(base)
-        draw.text((p1_x + 24 + mw + 4, v_y + 7), "체크앤페이 패시 키오스크", font=get_font(8.5, 'bold'), fill=(0, 81, 255))
+        draw.text((p1_x + 22 + mw + 4, v_y + 7), "체크앤페이 키오스크", font=get_font(8.5, 'bold'), fill=(0, 81, 255))
     else:
-        draw.text((p1_x + 24, v_y + 6), "⚡ 체크앤페이 키오스크 가동 중", font=get_font(8.5, 'bold'), fill=(0, 81, 255))
+        draw.text((p1_x + 24, v_y + 6), "체크앤페이 키오스크 가동 중", font=get_font(8.5, 'bold'), fill=(0, 81, 255))
         
     draw.text((p1_x + pw - 24, v_y + 7), "15:30:24", font=get_num_font(8.5, 'bold'), fill=(100, 116, 139), anchor='ra')
     
@@ -972,29 +976,31 @@ def make_slide_07():
     draw.text((b3_box[2] + 14, r1_y + 30), "브랜드 캐릭터 '패시(Passy)' & 24dp 아이콘", font=get_font(13.5, 'bold'), fill=(15, 23, 42), anchor='lm')
     draw.line([(col3_x + 24, r1_y + 52), (col3_x + col3_w - 24, r1_y + 52)], fill=(241, 245, 249), width=1)
     
-    # 3 Mascot Expressions Plate (Top Half of Card 03)
+    # 4 Mascot Expression & Action System Plate (Top Half of Card 03)
     mascot_exp_y = r1_y + 60
     m_avatars = [
-        ("mascot_profile_round.png", "기본 안내 패시", "출결 및 일반 안내"),
-        ("mascot_profile_laughing_round.png", "성공/환영 패시", "출결 완료·수납 완결"),
-        ("mascot_profile_crying_round.png", "주의/연체 패시", "D-Day 연체·만료 임박")
+        ("passy_cheer.png", "환영/등원 패시", "출결 터치 & 시작"),
+        ("passy_success_check.png", "인증완결 패시", "출결 완료·수납 완결"),
+        ("passy_alert_crying.png", "주의/연체 패시", "D-Day 연체·만료 임박"),
+        ("passy_vault_security.png", "보안관 패시", "오프라인 안심 암호화")
     ]
-    ma_w = (col3_w - 48 - 20) // 3
+    ma_w = (col3_w - 48 - 18) // 4
     ma_h = 100
     for ma_idx, (m_file, m_label, m_desc) in enumerate(m_avatars):
-        ma_x = col3_x + 24 + ma_idx * (ma_w + 10)
+        ma_x = col3_x + 24 + ma_idx * (ma_w + 6)
         draw.rounded_rectangle([ma_x, mascot_exp_y, ma_x + ma_w, mascot_exp_y + ma_h], radius=10, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
         
-        m_img_p = f"d:/097.flutter_project/auto_portfolio/zeropass/assets/mascot/{m_file}"
+        m_img_p = f"d:/097.flutter_project/auto_portfolio/zeropass/assets/mascot_poses/{m_file}"
+        if not os.path.exists(m_img_p):
+            m_img_p = f"d:/097.flutter_project/auto_portfolio/zeropass/assets/mascot/{m_file}"
         if os.path.exists(m_img_p):
             im_av = Image.open(m_img_p).convert('RGBA').resize((46, 46), Image.Resampling.LANCZOS)
-            base.paste(im_av, (ma_x + 10, mascot_exp_y + 12), im_av)
+            base.paste(im_av, (ma_x + (ma_w - 46) // 2, mascot_exp_y + 8), im_av)
             draw = ImageDraw.Draw(base)
             
-        draw.text((ma_x + 64, mascot_exp_y + 16), m_label, font=get_font(10, 'bold'), fill=(15, 23, 42))
-        draw.text((ma_x + 64, mascot_exp_y + 34), m_desc, font=get_font(8.2, 'medium'), fill=(0, 82, 255) if ma_idx==1 else ((220, 38, 38) if ma_idx==2 else (100, 116, 139)))
-        draw.rounded_rectangle([ma_x + 10, mascot_exp_y + 66, ma_x + ma_w - 10, mascot_exp_y + 90], radius=5, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-        draw.text((ma_x + ma_w // 2, mascot_exp_y + 78), f"상태 연동 인터랙션 #{ma_idx+1}", font=get_font(7.5, 'bold'), fill=(71, 85, 105), anchor='mm')
+        draw.text((ma_x + ma_w // 2, mascot_exp_y + 58), m_label, font=get_font(9.5, 'bold'), fill=(15, 23, 42), anchor='mm')
+        draw.text((ma_x + ma_w // 2, mascot_exp_y + 74), m_desc, font=get_font(7.5, 'medium'), fill=(0, 82, 255) if ma_idx in [0, 1] else ((220, 38, 38) if ma_idx==2 else (122, 34, 255)), anchor='mm')
+        draw.text((ma_x + ma_w // 2, mascot_exp_y + 88), f"인터랙션 #{ma_idx+1}", font=get_font(7, 'bold'), fill=(100, 116, 139), anchor='mm')
     
     # 24dp Iconography (Bottom Half of Card 03)
     draw.line([(col3_x + 24, mascot_exp_y + ma_h + 10), (col3_x + col3_w - 24, mascot_exp_y + ma_h + 10)], fill=(241, 245, 249), width=1)
@@ -1356,11 +1362,13 @@ def make_slide_08():
     draw.rounded_rectangle([rx + 24, tel_y, rx + rw - 24, comp_y + comp_h - 24], radius=12, fill=(240, 246, 255), outline=(191, 219, 254), width=1)
     draw.text((rx + 40, tel_y + 20), "출결 엔진 실시간 측정 성과 지표", font=get_font(10.5, 'bold'), fill=(0, 82, 255))
     
-    # Passy mini badge in Telemetry Header
-    mascot_laugh_p = 'd:/097.flutter_project/auto_portfolio/zeropass/assets/mascot/mascot_profile_laughing_round.png'
-    if os.path.exists(mascot_laugh_p):
-        im_l = Image.open(mascot_laugh_p).convert('RGBA').resize((28, 28), Image.Resampling.LANCZOS)
-        base.paste(im_l, (rx + rw - 185, tel_y + 12), im_l)
+    # Passy Success Check Badge in Telemetry Header
+    mascot_success_p = 'd:/097.flutter_project/auto_portfolio/zeropass/assets/mascot_poses/passy_success_check.png'
+    if not os.path.exists(mascot_success_p):
+        mascot_success_p = 'd:/097.flutter_project/auto_portfolio/zeropass/assets/mascot/mascot_profile_laughing_round.png'
+    if os.path.exists(mascot_success_p):
+        im_l = Image.open(mascot_success_p).convert('RGBA').resize((34, 34), Image.Resampling.LANCZOS)
+        base.paste(im_l, (rx + rw - 190, tel_y + 8), im_l)
         draw = ImageDraw.Draw(base)
         draw.text((rx + rw - 150, tel_y + 20), "패시 인증 보증 🐧", font=get_font(9.5, 'bold'), fill=(0, 82, 255), anchor='lm')
 
