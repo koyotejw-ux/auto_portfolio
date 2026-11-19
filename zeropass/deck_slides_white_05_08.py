@@ -84,7 +84,7 @@ def make_slide_05():
         tb_x = leg_x - mw - 118
         tb_y = leg_y + 12
         draw.rounded_rectangle([tb_x, tb_y, tb_x + 104, tb_y + 34], radius=8, fill=(255, 255, 255), outline=(0, 82, 255), width=1)
-        draw.text((tb_x + 52, tb_y + 17), "0.8초 플로우 안내! 🐧", font=get_font(9, 'bold'), fill=(0, 82, 255), anchor='mm')
+        draw.text((tb_x + 52, tb_y + 17), "0.8초 플로우 안내!", font=get_font(9, 'bold'), fill=(0, 82, 255), anchor='mm')
     draw.text((leg_x + 43, leg_y + 56), "시작/종료", font=get_font(7.5, 'bold'), fill=(255, 255, 255), anchor='mm')
     draw.text((leg_x + 76, leg_y + 56), "프로세스", font=get_font(9.5, 'medium'), fill=(71, 85, 105), anchor='lm')
     
@@ -575,7 +575,7 @@ def make_slide_06():
     # Primary Action Button inside Thumb Zone
     btn1_y = sec_y + ph - 68
     draw.rounded_rectangle([p1_x + 14, btn1_y, p1_x + pw - 14, btn1_y + 42], radius=10, fill=(0, 81, 255))
-    draw.text((p1_x + pw//2, btn1_y + 21), "✓ 0.8초 등원 인증 완결", font=get_font(12, 'bold'), fill=(255, 255, 255), anchor='mm')
+    draw.text((p1_x + pw//2, btn1_y + 21), "0.8초 등원 인증 완결", font=get_font(12, 'bold'), fill=(255, 255, 255), anchor='mm')
 
     # -----------------------------------------------------------------
     # Chassis 2: [SCR-02 · D-Day 수납 장부] (p2_x = 580)
@@ -623,7 +623,7 @@ def make_slide_06():
     # Primary Action Button inside Thumb Zone
     btn2_y = sec_y + ph - 68
     draw.rounded_rectangle([p2_x + 14, btn2_y, p2_x + pw - 14, btn2_y + 42], radius=10, fill=(0, 81, 255))
-    draw.text((p2_x + pw//2, btn2_y + 21), "⚡ 미수금 원생 전체 청구서 발송", font=get_font(11.5, 'bold'), fill=(255, 255, 255), anchor='mm')
+    draw.text((p2_x + pw//2, btn2_y + 21), "미수금 원생 전체 청구서 발송", font=get_font(11.5, 'bold'), fill=(255, 255, 255), anchor='mm')
 
     # -----------------------------------------------------------------
     # Chassis 3: [SCR-03 · 원생 디렉터리] (p3_x = 1060)
@@ -633,7 +633,7 @@ def make_slide_06():
     # Search Box Mockup
     sb_y = sec_y + 54
     draw.rounded_rectangle([p3_x + 14, sb_y, p3_x + pw - 14, sb_y + 34], radius=8, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
-    draw.text((p3_x + 24, sb_y + 10), "🔍 원생 이름 또는 번호 뒷자리 검색", font=get_font(8.5, 'regular'), fill=(100, 116, 139))
+    draw.text((p3_x + 24, sb_y + 10), "원생 이름 또는 번호 뒷자리 검색", font=get_font(8.5, 'regular'), fill=(100, 116, 139))
     
     # Member Detail Card with Tab & Avatar
     md_y = sb_y + 44
@@ -693,7 +693,7 @@ def make_slide_06():
     # 2-Button Channel Row: SMS vs Kakao
     cr_y = inv_y + 248
     draw.rounded_rectangle([p4_x + 14, cr_y, p4_x + pw//2 - 6, cr_y + 36], radius=8, fill=(248, 250, 252), outline=(203, 213, 225), width=1)
-    draw.text((p4_x + 14 + (pw//2 - 20)//2, cr_y + 18), "💬 문자(SMS)", font=get_font(9.5, 'bold'), fill=(71, 85, 105), anchor='mm')
+    draw.text((p4_x + 14 + (pw//2 - 20)//2, cr_y + 18), "문자(SMS)", font=get_font(9.5, 'bold'), fill=(71, 85, 105), anchor='mm')
     
     draw.rounded_rectangle([p4_x + pw//2 + 6, cr_y, p4_x + pw - 14, cr_y + 36], radius=8, fill=(254, 229, 0), outline=(234, 209, 0), width=1)
     draw.text((p4_x + pw//2 + 6 + (pw//2 - 20)//2, cr_y + 18), "카카오톡 공유", font=get_font(9.5, 'bold'), fill=(59, 30, 30), anchor='mm')
@@ -1323,7 +1323,7 @@ def make_slide_08():
     ]
     zy = comp_y + 365
     for z_tit, z_desc in z_bullets:
-        draw.text((lx + 40, zy), "✔ " + z_tit, font=get_font(13, 'bold'), fill=(0, 82, 255))
+        draw.text((lx + 40, zy), "" + z_tit, font=get_font(13, 'bold'), fill=(0, 82, 255))
         draw.text((lx + 40, zy + 24), z_desc, font=get_font(11.5, 'regular'), fill=(51, 65, 85))
         zy += 65
 
@@ -1373,7 +1373,7 @@ def make_slide_08():
         im_l = Image.open(mascot_success_p).convert('RGBA').resize((34, 34), Image.Resampling.LANCZOS)
         base.paste(im_l, (rx + rw - 190, tel_y + 8), im_l)
         draw = ImageDraw.Draw(base)
-        draw.text((rx + rw - 150, tel_y + 20), "패시 인증 보증 🐧", font=get_font(9.5, 'bold'), fill=(0, 82, 255), anchor='lm')
+        draw.text((rx + rw - 150, tel_y + 20), "패시 인증 보증", font=get_font(9.5, 'bold'), fill=(0, 82, 255), anchor='lm')
 
     kpis = [
         ("출결 인증 속도", "0.8초", "기존 45초 대비 98% 단축"),

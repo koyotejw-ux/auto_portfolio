@@ -9,12 +9,12 @@ for d in MOCKUP_DIRS:
 
 # Sources from actual simulator/device captures (904 x 2316)
 SRC_SCREENS = {
-    'mockup_01_pass.png': 'd:/097.flutter_project/zeropass/test_tab1.png',
-    'mockup_02_ledger.png': 'd:/097.flutter_project/zeropass/test_tab2.png',
-    'mockup_03_members.png': 'd:/097.flutter_project/zeropass/test_tab3.png',
-    'mockup_04_pro.png': 'd:/097.flutter_project/zeropass/test_tab4.png',
-    'mockup_05_vault.png': 'd:/097.flutter_project/zeropass/test_tab5.png',
-    'mockup_06_en.png': 'd:/097.flutter_project/zeropass/en_test_tab1.png',
+    'mockup_01_pass.png': 'd:/097.flutter_project/zeropass/clean_ko_tab1.png',
+    'mockup_02_ledger.png': 'd:/097.flutter_project/zeropass/clean_ko_tab2.png',
+    'mockup_03_members.png': 'd:/097.flutter_project/zeropass/clean_ko_tab3.png',
+    'mockup_04_pro.png': 'd:/097.flutter_project/zeropass/clean_ko_tab4.png',
+    'mockup_05_vault.png': 'd:/097.flutter_project/zeropass/clean_ko_tab5.png',
+    'mockup_06_en.png': 'd:/097.flutter_project/zeropass/clean_en_tab1.png',
 }
 
 def make_clean_iphone_mockup(screen_path, target_screen_w=720):

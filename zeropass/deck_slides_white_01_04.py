@@ -169,7 +169,7 @@ def make_slide_01():
         # Tail
         draw.polygon([(sb_x + 130, sb_y + sb_h), (sb_x + 150, sb_y + sb_h), (sb_x + 145, sb_y + sb_h + 10)], fill=(0, 82, 255))
         draw.polygon([(sb_x + 132, sb_y + sb_h - 1), (sb_x + 148, sb_y + sb_h - 1), (sb_x + 145, sb_y + sb_h + 8)], fill=(255, 255, 255))
-        draw.text((sb_x + sb_w // 2, sb_y + sb_h // 2 - 1), "안녕! 체크앤페이 마스코트 패시야 🐧✨", font=get_font(11, 'bold'), fill=(0, 82, 255), anchor='mm')
+        draw.text((sb_x + sb_w // 2, sb_y + sb_h // 2 - 1), "안녕! 체크앤페이 마스코트 패시야!", font=get_font(11, 'bold'), fill=(0, 82, 255), anchor='mm')
     
     draw = ImageDraw.Draw(base)
     
@@ -387,7 +387,7 @@ def make_slide_02():
         sb_w, sb_h = 240, 32
         sb_x, sb_y = 1820 - mw2 - 10 - sb_w - 10, 78
         draw.rounded_rectangle([sb_x, sb_y, sb_x + sb_w, sb_y + sb_h], radius=8, fill=(255, 255, 255), outline=(0, 82, 255), width=1)
-        draw.text((sb_x + sb_w // 2, sb_y + sb_h // 2), "N=120 현장 리서치 데이터 분석! 🐧📊", font=get_font(9.5, 'bold'), fill=(0, 82, 255), anchor='mm')
+        draw.text((sb_x + sb_w // 2, sb_y + sb_h // 2), "N=120 현장 리서치 데이터 분석!", font=get_font(9.5, 'bold'), fill=(0, 82, 255), anchor='mm')
 
     draw_slide_footer(draw, 2)
     save_slide(base.convert('RGB'), 2)
@@ -578,7 +578,7 @@ def make_slide_03():
         sb_w, sb_h = 240, 32
         sb_x, sb_y = 1820 - mw3 - 10 - sb_w - 10, 78
         draw.rounded_rectangle([sb_x, sb_y, sb_x + sb_w, sb_y + sb_h], radius=8, fill=(255, 255, 255), outline=(16, 185, 129), width=1)
-        draw.text((sb_x + sb_w // 2, sb_y + sb_h // 2), "원장님 감정 마찰 100% 공감! 🐧♥", font=get_font(9.5, 'bold'), fill=(22, 101, 52), anchor='mm')
+        draw.text((sb_x + sb_w // 2, sb_y + sb_h // 2), "원장님 감정 마찰 100% 공감!", font=get_font(9.5, 'bold'), fill=(22, 101, 52), anchor='mm')
 
     draw_slide_footer(draw, 3)
     save_slide(base.convert('RGB'), 3)
@@ -620,7 +620,7 @@ def make_slide_04():
         text_x = top_badge_x + 110
         
     draw.text((text_x, top_badge_y + 16), "5대 핵심 메뉴 구조 (IA)", font=get_font(12.5, 'bold'), fill=(15, 23, 42))
-    draw.text((text_x, top_badge_y + 37), "패시가 안내하는 25개 직관적 화면 ✨", font=get_font(10.5, 'medium'), fill=(0, 82, 255))
+    draw.text((text_x, top_badge_y + 37), "패시가 안내하는 25개 직관적 화면", font=get_font(10.5, 'medium'), fill=(0, 82, 255))
     
     # Root Node
     root_x1, root_y1, root_x2, root_y2 = 730, 226, 1190, 286

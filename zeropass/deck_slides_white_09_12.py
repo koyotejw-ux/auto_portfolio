@@ -219,7 +219,7 @@ def make_slide_09():
     sol_y = rep_y + 58
     draw.rounded_rectangle([rx + 28, sol_y, rx + rw - 28, sol_y + 68], radius=12, fill=(240, 246, 255), outline=(191, 219, 254), width=1)
     draw_pill_badge(draw, left_x=rx + 48, cy=sol_y + 22, text="회수율 92.4% 입증", font=get_font(9.5, 'bold'), theme='green', has_dot=False, pad_x=8, height=22)
-    draw.text((rx + 295, sol_y + 12), "D-Day 사전 알림 도입 후 미수금 회수 소요 14일 ➔ 2일 단축", font=get_font(14.5, 'bold'), fill=(0, 82, 255))
+    draw.text((rx + 295, sol_y + 12), "D-Day 사전 알림 도입 후 미수금 회수 소요 14일 -> 2일 단축", font=get_font(14.5, 'bold'), fill=(0, 82, 255))
     draw.text((rx + 48, sol_y + 44), "100% 로컬 안심 저장 연동으로 수납 누수 및 장부 오차율 0.00% 달성", font=get_font(10.5, 'regular'), fill=(71, 85, 105))
     
     rep_chips = [
@@ -328,7 +328,7 @@ def make_slide_10():
         sb_w, sb_h = 240, 32
         sb_x, sb_y = 1820 - mw10 - 10 - sb_w - 10, 78
         draw.rounded_rectangle([sb_x, sb_y, sb_x + sb_w, sb_y + sb_h], radius=8, fill=(255, 255, 255), outline=(0, 82, 255), width=1)
-        draw.text((sb_x + sb_w // 2, sb_y + sb_h // 2), "6대 상용 화면 직접 둘러보기! 🐧📱", font=get_font(9.5, 'bold'), fill=(0, 82, 255), anchor='mm')
+        draw.text((sb_x + sb_w // 2, sb_y + sb_h // 2), "6대 상용 화면 직접 둘러보기!", font=get_font(9.5, 'bold'), fill=(0, 82, 255), anchor='mm')
 
     draw_slide_footer(draw, 10)
     save_slide(base.convert('RGB'), 10)
@@ -388,7 +388,7 @@ def make_slide_11():
     
     a_rows = [
         ("키오스크 출결 속도", "0.8초 즉시 인증 완결 (소요 시간 98.2% 대폭 단축)", (0, 82, 255)),
-        ("D-Day 수납 적기 회수율", "92.4% 적기 회수 달성 (회수 소요 기간 14일 ➔ 2일)", (5, 150, 105)),
+        ("D-Day 수납 적기 회수율", "92.4% 적기 회수 달성 (회수 소요 기간 14일 -> 2일)", (5, 150, 105)),
         ("모바일 청구서 발송", "1-Tap 카카오톡 서식 즉시 전송 (대면 마찰 제로)", (5, 150, 105)),
         ("월 고정 유지비용", "월 0원 평생 소장 라이선스 (서버비 0원 온디바이스)", (180, 83, 9))
     ]
@@ -500,7 +500,7 @@ def make_slide_11():
         sb_w, sb_h = 240, 32
         sb_x, sb_y = 1820 - mw11 - 10 - sb_w - 10, 78
         draw.rounded_rectangle([sb_x, sb_y, sb_x + sb_w, sb_y + sb_h], radius=8, fill=(255, 255, 255), outline=(16, 185, 129), width=1)
-        draw.text((sb_x + sb_w // 2, sb_y + sb_h // 2), "검증된 임팩트 & 성장 로드맵! 🐧🏆", font=get_font(9.5, 'bold'), fill=(6, 95, 70), anchor='mm')
+        draw.text((sb_x + sb_w // 2, sb_y + sb_h // 2), "검증된 임팩트 & 성장 로드맵!", font=get_font(9.5, 'bold'), fill=(6, 95, 70), anchor='mm')
 
     draw_slide_footer(draw, 11)
     save_slide(base.convert('RGB'), 11)
