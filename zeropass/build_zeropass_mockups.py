@@ -35,7 +35,7 @@ def make_clean_iphone_mockup(screen_path, target_screen_w=720):
     bar_w_raw = 280
     bar_h_raw = 10
     bar_y_raw = screen.height - 35
-    bar_col_raw = (0, 210, 255, 200) # Electric cyan bar
+    bar_col_raw = (37, 99, 235, 220) # Royal Cerulean Blue bar
     s_draw.rounded_rectangle(
         [(screen.width - bar_w_raw) // 2, bar_y_raw, (screen.width + bar_w_raw) // 2, bar_y_raw + bar_h_raw],
         radius=5, fill=bar_col_raw
@@ -80,7 +80,7 @@ def make_clean_iphone_mockup(screen_path, target_screen_w=720):
     draw.rounded_rectangle([ox + dev_w, 320, ox + dev_w + 4, 440], radius=2, fill=(30, 41, 59, 255))
     
     # Body Frame
-    draw.rounded_rectangle([ox, oy, ox + dev_w, oy + dev_h], radius=54, fill=(15, 23, 42, 255), outline=(0, 210, 255, 140), width=2)
+    draw.rounded_rectangle([ox, oy, ox + dev_w, oy + dev_h], radius=54, fill=(15, 23, 42, 255), outline=(37, 99, 235, 140), width=2)
     draw.rounded_rectangle([ox + 2, oy + 2, ox + dev_w - 2, oy + dev_h - 2], radius=52, outline=(99, 102, 241, 70), width=1)
     draw.rounded_rectangle([ox + bezel - 2, oy + bezel - 2, ox + dev_w - bezel + 2, oy + dev_h - bezel + 2], radius=40, fill=(7, 10, 19, 255))
     
@@ -99,7 +99,7 @@ def make_clean_iphone_mockup(screen_path, target_screen_w=720):
     lens_x = di_x + di_w - 20
     lens_y = di_y + di_h // 2
     draw.ellipse([lens_x - 4, lens_y - 4, lens_x + 4, lens_y + 4], fill=(15, 23, 42, 255), outline=(30, 41, 59, 255), width=1)
-    draw.ellipse([lens_x - 2, lens_y - 2, lens_x + 1, lens_y + 1], fill=(0, 210, 255, 180))
+    draw.ellipse([lens_x - 2, lens_y - 2, lens_x + 1, lens_y + 1], fill=(37, 99, 235, 180))
     
     return device
 
