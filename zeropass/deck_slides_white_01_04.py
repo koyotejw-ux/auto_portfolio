@@ -365,8 +365,29 @@ def make_slide_02():
         draw_pill_badge(draw, left_x=sp_x + 40, cy=py + 24, text=p_tag, font=get_font(10, 'bold'), theme='blue', pad_x=8, height=22)
         draw.text((sp_x + 155, py + 14), p_tit, font=get_font(14, 'bold'), fill=(15, 23, 42))
         draw.text((sp_x + 350, py + 16), "• " + p_sub, font=get_font(12, 'bold'), fill=(0, 82, 255))
-        draw.text((sp_x + 40, py + 48), p_desc, font=get_font(12, 'regular'), fill=(71, 85, 105))
+        
+        # Proper wrapping to avoid overflow
+        p_lines = wrap_text_by_words(p_desc, get_font(11.5, 'regular'), sp_w - 90, draw)
+        p_dy = py + 46
+        for pl in p_lines[:2]:
+            draw.text((sp_x + 40, p_dy), pl, font=get_font(11.5, 'regular'), fill=(71, 85, 105))
+            p_dy += 19
         py += 108
+
+    # 🌟 Storytelling Mascot "Passy" Guide for Slide 02
+    mascot_p2 = 'd:/097.flutter_project/auto_portfolio/zeropass/assets/mascot_poses/passy_analytics_research.png'
+    if os.path.exists(mascot_p2):
+        im_m2 = Image.open(mascot_p2).convert('RGBA')
+        mh2 = 82
+        mw2 = int(round(mh2 * (im_m2.width / im_m2.height)))
+        m2_scaled = im_m2.resize((mw2, mh2), Image.Resampling.LANCZOS)
+        base.paste(m2_scaled, (1820 - mw2 - 10, 68), m2_scaled)
+        draw = ImageDraw.Draw(base)
+        # Speech bubble
+        sb_w, sb_h = 240, 32
+        sb_x, sb_y = 1820 - mw2 - 10 - sb_w - 10, 78
+        draw.rounded_rectangle([sb_x, sb_y, sb_x + sb_w, sb_y + sb_h], radius=8, fill=(255, 255, 255), outline=(0, 82, 255), width=1)
+        draw.text((sb_x + sb_w // 2, sb_y + sb_h // 2), "N=120 현장 리서치 데이터 분석! 🐧📊", font=get_font(9.5, 'bold'), fill=(0, 82, 255), anchor='mm')
 
     draw_slide_footer(draw, 2)
     save_slide(base.convert('RGB'), 2)
@@ -543,6 +564,21 @@ def make_slide_03():
     draw_behavior_slider(draw, p2_x + 430, p_y + 282, 380, "회수 주기", "D-3 사전예방", "연체 후 독촉", 0.25, theme='green')
     draw_behavior_slider(draw, p2_x + 25, p_y + 316, 380, "기기 활용", "공기계 태블릿", "고가 키오스크", 0.20, theme='green')
     draw_behavior_slider(draw, p2_x + 430, p_y + 316, 380, "프라이버시", "온디바이스", "외부 서버", 0.15, theme='green')
+
+    # 🌟 Storytelling Mascot "Passy" Guide for Slide 03
+    mascot_p3 = 'd:/097.flutter_project/auto_portfolio/zeropass/assets/mascot_poses/passy_persona_empathy.png'
+    if os.path.exists(mascot_p3):
+        im_m3 = Image.open(mascot_p3).convert('RGBA')
+        mh3 = 82
+        mw3 = int(round(mh3 * (im_m3.width / im_m3.height)))
+        m3_scaled = im_m3.resize((mw3, mh3), Image.Resampling.LANCZOS)
+        base.paste(m3_scaled, (1820 - mw3 - 10, 68), m3_scaled)
+        draw = ImageDraw.Draw(base)
+        # Speech bubble
+        sb_w, sb_h = 240, 32
+        sb_x, sb_y = 1820 - mw3 - 10 - sb_w - 10, 78
+        draw.rounded_rectangle([sb_x, sb_y, sb_x + sb_w, sb_y + sb_h], radius=8, fill=(255, 255, 255), outline=(16, 185, 129), width=1)
+        draw.text((sb_x + sb_w // 2, sb_y + sb_h // 2), "원장님 감정 마찰 100% 공감! 🐧♥", font=get_font(9.5, 'bold'), fill=(22, 101, 52), anchor='mm')
 
     draw_slide_footer(draw, 3)
     save_slide(base.convert('RGB'), 3)

@@ -688,21 +688,21 @@
 
     <!-- Center Flow Segment Switcher: 4 Core Sections -->
     <nav class="flow-pill-group" aria-label="테스트 구간 선택">
-      <button class="flow-pill active" data-flow="home" id="pill-home" title="01. 자산 현황 진단">
-        <span class="desktop-label"><span class="flow-num">01</span> 자산 진단</span>
-        <span class="mobile-label"><span class="flow-num">1</span>진단</span>
+      <button class="flow-pill active" data-flow="kiosk" id="pill-kiosk" title="01. 0.8초 키오스크 출결">
+        <span class="desktop-label"><span class="flow-num">01</span> 출결 키오스크</span>
+        <span class="mobile-label"><span class="flow-num">1</span>출결</span>
       </button>
-      <button class="flow-pill" data-flow="voice" id="pill-voice" title="02. 0.2초 음성 도크">
-        <span class="desktop-label"><span class="flow-num">02</span> 0.2초 음성 도크</span>
-        <span class="mobile-label"><span class="flow-num">2</span>음성</span>
+      <button class="flow-pill" data-flow="ledger" id="pill-ledger" title="02. D-Day 수납 장부">
+        <span class="desktop-label"><span class="flow-num">02</span> D-Day 수납장부</span>
+        <span class="mobile-label"><span class="flow-num">2</span>수납</span>
       </button>
-      <button class="flow-pill" data-flow="target" id="pill-target" title="03. 목표 평단가 역산 엔진">
-        <span class="desktop-label"><span class="flow-num">03</span> 목표 역산 엔진</span>
-        <span class="mobile-label"><span class="flow-num">3</span>역산</span>
+      <button class="flow-pill" data-flow="members" id="pill-members" title="03. 원생 관리 & 디렉터리">
+        <span class="desktop-label"><span class="flow-num">03</span> 원생 디렉터리</span>
+        <span class="mobile-label"><span class="flow-num">3</span>원생</span>
       </button>
-      <button class="flow-pill" data-flow="sim" id="pill-sim" title="04. 최종 플랜 확정 & 안전 진단">
-        <span class="desktop-label"><span class="flow-num">04</span> 최종 플랜 확정</span>
-        <span class="mobile-label"><span class="flow-num">4</span>플랜</span>
+      <button class="flow-pill" data-flow="vault" id="pill-vault" title="04. 안심 보안 볼트">
+        <span class="desktop-label"><span class="flow-num">04</span> 안심 보안볼트</span>
+        <span class="mobile-label"><span class="flow-num">4</span>볼트</span>
       </button>
     </nav>
 
@@ -786,12 +786,12 @@
       const btnReload = document.getElementById('btn-reload');
       const btnFullscreenApp = document.getElementById('btn-fullscreen-app');
 
-      // Valid flows mapping
-      const validFlows = ['home', 'voice', 'target', 'sim'];
+      // Valid flows mapping for ZeroPass
+      const validFlows = ['kiosk', 'ledger', 'members', 'vault'];
 
       // Function to switch flow
       function setFlow(flow, updateUrl = true) {
-        if (!validFlows.includes(flow)) flow = 'home';
+        if (!validFlows.includes(flow)) flow = 'kiosk';
 
         pills.forEach(pill => {
           pill.classList.toggle('active', pill.getAttribute('data-flow') === flow);

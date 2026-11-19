@@ -315,6 +315,21 @@ def make_slide_10():
         if sx < 1600:
             draw.text((sx + 190, 945), "→", font=get_font(18, 'bold'), fill=(0, 82, 255), anchor='lm')
 
+    # 🌟 Storytelling Mascot "Passy" Guide for Slide 10
+    mascot_p10 = 'd:/097.flutter_project/auto_portfolio/zeropass/assets/mascot_poses/passy_mobile_showcase.png'
+    if os.path.exists(mascot_p10):
+        im_m10 = Image.open(mascot_p10).convert('RGBA')
+        mh10 = 82
+        mw10 = int(round(mh10 * (im_m10.width / im_m10.height)))
+        m10_scaled = im_m10.resize((mw10, mh10), Image.Resampling.LANCZOS)
+        base.paste(m10_scaled, (1820 - mw10 - 10, 68), m10_scaled)
+        draw = ImageDraw.Draw(base)
+        # Speech bubble
+        sb_w, sb_h = 240, 32
+        sb_x, sb_y = 1820 - mw10 - 10 - sb_w - 10, 78
+        draw.rounded_rectangle([sb_x, sb_y, sb_x + sb_w, sb_y + sb_h], radius=8, fill=(255, 255, 255), outline=(0, 82, 255), width=1)
+        draw.text((sb_x + sb_w // 2, sb_y + sb_h // 2), "6대 상용 화면 직접 둘러보기! 🐧📱", font=get_font(9.5, 'bold'), fill=(0, 82, 255), anchor='mm')
+
     draw_slide_footer(draw, 10)
     save_slide(base.convert('RGB'), 10)
 
@@ -471,6 +486,21 @@ def make_slide_11():
         draw.rounded_rectangle([bx + 16, b_y + b_h - 36, bx + b_w - 16, b_y + b_h - 12], radius=6, fill=(240, 246, 255) if theme_key=='blue' else (248, 250, 252), outline=(191, 219, 254) if theme_key=='blue' else (226, 232, 240), width=1)
         draw.text((bx + 24, b_y + b_h - 24), check_txt, font=get_font(10, 'bold'), fill=col, anchor='lm')
         bx += b_w + b_gap
+
+    # 🌟 Storytelling Mascot "Passy" Guide for Slide 11
+    mascot_p11 = 'd:/097.flutter_project/auto_portfolio/zeropass/assets/mascot_poses/passy_retrospective_growth.png'
+    if os.path.exists(mascot_p11):
+        im_m11 = Image.open(mascot_p11).convert('RGBA')
+        mh11 = 82
+        mw11 = int(round(mh11 * (im_m11.width / im_m11.height)))
+        m11_scaled = im_m11.resize((mw11, mh11), Image.Resampling.LANCZOS)
+        base.paste(m11_scaled, (1820 - mw11 - 10, 68), m11_scaled)
+        draw = ImageDraw.Draw(base)
+        # Speech bubble
+        sb_w, sb_h = 240, 32
+        sb_x, sb_y = 1820 - mw11 - 10 - sb_w - 10, 78
+        draw.rounded_rectangle([sb_x, sb_y, sb_x + sb_w, sb_y + sb_h], radius=8, fill=(255, 255, 255), outline=(16, 185, 129), width=1)
+        draw.text((sb_x + sb_w // 2, sb_y + sb_h // 2), "검증된 임팩트 & 성장 로드맵! 🐧🏆", font=get_font(9.5, 'bold'), fill=(6, 95, 70), anchor='mm')
 
     draw_slide_footer(draw, 11)
     save_slide(base.convert('RGB'), 11)
