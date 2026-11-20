@@ -68,23 +68,6 @@ def make_slide_05():
     draw_pill_badge(draw, left_x=leg_x + 16, cy=leg_y + 20, text="기호 범례", font=get_font(8, 'bold'), theme='blue', has_dot=False, pad_x=6, height=18)
     draw.text((leg_x + 105, leg_y + 20), "플로우차트 기호 범례", font=get_font(11, 'bold'), fill=(15, 23, 42), anchor='lm')
     
-    # Mascot Passy Mascot in Flowchart Legend (Pointer Pose)
-    mascot_p = 'd:/097.flutter_project/auto_portfolio/zeropass/assets/mascot_poses/passy_guide_pointing.png'
-    if not os.path.exists(mascot_p):
-        mascot_p = 'd:/097.flutter_project/auto_portfolio/zeropass/assets/mascot/passy_clean_body.png'
-    if os.path.exists(mascot_p):
-        im_m = Image.open(mascot_p).convert('RGBA')
-        mh = 68
-        mw = int(round(mh * (im_m.width / im_m.height)))
-        m_scaled = im_m.resize((mw, mh), Image.Resampling.LANCZOS)
-        base.paste(m_scaled, (leg_x - mw - 14, leg_y + 4), m_scaled)
-        draw = ImageDraw.Draw(base)
-        
-        # Thought bubble
-        tb_x = leg_x - mw - 118
-        tb_y = leg_y + 12
-        draw.rounded_rectangle([tb_x, tb_y, tb_x + 104, tb_y + 34], radius=8, fill=(255, 255, 255), outline=(0, 82, 255), width=1)
-        draw.text((tb_x + 52, tb_y + 17), "0.8초 플로우 안내!", font=get_font(9, 'bold'), fill=(0, 82, 255), anchor='mm')
     draw.text((leg_x + 43, leg_y + 56), "시작/종료", font=get_font(7.5, 'bold'), fill=(255, 255, 255), anchor='mm')
     draw.text((leg_x + 76, leg_y + 56), "프로세스", font=get_font(9.5, 'medium'), fill=(71, 85, 105), anchor='lm')
     

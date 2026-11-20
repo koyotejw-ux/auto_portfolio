@@ -599,35 +599,22 @@ def make_slide_04():
         subtitle_kr="원터치 출결부터 수납 장부, 원생 디렉터리, 보안 볼트까지 필요한 기능을 한눈에 찾을 수 있는 쉬운 계층 구조"
     )
     
-    top_badge_x = 1450
-    top_badge_y = 65
-    draw.rounded_rectangle([top_badge_x, top_badge_y, top_badge_x + 370, top_badge_y + 60], radius=10, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+    top_badge_x = 1530
+    top_badge_y = 66
+    draw.rounded_rectangle([top_badge_x, top_badge_y, top_badge_x + 290, top_badge_y + 44], radius=8, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+    draw_pill_badge(draw, left_x=top_badge_x + 12, cy=top_badge_y + 22, text="서비스 구조", font=get_font(9.5, 'bold'), theme='blue', pad_x=8, height=22)
+    draw.text((top_badge_x + 88, top_badge_y + 22), "5대 핵심 도메인 · 25개 화면 계층", font=get_font(10.5, 'bold'), fill=(15, 23, 42), anchor='lm')
     
-    # 🌟 Passy Pointer Mascot for IA Guide
-    mascot_p = 'd:/097.flutter_project/auto_portfolio/zeropass/assets/mascot_poses/passy_guide_pointing.png'
-    if not os.path.exists(mascot_p):
-        mascot_p = 'd:/097.flutter_project/auto_portfolio/zeropass/assets/mascot/passy_clean_body.png'
-    if os.path.exists(mascot_p):
-        im_m = Image.open(mascot_p).convert('RGBA')
-        mh = 54
-        mw = int(round(mh * (im_m.width / im_m.height)))
-        m_scaled = im_m.resize((mw, mh), Image.Resampling.LANCZOS)
-        base.paste(m_scaled, (top_badge_x + 10, top_badge_y + 3), m_scaled)
-        draw = ImageDraw.Draw(base)
-        text_x = top_badge_x + mw + 18
-    else:
-        draw_pill_badge(draw, left_x=top_badge_x + 16, cy=top_badge_y + 30, text="서비스 구성", font=get_font(9.5, 'bold'), theme='blue', pad_x=8, height=24)
-        text_x = top_badge_x + 110
-        
-    draw.text((text_x, top_badge_y + 16), "5대 핵심 메뉴 구조 (IA)", font=get_font(12.5, 'bold'), fill=(15, 23, 42))
-    draw.text((text_x, top_badge_y + 37), "패시가 안내하는 25개 직관적 화면", font=get_font(10.5, 'medium'), fill=(0, 82, 255))
-    
-    # Root Node
-    root_x1, root_y1, root_x2, root_y2 = 730, 226, 1190, 286
+    # Root Node (Centered at 960, perfectly balanced width & padding)
+    root_w = 460
+    root_x1 = 960 - root_w // 2
+    root_x2 = root_x1 + root_w
+    root_y1 = 226
+    root_y2 = 286
     draw.rounded_rectangle([root_x1, root_y1, root_x2, root_y2], radius=12, fill=(255, 255, 255), outline=(0, 82, 255), width=2)
-    b_root = draw_pill_badge(draw, left_x=root_x1 + 18, cy=root_y1 + 30, text="시작 화면", font=get_font(10, 'bold'), theme='blue', pad_x=10, height=26)
-    draw.text((b_root[2] + 16, root_y1 + 19), "체크앤페이 전체 메뉴 구조 (IA)", font=get_font(14.5, 'bold'), fill=(15, 23, 42))
-    draw.text((b_root[2] + 16, root_y1 + 41), "원생 키오스크와 원장님 ERP를 통합한 5대 핵심 도메인", font=get_font(10.5, 'medium'), fill=(71, 85, 105))
+    b_root = draw_pill_badge(draw, left_x=root_x1 + 24, cy=root_y1 + 30, text="시작 화면", font=get_font(10, 'bold'), theme='blue', pad_x=10, height=26)
+    draw.text((b_root[2] + 16, root_y1 + 13), "체크앤페이 전체 메뉴 구조 (IA)", font=get_font(14.5, 'bold'), fill=(15, 23, 42))
+    draw.text((b_root[2] + 16, root_y1 + 34), "원생 키오스크와 원장님 ERP를 통합한 5대 핵심 도메인", font=get_font(10.5, 'medium'), fill=(71, 85, 105))
     
     cw = 328
     cgap = 20
@@ -691,7 +678,7 @@ def make_slide_04():
             draw.rounded_rectangle([cx, sy, cx + cw, sy + 115], radius=10, fill=bg_col, outline=border_col, width=1)
             
             draw_pill_badge(draw, left_x=cx + 12, cy=sy + 20, text=s_type, font=get_font(8.5, 'bold'), theme='blue' if is_key else 'slate', pad_x=6, height=18)
-            draw.text((cx + 80, sy + 11), s_name, font=get_font(13.5, 'bold'), fill=(15, 23, 42))
+            draw.text((cx + 62, sy + 11), s_name, font=get_font(13.0, 'bold'), fill=(15, 23, 42))
             draw.text((cx + 12, sy + 43), s_desc, font=get_font(11, 'regular'), fill=(71, 85, 105))
             draw.line([(cx + 12, sy + 74), (cx + cw - 12, sy + 74)], fill=(226, 232, 240), width=1)
             
