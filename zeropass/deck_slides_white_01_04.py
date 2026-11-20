@@ -532,10 +532,10 @@ def make_slide_03():
     draw.line([(125, p_y + 248), (100 + pw - 25, p_y + 248)], fill=(241, 245, 249), width=1)
     draw.text((125, p_y + 258), "운영 성향 지표 분석", font=get_font(10, 'bold'), fill=(100, 116, 139))
     from build_zeropass_white_common import draw_behavior_slider
-    draw_behavior_slider(draw, 125, p_y + 282, 380, "운영 형태", "1인 단독", "전담 직원", 0.15, theme='blue')
-    draw_behavior_slider(draw, 530, p_y + 282, 380, "출결 방식", "0.8초 키오스크", "수기 장부", 0.10, theme='blue')
-    draw_behavior_slider(draw, 125, p_y + 316, 380, "수납 관리", "D-Day 자동", "월말 정산", 0.20, theme='blue')
-    draw_behavior_slider(draw, 530, p_y + 316, 380, "서버 의존", "오프라인 안심", "클라우드", 0.10, theme='blue')
+    draw_behavior_slider(draw, 125, p_y + 282, 385, "운영 형태", "1인 단독", "전담 직원", 0.15, theme='blue')
+    draw_behavior_slider(draw, 530, p_y + 282, 385, "출결 방식", "0.8초 키오스크", "수기 장부", 0.10, theme='blue')
+    draw_behavior_slider(draw, 125, p_y + 316, 385, "수납 관리", "D-Day 자동", "월말 정산", 0.20, theme='blue')
+    draw_behavior_slider(draw, 530, p_y + 316, 385, "서버 의존", "오프라인 안심", "클라우드", 0.10, theme='blue')
 
     # Persona 2: 박진우 대표 (1인 PT/필라테스 스튜디오)
     p2_x = 980
@@ -560,10 +560,10 @@ def make_slide_03():
         
     draw.line([(p2_x + 25, p_y + 248), (p2_x + pw - 25, p_y + 248)], fill=(241, 245, 249), width=1)
     draw.text((p2_x + 25, p_y + 258), "운영 성향 지표 분석", font=get_font(10, 'bold'), fill=(100, 116, 139))
-    draw_behavior_slider(draw, p2_x + 25, p_y + 282, 380, "세션 차감", "원터치 자동", "수동 체크", 0.10, theme='green')
-    draw_behavior_slider(draw, p2_x + 430, p_y + 282, 380, "회수 주기", "D-3 사전예방", "연체 후 독촉", 0.25, theme='green')
-    draw_behavior_slider(draw, p2_x + 25, p_y + 316, 380, "기기 활용", "공기계 태블릿", "고가 키오스크", 0.20, theme='green')
-    draw_behavior_slider(draw, p2_x + 430, p_y + 316, 380, "프라이버시", "온디바이스", "외부 서버", 0.15, theme='green')
+    draw_behavior_slider(draw, p2_x + 25, p_y + 282, 385, "세션 차감", "원터치 자동", "수동 체크", 0.10, theme='green')
+    draw_behavior_slider(draw, p2_x + 430, p_y + 282, 385, "회수 주기", "D-3 사전예방", "연체 후 독촉", 0.25, theme='green')
+    draw_behavior_slider(draw, p2_x + 25, p_y + 316, 385, "기기 활용", "공기계 태블릿", "고가 키오스크", 0.20, theme='green')
+    draw_behavior_slider(draw, p2_x + 430, p_y + 316, 385, "프라이버시", "온디바이스", "외부 서버", 0.15, theme='green')
 
     # 🌟 Storytelling Mascot "Passy" Guide for Slide 03
     mascot_p3 = 'd:/097.flutter_project/auto_portfolio/zeropass/assets/mascot_poses/passy_persona_empathy.png'

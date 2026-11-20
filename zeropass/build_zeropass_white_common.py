@@ -246,7 +246,8 @@ def draw_dashed_arrow(draw, p1, p2, col=(0, 82, 255), width=2, dash_len=4, gap_l
 
 def draw_behavior_slider(draw, x, y, w, label, left_txt, right_txt, ratio, theme='blue'):
     """
-    Renders an editorial behavior spectrum slider track with active segment and circular marker dot.
+    Renders an editorial behavior spectrum slider track with distinct column separation,
+    aligned text bounds, and an active segment marker.
     """
     theme_colors = {
         'blue': {'active': (0, 82, 255), 'dot': (0, 82, 255)},
@@ -257,14 +258,28 @@ def draw_behavior_slider(draw, x, y, w, label, left_txt, right_txt, ratio, theme
     }
     col = theme_colors.get(theme, theme_colors['blue'])
     
+    # 1. Label Column: Fixed width & clean margin
     draw.text((x, y), label, font=get_font(10.5, 'bold'), fill=(15, 23, 42))
-    draw.text((x + 75, y + 1), left_txt, font=get_font(9, 'medium'), fill=(100, 116, 139))
-    r_bbox = draw.textbbox((0, 0), right_txt, font=get_font(9, 'medium'))
-    r_w = r_bbox[2] - r_bbox[0]
-    draw.text((x + w - r_w, y + 1), right_txt, font=get_font(9, 'medium'), fill=(100, 116, 139))
     
-    track_x = x + 125
-    track_w = w - 135 - r_w
+    # 2. Left Anchor Text (Fixed start for consistent left column)
+    left_x = x + 62
+    draw.text((left_x, y + 1), left_txt, font=get_font(9, 'medium'), fill=(100, 116, 139))
+    
+    # Measure texts
+    lt_bbox = draw.textbbox((0, 0), left_txt, font=get_font(9, 'medium'))
+    lt_w = lt_bbox[2] - lt_bbox[0]
+    
+    rt_bbox = draw.textbbox((0, 0), right_txt, font=get_font(9, 'medium'))
+    rt_w = rt_bbox[2] - rt_bbox[0]
+    
+    # 3. Right Anchor Text
+    right_x = x + w - rt_w
+    draw.text((right_x, y + 1), right_txt, font=get_font(9, 'medium'), fill=(100, 116, 139))
+    
+    # 4. Slider Track: Clear margins between left text and right text
+    track_x = left_x + lt_w + 10
+    track_end = right_x - 10
+    track_w = max(40, track_end - track_x)
     track_y = y + 7
     
     draw.rounded_rectangle([track_x, track_y, track_x + track_w, track_y + 4], radius=2, fill=(226, 232, 240))
