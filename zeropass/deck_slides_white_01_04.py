@@ -599,12 +599,6 @@ def make_slide_04():
         subtitle_kr="원터치 출결부터 수납 장부, 원생 디렉터리, 보안 볼트까지 필요한 기능을 한눈에 찾을 수 있는 쉬운 계층 구조"
     )
     
-    top_badge_x = 1530
-    top_badge_y = 66
-    draw.rounded_rectangle([top_badge_x, top_badge_y, top_badge_x + 290, top_badge_y + 44], radius=8, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-    draw_pill_badge(draw, left_x=top_badge_x + 12, cy=top_badge_y + 22, text="서비스 구조", font=get_font(9.5, 'bold'), theme='blue', pad_x=8, height=22)
-    draw.text((top_badge_x + 88, top_badge_y + 22), "5대 핵심 도메인 · 25개 화면 계층", font=get_font(10.5, 'bold'), fill=(15, 23, 42), anchor='lm')
-    
     # Root Node (Centered at 960, mathematically verified vertical center with anchor='lm')
     root_w = 460
     root_x1 = 960 - root_w // 2
