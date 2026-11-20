@@ -605,16 +605,18 @@ def make_slide_04():
     draw_pill_badge(draw, left_x=top_badge_x + 12, cy=top_badge_y + 22, text="서비스 구조", font=get_font(9.5, 'bold'), theme='blue', pad_x=8, height=22)
     draw.text((top_badge_x + 88, top_badge_y + 22), "5대 핵심 도메인 · 25개 화면 계층", font=get_font(10.5, 'bold'), fill=(15, 23, 42), anchor='lm')
     
-    # Root Node (Centered at 960, perfectly balanced width & padding)
+    # Root Node (Centered at 960, mathematically verified vertical center with anchor='lm')
     root_w = 460
     root_x1 = 960 - root_w // 2
     root_x2 = root_x1 + root_w
-    root_y1 = 226
-    root_y2 = 286
+    root_y1 = 225
+    root_y2 = 287
+    card_cy = (root_y1 + root_y2) // 2
     draw.rounded_rectangle([root_x1, root_y1, root_x2, root_y2], radius=12, fill=(255, 255, 255), outline=(0, 82, 255), width=2)
-    b_root = draw_pill_badge(draw, left_x=root_x1 + 24, cy=root_y1 + 30, text="시작 화면", font=get_font(10, 'bold'), theme='blue', pad_x=10, height=26)
-    draw.text((b_root[2] + 16, root_y1 + 13), "체크앤페이 전체 메뉴 구조 (IA)", font=get_font(14.5, 'bold'), fill=(15, 23, 42))
-    draw.text((b_root[2] + 16, root_y1 + 34), "원생 키오스크와 원장님 ERP를 통합한 5대 핵심 도메인", font=get_font(10.5, 'medium'), fill=(71, 85, 105))
+    b_root = draw_pill_badge(draw, left_x=root_x1 + 24, cy=card_cy, text="시작 화면", font=get_font(10, 'bold'), theme='blue', pad_x=10, height=26)
+    txt_x = b_root[2] + 16
+    draw.text((txt_x, root_y1 + 23), "체크앤페이 전체 메뉴 구조 (IA)", font=get_font(13.5, 'bold'), fill=(15, 23, 42), anchor='lm')
+    draw.text((txt_x, root_y1 + 42), "원생 키오스크와 원장님 ERP를 통합한 5대 핵심 도메인", font=get_font(10.0, 'medium'), fill=(71, 85, 105), anchor='lm')
     
     cw = 328
     cgap = 20
