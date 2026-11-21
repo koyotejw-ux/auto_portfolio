@@ -155,55 +155,86 @@ def make_slide_01():
             
         k_y += 114
 
-    # Right Side: Single Flagship Android Smartphone Mockup in Authentic 3D Isometric Tilt
-    # Clean vector-crisp Android device with edge-to-edge display, punch-hole camera, and diffused drop shadow
+    # Right Side: Authentic 3D Flagship Android Smartphone Mockup with Physical Chassis Depth
+    # High-resolution edge-to-edge display with Android punch-hole camera and extruded titanium chassis
     phone = Image.open('zeropass/assets/iphone_mockups/clean_android_upright_mockup.png').convert('RGBA')
     pw, ph = phone.size
 
-    # Tilted 3D Isometric Perspective Transform with Lanczos-level precision (Bicubic native)
-    target_corners = [
+    target_front = [
         (1060, 110), # TL
         (1490, 175), # TR
         (1310, 865), # BR
         (880, 800)   # BL
     ]
     src_corners = [(0, 0), (pw, 0), (pw, ph), (0, ph)]
-    coeffs = find_perspective_coeffs(src_corners, target_corners)
-    t_phone = phone.transform((W, H), Image.Transform.PERSPECTIVE, coeffs, Image.Resampling.BICUBIC)
 
-    # Soft, diffused multi-stage drop shadows (broad ambient floor + tight contact shadow)
-    mask_phone = t_phone.split()[3]
-    sh_phone = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+    # Authentic 3D Physical Extrusion Depth (dx=-14, dy=16) revealing the metallic side and bottom rim
+    depth_steps = 18
+    dx, dy = -14, 16
+    chassis_canvas = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+    dev_mask = phone.split()[3]
+
+    for step in range(depth_steps, 0, -1):
+        ratio = step / float(depth_steps)
+        shade = int(32 + (1.0 - ratio) * 38)
+        step_corners = [
+            (int(target_front[0][0] + dx * ratio), int(target_front[0][1] + dy * ratio)),
+            (int(target_front[1][0] + dx * ratio), int(target_front[1][1] + dy * ratio)),
+            (int(target_front[2][0] + dx * ratio), int(target_front[2][1] + dy * ratio)),
+            (int(target_front[3][0] + dx * ratio), int(target_front[3][1] + dy * ratio))
+        ]
+        step_coeffs = find_perspective_coeffs(src_corners, step_corners)
+        step_mask = dev_mask.transform((W, H), Image.Transform.PERSPECTIVE, step_coeffs, Image.Resampling.BICUBIC)
+        col_img = Image.new('RGBA', (W, H), (shade, shade + 2, shade + 6, 255))
+        chassis_canvas.paste(col_img, (0, 0), step_mask)
+
+    front_coeffs = find_perspective_coeffs(src_corners, target_front)
+    front_surface = phone.transform((W, H), Image.Transform.PERSPECTIVE, front_coeffs, Image.Resampling.BICUBIC)
+
+    complete_3d_phone = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+    complete_3d_phone.paste(chassis_canvas, (0, 0), chassis_canvas)
+    complete_3d_phone.paste(front_surface, (0, 0), front_surface)
+
+    # Specular metallic rim highlights along the edge
+    rim_highlight = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+    rh_d = ImageDraw.Draw(rim_highlight)
+    rh_d.line([target_front[0], target_front[3]], fill=(140, 145, 160, 180), width=2)
+    rh_d.line([target_front[3], target_front[2]], fill=(120, 125, 140, 160), width=2)
+    complete_3d_phone = Image.alpha_composite(complete_3d_phone, rim_highlight)
+
+    # Soft, diffused multi-stage drop shadows (ambient floor + contact shadow)
+    mask_3d = complete_3d_phone.split()[3]
+    sh_canvas = Image.new('RGBA', (W, H), (0, 0, 0, 0))
 
     sh_ambient = Image.new('RGBA', (W, H), (15, 23, 42, 45))
-    sh_phone.paste(sh_ambient, (32, 50), mask_phone)
-    sh_phone = sh_phone.filter(ImageFilter.GaussianBlur(34))
+    sh_canvas.paste(sh_ambient, (36, 56), mask_3d)
+    sh_canvas = sh_canvas.filter(ImageFilter.GaussianBlur(38))
 
     sh_contact = Image.new('RGBA', (W, H), (0, 40, 120, 55))
-    sh_phone.paste(sh_contact, (16, 24), mask_phone)
-    sh_phone = sh_phone.filter(ImageFilter.GaussianBlur(14))
+    sh_canvas.paste(sh_contact, (18, 28), mask_3d)
+    sh_canvas = sh_canvas.filter(ImageFilter.GaussianBlur(16))
 
-    base = Image.alpha_composite(base, sh_phone)
-    base = Image.alpha_composite(base, t_phone)
+    base = Image.alpha_composite(base, sh_canvas)
+    base = Image.alpha_composite(base, complete_3d_phone)
 
-    # 🌟 Energetic Official 3D Pixar Mascot "Passy" (패시)
-    # Authentic, uncorrupted jumping celebration pose from brand design system (passy_cheer.png)
-    mascot_p = 'zeropass/assets/mascot_poses/passy_cheer.png'
+    # 🌟 Brand-New 3D Pixar Mascot "Passy" (패시)
+    # Joyfully jumping in mid-air, playfully winking, with completely empty hands (NO phone, NO cards!)
+    mascot_p = 'zeropass/assets/mascot_poses/passy_active_jump_wink_3d.png'
     if os.path.exists(mascot_p):
         im_m = Image.open(mascot_p).convert('RGBA')
-        mh = 315
+        mh = 330
         mw = int(round(mh * (im_m.width / im_m.height)))
         m_scaled = im_m.resize((mw, mh), Image.Resampling.LANCZOS)
         
         # Position jumping high in the air beside the 3D Android mockup
-        mx_pos = 1480
-        my_pos = 460
+        mx_pos = 1470
+        my_pos = 450
         
         # Diffused ground drop shadow beneath jumping mascot
         m_sh = Image.new('RGBA', (W, H), (0, 0, 0, 0))
         m_sh_d = ImageDraw.Draw(m_sh)
-        m_sh_d.ellipse([mx_pos + 40, my_pos + mh + 15, mx_pos + mw - 30, my_pos + mh + 42], fill=(0, 40, 120, 55))
-        m_sh = m_sh.filter(ImageFilter.GaussianBlur(15))
+        m_sh_d.ellipse([mx_pos + 45, my_pos + mh + 15, mx_pos + mw - 35, my_pos + mh + 45], fill=(0, 40, 120, 55))
+        m_sh = m_sh.filter(ImageFilter.GaussianBlur(16))
         
         base = Image.alpha_composite(base, m_sh)
         base.paste(m_scaled, (mx_pos, my_pos), m_scaled)
