@@ -160,17 +160,18 @@ def make_slide_01():
     phone_ledger = Image.open(f"{MOCKUP_DIR}/mockup_02_ledger.png").convert('RGBA')
     
     # Coordinates with pronounced 3D perspective rotation (Z/Y yaw & tilt)
+    # Shifted left slightly to harmoniously accommodate the 3D mascot showcasing the screens
     back_corners = [
-        (1320, 100),
-        (1710, 165),
-        (1560, 835),
-        (1200, 770)
+        (1260, 100),
+        (1650, 165),
+        (1500, 835),
+        (1140, 770)
     ]
     front_corners = [
-        (960, 135),
-        (1385, 205),
-        (1230, 895),
-        (835, 825)
+        (910, 135),
+        (1335, 205),
+        (1180, 895),
+        (785, 825)
     ]
     
     r_back, m_back = render_3d_phone(phone_ledger, back_corners, depth=22, extrude_dir=(-18, 12))
@@ -189,13 +190,11 @@ def make_slide_01():
     base = Image.alpha_composite(base, r_back)
     base = Image.alpha_composite(base, r_front)
     
-    # 🌟 Mascot "Passy" (패시) Cheerful Greeting Placement
-    mascot_p = 'd:/097.flutter_project/auto_portfolio/zeropass/assets/mascot_poses/passy_cheer.png'
-    if not os.path.exists(mascot_p):
-        mascot_p = 'd:/097.flutter_project/auto_portfolio/zeropass/assets/mascot/passy_clean_body.png'
+    # 🌟 3D Pixar Mascot "Passy" (패시) Showcasing the Screens
+    mascot_p = 'zeropass/assets/mascot_poses/passy_pointing_3d.png'
     if os.path.exists(mascot_p):
         im_m = Image.open(mascot_p).convert('RGBA')
-        mh = 248
+        mh = 270
         mw = int(round(mh * (im_m.width / im_m.height)))
         m_scaled = im_m.resize((mw, mh), Image.Resampling.LANCZOS)
         
@@ -203,23 +202,23 @@ def make_slide_01():
         m_sh = Image.new('RGBA', (W, H), (0, 0, 0, 0))
         m_sh_d = ImageDraw.Draw(m_sh)
         mx_pos = 1530
-        my_pos = 575
-        m_sh_d.ellipse([mx_pos + 25, my_pos + mh - 25, mx_pos + mw - 15, my_pos + mh + 15], fill=(0, 50, 150, 70))
+        my_pos = 555
+        m_sh_d.ellipse([mx_pos + 30, my_pos + mh - 25, mx_pos + mw - 20, my_pos + mh + 15], fill=(0, 50, 150, 65))
         m_sh = m_sh.filter(ImageFilter.GaussianBlur(14))
         base = Image.alpha_composite(base, m_sh)
         base.paste(m_scaled, (mx_pos, my_pos), m_scaled)
         
-        # Mascot Speech Bubble (Cute Welcoming Message)
+        # Mascot Speech Bubble (Showcase Greeting Message)
         draw = ImageDraw.Draw(base)
-        sb_x = mx_pos - 80
-        sb_y = my_pos - 48
+        sb_x = mx_pos - 70
+        sb_y = my_pos - 46
         sb_w = 270
-        sb_h = 44
+        sb_h = 42
         draw.rounded_rectangle([sb_x, sb_y, sb_x + sb_w, sb_y + sb_h], radius=12, fill=(255, 255, 255), outline=(0, 82, 255), width=2)
         # Tail
         draw.polygon([(sb_x + 130, sb_y + sb_h), (sb_x + 150, sb_y + sb_h), (sb_x + 145, sb_y + sb_h + 10)], fill=(0, 82, 255))
         draw.polygon([(sb_x + 132, sb_y + sb_h - 1), (sb_x + 148, sb_y + sb_h - 1), (sb_x + 145, sb_y + sb_h + 8)], fill=(255, 255, 255))
-        draw.text((sb_x + sb_w // 2, sb_y + sb_h // 2 - 1), "안녕! 체크앤페이 마스코트 패시야!", font=get_font(11, 'bold'), fill=(0, 82, 255), anchor='mm')
+        draw.text((sb_x + sb_w // 2, sb_y + sb_h // 2 - 1), "0.8초 원터치로 출결을 완성해요!", font=get_font(11, 'bold'), fill=(0, 82, 255), anchor='mm')
     
     draw = ImageDraw.Draw(base)
     
