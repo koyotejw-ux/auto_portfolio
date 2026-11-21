@@ -155,70 +155,73 @@ def make_slide_01():
             
         k_y += 114
 
-    # Right Side: Dual Flagship iPhone Mockups in Dynamic 3D Perspective (Z-Axis / Y-Axis Yaw & Tilt)
-    phone_pass = Image.open(f"{MOCKUP_DIR}/mockup_01_pass.png").convert('RGBA')
-    phone_ledger = Image.open(f"{MOCKUP_DIR}/mockup_02_ledger.png").convert('RGBA')
+    # Right Side: Dual Flagship iPhone Mockups in Authentic 3D Isometric Physical Chassis
+    # Rendered with physical metallic frame, speaker grilles, volume/power buttons, glass glare, and realistic floating contact shadows
+    p_pass = Image.open('zeropass/assets/iphone_mockups/realistic_3d_pass.png').convert('RGBA')
+    p_ledger = Image.open('zeropass/assets/iphone_mockups/realistic_3d_ledger.png').convert('RGBA')
     
-    # Coordinates with pronounced 3D perspective rotation (Z/Y yaw & tilt)
-    # Shifted left slightly to harmoniously accommodate the 3D mascot showcasing the screens
-    back_corners = [
-        (1260, 100),
-        (1650, 165),
-        (1500, 835),
-        (1140, 770)
-    ]
-    front_corners = [
-        (910, 135),
-        (1335, 205),
-        (1180, 895),
-        (785, 825)
-    ]
+    scale_back = 1.10
+    w_b = int(p_ledger.width * scale_back)
+    h_b = int(p_ledger.height * scale_back)
+    p_ledger_s = p_ledger.resize((w_b, h_b), Image.Resampling.LANCZOS)
     
-    r_back, m_back = render_3d_phone(phone_ledger, back_corners, depth=22, extrude_dir=(-18, 12))
-    r_front, m_front = render_3d_phone(phone_pass, front_corners, depth=28, extrude_dir=(-22, 16))
+    scale_front = 1.24
+    w_f = int(p_pass.width * scale_front)
+    h_f = int(p_pass.height * scale_front)
+    p_pass_s = p_pass.resize((w_f, h_f), Image.Resampling.LANCZOS)
     
-    # 3D Depth Floor Shadows
-    sh_canvas = Image.new('RGBA', (W, H), (0, 0, 0, 0))
-    for mask, off in [(m_back, (30, 44)), (m_front, (40, 58))]:
-        sh_part = Image.new('RGBA', (W, H), (15, 23, 42, 80))
-        sh_layer = Image.new('RGBA', (W, H), (0, 0, 0, 0))
-        sh_layer.paste(sh_part, off, mask)
-        sh_canvas = Image.alpha_composite(sh_canvas, sh_layer)
-    sh_canvas = sh_canvas.filter(ImageFilter.GaussianBlur(38))
+    pos_back = (1170, 115)
+    pos_front = (880, 165)
     
-    base = Image.alpha_composite(base, sh_canvas)
-    base = Image.alpha_composite(base, r_back)
-    base = Image.alpha_composite(base, r_front)
+    # Authentic multi-stage ambient contact drop shadows
+    def add_realistic_shadow(img, pos, blur=32, offset=(20, 35), alpha=70):
+        mask = img.split()[3]
+        sh_mask = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+        sh_color = Image.new('RGBA', img.size, (15, 23, 42, alpha))
+        sh_mask.paste(sh_color, (pos[0] + offset[0], pos[1] + offset[1]), mask)
+        return sh_mask.filter(ImageFilter.GaussianBlur(blur))
     
-    # 🌟 3D Pixar Mascot "Passy" (패시) Showcasing the Screens
-    mascot_p = 'zeropass/assets/mascot_poses/passy_pointing_3d.png'
+    sh_b1 = add_realistic_shadow(p_ledger_s, pos_back, blur=40, offset=(28, 48), alpha=70)
+    sh_b2 = add_realistic_shadow(p_ledger_s, pos_back, blur=15, offset=(12, 22), alpha=55)
+    sh_f1 = add_realistic_shadow(p_pass_s, pos_front, blur=46, offset=(32, 54), alpha=78)
+    sh_f2 = add_realistic_shadow(p_pass_s, pos_front, blur=18, offset=(14, 24), alpha=65)
+    
+    for s in [sh_b1, sh_b2, sh_f1, sh_f2]:
+        base = Image.alpha_composite(base, s)
+        
+    base.paste(p_ledger_s, pos_back, p_ledger_s)
+    base.paste(p_pass_s, pos_front, p_pass_s)
+    
+    # 🌟 Authentic 3D Official Mascot "Passy" (패시) Showcasing the Screens
+    # Uses the canonical 3D character model matching app_icon.png and brand guidelines
+    mascot_p = 'zeropass/assets/mascot_poses/passy_guide_pointing.png'
     if os.path.exists(mascot_p):
         im_m = Image.open(mascot_p).convert('RGBA')
-        mh = 270
+        mh = 305
         mw = int(round(mh * (im_m.width / im_m.height)))
         m_scaled = im_m.resize((mw, mh), Image.Resampling.LANCZOS)
         
-        # Ground Shadow for Mascot
+        # Ground Contact Shadow for Mascot
         m_sh = Image.new('RGBA', (W, H), (0, 0, 0, 0))
         m_sh_d = ImageDraw.Draw(m_sh)
-        mx_pos = 1530
-        my_pos = 555
-        m_sh_d.ellipse([mx_pos + 30, my_pos + mh - 25, mx_pos + mw - 20, my_pos + mh + 15], fill=(0, 50, 150, 65))
+        mx_pos = 1490
+        my_pos = 505
+        m_sh_d.ellipse([mx_pos + 35, my_pos + mh - 26, mx_pos + mw - 25, my_pos + mh + 14], fill=(0, 45, 130, 68))
         m_sh = m_sh.filter(ImageFilter.GaussianBlur(14))
         base = Image.alpha_composite(base, m_sh)
         base.paste(m_scaled, (mx_pos, my_pos), m_scaled)
         
         # Mascot Speech Bubble (Showcase Greeting Message)
         draw = ImageDraw.Draw(base)
-        sb_x = mx_pos - 70
-        sb_y = my_pos - 46
-        sb_w = 270
-        sb_h = 42
+        sb_x = mx_pos - 65
+        sb_y = my_pos - 48
+        sb_w = 264
+        sb_h = 44
         draw.rounded_rectangle([sb_x, sb_y, sb_x + sb_w, sb_y + sb_h], radius=12, fill=(255, 255, 255), outline=(0, 82, 255), width=2)
-        # Tail
-        draw.polygon([(sb_x + 130, sb_y + sb_h), (sb_x + 150, sb_y + sb_h), (sb_x + 145, sb_y + sb_h + 10)], fill=(0, 82, 255))
-        draw.polygon([(sb_x + 132, sb_y + sb_h - 1), (sb_x + 148, sb_y + sb_h - 1), (sb_x + 145, sb_y + sb_h + 8)], fill=(255, 255, 255))
-        draw.text((sb_x + sb_w // 2, sb_y + sb_h // 2 - 1), "0.8초 원터치로 출결을 완성해요!", font=get_font(11, 'bold'), fill=(0, 82, 255), anchor='mm')
+        # Tail pointing towards Passy
+        draw.polygon([(sb_x + 130, sb_y + sb_h), (sb_x + 152, sb_y + sb_h), (sb_x + 146, sb_y + sb_h + 10)], fill=(0, 82, 255))
+        draw.polygon([(sb_x + 132, sb_y + sb_h - 1), (sb_x + 150, sb_y + sb_h - 1), (sb_x + 146, sb_y + sb_h + 8)], fill=(255, 255, 255))
+        draw.text((sb_x + sb_w // 2, sb_y + sb_h // 2 - 1), "0.8초 원터치로 출결을 완성해요!", font=get_font(11.5, 'bold'), fill=(0, 82, 255), anchor='mm')
     
     draw = ImageDraw.Draw(base)
     
