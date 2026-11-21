@@ -1,5 +1,6 @@
 import os
 import math
+import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
 from build_zeropass_white_common import (
     W, H, MOCKUP_DIR, get_font, get_num_font, wrap_text_by_words,
@@ -8,6 +9,53 @@ from build_zeropass_white_common import (
     C_TITLE_BLACK, C_BLUE_HERO, C_CYAN_ACCENT, C_TEXT_BODY, C_TEXT_MUTED,
     C_BORDER_LINE, C_BG_CARD, C_BG_CONTAINER
 )
+
+def find_perspective_coeffs(source_coords, target_coords):
+    """Computes homography coefficients for PIL inverse perspective transform."""
+    matrix = []
+    for (x_t, y_t), (x_s, y_s) in zip(target_coords, source_coords):
+        matrix.append([x_t, y_t, 1, 0, 0, 0, -x_s * x_t, -x_s * y_t])
+        matrix.append([0, 0, 0, x_t, y_t, 1, -y_s * x_t, -y_s * y_t])
+    A = np.matrix(matrix, dtype=float)
+    B = np.array(source_coords).reshape(8)
+    res = np.dot(np.linalg.inv(A.T * A) * A.T, B)
+    return np.array(res).reshape(8)
+
+def render_3d_phone(device_img, target_corners, depth=26, extrude_dir=(-20, 14), canvas_size=(W, H)):
+    """
+    Renders an ultra-realistic 3D perspective smartphone with metallic bezel extrusion layers.
+    """
+    cw, ch = canvas_size
+    dw, dh = device_img.size
+    src_corners = [(0, 0), (dw, 0), (dw, dh), (0, dh)]
+    t_tl, t_tr, t_br, t_bl = target_corners
+    dx, dy = extrude_dir
+    
+    chassis_canvas = Image.new('RGBA', (cw, ch), (0, 0, 0, 0))
+    dev_mask = device_img.split()[3]
+    
+    for step in range(depth, 0, -1):
+        ratio = step / depth
+        v = int(218 - ratio * 42)
+        step_corners = [
+            (t_tl[0] + int(dx * ratio), t_tl[1] + int(dy * ratio)),
+            (t_tr[0] + int(dx * ratio), t_tr[1] + int(dy * ratio)),
+            (t_br[0] + int(dx * ratio), t_br[1] + int(dy * ratio)),
+            (t_bl[0] + int(dx * ratio), t_bl[1] + int(dy * ratio))
+        ]
+        step_coeffs = find_perspective_coeffs(src_corners, step_corners)
+        step_mask = dev_mask.transform((cw, ch), Image.Transform.PERSPECTIVE, step_coeffs, Image.Resampling.BICUBIC)
+        col_img = Image.new('RGBA', (cw, ch), (v, v + 2, v + 8, 255))
+        chassis_canvas.paste(col_img, (0, 0), step_mask)
+        
+    front_coeffs = find_perspective_coeffs(src_corners, target_corners)
+    phone_front = device_img.transform((cw, ch), Image.Transform.PERSPECTIVE, front_coeffs, Image.Resampling.BICUBIC)
+    sh_mask = dev_mask.transform((cw, ch), Image.Transform.PERSPECTIVE, front_coeffs, Image.Resampling.BICUBIC)
+    
+    composite = Image.new('RGBA', (cw, ch), (0, 0, 0, 0))
+    composite.paste(chassis_canvas, (0, 0), chassis_canvas)
+    composite.paste(phone_front, (0, 0), phone_front)
+    return composite, sh_mask
 
 def make_shadow(img, blur=44, offset=(22, 40), alpha=80):
     mask = img.split()[3]
@@ -107,37 +155,39 @@ def make_slide_01():
             
         k_y += 114
 
-    # Right Side: Dual Flagship iPhone Mockups (-11 deg Angled & Ultra-Natural Shadow)
+    # Right Side: Dual Flagship iPhone Mockups in Dynamic 3D Perspective (Z-Axis / Y-Axis Yaw & Tilt)
     phone_pass = Image.open(f"{MOCKUP_DIR}/mockup_01_pass.png").convert('RGBA')
     phone_ledger = Image.open(f"{MOCKUP_DIR}/mockup_02_ledger.png").convert('RGBA')
     
-    target_h = 670
-    target_w = int(round(target_h * (phone_pass.width / phone_pass.height)))
-    p_front = phone_pass.resize((target_w, target_h), Image.Resampling.LANCZOS)
-    p_back = phone_ledger.resize((target_w, target_h), Image.Resampling.LANCZOS)
+    # Coordinates with pronounced 3D perspective rotation (Z/Y yaw & tilt)
+    back_corners = [
+        (1320, 100),
+        (1710, 165),
+        (1560, 835),
+        (1200, 770)
+    ]
+    front_corners = [
+        (960, 135),
+        (1385, 205),
+        (1230, 895),
+        (835, 825)
+    ]
     
-    angle = -11.0
-    rot_front = p_front.rotate(angle, expand=True, resample=Image.Resampling.BICUBIC)
-    rot_back = p_back.rotate(angle, expand=True, resample=Image.Resampling.BICUBIC)
+    r_back, m_back = render_3d_phone(phone_ledger, back_corners, depth=22, extrude_dir=(-18, 12))
+    r_front, m_front = render_3d_phone(phone_pass, front_corners, depth=28, extrude_dir=(-22, 16))
     
-    def make_shadow_angled(img, blur=44, offset=(22, 40), alpha=80):
-        mask = img.split()[3]
-        sh_img = Image.new('RGBA', (img.width + 120, img.height + 120), (0, 0, 0, 0))
-        black = Image.new('RGBA', img.size, (15, 23, 42, alpha))
-        sh_img.paste(black, (60 + offset[0], 60 + offset[1]), mask)
-        return sh_img.filter(ImageFilter.GaussianBlur(blur)), (60, 60)
-        
-    sh_back, pad_b = make_shadow_angled(rot_back, blur=40, offset=(18, 34), alpha=65)
-    sh_front, pad_f = make_shadow_angled(rot_front, blur=48, offset=(24, 44), alpha=88)
+    # 3D Depth Floor Shadows
+    sh_canvas = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+    for mask, off in [(m_back, (30, 44)), (m_front, (40, 58))]:
+        sh_part = Image.new('RGBA', (W, H), (15, 23, 42, 80))
+        sh_layer = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+        sh_layer.paste(sh_part, off, mask)
+        sh_canvas = Image.alpha_composite(sh_canvas, sh_layer)
+    sh_canvas = sh_canvas.filter(ImageFilter.GaussianBlur(38))
     
-    p_back_x, p_back_y = 1270, 115
-    p_front_x, p_front_y = 970, 170
-    
-    base.paste(sh_back, (p_back_x - pad_b[0], p_back_y - pad_b[1]), sh_back)
-    base.paste(rot_back, (p_back_x, p_back_y), rot_back)
-    
-    base.paste(sh_front, (p_front_x - pad_f[0], p_front_y - pad_f[1]), sh_front)
-    base.paste(rot_front, (p_front_x, p_front_y), rot_front)
+    base = Image.alpha_composite(base, sh_canvas)
+    base = Image.alpha_composite(base, r_back)
+    base = Image.alpha_composite(base, r_front)
     
     # 🌟 Mascot "Passy" (패시) Cheerful Greeting Placement
     mascot_p = 'd:/097.flutter_project/auto_portfolio/zeropass/assets/mascot_poses/passy_cheer.png'
