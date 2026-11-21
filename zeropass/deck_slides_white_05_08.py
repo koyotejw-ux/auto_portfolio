@@ -1275,7 +1275,10 @@ def make_slide_08():
     draw.text((lx, 158), t2_a, font=font_title, fill=(0, 81, 255))
     draw.text((lx + w_t2_a, 158), t2_b, font=font_title, fill=(15, 23, 42))
     
-    draw.text((lx, 210), "바코드 리더기나 지문 인식기 고장 없이, 원생이 직접 전화번호 뒤 4자리만 터치하면 즉각 인증 완결", font=get_font(13.5, 'regular'), fill=(71, 85, 105))
+    desc_sub_1 = "바코드 리더기나 지문 인식기 고장 없이, 원생이 직접"
+    desc_sub_2 = "전화번호 뒤 4자리만 터치하면 0.8초 내에 즉각 출결 인증 완결"
+    draw.text((lx, 204), desc_sub_1, font=get_font(12.5, 'regular'), fill=(71, 85, 105))
+    draw.text((lx, 224), desc_sub_2, font=get_font(12.5, 'regular'), fill=(71, 85, 105))
     
     # Left Comparison Card (Traditional vs ZeroPass)
     comp_y = 260
