@@ -125,11 +125,11 @@ def draw_pill_badge(draw, left_x=None, cx=None, cy=None, text="", font=None, the
     return bx1, by1, bx2, by2
 
 def draw_slide_header(draw, slide_num, category_en=None, title_black="", title_blue="", subtitle_kr="", right_badge=None, dark_mode=False, category_ko=None):
-    category = category_ko or category_en or ""
+    category = category_en or category_ko or ""
     line_col = (40, 53, 72) if dark_mode else (226, 232, 240)
     draw.line([(100, 52), (1820, 52)], fill=line_col, width=1)
     
-    badge_text = f"{slide_num:02d} {category}"
+    badge_text = f"{slide_num:02d} {category.upper()}"
     draw_pill_badge(draw, left_x=100, cy=78, text=badge_text, font=get_font(10.5, 'bold'), theme='blue', has_dot=False, dark_mode=dark_mode, pad_x=10, height=26)
     
     if right_badge:
@@ -151,13 +151,13 @@ def draw_slide_footer(draw, slide_num, total_slides=12, dark_mode=False):
     draw.line([(100, 995), (1820, 995)], fill=line_col, width=1)
     
     brand_col = (56, 189, 248) if dark_mode else (0, 81, 255)
-    draw.text((100, 1018), "체크앤페이 (ZeroPass)", font=get_font(11, 'bold'), fill=brand_col)
+    draw.text((100, 1018), "CHECK & PAY", font=get_font(11, 'bold'), fill=brand_col)
     meta_col = (100, 116, 139) if dark_mode else (148, 163, 184)
-    draw.text((270, 1018), "·   스마트 출결 & D-Day 수납 관리 솔루션", font=get_font(11, 'medium'), fill=meta_col)
-    draw.text((960, 1018), "모바일 & 태블릿 지원  ·  100% 로컬 안심 저장  ·  구글 플레이 출시", font=get_font(10.5, 'medium'), fill=meta_col, anchor='mt')
+    draw.text((196, 1018), "·   Behance Enterprise Case Study  ·  Smart Attendance & D-Day Ledger Engine", font=get_font(11, 'medium'), fill=meta_col)
+    draw.text((960, 1018), "Flutter Mobile & Tablet  ·  100% On-Device Vault  ·  Google Play Production Live", font=get_font(10.5, 'medium'), fill=meta_col, anchor='mt')
     
     page_col = (148, 163, 184) if dark_mode else (100, 116, 139)
-    page_str = f"{slide_num:02d} / {total_slides:02d}"
+    page_str = f"PAGE {slide_num:02d} / {total_slides:02d}"
     draw.text((1820, 1018), page_str, font=get_num_font(11.5, 'black'), fill=page_col, anchor='rt')
 
 def draw_donut_chart_on_base(base, cx, cy, r_outer, r_inner, percentage, col_fill=(220, 38, 38), col_track=(241, 245, 249)):

@@ -25,7 +25,7 @@ def make_slide_09():
     lx = 100
     lw = 540
     
-    draw_pill_badge(draw, left_x=lx, cy=78, text="09 핵심 기능 | 스마트 D-Day 수납 장부", font=get_font(10.5, 'bold'), theme='blue', has_dot=False, pad_x=10, height=26)
+    draw_pill_badge(draw, left_x=lx, cy=78, text="09 CORE FEATURE | SMART D-DAY BILLING LEDGER", font=get_font(10.5, 'bold'), theme='blue', has_dot=False, pad_x=10, height=26)
     
     t1_a = "정기 결제일부터 "
     t1_b = "잔여 회차까지,"
@@ -229,7 +229,7 @@ def make_slide_10():
     draw_slide_header(
         draw,
         slide_num=10,
-        category_en="모바일 상용 화면 · 피그마 및 플러터",
+        category_en="MOBILE SCREENS | PRODUCTION FIGMA & FLUTTER",
         title_black="출결 키오스크부터 수납 장부까지, ",
         title_blue="일관된 6대 핵심 상용 화면이에요.",
         subtitle_kr="원생과 원장님의 핵심 여정(User Journey)을 빈틈없이 지원하도록 피그마 토큰과 플러터 위젯 트리로 구현한 6대 상용 화면입니다."
@@ -308,7 +308,7 @@ def make_slide_11():
     draw_slide_header(
         draw,
         slide_num=11,
-        category_en="성과 지표 · 기획 디자인 회고",
+        category_en="BUSINESS IMPACT | STRATEGIC RETROSPECTIVE",
         title_black="출결 소요 시간 0.8초와 미수금 92% 회수, ",
         title_blue="실제 학원 파일럿으로 검증된 프로덕트 가치예요.",
         subtitle_kr="현장 검증 기반 4대 정량 지표와 STAR 기법으로 서술한 시니어 프로덕트 기획·디자인 회고입니다."
@@ -467,7 +467,7 @@ def make_slide_12():
     draw_slide_header(
         draw,
         slide_num=12,
-        category_en="인터랙티브 프로토타입 · 플러터 웹",
+        category_en="LIVE INTERACTIVE PROTOTYPE | FLUTTER WEB ENGINE",
         title_black="화면을 터치하듯, ",
         title_blue="실제 플러터 웹 프로토타입을 직접 조작해 보세요.",
         subtitle_kr="정적인 슬라이드를 넘어 스마트폰 뷰포트에서 4대 핵심 출결·수납 여정을 직접 터치하고 검증할 수 있는 인터랙티브 허브입니다.",

@@ -53,7 +53,7 @@ def make_slide_05():
     draw_slide_header(
         draw, 
         slide_num=5, 
-        category_en="사용자 여정 · 서비스 플로우", 
+        category_en="USER FLOW & UX FLOWCHART | TASK FLOW ARCHITECTURE", 
         title_black="사용자 행동과 판단을 이끄는 ", 
         title_blue="5단계 서비스 UX 플로우차트", 
         subtitle_kr="원생 등원 인증부터 잔여 횟수 즉시 차감, D-Day 수납 정렬, 카카오톡 청구서 발송 및 안심 보관까지의 핵심 여정"
@@ -449,7 +449,7 @@ def make_slide_06():
     draw_slide_header(
         draw, 
         slide_num=6, 
-        category_en="와이어프레임 · 인체공학적 설계", 
+        category_en="WIREFRAME & INTERACTION CALLOUTS | ERGONOMIC DESIGN", 
         title_black="실제 앱 구조를 그대로 반영한 ", 
         title_blue="4대 모바일 와이어프레임과 인체공학적 설계", 
         subtitle_kr="키오스크 다이얼·D-Day 수납장부·원생 디렉터리·원클릭 청구서 4대 핵심 화면의 골격 구조와 한 손 엄지 조작 반경(Thumb-Zone) 인체공학 설계"
@@ -799,7 +799,7 @@ def make_slide_07():
     draw_slide_header(
         draw, 
         slide_num=7, 
-        category_en="디자인 시스템 · 비주얼 아이덴티티", 
+        category_en="DESIGN SYSTEM | BRAND IDENTITY & COMPONENT ARCHITECTURE", 
         title_black="브랜드 정체성과 신뢰를 규정하는 ", 
         title_blue="비주얼 아이덴티티 & 디자인 시스템", 
         subtitle_kr="체크앤페이 핵심 디자인 컨셉, 기하학 키라인 그리드, 24dp 아이코노그라피, 파운데이션 토큰 규칙(Radius·Spacing·Color) & 아토믹 킷"
@@ -1274,7 +1274,7 @@ def make_slide_08():
     
     lx = 100
     lw = 490
-    draw_pill_badge(draw, left_x=lx, cy=78, text="08 핵심 기능 | 0.8초 키오스크 출결 엔진", font=get_font(10.5, 'bold'), theme='blue', pad_x=10, height=26)
+    draw_pill_badge(draw, left_x=lx, cy=78, text="08 CORE FEATURE | 0.8S KIOSK ATTENDANCE ENGINE", font=get_font(10.5, 'bold'), theme='blue', pad_x=10, height=26)
     
     t1_a = "복잡한 카드 태그 없이 "
     t1_b = "번호 4자리로,"

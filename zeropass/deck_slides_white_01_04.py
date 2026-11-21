@@ -36,9 +36,9 @@ def make_slide_01():
     draw.line([(100, 52), (1820, 52)], fill=(226, 232, 240), width=1)
     
     # Top Kicker & Metadata
-    draw_pill_badge(draw, left_x=100, cy=76, text="프로덕션 케이스 스터디", font=get_font(11.5, 'bold'), theme='blue', has_dot=False, pad_x=12, height=28)
+    draw_pill_badge(draw, left_x=100, cy=76, text="2026 CASE STUDY", font=get_font(11.5, 'bold'), theme='blue', has_dot=False, pad_x=12, height=28)
     
-    meta_txt = "기획(PM) · UI/UX 디자인 · Android 출시 (v1.0) · 웹 프로토타입"
+    meta_txt = "서비스 기획 · UI/UX 디자인 · Android Live · Smart Attendance System"
     w_meta = draw.textlength(meta_txt, font=get_font(13.5, 'medium'))
     draw.text((1820 - w_meta, 68), meta_txt, font=get_font(13.5, 'medium'), fill=(100, 116, 139))
     
@@ -208,7 +208,7 @@ def make_slide_02():
     draw_slide_header(
         draw,
         slide_num=2,
-        category_en="시장 리서치 · 문제 정의",
+        category_en="USER RESEARCH | DESK RESEARCH & MARKET STUDY",
         title_black="소규모 교육·체육 시설의 고질적 운영 병목과 ",
         title_blue="아날로그 장부의 기존 문제점",
         subtitle_kr="소규모 학원 및 스튜디오 운영자(N=120) 심층 인터뷰와 SaaS 도입 비용 분석을 통해 도출한 3대 핵심 전략"
@@ -387,7 +387,7 @@ def make_slide_03():
     draw_slide_header(
         draw,
         slide_num=3,
-        category_en="타깃 세그먼트 · 페르소나 분석",
+        category_en="TARGET & PERSONA | SEGMENTATION MATRIX & BENCHMARK",
         title_black="타깃 세그먼트 매트릭스와 ",
         title_blue="경쟁사 벤치마킹 분석",
         subtitle_kr="2x2 타깃 포지셔닝 매트릭스와 4대 플랫폼 벤치마크, 그리고 대표 페르소나 행동 지표"
@@ -563,7 +563,7 @@ def make_slide_04():
     draw_slide_header(
         draw,
         slide_num=4,
-        category_en="정보 구조도 (IA) · 서비스 설계",
+        category_en="INFORMATION ARCHITECTURE · SERVICE STRUCTURE",
         title_black="누구나 바로 이해하고 쓰는 ",
         title_blue="5대 핵심 메뉴 구조 (IA)",
         subtitle_kr="원터치 출결부터 수납 장부, 원생 디렉터리, 보안 볼트까지 필요한 기능을 한눈에 찾을 수 있는 쉬운 계층 구조"
