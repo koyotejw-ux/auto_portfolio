@@ -156,27 +156,27 @@ def make_slide_01():
         k_y += 114
 
     # Right Side: Authentic 3D Flagship Android Smartphone Mockup with Physical Chassis Depth
-    # High-resolution edge-to-edge display with Android punch-hole camera and extruded titanium chassis
+    # Matching exact 3D perspective angle with physical extrusion and specular highlights
     phone = Image.open('zeropass/assets/iphone_mockups/clean_android_upright_mockup.png').convert('RGBA')
     pw, ph = phone.size
 
     target_front = [
-        (1060, 110), # TL
-        (1490, 175), # TR
-        (1310, 865), # BR
-        (880, 800)   # BL
+        (1150, 90),  # TL
+        (1490, 65),  # TR
+        (1270, 865), # BR
+        (880, 790)   # BL
     ]
     src_corners = [(0, 0), (pw, 0), (pw, ph), (0, ph)]
 
-    # Authentic 3D Physical Extrusion Depth (dx=-14, dy=16) revealing the metallic side and bottom rim
-    depth_steps = 18
-    dx, dy = -14, 16
+    # Authentic 3D Physical Extrusion Depth (dx=16, dy=12) revealing the metallic side and bottom rim
+    depth_steps = 20
+    dx, dy = 16, 12
     chassis_canvas = Image.new('RGBA', (W, H), (0, 0, 0, 0))
     dev_mask = phone.split()[3]
 
     for step in range(depth_steps, 0, -1):
         ratio = step / float(depth_steps)
-        shade = int(32 + (1.0 - ratio) * 38)
+        shade = int(24 + (1.0 - ratio) * 45)
         step_corners = [
             (int(target_front[0][0] + dx * ratio), int(target_front[0][1] + dy * ratio)),
             (int(target_front[1][0] + dx * ratio), int(target_front[1][1] + dy * ratio)),
@@ -185,7 +185,7 @@ def make_slide_01():
         ]
         step_coeffs = find_perspective_coeffs(src_corners, step_corners)
         step_mask = dev_mask.transform((W, H), Image.Transform.PERSPECTIVE, step_coeffs, Image.Resampling.BICUBIC)
-        col_img = Image.new('RGBA', (W, H), (shade, shade + 2, shade + 6, 255))
+        col_img = Image.new('RGBA', (W, H), (shade, shade + 2, shade + 5, 255))
         chassis_canvas.paste(col_img, (0, 0), step_mask)
 
     front_coeffs = find_perspective_coeffs(src_corners, target_front)
@@ -195,46 +195,81 @@ def make_slide_01():
     complete_3d_phone.paste(chassis_canvas, (0, 0), chassis_canvas)
     complete_3d_phone.paste(front_surface, (0, 0), front_surface)
 
-    # Specular metallic rim highlights along the edge
-    rim_highlight = Image.new('RGBA', (W, H), (0, 0, 0, 0))
-    rh_d = ImageDraw.Draw(rim_highlight)
-    rh_d.line([target_front[0], target_front[3]], fill=(140, 145, 160, 180), width=2)
-    rh_d.line([target_front[3], target_front[2]], fill=(120, 125, 140, 160), width=2)
-    complete_3d_phone = Image.alpha_composite(complete_3d_phone, rim_highlight)
-
     # Soft, diffused multi-stage drop shadows (ambient floor + contact shadow)
     mask_3d = complete_3d_phone.split()[3]
     sh_canvas = Image.new('RGBA', (W, H), (0, 0, 0, 0))
 
-    sh_ambient = Image.new('RGBA', (W, H), (15, 23, 42, 45))
-    sh_canvas.paste(sh_ambient, (36, 56), mask_3d)
+    sh_ambient = Image.new('RGBA', (W, H), (15, 23, 42, 55))
+    sh_canvas.paste(sh_ambient, (40, 60), mask_3d)
     sh_canvas = sh_canvas.filter(ImageFilter.GaussianBlur(38))
-
-    sh_contact = Image.new('RGBA', (W, H), (0, 40, 120, 55))
-    sh_canvas.paste(sh_contact, (18, 28), mask_3d)
-    sh_canvas = sh_canvas.filter(ImageFilter.GaussianBlur(16))
 
     base = Image.alpha_composite(base, sh_canvas)
     base = Image.alpha_composite(base, complete_3d_phone)
 
-    # 🌟 Brand-New 3D Pixar Mascot "Passy" (패시)
-    # Joyfully jumping in mid-air, playfully winking, with completely empty hands (NO phone, NO cards!)
+    # 🌟 Brand-New 3D Pixar Mascot "Passy" (패시) with signature hair tuft, jumping & winking pose
+    # + Cute floating brand graphic pattern behind Passy!
     mascot_p = 'zeropass/assets/mascot_poses/passy_active_jump_wink_3d.png'
     if os.path.exists(mascot_p):
         im_m = Image.open(mascot_p).convert('RGBA')
-        mh = 330
+        mh = 350
         mw = int(round(mh * (im_m.width / im_m.height)))
         m_scaled = im_m.resize((mw, mh), Image.Resampling.LANCZOS)
         
         # Position jumping high in the air beside the 3D Android mockup
-        mx_pos = 1470
-        my_pos = 450
-        
+        mx_pos = 1440
+        my_pos = 410
+
+        # Cute background pattern behind Passy (soft radial circle, sparkles, cute crosses, pastel bubbles)
+        pat = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+        p_draw = ImageDraw.Draw(pat)
+
+        p_draw.ellipse([1360, 380, 1860, 880], fill=(0, 82, 255, 16))
+        p_draw.ellipse([1420, 440, 1800, 820], fill=(6, 182, 212, 20))
+
+        def draw_sparkle(d, cx, cy, r_outer, r_inner, fill):
+            pts = []
+            for i in range(8):
+                angle = i * math.pi / 4
+                r = r_outer if i % 2 == 0 else r_inner
+                pts.append((cx + r * math.cos(angle), cy + r * math.sin(angle)))
+            d.polygon(pts, fill=fill)
+
+        def draw_cute_cross(d, cx, cy, size, thickness, fill):
+            d.rounded_rectangle([cx - size, cy - thickness//2, cx + size, cy + thickness//2], radius=2, fill=fill)
+            d.rounded_rectangle([cx - thickness//2, cy - size, cx + thickness//2, cy + size], radius=2, fill=fill)
+
+        # Sparkles (✦)
+        draw_sparkle(p_draw, 1400, 390, 18, 5, (0, 82, 255, 160))
+        draw_sparkle(p_draw, 1780, 420, 22, 6, (245, 158, 11, 180))
+        draw_sparkle(p_draw, 1370, 680, 14, 4, (6, 182, 212, 170))
+        draw_sparkle(p_draw, 1830, 690, 16, 5, (236, 72, 153, 160))
+
+        # Cute crosses (+)
+        draw_cute_cross(p_draw, 1430, 470, 10, 4, (6, 182, 212, 150))
+        draw_cute_cross(p_draw, 1750, 620, 12, 4, (0, 82, 255, 140))
+        draw_cute_cross(p_draw, 1840, 520, 10, 3, (245, 158, 11, 150))
+
+        # Pastel colorful bubbles / dots
+        dots = [
+            (1390, 460, 7, (236, 72, 153, 140)),
+            (1420, 360, 11, (6, 182, 212, 140)),
+            (1720, 380, 8, (0, 82, 255, 150)),
+            (1810, 450, 10, (245, 158, 11, 140)),
+            (1360, 580, 9, (16, 185, 129, 140)),
+            (1840, 610, 8, (139, 92, 246, 140)),
+            (1780, 750, 12, (6, 182, 212, 140)),
+            (1410, 770, 10, (245, 158, 11, 140))
+        ]
+        for x, y, r, c in dots:
+            p_draw.ellipse([x - r, y - r, x + r, y + r], fill=c)
+
+        base = Image.alpha_composite(base, pat)
+
         # Diffused ground drop shadow beneath jumping mascot
         m_sh = Image.new('RGBA', (W, H), (0, 0, 0, 0))
         m_sh_d = ImageDraw.Draw(m_sh)
         m_sh_d.ellipse([mx_pos + 45, my_pos + mh + 15, mx_pos + mw - 35, my_pos + mh + 45], fill=(0, 40, 120, 55))
-        m_sh = m_sh.filter(ImageFilter.GaussianBlur(16))
+        m_sh = m_sh.filter(ImageFilter.GaussianBlur(18))
         
         base = Image.alpha_composite(base, m_sh)
         base.paste(m_scaled, (mx_pos, my_pos), m_scaled)
