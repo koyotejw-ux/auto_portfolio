@@ -59,29 +59,43 @@ def make_slide_05():
         subtitle_kr="원생 등원 인증부터 잔여 횟수 즉시 차감, D-Day 수납 정렬, 카카오톡 청구서 발송 및 안심 보관까지의 핵심 여정"
     )
     
-    # Top-Right Legend: Diagram Notation (w=540, h=78)
+    # Top-Right Legend: Diagram Notation (w=540, h=78, perfectly balanced 4 columns)
     leg_x = 1280
     leg_y = 65
     leg_w = 540
     leg_h = 78
     draw.rounded_rectangle([leg_x, leg_y, leg_x + leg_w, leg_y + leg_h], radius=10, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
     draw_pill_badge(draw, left_x=leg_x + 16, cy=leg_y + 20, text="기호 범례", font=get_font(8, 'bold'), theme='blue', has_dot=False, pad_x=6, height=18)
-    draw.text((leg_x + 105, leg_y + 20), "플로우차트 기호 범례", font=get_font(11, 'bold'), fill=(15, 23, 42), anchor='lm')
+    draw.text((leg_x + 78, leg_y + 20), "플로우차트 기호 범례", font=get_font(11, 'bold'), fill=(15, 23, 42), anchor='lm')
+    draw.line([(leg_x + 16, leg_y + 36), (leg_x + leg_w - 16, leg_y + 36)], fill=(241, 245, 249), width=1)
     
-    draw.text((leg_x + 43, leg_y + 56), "시작/종료", font=get_font(7.5, 'bold'), fill=(255, 255, 255), anchor='mm')
-    draw.text((leg_x + 76, leg_y + 56), "프로세스", font=get_font(9.5, 'medium'), fill=(71, 85, 105), anchor='lm')
+    r2_cy = leg_y + 56
+    start_x = leg_x + 20
+    col_w = (leg_w - 40) / 4  # 125px per column slot
     
-    draw.rounded_rectangle([leg_x + 142, leg_y + 44, leg_x + 192, leg_y + 68], radius=4, fill=(255, 255, 255), outline=(203, 213, 225), width=1)
-    draw.text((leg_x + 167, leg_y + 56), "화면", font=get_font(7.5, 'bold'), fill=(15, 23, 42), anchor='mm')
-    draw.text((leg_x + 198, leg_y + 56), "접점 화면", font=get_font(9.5, 'medium'), fill=(71, 85, 105), anchor='lm')
+    # 1. 프로세스 (시작/종료)
+    bx0 = start_x
+    draw.rounded_rectangle([bx0, r2_cy - 11, bx0 + 38, r2_cy + 11], radius=11, fill=(0, 82, 255))
+    draw.text((bx0 + 19, r2_cy), "시작", font=get_font(8, 'bold'), fill=(255, 255, 255), anchor='mm')
+    draw.text((bx0 + 46, r2_cy), "프로세스", font=get_font(9.5, 'medium'), fill=(71, 85, 105), anchor='lm')
     
-    draw.rounded_rectangle([leg_x + 268, leg_y + 44, leg_x + 318, leg_y + 68], radius=4, fill=(240, 246, 255), outline=(0, 82, 255), width=1)
-    draw.text((leg_x + 293, leg_y + 56), "행동", font=get_font(7.5, 'bold'), fill=(0, 82, 255), anchor='mm')
-    draw.text((leg_x + 325, leg_y + 56), "사용자 터치", font=get_font(9.5, 'medium'), fill=(71, 85, 105), anchor='lm')
+    # 2. 접점 화면
+    bx1 = start_x + col_w
+    draw.rounded_rectangle([bx1, r2_cy - 11, bx1 + 38, r2_cy + 11], radius=4, fill=(255, 255, 255), outline=(203, 213, 225), width=1)
+    draw.text((bx1 + 19, r2_cy), "화면", font=get_font(8, 'bold'), fill=(15, 23, 42), anchor='mm')
+    draw.text((bx1 + 46, r2_cy), "접점 화면", font=get_font(9.5, 'medium'), fill=(71, 85, 105), anchor='lm')
     
-    draw_diamond(draw, cx=leg_x + 410, cy=leg_y + 56, w=34, h=22, fill=(254, 243, 199), outline=(217, 119, 6), width=1)
-    draw.text((leg_x + 410, leg_y + 56), "판단", font=get_font(6.5, 'bold'), fill=(180, 83, 9), anchor='mm')
-    draw.text((leg_x + 434, leg_y + 56), "조건 분기", font=get_font(9.5, 'medium'), fill=(71, 85, 105), anchor='lm')
+    # 3. 사용자 터치
+    bx2 = start_x + col_w * 2
+    draw.rounded_rectangle([bx2, r2_cy - 11, bx2 + 38, r2_cy + 11], radius=4, fill=(239, 246, 255), outline=(0, 82, 255), width=1)
+    draw.text((bx2 + 19, r2_cy), "행동", font=get_font(8, 'bold'), fill=(0, 82, 255), anchor='mm')
+    draw.text((bx2 + 46, r2_cy), "사용자 터치", font=get_font(9.5, 'medium'), fill=(71, 85, 105), anchor='lm')
+    
+    # 4. 조건 분기
+    bx3 = start_x + col_w * 3
+    draw_diamond(draw, cx=bx3 + 14, cy=r2_cy, w=28, h=20, fill=(254, 243, 199), outline=(217, 119, 6), width=1)
+    draw.text((bx3 + 14, r2_cy), "판단", font=get_font(6.5, 'bold'), fill=(180, 83, 9), anchor='mm')
+    draw.text((bx3 + 36, r2_cy), "조건 분기", font=get_font(9.5, 'medium'), fill=(71, 85, 105), anchor='lm')
     
     # 5 STAGE COLUMNS
     cw = 328
