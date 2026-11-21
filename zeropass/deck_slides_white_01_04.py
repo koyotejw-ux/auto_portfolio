@@ -156,50 +156,53 @@ def make_slide_01():
         k_y += 114
 
     # Right Side: Single Flagship Android Smartphone Mockup in Authentic 3D Isometric Tilt
-    # Clean single Android device with edge-to-edge display and punch-hole camera
-    # Background is 100% clean with smooth Gaussian ambient lighting and soft contact drop shadows
-    p_android = Image.open('zeropass/assets/iphone_mockups/realistic_3d_android.png').convert('RGBA')
-    
-    scale_phone = 1.25
-    w_p = int(p_android.width * scale_phone)
-    h_p = int(p_android.height * scale_phone)
-    p_android_s = p_android.resize((w_p, h_p), Image.Resampling.LANCZOS)
-    
-    # Position prominently on the right stage
-    pos_phone = (910, 140)
-    
-    # Smooth, non-destructive diffused Gaussian contact floor shadows
-    sh_1 = Image.new('RGBA', (W, H), (0, 0, 0, 0))
-    sh_1_d = ImageDraw.Draw(sh_1)
-    sh_1_d.ellipse([pos_phone[0] + 110, pos_phone[1] + h_p - 65, pos_phone[0] + w_p - 100, pos_phone[1] + h_p + 30], fill=(15, 23, 42, 60))
-    sh_1 = sh_1.filter(ImageFilter.GaussianBlur(38))
-    
-    sh_2 = Image.new('RGBA', (W, H), (0, 0, 0, 0))
-    sh_2_d = ImageDraw.Draw(sh_2)
-    sh_2_d.ellipse([pos_phone[0] + 150, pos_phone[1] + h_p - 45, pos_phone[0] + w_p - 140, pos_phone[1] + h_p + 15], fill=(0, 50, 150, 40))
-    sh_2 = sh_2.filter(ImageFilter.GaussianBlur(20))
-    
-    base = Image.alpha_composite(base, sh_1)
-    base = Image.alpha_composite(base, sh_2)
-    base.paste(p_android_s, pos_phone, p_android_s)
-    
-    # 🌟 Energetic Official 3D Mascot "Passy" (패시)
-    # Animated character jumping with joy (No phone/card, no speech bubble, 100% clean)
-    mascot_p = 'zeropass/assets/mascot_poses/passy_jump_active.png'
+    # Clean vector-crisp Android device with edge-to-edge display, punch-hole camera, and diffused drop shadow
+    phone = Image.open('zeropass/assets/iphone_mockups/clean_android_upright_mockup.png').convert('RGBA')
+    pw, ph = phone.size
+
+    # Tilted 3D Isometric Perspective Transform with Lanczos-level precision (Bicubic native)
+    target_corners = [
+        (1060, 110), # TL
+        (1490, 175), # TR
+        (1310, 865), # BR
+        (880, 800)   # BL
+    ]
+    src_corners = [(0, 0), (pw, 0), (pw, ph), (0, ph)]
+    coeffs = find_perspective_coeffs(src_corners, target_corners)
+    t_phone = phone.transform((W, H), Image.Transform.PERSPECTIVE, coeffs, Image.Resampling.BICUBIC)
+
+    # Soft, diffused multi-stage drop shadows (broad ambient floor + tight contact shadow)
+    mask_phone = t_phone.split()[3]
+    sh_phone = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+
+    sh_ambient = Image.new('RGBA', (W, H), (15, 23, 42, 45))
+    sh_phone.paste(sh_ambient, (32, 50), mask_phone)
+    sh_phone = sh_phone.filter(ImageFilter.GaussianBlur(34))
+
+    sh_contact = Image.new('RGBA', (W, H), (0, 40, 120, 55))
+    sh_phone.paste(sh_contact, (16, 24), mask_phone)
+    sh_phone = sh_phone.filter(ImageFilter.GaussianBlur(14))
+
+    base = Image.alpha_composite(base, sh_phone)
+    base = Image.alpha_composite(base, t_phone)
+
+    # 🌟 Energetic Official 3D Pixar Mascot "Passy" (패시)
+    # Authentic, uncorrupted jumping celebration pose from brand design system (passy_cheer.png)
+    mascot_p = 'zeropass/assets/mascot_poses/passy_cheer.png'
     if os.path.exists(mascot_p):
         im_m = Image.open(mascot_p).convert('RGBA')
         mh = 315
         mw = int(round(mh * (im_m.width / im_m.height)))
         m_scaled = im_m.resize((mw, mh), Image.Resampling.LANCZOS)
         
-        # Position jumping high in the air beside the Android mockup
-        mx_pos = 1500
+        # Position jumping high in the air beside the 3D Android mockup
+        mx_pos = 1480
         my_pos = 460
         
-        # Floating ground shadow below feet to emphasize jumping height
+        # Diffused ground drop shadow beneath jumping mascot
         m_sh = Image.new('RGBA', (W, H), (0, 0, 0, 0))
         m_sh_d = ImageDraw.Draw(m_sh)
-        m_sh_d.ellipse([mx_pos + 45, my_pos + mh + 15, mx_pos + mw - 35, my_pos + mh + 42], fill=(0, 45, 130, 50))
+        m_sh_d.ellipse([mx_pos + 40, my_pos + mh + 15, mx_pos + mw - 30, my_pos + mh + 42], fill=(0, 40, 120, 55))
         m_sh = m_sh.filter(ImageFilter.GaussianBlur(15))
         
         base = Image.alpha_composite(base, m_sh)
