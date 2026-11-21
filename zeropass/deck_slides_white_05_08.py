@@ -346,35 +346,35 @@ def make_slide_05():
     
     # 1. Action: 안심 백업 & 내보내기
     draw.rounded_rectangle([c4 - nw // 2, 300, c4 + nw // 2, 344], radius=6, fill=(239, 246, 255), outline=(0, 82, 255), width=2)
-    draw_pill_badge(draw, left_x=c4 - 114, cy=314, text="ACTION", font=get_font(6.5, 'bold'), theme='blue', pad_x=4, height=14)
+    draw_pill_badge(draw, left_x=c4 - 114, cy=322, text="ACTION", font=get_font(6.5, 'bold'), theme='blue', pad_x=4, height=14)
     draw.text((c4 - 54, 314), "1-Tap 스튜디오 볼트 백업", font=get_font(9, 'bold'), fill=(0, 82, 255), anchor='lm')
     draw.text((c4, 331), "암호화된 안전 백업 파일 또는 CSV 즉시 추출", font=get_font(7.5, 'medium'), fill=(15, 23, 42), anchor='mm')
-    draw_arrow(draw, (c4, 344), (c4, 362), col=(0, 82, 255), width=2, arrow_size=4)
+    draw_arrow(draw, (c4, 344), (c4, 370), col=(0, 82, 255), width=2, arrow_size=4)
     
     # 2. Feedback: 로컬 볼트 보관 완료
-    draw.rounded_rectangle([c4 - nw // 2, 362, c4 + nw // 2, 406], radius=6, fill=(240, 253, 244), outline=(187, 247, 208), width=1)
-    draw_pill_badge(draw, left_x=c4 - 114, cy=376, text="FEEDBACK", font=get_font(6.5, 'bold'), theme='green', pad_x=4, height=14)
-    draw.text((c4 - 44, 376), "무손실 볼트 백업 완결", font=get_font(9, 'bold'), fill=(22, 101, 52), anchor='lm')
-    draw.text((c4, 393), "SHA-256 무결성 검증 및 백업 파일 생성", font=get_font(7.5, 'medium'), fill=(21, 128, 61), anchor='mm')
-    draw_arrow(draw, (c4, 406), (c4, 430), col=(0, 82, 255), width=2, arrow_size=4)
+    draw.rounded_rectangle([c4 - nw // 2, 370, c4 + nw // 2, 414], radius=6, fill=(240, 253, 244), outline=(187, 247, 208), width=1)
+    draw_pill_badge(draw, left_x=c4 - 114, cy=392, text="FEEDBACK", font=get_font(6.5, 'bold'), theme='green', pad_x=4, height=14)
+    draw.text((c4 - 44, 384), "무손실 볼트 백업 완결", font=get_font(9, 'bold'), fill=(22, 101, 52), anchor='lm')
+    draw.text((c4, 401), "SHA-256 무결성 검증 및 백업 파일 생성", font=get_font(7.5, 'medium'), fill=(21, 128, 61), anchor='mm')
+    draw_arrow(draw, (c4, 414), (c4, 449), col=(0, 82, 255), width=2, arrow_size=4)
     
     # 3. Decision Diamond: 다기기 복원 또는 인쇄?
-    draw_diamond(draw, cx=c4, cy=460, w=186, h=52, fill=(254, 243, 199), outline=(217, 119, 6), width=2)
-    draw.text((c4, 454), "다기기 복원 / 장부 인쇄?", font=get_font(9, 'bold'), fill=(180, 83, 9), anchor='mm')
-    draw.text((c4, 468), "태블릿 ↔ 스마트폰 데이터 인계", font=get_font(7, 'medium'), fill=(146, 64, 14), anchor='mm')
-    draw_arrow(draw, (c4, 486), (c4, 516), col=(0, 82, 255), width=2, arrow_size=4)
-    draw.text((c4 + 30, 501), "완벽 동기화", font=get_font(7.5, 'bold'), fill=(0, 82, 255), anchor='mm')
+    draw_diamond(draw, cx=c4, cy=475, w=186, h=52, fill=(254, 243, 199), outline=(217, 119, 6), width=2)
+    draw.text((c4, 469), "다기기 복원 / 장부 인쇄?", font=get_font(9, 'bold'), fill=(180, 83, 9), anchor='mm')
+    draw.text((c4, 483), "태블릿 ↔ 스마트폰 데이터 인계", font=get_font(7, 'medium'), fill=(146, 64, 14), anchor='mm')
+    draw_arrow(draw, (c4, 501), (c4, 536), col=(0, 82, 255), width=2, arrow_size=4)
+    draw.text((c4 + 32, 518), "완벽 동기화", font=get_font(7.5, 'bold'), fill=(0, 82, 255), anchor='mm')
     
     # 4. Process: 온디바이스 데이터 무결성 보장
-    draw.rounded_rectangle([c4 - nw // 2, 516, c4 + nw // 2, 562], radius=6, fill=(248, 250, 252), outline=(203, 213, 225), width=1)
-    draw_pill_badge(draw, left_x=c4 - 114, cy=530, text="SECURITY", font=get_font(6.5, 'bold'), theme='slate', pad_x=4, height=14)
-    draw.text((c4 - 48, 530), "100% 온디바이스 로컬 보안", font=get_font(9, 'bold'), fill=(15, 23, 42), anchor='lm')
-    draw.text((c4, 550), "외부 SaaS 서버 전송 0건, 개인정보 유출 완전 방어", font=get_font(7.5, 'medium'), fill=(100, 116, 139), anchor='mm')
-    draw_arrow(draw, (c4, 562), (c4, 586), col=(0, 82, 255), width=2, arrow_size=4)
+    draw.rounded_rectangle([c4 - nw // 2, 536, c4 + nw // 2, 582], radius=6, fill=(248, 250, 252), outline=(203, 213, 225), width=1)
+    draw_pill_badge(draw, left_x=c4 - 114, cy=559, text="SECURITY", font=get_font(6.5, 'bold'), theme='slate', pad_x=4, height=14)
+    draw.text((c4 - 48, 550), "100% 온디바이스 로컬 보안", font=get_font(9, 'bold'), fill=(15, 23, 42), anchor='lm')
+    draw.text((c4, 570), "외부 SaaS 서버 전송 0건, 개인정보 유출 완전 방어", font=get_font(7.5, 'medium'), fill=(100, 116, 139), anchor='mm')
+    draw_arrow(draw, (c4, 582), (c4, 626), col=(0, 82, 255), width=2, arrow_size=4)
     
-    # 5. Finish Terminal Capsule
-    draw.rounded_rectangle([c4 - 90, 586, c4 + 90, 622], radius=18, fill=(0, 82, 255))
-    draw.text((c4, 604), "Finish : 무결성 학원 운영", font=get_font(10, 'bold'), fill=(255, 255, 255), anchor='mm')
+    # 5. Finish Terminal Capsule (Bottom aligned perfectly with Cols 0~3: 626..672, cy=649)
+    draw.rounded_rectangle([c4 - 96, 626, c4 + 96, 672], radius=23, fill=(0, 82, 255))
+    draw.text((c4, 649), "Finish : 무결성 학원 운영", font=get_font(10, 'bold'), fill=(255, 255, 255), anchor='mm')
     
     # -------------------------------------------------------------
     # LOWER SUMMARY BAR: Emotional Mindset & UX Impact KPIs
