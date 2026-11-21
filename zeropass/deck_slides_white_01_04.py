@@ -156,21 +156,22 @@ def make_slide_01():
         k_y += 114
 
     # Right Side: Authentic 3D Flagship Android Smartphone Mockup with Physical Chassis Depth
-    # Matching exact 3D perspective angle with physical extrusion and specular highlights
+    # Refined proportions & balanced sizing for seamless full-page harmony
     phone = Image.open('zeropass/assets/iphone_mockups/clean_android_upright_mockup.png').convert('RGBA')
     pw, ph = phone.size
 
+    # Balanced 3D perspective quad scaled to sit gracefully between y=165 and y=775
     target_front = [
-        (1150, 90),  # TL
-        (1490, 65),  # TR
-        (1270, 865), # BR
-        (880, 790)   # BL
+        (1150, 165), # TL
+        (1420, 140), # TR
+        (1250, 775), # BR
+        (940, 715)   # BL
     ]
     src_corners = [(0, 0), (pw, 0), (pw, ph), (0, ph)]
 
-    # Authentic 3D Physical Extrusion Depth (dx=16, dy=12) revealing the metallic side and bottom rim
-    depth_steps = 20
-    dx, dy = 16, 12
+    # Authentic 3D Physical Extrusion Depth (dx=14, dy=10) revealing the metallic side and bottom rim
+    depth_steps = 16
+    dx, dy = 14, 10
     chassis_canvas = Image.new('RGBA', (W, H), (0, 0, 0, 0))
     dev_mask = phone.split()[3]
 
@@ -199,32 +200,32 @@ def make_slide_01():
     mask_3d = complete_3d_phone.split()[3]
     sh_canvas = Image.new('RGBA', (W, H), (0, 0, 0, 0))
 
-    sh_ambient = Image.new('RGBA', (W, H), (15, 23, 42, 55))
-    sh_canvas.paste(sh_ambient, (40, 60), mask_3d)
-    sh_canvas = sh_canvas.filter(ImageFilter.GaussianBlur(38))
+    sh_ambient = Image.new('RGBA', (W, H), (15, 23, 42, 45))
+    sh_canvas.paste(sh_ambient, (35, 50), mask_3d)
+    sh_canvas = sh_canvas.filter(ImageFilter.GaussianBlur(32))
 
     base = Image.alpha_composite(base, sh_canvas)
     base = Image.alpha_composite(base, complete_3d_phone)
 
     # 🌟 Brand-New 3D Pixar Mascot "Passy" (패시) with signature hair tuft, jumping & winking pose
-    # + Cute floating brand graphic pattern behind Passy!
+    # Perfectly scaled & harmonized with the phone mockup and overall composition
     mascot_p = 'zeropass/assets/mascot_poses/passy_active_jump_wink_3d.png'
     if os.path.exists(mascot_p):
         im_m = Image.open(mascot_p).convert('RGBA')
-        mh = 350
+        mh = 290
         mw = int(round(mh * (im_m.width / im_m.height)))
         m_scaled = im_m.resize((mw, mh), Image.Resampling.LANCZOS)
         
         # Position jumping high in the air beside the 3D Android mockup
-        mx_pos = 1440
-        my_pos = 410
+        mx_pos = 1430
+        my_pos = 460
 
-        # Cute background pattern behind Passy (soft radial circle, sparkles, cute crosses, pastel bubbles)
+        # Harmonious background aura & cute decorative pattern behind Passy
         pat = Image.new('RGBA', (W, H), (0, 0, 0, 0))
         p_draw = ImageDraw.Draw(pat)
 
-        p_draw.ellipse([1360, 380, 1860, 880], fill=(0, 82, 255, 16))
-        p_draw.ellipse([1420, 440, 1800, 820], fill=(6, 182, 212, 20))
+        p_draw.ellipse([1360, 430, 1780, 810], fill=(0, 82, 255, 12))
+        p_draw.ellipse([1400, 470, 1730, 770], fill=(6, 182, 212, 16))
 
         def draw_sparkle(d, cx, cy, r_outer, r_inner, fill):
             pts = []
@@ -239,26 +240,26 @@ def make_slide_01():
             d.rounded_rectangle([cx - thickness//2, cy - size, cx + thickness//2, cy + size], radius=2, fill=fill)
 
         # Sparkles (✦)
-        draw_sparkle(p_draw, 1400, 390, 18, 5, (0, 82, 255, 160))
-        draw_sparkle(p_draw, 1780, 420, 22, 6, (245, 158, 11, 180))
-        draw_sparkle(p_draw, 1370, 680, 14, 4, (6, 182, 212, 170))
-        draw_sparkle(p_draw, 1830, 690, 16, 5, (236, 72, 153, 160))
+        draw_sparkle(p_draw, 1400, 440, 15, 4, (0, 82, 255, 140))
+        draw_sparkle(p_draw, 1720, 460, 18, 5, (245, 158, 11, 160))
+        draw_sparkle(p_draw, 1370, 670, 12, 3, (6, 182, 212, 150))
+        draw_sparkle(p_draw, 1760, 680, 14, 4, (236, 72, 153, 140))
 
         # Cute crosses (+)
-        draw_cute_cross(p_draw, 1430, 470, 10, 4, (6, 182, 212, 150))
-        draw_cute_cross(p_draw, 1750, 620, 12, 4, (0, 82, 255, 140))
-        draw_cute_cross(p_draw, 1840, 520, 10, 3, (245, 158, 11, 150))
+        draw_cute_cross(p_draw, 1420, 520, 8, 3, (6, 182, 212, 130))
+        draw_cute_cross(p_draw, 1700, 620, 10, 3, (0, 82, 255, 120))
+        draw_cute_cross(p_draw, 1760, 530, 8, 2, (245, 158, 11, 130))
 
         # Pastel colorful bubbles / dots
         dots = [
-            (1390, 460, 7, (236, 72, 153, 140)),
-            (1420, 360, 11, (6, 182, 212, 140)),
-            (1720, 380, 8, (0, 82, 255, 150)),
-            (1810, 450, 10, (245, 158, 11, 140)),
-            (1360, 580, 9, (16, 185, 129, 140)),
-            (1840, 610, 8, (139, 92, 246, 140)),
-            (1780, 750, 12, (6, 182, 212, 140)),
-            (1410, 770, 10, (245, 158, 11, 140))
+            (1390, 490, 6, (236, 72, 153, 120)),
+            (1420, 400, 9, (6, 182, 212, 120)),
+            (1680, 420, 7, (0, 82, 255, 130)),
+            (1740, 490, 8, (245, 158, 11, 120)),
+            (1360, 600, 7, (16, 185, 129, 120)),
+            (1760, 610, 7, (139, 92, 246, 120)),
+            (1720, 730, 9, (6, 182, 212, 120)),
+            (1400, 740, 8, (245, 158, 11, 120))
         ]
         for x, y, r, c in dots:
             p_draw.ellipse([x - r, y - r, x + r, y + r], fill=c)
@@ -268,8 +269,8 @@ def make_slide_01():
         # Diffused ground drop shadow beneath jumping mascot
         m_sh = Image.new('RGBA', (W, H), (0, 0, 0, 0))
         m_sh_d = ImageDraw.Draw(m_sh)
-        m_sh_d.ellipse([mx_pos + 45, my_pos + mh + 15, mx_pos + mw - 35, my_pos + mh + 45], fill=(0, 40, 120, 55))
-        m_sh = m_sh.filter(ImageFilter.GaussianBlur(18))
+        m_sh_d.ellipse([mx_pos + 40, my_pos + mh + 10, mx_pos + mw - 30, my_pos + mh + 36], fill=(0, 40, 120, 45))
+        m_sh = m_sh.filter(ImageFilter.GaussianBlur(15))
         
         base = Image.alpha_composite(base, m_sh)
         base.paste(m_scaled, (mx_pos, my_pos), m_scaled)
