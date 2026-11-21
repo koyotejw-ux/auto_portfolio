@@ -155,73 +155,57 @@ def make_slide_01():
             
         k_y += 114
 
-    # Right Side: Dual Flagship iPhone Mockups in Authentic 3D Isometric Physical Chassis
-    # Rendered with physical metallic frame, speaker grilles, volume/power buttons, glass glare, and realistic floating contact shadows
-    p_pass = Image.open('zeropass/assets/iphone_mockups/realistic_3d_pass.png').convert('RGBA')
-    p_ledger = Image.open('zeropass/assets/iphone_mockups/realistic_3d_ledger.png').convert('RGBA')
+    # Right Side: Single Flagship Android Smartphone Mockup in Authentic 3D Isometric Tilt
+    # Clean single Android device with edge-to-edge display and punch-hole camera
+    # Background is 100% clean with smooth Gaussian ambient lighting and soft contact drop shadows
+    p_android = Image.open('zeropass/assets/iphone_mockups/realistic_3d_android.png').convert('RGBA')
     
-    scale_back = 1.10
-    w_b = int(p_ledger.width * scale_back)
-    h_b = int(p_ledger.height * scale_back)
-    p_ledger_s = p_ledger.resize((w_b, h_b), Image.Resampling.LANCZOS)
+    scale_phone = 1.34
+    w_p = int(p_android.width * scale_phone)
+    h_p = int(p_android.height * scale_phone)
+    p_android_s = p_android.resize((w_p, h_p), Image.Resampling.LANCZOS)
     
-    scale_front = 1.24
-    w_f = int(p_pass.width * scale_front)
-    h_f = int(p_pass.height * scale_front)
-    p_pass_s = p_pass.resize((w_f, h_f), Image.Resampling.LANCZOS)
+    # Position prominently on the right stage
+    pos_phone = (950, 130)
     
-    pos_back = (1170, 115)
-    pos_front = (880, 165)
+    # Smooth, non-destructive diffused Gaussian contact floor shadows
+    # Layer 1: Deep ambient contact shadow
+    sh_1 = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+    sh_1_d = ImageDraw.Draw(sh_1)
+    sh_1_d.ellipse([pos_phone[0] + 120, pos_phone[1] + h_p - 75, pos_phone[0] + w_p - 80, pos_phone[1] + h_p + 35], fill=(15, 23, 42, 65))
+    sh_1 = sh_1.filter(ImageFilter.GaussianBlur(40))
     
-    # Authentic multi-stage ambient contact drop shadows
-    def add_realistic_shadow(img, pos, blur=32, offset=(20, 35), alpha=70):
-        mask = img.split()[3]
-        sh_mask = Image.new('RGBA', (W, H), (0, 0, 0, 0))
-        sh_color = Image.new('RGBA', img.size, (15, 23, 42, alpha))
-        sh_mask.paste(sh_color, (pos[0] + offset[0], pos[1] + offset[1]), mask)
-        return sh_mask.filter(ImageFilter.GaussianBlur(blur))
+    # Layer 2: Soft extended elevation shadow
+    sh_2 = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+    sh_2_d = ImageDraw.Draw(sh_2)
+    sh_2_d.ellipse([pos_phone[0] + 160, pos_phone[1] + h_p - 50, pos_phone[0] + w_p - 130, pos_phone[1] + h_p + 15], fill=(0, 50, 150, 45))
+    sh_2 = sh_2.filter(ImageFilter.GaussianBlur(22))
     
-    sh_b1 = add_realistic_shadow(p_ledger_s, pos_back, blur=40, offset=(28, 48), alpha=70)
-    sh_b2 = add_realistic_shadow(p_ledger_s, pos_back, blur=15, offset=(12, 22), alpha=55)
-    sh_f1 = add_realistic_shadow(p_pass_s, pos_front, blur=46, offset=(32, 54), alpha=78)
-    sh_f2 = add_realistic_shadow(p_pass_s, pos_front, blur=18, offset=(14, 24), alpha=65)
+    base = Image.alpha_composite(base, sh_1)
+    base = Image.alpha_composite(base, sh_2)
+    base.paste(p_android_s, pos_phone, p_android_s)
     
-    for s in [sh_b1, sh_b2, sh_f1, sh_f2]:
-        base = Image.alpha_composite(base, s)
-        
-    base.paste(p_ledger_s, pos_back, p_ledger_s)
-    base.paste(p_pass_s, pos_front, p_pass_s)
-    
-    # 🌟 Authentic 3D Official Mascot "Passy" (패시) Showcasing the Screens
-    # Uses the canonical 3D character model matching app_icon.png and brand guidelines
-    mascot_p = 'zeropass/assets/mascot_poses/passy_guide_pointing.png'
+    # 🌟 Energetic Official 3D Mascot "Passy" (패시)
+    # Animated character jumping with joy & winking (No phone/card, no speech bubble)
+    mascot_p = 'zeropass/assets/mascot_poses/passy_jump_wink.png'
     if os.path.exists(mascot_p):
         im_m = Image.open(mascot_p).convert('RGBA')
-        mh = 305
+        mh = 325
         mw = int(round(mh * (im_m.width / im_m.height)))
         m_scaled = im_m.resize((mw, mh), Image.Resampling.LANCZOS)
         
-        # Ground Contact Shadow for Mascot
+        # Position jumping high in the air beside the Android mockup
+        mx_pos = 1530
+        my_pos = 450
+        
+        # Floating ground shadow below feet to emphasize jumping height
         m_sh = Image.new('RGBA', (W, H), (0, 0, 0, 0))
         m_sh_d = ImageDraw.Draw(m_sh)
-        mx_pos = 1490
-        my_pos = 505
-        m_sh_d.ellipse([mx_pos + 35, my_pos + mh - 26, mx_pos + mw - 25, my_pos + mh + 14], fill=(0, 45, 130, 68))
-        m_sh = m_sh.filter(ImageFilter.GaussianBlur(14))
+        m_sh_d.ellipse([mx_pos + 50, my_pos + mh + 20, mx_pos + mw - 40, my_pos + mh + 50], fill=(0, 45, 130, 55))
+        m_sh = m_sh.filter(ImageFilter.GaussianBlur(16))
+        
         base = Image.alpha_composite(base, m_sh)
         base.paste(m_scaled, (mx_pos, my_pos), m_scaled)
-        
-        # Mascot Speech Bubble (Showcase Greeting Message)
-        draw = ImageDraw.Draw(base)
-        sb_x = mx_pos - 65
-        sb_y = my_pos - 48
-        sb_w = 264
-        sb_h = 44
-        draw.rounded_rectangle([sb_x, sb_y, sb_x + sb_w, sb_y + sb_h], radius=12, fill=(255, 255, 255), outline=(0, 82, 255), width=2)
-        # Tail pointing towards Passy
-        draw.polygon([(sb_x + 130, sb_y + sb_h), (sb_x + 152, sb_y + sb_h), (sb_x + 146, sb_y + sb_h + 10)], fill=(0, 82, 255))
-        draw.polygon([(sb_x + 132, sb_y + sb_h - 1), (sb_x + 150, sb_y + sb_h - 1), (sb_x + 146, sb_y + sb_h + 8)], fill=(255, 255, 255))
-        draw.text((sb_x + sb_w // 2, sb_y + sb_h // 2 - 1), "0.8초 원터치로 출결을 완성해요!", font=get_font(11.5, 'bold'), fill=(0, 82, 255), anchor='mm')
     
     draw = ImageDraw.Draw(base)
     
