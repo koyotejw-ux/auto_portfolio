@@ -1339,76 +1339,86 @@ def make_slide_08():
     draw.line([(100, 52), (1820, 52)], fill=(226, 232, 240), width=1)
     
     lx = 100
-    draw_pill_badge(draw, left_x=lx, cy=78, text="08 CORE FEATURE | 0.8S TABLET KIOSK ATTENDANCE ENGINE", font=get_font(10.5, 'bold'), theme='blue', pad_x=10, height=26)
+    draw_pill_badge(draw, left_x=lx, cy=78, text="08 CORE FEATURE | 0.8S TABLET KIOSK ATTENDANCE & MOBILE INTERACTION ENGINE", font=get_font(10.5, 'bold'), theme='blue', pad_x=10, height=26)
     
-    t1_a = "복잡한 카드 태그 없이 "
-    t1_b = "번호 4자리로,"
-    font_title = get_font(33, 'extrabold')
+    t1_a = "원생 4자리 번호 터치부터 "
+    t1_b = "원장님 메인 출결 동기화까지,"
+    font_title = get_font(31, 'extrabold')
     w_t1_a = draw.textlength(t1_a, font=font_title)
-    draw.text((lx, 116), t1_a, font=font_title, fill=(15, 23, 42))
-    draw.text((lx + w_t1_a, 116), t1_b, font=font_title, fill=(0, 81, 255))
+    draw.text((lx, 114), t1_a, font=font_title, fill=(15, 23, 42))
+    draw.text((lx + w_t1_a, 114), t1_b, font=font_title, fill=(0, 81, 255))
     
     t2_a = "0.8초 만에 "
-    t2_b = "출결과 차감을 완성해요."
+    t2_b = "무인 출결 완결과 모바일 실시간 인터랙션이 연동돼요."
     w_t2_a = draw.textlength(t2_a, font=font_title)
-    draw.text((lx, 158), t2_a, font=font_title, fill=(0, 81, 255))
-    draw.text((lx + w_t2_a, 158), t2_b, font=font_title, fill=(15, 23, 42))
+    draw.text((lx, 154), t2_a, font=font_title, fill=(0, 81, 255))
+    draw.text((lx + w_t2_a, 154), t2_b, font=font_title, fill=(15, 23, 42))
     
-    desc_sub_1 = "원생 대기 없이 10인치 태블릿 키오스크에서 직접 전화번호 4자리를 터치하면"
-    desc_sub_2 = "0.8초 이내 초고속 출결 인증과 회차 자동 차감, 학부모 안심 카카오 알림톡이 완결됩니다."
-    draw.text((lx, 204), desc_sub_1, font=get_font(12, 'regular'), fill=(71, 85, 105))
-    draw.text((lx, 224), desc_sub_2, font=get_font(12, 'regular'), fill=(71, 85, 105))
+    desc_sub_1 = "원생이 10인치 태블릿 키오스크에서 전화번호 4자리를 입력하는 즉시, 0.8초 초고속 인증과 회차 자동 차감이 완결되며"
+    desc_sub_2 = "원장님 모바일 '출결 체크' 메인 화면의 실시간 카운터 및 대기 목록에 100% 무선 동기화되어 즉각 반영됩니다."
+    draw.text((lx, 196), desc_sub_1, font=get_font(12, 'regular'), fill=(71, 85, 105))
+    draw.text((lx, 216), desc_sub_2, font=get_font(12, 'regular'), fill=(71, 85, 105))
+
+    # Top-Right Live Sync Status Pill
+    sync_badge_x = 1420
+    draw.rounded_rectangle([sync_badge_x, 116, 1820, 166], radius=10, fill=(239, 246, 255), outline=(191, 219, 254), width=1)
+    draw.ellipse([sync_badge_x + 18, 137, sync_badge_x + 28, 147], fill=(16, 185, 129))
+    draw.text((sync_badge_x + 36, 142), "키오스크 ⇄ 모바일 양방향 실시간 동기화", font=get_font(10.5, 'bold'), fill=(0, 82, 255), anchor='lm')
+    draw.text((sync_badge_x + 36, 156), "로컬 소켓 & 이벤트 버스 무지연 파이프라인 (지연 < 10ms)", font=get_font(8.5, 'regular'), fill=(100, 116, 139), anchor='lm')
 
     # -------------------------------------------------------------
-    # 3-Stage Full Lifecycle Carousel (Standby -> Dialing -> Success)
+    # 3-Stage Interactive Columns with Expanded Screen Mockups
     # -------------------------------------------------------------
+    card_y = 244
+    card_w = 548
+    card_h = 572
+    card_gap = 38
+    start_x = 100
+
     kiosk_stages = [
         {
             "step": "STEP 01",
-            "title": "대기 및 진입 (Standby)",
-            "sub": "원생 진입 대기 & 실시간 클록 동기화",
+            "title": "대기 및 진입 (Standby Engine)",
+            "sub": "원생 진입 감지 & 실시간 디지털 클록 연동",
             "img_path": "zeropass/assets/kiosk_mockups/real_tablet_kiosk_standby.png",
             "badge": "무인 대기 모드",
             "badge_theme": "slate",
-            "bullets": [
-                "다크 옵시디언 고대비 테마로 시인성 확보",
-                "스튜디오 브랜드 엠블럼 및 실시간 시계 연동",
-                "초기화(Clear) 상태 4자리 대기 박스 렌더링"
-            ]
+            "chips": [
+                ("옵시디언 다크 테마", "시인성 100% 최적화"),
+                ("스튜디오 브랜드 연동", "실시간 시계 동기화"),
+                ("10인치 태블릿 반응형", "가로/세로 오토 레이아웃")
+            ],
+            "interaction": "진입 대기: 4자리 입력 박스가 Clear 상태로 원생 터치 대기 (CPU 점유율 < 1%)"
         },
         {
             "step": "STEP 02",
-            "title": "인체공학 터치 다이얼 (Dialing)",
-            "sub": "116dp 대형 텐키패드 & 10ms 인덱싱",
+            "title": "인체공학 터치 다이얼 (Dialing & Indexing)",
+            "sub": "116dp 대형 텐키패드 & 10ms 고속 트리거",
             "img_path": "zeropass/assets/kiosk_mockups/real_tablet_kiosk_dial.png",
             "badge": "고속 햅틱 입력",
             "badge_theme": "blue",
-            "bullets": [
-                "유아/저학년도 오터치 없는 116dp 그리드",
-                "번호 입력 즉시 네온 글로우 피드백",
-                "전화번호 뒷자리 고속 인덱스 자동 매칭"
-            ]
+            "chips": [
+                ("116dp 대형 터치 그리드", "유아 오터치 원천 차단"),
+                ("네온 글로우 햅틱 피드백", "입력 즉시 시각 반응"),
+                ("인메모리 인덱스 매칭", "4자리 입력 시 즉각 검색")
+            ],
+            "interaction": "입력 파이프라인: 4자리 터치 완료 시 10ms 내 로컬 DB 원생 식별 트리거 가동"
         },
         {
             "step": "STEP 03",
-            "title": "0.8초 출결 완결 (Celebration)",
-            "sub": "원생 식별 · 회차 차감 · 알림톡 자동 발송",
+            "title": "0.8초 완결 & 메인 동기화 (Sync Celebration)",
+            "sub": "원생 식별 · 잔여 회차 즉시 차감 · 모바일 실시간 반영",
             "img_path": "zeropass/assets/kiosk_mockups/real_tablet_kiosk_success.png",
             "badge": "출결 및 차감 완결",
             "badge_theme": "emerald",
-            "bullets": [
-                "강지훈 원생 식별 및 잔여 회차 즉각 차감",
-                "보호자 안심 알림톡 발송 큐 실시간 적립",
-                "원터치 확인 및 대기 화면 자동 복귀"
-            ]
+            "chips": [
+                ("강지훈 원생 식별 및 차감", "잔여 1회 / 총 12회 차감"),
+                ("학부모 알림톡 큐 자동 적립", "백그라운드 즉각 발송"),
+                ("원장님 모바일 실시간 갱신", "헤더 출결 카운터 즉시 반영")
+            ],
+            "interaction": "상태 인터랙션: 태블릿 성공 완료 즉시 모바일 '출결 체크' 헤더 카운터 자동 갱신"
         }
     ]
-
-    card_y = 258
-    card_w = 548
-    card_h = 560
-    card_gap = 38
-    start_x = 100
 
     for idx, stage in enumerate(kiosk_stages):
         cx = start_x + idx * (card_w + card_gap)
@@ -1418,52 +1428,101 @@ def make_slide_08():
         
         # Step Header Pill & Badge
         draw_pill_badge(draw, left_x=cx + 20, cy=card_y + 24, text=stage["step"], font=get_font(9.5, 'bold'), theme='blue', pad_x=8, height=22)
-        draw_pill_badge(draw, left_x=cx + card_w - 110, cy=card_y + 24, text=stage["badge"], font=get_font(8.5, 'bold'), theme=stage["badge_theme"], pad_x=8, height=20)
+        draw_pill_badge(draw, left_x=cx + card_w - 116, cy=card_y + 24, text=stage["badge"], font=get_font(8.5, 'bold'), theme=stage["badge_theme"], pad_x=8, height=20)
         
-        draw.text((cx + 20, card_y + 44), stage["title"], font=get_font(14, 'bold'), fill=(15, 23, 42))
-        draw.text((cx + 20, card_y + 66), stage["sub"], font=get_font(10.5, 'regular'), fill=(100, 116, 139))
+        draw.text((cx + 20, card_y + 44), stage["title"], font=get_font(13.5, 'bold'), fill=(15, 23, 42))
+        draw.text((cx + 20, card_y + 65), stage["sub"], font=get_font(10, 'regular'), fill=(100, 116, 139))
         
         # Tablet Device Mockup Placement
         img_p = stage["img_path"]
         if os.path.exists(img_p):
             raw_screen = Image.open(img_p).convert('RGBA')
-            framed_tab = make_tablet_kiosk_frame(raw_screen, target_h=340)
             
-            # Center inside card
-            tab_x = cx + (card_w - framed_tab.width) // 2
-            tab_y = card_y + 92
-            
-            sh_tab, pad_tab = make_shadow(framed_tab, blur=24, offset=(10, 16), alpha=70)
-            base.paste(sh_tab, (tab_x - pad_tab[0], tab_y - pad_tab[1]), sh_tab)
-            base.paste(framed_tab, (tab_x, tab_y), framed_tab)
+            if idx < 2:
+                # Steps 1 & 2: Large Expanded Tablet Mockup (target_h=370)
+                framed_tab = make_tablet_kiosk_frame(raw_screen, target_h=370)
+                tab_x = cx + (card_w - framed_tab.width) // 2
+                tab_y = card_y + 86
+                
+                sh_tab, pad_tab = make_shadow(framed_tab, blur=24, offset=(10, 16), alpha=70)
+                base.paste(sh_tab, (tab_x - pad_tab[0], tab_y - pad_tab[1]), sh_tab)
+                base.paste(framed_tab, (tab_x, tab_y), framed_tab)
+                
+            else:
+                # STEP 03: Dual Mockup (Tablet Kiosk Success + Real-Time Mobile "출결 체크" Sync Phone)
+                framed_tab = make_tablet_kiosk_frame(raw_screen, target_h=356)
+                tab_x = cx + 22
+                tab_y = card_y + 88
+                
+                sh_tab, pad_tab = make_shadow(framed_tab, blur=22, offset=(8, 14), alpha=65)
+                base.paste(sh_tab, (tab_x - pad_tab[0], tab_y - pad_tab[1]), sh_tab)
+                base.paste(framed_tab, (tab_x, tab_y), framed_tab)
+                
+                # Mobile Phone Showing Real-Time Synced "출결 체크" Main Screen
+                phone_p = 'zeropass/assets/iphone_mockups/clean_android_upright_mockup.png'
+                if os.path.exists(phone_p):
+                    phone_img = Image.open(phone_p).convert('RGBA')
+                    p_scale = 310 / phone_img.height
+                    pw_scaled = int(phone_img.width * p_scale)
+                    phone_scaled = phone_img.resize((pw_scaled, 310), Image.Resampling.LANCZOS)
+                    
+                    px_pos = cx + card_w - pw_scaled - 20
+                    py_pos = card_y + 142
+                    
+                    sh_phone, pad_ph = make_shadow(phone_scaled, blur=20, offset=(10, 16), alpha=85)
+                    base.paste(sh_phone, (px_pos - pad_ph[0], py_pos - pad_ph[1]), sh_phone)
+                    base.paste(phone_scaled, (px_pos, py_pos), phone_scaled)
+                    
+                    # Floating Real-Time Sync Indicator Pill on Phone
+                    pill_w = 142
+                    pill_h = 24
+                    pill_x = px_pos + (pw_scaled - pill_w) // 2
+                    pill_y = py_pos - 12
+                    draw.rounded_rectangle([pill_x, pill_y, pill_x + pill_w, pill_y + pill_h], radius=12, fill=(0, 82, 255), outline=(255, 255, 255), width=2)
+                    draw.text((pill_x + pill_w // 2, pill_y + 12), "⚡ 메인 즉시 동기화", font=get_font(8.5, 'bold'), fill=(255, 255, 255), anchor='mm')
 
-        # Bullets Container at Bottom of Card
-        bullet_box_y = card_y + 444
-        draw.rounded_rectangle([cx + 16, bullet_box_y, cx + card_w - 16, card_y + card_h - 16], radius=10, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
-        
-        for b_idx, b_text in enumerate(stage["bullets"]):
-            by = bullet_box_y + 12 + b_idx * 26
-            draw.ellipse([cx + 28, by + 4, cx + 34, by + 10], fill=(0, 81, 255))
-            draw.text((cx + 42, by), b_text, font=get_font(10.5, 'regular'), fill=(51, 65, 85))
+        # 3 Structured Micro Feature Chips
+        chip_y = card_y + 466
+        chip_h = 24
+        for c_idx, (c_label, c_sub) in enumerate(stage["chips"]):
+            cy_pos = chip_y + c_idx * 27
+            draw.rounded_rectangle([cx + 16, cy_pos, cx + card_w - 16, cy_pos + chip_h], radius=6, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
+            draw.ellipse([cx + 26, cy_pos + 9, cx + 32, cy_pos + 15], fill=(0, 81, 255))
+            draw.text((cx + 38, cy_pos + 12), c_label, font=get_font(9.5, 'bold'), fill=(30, 41, 59), anchor='lm')
+            draw.text((cx + card_w - 26, cy_pos + 12), c_sub, font=get_font(8.5, 'medium'), fill=(0, 82, 255), anchor='rm')
+
+        # Interactive Relationship Box
+        rel_y = card_y + card_h - 40
+        draw.rounded_rectangle([cx + 16, rel_y, cx + card_w - 16, rel_y + 28], radius=6, fill=(239, 246, 255), outline=(191, 219, 254), width=1)
+        draw.text((cx + card_w // 2, rel_y + 14), stage["interaction"], font=get_font(8.5, 'bold'), fill=(0, 82, 255), anchor='mm')
+
+    # Draw Inter-Stage Flow Arrows Between Step 1 -> Step 2 and Step 2 -> Step 3
+    for a_idx in range(2):
+        ax1 = start_x + (a_idx + 1) * card_w + a_idx * card_gap - 6
+        ax2 = ax1 + 48
+        ay = card_y + 260
+        draw_arrow(draw, (ax1, ay), (ax2, ay), col=(0, 82, 255), width=2, arrow_size=6)
+        draw.rounded_rectangle([ax1 + 8, ay - 14, ax2 - 8, ay + 14], radius=10, fill=(255, 255, 255), outline=(191, 219, 254), width=1)
+        draw.text((ax1 + 20, ay), "0.4s", font=get_font(8, 'bold'), fill=(0, 82, 255), anchor='mm')
 
     # -------------------------------------------------------------
     # Bottom Horizontal KPI & Telemetry Performance Strip
     # -------------------------------------------------------------
-    tel_y = 836
-    tel_h = 138
+    tel_y = 832
+    tel_h = 142
     draw.rounded_rectangle([lx, tel_y, lx + 1720, tel_y + tel_h], radius=14, fill=(240, 246, 255), outline=(191, 219, 254), width=1)
     
     # Left Header in Strip
-    draw.text((lx + 32, tel_y + 24), "키오스크 출결 엔진 실시간 측정 성능 지표", font=get_font(12, 'bold'), fill=(0, 82, 255))
-    draw_pill_badge(draw, left_x=lx + 32, cy=tel_y + 60, text="10인치 태블릿 반응형 최적화 완료", font=get_font(9.5, 'bold'), theme='blue', pad_x=10, height=24)
-    draw.text((lx + 32, tel_y + 88), "원생 직접 터치 무인 키오스크 실측 데이터", font=get_font(10, 'regular'), fill=(100, 116, 139))
+    draw.text((lx + 32, tel_y + 24), "키오스크 출결 엔진 & 메인 동기화 실측 지표", font=get_font(12, 'bold'), fill=(0, 82, 255))
+    draw_pill_badge(draw, left_x=lx + 32, cy=tel_y + 60, text="10인치 태블릿 + 모바일 양방향 최적화", font=get_font(9.5, 'bold'), theme='blue', pad_x=10, height=24)
+    draw.text((lx + 32, tel_y + 88), "무인 태블릿 키오스크 ⇄ 모바일 출결 실시간 연동", font=get_font(10, 'regular'), fill=(100, 116, 139))
     
     # 4 KPI Blocks
     kpis = [
-        ("출결 인증 속도", "0.8초", "기존 45초 대비 98% 단축"),
-        ("원생 식별 지연", "10ms", "초고속 실시간 인덱싱"),
+        ("출결 완결 속도", "0.8초", "기존 45초 대비 98% 단축"),
+        ("메인 실시간 동기화", "< 10ms", "로컬 이벤트 버스 즉각 반영"),
         ("오프라인 보존율", "100%", "무손실 SQLite 볼트 저장"),
-        ("UI 렌더링 지연", "16.6ms", "Flutter 60fps 무지연")
+        ("UI 렌더링 무지연", "60 fps", "Flutter 프레임 드랍 0%")
     ]
     
     kpi_start_x = lx + 440
