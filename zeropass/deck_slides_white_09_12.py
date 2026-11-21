@@ -129,16 +129,6 @@ def make_slide_09():
     draw.rounded_rectangle([p1_x, p_y, p1_x + p_w, p_y + p_h], radius=14, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
     draw_pill_badge(draw, left_x=p1_x + 14, cy=p_y + 20, text="1단계", font=get_font(9, 'bold'), theme='slate', pad_x=8, height=20)
     draw.text((p1_x + 70, p_y + 20), "D-Day 장부 실시간 정렬", font=get_font(13.5, 'bold'), fill=(15, 23, 42), anchor='lm')
-    
-    # Passy Alert Crying pose
-    p_cry = 'd:/097.flutter_project/auto_portfolio/zeropass/assets/mascot_poses/passy_alert_crying.png'
-    if not os.path.exists(p_cry):
-        p_cry = 'd:/097.flutter_project/auto_portfolio/zeropass/assets/mascot/mascot_profile_crying_round.png'
-    if os.path.exists(p_cry):
-        im_cry = Image.open(p_cry).convert('RGBA').resize((28, 28), Image.Resampling.LANCZOS)
-        base.paste(im_cry, (p1_x + p_w - 40, p_y + 6), im_cry)
-        draw = ImageDraw.Draw(base)
-
     draw.line([(p1_x + 14, p_y + 36), (p1_x + p_w - 14, p_y + 36)], fill=(226, 232, 240), width=1)
     
     phone1_x = p1_x + 14
@@ -171,16 +161,6 @@ def make_slide_09():
     draw.rounded_rectangle([p2_x, p_y, p2_x + p_w, p_y + p_h], radius=14, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
     draw_pill_badge(draw, left_x=p2_x + 14, cy=p_y + 20, text="2단계", font=get_font(9, 'bold'), theme='blue', pad_x=8, height=20)
     draw.text((p2_x + 70, p_y + 20), "원클릭 청구서 & 원부 관리", font=get_font(13.5, 'bold'), fill=(15, 23, 42), anchor='lm')
-
-    # Passy Success Check / Ledger Pose
-    p_laugh = 'd:/097.flutter_project/auto_portfolio/zeropass/assets/mascot_poses/passy_ledger_clock.png'
-    if not os.path.exists(p_laugh):
-        p_laugh = 'd:/097.flutter_project/auto_portfolio/zeropass/assets/mascot/mascot_profile_laughing_round.png'
-    if os.path.exists(p_laugh):
-        im_lgh = Image.open(p_laugh).convert('RGBA').resize((28, 28), Image.Resampling.LANCZOS)
-        base.paste(im_lgh, (p2_x + p_w - 40, p_y + 6), im_lgh)
-        draw = ImageDraw.Draw(base)
-
     draw.line([(p2_x + 14, p_y + 36), (p2_x + p_w - 14, p_y + 36)], fill=(226, 232, 240), width=1)
     
     phone2_x = p2_x + 14
@@ -611,18 +591,6 @@ def make_slide_12():
     draw_pill_badge(draw, left_x=rx + 24, cy=qy + 26, text="모바일 QR 즉시 실행", font=get_font(9.5, 'bold'), theme='green', dark_mode=True, has_dot=False, pad_x=10, height=22)
     draw.text((rx + 24, qy + 58), "스마트폰 카메라로 QR 코드를 스캔하세요.", font=get_font(17, 'bold'), fill=(255, 255, 255))
     draw.text((rx + 24, qy + 86), "별도 앱 설치 없이 모바일 브라우저에서 60fps 플러터 웹 프로토타입이 즉시 구동됩니다.", font=get_font(12, 'regular'), fill=(148, 163, 184))
-    
-    # Passy Assistant Security Officer Character beside QR Code
-    mascot_body_p = 'd:/097.flutter_project/auto_portfolio/zeropass/assets/mascot_poses/passy_vault_security.png'
-    if not os.path.exists(mascot_body_p):
-        mascot_body_p = 'd:/097.flutter_project/auto_portfolio/zeropass/assets/mascot/passy_clean_body.png'
-    if os.path.exists(mascot_body_p):
-        im_pb = Image.open(mascot_body_p).convert('RGBA')
-        pb_h = 88
-        pb_w = int(round(pb_h * (im_pb.width / im_pb.height)))
-        pb_scaled = im_pb.resize((pb_w, pb_h), Image.Resampling.LANCZOS)
-        base.paste(pb_scaled, (rx + rw - 190 - pb_w - 45, qy + 130), pb_scaled)
-        draw = ImageDraw.Draw(base)
     
     # 4 Quick Mode Pill Badges
     q_modes = [

@@ -1347,16 +1347,7 @@ def make_slide_08():
     tel_y = comp_y + comp_h - 180
     draw.rounded_rectangle([rx + 24, tel_y, rx + rw - 24, comp_y + comp_h - 24], radius=12, fill=(240, 246, 255), outline=(191, 219, 254), width=1)
     draw.text((rx + 40, tel_y + 20), "출결 엔진 실시간 측정 성과 지표", font=get_font(10.5, 'bold'), fill=(0, 82, 255))
-    
-    # Passy Success Check Badge in Telemetry Header
-    mascot_success_p = 'd:/097.flutter_project/auto_portfolio/zeropass/assets/mascot_poses/passy_success_check.png'
-    if not os.path.exists(mascot_success_p):
-        mascot_success_p = 'd:/097.flutter_project/auto_portfolio/zeropass/assets/mascot/mascot_profile_laughing_round.png'
-    if os.path.exists(mascot_success_p):
-        im_l = Image.open(mascot_success_p).convert('RGBA').resize((34, 34), Image.Resampling.LANCZOS)
-        base.paste(im_l, (rx + rw - 190, tel_y + 8), im_l)
-        draw = ImageDraw.Draw(base)
-        draw.text((rx + rw - 150, tel_y + 20), "패시 인증 보증", font=get_font(9.5, 'bold'), fill=(0, 82, 255), anchor='lm')
+    draw_pill_badge(draw, left_x=rx + rw - 140, cy=tel_y + 20, text="실측 인증 완료", font=get_font(9.5, 'bold'), theme='blue', pad_x=8, height=22)
 
     kpis = [
         ("출결 인증 속도", "0.8초", "기존 45초 대비 98% 단축"),
