@@ -1299,6 +1299,39 @@ def make_tablet_kiosk_frame(screen_img, target_h=740):
     new_h = target_h
     return tablet.resize((new_w, new_h), Image.Resampling.LANCZOS)
 
+def make_tablet_kiosk_frame(screen_img, target_h=490):
+    sw, sh = screen_img.size
+    bezel = int(sw * 0.04)
+    top_bezel = int(sw * 0.055)
+    bot_bezel = int(sw * 0.055)
+    total_w = sw + bezel * 2
+    total_h = sh + top_bezel + bot_bezel
+    outer_rad = int(bezel * 1.5)
+    screen_rad = int(bezel * 0.5)
+    
+    tablet = Image.new('RGBA', (total_w, total_h), (0, 0, 0, 0))
+    d = ImageDraw.Draw(tablet)
+    # Metallic Outer Chassis
+    d.rounded_rectangle([0, 0, total_w, total_h], radius=outer_rad, fill=(28, 30, 36, 255), outline=(75, 85, 99, 255), width=3)
+    d.rounded_rectangle([4, 4, total_w - 4, total_h - 4], radius=outer_rad - 3, outline=(55, 65, 81, 255), width=2)
+    d.rounded_rectangle([8, 8, total_w - 8, total_h - 8], radius=outer_rad - 6, fill=(11, 15, 25, 255))
+    
+    # Front Camera Dot
+    cam_cx = total_w // 2
+    cam_cy = top_bezel // 2 + 4
+    d.ellipse([cam_cx - 8, cam_cy - 8, cam_cx + 8, cam_cy + 8], fill=(17, 24, 39, 255), outline=(55, 65, 81, 255), width=2)
+    d.ellipse([cam_cx - 3, cam_cy - 3, cam_cx + 3, cam_cy + 3], fill=(30, 41, 59, 255))
+    
+    mask = Image.new('L', (sw, sh), 0)
+    md = ImageDraw.Draw(mask)
+    md.rounded_rectangle([0, 0, sw, sh], radius=screen_rad, fill=255)
+    tablet.paste(screen_img, (bezel, top_bezel), mask)
+    
+    scale = target_h / total_h
+    new_w = int(total_w * scale)
+    new_h = target_h
+    return tablet.resize((new_w, new_h), Image.Resampling.LANCZOS)
+
 def make_slide_08():
     base = Image.new('RGBA', (W, H), (248, 250, 252, 255))
     draw = ImageDraw.Draw(base)
@@ -1306,7 +1339,6 @@ def make_slide_08():
     draw.line([(100, 52), (1820, 52)], fill=(226, 232, 240), width=1)
     
     lx = 100
-    lw = 460
     draw_pill_badge(draw, left_x=lx, cy=78, text="08 CORE FEATURE | 0.8S TABLET KIOSK ATTENDANCE ENGINE", font=get_font(10.5, 'bold'), theme='blue', pad_x=10, height=26)
     
     t1_a = "복잡한 카드 태그 없이 "
@@ -1322,105 +1354,132 @@ def make_slide_08():
     draw.text((lx, 158), t2_a, font=font_title, fill=(0, 81, 255))
     draw.text((lx + w_t2_a, 158), t2_b, font=font_title, fill=(15, 23, 42))
     
-    desc_sub_1 = "바코드 리더기나 지문 인식기 고장 없이, 원생이 태블릿 화면에서 직접"
-    desc_sub_2 = "전화번호 뒤 4자리만 터치하면 0.8초 내에 즉각 출결 인증 및 학부모 알림 완결"
+    desc_sub_1 = "원생 대기 없이 10인치 태블릿 키오스크에서 직접 전화번호 4자리를 터치하면"
+    desc_sub_2 = "0.8초 이내 초고속 출결 인증과 회차 자동 차감, 학부모 안심 카카오 알림톡이 완결됩니다."
     draw.text((lx, 204), desc_sub_1, font=get_font(12, 'regular'), fill=(71, 85, 105))
     draw.text((lx, 224), desc_sub_2, font=get_font(12, 'regular'), fill=(71, 85, 105))
-    
-    # Left Comparison Card (Traditional vs ZeroPass Kiosk)
-    comp_y = 260
-    comp_h = 680
-    draw.rounded_rectangle([lx, comp_y, lx + lw, comp_y + comp_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-    draw_pill_badge(draw, left_x=lx + 24, cy=comp_y + 30, text="출결 방식 비교 분석", font=get_font(9.5, 'bold'), theme='slate', pad_x=8, height=22)
-    draw.text((lx + 24, comp_y + 58), "기존 아날로그 출결 vs 체크앤페이 키오스크", font=get_font(14, 'bold'), fill=(15, 23, 42))
-    
-    # Traditional
-    draw.rounded_rectangle([lx + 24, comp_y + 92, lx + lw - 24, comp_y + 272], radius=12, fill=(254, 242, 242), outline=(254, 202, 202), width=1)
-    draw.text((lx + 40, comp_y + 112), "기존 종이 장부 & 바코드 카드 출결", font=get_font(13, 'bold'), fill=(220, 38, 38))
-    t_bullets = [
-        "• 종이 출석부에 손으로 이름을 적느라 대기 줄 발생",
-        "• 실물 카드 분실 시 재발급 비용 및 출결 누락 위험",
-        "• 수업 전 15~20분 동안 강사가 출결 확인에 매달림"
-    ]
-    for b_idx, b in enumerate(t_bullets):
-        draw.text((lx + 40, comp_y + 144 + b_idx * 36), b, font=get_font(11.5, 'regular'), fill=(127, 29, 29))
-        
-    # ZeroPass Kiosk
-    draw.rounded_rectangle([lx + 24, comp_y + 295, lx + lw - 24, comp_y + 655], radius=12, fill=(239, 246, 255), outline=(191, 219, 254), width=1)
-    draw.text((lx + 40, comp_y + 315), "체크앤페이 원터치 키오스크 혁신", font=get_font(13.5, 'bold'), fill=(0, 82, 255))
-    z_bullets = [
-        ("4자리 초고속 인덱스 매칭", "전화번호 뒤 4자리 입력 즉시 10ms 내 원생 자동 감지"),
-        ("80dp 특대형 터치 다이얼패드", "유아/저학년도 오터치 없이 쉽게 누르는 인체공학 키패드"),
-        ("등원 / 하원 원터치 자동 분기", "오늘 이미 등원한 원생은 하원 완료 버튼으로 자동 스위칭"),
-        ("하원 시 잔여 수강권 자동 차감", "수강권 종류(월정기/회차)에 맞추어 실시간 차감 처리"),
-        ("학부모 카카오 안심 알림톡", "출결 즉시 등록된 보호자에게 안전 도착/하원 알림 발송")
-    ]
-    zy = comp_y + 352
-    for z_tit, z_desc in z_bullets:
-        draw.text((lx + 40, zy), z_tit, font=get_font(12.5, 'bold'), fill=(0, 82, 255))
-        draw.text((lx + 40, zy + 22), z_desc, font=get_font(11, 'regular'), fill=(51, 65, 85))
-        zy += 58
 
-    # Center Tablet Kiosk Device (Authentic Flutter Kiosk Capture)
-    kiosk_raw_path = 'zeropass/assets/kiosk_mockups/real_tablet_kiosk_dial.png'
-    if os.path.exists(kiosk_raw_path):
-        raw_kiosk = Image.open(kiosk_raw_path).convert('RGBA')
-        framed_tablet = make_tablet_kiosk_frame(raw_kiosk, target_h=740)
-        pos_tab = (595, 200)
-        sh_tab, pad_tab = make_shadow(framed_tablet, blur=44, alpha=85)
-        base.paste(sh_tab, (pos_tab[0] - pad_tab[0], pos_tab[1] - pad_tab[1]), sh_tab)
-        base.paste(framed_tablet, pos_tab, framed_tablet)
-        
-        # Tablet Tag / Caption
-        draw_pill_badge(draw, left_x=pos_tab[0] + framed_tablet.width // 2 - 110, cy=comp_y + comp_h + 18, 
-                        text="실제 구동 화면 · 10인치 태블릿 키오스크", font=get_font(9.5, 'bold'), theme='slate', pad_x=12, height=24)
-
-    # Right Column: Kiosk Architecture & Telemetry KPIs (x=1130 to 1820)
-    rx = 1130
-    rw = 690
-    draw.rounded_rectangle([rx, comp_y, rx + rw, comp_y + comp_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-    draw_pill_badge(draw, left_x=rx + 24, cy=comp_y + 30, text="키오스크 하드웨어 & UX 엔진 분석", font=get_font(9.5, 'bold'), theme='blue', pad_x=8, height=22)
-    draw.text((rx + 24, comp_y + 58), "현장 무인 출결을 위한 4대 UX/엔지니어링 코어", font=get_font(14.5, 'bold'), fill=(15, 23, 42))
-    
-    kiosk_specs = [
-        ("01. 다크 옵시디언 고대비 UI (Dark Obsidian)", 
-         "실내 조명 반사를 최소화하고 유아부터 시니어까지 직관적으로 숫자를 인식할 수 있는 고대비 다크 테마 적용"),
-        ("02. 동명이인 및 중복 번호 2차 식별 모달", 
-         "동일한 뒷번호 4자리를 가진 원생 다수 감지 시 즉시 실명 카드 선택 모달을 띄워 오출결 100% 방지"),
-        ("03. 100% 오프라인 SQLite 볼트 안심 동기화", 
-         "학원 Wi-Fi가 일시적으로 끊겨도 로컬 암호화 데이터베이스에 우선 저장 후 복구 시 서버로 안전 전송"),
-        ("04. 터치 햅틱 & 실시간 출결 폭죽 축하 효과", 
-         "숫자 터치 시 즉각적인 햅틱 반응 및 출결 완료 시 원생 만족도를 극대화하는 시각적 보상 애니메이션 제공")
+    # -------------------------------------------------------------
+    # 3-Stage Full Lifecycle Carousel (Standby -> Dialing -> Success)
+    # -------------------------------------------------------------
+    kiosk_stages = [
+        {
+            "step": "STEP 01",
+            "title": "대기 및 진입 (Standby)",
+            "sub": "원생 진입 대기 & 실시간 클록 동기화",
+            "img_path": "zeropass/assets/kiosk_mockups/real_tablet_kiosk_standby.png",
+            "badge": "무인 대기 모드",
+            "badge_theme": "slate",
+            "bullets": [
+                "다크 옵시디언 고대비 테마로 시인성 확보",
+                "스튜디오 브랜드 엠블럼 및 실시간 시계 연동",
+                "초기화(Clear) 상태 4자리 대기 박스 렌더링"
+            ]
+        },
+        {
+            "step": "STEP 02",
+            "title": "인체공학 터치 다이얼 (Dialing)",
+            "sub": "116dp 대형 텐키패드 & 10ms 인덱싱",
+            "img_path": "zeropass/assets/kiosk_mockups/real_tablet_kiosk_dial.png",
+            "badge": "고속 햅틱 입력",
+            "badge_theme": "blue",
+            "bullets": [
+                "유아/저학년도 오터치 없는 116dp 그리드",
+                "번호 입력 즉시 네온 글로우 피드백",
+                "전화번호 뒷자리 고속 인덱스 자동 매칭"
+            ]
+        },
+        {
+            "step": "STEP 03",
+            "title": "0.8초 출결 완결 (Celebration)",
+            "sub": "원생 식별 · 회차 차감 · 알림톡 자동 발송",
+            "img_path": "zeropass/assets/kiosk_mockups/real_tablet_kiosk_success.png",
+            "badge": "출결 및 차감 완결",
+            "badge_theme": "emerald",
+            "bullets": [
+                "강지훈 원생 식별 및 잔여 회차 즉각 차감",
+                "보호자 안심 알림톡 발송 큐 실시간 적립",
+                "원터치 확인 및 대기 화면 자동 복귀"
+            ]
+        }
     ]
-    
-    f_y = comp_y + 92
-    for s_tit, s_desc in kiosk_specs:
-        draw.rounded_rectangle([rx + 24, f_y, rx + rw - 24, f_y + 72], radius=10, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
-        draw_pill_badge(draw, left_x=rx + 36, cy=f_y + 22, text="CORE SPEC", font=get_font(8, 'bold'), theme='blue', pad_x=6, height=18)
-        draw.text((rx + 115, f_y + 22), s_tit, font=get_font(12.5, 'bold'), fill=(15, 23, 42), anchor='lm')
-        draw.text((rx + 36, f_y + 48), s_desc, font=get_font(10.5, 'regular'), fill=(71, 85, 105))
-        f_y += 84
-        
-    # Telemetry KPI Strip at Bottom of Right Box
-    tel_y = comp_y + comp_h - 180
-    draw.rounded_rectangle([rx + 24, tel_y, rx + rw - 24, comp_y + comp_h - 24], radius=12, fill=(240, 246, 255), outline=(191, 219, 254), width=1)
-    draw.text((rx + 40, tel_y + 20), "키오스크 엔진 실시간 측정 성능 지표", font=get_font(10.5, 'bold'), fill=(0, 82, 255))
-    draw_pill_badge(draw, left_x=rx + rw - 140, cy=tel_y + 20, text="실측 인증 완료", font=get_font(9.5, 'bold'), theme='blue', pad_x=8, height=22)
 
+    card_y = 258
+    card_w = 548
+    card_h = 560
+    card_gap = 38
+    start_x = 100
+
+    for idx, stage in enumerate(kiosk_stages):
+        cx = start_x + idx * (card_w + card_gap)
+        
+        # Outer Card Container
+        draw.rounded_rectangle([cx, card_y, cx + card_w, card_y + card_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+        
+        # Step Header Pill & Badge
+        draw_pill_badge(draw, left_x=cx + 20, cy=card_y + 24, text=stage["step"], font=get_font(9.5, 'bold'), theme='blue', pad_x=8, height=22)
+        draw_pill_badge(draw, left_x=cx + card_w - 110, cy=card_y + 24, text=stage["badge"], font=get_font(8.5, 'bold'), theme=stage["badge_theme"], pad_x=8, height=20)
+        
+        draw.text((cx + 20, card_y + 44), stage["title"], font=get_font(14, 'bold'), fill=(15, 23, 42))
+        draw.text((cx + 20, card_y + 66), stage["sub"], font=get_font(10.5, 'regular'), fill=(100, 116, 139))
+        
+        # Tablet Device Mockup Placement
+        img_p = stage["img_path"]
+        if os.path.exists(img_p):
+            raw_screen = Image.open(img_p).convert('RGBA')
+            framed_tab = make_tablet_kiosk_frame(raw_screen, target_h=340)
+            
+            # Center inside card
+            tab_x = cx + (card_w - framed_tab.width) // 2
+            tab_y = card_y + 92
+            
+            sh_tab, pad_tab = make_shadow(framed_tab, blur=24, offset=(10, 16), alpha=70)
+            base.paste(sh_tab, (tab_x - pad_tab[0], tab_y - pad_tab[1]), sh_tab)
+            base.paste(framed_tab, (tab_x, tab_y), framed_tab)
+
+        # Bullets Container at Bottom of Card
+        bullet_box_y = card_y + 444
+        draw.rounded_rectangle([cx + 16, bullet_box_y, cx + card_w - 16, card_y + card_h - 16], radius=10, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
+        
+        for b_idx, b_text in enumerate(stage["bullets"]):
+            by = bullet_box_y + 12 + b_idx * 26
+            draw.ellipse([cx + 28, by + 4, cx + 34, by + 10], fill=(0, 81, 255))
+            draw.text((cx + 42, by), b_text, font=get_font(10.5, 'regular'), fill=(51, 65, 85))
+
+    # -------------------------------------------------------------
+    # Bottom Horizontal KPI & Telemetry Performance Strip
+    # -------------------------------------------------------------
+    tel_y = 836
+    tel_h = 138
+    draw.rounded_rectangle([lx, tel_y, lx + 1720, tel_y + tel_h], radius=14, fill=(240, 246, 255), outline=(191, 219, 254), width=1)
+    
+    # Left Header in Strip
+    draw.text((lx + 32, tel_y + 24), "키오스크 출결 엔진 실시간 측정 성능 지표", font=get_font(12, 'bold'), fill=(0, 82, 255))
+    draw_pill_badge(draw, left_x=lx + 32, cy=tel_y + 60, text="10인치 태블릿 반응형 최적화 완료", font=get_font(9.5, 'bold'), theme='blue', pad_x=10, height=24)
+    draw.text((lx + 32, tel_y + 88), "원생 직접 터치 무인 키오스크 실측 데이터", font=get_font(10, 'regular'), fill=(100, 116, 139))
+    
+    # 4 KPI Blocks
     kpis = [
         ("출결 인증 속도", "0.8초", "기존 45초 대비 98% 단축"),
         ("원생 식별 지연", "10ms", "초고속 실시간 인덱싱"),
         ("오프라인 보존율", "100%", "무손실 SQLite 볼트 저장"),
         ("UI 렌더링 지연", "16.6ms", "Flutter 60fps 무지연")
     ]
-    tkw = (rw - 48 - 30) // 4
+    
+    kpi_start_x = lx + 440
+    kpi_col_w = (1720 - 460) // 4
     for kidx, (k_name, k_val, k_sub) in enumerate(kpis):
-        kx = rx + 40 + kidx * (tkw + 10)
-        ky = tel_y + 44
-        draw.text((kx, ky), k_name, font=get_font(10, 'medium'), fill=(100, 116, 139))
-        draw.text((kx, ky + 24), k_val, font=get_num_font(18, 'black'), fill=(0, 82, 255))
-        draw.text((kx, ky + 48), k_sub, font=get_font(8.5, 'regular'), fill=(71, 85, 105))
+        kx = kpi_start_x + kidx * kpi_col_w
+        
+        # Divider line
+        if kidx > 0:
+            draw.line([(kx - 18, tel_y + 24), (kx - 18, tel_y + tel_h - 24)], fill=(203, 213, 225), width=1)
+            
+        draw.text((kx, tel_y + 26), k_name, font=get_font(11, 'medium'), fill=(100, 116, 139))
+        draw.text((kx, tel_y + 50), k_val, font=get_num_font(26, 'black'), fill=(0, 82, 255))
+        draw.text((kx, tel_y + 92), k_sub, font=get_font(10, 'regular'), fill=(71, 85, 105))
 
     draw_slide_footer(draw, 8)
     save_slide(base.convert('RGB'), 8)
-    print("SAVED perfect Slide 08 (0.8s Tablet Kiosk Attendance Dock) successfully!")
+    print('Slide 08 saved successfully for inspection.')
+
