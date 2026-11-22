@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'models/deck_model.dart';
 import 'widgets/canvas_editor.dart';
 import 'widgets/inspector_panel.dart';
+import 'widgets/figma_toolbar.dart';
 import 'widgets/element_library_modal.dart';
 import 'widgets/design_system_library_modal.dart';
 
@@ -43,6 +45,12 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
   int _activeSlideIndex = 0;
   DeckElement? _selectedElement;
 
+  // Figma Toolbar Mode & Undo/Redo Stacks
+  FigmaToolMode _currentToolMode = FigmaToolMode.select;
+  final List<String> _undoStack = [];
+  final List<String> _redoStack = [];
+  double _zoomScale = 0.55;
+
   @override
   void initState() {
     super.initState();
@@ -51,7 +59,51 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
 
   DeckSlide get _currentSlide => _project.slides[_activeSlideIndex];
 
+  void _recordUndoState() {
+    try {
+      final jsonState = jsonEncode(_project.toJson());
+      _undoStack.add(jsonState);
+      if (_undoStack.length > 30) {
+        _undoStack.removeAt(0);
+      }
+      _redoStack.clear();
+    } catch (_) {}
+  }
+
+  void _undo() {
+    if (_undoStack.isEmpty) return;
+    try {
+      final currentState = jsonEncode(_project.toJson());
+      _redoStack.add(currentState);
+      final lastState = _undoStack.removeLast();
+      setState(() {
+        _project = PortfolioProject.fromJson(jsonDecode(lastState));
+        if (_activeSlideIndex >= _project.slides.length) {
+          _activeSlideIndex = _project.slides.length - 1;
+        }
+        _selectedElement = null;
+      });
+    } catch (_) {}
+  }
+
+  void _redo() {
+    if (_redoStack.isEmpty) return;
+    try {
+      final currentState = jsonEncode(_project.toJson());
+      _undoStack.add(currentState);
+      final nextState = _redoStack.removeLast();
+      setState(() {
+        _project = PortfolioProject.fromJson(jsonDecode(nextState));
+        if (_activeSlideIndex >= _project.slides.length) {
+          _activeSlideIndex = _project.slides.length - 1;
+        }
+        _selectedElement = null;
+      });
+    } catch (_) {}
+  }
+
   void _addNewSlide() {
+    _recordUndoState();
     setState(() {
       final newPageNum = _project.slides.length + 1;
       _project.slides.add(DeckSlide(
@@ -99,46 +151,56 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
       context: context,
       builder: (ctx) => ElementLibraryModal(
         onSelectType: (type) {
-          _addElementOfType(type);
+          Navigator.pop(ctx);
+          _insertElement(type);
         },
       ),
     );
   }
 
-  void _addElementOfType(ElementType type) {
+  void _insertElement(ElementType type) {
+    _recordUndoState();
     setState(() {
       final id = 'elem_${DateTime.now().millisecondsSinceEpoch}';
       late DeckElement newElem;
 
       switch (type) {
-        case ElementType.header:
-          newElem = DeckElement(
-            id: id,
-            type: type,
-            name: '헤더 인디케이터',
-            x: 100,
-            y: 70,
-            width: 1720,
-            height: 60,
-            props: {
-              'badge': '2026 CASE STUDY',
-              'meta': '서비스 기획 · UI/UX 디자인 · Android Live',
-            },
-          );
-          break;
         case ElementType.text:
           newElem = DeckElement(
             id: id,
             type: type,
-            name: '텍스트 헤드라인',
-            x: 100,
+            name: '텍스트 레이블',
+            x: 200,
             y: 200,
-            width: 800,
-            height: 140,
+            width: 480,
+            height: 100,
             props: {
-              'titleBlack': '핵심 타이틀 ',
+              'category': 'HIGHLIGHT',
+              'titleBlack': '핵심 가치 제안 ',
               'titleBlue': '강조 포인트',
               'subtitle': '상세한 UX 기획 배경 및 문제 해결 과정을 서술합니다.',
+            },
+          );
+          break;
+        case ElementType.shape:
+          newElem = DeckElement(
+            id: id,
+            type: type,
+            name: '컨테이너 / 카드',
+            x: 240,
+            y: 240,
+            width: 460,
+            height: 260,
+            boxStyle: DeckBoxStyle(
+              backgroundColor: Colors.white,
+              borderColor: const Color(0xFFE2E8F0),
+              borderWidth: 1.0,
+              borderRadius: 16.0,
+              padding: 20.0,
+            ),
+            props: {
+              'title': '카드 컴포넌트',
+              'desc': 'Figma처럼 자유롭게 스타일과 규격을 변경할 수 있는 다목적 카드 컨테이너입니다.',
             },
           );
           break;
@@ -251,15 +313,137 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
     });
   }
 
+  // --- Quick Figma Actions ---
+  void _duplicateSelected() {
+    if (_selectedElement == null) return;
+    _recordUndoState();
+    setState(() {
+      final old = _selectedElement!;
+      final copyJson = old.toJson();
+      copyJson['id'] = 'elem_${DateTime.now().millisecondsSinceEpoch}';
+      copyJson['name'] = '${old.name} (복제)';
+      copyJson['x'] = old.x + 24.0;
+      copyJson['y'] = old.y + 24.0;
+
+      final duplicated = DeckElement.fromJson(copyJson);
+      _currentSlide.elements.add(duplicated);
+      _selectedElement = duplicated;
+    });
+  }
+
+  void _deleteSelected() {
+    if (_selectedElement == null) return;
+    _recordUndoState();
+    setState(() {
+      _currentSlide.elements.removeWhere((e) => e.id == _selectedElement!.id);
+      _selectedElement = null;
+    });
+  }
+
+  void _bringToFront() {
+    if (_selectedElement == null) return;
+    _recordUndoState();
+    setState(() {
+      final elem = _selectedElement!;
+      _currentSlide.elements.removeWhere((e) => e.id == elem.id);
+      _currentSlide.elements.add(elem);
+    });
+  }
+
+  void _sendToBack() {
+    if (_selectedElement == null) return;
+    _recordUndoState();
+    setState(() {
+      final elem = _selectedElement!;
+      _currentSlide.elements.removeWhere((e) => e.id == elem.id);
+      _currentSlide.elements.insert(0, elem);
+    });
+  }
+
+  void _alignSelected(String alignType) {
+    if (_selectedElement == null) return;
+    _recordUndoState();
+    setState(() {
+      final elem = _selectedElement!;
+      const canvasW = 1920.0;
+      const canvasH = 1080.0;
+
+      switch (alignType) {
+        case 'left':
+          elem.x = 100.0;
+          break;
+        case 'center_h':
+          elem.x = (canvasW - elem.width) / 2;
+          break;
+        case 'right':
+          elem.x = canvasW - elem.width - 100.0;
+          break;
+        case 'top':
+          elem.y = 80.0;
+          break;
+        case 'center_v':
+          elem.y = (canvasH - elem.height) / 2;
+          break;
+        case 'bottom':
+          elem.y = canvasH - elem.height - 80.0;
+          break;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: [
-          // Global App Bar
+          // 1. Global App Bar
           _buildGlobalAppBar(),
 
-          // Main Workspace: Slide Thumbnails + Canvas Editor + Inspector Panel
+          // 2. Figma-Style Quick Toolbar (추가/수정/삭제/정렬/되돌리기/도구 모음)
+          FigmaToolbar(
+            activeMode: _currentToolMode,
+            onModeChanged: (mode) {
+              setState(() => _currentToolMode = mode);
+            },
+            selectedElement: _selectedElement,
+            onAddText: () => _insertElement(ElementType.text),
+            onAddCard: () => _insertElement(ElementType.shape),
+            onAddFrame: _addNewSlide,
+            onOpenComponentLibrary: _openElementLibrary,
+            onOpenDesignSystem: () {
+              showDialog(
+                context: context,
+                builder: (ctx) => const DesignSystemLibraryModal(),
+              );
+            },
+            onDuplicateSelected: _duplicateSelected,
+            onDeleteSelected: _deleteSelected,
+            onBringToFront: _bringToFront,
+            onSendToBack: _sendToBack,
+            onAlignSelected: _alignSelected,
+            onUndo: _undo,
+            onRedo: _redo,
+            canUndo: _undoStack.isNotEmpty,
+            canRedo: _redoStack.isNotEmpty,
+            zoomScale: _zoomScale,
+            onZoomIn: () {
+              setState(() {
+                if (_zoomScale < 1.5) _zoomScale += 0.05;
+              });
+            },
+            onZoomOut: () {
+              setState(() {
+                if (_zoomScale > 0.25) _zoomScale -= 0.05;
+              });
+            },
+            onZoomFit: () {
+              setState(() {
+                _zoomScale = 0.55;
+              });
+            },
+          ),
+
+          // 3. Main Workspace: Slide Thumbnails + Canvas Editor + Inspector Panel
           Expanded(
             child: Row(
               children: [
@@ -275,25 +459,20 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
                       setState(() => _selectedElement = elem);
                     },
                     onSlideModified: () {
+                      _recordUndoState();
                       setState(() {});
                     },
                   ),
                 ),
 
-                // Right: Inspector Panel (Width: 340)
+                // Right: Inspector Panel (Width: 380)
                 InspectorPanel(
                   element: _selectedElement,
                   onElementUpdated: () {
+                    _recordUndoState();
                     setState(() {});
                   },
-                  onElementDeleted: () {
-                    if (_selectedElement != null) {
-                      setState(() {
-                        _currentSlide.elements.removeWhere((e) => e.id == _selectedElement!.id);
-                        _selectedElement = null;
-                      });
-                    }
-                  },
+                  onElementDeleted: _deleteSelected,
                 ),
               ],
             ),
@@ -305,8 +484,8 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
 
   Widget _buildGlobalAppBar() {
     return Container(
-      height: 56,
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      height: 52,
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: const BoxDecoration(
         color: Color(0xFF0F172A),
         border: Border(bottom: BorderSide(color: Color(0xFF1E293B))),
@@ -314,12 +493,12 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(7),
             decoration: BoxDecoration(
               color: const Color(0xFF0052FF),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: const Icon(Icons.dashboard_customize, color: Colors.white, size: 18),
+            child: const Icon(Icons.dashboard_customize, color: Colors.white, size: 16),
           ),
           const SizedBox(width: 12),
           const Column(
@@ -328,23 +507,23 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
             children: [
               Text(
                 'DeckStudio (데스크탑 포트폴리오 에디터)',
-                style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
+                style: TextStyle(color: Colors.white, fontSize: 13.5, fontWeight: FontWeight.bold),
               ),
               Text(
-                '도식 · 그래프 · 플로우차트 · 디자인시스템 · 3D 목업 실시간 커스텀 툴',
+                'Figma 표준 툴바 · 도식/플로우차트/디자인시스템/목업 실시간 커스텀 툴',
                 style: TextStyle(color: Color(0xFF94A3B8), fontSize: 10),
               ),
             ],
           ),
           const Spacer(),
           ElevatedButton.icon(
-            icon: const Icon(Icons.style, size: 16),
-            label: const Text('디자인 시스템 라이브러리', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+            icon: const Icon(Icons.style, size: 15),
+            label: const Text('디자인 시스템 라이브러리', style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.bold)),
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF0891B2),
               foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
             ),
             onPressed: () {
               showDialog(
@@ -353,27 +532,27 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
               );
             },
           ),
-          const SizedBox(width: 10),
+          const SizedBox(width: 8),
           ElevatedButton.icon(
-            icon: const Icon(Icons.add_box_outlined, size: 16),
-            label: const Text('컴포넌트 삽입', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+            icon: const Icon(Icons.add_box_outlined, size: 15),
+            label: const Text('컴포넌트 삽입', style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.bold)),
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF0052FF),
               foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
             ),
             onPressed: _openElementLibrary,
           ),
-          const SizedBox(width: 10),
+          const SizedBox(width: 8),
           OutlinedButton.icon(
-            icon: const Icon(Icons.picture_as_pdf, size: 16),
-            label: const Text('Behance 슬라이드 / PDF 내보내기', style: TextStyle(fontSize: 12)),
+            icon: const Icon(Icons.picture_as_pdf, size: 15),
+            label: const Text('Behance 슬라이드 / PDF 내보내기', style: TextStyle(fontSize: 11.5)),
             style: OutlinedButton.styleFrom(
               foregroundColor: Colors.white,
               side: const BorderSide(color: Color(0xFF334155)),
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
             ),
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
@@ -399,7 +578,7 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
       child: Column(
         children: [
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(14),
             decoration: const BoxDecoration(
               border: Border(bottom: BorderSide(color: Color(0xFFE2E8F0))),
             ),

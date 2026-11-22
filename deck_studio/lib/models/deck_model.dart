@@ -259,16 +259,13 @@ class PortfolioProject {
     List<DeckSlide>? slides,
   }) : slides = slides ?? [];
 
-  String toJsonString() {
-    return jsonEncode({
-      'title': title,
-      'author': author,
-      'slides': slides.map((s) => s.toJson()).toList(),
-    });
-  }
+  Map<String, dynamic> toJson() => {
+        'title': title,
+        'author': author,
+        'slides': slides.map((s) => s.toJson()).toList(),
+      };
 
-  factory PortfolioProject.fromJsonString(String str) {
-    final map = jsonDecode(str);
+  factory PortfolioProject.fromJson(Map<String, dynamic> map) {
     return PortfolioProject(
       title: map['title'] ?? 'Portfolio',
       author: map['author'] ?? 'Designer',
@@ -276,6 +273,14 @@ class PortfolioProject {
           .map((s) => DeckSlide.fromJson(Map<String, dynamic>.from(s)))
           .toList(),
     );
+  }
+
+  String toJsonString() {
+    return jsonEncode(toJson());
+  }
+
+  factory PortfolioProject.fromJsonString(String str) {
+    return PortfolioProject.fromJson(jsonDecode(str));
   }
 
   static PortfolioProject createDefaultTemplate() {

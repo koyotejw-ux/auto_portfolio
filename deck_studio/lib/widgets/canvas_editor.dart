@@ -231,9 +231,37 @@ class _CanvasEditorState extends State<CanvasEditor> {
         return _buildDesignTokens(elem);
       case ElementType.donutChart:
         return _buildDonutChart(elem);
+      case ElementType.shape:
+        return Container(
+          padding: EdgeInsets.all(elem.boxStyle.padding),
+          decoration: elem.boxStyle.toDecoration(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (elem.props['title'] != null)
+                Text(
+                  elem.props['title'],
+                  style: TextStyle(
+                    fontFamily: elem.textStyle.fontFamily,
+                    fontSize: elem.textStyle.fontSize,
+                    fontWeight: elem.textStyle.fontWeight,
+                    color: elem.textStyle.color,
+                  ),
+                ),
+              if (elem.props['desc'] != null) ...[
+                const SizedBox(height: 8),
+                Text(
+                  elem.props['desc'],
+                  style: const TextStyle(color: Color(0xFF64748B), fontSize: 13, height: 1.5),
+                ),
+              ],
+            ],
+          ),
+        );
       default:
         return Container(
-          color: Colors.blue.withOpacity(0.05),
+          padding: EdgeInsets.all(elem.boxStyle.padding),
+          decoration: elem.boxStyle.toDecoration(),
           child: Center(
             child: Text(elem.name, style: const TextStyle(fontSize: 12)),
           ),
@@ -289,39 +317,57 @@ class _CanvasEditorState extends State<CanvasEditor> {
     final titleBlue = elem.props['titleBlue'] ?? '';
     final subtitle = elem.props['subtitle'] ?? '';
 
+    final ts = elem.textStyle;
+    final align = ts.flutterTextAlign;
+    final crossAlign = align == TextAlign.center
+        ? CrossAxisAlignment.center
+        : (align == TextAlign.right
+            ? CrossAxisAlignment.end
+            : CrossAxisAlignment.start);
+
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: crossAlign,
       children: [
         if (category != null) ...[
           Text(
             category,
-            style: const TextStyle(
-              color: Color(0xFF0052FF),
+            textAlign: align,
+            style: TextStyle(
+              fontFamily: ts.fontFamily,
+              color: const Color(0xFF0052FF),
               fontSize: 14,
               fontWeight: FontWeight.bold,
+              letterSpacing: ts.letterSpacing,
             ),
           ),
           const SizedBox(height: 8),
         ],
         RichText(
+          textAlign: align,
           text: TextSpan(
             children: [
               TextSpan(
                 text: titleBlack,
-                style: const TextStyle(
-                  color: Color(0xFF0F172A),
-                  fontSize: 32,
-                  fontWeight: FontWeight.w900,
-                  height: 1.2,
+                style: TextStyle(
+                  fontFamily: ts.fontFamily,
+                  color: ts.color,
+                  fontSize: ts.fontSize > 24 ? ts.fontSize : 32,
+                  fontWeight: ts.fontWeight,
+                  letterSpacing: ts.letterSpacing,
+                  height: ts.height,
+                  wordSpacing: ts.wordSpacing,
                 ),
               ),
               TextSpan(
                 text: titleBlue,
-                style: const TextStyle(
-                  color: Color(0xFF0052FF),
-                  fontSize: 32,
-                  fontWeight: FontWeight.w900,
-                  height: 1.2,
+                style: TextStyle(
+                  fontFamily: ts.fontFamily,
+                  color: const Color(0xFF0052FF),
+                  fontSize: ts.fontSize > 24 ? ts.fontSize : 32,
+                  fontWeight: ts.fontWeight,
+                  letterSpacing: ts.letterSpacing,
+                  height: ts.height,
+                  wordSpacing: ts.wordSpacing,
                 ),
               ),
             ],
@@ -331,10 +377,13 @@ class _CanvasEditorState extends State<CanvasEditor> {
           const SizedBox(height: 14),
           Text(
             subtitle,
-            style: const TextStyle(
-              color: Color(0xFF475569),
+            textAlign: align,
+            style: TextStyle(
+              fontFamily: ts.fontFamily,
+              color: const Color(0xFF475569),
               fontSize: 13.5,
               height: 1.5,
+              letterSpacing: ts.letterSpacing,
             ),
           ),
         ],
