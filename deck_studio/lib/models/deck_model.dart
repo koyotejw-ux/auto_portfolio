@@ -15,7 +15,11 @@ enum ElementType {
   personaMatrix,
   kpiStrip,
   shape,
+  group, // Figma Group / AutoLayout Frame
 }
+
+enum AutoLayoutDirection { none, horizontal, vertical }
+enum AutoLayoutAlignment { start, center, end, spaceBetween }
 
 enum TextAlignOption { left, center, right }
 
@@ -159,6 +163,15 @@ class DeckElement {
   String iconName; // e.g., 'check_circle', 'phone', 'tune', 'star'
   Map<String, dynamic> props;
 
+  // Figma Layer & AutoLayout Features
+  bool isLocked;
+  bool isVisible;
+  AutoLayoutDirection autoLayoutDirection;
+  double autoLayoutSpacing;
+  double autoLayoutPadding;
+  AutoLayoutAlignment autoLayoutAlignment;
+  List<DeckElement> children;
+
   DeckElement({
     required this.id,
     required this.type,
@@ -171,8 +184,39 @@ class DeckElement {
     DeckBoxStyle? boxStyle,
     this.iconName = '',
     required this.props,
+    this.isLocked = false,
+    this.isVisible = true,
+    this.autoLayoutDirection = AutoLayoutDirection.none,
+    this.autoLayoutSpacing = 16.0,
+    this.autoLayoutPadding = 16.0,
+    this.autoLayoutAlignment = AutoLayoutAlignment.start,
+    List<DeckElement>? children,
   })  : textStyle = textStyle ?? DeckTextStyle(),
-        boxStyle = boxStyle ?? DeckBoxStyle();
+        boxStyle = boxStyle ?? DeckBoxStyle(),
+        children = children ?? [];
+
+  /// Helper to trigger AutoLayout re-positioning of children
+  void applyAutoLayout() {
+    if (autoLayoutDirection == AutoLayoutDirection.none || children.isEmpty) return;
+
+    if (autoLayoutDirection == AutoLayoutDirection.horizontal) {
+      double curX = autoLayoutPadding;
+      for (final child in children) {
+        child.x = curX;
+        child.y = autoLayoutPadding;
+        curX += child.width + autoLayoutSpacing;
+      }
+      width = curX - autoLayoutSpacing + autoLayoutPadding;
+    } else if (autoLayoutDirection == AutoLayoutDirection.vertical) {
+      double curY = autoLayoutPadding;
+      for (final child in children) {
+        child.x = autoLayoutPadding;
+        child.y = curY;
+        curY += child.height + autoLayoutSpacing;
+      }
+      height = curY - autoLayoutSpacing + autoLayoutPadding;
+    }
+  }
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -186,6 +230,13 @@ class DeckElement {
         'boxStyle': boxStyle.toJson(),
         'iconName': iconName,
         'props': props,
+        'isLocked': isLocked,
+        'isVisible': isVisible,
+        'autoLayoutDirection': autoLayoutDirection.name,
+        'autoLayoutSpacing': autoLayoutSpacing,
+        'autoLayoutPadding': autoLayoutPadding,
+        'autoLayoutAlignment': autoLayoutAlignment.name,
+        'children': children.map((c) => c.toJson()).toList(),
       };
 
   factory DeckElement.fromJson(Map<String, dynamic> json) {
@@ -208,6 +259,21 @@ class DeckElement {
           : DeckBoxStyle(),
       iconName: json['iconName'] ?? '',
       props: Map<String, dynamic>.from(json['props'] ?? {}),
+      isLocked: json['isLocked'] ?? false,
+      isVisible: json['isVisible'] ?? true,
+      autoLayoutDirection: AutoLayoutDirection.values.firstWhere(
+        (d) => d.name == json['autoLayoutDirection'],
+        orElse: () => AutoLayoutDirection.none,
+      ),
+      autoLayoutSpacing: (json['autoLayoutSpacing'] as num?)?.toDouble() ?? 16.0,
+      autoLayoutPadding: (json['autoLayoutPadding'] as num?)?.toDouble() ?? 16.0,
+      autoLayoutAlignment: AutoLayoutAlignment.values.firstWhere(
+        (a) => a.name == json['autoLayoutAlignment'],
+        orElse: () => AutoLayoutAlignment.start,
+      ),
+      children: (json['children'] as List? ?? [])
+          .map((c) => DeckElement.fromJson(Map<String, dynamic>.from(c)))
+          .toList(),
     );
   }
 }

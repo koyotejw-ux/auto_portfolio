@@ -26,7 +26,9 @@ class FigmaToolbar extends StatelessWidget {
   final VoidCallback onDeleteSelected;
   final VoidCallback onBringToFront;
   final VoidCallback onSendToBack;
+  final VoidCallback onGroupSelected;
   final VoidCallback onUngroupSelected;
+  final VoidCallback onToggleAutoLayout;
   final ValueChanged<String> onAlignSelected; // 'left', 'center_h', 'right', 'top', 'center_v', 'bottom'
   final VoidCallback onUndo;
   final VoidCallback onRedo;
@@ -51,7 +53,9 @@ class FigmaToolbar extends StatelessWidget {
     required this.onDeleteSelected,
     required this.onBringToFront,
     required this.onSendToBack,
+    required this.onGroupSelected,
     required this.onUngroupSelected,
+    required this.onToggleAutoLayout,
     required this.onAlignSelected,
     required this.onUndo,
     required this.onRedo,
@@ -167,10 +171,29 @@ class FigmaToolbar extends StatelessWidget {
             onPressed: onSendToBack,
           ),
           _buildIconButton(
+            icon: Icons.folder_open,
+            tooltip: '선택 요소 그룹화 (Ctrl+G)',
+            enabled: selectedElement != null,
+            color: selectedElement != null ? const Color(0xFFFBBF24) : null,
+            onPressed: onGroupSelected,
+          ),
+          _buildIconButton(
+            icon: Icons.auto_awesome_motion,
+            tooltip: '오토레이아웃 토글 (Shift+A)',
+            enabled: selectedElement != null,
+            color: selectedElement != null && selectedElement!.autoLayoutDirection != AutoLayoutDirection.none
+                ? const Color(0xFF0052FF)
+                : (selectedElement != null ? const Color(0xFF38BDF8) : null),
+            onPressed: onToggleAutoLayout,
+          ),
+          _buildIconButton(
             icon: Icons.call_split,
             tooltip: '그룹/리스트 분해 (Ctrl+Shift+G)',
-            enabled: selectedElement != null && selectedElement!.props['items'] is List,
-            color: selectedElement != null && selectedElement!.props['items'] is List ? const Color(0xFF38BDF8) : null,
+            enabled: selectedElement != null &&
+                (selectedElement!.props['items'] is List ||
+                 selectedElement!.type == ElementType.group ||
+                 selectedElement!.children.isNotEmpty),
+            color: selectedElement != null ? const Color(0xFF38BDF8) : null,
             onPressed: onUngroupSelected,
           ),
           _buildIconButton(

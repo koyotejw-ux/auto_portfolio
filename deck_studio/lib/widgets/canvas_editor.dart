@@ -129,7 +129,7 @@ class _CanvasEditorState extends State<CanvasEditor> {
                         ),
 
                         // Interactive Elements
-                        ...widget.slide.elements.map((elem) {
+                        ...widget.slide.elements.where((elem) => elem.isVisible).map((elem) {
                           final isSelected = widget.selectedElement?.id == elem.id;
                           return Positioned(
                             left: elem.x,
@@ -138,18 +138,22 @@ class _CanvasEditorState extends State<CanvasEditor> {
                             height: elem.height,
                             child: GestureDetector(
                               onTap: () => widget.onElementSelected(elem),
-                              onPanUpdate: (details) {
-                                setState(() {
-                                  elem.x += details.delta.dx;
-                                  elem.y += details.delta.dy;
-                                });
-                                widget.onSlideModified();
-                              },
+                              onPanUpdate: elem.isLocked
+                                  ? null
+                                  : (details) {
+                                      setState(() {
+                                        elem.x += details.delta.dx;
+                                        elem.y += details.delta.dy;
+                                      });
+                                      widget.onSlideModified();
+                                    },
                               child: Container(
                                 decoration: BoxDecoration(
                                   border: isSelected
                                       ? Border.all(color: const Color(0xFF0052FF), width: 2)
-                                      : null,
+                                      : (elem.type == ElementType.group
+                                          ? Border.all(color: const Color(0xFF38BDF8).withOpacity(0.3), width: 1)
+                                          : null),
                                 ),
                                 child: Stack(
                                   clipBehavior: Clip.none,
@@ -162,20 +166,29 @@ class _CanvasEditorState extends State<CanvasEditor> {
                                         child: Container(
                                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                                           decoration: BoxDecoration(
-                                            color: const Color(0xFF0052FF),
+                                            color: elem.isLocked ? const Color(0xFFF59E0B) : const Color(0xFF0052FF),
                                             borderRadius: BorderRadius.circular(4),
                                           ),
-                                          child: Text(
-                                            '${elem.name} (${elem.x.toInt()}, ${elem.y.toInt()}) [${elem.width.toInt()}×${elem.height.toInt()}]',
-                                            style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 10,
-                                              fontWeight: FontWeight.bold,
-                                            ),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              if (elem.isLocked) ...[
+                                                const Icon(Icons.lock, color: Colors.white, size: 10),
+                                                const SizedBox(width: 4),
+                                              ],
+                                              Text(
+                                                '${elem.name} (${elem.x.toInt()}, ${elem.y.toInt()}) [${elem.width.toInt()}×${elem.height.toInt()}]',
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 10,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ),
-                                    if (isSelected)
+                                    if (isSelected && !elem.isLocked)
                                       Positioned(
                                         right: -8,
                                         bottom: -8,
@@ -184,6 +197,7 @@ class _CanvasEditorState extends State<CanvasEditor> {
                                             setState(() {
                                               elem.width = (elem.width + details.delta.dx).clamp(50.0, 1920.0);
                                               elem.height = (elem.height + details.delta.dy).clamp(30.0, 1080.0);
+                                              elem.applyAutoLayout();
                                             });
                                             widget.onSlideModified();
                                           },
@@ -236,6 +250,8 @@ class _CanvasEditorState extends State<CanvasEditor> {
         return _buildStatCard(elem);
       case ElementType.shape:
         return _buildShape(elem);
+      case ElementType.group:
+        return _buildGroup(elem);
       default:
         return Container(
           padding: EdgeInsets.all(elem.boxStyle.padding),
@@ -1060,6 +1076,74 @@ class _CanvasEditorState extends State<CanvasEditor> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildGroup(DeckElement elem) {
+    if (elem.children.isEmpty) {
+      return Container(
+        decoration: BoxDecoration(
+          border: Border.all(color: const Color(0xFF38BDF8).withOpacity(0.4), width: 1),
+          borderRadius: BorderRadius.circular(elem.boxStyle.borderRadius),
+        ),
+        child: Center(
+          child: Text(
+            elem.name,
+            style: const TextStyle(color: Color(0xFF0284C7), fontSize: 11, fontWeight: FontWeight.bold),
+          ),
+        ),
+      );
+    }
+
+    if (elem.autoLayoutDirection == AutoLayoutDirection.horizontal) {
+      return Padding(
+        padding: EdgeInsets.all(elem.autoLayoutPadding),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: elem.children.map((child) {
+            return Padding(
+              padding: EdgeInsets.only(right: elem.autoLayoutSpacing),
+              child: SizedBox(
+                width: child.width,
+                height: child.height,
+                child: _buildInnerElement(child),
+              ),
+            );
+          }).toList(),
+        ),
+      );
+    } else if (elem.autoLayoutDirection == AutoLayoutDirection.vertical) {
+      return Padding(
+        padding: EdgeInsets.all(elem.autoLayoutPadding),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: elem.children.map((child) {
+            return Padding(
+              padding: EdgeInsets.only(bottom: elem.autoLayoutSpacing),
+              child: SizedBox(
+                width: child.width,
+                height: child.height,
+                child: _buildInnerElement(child),
+              ),
+            );
+          }).toList(),
+        ),
+      );
+    }
+
+    // Freeform absolute children
+    return Stack(
+      children: elem.children.map((child) {
+        return Positioned(
+          left: child.x,
+          top: child.y,
+          width: child.width,
+          height: child.height,
+          child: _buildInnerElement(child),
+        );
+      }).toList(),
     );
   }
 }

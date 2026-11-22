@@ -8,6 +8,7 @@ import 'widgets/figma_toolbar.dart';
 import 'widgets/element_library_modal.dart';
 import 'widgets/design_system_library_modal.dart';
 import 'widgets/fullscreen_export_modal.dart';
+import 'widgets/figma_layers_panel.dart';
 
 void main() {
   runApp(const DeckStudioApp());
@@ -412,9 +413,80 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
     });
   }
 
+  void _groupSelected() {
+    if (_selectedElement == null) return;
+    _recordUndoState();
+    setState(() {
+      final elem = _selectedElement!;
+      final index = _currentSlide.elements.indexOf(elem);
+      if (index == -1) return;
+
+      final group = DeckElement(
+        id: 'group_${DateTime.now().millisecondsSinceEpoch}',
+        type: ElementType.group,
+        name: 'Frame · ${elem.name}',
+        x: elem.x,
+        y: elem.y,
+        width: elem.width,
+        height: elem.height,
+        boxStyle: DeckBoxStyle(
+          backgroundColor: Colors.transparent,
+          borderColor: const Color(0xFF38BDF8),
+          borderWidth: 1.0,
+          borderRadius: 8.0,
+        ),
+        props: {},
+        autoLayoutDirection: AutoLayoutDirection.none,
+        children: [elem],
+      );
+
+      _currentSlide.elements[index] = group;
+      _selectedElement = group;
+    });
+  }
+
+  void _toggleAutoLayout() {
+    if (_selectedElement == null) return;
+    _recordUndoState();
+    setState(() {
+      final elem = _selectedElement!;
+      if (elem.autoLayoutDirection == AutoLayoutDirection.none) {
+        elem.autoLayoutDirection = AutoLayoutDirection.horizontal;
+        elem.type = ElementType.group;
+        elem.name = elem.name.startsWith('AutoLayout') ? elem.name : 'AutoLayout · ${elem.name}';
+        elem.applyAutoLayout();
+      } else if (elem.autoLayoutDirection == AutoLayoutDirection.horizontal) {
+        elem.autoLayoutDirection = AutoLayoutDirection.vertical;
+        elem.applyAutoLayout();
+      } else {
+        elem.autoLayoutDirection = AutoLayoutDirection.none;
+      }
+    });
+  }
+
   void _ungroupSelected() {
     if (_selectedElement == null) return;
     final parent = _selectedElement!;
+
+    // Check if it's a Figma Group with children
+    if (parent.children.isNotEmpty) {
+      _recordUndoState();
+      setState(() {
+        final index = _currentSlide.elements.indexOf(parent);
+        for (final child in parent.children) {
+          child.x = parent.x + child.x;
+          child.y = parent.y + child.y;
+        }
+        if (index != -1) {
+          _currentSlide.elements.removeAt(index);
+          _currentSlide.elements.insertAll(index, parent.children);
+          _selectedElement = parent.children.first;
+        }
+      });
+      return;
+    }
+
+    // Check legacy composite items
     final items = parent.props['items'];
     if (items is! List || items.isEmpty) return;
 
@@ -554,7 +626,9 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
             onDeleteSelected: _deleteSelected,
             onBringToFront: _bringToFront,
             onSendToBack: _sendToBack,
+            onGroupSelected: _groupSelected,
             onUngroupSelected: _ungroupSelected,
+            onToggleAutoLayout: _toggleAutoLayout,
             onAlignSelected: _alignSelected,
             onUndo: _undo,
             onRedo: _redo,
@@ -578,12 +652,27 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
             },
           ),
 
-          // 3. Main Workspace: Slide Thumbnails + Canvas Editor + Inspector Panel
+          // 3. Main Workspace: Slide Thumbnails + Figma Layers + Canvas Editor + Inspector Panel
           Expanded(
             child: Row(
               children: [
-                // Left: Slide Thumbnails Navigator (Width: 240)
+                // Left 1: Slide Thumbnails Navigator (Width: 200)
                 _buildSlideNavigator(),
+
+                // Left 2: Figma Object Layers Tree (Width: 260)
+                FigmaLayersPanel(
+                  slide: _currentSlide,
+                  selectedElement: _selectedElement,
+                  onElementSelected: (elem) {
+                    setState(() => _selectedElement = elem);
+                  },
+                  onSlideModified: () {
+                    _recordUndoState();
+                    setState(() {});
+                  },
+                  onGroupSelected: _groupSelected,
+                  onUngroupSelected: _ungroupSelected,
+                ),
 
                 // Center: 1920x1080 Interactive Canvas
                 Expanded(
@@ -717,7 +806,7 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
 
   Widget _buildSlideNavigator() {
     return Container(
-      width: 240,
+      width: 190,
       decoration: const BoxDecoration(
         color: Colors.white,
         border: Border(right: BorderSide(color: Color(0xFFE2E8F0))),

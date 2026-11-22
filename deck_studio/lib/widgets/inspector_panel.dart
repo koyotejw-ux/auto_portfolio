@@ -518,6 +518,10 @@ class _InspectorPanelState extends State<InspectorPanel> {
                 ),
                 const SizedBox(height: 18),
 
+                // 5.5 Figma AutoLayout Section
+                _buildAutoLayoutSection(elem),
+                const SizedBox(height: 18),
+
                 // 6. 텍스트 및 UI 콘텐츠 직접 수정
                 _buildSectionHeader(Icons.edit_note, 'UI 텍스트 직접 편집 (UI Content)'),
                 const SizedBox(height: 10),
@@ -526,6 +530,103 @@ class _InspectorPanelState extends State<InspectorPanel> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildAutoLayoutSection(DeckElement elem) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildSectionHeader(Icons.view_quilt_outlined, 'Figma AutoLayout (오토레이아웃)'),
+        const SizedBox(height: 10),
+        Row(
+          children: [
+            _buildAutoLayoutDirBtn('없음', AutoLayoutDirection.none, Icons.close, elem.autoLayoutDirection, () {
+              setState(() => elem.autoLayoutDirection = AutoLayoutDirection.none);
+              widget.onElementUpdated();
+            }),
+            const SizedBox(width: 6),
+            _buildAutoLayoutDirBtn('가로 (H)', AutoLayoutDirection.horizontal, Icons.view_column, elem.autoLayoutDirection, () {
+              setState(() {
+                elem.autoLayoutDirection = AutoLayoutDirection.horizontal;
+                elem.applyAutoLayout();
+              });
+              widget.onElementUpdated();
+            }),
+            const SizedBox(width: 6),
+            _buildAutoLayoutDirBtn('세로 (V)', AutoLayoutDirection.vertical, Icons.view_stream, elem.autoLayoutDirection, () {
+              setState(() {
+                elem.autoLayoutDirection = AutoLayoutDirection.vertical;
+                elem.applyAutoLayout();
+              });
+              widget.onElementUpdated();
+            }),
+          ],
+        ),
+        if (elem.autoLayoutDirection != AutoLayoutDirection.none) ...[
+          const SizedBox(height: 10),
+          Row(
+            children: [
+              _buildNumField('간격 (Gap)', elem.autoLayoutSpacing, (val) {
+                setState(() {
+                  elem.autoLayoutSpacing = val;
+                  elem.applyAutoLayout();
+                });
+                widget.onElementUpdated();
+              }),
+              const SizedBox(width: 8),
+              _buildNumField('패딩 (Padding)', elem.autoLayoutPadding, (val) {
+                setState(() {
+                  elem.autoLayoutPadding = val;
+                  elem.applyAutoLayout();
+                });
+                widget.onElementUpdated();
+              }),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Text(
+            '하위 요소: ${elem.children.length}개 자동 정렬 배치됨',
+            style: const TextStyle(color: Color(0xFF0052FF), fontSize: 11, fontWeight: FontWeight.bold),
+          ),
+        ],
+      ],
+    );
+  }
+
+  Widget _buildAutoLayoutDirBtn(String label, AutoLayoutDirection dir, IconData icon, AutoLayoutDirection cur, VoidCallback onTap) {
+    final isSelected = cur == dir;
+    return Expanded(
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(8),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          decoration: BoxDecoration(
+            color: isSelected ? const Color(0xFFEFF6FF) : const Color(0xFFF8FAFC),
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(
+              color: isSelected ? const Color(0xFF0052FF) : const Color(0xFFE2E8F0),
+              width: isSelected ? 1.5 : 1,
+            ),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(icon, size: 14, color: isSelected ? const Color(0xFF0052FF) : const Color(0xFF64748B)),
+              const SizedBox(height: 3),
+              Text(
+                label,
+                style: TextStyle(
+                  color: isSelected ? const Color(0xFF0052FF) : const Color(0xFF64748B),
+                  fontSize: 10.5,
+                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
