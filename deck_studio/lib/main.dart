@@ -412,6 +412,88 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
     });
   }
 
+  void _ungroupSelected() {
+    if (_selectedElement == null) return;
+    final parent = _selectedElement!;
+    final items = parent.props['items'];
+    if (items is! List || items.isEmpty) return;
+
+    _recordUndoState();
+    setState(() {
+      final index = _currentSlide.elements.indexOf(parent);
+      final newElements = <DeckElement>[];
+
+      if (parent.type == ElementType.kpiStrip) {
+        final count = items.length;
+        const totalW = 1720.0;
+        final cardW = (totalW - (count - 1) * 16.0) / count;
+        final cardH = parent.height;
+
+        for (int i = 0; i < count; i++) {
+          final item = Map<String, dynamic>.from(items[i]);
+          final newX = parent.x + i * (cardW + 16.0);
+          final newY = parent.y;
+
+          newElements.add(DeckElement(
+            id: 'kpi_${DateTime.now().millisecondsSinceEpoch}_$i',
+            type: ElementType.statCard,
+            name: '${item['title'] ?? '메트릭 ${i + 1}'}',
+            x: newX,
+            y: newY,
+            width: cardW,
+            height: cardH,
+            boxStyle: DeckBoxStyle(
+              backgroundColor: parent.boxStyle.backgroundColor,
+              borderColor: parent.boxStyle.borderColor,
+            ),
+            props: {
+              'title': item['title'] ?? '',
+              'val': item['val'] ?? '',
+              'sub': item['sub'] ?? '',
+            },
+          ));
+        }
+      } else {
+        // Flowchart or list items
+        final count = items.length;
+        final itemH = (parent.height - (count - 1) * 14.0) / count;
+        final itemW = parent.width;
+
+        for (int i = 0; i < count; i++) {
+          final item = Map<String, dynamic>.from(items[i]);
+          final newX = parent.x;
+          final newY = parent.y + i * (itemH + 14.0);
+
+          newElements.add(DeckElement(
+            id: 'card_${DateTime.now().millisecondsSinceEpoch}_$i',
+            type: ElementType.shape,
+            name: '${item['tag'] ?? item['title'] ?? '카드 ${i + 1}'}',
+            x: newX,
+            y: newY,
+            width: itemW,
+            height: itemH,
+            boxStyle: DeckBoxStyle(
+              backgroundColor: Colors.white,
+              borderColor: const Color(0xFFE2E8F0),
+            ),
+            props: {
+              'num': item['num'] ?? '0${i + 1}',
+              'tag': item['tag'] ?? '',
+              'title': item['title'] ?? '',
+              'desc': item['desc'] ?? '',
+            },
+          ));
+        }
+      }
+
+      if (index != -1) {
+        _currentSlide.elements.removeAt(index);
+        _currentSlide.elements.insertAll(index, newElements);
+        _selectedElement = newElements.isNotEmpty ? newElements.first : null;
+      }
+    });
+  }
+
   void _alignSelected(String alignType) {
     if (_selectedElement == null) return;
     _recordUndoState();
@@ -472,6 +554,7 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
             onDeleteSelected: _deleteSelected,
             onBringToFront: _bringToFront,
             onSendToBack: _sendToBack,
+            onUngroupSelected: _ungroupSelected,
             onAlignSelected: _alignSelected,
             onUndo: _undo,
             onRedo: _redo,

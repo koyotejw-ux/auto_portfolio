@@ -232,33 +232,10 @@ class _CanvasEditorState extends State<CanvasEditor> {
         return _buildDesignTokens(elem);
       case ElementType.donutChart:
         return _buildDonutChart(elem);
+      case ElementType.statCard:
+        return _buildStatCard(elem);
       case ElementType.shape:
-        return Container(
-          padding: EdgeInsets.all(elem.boxStyle.padding),
-          decoration: elem.boxStyle.toDecoration(),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (elem.props['title'] != null)
-                Text(
-                  elem.props['title'],
-                  style: TextStyle(
-                    fontFamily: elem.textStyle.fontFamily,
-                    fontSize: elem.textStyle.fontSize,
-                    fontWeight: elem.textStyle.fontWeight,
-                    color: elem.textStyle.color,
-                  ),
-                ),
-              if (elem.props['desc'] != null) ...[
-                const SizedBox(height: 8),
-                Text(
-                  elem.props['desc'],
-                  style: const TextStyle(color: Color(0xFF64748B), fontSize: 13, height: 1.5),
-                ),
-              ],
-            ],
-          ),
-        );
+        return _buildShape(elem);
       default:
         return Container(
           padding: EdgeInsets.all(elem.boxStyle.padding),
@@ -929,6 +906,157 @@ class _CanvasEditorState extends State<CanvasEditor> {
                 ],
               ),
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildShape(DeckElement elem) {
+    final num = elem.props['num'] as String?;
+    final tag = elem.props['tag'] as String?;
+    final title = elem.props['title'] as String? ?? elem.name;
+    final desc = elem.props['desc'] as String?;
+
+    return Container(
+      padding: EdgeInsets.all(elem.boxStyle.padding),
+      decoration: elem.boxStyle.toDecoration(),
+      child: num != null || tag != null
+          ? Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (num != null && num.isNotEmpty) ...[
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF1F5F9),
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Text(
+                      num,
+                      style: const TextStyle(
+                        color: Color(0xFF0052FF),
+                        fontSize: 11,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                ],
+                if (tag != null && tag.isNotEmpty) ...[
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFEFF6FF),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Text(
+                      tag,
+                      style: const TextStyle(
+                        color: Color(0xFF0052FF),
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                ],
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        title,
+                        style: TextStyle(
+                          fontFamily: elem.textStyle.fontFamily,
+                          color: elem.textStyle.color,
+                          fontSize: elem.textStyle.fontSize > 16 ? elem.textStyle.fontSize : 13,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      if (desc != null && desc.isNotEmpty) ...[
+                        const SizedBox(height: 3),
+                        Text(
+                          desc,
+                          style: const TextStyle(
+                            color: Color(0xFF475569),
+                            fontSize: 11,
+                            height: 1.4,
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              ],
+            )
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontFamily: elem.textStyle.fontFamily,
+                    fontSize: elem.textStyle.fontSize,
+                    fontWeight: elem.textStyle.fontWeight,
+                    color: elem.textStyle.color,
+                  ),
+                ),
+                if (desc != null && desc.isNotEmpty) ...[
+                  const SizedBox(height: 8),
+                  Text(
+                    desc,
+                    style: const TextStyle(color: Color(0xFF64748B), fontSize: 13, height: 1.5),
+                  ),
+                ],
+              ],
+            ),
+    );
+  }
+
+  Widget _buildStatCard(DeckElement elem) {
+    final title = elem.props['title'] as String? ?? 'METRIC';
+    final val = elem.props['val'] as String? ?? '-';
+    final sub = elem.props['sub'] as String? ?? '';
+
+    final isDark = elem.boxStyle.backgroundColor.computeLuminance() < 0.2;
+
+    return Container(
+      padding: EdgeInsets.all(elem.boxStyle.padding),
+      decoration: elem.boxStyle.toDecoration(),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              color: isDark ? const Color(0xFF94A3B8) : const Color(0xFF64748B),
+              fontSize: 10,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            val,
+            style: TextStyle(
+              color: isDark ? const Color(0xFF38BDF8) : const Color(0xFF0052FF),
+              fontSize: 16,
+              fontWeight: FontWeight.w900,
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          const SizedBox(height: 2),
+          Text(
+            sub,
+            style: TextStyle(
+              color: isDark ? const Color(0xFFCBD5E1) : const Color(0xFF475569),
+              fontSize: 9.5,
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
         ],
       ),

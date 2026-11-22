@@ -26,6 +26,7 @@ class FigmaToolbar extends StatelessWidget {
   final VoidCallback onDeleteSelected;
   final VoidCallback onBringToFront;
   final VoidCallback onSendToBack;
+  final VoidCallback onUngroupSelected;
   final ValueChanged<String> onAlignSelected; // 'left', 'center_h', 'right', 'top', 'center_v', 'bottom'
   final VoidCallback onUndo;
   final VoidCallback onRedo;
@@ -50,6 +51,7 @@ class FigmaToolbar extends StatelessWidget {
     required this.onDeleteSelected,
     required this.onBringToFront,
     required this.onSendToBack,
+    required this.onUngroupSelected,
     required this.onAlignSelected,
     required this.onUndo,
     required this.onRedo,
@@ -163,6 +165,13 @@ class FigmaToolbar extends StatelessWidget {
             tooltip: '맨 뒤로 보내기 ([)',
             enabled: selectedElement != null,
             onPressed: onSendToBack,
+          ),
+          _buildIconButton(
+            icon: Icons.call_split,
+            tooltip: '그룹/리스트 분해 (Ctrl+Shift+G)',
+            enabled: selectedElement != null && selectedElement!.props['items'] is List,
+            color: selectedElement != null && selectedElement!.props['items'] is List ? const Color(0xFF38BDF8) : null,
+            onPressed: onUngroupSelected,
           ),
           _buildIconButton(
             icon: Icons.delete_outline,
