@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/deck_model.dart';
 
-class FigmaLayersPanel extends StatelessWidget {
+class FigmaLayersPanel extends StatefulWidget {
   final DeckSlide slide;
   final DeckElement? selectedElement;
   final ValueChanged<DeckElement?> onElementSelected;
@@ -18,6 +18,13 @@ class FigmaLayersPanel extends StatelessWidget {
     required this.onGroupSelected,
     required this.onUngroupSelected,
   });
+
+  @override
+  State<FigmaLayersPanel> createState() => _FigmaLayersPanelState();
+}
+
+class _FigmaLayersPanelState extends State<FigmaLayersPanel> {
+  final Set<String> _expandedGroupIds = {};
 
   IconData _getElementIcon(ElementType type) {
     switch (type) {
@@ -47,7 +54,7 @@ class FigmaLayersPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 260,
+      width: 270,
       decoration: const BoxDecoration(
         color: Color(0xFF1E293B), // Figma dark slate panel
         border: Border(right: BorderSide(color: Color(0xFF334155))),
@@ -66,7 +73,7 @@ class FigmaLayersPanel extends StatelessWidget {
                 const SizedBox(width: 6),
                 const Expanded(
                   child: Text(
-                    'Layers',
+                    'Layers & Hierarchy',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 12,
@@ -82,7 +89,7 @@ class FigmaLayersPanel extends StatelessWidget {
                   visualDensity: VisualDensity.compact,
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(minWidth: 22, minHeight: 22),
-                  onPressed: onGroupSelected,
+                  onPressed: widget.onGroupSelected,
                 ),
                 // Ungroup button (Ctrl+Shift+G)
                 IconButton(
@@ -91,7 +98,7 @@ class FigmaLayersPanel extends StatelessWidget {
                   visualDensity: VisualDensity.compact,
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(minWidth: 22, minHeight: 22),
-                  onPressed: onUngroupSelected,
+                  onPressed: widget.onUngroupSelected,
                 ),
               ],
             ),
@@ -99,35 +106,18 @@ class FigmaLayersPanel extends StatelessWidget {
 
           // Layer item list (Z-index order from top to bottom)
           Expanded(
-            child: slide.elements.isEmpty
+            child: widget.slide.elements.isEmpty
                 ? const Center(
                     child: Text(
                       '요소 없음',
                       style: TextStyle(color: Color(0xFF64748B), fontSize: 11),
                     ),
                   )
-                : ReorderableListView.builder(
+                : ListView(
                     padding: const EdgeInsets.symmetric(vertical: 4),
-                    itemCount: slide.elements.length,
-                    onReorder: (oldIndex, newIndex) {
-                      // Reverse index to map visually: top of list = front of stack
-                      final actualOld = slide.elements.length - 1 - oldIndex;
-                      var actualNew = slide.elements.length - 1 - newIndex;
-                      if (oldIndex < newIndex) {
-                        actualNew += 1;
-                      }
-                      final item = slide.elements.removeAt(actualOld);
-                      slide.elements.insert(actualNew.clamp(0, slide.elements.length), item);
-                      onSlideModified();
-                    },
-                    itemBuilder: (context, index) {
-                      // Topmost visual item is last element in stack (highest z-index)
-                      final actualIndex = slide.elements.length - 1 - index;
-                      final elem = slide.elements[actualIndex];
-                      final isSelected = selectedElement?.id == elem.id;
-
-                      return _buildLayerItem(elem, isSelected, ValueKey(elem.id));
-                    },
+                    children: widget.slide.elements.reversed.map((elem) {
+                      return _buildElementTreeItem(elem, depth: 0);
+                    }).toList(),
                   ),
           ),
 
@@ -142,12 +132,13 @@ class FigmaLayersPanel extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  '${slide.elements.length}개 레이어',
+                  '${widget.slide.elements.length}개 최상위 레이어',
                   style: const TextStyle(color: Color(0xFF94A3B8), fontSize: 10.5),
                 ),
                 Text(
-                  selectedElement != null ? '1개 선택됨' : '선택 없음',
+                  widget.selectedElement != null ? widget.selectedElement!.name : '선택 없음',
                   style: const TextStyle(color: Color(0xFF38BDF8), fontSize: 10.5, fontWeight: FontWeight.bold),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),
@@ -157,113 +148,144 @@ class FigmaLayersPanel extends StatelessWidget {
     );
   }
 
-  Widget _buildLayerItem(DeckElement elem, bool isSelected, Key key) {
-    final isGroup = elem.type == ElementType.group || elem.children.isNotEmpty;
+  Widget _buildElementTreeItem(DeckElement elem, {int depth = 0}) {
+    final hasChildren = elem.children.isNotEmpty;
+    final isExpanded = _expandedGroupIds.contains(elem.id) || depth > 0;
+    final isSelected = widget.selectedElement?.id == elem.id;
     final isAutoLayout = elem.autoLayoutDirection != AutoLayoutDirection.none;
 
-    return Container(
-      key: key,
-      margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
-      decoration: BoxDecoration(
-        color: isSelected ? const Color(0xFF0052FF).withOpacity(0.3) : Colors.transparent,
-        borderRadius: BorderRadius.circular(6),
-        border: isSelected ? Border.all(color: const Color(0xFF0052FF), width: 1) : null,
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(6),
-          onTap: () => onElementSelected(elem),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-            child: Row(
-              children: [
-                // Icon
-                Icon(
-                  isGroup
-                      ? (isAutoLayout ? Icons.view_stream : Icons.folder_outlined)
-                      : _getElementIcon(elem.type),
-                  color: isSelected
-                      ? const Color(0xFF38BDF8)
-                      : (elem.isVisible ? const Color(0xFF94A3B8) : const Color(0xFF475569)),
-                  size: 15,
-                ),
-                const SizedBox(width: 8),
-
-                // Name & Type badge
-                Expanded(
-                  child: Row(
-                    children: [
-                      Flexible(
-                        child: Text(
-                          elem.name,
-                          style: TextStyle(
-                            color: elem.isVisible
-                                ? (isSelected ? Colors.white : const Color(0xFFE2E8F0))
-                                : const Color(0xFF64748B),
-                            fontSize: 11.5,
-                            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Container(
+          margin: EdgeInsets.only(left: 4.0 + (depth * 14.0), right: 4.0, top: 1.0, bottom: 1.0),
+          decoration: BoxDecoration(
+            color: isSelected ? const Color(0xFF0052FF).withOpacity(0.3) : Colors.transparent,
+            borderRadius: BorderRadius.circular(6),
+            border: isSelected ? Border.all(color: const Color(0xFF0052FF), width: 1) : null,
+          ),
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              borderRadius: BorderRadius.circular(6),
+              onTap: () => widget.onElementSelected(elem),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 5),
+                child: Row(
+                  children: [
+                    // Expand/Collapse Chevron for groups
+                    if (hasChildren)
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            if (_expandedGroupIds.contains(elem.id)) {
+                              _expandedGroupIds.remove(elem.id);
+                            } else {
+                              _expandedGroupIds.add(elem.id);
+                            }
+                          });
+                        },
+                        child: Icon(
+                          isExpanded ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_right,
+                          color: const Color(0xFF94A3B8),
+                          size: 16,
                         ),
+                      )
+                    else
+                      const SizedBox(width: 8),
+
+                    // Icon
+                    Icon(
+                      hasChildren
+                          ? (isAutoLayout ? Icons.view_stream : Icons.folder_outlined)
+                          : _getElementIcon(elem.type),
+                      color: isSelected
+                          ? const Color(0xFF38BDF8)
+                          : (elem.isVisible ? const Color(0xFF94A3B8) : const Color(0xFF475569)),
+                      size: 14,
+                    ),
+                    const SizedBox(width: 6),
+
+                    // Name & AutoLayout badge
+                    Expanded(
+                      child: Row(
+                        children: [
+                          Flexible(
+                            child: Text(
+                              elem.name,
+                              style: TextStyle(
+                                color: elem.isVisible
+                                    ? (isSelected ? Colors.white : const Color(0xFFE2E8F0))
+                                    : const Color(0xFF64748B),
+                                fontSize: 11,
+                                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          if (isAutoLayout) ...[
+                            const SizedBox(width: 4),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF0284C7).withOpacity(0.3),
+                                borderRadius: BorderRadius.circular(3),
+                              ),
+                              child: Text(
+                                elem.autoLayoutDirection == AutoLayoutDirection.horizontal ? 'H' : 'V',
+                                style: const TextStyle(color: Color(0xFF38BDF8), fontSize: 8.5, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ],
+                        ],
                       ),
-                      if (isAutoLayout) ...[
-                        const SizedBox(width: 6),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF0284C7).withOpacity(0.3),
-                            borderRadius: BorderRadius.circular(3),
-                          ),
-                          child: Text(
-                            elem.autoLayoutDirection == AutoLayoutDirection.horizontal ? 'H' : 'V',
-                            style: const TextStyle(color: Color(0xFF38BDF8), fontSize: 9, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ],
-                    ],
-                  ),
-                ),
+                    ),
 
-                // Lock toggle button
-                IconButton(
-                  icon: Icon(
-                    elem.isLocked ? Icons.lock : Icons.lock_open,
-                    size: 13,
-                    color: elem.isLocked ? const Color(0xFFF59E0B) : const Color(0xFF475569),
-                  ),
-                  tooltip: elem.isLocked ? '잠금 해제' : '잠금',
-                  visualDensity: VisualDensity.compact,
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(minWidth: 20, minHeight: 20),
-                  onPressed: () {
-                    elem.isLocked = !elem.isLocked;
-                    onSlideModified();
-                  },
-                ),
+                    // Lock button
+                    IconButton(
+                      icon: Icon(
+                        elem.isLocked ? Icons.lock : Icons.lock_open,
+                        size: 12,
+                        color: elem.isLocked ? const Color(0xFFF59E0B) : const Color(0xFF475569),
+                      ),
+                      tooltip: elem.isLocked ? '잠금 해제' : '잠금',
+                      visualDensity: VisualDensity.compact,
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(minWidth: 18, minHeight: 18),
+                      onPressed: () {
+                        elem.isLocked = !elem.isLocked;
+                        widget.onSlideModified();
+                      },
+                    ),
 
-                // Visibility toggle button
-                IconButton(
-                  icon: Icon(
-                    elem.isVisible ? Icons.visibility : Icons.visibility_off,
-                    size: 13,
-                    color: elem.isVisible ? const Color(0xFF94A3B8) : const Color(0xFF475569),
-                  ),
-                  tooltip: elem.isVisible ? '숨기기' : '표시하기',
-                  visualDensity: VisualDensity.compact,
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(minWidth: 20, minHeight: 20),
-                  onPressed: () {
-                    elem.isVisible = !elem.isVisible;
-                    onSlideModified();
-                  },
+                    // Visibility button
+                    IconButton(
+                      icon: Icon(
+                        elem.isVisible ? Icons.visibility : Icons.visibility_off,
+                        size: 12,
+                        color: elem.isVisible ? const Color(0xFF94A3B8) : const Color(0xFF475569),
+                      ),
+                      tooltip: elem.isVisible ? '숨기기' : '표시하기',
+                      visualDensity: VisualDensity.compact,
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(minWidth: 18, minHeight: 18),
+                      onPressed: () {
+                        elem.isVisible = !elem.isVisible;
+                        widget.onSlideModified();
+                      },
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         ),
-      ),
+
+        // Recursive Children rendering if expanded
+        if (hasChildren && isExpanded)
+          ...elem.children.map((child) => _buildElementTreeItem(child, depth: depth + 1)),
+      ],
     );
   }
 }

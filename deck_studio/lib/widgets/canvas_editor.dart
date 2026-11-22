@@ -252,6 +252,8 @@ class _CanvasEditorState extends State<CanvasEditor> {
         return _buildShape(elem);
       case ElementType.group:
         return _buildGroup(elem);
+      case ElementType.badge:
+        return _buildBadge(elem);
       default:
         return Container(
           padding: EdgeInsets.all(elem.boxStyle.padding),
@@ -310,6 +312,7 @@ class _CanvasEditorState extends State<CanvasEditor> {
     final titleBlack = elem.props['titleBlack'] ?? '';
     final titleBlue = elem.props['titleBlue'] ?? '';
     final subtitle = elem.props['subtitle'] ?? '';
+    final plainTitle = elem.props['title'] as String?;
 
     final ts = elem.textStyle;
     final align = ts.flutterTextAlign;
@@ -319,8 +322,25 @@ class _CanvasEditorState extends State<CanvasEditor> {
             ? CrossAxisAlignment.end
             : CrossAxisAlignment.start);
 
+    // If it's a decomposed title component with only plain title / subtitle
+    if (plainTitle != null && category == null && titleBlack.isEmpty && titleBlue.isEmpty) {
+      return Text(
+        plainTitle,
+        textAlign: align,
+        style: TextStyle(
+          fontFamily: ts.fontFamily,
+          color: ts.color,
+          fontSize: ts.fontSize,
+          fontWeight: ts.fontWeight,
+          letterSpacing: ts.letterSpacing,
+          height: ts.height,
+        ),
+      );
+    }
+
     return Column(
       crossAxisAlignment: crossAlign,
+      mainAxisSize: MainAxisSize.min,
       children: [
         if (category != null) ...[
           Text(
@@ -336,39 +356,40 @@ class _CanvasEditorState extends State<CanvasEditor> {
           ),
           const SizedBox(height: 8),
         ],
-        RichText(
-          textAlign: align,
-          text: TextSpan(
-            children: [
-              TextSpan(
-                text: titleBlack,
-                style: TextStyle(
-                  fontFamily: ts.fontFamily,
-                  color: ts.color,
-                  fontSize: ts.fontSize > 24 ? ts.fontSize : 32,
-                  fontWeight: ts.fontWeight,
-                  letterSpacing: ts.letterSpacing,
-                  height: ts.height,
-                  wordSpacing: ts.wordSpacing,
+        if (titleBlack.isNotEmpty || titleBlue.isNotEmpty)
+          RichText(
+            textAlign: align,
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: titleBlack,
+                  style: TextStyle(
+                    fontFamily: ts.fontFamily,
+                    color: ts.color,
+                    fontSize: ts.fontSize > 24 ? ts.fontSize : 32,
+                    fontWeight: ts.fontWeight,
+                    letterSpacing: ts.letterSpacing,
+                    height: ts.height,
+                    wordSpacing: ts.wordSpacing,
+                  ),
                 ),
-              ),
-              TextSpan(
-                text: titleBlue,
-                style: TextStyle(
-                  fontFamily: ts.fontFamily,
-                  color: const Color(0xFF0052FF),
-                  fontSize: ts.fontSize > 24 ? ts.fontSize : 32,
-                  fontWeight: ts.fontWeight,
-                  letterSpacing: ts.letterSpacing,
-                  height: ts.height,
-                  wordSpacing: ts.wordSpacing,
+                TextSpan(
+                  text: titleBlue,
+                  style: TextStyle(
+                    fontFamily: ts.fontFamily,
+                    color: const Color(0xFF0052FF),
+                    fontSize: ts.fontSize > 24 ? ts.fontSize : 32,
+                    fontWeight: ts.fontWeight,
+                    letterSpacing: ts.letterSpacing,
+                    height: ts.height,
+                    wordSpacing: ts.wordSpacing,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
         if (subtitle.isNotEmpty) ...[
-          const SizedBox(height: 14),
+          const SizedBox(height: 8),
           Text(
             subtitle,
             textAlign: align,
@@ -382,6 +403,85 @@ class _CanvasEditorState extends State<CanvasEditor> {
           ),
         ],
       ],
+    );
+  }
+
+  Widget _buildBadge(DeckElement elem) {
+    final num = elem.props['num'] as String?;
+    final tag = elem.props['tag'] as String?;
+    final badge = elem.props['badge'] as String?;
+    final category = elem.props['category'] as String?;
+    final title = elem.props['title'] as String? ?? elem.name;
+
+    if (num != null && num.isNotEmpty) {
+      return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        decoration: BoxDecoration(
+          color: const Color(0xFFF1F5F9),
+          borderRadius: BorderRadius.circular(6),
+        ),
+        child: Text(
+          num,
+          style: const TextStyle(
+            color: Color(0xFF0052FF),
+            fontSize: 11,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      );
+    }
+
+    if (tag != null && tag.isNotEmpty) {
+      return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        decoration: BoxDecoration(
+          color: const Color(0xFFEFF6FF),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Text(
+          tag,
+          style: const TextStyle(
+            color: Color(0xFF0052FF),
+            fontSize: 10,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      );
+    }
+
+    if (badge != null && badge.isNotEmpty) {
+      return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
+        decoration: BoxDecoration(
+          color: const Color(0xFFEFF6FF),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: const Color(0xFFBFDBFE)),
+        ),
+        child: Text(
+          badge,
+          style: const TextStyle(
+            color: Color(0xFF0052FF),
+            fontSize: 11,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      );
+    }
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: const Color(0xFFEFF6FF),
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: Text(
+        category ?? title,
+        style: const TextStyle(
+          color: Color(0xFF0052FF),
+          fontSize: 12,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
     );
   }
 
@@ -1102,12 +1202,24 @@ class _CanvasEditorState extends State<CanvasEditor> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: elem.children.map((child) {
+            final isChildSelected = widget.selectedElement?.id == child.id;
             return Padding(
               padding: EdgeInsets.only(right: elem.autoLayoutSpacing),
-              child: SizedBox(
-                width: child.width,
-                height: child.height,
-                child: _buildInnerElement(child),
+              child: GestureDetector(
+                onTap: () => widget.onElementSelected(child),
+                behavior: HitTestBehavior.opaque,
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: isChildSelected
+                        ? Border.all(color: const Color(0xFF0052FF), width: 2)
+                        : null,
+                  ),
+                  child: SizedBox(
+                    width: child.width,
+                    height: child.height,
+                    child: _buildInnerElement(child),
+                  ),
+                ),
               ),
             );
           }).toList(),
@@ -1116,19 +1228,35 @@ class _CanvasEditorState extends State<CanvasEditor> {
     } else if (elem.autoLayoutDirection == AutoLayoutDirection.vertical) {
       return Padding(
         padding: EdgeInsets.all(elem.autoLayoutPadding),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: elem.children.map((child) {
-            return Padding(
-              padding: EdgeInsets.only(bottom: elem.autoLayoutSpacing),
-              child: SizedBox(
-                width: child.width,
-                height: child.height,
-                child: _buildInnerElement(child),
-              ),
-            );
-          }).toList(),
+        child: SingleChildScrollView(
+          physics: const NeverScrollableScrollPhysics(),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: elem.children.map((child) {
+              final isChildSelected = widget.selectedElement?.id == child.id;
+              return Padding(
+                padding: EdgeInsets.only(bottom: elem.autoLayoutSpacing),
+                child: GestureDetector(
+                  onTap: () => widget.onElementSelected(child),
+                  behavior: HitTestBehavior.opaque,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: isChildSelected
+                          ? Border.all(color: const Color(0xFF0052FF), width: 2)
+                          : null,
+                    ),
+                    child: SizedBox(
+                      width: child.width,
+                      height: child.height,
+                      child: _buildInnerElement(child),
+                    ),
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
         ),
       );
     }
@@ -1136,12 +1264,32 @@ class _CanvasEditorState extends State<CanvasEditor> {
     // Freeform absolute children
     return Stack(
       children: elem.children.map((child) {
+        final isChildSelected = widget.selectedElement?.id == child.id;
         return Positioned(
           left: child.x,
           top: child.y,
           width: child.width,
           height: child.height,
-          child: _buildInnerElement(child),
+          child: GestureDetector(
+            onTap: () => widget.onElementSelected(child),
+            onPanUpdate: child.isLocked
+                ? null
+                : (details) {
+                    setState(() {
+                      child.x += details.delta.dx;
+                      child.y += details.delta.dy;
+                    });
+                    widget.onSlideModified();
+                  },
+            child: Container(
+              decoration: BoxDecoration(
+                border: isChildSelected
+                    ? Border.all(color: const Color(0xFF0052FF), width: 2)
+                    : null,
+              ),
+              child: _buildInnerElement(child),
+            ),
+          ),
         );
       }).toList(),
     );
