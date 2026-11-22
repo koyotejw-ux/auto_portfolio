@@ -7,6 +7,7 @@ import 'widgets/inspector_panel.dart';
 import 'widgets/figma_toolbar.dart';
 import 'widgets/element_library_modal.dart';
 import 'widgets/design_system_library_modal.dart';
+import 'widgets/fullscreen_export_modal.dart';
 
 void main() {
   runApp(const DeckStudioApp());
@@ -611,20 +612,18 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
           ),
           const SizedBox(width: 8),
           OutlinedButton.icon(
-            icon: const Icon(Icons.picture_as_pdf, size: 15),
-            label: const Text('Behance 슬라이드 / PDF 내보내기', style: TextStyle(fontSize: 11.5)),
+            icon: const Icon(Icons.file_download_outlined, size: 15, color: Color(0xFF38BDF8)),
+            label: const Text('전체화면 HTML / Flutter 웹 / PDF 출력', style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.bold, color: Colors.white)),
             style: OutlinedButton.styleFrom(
-              foregroundColor: Colors.white,
-              side: const BorderSide(color: Color(0xFF334155)),
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              backgroundColor: const Color(0xFF1E293B),
+              side: const BorderSide(color: Color(0xFF0052FF)),
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
             ),
             onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('현재 덱의 모든 슬라이드가 고해상도 1920x1080 규격으로 준비되었습니다.'),
-                  backgroundColor: Color(0xFF0052FF),
-                ),
+              showDialog(
+                context: context,
+                builder: (ctx) => FullscreenExportModal(project: _project),
               );
             },
           ),
