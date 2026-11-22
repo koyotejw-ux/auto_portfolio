@@ -3,6 +3,7 @@ import 'models/deck_model.dart';
 import 'widgets/canvas_editor.dart';
 import 'widgets/inspector_panel.dart';
 import 'widgets/element_library_modal.dart';
+import 'widgets/design_system_library_modal.dart';
 
 void main() {
   runApp(const DeckStudioApp());
@@ -336,6 +337,23 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
             ],
           ),
           const Spacer(),
+          ElevatedButton.icon(
+            icon: const Icon(Icons.style, size: 16),
+            label: const Text('디자인 시스템 라이브러리', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF0891B2),
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            ),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (ctx) => const DesignSystemLibraryModal(),
+              );
+            },
+          ),
+          const SizedBox(width: 10),
           ElevatedButton.icon(
             icon: const Icon(Icons.add_box_outlined, size: 16),
             label: const Text('컴포넌트 삽입', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
