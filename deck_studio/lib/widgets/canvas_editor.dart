@@ -36,15 +36,17 @@ class _CanvasEditorState extends State<CanvasEditor> {
           ),
           child: Row(
             children: [
-              Text(
-                widget.slide.title,
-                style: const TextStyle(
-                  color: Color(0xFF0F172A),
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
+              Expanded(
+                child: Text(
+                  widget.slide.title,
+                  style: const TextStyle(
+                    color: Color(0xFF0F172A),
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
-              const Spacer(),
               IconButton(
                 icon: const Icon(Icons.zoom_out, size: 20),
                 onPressed: () {
@@ -67,15 +69,15 @@ class _CanvasEditorState extends State<CanvasEditor> {
                 },
                 tooltip: '확대',
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: 8),
               ElevatedButton.icon(
-                icon: const Icon(Icons.fit_screen, size: 16),
-                label: const Text('1920x1080 핏', style: TextStyle(fontSize: 12)),
+                icon: const Icon(Icons.fit_screen, size: 14),
+                label: const Text('핏', style: TextStyle(fontSize: 11)),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFF1F5F9),
                   foregroundColor: const Color(0xFF334155),
                   elevation: 0,
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                 ),
                 onPressed: () {
                   setState(() {

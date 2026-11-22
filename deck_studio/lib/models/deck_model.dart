@@ -15,6 +15,60 @@ enum ElementType {
   shape,
 }
 
+class DeckTextStyle {
+  String fontFamily;
+  double fontSize;
+  FontWeight fontWeight;
+  Color color;
+  double letterSpacing; // 자간 (Letter spacing)
+  double height; // 행간 / 줄간격 (Line height multiplier)
+  double wordSpacing; // 어간 (Word spacing)
+
+  DeckTextStyle({
+    this.fontFamily = 'Pretendard',
+    this.fontSize = 16.0,
+    this.fontWeight = FontWeight.normal,
+    this.color = const Color(0xFF0F172A),
+    this.letterSpacing = 0.0,
+    this.height = 1.4,
+    this.wordSpacing = 0.0,
+  });
+
+  TextStyle toTextStyle() {
+    return TextStyle(
+      fontFamily: fontFamily,
+      fontSize: fontSize,
+      fontWeight: fontWeight,
+      color: color,
+      letterSpacing: letterSpacing,
+      height: height,
+      wordSpacing: wordSpacing,
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        'fontFamily': fontFamily,
+        'fontSize': fontSize,
+        'fontWeight': fontWeight.index,
+        'color': color.toARGB32(),
+        'letterSpacing': letterSpacing,
+        'height': height,
+        'wordSpacing': wordSpacing,
+      };
+
+  factory DeckTextStyle.fromJson(Map<String, dynamic> json) {
+    return DeckTextStyle(
+      fontFamily: json['fontFamily'] ?? 'Pretendard',
+      fontSize: (json['fontSize'] as num?)?.toDouble() ?? 16.0,
+      fontWeight: FontWeight.values[(json['fontWeight'] as int?) ?? 3],
+      color: Color((json['color'] as int?) ?? 0xFF0F172A),
+      letterSpacing: (json['letterSpacing'] as num?)?.toDouble() ?? 0.0,
+      height: (json['height'] as num?)?.toDouble() ?? 1.4,
+      wordSpacing: (json['wordSpacing'] as num?)?.toDouble() ?? 0.0,
+    );
+  }
+}
+
 class DeckElement {
   String id;
   ElementType type;
@@ -23,6 +77,7 @@ class DeckElement {
   double y;
   double width;
   double height;
+  DeckTextStyle textStyle;
   Map<String, dynamic> props;
 
   DeckElement({
@@ -33,8 +88,9 @@ class DeckElement {
     required this.y,
     required this.width,
     required this.height,
+    DeckTextStyle? textStyle,
     required this.props,
-  });
+  }) : textStyle = textStyle ?? DeckTextStyle();
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -44,6 +100,7 @@ class DeckElement {
         'y': y,
         'width': width,
         'height': height,
+        'textStyle': textStyle.toJson(),
         'props': props,
       };
 
@@ -59,6 +116,9 @@ class DeckElement {
       y: (json['y'] as num).toDouble(),
       width: (json['width'] as num).toDouble(),
       height: (json['height'] as num).toDouble(),
+      textStyle: json['textStyle'] != null
+          ? DeckTextStyle.fromJson(json['textStyle'])
+          : DeckTextStyle(),
       props: Map<String, dynamic>.from(json['props'] ?? {}),
     );
   }
@@ -83,7 +143,7 @@ class DeckSlide {
         'id': id,
         'title': title,
         'pageNumber': pageNumber,
-        'backgroundColor': backgroundColor.value,
+        'backgroundColor': backgroundColor.toARGB32(),
         'elements': elements.map((e) => e.toJson()).toList(),
       };
 
@@ -151,6 +211,12 @@ class PortfolioProject {
           y: 70,
           width: 1720,
           height: 60,
+          textStyle: DeckTextStyle(
+            fontFamily: 'Pretendard',
+            fontSize: 13,
+            fontWeight: FontWeight.w600,
+            letterSpacing: -0.2,
+          ),
           props: {
             'badge': '2026 CASE STUDY',
             'meta': '서비스 기획 · UI/UX 디자인 · Android Live · Smart Attendance System',
@@ -164,6 +230,13 @@ class PortfolioProject {
           y: 160,
           width: 820,
           height: 220,
+          textStyle: DeckTextStyle(
+            fontFamily: 'Pretendard',
+            fontSize: 32,
+            fontWeight: FontWeight.w900,
+            letterSpacing: -1.0,
+            height: 1.25,
+          ),
           props: {
             'category': '체크앤페이 · CHECK & PAY',
             'titleBlack': '1초 원터치 출결, ',
@@ -179,6 +252,13 @@ class PortfolioProject {
           y: 360,
           width: 780,
           height: 440,
+          textStyle: DeckTextStyle(
+            fontFamily: 'Pretendard',
+            fontSize: 13,
+            fontWeight: FontWeight.bold,
+            letterSpacing: -0.3,
+            height: 1.4,
+          ),
           props: {
             'items': [
               {'num': '01', 'tag': '출결 마찰 제로', 'title': '1초 원터치 키오스크 UI', 'desc': '번호 뒤 4자리 터치 즉시 0.8초 등하원 인증 및 대기 줄 완전 제거'},
@@ -251,6 +331,13 @@ class PortfolioProject {
           y: 114,
           width: 1200,
           height: 110,
+          textStyle: DeckTextStyle(
+            fontFamily: 'Pretendard',
+            fontSize: 30,
+            fontWeight: FontWeight.w900,
+            letterSpacing: -0.8,
+            height: 1.25,
+          ),
           props: {
             'titleBlack': '원생 4자리 번호 터치부터 ',
             'titleBlue': '원장님 메인 출결 동기화까지,',
@@ -316,88 +403,6 @@ class PortfolioProject {
       ],
     ));
 
-    // Slide 3: Visual Design System
-    proj.slides.add(DeckSlide(
-      id: 'slide_3',
-      title: '07. Visual Design System & Design Tokens',
-      pageNumber: 7,
-      backgroundColor: const Color(0xFFF8FAFC),
-      elements: [
-        DeckElement(
-          id: 's3_header',
-          type: ElementType.header,
-          name: '디자인 시스템 헤더',
-          x: 100,
-          y: 70,
-          width: 1720,
-          height: 60,
-          props: {
-            'badge': '07 VISUAL DESIGN SYSTEM & BRAND TOKENS',
-            'meta': 'Design Foundations · Keyline Drafting · 24dp Iconography · Component Tokens',
-          },
-        ),
-        DeckElement(
-          id: 's3_tokens',
-          type: ElementType.designTokens,
-          name: '컬러 팔레트 및 타이포그래피 토큰',
-          x: 100,
-          y: 150,
-          width: 820,
-          height: 660,
-          props: {
-            'colors': [
-              {'name': 'Brand Electric Blue', 'hex': '#0052FF', 'role': 'Primary Action & Hero Accent'},
-              {'name': 'Cyan Accent', 'hex': '#06B6D4', 'role': 'Secondary Glow & Active States'},
-              {'name': 'Obsidian Dark', 'hex': '#0F172A', 'role': 'Title Black & Kiosk Surface'},
-              {'name': 'Success Emerald', 'hex': '#10B981', 'role': 'Attendance Success & Verified'},
-              {'name': 'Warning Amber', 'hex': '#F59E0B', 'role': 'D-Day Expiring Soon Alert'},
-              {'name': 'Pure White Clean', 'hex': '#FFFFFF', 'role': 'Card Surface & Elevated Light'},
-            ],
-            'typography': [
-              {'level': 'Hero Display', 'size': '56px Black', 'sample': '1초 원터치 출결'},
-              {'level': 'Section Title', 'size': '32px ExtraBold', 'sample': '스마트 D-Day 수납 장부'},
-              {'level': 'Card Headline', 'size': '18px Bold', 'sample': '출결 마찰 제로 키오스크'},
-              {'level': 'Body Regular', 'size': '14px Regular', 'sample': '단 한 번의 터치로 완결되는 경험'},
-            ]
-          },
-        ),
-        DeckElement(
-          id: 's3_charts',
-          type: ElementType.donutChart,
-          name: '컴포넌트 완성도 & 도넛 차트',
-          x: 960,
-          y: 150,
-          width: 860,
-          height: 660,
-          props: {
-            'title': '디자인 시스템 토큰 규격 준수율',
-            'percentage': 98.4,
-            'stat1': '24dp 아이콘 64종',
-            'stat2': 'WCAG AAA 12.8:1 고대비',
-            'stat3': '8pt 그리드 100% 준수',
-          },
-        ),
-        DeckElement(
-          id: 's3_kpis',
-          type: ElementType.kpiStrip,
-          name: '디자인 시스템 규격 요약 바',
-          x: 100,
-          y: 840,
-          width: 1720,
-          height: 120,
-          props: {
-            'items': [
-              {'title': '디자인 시스템 명', 'val': 'FinTech Trust Tokens', 'sub': 'Flutter 및 Web 범용'},
-              {'title': '컴포넌트 재사용률', 'val': '92%', 'sub': '모듈러 아키텍처 구축'},
-              {'title': '접근성 보장', 'val': 'AAA Level', 'sub': '시인성 및 고대비 최적화'},
-              {'title': '규격 빌드', 'val': 'Auto-Sync Kit', 'sub': '토큰 실시간 렌더링'},
-            ]
-          },
-        ),
-      ],
-    ));
-
     return proj;
   }
 }
-
