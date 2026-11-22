@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import '../models/deck_model.dart';
 
@@ -609,10 +610,24 @@ class _CanvasEditorState extends State<CanvasEditor> {
   Widget _buildMockupPlaceholder(DeckElement elem) {
     final title = elem.props['screenTitle'] ?? 'Mockup Screen';
     final showMascot = elem.props['showMascot'] == true;
+    final imagePath = elem.props['imagePath'] as String?;
+
+    if (imagePath != null && imagePath.isNotEmpty) {
+      final file = File(imagePath);
+      if (file.existsSync()) {
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(elem.boxStyle.borderRadius),
+          child: Image.file(
+            file,
+            fit: BoxFit.contain,
+          ),
+        );
+      }
+    }
 
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFFEFF6FF).withOpacity(0.5),
+        color: const Color(0xFFEFF6FF).withValues(alpha: 0.5),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: const Color(0xFFBFDBFE), width: 1.5),
       ),

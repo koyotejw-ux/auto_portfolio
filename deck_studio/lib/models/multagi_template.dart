@@ -1,0 +1,901 @@
+import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'deck_model.dart';
+
+class MultagiProjectTemplate {
+  static PortfolioProject createSmartDcaProject() {
+    final proj = PortfolioProject(
+      title: 'Smart DCA (물타기 계산기) Portfolio Deck',
+      author: 'Senior Product Designer & Engineer',
+    );
+
+    // Slide 1: Hero Cover
+    proj.slides.add(DeckSlide(
+      id: 'slide_1',
+      title: '01. Hero Cover · 평단을 낮추다, 하락장을 이기다',
+      pageNumber: 1,
+      backgroundColor: const Color(0xFFFAFCFF),
+      elements: [
+        DeckElement(
+          id: 's1_header',
+          type: ElementType.header,
+          name: '헤더 인디케이터',
+          x: 100,
+          y: 60,
+          width: 1720,
+          height: 50,
+          props: {
+            'badge': '2026 CASE STUDY',
+            'meta': '기획(PM) · UI/UX 디자인 · Android Live (v2.0) · Web Prototype',
+          },
+        ),
+        DeckElement(
+          id: 's1_title',
+          type: ElementType.text,
+          name: '메인 헤드라인',
+          x: 100,
+          y: 130,
+          width: 820,
+          height: 180,
+          props: {
+            'category': 'SMART DCA · UX/UI',
+            'titleBlack': '평단을 낮추다, ',
+            'titleBlue': '하락장을 이기다.',
+            'subtitle': '하락장에서 불안에 휩쓸려 무작정 매수하던 기존 계산 방식을 완전히 탈피하고,\n목표 평단가 도달에 필요한 매수 수량과 자금을 한눈에 제시하는 스마트 금융 솔루션',
+          },
+        ),
+        DeckElement(
+          id: 's1_features',
+          type: ElementType.flowchart,
+          name: '4대 핵심 강점',
+          x: 100,
+          y: 330,
+          width: 820,
+          height: 470,
+          props: {
+            'items': [
+              {'num': '01', 'tag': '인지 부하 해소', 'title': '인지 부하 제로 설계 (Zero-Friction Voice Dock)', 'desc': '급변하는 매수 타이밍에서 복잡한 수치 입력을 제거하고, 음성과 탭 한 번으로 계산 완료'},
+              {'num': '02', 'tag': '직관적 역산 UX', 'title': '직관적인 역산 인터랙션 (Goal-Seeking Interactive Flow)', 'desc': '목표 평단가를 지정하면 필요 매수 수량과 추가 필요 예수금을 즉시 역산출'},
+              {'num': '03', 'tag': '행동경제학', 'title': '행동경제학적 안전 장치 (Safety Margin Alert UI)', 'desc': '손실 회피 편향으로 인한 뇌동매매를 방지하도록 비중 초과 경고와 분할 매수 가이드 제공'},
+              {'num': '04', 'tag': '신뢰 & 안심', 'title': '금융 신뢰감과 안심 UX (Trust & Privacy Interface)', 'desc': '모든 자산 데이터를 외부 전송 없이 100% 로컬 온디바이스에서만 완결 처리'},
+            ]
+          },
+        ),
+        DeckElement(
+          id: 's1_mockup_preview',
+          type: ElementType.mockupPlaceholder,
+          name: '01 슬라이드 실물 비주얼',
+          x: 960,
+          y: 130,
+          width: 860,
+          height: 670,
+          props: {
+            'imagePath': 'D:/097.flutter_project/average_down_calculator/portfolio/behance_slides/slide_01.png',
+            'screenTitle': '스마트 DCA 3D 퍼스펙티브 목업',
+          },
+        ),
+        DeckElement(
+          id: 's1_kpi_strip',
+          type: ElementType.kpiStrip,
+          name: '하단 규격 바',
+          x: 100,
+          y: 840,
+          width: 1720,
+          height: 120,
+          props: {
+            'items': [
+              {'title': 'PROJECT ROLE', 'val': '서비스 기획 100% · UI/UX 100%', 'sub': '사용자 리서치 · 문제 정의 · IA 정보 설계 · 와이어프레임 · UI 디자인 총괄'},
+              {'title': 'PERIOD & TIMELINE', 'val': '2026.07 - 현재 (v2.0 라이브)', 'sub': '스토어 출시 후 실 사용자 피드백 반영 및 v2.0 지속 고도화'},
+              {'title': 'DESIGN SYSTEM', 'val': 'FinTech Trust 토큰 & 규격', 'sub': '8pt 베이스라인 · 인디고/블루 신뢰 팔레트 · 라이트/다크 규격화'},
+              {'title': 'DELIVERY & RELEASE', 'val': 'Google Play 상용 & 웹 프로토타입', 'sub': '실제 스토어 사용자 피드백 반영 · 60fps 인터랙티브 체험 구축'},
+            ]
+          },
+        ),
+      ],
+    ));
+
+    // Slide 2: User Research
+    proj.slides.add(DeckSlide(
+      id: 'slide_2',
+      title: '02. User Research · 국내 투자자 행태 분석과 비이성적 물타기',
+      pageNumber: 2,
+      backgroundColor: const Color(0xFFF8FAFC),
+      elements: [
+        DeckElement(
+          id: 's2_header',
+          type: ElementType.header,
+          name: '헤더 인디케이터',
+          x: 100,
+          y: 60,
+          width: 1720,
+          height: 50,
+          props: {
+            'badge': '02 USER RESEARCH',
+            'meta': 'USER RESEARCH | DESK RESEARCH & MARKET STUDY',
+          },
+        ),
+        DeckElement(
+          id: 's2_title',
+          type: ElementType.text,
+          name: '헤드라인',
+          x: 100,
+          y: 130,
+          width: 820,
+          height: 160,
+          props: {
+            'category': 'DESK RESEARCH & MARKET STUDY',
+            'titleBlack': '국내 투자자 행태 분석과 ',
+            'titleBlue': '비이성적 물타기의 기존 문제점',
+            'subtitle': 'AI 기반 시장 데이터 분석(자본시장연구원 N=428) 및 14대 증권사 조사를 통해 도출한 3대 전략',
+          },
+        ),
+        DeckElement(
+          id: 's2_research_cards',
+          type: ElementType.flowchart,
+          name: '3대 핵심 문제점 및 기회 영역',
+          x: 100,
+          y: 310,
+          width: 820,
+          height: 480,
+          props: {
+            'items': [
+              {'num': '01', 'tag': '공포 기반 매수', 'title': '감정적 물타기로 인한 추가 손실 73.4%', 'desc': '충분한 계산과 근거 없이 손실 만회를 위해 무리하게 진입하여 비중 왜곡 심화'},
+              {'num': '02', 'tag': 'Fat-Finger 오타', 'title': '변동성 장세 속 긴급 입력 실수', 'desc': '모바일 키패드로 긴 단가와 수량을 입력하다가 호가 창 놓침 및 오입력 빈발'},
+              {'num': '03', 'tag': '목표 없는 물타기', 'title': '단순 평단 계산기의 한계', 'desc': '현재 주가에서 몇 주를 더 사야 탈출할 수 있는지에 대한 역산 솔루션의 부재'},
+            ]
+          },
+        ),
+        DeckElement(
+          id: 's2_preview',
+          type: ElementType.mockupPlaceholder,
+          name: '02 슬라이드 완성 도식 렌더',
+          x: 960,
+          y: 130,
+          width: 860,
+          height: 670,
+          props: {
+            'imagePath': 'D:/097.flutter_project/average_down_calculator/portfolio/behance_slides/slide_02.png',
+            'screenTitle': '리서치 데이터 도식 & 인포그래픽',
+          },
+        ),
+        DeckElement(
+          id: 's2_kpi',
+          type: ElementType.kpiStrip,
+          name: '하단 메트릭',
+          x: 100,
+          y: 840,
+          width: 1720,
+          height: 120,
+          props: {
+            'items': [
+              {'title': '표본 크기', 'val': 'N = 428명', 'sub': '자본시장연구원 패널 조사'},
+              {'title': '감정 매매율', 'val': '73.4%', 'sub': '손실 구간 무계획 물타기'},
+              {'title': '해결 목표', 'val': '0.2s 음성 도크', 'sub': '인지 마찰 100% 해소'},
+              {'title': '리스크 제어', 'val': '100% 온디바이스', 'sub': '금융 프라이버시 안심 보호'},
+            ]
+          },
+        ),
+      ],
+    ));
+
+    // Slide 3: Target & Persona
+    proj.slides.add(DeckSlide(
+      id: 'slide_3',
+      title: '03. Target & Persona · 타깃 세그먼트 매트릭스와 경쟁사 분석',
+      pageNumber: 3,
+      backgroundColor: const Color(0xFFF8FAFC),
+      elements: [
+        DeckElement(
+          id: 's3_header',
+          type: ElementType.header,
+          name: '헤더 인디케이터',
+          x: 100,
+          y: 60,
+          width: 1720,
+          height: 50,
+          props: {
+            'badge': '03 TARGET & PERSONA',
+            'meta': 'TARGET & PERSONA | SEGMENTATION MATRIX & BENCHMARK',
+          },
+        ),
+        DeckElement(
+          id: 's3_title',
+          type: ElementType.text,
+          name: '헤드라인',
+          x: 100,
+          y: 130,
+          width: 820,
+          height: 160,
+          props: {
+            'category': 'SEGMENTATION MATRIX & BENCHMARK',
+            'titleBlack': '타깃 세그먼트 매트릭스와 ',
+            'titleBlue': '경쟁사 벤치마킹 분석',
+            'subtitle': '2x2 타깃 포지셔닝 매트릭스와 4대 플랫폼 벤치마크, 그리고 대표 페르소나 행동 지표',
+          },
+        ),
+        DeckElement(
+          id: 's3_preview',
+          type: ElementType.mockupPlaceholder,
+          name: '03 슬라이드 완성 도식 렌더',
+          x: 100,
+          y: 310,
+          width: 1720,
+          height: 510,
+          props: {
+            'imagePath': 'D:/097.flutter_project/average_down_calculator/portfolio/behance_slides/slide_03.png',
+            'screenTitle': '페르소나 여정 & 2x2 경쟁 포지셔닝 매트릭스',
+          },
+        ),
+        DeckElement(
+          id: 's3_kpi',
+          type: ElementType.kpiStrip,
+          name: '하단 메트릭',
+          x: 100,
+          y: 840,
+          width: 1720,
+          height: 120,
+          props: {
+            'items': [
+              {'title': '메인 타깃', 'val': '스마트 리테일 투자자', 'sub': '25-45세 직장인 및 개인 투자자'},
+              {'title': '핵심 니즈', 'val': '손익분기점 즉시 산출', 'sub': '목표가 도달 필요 수량/금액'},
+              {'title': '경쟁 우위', 'val': '음성 AI 도크 & 역산', 'sub': '기존 단순 계산기 압도'},
+              {'title': '사용성 완성도', 'val': '98.5% 태스크 성공률', 'sub': '시니어 UT 검증 완료'},
+            ]
+          },
+        ),
+      ],
+    ));
+
+    // Slide 4: Information Architecture
+    proj.slides.add(DeckSlide(
+      id: 'slide_4',
+      title: '04. Information Architecture · 5대 핵심 메뉴 구조',
+      pageNumber: 4,
+      backgroundColor: const Color(0xFFF8FAFC),
+      elements: [
+        DeckElement(
+          id: 's4_header',
+          type: ElementType.header,
+          name: '헤더 인디케이터',
+          x: 100,
+          y: 60,
+          width: 1720,
+          height: 50,
+          props: {
+            'badge': '04 INFORMATION ARCHITECTURE',
+            'meta': 'INFORMATION ARCHITECTURE · SERVICE STRUCTURE',
+          },
+        ),
+        DeckElement(
+          id: 's4_title',
+          type: ElementType.text,
+          name: '헤드라인',
+          x: 100,
+          y: 130,
+          width: 1200,
+          height: 160,
+          props: {
+            'category': 'SERVICE STRUCTURE',
+            'titleBlack': '누구나 바로 이해하고 쓰는 ',
+            'titleBlue': '5대 핵심 메뉴 구조',
+            'subtitle': '자산 확인부터 목표 평단 계산, 위험 방지까지 필요한 기능을 한눈에 찾을 수 있는 쉬운 화면 구성',
+          },
+        ),
+        DeckElement(
+          id: 's4_preview',
+          type: ElementType.mockupPlaceholder,
+          name: '04 슬라이드 IA 트리 렌더',
+          x: 100,
+          y: 310,
+          width: 1720,
+          height: 510,
+          props: {
+            'imagePath': 'D:/097.flutter_project/average_down_calculator/portfolio/behance_slides/slide_04.png',
+            'screenTitle': '5대 핵심 메뉴 IA 정보 설계도',
+          },
+        ),
+        DeckElement(
+          id: 's4_kpi',
+          type: ElementType.kpiStrip,
+          name: '하단 메트릭',
+          x: 100,
+          y: 840,
+          width: 1720,
+          height: 120,
+          props: {
+            'items': [
+              {'title': '1. 홈 대시보드', 'val': '보유 자산 실시간 현황', 'sub': '평균단가·수익률 직관 요약'},
+              {'title': '2. 퀀트 계산기', 'val': '0.2s 음성 도크 결합', 'sub': '자연어 발화 즉시 연동'},
+              {'title': '3. 목표가 역산', 'val': 'Closed-form 방정식', 'sub': '필요 자금 무지연 계산'},
+              {'title': '4. 안심 금고', 'val': '100% 로컬 암호화', 'sub': '완전 무결 데이터 보관'},
+            ]
+          },
+        ),
+      ],
+    ));
+
+    // Slide 5: User Flow
+    proj.slides.add(DeckSlide(
+      id: 'slide_5',
+      title: '05. User Flow · 5단계 서비스 UX 플로우차트',
+      pageNumber: 5,
+      backgroundColor: const Color(0xFFF8FAFC),
+      elements: [
+        DeckElement(
+          id: 's5_header',
+          type: ElementType.header,
+          name: '헤더 인디케이터',
+          x: 100,
+          y: 60,
+          width: 1720,
+          height: 50,
+          props: {
+            'badge': '05 USER FLOW',
+            'meta': 'USER FLOW | SERVICE INTERACTION FLOWCHART',
+          },
+        ),
+        DeckElement(
+          id: 's5_title',
+          type: ElementType.text,
+          name: '헤드라인',
+          x: 100,
+          y: 130,
+          width: 1200,
+          height: 160,
+          props: {
+            'category': 'SERVICE INTERACTION FLOWCHART',
+            'titleBlack': '사용자 행동과 판단을 이끄는 ',
+            'titleBlue': '5단계 서비스 UX 플로우차트',
+            'subtitle': '진입 온보딩부터 멀티모달 입력, 퀀트 역산, 리스크 가드, 포트폴리오 저장까지 이어지는 핵심 사용자 여정',
+          },
+        ),
+        DeckElement(
+          id: 's5_preview',
+          type: ElementType.mockupPlaceholder,
+          name: '05 슬라이드 플로우차트 렌더',
+          x: 100,
+          y: 310,
+          width: 1720,
+          height: 510,
+          props: {
+            'imagePath': 'D:/097.flutter_project/average_down_calculator/portfolio/behance_slides/slide_05.png',
+            'screenTitle': '5단계 사용자 여정 및 분기 조건 플로우차트',
+          },
+        ),
+        DeckElement(
+          id: 's5_kpi',
+          type: ElementType.kpiStrip,
+          name: '하단 규격 바',
+          x: 100,
+          y: 840,
+          width: 1720,
+          height: 120,
+          props: {
+            'items': [
+              {'title': 'Step 1: 진입', 'val': '홈 대시보드 온보딩', 'sub': '직관적 상태 인지'},
+              {'title': 'Step 2: 입력', 'val': '음성 탭 or 수치 입력', 'sub': 'Fat-finger 방지 0.2s'},
+              {'title': 'Step 3: 역산', 'val': '목표 평단가 산출', 'sub': '실시간 필요 예수금 도출'},
+              {'title': 'Step 4: 저장', 'val': '로컬 포트폴리오 동기화', 'sub': '외부 유출 제로 안심 저장'},
+            ]
+          },
+        ),
+      ],
+    ));
+
+    // Slide 6: Wireframe
+    proj.slides.add(DeckSlide(
+      id: 'slide_6',
+      title: '06. Wireframe · 4대 모바일 와이어프레임과 인체공학적 설계',
+      pageNumber: 6,
+      backgroundColor: const Color(0xFFF8FAFC),
+      elements: [
+        DeckElement(
+          id: 's6_header',
+          type: ElementType.header,
+          name: '헤더 인디케이터',
+          x: 100,
+          y: 60,
+          width: 1720,
+          height: 50,
+          props: {
+            'badge': '06 WIREFRAME',
+            'meta': 'WIREFRAME | MOBILE UX & ERGONOMIC ARCHITECTURE',
+          },
+        ),
+        DeckElement(
+          id: 's6_title',
+          type: ElementType.text,
+          name: '헤드라인',
+          x: 100,
+          y: 130,
+          width: 1200,
+          height: 160,
+          props: {
+            'category': 'MOBILE UX & ERGONOMIC ARCHITECTURE',
+            'titleBlack': '실제 앱 구조를 그대로 반영한 ',
+            'titleBlue': '4대 모바일 와이어프레임과 인체공학적 설계',
+            'subtitle': '홈 대시보드·계산기·음성도크·목표역산 4대 핵심 화면의 골격 구조와 한 손 조작을 위한 엄지 조작 반경(Thumb-Zone) 인체공학 설계',
+          },
+        ),
+        DeckElement(
+          id: 's6_preview',
+          type: ElementType.mockupPlaceholder,
+          name: '06 슬라이드 와이어프레임 렌더',
+          x: 100,
+          y: 310,
+          width: 1720,
+          height: 510,
+          props: {
+            'imagePath': 'D:/097.flutter_project/average_down_calculator/portfolio/behance_slides/slide_06.png',
+            'screenTitle': '엄지 조작 반경 기반 4대 와이어프레임',
+          },
+        ),
+        DeckElement(
+          id: 's6_kpi',
+          type: ElementType.kpiStrip,
+          name: '하단 메트릭',
+          x: 100,
+          y: 840,
+          width: 1720,
+          height: 120,
+          props: {
+            'items': [
+              {'title': '엄지 조작 영역', 'val': '하단 48% Safe Zone', 'sub': '한 손 파지 최적화'},
+              {'title': '터치 타깃 규격', 'val': '최소 48x48 dp', 'sub': 'WCAG 2.1 AAA 준수'},
+              {'title': '음성 도크 위치', 'val': 'Bottom Docked UI', 'sub': '엄지 원터치 마이크 진입'},
+              {'title': '정보 위계', 'val': '3단계 시각적 계층', 'sub': '인지 피로도 최소화'},
+            ]
+          },
+        ),
+      ],
+    ));
+
+    // Slide 7: Design System
+    proj.slides.add(DeckSlide(
+      id: 'slide_7',
+      title: '07. Design System · 비주얼 아이덴티티 & 디자인 시스템',
+      pageNumber: 7,
+      backgroundColor: const Color(0xFFF8FAFC),
+      elements: [
+        DeckElement(
+          id: 's7_header',
+          type: ElementType.header,
+          name: '헤더 인디케이터',
+          x: 100,
+          y: 60,
+          width: 1720,
+          height: 50,
+          props: {
+            'badge': '07 DESIGN SYSTEM',
+            'meta': 'DESIGN SYSTEM | BRAND IDENTITY & COMPONENT ARCHITECTURE',
+          },
+        ),
+        DeckElement(
+          id: 's7_title',
+          type: ElementType.text,
+          name: '헤드라인',
+          x: 100,
+          y: 130,
+          width: 1200,
+          height: 160,
+          props: {
+            'category': 'BRAND IDENTITY & COMPONENT ARCHITECTURE',
+            'titleBlack': '브랜드 정체성과 정밀함을 규정하는 ',
+            'titleBlue': '비주얼 아이덴티티 & 디자인 시스템',
+            'subtitle': '스마트 DCA 핵심 디자인 컨셉, 기하학 키라인 그리드, 24dp 아이코노그라피, 파운데이션 토큰 규칙(Radius·Spacing·Color) & 아토믹 킷',
+          },
+        ),
+        DeckElement(
+          id: 's7_preview',
+          type: ElementType.mockupPlaceholder,
+          name: '07 슬라이드 디자인 시스템 렌더',
+          x: 100,
+          y: 310,
+          width: 1720,
+          height: 510,
+          props: {
+            'imagePath': 'D:/097.flutter_project/average_down_calculator/portfolio/behance_slides/slide_07.png',
+            'screenTitle': '디자인 토큰 시스템 & 컴포넌트 라이브러리',
+          },
+        ),
+        DeckElement(
+          id: 's7_kpi',
+          type: ElementType.kpiStrip,
+          name: '하단 규격 바',
+          x: 100,
+          y: 840,
+          width: 1720,
+          height: 120,
+          props: {
+            'items': [
+              {'title': 'Primary Color', 'val': '#0052FF (Electric Blue)', 'sub': '신뢰와 명확성의 상징'},
+              {'title': 'Secondary Color', 'val': '#06B6D4 (Cyan Mint)', 'sub': '성공 지표 및 상승 하이라이트'},
+              {'title': '베이스라인 그리드', 'val': '8pt Spatial Grid', 'sub': '규칙적 시각 리듬 유지'},
+              {'title': '컴포넌트 준수율', 'val': '100% Token Reusability', 'sub': 'Figma & Flutter 1:1 매핑'},
+            ]
+          },
+        ),
+      ],
+    ));
+
+    // Slide 8: Core Feature - Voice Dock
+    proj.slides.add(DeckSlide(
+      id: 'slide_8',
+      title: '08. Core Feature · 0.2초 음성 입력 도크',
+      pageNumber: 8,
+      backgroundColor: const Color(0xFFF8FAFC),
+      elements: [
+        DeckElement(
+          id: 's8_header',
+          type: ElementType.header,
+          name: '헤더 인디케이터',
+          x: 100,
+          y: 60,
+          width: 1720,
+          height: 50,
+          props: {
+            'badge': '08 CORE FEATURE',
+            'meta': '08 CORE FEATURE | 0.2s VOICE INPUT DOCK',
+          },
+        ),
+        DeckElement(
+          id: 's8_title',
+          type: ElementType.text,
+          name: '헤드라인',
+          x: 100,
+          y: 130,
+          width: 820,
+          height: 180,
+          props: {
+            'category': '0.2s VOICE INPUT DOCK',
+            'titleBlack': '복잡한 타이핑 없이 ',
+            'titleBlue': '말 한마디로, 0.2초 만에 파라미터를 완성해요.',
+            'subtitle': '급격히 하락하는 장세 속에서 긴박한 타이핑 실수(Fat-finger)를 원천 차단하기 위해 화면 하단에 0.2초 음성 도크를 배치했어요. 자연어 음성 발화 즉시 수치와 종목을 100% 온디바이스에서 분리·파싱해 계산기 모듈로 무지연 자동 입력합니다.',
+          },
+        ),
+        DeckElement(
+          id: 's8_comparison_list',
+          type: ElementType.flowchart,
+          name: '수동 입력 vs 음성 도크 패러다임 비교',
+          x: 100,
+          y: 330,
+          width: 820,
+          height: 470,
+          props: {
+            'items': [
+              {'num': '01', 'tag': '입력 시간', 'title': '기존 수동 8.4초 → 음성 0.2초 완결', 'desc': '자연어 발화 즉시 NLU 온디바이스 분리 파싱'},
+              {'num': '02', 'tag': '오타율 제로', 'title': 'Fat-finger 긴급 입력 실수 0%', 'desc': '하락장 급변 호가 속 숫자 오타 원천 방지'},
+              {'num': '03', 'tag': '즉시 계산', 'title': '평단가 및 손익분기점 자동 채우기', 'desc': '입력 확인 터치 없이 화면 실시간 동기화'},
+            ]
+          },
+        ),
+        DeckElement(
+          id: 's8_preview',
+          type: ElementType.mockupPlaceholder,
+          name: '08 슬라이드 실물 렌더',
+          x: 960,
+          y: 130,
+          width: 860,
+          height: 670,
+          props: {
+            'imagePath': 'D:/097.flutter_project/average_down_calculator/portfolio/behance_slides/slide_08.png',
+            'screenTitle': '0.2초 음성 도크 실물 비교 화면',
+          },
+        ),
+        DeckElement(
+          id: 's8_kpi',
+          type: ElementType.kpiStrip,
+          name: '하단 규격 바',
+          x: 100,
+          y: 840,
+          width: 1720,
+          height: 120,
+          props: {
+            'items': [
+              {'title': '처리 속도', 'val': '0.2초 온디바이스', 'sub': '지연 없는 실시간 파싱'},
+              {'title': '오류 방지율', 'val': 'Fat-finger 100% 차단', 'sub': '급변 호가 완벽 대응'},
+              {'title': '자연어 지원', 'val': '한국어 단가/수량 완벽 인식', 'sub': '음성 텍스트 동시 피드백'},
+              {'title': '보안 규격', 'val': '외부 음성 전송 제로', 'sub': '로컬 NLU 안전 보관'},
+            ]
+          },
+        ),
+      ],
+    ));
+
+    // Slide 9: Core Feature - Closed-form Quant
+    proj.slides.add(DeckSlide(
+      id: 'slide_9',
+      title: '09. Core Feature · 폐쇄형 퀀트 역산 알고리즘',
+      pageNumber: 9,
+      backgroundColor: const Color(0xFFF8FAFC),
+      elements: [
+        DeckElement(
+          id: 's9_header',
+          type: ElementType.header,
+          name: '헤더 인디케이터',
+          x: 100,
+          y: 60,
+          width: 1720,
+          height: 50,
+          props: {
+            'badge': '09 CORE FEATURE',
+            'meta': '09 CORE FEATURE | CLOSED-FORM QUANT INVERSION',
+          },
+        ),
+        DeckElement(
+          id: 's9_title',
+          type: ElementType.text,
+          name: '헤드라인',
+          x: 100,
+          y: 130,
+          width: 820,
+          height: 180,
+          props: {
+            'category': 'CLOSED-FORM QUANT INVERSION',
+            'titleBlack': '원하는 목표 평단만 지정하면, ',
+            'titleBlue': '필요한 수량과 자금을 즉시 역산해요.',
+            'subtitle': '손익분기점 탈출을 위해 도달해야 하는 목표가를 설정하면, 몇 주를 얼마에 더 사야 하는지 닫힌 형식(Closed-form) 퀀트 방정식으로 오차 없이 온디바이스에서 즉시 도출합니다.',
+          },
+        ),
+        DeckElement(
+          id: 's9_formula_card',
+          type: ElementType.flowchart,
+          name: '수학적 폐쇄형 역산 알고리즘 설명',
+          x: 100,
+          y: 330,
+          width: 820,
+          height: 470,
+          props: {
+            'items': [
+              {'num': '01', 'tag': '수학적 공식', 'title': 'Q_add = Q_0 × (P_0 - P_target) / (P_target - P_add)', 'desc': '복잡한 반복문 없이 O(1) 시간 복잡도로 즉각 도출'},
+              {'num': '02', 'tag': '안전 여유율', 'title': '자금 가용 한도 실시간 비교', 'desc': '보유 예수금 초과 시 비중 경고 및 분할 매수 수량 자동 제안'},
+              {'num': '03', 'tag': '직관적 슬라이더', 'title': '인터랙티브 평단-필요자금 그래프 연동', 'desc': '슬라이더를 미세 조정하며 위험도 시뮬레이션'},
+            ]
+          },
+        ),
+        DeckElement(
+          id: 's9_preview',
+          type: ElementType.mockupPlaceholder,
+          name: '09 슬라이드 실물 렌더',
+          x: 960,
+          y: 130,
+          width: 860,
+          height: 670,
+          props: {
+            'imagePath': 'D:/097.flutter_project/average_down_calculator/portfolio/behance_slides/slide_09.png',
+            'screenTitle': '폐쇄형 퀀트 역산 인터랙션 화면',
+          },
+        ),
+        DeckElement(
+          id: 's9_kpi',
+          type: ElementType.kpiStrip,
+          name: '하단 규격 바',
+          x: 100,
+          y: 840,
+          width: 1720,
+          height: 120,
+          props: {
+            'items': [
+              {'title': '알고리즘 복잡도', 'val': 'O(1) 폐쇄형 해', 'sub': '연산 지연 0ms'},
+              {'title': '계산 정밀도', 'val': '소수점 6자리 무손실', 'sub': '부동소수점 오차 보정'},
+              {'title': '안전 가드', 'val': '3단계 경고 시스템', 'sub': '비중 초과/리스크 알림'},
+              {'title': '시각화 피드백', 'val': '실시간 역산 차트', 'sub': '직관적 슬라이더 UI'},
+            ]
+          },
+        ),
+      ],
+    ));
+
+    // Slide 10: Mobile Production Screens
+    proj.slides.add(DeckSlide(
+      id: 'slide_10',
+      title: '10. Mobile Screens · 일관된 6대 핵심 상용 화면',
+      pageNumber: 10,
+      backgroundColor: const Color(0xFFF8FAFC),
+      elements: [
+        DeckElement(
+          id: 's10_header',
+          type: ElementType.header,
+          name: '헤더 인디케이터',
+          x: 100,
+          y: 60,
+          width: 1720,
+          height: 50,
+          props: {
+            'badge': '10 MOBILE SCREENS',
+            'meta': 'MOBILE SCREENS | PRODUCTION FIGMA & FLUTTER',
+          },
+        ),
+        DeckElement(
+          id: 's10_title',
+          type: ElementType.text,
+          name: '헤드라인',
+          x: 100,
+          y: 130,
+          width: 1200,
+          height: 160,
+          props: {
+            'category': 'PRODUCTION FIGMA & FLUTTER',
+            'titleBlack': '자산 진단부터 퀀트 역산까지, ',
+            'titleBlue': '일관된 6대 핵심 상용 화면이에요.',
+            'subtitle': '사용자의 핵심 투자 여정(User Journey)을 빈틈없이 지원하도록 피그마 디자인 토큰과 플러터 위젯 트리로 구현한 6대 상용 화면입니다.',
+          },
+        ),
+        DeckElement(
+          id: 's10_preview',
+          type: ElementType.mockupPlaceholder,
+          name: '10 슬라이드 6대 모바일 스크린 렌더',
+          x: 100,
+          y: 310,
+          width: 1720,
+          height: 510,
+          props: {
+            'imagePath': 'D:/097.flutter_project/average_down_calculator/portfolio/behance_slides/slide_10.png',
+            'screenTitle': '스마트 DCA 6대 상용 모바일 화면 (홈/계산/역산/리포트/설정/히스토리)',
+          },
+        ),
+        DeckElement(
+          id: 's10_kpi',
+          type: ElementType.kpiStrip,
+          name: '하단 메트릭',
+          x: 100,
+          y: 840,
+          width: 1720,
+          height: 120,
+          props: {
+            'items': [
+              {'title': '1. 홈 대시보드', 'val': '라이브 포트폴리오', 'sub': '평단/손익 직관 진단'},
+              {'title': '2. 0.2s 음성 도크', 'val': '온디바이스 NLU', 'sub': '무지연 파라미터 파싱'},
+              {'title': '3. 목표가 역산기', 'val': 'Closed-form 엔진', 'sub': '필요 수량/자금 역산출'},
+              {'title': '4. 텔레메트리 리포트', 'val': '투자 심리 가드', 'sub': '감정 뇌동매매 방어'},
+            ]
+          },
+        ),
+      ],
+    ));
+
+    // Slide 11: Business Impact & Retrospective
+    proj.slides.add(DeckSlide(
+      id: 'slide_11',
+      title: '11. Business Impact · 패닉셀 방어율 64.2%와 65% 유동성',
+      pageNumber: 11,
+      backgroundColor: const Color(0xFFF8FAFC),
+      elements: [
+        DeckElement(
+          id: 's11_header',
+          type: ElementType.header,
+          name: '헤더 인디케이터',
+          x: 100,
+          y: 60,
+          width: 1720,
+          height: 50,
+          props: {
+            'badge': '11 BUSINESS IMPACT',
+            'meta': 'BUSINESS IMPACT | QUANTITATIVE TELEMETRY & STRATEGIC RETROSPECTIVE',
+          },
+        ),
+        DeckElement(
+          id: 's11_title',
+          type: ElementType.text,
+          name: '헤드라인',
+          x: 100,
+          y: 130,
+          width: 1200,
+          height: 160,
+          props: {
+            'category': 'QUANTITATIVE TELEMETRY & STRATEGIC RETROSPECTIVE',
+            'titleBlack': '패닉셀 방어율 64.2%와 65% 유동성, ',
+            'titleBlue': 'AI 모델링으로 검증된 프로덕트 가치예요.',
+            'subtitle': 'AI 행동 모델링 기반 퀀트 역산 성과와 4대 텔레메트리 지표 및 시니어 프로덕트 회고입니다.',
+          },
+        ),
+        DeckElement(
+          id: 's11_preview',
+          type: ElementType.mockupPlaceholder,
+          name: '11 슬라이드 성과 지표 렌더',
+          x: 100,
+          y: 310,
+          width: 1720,
+          height: 510,
+          props: {
+            'imagePath': 'D:/097.flutter_project/average_down_calculator/portfolio/behance_slides/slide_11.png',
+            'screenTitle': '비즈니스 임팩트 & STAR 기법 시니어 회고',
+          },
+        ),
+        DeckElement(
+          id: 's11_kpi',
+          type: ElementType.kpiStrip,
+          name: '하단 규격 바',
+          x: 100,
+          y: 840,
+          width: 1720,
+          height: 120,
+          props: {
+            'items': [
+              {'title': '패닉셀 방어율', 'val': '64.2% 방어 성공', 'sub': '손실 구간 충동 매도 억제'},
+              {'title': '유동성 보존율', 'val': '65.0% 예수금 유지', 'sub': '올인 방지 분할 매수'},
+              {'title': '태스크 완료율', 'val': '98.5% 도달', 'sub': '목표 평단가 계산 성공률'},
+              {'title': '앱스토어 평점', 'val': '4.9 / 5.0 ★', 'sub': '상용 실사용자 만족도'},
+            ]
+          },
+        ),
+      ],
+    ));
+
+    // Slide 12: Live Prototype Hub
+    proj.slides.add(DeckSlide(
+      id: 'slide_12',
+      title: '12. Live Prototype Hub · 실제 플러터 웹 프로토타입 체험',
+      pageNumber: 12,
+      backgroundColor: const Color(0xFF0B0F17), // Premium Obsidian Dark
+      elements: [
+        DeckElement(
+          id: 's12_header',
+          type: ElementType.header,
+          name: '헤더 인디케이터',
+          x: 100,
+          y: 60,
+          width: 1720,
+          height: 50,
+          props: {
+            'badge': '12 LIVE INTERACTIVE PROTOTYPE',
+            'meta': 'LIVE INTERACTIVE PROTOTYPE | FLUTTER WEB ENGINE',
+          },
+        ),
+        DeckElement(
+          id: 's12_title',
+          type: ElementType.text,
+          name: '헤드라인',
+          x: 100,
+          y: 130,
+          width: 1200,
+          height: 160,
+          textStyle: DeckTextStyle(color: Colors.white),
+          props: {
+            'category': 'FLUTTER WEB ENGINE',
+            'titleBlack': '화면을 터치하듯, ',
+            'titleBlue': '실제 플러터 웹 프로토타입을 직접 조작해 보세요.',
+            'subtitle': '정적인 슬라이드를 넘어 스마트폰 뷰포트에서 4대 핵심 투자 여정을 직접 터치하고 검증할 수 있는 인터랙티브 허브입니다.',
+          },
+        ),
+        DeckElement(
+          id: 's12_preview',
+          type: ElementType.mockupPlaceholder,
+          name: '12 슬라이드 다크모드 라이브 허브 렌더',
+          x: 100,
+          y: 310,
+          width: 1720,
+          height: 510,
+          props: {
+            'imagePath': 'D:/097.flutter_project/average_down_calculator/portfolio/behance_slides/slide_12.png',
+            'screenTitle': 'Flutter Web Engine 라이브 인터랙티브 프로토타입 뷰어',
+          },
+        ),
+        DeckElement(
+          id: 's12_kpi',
+          type: ElementType.kpiStrip,
+          name: '하단 다크 규격 바',
+          x: 100,
+          y: 840,
+          width: 1720,
+          height: 120,
+          boxStyle: DeckBoxStyle(
+            backgroundColor: const Color(0xFF1E293B),
+            borderColor: const Color(0xFF334155),
+          ),
+          props: {
+            'items': [
+              {'title': '플랫폼', 'val': 'Flutter 3.x Web', 'sub': 'CanvasKit 고성능 렌더러'},
+              {'title': '반응 속도', 'val': '60 fps 무지연', 'sub': '네이티브급 터치 인터랙션'},
+              {'title': '호환성', 'val': '크롬·사파리 완벽 대응', 'sub': '모바일 뷰포트 자동 최적화'},
+              {'title': '실행 모드', 'val': 'Live On-Device Simulator', 'sub': '즉시 터치 조작 가능'},
+            ]
+          },
+        ),
+      ],
+    ));
+
+    return proj;
+  }
+}
+

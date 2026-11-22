@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'models/deck_model.dart';
+import 'models/multagi_template.dart';
 import 'widgets/canvas_editor.dart';
 import 'widgets/inspector_panel.dart';
 import 'widgets/figma_toolbar.dart';
@@ -54,7 +55,8 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
   @override
   void initState() {
     super.initState();
-    _project = PortfolioProject.createDefaultTemplate();
+    // Default load Smart DCA (물타기 계산기) 12-slide full portfolio deck
+    _project = MultagiProjectTemplate.createSmartDcaProject();
   }
 
   DeckSlide get _currentSlide => _project.slides[_activeSlideIndex];
@@ -144,6 +146,55 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
       _activeSlideIndex = _project.slides.length - 1;
       _selectedElement = null;
     });
+  }
+
+  void _showProjectSwitchDialog() {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: const Color(0xFF0F172A),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: const Text('포트폴리오 프로젝트 전환', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              tileColor: const Color(0xFF1E293B),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              leading: const Icon(Icons.calculate, color: Color(0xFF0052FF)),
+              title: const Text('스마트 DCA (물타기 계산기) 12개 전 섹션', style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold)),
+              subtitle: const Text('리서치, 페르소나, IA, 플로우차트, 와이어프레임, 디자인시스템, 0.2s 음성도크, 퀀트역산, 6대화면, 비즈니스임팩트, 라이브허브', style: TextStyle(color: Color(0xFF94A3B8), fontSize: 10)),
+              onTap: () {
+                _recordUndoState();
+                setState(() {
+                  _project = MultagiProjectTemplate.createSmartDcaProject();
+                  _activeSlideIndex = 0;
+                  _selectedElement = null;
+                });
+                Navigator.pop(ctx);
+              },
+            ),
+            const SizedBox(height: 12),
+            ListTile(
+              tileColor: const Color(0xFF1E293B),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              leading: const Icon(Icons.qr_code_scanner, color: Color(0xFF06B6D4)),
+              title: const Text('ZeroPass / 체크앤페이 엔터프라이즈 케이스스터디', style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold)),
+              subtitle: const Text('1초 원터치 키오스크 UI, D-Day 수납, 3D 마스코트 패시 덱', style: TextStyle(color: Color(0xFF94A3B8), fontSize: 10)),
+              onTap: () {
+                _recordUndoState();
+                setState(() {
+                  _project = PortfolioProject.createDefaultTemplate();
+                  _activeSlideIndex = 0;
+                  _selectedElement = null;
+                });
+                Navigator.pop(ctx);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   void _openElementLibrary() {
@@ -516,6 +567,20 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
             ],
           ),
           const Spacer(),
+          ElevatedButton.icon(
+            icon: const Icon(Icons.swap_horiz, size: 15),
+            label: const Text('프로젝트 템플릿 전환', style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.bold)),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF334155),
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+            ),
+            onPressed: () {
+              _showProjectSwitchDialog();
+            },
+          ),
+          const SizedBox(width: 8),
           ElevatedButton.icon(
             icon: const Icon(Icons.style, size: 15),
             label: const Text('디자인 시스템 라이브러리', style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.bold)),
