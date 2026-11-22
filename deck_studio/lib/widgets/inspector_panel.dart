@@ -611,6 +611,7 @@ class _InspectorPanelState extends State<InspectorPanel> {
               border: Border.all(color: const Color(0xFFE2E8F0)),
             ),
             child: TextFormField(
+              key: ValueKey('\${widget.element!.id}_\${label}_\$val'),
               initialValue: step < 1.0 ? val.toStringAsFixed(2) : val.toInt().toString(),
               keyboardType: const TextInputType.numberWithOptions(decimal: true),
               style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
@@ -646,6 +647,7 @@ class _InspectorPanelState extends State<InspectorPanel> {
               ),
               const SizedBox(height: 6),
               TextFormField(
+                key: ValueKey('\${elem.id}_\$key'),
                 initialValue: value,
                 maxLines: value.contains('\n') || value.length > 30 ? 3 : 1,
                 style: const TextStyle(fontSize: 12),
@@ -685,6 +687,84 @@ class _InspectorPanelState extends State<InspectorPanel> {
                   widget.onElementUpdated();
                 },
               ),
+            ],
+          ),
+        ));
+      } else if (value is List) {
+        // Support editing lists of items (Flowcharts, KPI strips, stages)
+        widgets.add(Padding(
+          padding: const EdgeInsets.only(bottom: 12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '$key (${value.length}개 항목)',
+                    style: const TextStyle(color: Color(0xFF0052FF), fontSize: 11, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 6),
+              ...value.asMap().entries.map((entry) {
+                final idx = entry.key;
+                final item = entry.value;
+                if (item is Map) {
+                  final mapItem = Map<String, dynamic>.from(item);
+                  return Container(
+                    margin: const EdgeInsets.only(bottom: 8),
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF8FAFC),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: const Color(0xFFE2E8F0)),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: mapItem.entries.map((fEntry) {
+                        if (fEntry.value is String) {
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 6),
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                  width: 50,
+                                  child: Text(
+                                    fEntry.key,
+                                    style: const TextStyle(fontSize: 10, color: Color(0xFF64748B), fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: TextFormField(
+                                    key: ValueKey('\${elem.id}_\${key}_\${idx}_\${fEntry.key}'),
+                                    initialValue: fEntry.value as String,
+                                    style: const TextStyle(fontSize: 11),
+                                    decoration: InputDecoration(
+                                      isDense: true,
+                                      contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                                      fillColor: Colors.white,
+                                      filled: true,
+                                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(4), borderSide: const BorderSide(color: Color(0xFFE2E8F0))),
+                                    ),
+                                    onChanged: (newText) {
+                                      mapItem[fEntry.key] = newText;
+                                      value[idx] = mapItem;
+                                      widget.onElementUpdated();
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+                        return const SizedBox.shrink();
+                      }).toList(),
+                    ),
+                  );
+                }
+                return const SizedBox.shrink();
+              }),
             ],
           ),
         ));
