@@ -2,11 +2,16 @@ import 'package:flutter/material.dart';
 import '../models/deck_model.dart';
 
 class CodeExportGenerator {
-  /// 1. Flutter Widget 코드 생성 (그대로 복붙하여 실행 가능한 형태)
+  /// 1. Flutter Widget 코드 생성 (정렬, 마진, 패딩, 보더, 폰트, 아이콘 완벽 반영)
   static String generateFlutterCode(DeckElement elem) {
     final name = _toPascalCase(elem.name);
     final ts = elem.textStyle;
-    final hexColor = '0x${ts.color.toARGB32().toRadixString(16).padLeft(8, '0').toUpperCase()}';
+    final bs = elem.boxStyle;
+    final textHex = '0x${ts.color.toARGB32().toRadixString(16).padLeft(8, '0').toUpperCase()}';
+    final bgHex = '0x${bs.backgroundColor.toARGB32().toRadixString(16).padLeft(8, '0').toUpperCase()}';
+    final borderHex = '0x${bs.borderColor.toARGB32().toRadixString(16).padLeft(8, '0').toUpperCase()}';
+    final textAlignStr = 'TextAlign.${ts.textAlign.name}';
+    final alignStr = _toAlignmentString(ts.textAlign);
 
     return '''
 // Flutter Component: $name
@@ -24,36 +29,49 @@ class ${name}Widget extends StatelessWidget {
       width: ${elem.width.toStringAsFixed(1)},
       height: ${elem.height.toStringAsFixed(1)},
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(${bs.padding.toStringAsFixed(1)}),
+        alignment: $alignStr,
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: const Color(0xFFE2E8F0)),
-          boxShadow: [
+          color: const Color($bgHex),
+          borderRadius: BorderRadius.circular(${bs.borderRadius.toStringAsFixed(1)}),
+          border: Border.all(color: const Color($borderHex), width: ${bs.borderWidth.toStringAsFixed(1)}),
+          ${bs.hasShadow ? '''boxShadow: [
             BoxShadow(
               color: const Color(0xFF0F172A).withValues(alpha: 0.04),
               blurRadius: 16,
               offset: const Offset(0, 4),
             ),
-          ],
+          ],''' : ''}
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: ${_toCrossAxisAlignment(ts.textAlign)},
           children: [
+            ${elem.iconName.isNotEmpty ? '''Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.${elem.iconName}, color: const Color($textHex), size: ${(ts.fontSize * 1.2).toStringAsFixed(1)}),
+                const SizedBox(width: 8),
+              ],
+            ),
+            const SizedBox(height: 8),''' : ''}
             Text(
               "${elem.props['titleBlack'] ?? elem.props['title'] ?? elem.name}",
+              textAlign: $textAlignStr,
               style: TextStyle(
                 fontFamily: '${ts.fontFamily}',
                 fontSize: ${ts.fontSize.toStringAsFixed(1)},
                 fontWeight: FontWeight.w${_weightToNumber(ts.fontWeight)},
-                color: const Color($hexColor),
+                color: const Color($textHex),
                 letterSpacing: ${ts.letterSpacing.toStringAsFixed(2)},
                 height: ${ts.height.toStringAsFixed(2)},
+                wordSpacing: ${ts.wordSpacing.toStringAsFixed(2)},
               ),
             ),
-            const SizedBox(height: 8),
+            ${elem.props['subtitle'] != null ? '''const SizedBox(height: 8),
             Text(
-              "${elem.props['subtitle'] ?? elem.props['sub'] ?? '상세 설명 및 UX 기획 사유'}",
+              "${elem.props['subtitle']}",
+              textAlign: $textAlignStr,
               style: const TextStyle(
                 fontFamily: '${ts.fontFamily}',
                 fontSize: 13,
@@ -61,7 +79,7 @@ class ${name}Widget extends StatelessWidget {
                 letterSpacing: -0.2,
                 height: 1.45,
               ),
-            ),
+            ),''' : ''}
           ],
         ),
       ),
@@ -71,45 +89,45 @@ class ${name}Widget extends StatelessWidget {
 ''';
   }
 
-  /// 2. HTML & Modern Tailwind CSS 코드 생성
+  /// 2. HTML & Modern Tailwind CSS 코드 생성 (정렬, 패딩, 보더, 폰트, 자간 완벽 반영)
   static String generateHtmlCode(DeckElement elem) {
     final ts = elem.textStyle;
-    final r = ts.color.r * 255;
-    final g = ts.color.g * 255;
-    final b = ts.color.b * 255;
-    final hex = '#${r.toInt().toRadixString(16).padLeft(2, '0')}${g.toInt().toRadixString(16).padLeft(2, '0')}${b.toInt().toRadixString(16).padLeft(2, '0')}';
+    final bs = elem.boxStyle;
+    final textHex = _colorToHex(ts.color);
+    final bgHex = _colorToHex(bs.backgroundColor);
+    final borderHex = _colorToHex(bs.borderColor);
+    final textAlignCss = ts.textAlign.name;
 
     return '''
 <!-- HTML / Tailwind Component: ${elem.name} -->
 <!-- Paste into Web / Behance HTML Canvas -->
-<div class="absolute bg-white rounded-2xl border border-slate-200 p-6 shadow-sm flex flex-col justify-between"
-     style="left: ${elem.x}px; top: ${elem.y}px; width: ${elem.width}px; height: ${elem.height}px;">
+<div class="absolute flex flex-col justify-between"
+     style="left: ${elem.x}px; top: ${elem.y}px; width: ${elem.width}px; height: ${elem.height}px; 
+            padding: ${bs.padding}px; background-color: $bgHex; border-radius: ${bs.borderRadius}px; 
+            border: ${bs.borderWidth}px solid $borderHex; text-align: $textAlignCss;
+            ${bs.hasShadow ? 'box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);' : ''}">
   <div>
-    <span class="inline-block px-3 py-1 bg-blue-50 text-blue-600 text-xs font-bold rounded-md mb-3 border border-blue-100">
-      ${elem.props['badge'] ?? 'CORE FEATURE'}
-    </span>
-    <h2 style="font-family: '${ts.fontFamily}', sans-serif; font-size: ${ts.fontSize}px; font-weight: ${_weightToNumber(ts.fontWeight)}; color: $hex; letter-spacing: ${ts.letterSpacing}px; line-height: ${ts.height};">
+    ${elem.props['badge'] != null ? '''<span class="inline-block px-3 py-1 bg-blue-50 text-blue-600 text-xs font-bold rounded-md mb-3 border border-blue-100">
+      ${elem.props['badge']}
+    </span>''' : ''}
+    <h2 style="font-family: '${ts.fontFamily}', sans-serif; font-size: ${ts.fontSize}px; font-weight: ${_weightToNumber(ts.fontWeight)}; color: $textHex; letter-spacing: ${ts.letterSpacing}px; line-height: ${ts.height}; word-spacing: ${ts.wordSpacing}px;">
       ${elem.props['titleBlack'] ?? elem.props['title'] ?? elem.name}
     </h2>
-    <p class="mt-2 text-slate-500 text-sm leading-relaxed" style="letter-spacing: -0.2px;">
-      ${elem.props['subtitle'] ?? elem.props['sub'] ?? '상세 기획 및 사용자 인터랙션 설명'}
-    </p>
-  </div>
-  <div class="pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400 font-medium">
-    <span>ZeroPass Portfolio Design System</span>
-    <span class="text-blue-600 font-semibold">100% On-Device Local</span>
+    ${elem.props['subtitle'] != null ? '''<p class="mt-2 text-slate-500 text-sm leading-relaxed" style="letter-spacing: -0.2px;">
+      ${elem.props['subtitle']}
+    </p>''' : ''}
   </div>
 </div>
 ''';
   }
 
-  /// 3. Figma Design Tokens & CSS / JSON Spec 생성 (Figma 복붙/속성 매핑용)
+  /// 3. Figma Design Tokens & CSS / JSON Spec 생성 (Figma 속성 및 Local Variables 1:1)
   static String generateFigmaSpec(DeckElement elem) {
     final ts = elem.textStyle;
-    final r = ts.color.r * 255;
-    final g = ts.color.g * 255;
-    final b = ts.color.b * 255;
-    final hex = '#${r.toInt().toRadixString(16).padLeft(2, '0')}${g.toInt().toRadixString(16).padLeft(2, '0')}${b.toInt().toRadixString(16).padLeft(2, '0')}';
+    final bs = elem.boxStyle;
+    final textHex = _colorToHex(ts.color);
+    final bgHex = _colorToHex(bs.backgroundColor);
+    final borderHex = _colorToHex(bs.borderColor);
 
     return '''
 /* ======================================================== */
@@ -117,27 +135,29 @@ class ${name}Widget extends StatelessWidget {
 /* Paste directly into Figma Inspect or CSS Token Manager   */
 /* ======================================================== */
 
-/* Frame Geometry */
+/* Frame Geometry & Layout */
 width: ${elem.width}px;
 height: ${elem.height}px;
 position: absolute;
 left: ${elem.x}px;
 top: ${elem.y}px;
-border-radius: 16px;
-border: 1px solid #E2E8F0;
-background: #FFFFFF;
-box-shadow: 0px 4px 16px rgba(15, 23, 42, 0.04);
+padding: ${bs.padding}px;
+border-radius: ${bs.borderRadius}px;
+border: ${bs.borderWidth}px solid $borderHex;
+background: $bgHex;
+${bs.hasShadow ? 'box-shadow: 0px 4px 16px rgba(15, 23, 42, 0.04);' : ''}
 
-/* Typography System */
+/* Alignment & Typography */
+text-align: ${ts.textAlign.name};
 font-family: "${ts.fontFamily}";
 font-size: ${ts.fontSize}px;
 font-weight: ${_weightToNumber(ts.fontWeight)};
-color: $hex;
+color: $textHex;
 letter-spacing: ${ts.letterSpacing}px;  /* 자간 */
 line-height: ${(ts.fontSize * ts.height).toStringAsFixed(1)}px; /* 행간 (${(ts.height * 100).toInt()}%) */
 word-spacing: ${ts.wordSpacing}px;    /* 장평/어간 */
 
-/* JSON Design Token */
+/* JSON Design Token (Tokens Studio Format) */
 {
   "name": "${elem.name}",
   "type": "${elem.type.name}",
@@ -149,12 +169,23 @@ word-spacing: ${ts.wordSpacing}px;    /* 장평/어간 */
     "fontFamily": "${ts.fontFamily}",
     "fontSize": ${ts.fontSize},
     "fontWeight": ${_weightToNumber(ts.fontWeight)},
-    "colorHex": "$hex",
+    "textColor": "$textHex",
+    "backgroundColor": "$bgHex",
+    "borderColor": "$borderHex",
+    "borderRadius": ${bs.borderRadius},
     "letterSpacing": ${ts.letterSpacing},
-    "lineHeightMultiplier": ${ts.height}
+    "lineHeight": ${ts.height},
+    "textAlign": "${ts.textAlign.name}"
   }
 }
 ''';
+  }
+
+  static String _colorToHex(Color color) {
+    final r = (color.r * 255).toInt().toRadixString(16).padLeft(2, '0');
+    final g = (color.g * 255).toInt().toRadixString(16).padLeft(2, '0');
+    final b = (color.b * 255).toInt().toRadixString(16).padLeft(2, '0');
+    return '#$r$g$b'.toUpperCase();
   }
 
   static String _toPascalCase(String text) {
@@ -164,6 +195,22 @@ word-spacing: ${ts.wordSpacing}px;    /* 장평/어간 */
         .where((s) => s.isNotEmpty)
         .map((s) => s[0].toUpperCase() + s.substring(1))
         .join('');
+  }
+
+  static String _toAlignmentString(TextAlignOption opt) {
+    switch (opt) {
+      case TextAlignOption.center: return 'Alignment.center';
+      case TextAlignOption.right: return 'Alignment.centerRight';
+      default: return 'Alignment.centerLeft';
+    }
+  }
+
+  static String _toCrossAxisAlignment(TextAlignOption opt) {
+    switch (opt) {
+      case TextAlignOption.center: return 'CrossAxisAlignment.center';
+      case TextAlignOption.right: return 'CrossAxisAlignment.end';
+      default: return 'CrossAxisAlignment.start';
+    }
   }
 
   static int _weightToNumber(FontWeight weight) {
@@ -181,4 +228,3 @@ word-spacing: ${ts.wordSpacing}px;    /* 장평/어간 */
     }
   }
 }
-

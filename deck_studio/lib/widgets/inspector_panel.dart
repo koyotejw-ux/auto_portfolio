@@ -30,6 +30,19 @@ class _InspectorPanelState extends State<InspectorPanel> {
     'SF Pro Display'
   ];
 
+  final List<Map<String, dynamic>> _commonIcons = [
+    {'name': '없음', 'val': ''},
+    {'name': '체크 완료', 'val': 'check_circle'},
+    {'name': '출결 체크', 'val': 'fact_check'},
+    {'name': '스마트폰', 'val': 'phone_android'},
+    {'name': '태블릿', 'val': 'tablet_mac'},
+    {'name': '장부/영수증', 'val': 'receipt_long'},
+    {'name': '원생 그룹', 'val': 'groups'},
+    {'name': '설정 볼트', 'val': 'tune'},
+    {'name': '보안 방패', 'val': 'security'},
+    {'name': '별표 강조', 'val': 'star'},
+  ];
+
   void _openCodeExport() {
     if (widget.element == null) return;
     final elem = widget.element!;
@@ -49,11 +62,11 @@ class _InspectorPanelState extends State<InspectorPanel> {
     );
   }
 
-  void _pickColor(BuildContext context, Color currentColor, ValueChanged<Color> onColorChanged) {
+  void _pickColor(BuildContext context, Color currentColor, String title, ValueChanged<Color> onColorChanged) {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('텍스트 컬러 피커', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+        title: Text(title, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
         content: SingleChildScrollView(
           child: ColorPicker(
             pickerColor: currentColor,
@@ -76,7 +89,7 @@ class _InspectorPanelState extends State<InspectorPanel> {
   Widget build(BuildContext context) {
     if (widget.element == null) {
       return Container(
-        width: 360,
+        width: 380,
         color: Colors.white,
         padding: const EdgeInsets.all(24),
         child: const Center(
@@ -86,7 +99,7 @@ class _InspectorPanelState extends State<InspectorPanel> {
               Icon(Icons.touch_app_outlined, size: 48, color: Color(0xFF94A3B8)),
               SizedBox(height: 16),
               Text(
-                '요소를 선택하면 세부 타이포그래피(폰트, 자간, 행간, 장평)와\nFlutter/HTML/Figma 소스를 즉시 복붙할 수 있습니다.',
+                '요소를 선택하면 정렬, 크기, 폰트, 자간/행간,\n아이콘, 색상 및 UI 텍스트를 자유자재로 수정하고\nFlutter/HTML/Figma 소스를 즉시 복붙할 수 있습니다.',
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Color(0xFF64748B), fontSize: 13, height: 1.5),
               ),
@@ -98,9 +111,10 @@ class _InspectorPanelState extends State<InspectorPanel> {
 
     final elem = widget.element!;
     final ts = elem.textStyle;
+    final bs = elem.boxStyle;
 
     return Container(
-      width: 360,
+      width: 380,
       decoration: const BoxDecoration(
         color: Colors.white,
         border: Border(left: BorderSide(color: Color(0xFFE2E8F0))),
@@ -171,17 +185,17 @@ class _InspectorPanelState extends State<InspectorPanel> {
             child: ListView(
               padding: const EdgeInsets.all(16),
               children: [
-                // 1. 레이아웃 위치 & 크기
-                _buildSectionHeader(Icons.aspect_ratio, '위치 및 크기 (Layout)'),
+                // 1. 레이아웃 위치 & 크기 (Size & Alignment)
+                _buildSectionHeader(Icons.aspect_ratio, '위치 및 크기 (Layout & Size)'),
                 const SizedBox(height: 8),
                 Row(
                   children: [
-                    _buildNumField('X', elem.x, (val) {
+                    _buildNumField('X 좌표', elem.x, (val) {
                       setState(() => elem.x = val);
                       widget.onElementUpdated();
                     }),
                     const SizedBox(width: 8),
-                    _buildNumField('Y', elem.y, (val) {
+                    _buildNumField('Y 좌표', elem.y, (val) {
                       setState(() => elem.y = val);
                       widget.onElementUpdated();
                     }),
@@ -190,24 +204,68 @@ class _InspectorPanelState extends State<InspectorPanel> {
                 const SizedBox(height: 8),
                 Row(
                   children: [
-                    _buildNumField('Width', elem.width, (val) {
+                    _buildNumField('너비 (Width)', elem.width, (val) {
                       setState(() => elem.width = val);
                       widget.onElementUpdated();
                     }),
                     const SizedBox(width: 8),
-                    _buildNumField('Height', elem.height, (val) {
+                    _buildNumField('높이 (Height)', elem.height, (val) {
                       setState(() => elem.height = val);
                       widget.onElementUpdated();
                     }),
                   ],
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 18),
 
-                // 2. 타이포그래피 (폰트, 자간, 행간, 장평, 컬러)
+                // 2. UI 정렬 옵션 (Alignment)
+                _buildSectionHeader(Icons.format_align_left, '텍스트 및 컨텐츠 정렬 (Alignment)'),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    _buildAlignButton('좌측', TextAlignOption.left, Icons.format_align_left, ts.textAlign),
+                    const SizedBox(width: 6),
+                    _buildAlignButton('중앙', TextAlignOption.center, Icons.format_align_center, ts.textAlign),
+                    const SizedBox(width: 6),
+                    _buildAlignButton('우측', TextAlignOption.right, Icons.format_align_right, ts.textAlign),
+                  ],
+                ),
+                const SizedBox(height: 18),
+
+                // 3. 아이콘 선택 (Icon Selector)
+                _buildSectionHeader(Icons.interests, '아이콘 삽입 및 변경 (Icon Selector)'),
+                const SizedBox(height: 8),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFF8FAFC),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: const Color(0xFFE2E8F0)),
+                  ),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      value: _commonIcons.any((i) => i['val'] == elem.iconName) ? elem.iconName : '',
+                      isExpanded: true,
+                      style: const TextStyle(fontSize: 12, color: Color(0xFF0F172A), fontWeight: FontWeight.bold),
+                      items: _commonIcons.map((i) => DropdownMenuItem<String>(
+                        value: i['val'] as String,
+                        child: Text(i['name'] as String),
+                      )).toList(),
+                      onChanged: (val) {
+                        if (val != null) {
+                          setState(() => elem.iconName = val);
+                          widget.onElementUpdated();
+                        }
+                      },
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 18),
+
+                // 4. 타이포그래피 (폰트, 자간, 행간, 장평, 컬러)
                 _buildSectionHeader(Icons.text_format, '타이포그래피 및 편집 (Typography)'),
                 const SizedBox(height: 10),
 
-                // 폰트 패밀리 선택
+                // 폰트 패밀리
                 _buildFieldLabel('폰트 (Font Family)'),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -282,7 +340,7 @@ class _InspectorPanelState extends State<InspectorPanel> {
                 ),
                 const SizedBox(height: 12),
 
-                // 자간 (Letter Spacing) & 행간 (Line Height)
+                // 자간 & 행간
                 Row(
                   children: [
                     _buildNumField('자간 (Letter)', ts.letterSpacing, (val) {
@@ -298,7 +356,7 @@ class _InspectorPanelState extends State<InspectorPanel> {
                 ),
                 const SizedBox(height: 12),
 
-                // 장평 / 어간 (Word Spacing) & 텍스트 컬러
+                // 장평/어간 & 텍스트 컬러
                 Row(
                   children: [
                     _buildNumField('장평/어간 (Word)', ts.wordSpacing, (val) {
@@ -312,7 +370,7 @@ class _InspectorPanelState extends State<InspectorPanel> {
                         children: [
                           _buildFieldLabel('글자 색상 (Color)'),
                           GestureDetector(
-                            onTap: () => _pickColor(context, ts.color, (c) {
+                            onTap: () => _pickColor(context, ts.color, '텍스트 컬러 선택', (c) {
                               setState(() => ts.color = c);
                               widget.onElementUpdated();
                             }),
@@ -350,16 +408,163 @@ class _InspectorPanelState extends State<InspectorPanel> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 18),
 
-                // 3. 텍스트 및 콘텐츠 속성
-                _buildSectionHeader(Icons.edit_note, '콘텐츠 내용 (Content)'),
+                // 5. 박스 및 배경 스타일 (UI Surface & Border)
+                _buildSectionHeader(Icons.palette, '박스 서피스 및 테두리 (Box Style)'),
+                const SizedBox(height: 10),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildFieldLabel('배경 색상 (Bg Color)'),
+                          GestureDetector(
+                            onTap: () => _pickColor(context, bs.backgroundColor, '배경 색상 선택', (c) {
+                              setState(() => bs.backgroundColor = c);
+                              widget.onElementUpdated();
+                            }),
+                            child: Container(
+                              height: 38,
+                              padding: const EdgeInsets.symmetric(horizontal: 8),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFF8FAFC),
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(color: const Color(0xFFE2E8F0)),
+                              ),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 16,
+                                    height: 16,
+                                    decoration: BoxDecoration(
+                                      color: bs.backgroundColor,
+                                      shape: BoxShape.circle,
+                                      border: Border.all(color: Colors.black26),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 6),
+                                  Text(
+                                    '#${(bs.backgroundColor.r * 255).toInt().toRadixString(16).padLeft(2, '0')}${(bs.backgroundColor.g * 255).toInt().toRadixString(16).padLeft(2, '0')}${(bs.backgroundColor.b * 255).toInt().toRadixString(16).padLeft(2, '0')}'
+                                        .toUpperCase(),
+                                    style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildFieldLabel('테두리 색상 (Border)'),
+                          GestureDetector(
+                            onTap: () => _pickColor(context, bs.borderColor, '테두리 색상 선택', (c) {
+                              setState(() => bs.borderColor = c);
+                              widget.onElementUpdated();
+                            }),
+                            child: Container(
+                              height: 38,
+                              padding: const EdgeInsets.symmetric(horizontal: 8),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFF8FAFC),
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(color: const Color(0xFFE2E8F0)),
+                              ),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 16,
+                                    height: 16,
+                                    decoration: BoxDecoration(
+                                      color: bs.borderColor,
+                                      shape: BoxShape.circle,
+                                      border: Border.all(color: Colors.black26),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 6),
+                                  Text(
+                                    '#${(bs.borderColor.r * 255).toInt().toRadixString(16).padLeft(2, '0')}${(bs.borderColor.g * 255).toInt().toRadixString(16).padLeft(2, '0')}${(bs.borderColor.b * 255).toInt().toRadixString(16).padLeft(2, '0')}'
+                                        .toUpperCase(),
+                                    style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                Row(
+                  children: [
+                    _buildNumField('곡률 (Radius)', bs.borderRadius, (val) {
+                      setState(() => bs.borderRadius = val);
+                      widget.onElementUpdated();
+                    }),
+                    const SizedBox(width: 8),
+                    _buildNumField('패딩 (Padding)', bs.padding, (val) {
+                      setState(() => bs.padding = val);
+                      widget.onElementUpdated();
+                    }),
+                  ],
+                ),
+                const SizedBox(height: 18),
+
+                // 6. 텍스트 및 UI 콘텐츠 직접 수정
+                _buildSectionHeader(Icons.edit_note, 'UI 텍스트 직접 편집 (UI Content)'),
                 const SizedBox(height: 10),
                 ..._buildCustomProps(elem),
               ],
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildAlignButton(String label, TextAlignOption opt, IconData icon, TextAlignOption current) {
+    final isSelected = current == opt;
+    return Expanded(
+      child: InkWell(
+        onTap: () {
+          setState(() => widget.element!.textStyle.textAlign = opt);
+          widget.onElementUpdated();
+        },
+        borderRadius: BorderRadius.circular(8),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          decoration: BoxDecoration(
+            color: isSelected ? const Color(0xFFEFF6FF) : const Color(0xFFF8FAFC),
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(
+              color: isSelected ? const Color(0xFF0052FF) : const Color(0xFFE2E8F0),
+              width: isSelected ? 1.5 : 1,
+            ),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, size: 14, color: isSelected ? const Color(0xFF0052FF) : const Color(0xFF64748B)),
+              const SizedBox(width: 4),
+              Text(
+                label,
+                style: TextStyle(
+                  color: isSelected ? const Color(0xFF0052FF) : const Color(0xFF64748B),
+                  fontSize: 11,
+                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
