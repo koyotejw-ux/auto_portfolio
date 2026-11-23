@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../models/deck_model.dart';
 
 class FigmaLayersPanel extends StatefulWidget {
   final DeckSlide slide;
   final DeckElement? selectedElement;
+  final Set<String> selectedElementIds;
   final ValueChanged<DeckElement?> onElementSelected;
+  final ValueChanged<Set<String>>? onMultiSelectChanged;
   final VoidCallback onSlideModified;
   final VoidCallback onGroupSelected;
   final VoidCallback onUngroupSelected;
@@ -16,7 +19,9 @@ class FigmaLayersPanel extends StatefulWidget {
     super.key,
     required this.slide,
     required this.selectedElement,
+    this.selectedElementIds = const {},
     required this.onElementSelected,
+    this.onMultiSelectChanged,
     required this.onSlideModified,
     required this.onGroupSelected,
     required this.onUngroupSelected,
@@ -175,7 +180,8 @@ class _FigmaLayersPanelState extends State<FigmaLayersPanel> {
   Widget _buildElementTreeItem(DeckElement elem, {int depth = 0}) {
     final hasChildren = elem.children.isNotEmpty;
     final isExpanded = _expandedGroupIds.contains(elem.id) || depth > 0;
-    final isSelected = widget.selectedElement?.id == elem.id;
+    final isSelected = widget.selectedElement?.id == elem.id ||
+        widget.selectedElementIds.contains(elem.id);
     final isAutoLayout = elem.autoLayoutDirection != AutoLayoutDirection.none;
 
     return Column(
@@ -192,7 +198,27 @@ class _FigmaLayersPanelState extends State<FigmaLayersPanel> {
             color: Colors.transparent,
             child: InkWell(
               borderRadius: BorderRadius.circular(6),
-              onTap: () => widget.onElementSelected(elem),
+              onTap: () {
+                final isCtrl = HardwareKeyboard.instance.isControlPressed ||
+                    HardwareKeyboard.instance.isMetaPressed;
+                final isShift = HardwareKeyboard.instance.isShiftPressed;
+
+                if ((isCtrl || isShift) && widget.onMultiSelectChanged != null) {
+                  final newSet = Set<String>.from(widget.selectedElementIds);
+                  if (newSet.contains(elem.id)) {
+                    newSet.remove(elem.id);
+                  } else {
+                    newSet.add(elem.id);
+                  }
+                  widget.onMultiSelectChanged!(newSet);
+                  widget.onElementSelected(newSet.isNotEmpty ? elem : null);
+                } else {
+                  if (widget.onMultiSelectChanged != null) {
+                    widget.onMultiSelectChanged!({elem.id});
+                  }
+                  widget.onElementSelected(elem);
+                }
+              },
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 5),
                 child: Row(

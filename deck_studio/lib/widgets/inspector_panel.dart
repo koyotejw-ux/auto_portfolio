@@ -90,18 +90,18 @@ class _InspectorPanelState extends State<InspectorPanel> {
     if (widget.element == null) {
       return Container(
         width: 380,
-        color: Colors.white,
+        color: const Color(0xFF1E1E1E), // Figma Dark Slate
         padding: const EdgeInsets.all(24),
         child: const Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.touch_app_outlined, size: 48, color: Color(0xFF94A3B8)),
+              Icon(Icons.touch_app_outlined, size: 48, color: Color(0xFF525252)),
               SizedBox(height: 16),
               Text(
                 '요소를 선택하면 정렬, 크기, 폰트, 자간/행간,\n아이콘, 색상 및 UI 텍스트를 자유자재로 수정하고\nFlutter/HTML/Figma 소스를 즉시 복붙할 수 있습니다.',
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Color(0xFF64748B), fontSize: 13, height: 1.5),
+                style: TextStyle(color: Color(0xFFA3A3A3), fontSize: 13, height: 1.5),
               ),
             ],
           ),
@@ -116,8 +116,8 @@ class _InspectorPanelState extends State<InspectorPanel> {
     return Container(
       width: 380,
       decoration: const BoxDecoration(
-        color: Colors.white,
-        border: Border(left: BorderSide(color: Color(0xFFE2E8F0))),
+        color: Color(0xFF1E1E1E), // Figma Dark
+        border: Border(left: BorderSide(color: Color(0xFF2C2C2C))),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -126,24 +126,24 @@ class _InspectorPanelState extends State<InspectorPanel> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: const BoxDecoration(
-              border: Border(bottom: BorderSide(color: Color(0xFFE2E8F0))),
+              border: Border(bottom: BorderSide(color: Color(0xFF2C2C2C))),
             ),
             child: Row(
               children: [
                 Container(
                   padding: const EdgeInsets.all(6),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFEFF6FF),
+                    color: const Color(0xFF2C2C2C),
                     borderRadius: BorderRadius.circular(6),
                   ),
-                  child: const Icon(Icons.tune, color: Color(0xFF0052FF), size: 16),
+                  child: const Icon(Icons.tune, color: Color(0xFF38BDF8), size: 16),
                 ),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
                     elem.name,
                     style: const TextStyle(
-                      color: Color(0xFF0F172A),
+                      color: Colors.white,
                       fontSize: 13,
                       fontWeight: FontWeight.bold,
                     ),
@@ -163,7 +163,7 @@ class _InspectorPanelState extends State<InspectorPanel> {
           // Action Button: 원클릭 코드 내보내기 (Flutter / HTML / Figma)
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            color: const Color(0xFFF8FAFC),
+            color: const Color(0xFF141414),
             child: ElevatedButton.icon(
               icon: const Icon(Icons.copy_all, size: 16),
               label: const Text(
@@ -282,16 +282,28 @@ class _InspectorPanelState extends State<InspectorPanel> {
                 ),
                 const SizedBox(height: 18),
 
-                // 2. UI 정렬 옵션 (Alignment)
-                _buildSectionHeader(Icons.format_align_left, '텍스트 및 컨텐츠 정렬 (Alignment)'),
+                // 2. UI 정렬 옵션 (Alignment: 수평 & 수직)
+                _buildSectionHeader(Icons.format_align_left, '텍스트 정렬 (Text Alignment)'),
                 const SizedBox(height: 8),
+                // 2.1 수평 정렬
                 Row(
                   children: [
                     _buildAlignButton('좌측', TextAlignOption.left, Icons.format_align_left, ts.textAlign),
                     const SizedBox(width: 6),
-                    _buildAlignButton('중앙', TextAlignOption.center, Icons.format_align_center, ts.textAlign),
+                    _buildAlignButton('가운데', TextAlignOption.center, Icons.format_align_center, ts.textAlign),
                     const SizedBox(width: 6),
                     _buildAlignButton('우측', TextAlignOption.right, Icons.format_align_right, ts.textAlign),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                // 2.2 피그마식 수직 정렬 (Top / Middle / Bottom)
+                Row(
+                  children: [
+                    _buildVerticalAlignButton('상단 (Top)', TextVerticalAlign.top, Icons.vertical_align_top, ts.verticalAlign),
+                    const SizedBox(width: 6),
+                    _buildVerticalAlignButton('세로 중앙 (Middle)', TextVerticalAlign.middle, Icons.vertical_align_center, ts.verticalAlign),
+                    const SizedBox(width: 6),
+                    _buildVerticalAlignButton('하단 (Bottom)', TextVerticalAlign.bottom, Icons.vertical_align_bottom, ts.verticalAlign),
                   ],
                 ),
                 const SizedBox(height: 18),
@@ -872,6 +884,45 @@ class _InspectorPanelState extends State<InspectorPanel> {
     );
   }
 
+  Widget _buildVerticalAlignButton(String label, TextVerticalAlign opt, IconData icon, TextVerticalAlign current) {
+    final isSelected = current == opt;
+    return Expanded(
+      child: InkWell(
+        onTap: () {
+          setState(() => widget.element!.textStyle.verticalAlign = opt);
+          widget.onElementUpdated();
+        },
+        borderRadius: BorderRadius.circular(8),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          decoration: BoxDecoration(
+            color: isSelected ? const Color(0xFFEFF6FF) : const Color(0xFFF8FAFC),
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(
+              color: isSelected ? const Color(0xFF0052FF) : const Color(0xFFE2E8F0),
+              width: isSelected ? 1.5 : 1,
+            ),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, size: 14, color: isSelected ? const Color(0xFF0052FF) : const Color(0xFF64748B)),
+              const SizedBox(width: 4),
+              Text(
+                label,
+                style: TextStyle(
+                  color: isSelected ? const Color(0xFF0052FF) : const Color(0xFF64748B),
+                  fontSize: 10,
+                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildSectionHeader(IconData icon, String title) {
     return Row(
       children: [
@@ -953,15 +1004,15 @@ class _InspectorPanelState extends State<InspectorPanel> {
       height: 36,
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       decoration: BoxDecoration(
-        color: const Color(0xFFF8FAFC),
+        color: const Color(0xFF262626),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: const Color(0xFFE2E8F0)),
+        border: Border.all(color: const Color(0xFF333333)),
       ),
       child: TextFormField(
         key: ValueKey('${widget.element!.id}_dim_$val'),
         initialValue: val.toInt().toString(),
         keyboardType: const TextInputType.numberWithOptions(decimal: true),
-        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Colors.white),
         decoration: const InputDecoration(
           isDense: true,
           contentPadding: EdgeInsets.zero,
@@ -985,7 +1036,7 @@ class _InspectorPanelState extends State<InspectorPanel> {
       padding: const EdgeInsets.only(bottom: 4),
       child: Text(
         label,
-        style: const TextStyle(color: Color(0xFF334155), fontSize: 11, fontWeight: FontWeight.w600),
+        style: const TextStyle(color: Color(0xFFD4D4D4), fontSize: 11, fontWeight: FontWeight.w600),
       ),
     );
   }
@@ -999,15 +1050,15 @@ class _InspectorPanelState extends State<InspectorPanel> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
             decoration: BoxDecoration(
-              color: const Color(0xFFF8FAFC),
+              color: const Color(0xFF262626),
               borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: const Color(0xFFE2E8F0)),
+              border: Border.all(color: const Color(0xFF333333)),
             ),
             child: TextFormField(
               key: ValueKey('${widget.element!.id}_${label}_$val'),
               initialValue: step < 1.0 ? val.toStringAsFixed(2) : val.toInt().toString(),
               keyboardType: const TextInputType.numberWithOptions(decimal: true),
-              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Colors.white),
               decoration: const InputDecoration(
                 isDense: true,
                 contentPadding: EdgeInsets.zero,

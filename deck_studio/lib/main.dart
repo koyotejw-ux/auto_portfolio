@@ -25,14 +25,17 @@ class DeckStudioApp extends StatelessWidget {
     return MaterialApp(
       title: 'DeckStudio - Portfolio Deck Builder',
       debugShowCheckedModeBanner: false,
+      themeMode: ThemeMode.dark,
       theme: ThemeData(
+        brightness: Brightness.dark,
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color(0xFF0052FF),
+          brightness: Brightness.dark,
           primary: const Color(0xFF0052FF),
+          surface: const Color(0xFF1E1E1E),
         ),
         fontFamily: 'Pretendard',
-        scaffoldBackgroundColor: const Color(0xFFF1F5F9),
-        useMaterial3: true,
+        scaffoldBackgroundColor: const Color(0xFF141414),
       ),
       home: const DeckStudioHomeScreen(),
     );
@@ -50,6 +53,7 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
   late PortfolioProject _project;
   int _activeSlideIndex = 0;
   DeckElement? _selectedElement;
+  Set<String> _selectedElementIds = {};
 
   // Figma Toolbar Mode & Undo/Redo Stacks
   FigmaToolMode _currentToolMode = FigmaToolMode.select;
@@ -460,52 +464,121 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
   }
 
   void _groupSelected() {
-    if (_selectedElement == null) return;
+    final targets = _currentSlide.elements.where((e) => _selectedElementIds.contains(e.id)).toList();
+    if (targets.isEmpty && _selectedElement != null) {
+      targets.add(_selectedElement!);
+    }
+    if (targets.isEmpty) return;
+
     _recordUndoState();
     setState(() {
-      final elem = _selectedElement!;
-      final index = _currentSlide.elements.indexOf(elem);
-      if (index == -1) return;
+      if (targets.length == 1) {
+        final elem = targets.first;
+        final index = _currentSlide.elements.indexOf(elem);
+        if (index == -1) return;
 
-      final group = DeckElement(
-        id: 'group_${DateTime.now().millisecondsSinceEpoch}',
-        type: ElementType.group,
-        name: 'Frame · ${elem.name}',
-        x: elem.x,
-        y: elem.y,
-        width: elem.width,
-        height: elem.height,
-        boxStyle: DeckBoxStyle(
-          backgroundColor: Colors.transparent,
-          borderColor: const Color(0xFF38BDF8),
-          borderWidth: 1.0,
-          borderRadius: 8.0,
-        ),
-        props: {},
-        autoLayoutDirection: AutoLayoutDirection.none,
-        children: [elem],
-      );
+        final group = DeckElement(
+          id: 'group_${DateTime.now().millisecondsSinceEpoch}',
+          type: ElementType.group,
+          name: 'Frame · ${elem.name}',
+          x: elem.x,
+          y: elem.y,
+          width: elem.width,
+          height: elem.height,
+          boxStyle: DeckBoxStyle(
+            backgroundColor: Colors.transparent,
+            borderColor: const Color(0xFF38BDF8),
+            borderWidth: 1.0,
+            borderRadius: 8.0,
+          ),
+          props: {},
+          autoLayoutDirection: AutoLayoutDirection.none,
+          children: [elem],
+        );
 
-      _currentSlide.elements[index] = group;
-      _selectedElement = group;
+        _currentSlide.elements[index] = group;
+        _selectedElement = group;
+        _selectedElementIds = {group.id};
+      } else {
+        // Multi-element grouping (Figma Ctrl+G)
+        double minX = targets.first.x;
+        double minY = targets.first.y;
+        double maxX = targets.first.x + targets.first.width;
+        double maxY = targets.first.y + targets.first.height;
+
+        for (final t in targets) {
+          if (t.x < minX) minX = t.x;
+          if (t.y < minY) minY = t.y;
+          if (t.x + t.width > maxX) maxX = t.x + t.width;
+          if (t.y + t.height > maxY) maxY = t.y + t.height;
+        }
+
+        // Convert children coordinates relative to the new group
+        final groupChildren = <DeckElement>[];
+        for (final t in targets) {
+          _currentSlide.elements.remove(t);
+          t.x -= minX;
+          t.y -= minY;
+          groupChildren.add(t);
+        }
+
+        final group = DeckElement(
+          id: 'group_${DateTime.now().millisecondsSinceEpoch}',
+          type: ElementType.group,
+          name: 'Group (${groupChildren.length} elements)',
+          x: minX,
+          y: minY,
+          width: maxX - minX,
+          height: maxY - minY,
+          boxStyle: DeckBoxStyle(
+            backgroundColor: Colors.transparent,
+            borderColor: const Color(0xFF38BDF8),
+            borderWidth: 1.0,
+            borderRadius: 8.0,
+          ),
+          props: {},
+          autoLayoutDirection: AutoLayoutDirection.none,
+          children: groupChildren,
+        );
+
+        _currentSlide.elements.add(group);
+        _selectedElement = group;
+        _selectedElementIds = {group.id};
+      }
     });
   }
 
   void _toggleAutoLayout() {
-    if (_selectedElement == null) return;
+    final targets = _currentSlide.elements.where((e) => _selectedElementIds.contains(e.id)).toList();
+    if (targets.isEmpty && _selectedElement != null) {
+      targets.add(_selectedElement!);
+    }
+    if (targets.isEmpty) return;
+
     _recordUndoState();
     setState(() {
-      final elem = _selectedElement!;
-      if (elem.autoLayoutDirection == AutoLayoutDirection.none) {
-        elem.autoLayoutDirection = AutoLayoutDirection.horizontal;
-        elem.type = ElementType.group;
-        elem.name = elem.name.startsWith('AutoLayout') ? elem.name : 'AutoLayout · ${elem.name}';
-        elem.applyAutoLayout();
-      } else if (elem.autoLayoutDirection == AutoLayoutDirection.horizontal) {
-        elem.autoLayoutDirection = AutoLayoutDirection.vertical;
-        elem.applyAutoLayout();
+      if (targets.length == 1) {
+        final elem = targets.first;
+        if (elem.autoLayoutDirection == AutoLayoutDirection.none) {
+          elem.autoLayoutDirection = AutoLayoutDirection.horizontal;
+          elem.type = ElementType.group;
+          elem.name = elem.name.startsWith('AutoLayout') ? elem.name : 'AutoLayout · ${elem.name}';
+          elem.applyAutoLayout();
+        } else if (elem.autoLayoutDirection == AutoLayoutDirection.horizontal) {
+          elem.autoLayoutDirection = AutoLayoutDirection.vertical;
+          elem.applyAutoLayout();
+        } else {
+          elem.autoLayoutDirection = AutoLayoutDirection.none;
+        }
       } else {
-        elem.autoLayoutDirection = AutoLayoutDirection.none;
+        // Multi-elements Shift+A: AutoLayout Group Frame
+        _groupSelected();
+        final group = _selectedElement;
+        if (group != null) {
+          group.autoLayoutDirection = AutoLayoutDirection.horizontal;
+          group.name = 'AutoLayout (${group.children.length} elements)';
+          group.applyAutoLayout();
+        }
       }
     });
   }
@@ -990,8 +1063,25 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
                                       child: FigmaLayersPanel(
                                         slide: _currentSlide,
                                         selectedElement: _selectedElement,
+                                        selectedElementIds: _selectedElementIds,
                                         onElementSelected: (elem) {
-                                          setState(() => _selectedElement = elem);
+                                          setState(() {
+                                            _selectedElement = elem;
+                                            _selectedElementIds = elem != null ? {elem.id} : {};
+                                          });
+                                        },
+                                        onMultiSelectChanged: (newSet) {
+                                          setState(() {
+                                            _selectedElementIds = newSet;
+                                            if (!newSet.contains(_selectedElement?.id)) {
+                                              _selectedElement = newSet.isNotEmpty
+                                                  ? _currentSlide.elements.firstWhere(
+                                                      (e) => newSet.contains(e.id),
+                                                      orElse: () => _currentSlide.elements.first,
+                                                    )
+                                                  : null;
+                                            }
+                                          });
                                         },
                                         onSlideModified: () {
                                           _recordUndoState();
@@ -1028,9 +1118,26 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
                           child: CanvasEditor(
                             slide: _currentSlide,
                             selectedElement: _selectedElement,
+                            selectedElementIds: _selectedElementIds,
                             showLayoutGrid: _showLayoutGrid,
                             onElementSelected: (elem) {
-                              setState(() => _selectedElement = elem);
+                              setState(() {
+                                _selectedElement = elem;
+                                _selectedElementIds = elem != null ? {elem.id} : {};
+                              });
+                            },
+                            onMultiSelectChanged: (newSet) {
+                              setState(() {
+                                _selectedElementIds = newSet;
+                                if (!newSet.contains(_selectedElement?.id)) {
+                                  _selectedElement = newSet.isNotEmpty
+                                      ? _currentSlide.elements.firstWhere(
+                                          (e) => newSet.contains(e.id),
+                                          orElse: () => _currentSlide.elements.first,
+                                        )
+                                      : null;
+                                }
+                              });
                             },
                             onSlideModified: () {
                               _recordUndoState();

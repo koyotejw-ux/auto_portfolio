@@ -1,12 +1,15 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../models/deck_model.dart';
 import 'figma_assets_panel.dart';
 
 class CanvasEditor extends StatefulWidget {
   final DeckSlide slide;
   final DeckElement? selectedElement;
+  final Set<String> selectedElementIds;
   final ValueChanged<DeckElement?> onElementSelected;
+  final ValueChanged<Set<String>> onMultiSelectChanged;
   final VoidCallback onSlideModified;
   final bool showLayoutGrid;
   final bool showRulers;
@@ -15,7 +18,9 @@ class CanvasEditor extends StatefulWidget {
     super.key,
     required this.slide,
     required this.selectedElement,
+    this.selectedElementIds = const {},
     required this.onElementSelected,
+    required this.onMultiSelectChanged,
     required this.onSlideModified,
     this.showLayoutGrid = false,
     this.showRulers = true,
@@ -30,6 +35,10 @@ class _CanvasEditorState extends State<CanvasEditor> {
   String? _editingElementId;
   final TextEditingController _inlineTextController = TextEditingController();
   final FocusNode _inlineFocusNode = FocusNode();
+
+  // Rubberband / Marquee selection state
+  Offset? _selectionStart;
+  Offset? _selectionEnd;
 
   @override
   void dispose() {
@@ -83,8 +92,8 @@ class _CanvasEditorState extends State<CanvasEditor> {
           height: 48,
           padding: const EdgeInsets.symmetric(horizontal: 16),
           decoration: const BoxDecoration(
-            color: Colors.white,
-            border: Border(bottom: BorderSide(color: Color(0xFFE2E8F0))),
+            color: Color(0xFF1E1E1E), // Figma Dark Mode
+            border: Border(bottom: BorderSide(color: Color(0xFF2C2C2C))),
           ),
           child: Row(
             children: [
@@ -92,15 +101,15 @@ class _CanvasEditorState extends State<CanvasEditor> {
                 child: Text(
                   widget.slide.title,
                   style: const TextStyle(
-                    color: Color(0xFF0F172A),
-                    fontSize: 14,
+                    color: Colors.white,
+                    fontSize: 13,
                     fontWeight: FontWeight.bold,
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
               IconButton(
-                icon: const Icon(Icons.zoom_out, size: 20),
+                icon: const Icon(Icons.zoom_out, size: 20, color: Color(0xFFA3A3A3)),
                 onPressed: () {
                   setState(() {
                     if (_scale > 0.25) _scale -= 0.05;
@@ -110,10 +119,10 @@ class _CanvasEditorState extends State<CanvasEditor> {
               ),
               Text(
                 '${(_scale * 100).toInt()}%',
-                style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),
               ),
               IconButton(
-                icon: const Icon(Icons.zoom_in, size: 20),
+                icon: const Icon(Icons.zoom_in, size: 20, color: Color(0xFFA3A3A3)),
                 onPressed: () {
                   setState(() {
                     if (_scale < 1.0) _scale += 0.05;
@@ -126,8 +135,8 @@ class _CanvasEditorState extends State<CanvasEditor> {
                 icon: const Icon(Icons.fit_screen, size: 14),
                 label: const Text('핏', style: TextStyle(fontSize: 11)),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFF1F5F9),
-                  foregroundColor: const Color(0xFF334155),
+                  backgroundColor: const Color(0xFF2C2C2C),
+                  foregroundColor: Colors.white,
                   elevation: 0,
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                 ),
@@ -144,7 +153,7 @@ class _CanvasEditorState extends State<CanvasEditor> {
         // Scrollable 1920x1080 Canvas Area
         Expanded(
           child: Container(
-            color: const Color(0xFFE2E8F0),
+            color: const Color(0xFF141414), // Figma Infinite Dark Canvas Background
             child: InteractiveViewer(
               constrained: false,
               boundaryMargin: const EdgeInsets.all(200),
@@ -239,7 +248,38 @@ class _CanvasEditorState extends State<CanvasEditor> {
                             },
                             builder: (context, candidateData, rejectedData) {
                               return GestureDetector(
-                                onTap: () => widget.onElementSelected(null),
+                                onTap: () {
+                                  widget.onElementSelected(null);
+                                  widget.onMultiSelectChanged({});
+                                },
+                                onPanStart: (details) {
+                                  setState(() {
+                                    _selectionStart = details.localPosition;
+                                    _selectionEnd = details.localPosition;
+                                  });
+                                },
+                                onPanUpdate: (details) {
+                                  setState(() {
+                                    _selectionEnd = details.localPosition;
+                                  });
+                                  if (_selectionStart != null && _selectionEnd != null) {
+                                    final rect = Rect.fromPoints(_selectionStart!, _selectionEnd!);
+                                    final matchedIds = <String>{};
+                                    for (final elem in widget.slide.elements) {
+                                      final elemRect = Rect.fromLTWH(elem.x, elem.y, elem.width, elem.height);
+                                      if (rect.overlaps(elemRect)) {
+                                        matchedIds.add(elem.id);
+                                      }
+                                    }
+                                    widget.onMultiSelectChanged(matchedIds);
+                                  }
+                                },
+                                onPanEnd: (_) {
+                                  setState(() {
+                                    _selectionStart = null;
+                                    _selectionEnd = null;
+                                  });
+                                },
                                 behavior: HitTestBehavior.opaque,
                                 child: const SizedBox.expand(),
                               );
@@ -259,21 +299,50 @@ class _CanvasEditorState extends State<CanvasEditor> {
 
                         // Interactive Elements
                         ...widget.slide.elements.where((elem) => elem.isVisible).map((elem) {
-                          final isSelected = widget.selectedElement?.id == elem.id;
+                          final isSelected = widget.selectedElement?.id == elem.id ||
+                              widget.selectedElementIds.contains(elem.id);
                           return Positioned(
                             left: elem.x,
                             top: elem.y,
                             width: elem.width,
                             height: elem.height,
                             child: GestureDetector(
-                              onTap: () => widget.onElementSelected(elem),
+                              onTap: () {
+                                final isCtrl = HardwareKeyboard.instance.isControlPressed ||
+                                    HardwareKeyboard.instance.isMetaPressed;
+                                final isShift = HardwareKeyboard.instance.isShiftPressed;
+
+                                if (isCtrl || isShift) {
+                                  final newSet = Set<String>.from(widget.selectedElementIds);
+                                  if (newSet.contains(elem.id)) {
+                                    newSet.remove(elem.id);
+                                  } else {
+                                    newSet.add(elem.id);
+                                  }
+                                  widget.onMultiSelectChanged(newSet);
+                                  widget.onElementSelected(newSet.isNotEmpty ? elem : null);
+                                } else {
+                                  widget.onMultiSelectChanged({elem.id});
+                                  widget.onElementSelected(elem);
+                                }
+                              },
                               onDoubleTap: () => _startEditing(elem),
                               onPanUpdate: elem.isLocked || _editingElementId == elem.id
                                   ? null
                                   : (details) {
                                       setState(() {
-                                        elem.x += details.delta.dx;
-                                        elem.y += details.delta.dy;
+                                        if (widget.selectedElementIds.contains(elem.id) &&
+                                            widget.selectedElementIds.length > 1) {
+                                          for (final other in widget.slide.elements) {
+                                            if (widget.selectedElementIds.contains(other.id) && !other.isLocked) {
+                                              other.x += details.delta.dx;
+                                              other.y += details.delta.dy;
+                                            }
+                                          }
+                                        } else {
+                                          elem.x += details.delta.dx;
+                                          elem.y += details.delta.dy;
+                                        }
                                       });
                                       widget.onSlideModified();
                                     },
@@ -398,6 +467,20 @@ class _CanvasEditorState extends State<CanvasEditor> {
                             ),
                           );
                         }),
+
+                        // Figma-style Rubberband / Marquee Selection Box
+                        if (_selectionStart != null && _selectionEnd != null)
+                          Positioned.fromRect(
+                            rect: Rect.fromPoints(_selectionStart!, _selectionEnd!),
+                            child: IgnorePointer(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFF0052FF).withOpacity(0.12),
+                                  border: Border.all(color: const Color(0xFF0052FF), width: 1.5),
+                                ),
+                              ),
+                            ),
+                          ),
                       ],
                     ),
                   ),
@@ -556,17 +639,22 @@ class _CanvasEditorState extends State<CanvasEditor> {
 
     // If it's a decomposed title component or pure single text element
     if (plainTitle != null && category == null && titleBlack.isEmpty && titleBlue.isEmpty) {
-      return Text(
-        plainTitle,
-        textAlign: align,
-        style: ts.toTextStyle(),
+      return Align(
+        alignment: ts.flutterAlignment,
+        child: Text(
+          plainTitle,
+          textAlign: align,
+          style: ts.toTextStyle(),
+        ),
       );
     }
 
-    return Column(
-      crossAxisAlignment: crossAlign,
-      mainAxisSize: MainAxisSize.min,
-      children: [
+    return Align(
+      alignment: ts.flutterAlignment,
+      child: Column(
+        crossAxisAlignment: crossAlign,
+        mainAxisSize: MainAxisSize.min,
+        children: [
         if (category != null) ...[
           Text(
             category,
@@ -628,6 +716,7 @@ class _CanvasEditorState extends State<CanvasEditor> {
           ),
         ],
       ],
+      ),
     );
   }
 
