@@ -255,30 +255,80 @@ class _CanvasEditorState extends State<CanvasEditor> {
                                           ),
                                         ),
                                       ),
-                                    if (isSelected && !elem.isLocked)
+                                    if (isSelected && !elem.isLocked) ...[
+                                      // Top-Left Handle
                                       Positioned(
-                                        right: -8,
-                                        bottom: -8,
+                                        left: -6,
+                                        top: -6,
                                         child: GestureDetector(
                                           onPanUpdate: (details) {
                                             setState(() {
-                                              elem.width = (elem.width + details.delta.dx).clamp(50.0, 1920.0);
-                                              elem.height = (elem.height + details.delta.dy).clamp(30.0, 1080.0);
+                                              final newW = (elem.width - details.delta.dx).clamp(40.0, 1920.0);
+                                              final newH = (elem.height - details.delta.dy).clamp(24.0, 1080.0);
+                                              elem.x += (elem.width - newW);
+                                              elem.y += (elem.height - newH);
+                                              elem.width = newW;
+                                              elem.height = newH;
                                               elem.applyAutoLayout();
                                             });
                                             widget.onSlideModified();
                                           },
-                                          child: Container(
-                                            width: 16,
-                                            height: 16,
-                                            decoration: BoxDecoration(
-                                              color: const Color(0xFF0052FF),
-                                              shape: BoxShape.circle,
-                                              border: Border.all(color: Colors.white, width: 2),
-                                            ),
-                                          ),
+                                          child: _buildFigmaHandle(),
                                         ),
                                       ),
+                                      // Top-Right Handle
+                                      Positioned(
+                                        right: -6,
+                                        top: -6,
+                                        child: GestureDetector(
+                                          onPanUpdate: (details) {
+                                            setState(() {
+                                              final newH = (elem.height - details.delta.dy).clamp(24.0, 1080.0);
+                                              elem.y += (elem.height - newH);
+                                              elem.height = newH;
+                                              elem.width = (elem.width + details.delta.dx).clamp(40.0, 1920.0);
+                                              elem.applyAutoLayout();
+                                            });
+                                            widget.onSlideModified();
+                                          },
+                                          child: _buildFigmaHandle(),
+                                        ),
+                                      ),
+                                      // Bottom-Left Handle
+                                      Positioned(
+                                        left: -6,
+                                        bottom: -6,
+                                        child: GestureDetector(
+                                          onPanUpdate: (details) {
+                                            setState(() {
+                                              final newW = (elem.width - details.delta.dx).clamp(40.0, 1920.0);
+                                              elem.x += (elem.width - newW);
+                                              elem.width = newW;
+                                              elem.height = (elem.height + details.delta.dy).clamp(24.0, 1080.0);
+                                              elem.applyAutoLayout();
+                                            });
+                                            widget.onSlideModified();
+                                          },
+                                          child: _buildFigmaHandle(),
+                                        ),
+                                      ),
+                                      // Bottom-Right Handle
+                                      Positioned(
+                                        right: -6,
+                                        bottom: -6,
+                                        child: GestureDetector(
+                                          onPanUpdate: (details) {
+                                            setState(() {
+                                              elem.width = (elem.width + details.delta.dx).clamp(40.0, 1920.0);
+                                              elem.height = (elem.height + details.delta.dy).clamp(24.0, 1080.0);
+                                              elem.applyAutoLayout();
+                                            });
+                                            widget.onSlideModified();
+                                          },
+                                          child: _buildFigmaHandle(),
+                                        ),
+                                      ),
+                                    ],
                                   ],
                                 ),
                               ),
@@ -294,6 +344,22 @@ class _CanvasEditorState extends State<CanvasEditor> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildFigmaHandle() {
+    return Container(
+      width: 11,
+      height: 11,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        shape: BoxShape.rectangle,
+        borderRadius: BorderRadius.circular(2),
+        border: Border.all(color: const Color(0xFF0052FF), width: 1.8),
+        boxShadow: const [
+          BoxShadow(color: Color(0x33000000), blurRadius: 4, offset: Offset(0, 1)),
+        ],
+      ),
     );
   }
 

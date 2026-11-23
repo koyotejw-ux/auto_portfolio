@@ -669,6 +669,37 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
             } else if (isCtrl && event.logicalKey == LogicalKeyboardKey.keyY) {
               _redo();
               return KeyEventResult.handled;
+            } else if (isCtrl && event.logicalKey == LogicalKeyboardKey.keyG) {
+              final isShift = HardwareKeyboard.instance.isShiftPressed;
+              if (isShift) {
+                _ungroupSelected();
+              } else {
+                _groupSelected();
+              }
+              return KeyEventResult.handled;
+            } else if (HardwareKeyboard.instance.isShiftPressed && event.logicalKey == LogicalKeyboardKey.keyA) {
+              _toggleAutoLayout();
+              return KeyEventResult.handled;
+            } else if (event.logicalKey == LogicalKeyboardKey.delete || event.logicalKey == LogicalKeyboardKey.backspace) {
+              if (_selectedElement != null) {
+                _deleteSelected();
+                return KeyEventResult.handled;
+              }
+            } else if (event.logicalKey == LogicalKeyboardKey.arrowLeft ||
+                event.logicalKey == LogicalKeyboardKey.arrowRight ||
+                event.logicalKey == LogicalKeyboardKey.arrowUp ||
+                event.logicalKey == LogicalKeyboardKey.arrowDown) {
+              if (_selectedElement != null && !_selectedElement!.isLocked) {
+                final delta = HardwareKeyboard.instance.isShiftPressed ? 10.0 : 1.0;
+                _recordUndoState();
+                setState(() {
+                  if (event.logicalKey == LogicalKeyboardKey.arrowLeft) _selectedElement!.x -= delta;
+                  if (event.logicalKey == LogicalKeyboardKey.arrowRight) _selectedElement!.x += delta;
+                  if (event.logicalKey == LogicalKeyboardKey.arrowUp) _selectedElement!.y -= delta;
+                  if (event.logicalKey == LogicalKeyboardKey.arrowDown) _selectedElement!.y += delta;
+                });
+                return KeyEventResult.handled;
+              }
             }
           }
           return KeyEventResult.ignored;
