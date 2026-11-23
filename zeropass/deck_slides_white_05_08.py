@@ -1369,9 +1369,9 @@ def make_slide_08():
     # -------------------------------------------------------------
     # 3-Stage Interactive Columns with Expanded Screen Mockups
     # -------------------------------------------------------------
-    card_y = 244
+    card_y = 236
     card_w = 548
-    card_h = 584
+    card_h = 604
     card_gap = 38
     start_x = 100
 
@@ -1422,57 +1422,57 @@ def make_slide_08():
 
     for idx, stage in enumerate(kiosk_stages):
         cx = start_x + idx * (card_w + card_gap)
-        
+
         # Outer Card Container
         draw.rounded_rectangle([cx, card_y, cx + card_w, card_y + card_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-        
+
         # Step Header Pill & Badge
         draw_pill_badge(draw, left_x=cx + 20, cy=card_y + 24, text=stage["step"], font=get_font(9.5, 'bold'), theme='blue', pad_x=8, height=22)
         # Removed redundant top-right badge per user UX request
-        
+
         draw.text((cx + 20, card_y + 44), stage["title"], font=get_font(13.5, 'bold'), fill=(15, 23, 42))
         draw.text((cx + 20, card_y + 65), stage["sub"], font=get_font(10, 'regular'), fill=(100, 116, 139))
-        
+
         # Tablet Device Mockup Placement
         img_p = stage["img_path"]
         if os.path.exists(img_p):
             raw_screen = Image.open(img_p).convert('RGBA')
-            
+
             if idx < 2:
-                # Steps 1 & 2: Large Expanded Tablet Mockup (target_h=356)
-                framed_tab = make_tablet_kiosk_frame(raw_screen, target_h=356)
+                # Steps 1 & 2: Large Expanded Tablet Mockup (target_h=340)
+                framed_tab = make_tablet_kiosk_frame(raw_screen, target_h=340)
                 tab_x = cx + (card_w - framed_tab.width) // 2
-                tab_y = card_y + 82
-                
+                tab_y = card_y + 80
+
                 sh_tab, pad_tab = make_shadow(framed_tab, blur=24, offset=(10, 16), alpha=70)
                 base.paste(sh_tab, (tab_x - pad_tab[0], tab_y - pad_tab[1]), sh_tab)
                 base.paste(framed_tab, (tab_x, tab_y), framed_tab)
-                
+
             else:
                 # STEP 03: Dual Mockup (Tablet Kiosk Success + Real-Time Mobile "출결 체크" Sync Phone)
-                framed_tab = make_tablet_kiosk_frame(raw_screen, target_h=356)
+                framed_tab = make_tablet_kiosk_frame(raw_screen, target_h=340)
                 tab_x = cx + 22
-                tab_y = card_y + 82
-                
+                tab_y = card_y + 80
+
                 sh_tab, pad_tab = make_shadow(framed_tab, blur=22, offset=(8, 14), alpha=65)
                 base.paste(sh_tab, (tab_x - pad_tab[0], tab_y - pad_tab[1]), sh_tab)
                 base.paste(framed_tab, (tab_x, tab_y), framed_tab)
-                
+
                 # Mobile Phone Showing Real-Time Synced "출결 체크" Main Screen
                 phone_p = 'zeropass/assets/iphone_mockups/clean_android_upright_mockup.png'
                 if os.path.exists(phone_p):
                     phone_img = Image.open(phone_p).convert('RGBA')
-                    p_scale = 310 / phone_img.height
+                    p_scale = 300 / phone_img.height
                     pw_scaled = int(phone_img.width * p_scale)
-                    phone_scaled = phone_img.resize((pw_scaled, 310), Image.Resampling.LANCZOS)
-                    
+                    phone_scaled = phone_img.resize((pw_scaled, 300), Image.Resampling.LANCZOS)
+
                     px_pos = cx + card_w - pw_scaled - 20
-                    py_pos = card_y + 142
-                    
+                    py_pos = card_y + 138
+
                     sh_phone, pad_ph = make_shadow(phone_scaled, blur=20, offset=(10, 16), alpha=85)
                     base.paste(sh_phone, (px_pos - pad_ph[0], py_pos - pad_ph[1]), sh_phone)
                     base.paste(phone_scaled, (px_pos, py_pos), phone_scaled)
-                    
+
                     # Floating Real-Time Sync Indicator Pill on Phone
                     pill_w = 142
                     pill_h = 24
@@ -1482,25 +1482,25 @@ def make_slide_08():
                     draw.text((pill_x + pill_w // 2, pill_y + 12), "⚡ 메인 즉시 동기화", font=get_font(8.5, 'bold'), fill=(255, 255, 255), anchor='mm')
 
         # 3 Structured Micro Feature Chips
-        chip_y = card_y + 458
-        chip_h = 24
+        chip_y = card_y + 452
+        chip_h = 26
         for c_idx, (c_label, c_sub) in enumerate(stage["chips"]):
-            cy_pos = chip_y + c_idx * 28
+            cy_pos = chip_y + c_idx * 32
             draw.rounded_rectangle([cx + 16, cy_pos, cx + card_w - 16, cy_pos + chip_h], radius=6, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
-            draw.ellipse([cx + 26, cy_pos + 9, cx + 32, cy_pos + 15], fill=(0, 81, 255))
-            draw.text((cx + 38, cy_pos + 12), c_label, font=get_font(9.5, 'bold'), fill=(30, 41, 59), anchor='lm')
-            draw.text((cx + card_w - 26, cy_pos + 12), c_sub, font=get_font(8.5, 'medium'), fill=(0, 82, 255), anchor='rm')
+            draw.ellipse([cx + 26, cy_pos + 10, cx + 32, cy_pos + 16], fill=(0, 81, 255))
+            draw.text((cx + 38, cy_pos + 13), c_label, font=get_font(9.5, 'bold'), fill=(30, 41, 59), anchor='lm')
+            draw.text((cx + card_w - 26, cy_pos + 13), c_sub, font=get_font(8.5, 'medium'), fill=(0, 82, 255), anchor='rm')
 
         # Interactive Relationship Box
-        rel_y = card_y + card_h - 38
-        draw.rounded_rectangle([cx + 16, rel_y, cx + card_w - 16, rel_y + 28], radius=6, fill=(239, 246, 255), outline=(191, 219, 254), width=1)
-        draw.text((cx + card_w // 2, rel_y + 14), stage["interaction"], font=get_font(8.5, 'bold'), fill=(0, 82, 255), anchor='mm')
+        rel_y = card_y + card_h - 44
+        draw.rounded_rectangle([cx + 16, rel_y, cx + card_w - 16, rel_y + 32], radius=6, fill=(239, 246, 255), outline=(191, 219, 254), width=1)
+        draw.text((cx + card_w // 2, rel_y + 16), stage["interaction"], font=get_font(8.5, 'bold'), fill=(0, 82, 255), anchor='mm')
 
     # Draw Inter-Stage Flow Arrows Between Step 1 -> Step 2 and Step 2 -> Step 3
     for a_idx in range(2):
         ax1 = start_x + (a_idx + 1) * card_w + a_idx * card_gap - 6
         ax2 = ax1 + 48
-        ay = card_y + 260
+        ay = card_y + 250
         draw_arrow(draw, (ax1, ay), (ax2, ay), col=(0, 82, 255), width=2, arrow_size=6)
         draw.rounded_rectangle([ax1 + 8, ay - 14, ax2 - 8, ay + 14], radius=10, fill=(255, 255, 255), outline=(191, 219, 254), width=1)
         draw.text((ax1 + 20, ay), "0.4s", font=get_font(8, 'bold'), fill=(0, 82, 255), anchor='mm')
