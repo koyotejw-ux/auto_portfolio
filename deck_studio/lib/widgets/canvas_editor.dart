@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../models/deck_model.dart';
 import 'figma_assets_panel.dart';
+import 'icon_drawing_modal.dart';
 
 class CanvasEditor extends StatefulWidget {
   final DeckSlide slide;
@@ -47,7 +48,37 @@ class _CanvasEditorState extends State<CanvasEditor> {
     super.dispose();
   }
 
+  void _openIconStudio(DeckElement elem) {
+    showDialog(
+      context: context,
+      builder: (ctx) => IconDrawingModal(
+        initialElement: elem,
+        onSaveComponent: (updatedElem) {
+          setState(() {});
+          widget.onSlideModified();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('아이콘 [${updatedElem.name}] 편집 내용이 적용되었습니다.'),
+              backgroundColor: const Color(0xFF0052FF),
+              duration: const Duration(seconds: 2),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
   void _startEditing(DeckElement elem) {
+    if (elem.type == ElementType.vectorIcon ||
+        elem.props.containsKey('iconStrokes') ||
+        elem.props.containsKey('icon') ||
+        elem.iconName.isNotEmpty ||
+        elem.name.toLowerCase().contains('icon') ||
+        elem.name.toLowerCase().contains('아이콘')) {
+      _openIconStudio(elem);
+      return;
+    }
+
     final textValue = (elem.props['title'] ??
             elem.props['text'] ??
             (elem.props['titleBlack'] != null || elem.props['titleBlue'] != null
@@ -819,6 +850,39 @@ class _CanvasEditorState extends State<CanvasEditor> {
     );
   }
 
+  IconData _resolveIconData(String val) {
+    switch (val) {
+      case 'check_circle':
+        return Icons.check_circle_outline;
+      case 'fact_check':
+        return Icons.fact_check_outlined;
+      case 'phone_android':
+        return Icons.phone_android;
+      case 'tablet_mac':
+        return Icons.tablet_mac;
+      case 'receipt_long':
+        return Icons.receipt_long;
+      case 'history_edu':
+        return Icons.history_edu;
+      case 'analytics':
+        return Icons.analytics_outlined;
+      case 'brush':
+        return Icons.brush_outlined;
+      case 'verified':
+        return Icons.verified;
+      case 'bookmark':
+        return Icons.bookmark_outline;
+      case 'star':
+        return Icons.star_outline;
+      case 'favorite':
+        return Icons.favorite_border;
+      case 'tune':
+        return Icons.tune;
+      default:
+        return Icons.category_outlined;
+    }
+  }
+
   Widget _buildVectorIcon(DeckElement elem) {
     final rawStrokes = elem.props['iconStrokes'] as List? ?? [];
     final strokeColor = Color(elem.props['strokeColor'] as int? ?? 0xFF0052FF);
@@ -1389,6 +1453,26 @@ class _CanvasEditorState extends State<CanvasEditor> {
   }
 
   Widget _buildShape(DeckElement elem) {
+    final iconVal = elem.props['icon'] as String? ?? (elem.iconName.isNotEmpty ? elem.iconName : null);
+    if (iconVal != null && iconVal.isNotEmpty) {
+      final iconData = _resolveIconData(iconVal);
+      return Container(
+        width: elem.width,
+        height: elem.height,
+        padding: EdgeInsets.all(elem.boxStyle.padding),
+        decoration: elem.boxStyle.backgroundColor != Colors.transparent || elem.boxStyle.borderWidth > 0
+            ? elem.boxStyle.toDecoration()
+            : null,
+        child: Center(
+          child: Icon(
+            iconData,
+            size: elem.textStyle.fontSize > 0 ? elem.textStyle.fontSize : (elem.height * 0.7).clamp(16.0, 120.0),
+            color: elem.textStyle.color,
+          ),
+        ),
+      );
+    }
+
     final num = elem.props['num'] as String?;
     final tag = elem.props['tag'] as String?;
     final title = elem.props['title'] as String? ?? elem.name;

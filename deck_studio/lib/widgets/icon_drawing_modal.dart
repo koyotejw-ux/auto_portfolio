@@ -19,9 +19,14 @@ class VectorPathPoint {
 }
 
 class IconDrawingModal extends StatefulWidget {
+  final DeckElement? initialElement;
   final ValueChanged<DeckElement> onSaveComponent;
 
-  const IconDrawingModal({super.key, required this.onSaveComponent});
+  const IconDrawingModal({
+    super.key,
+    this.initialElement,
+    required this.onSaveComponent,
+  });
 
   @override
   State<IconDrawingModal> createState() => _IconDrawingModalState();
@@ -38,6 +43,59 @@ class _IconDrawingModalState extends State<IconDrawingModal> {
 
   final List<List<VectorPathPoint>> _strokes = [];
   List<VectorPathPoint>? _currentStroke;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialElement != null) {
+      final elem = widget.initialElement!;
+      _iconName = elem.name;
+      if (elem.props.containsKey('strokeColor')) {
+        _strokeColor = Color(elem.props['strokeColor'] as int);
+      }
+      if (elem.props.containsKey('strokeWidth')) {
+        _strokeWidth = (elem.props['strokeWidth'] as num).toDouble();
+      }
+      if (elem.props.containsKey('isFilled')) {
+        _isFilled = elem.props['isFilled'] == true;
+      }
+      if (elem.props.containsKey('fillColor')) {
+        _fillColor = Color(elem.props['fillColor'] as int);
+      }
+      final rawStrokes = elem.props['iconStrokes'] as List?;
+      if (rawStrokes != null && rawStrokes.isNotEmpty) {
+        for (final s in rawStrokes) {
+          if (s is List) {
+            _strokes.add(
+              s.map((pt) => VectorPathPoint.fromJson(Map<String, dynamic>.from(pt as Map))).toList(),
+            );
+          }
+        }
+      } else if (elem.props.containsKey('icon') || elem.iconName.isNotEmpty) {
+        // Fallback for named icons: pre-load a preset
+        final iconVal = (elem.props['icon'] ?? elem.iconName).toString();
+        if (iconVal.contains('check')) {
+          _loadPreset('check');
+        } else if (iconVal.contains('bookmark')) {
+          _loadPreset('bookmark');
+        } else if (iconVal.contains('phone') || iconVal.contains('tablet')) {
+          _strokes.add([
+            VectorPathPoint(x: 7.0, y: 2.0, isMoveTo: true),
+            VectorPathPoint(x: 17.0, y: 2.0),
+            VectorPathPoint(x: 17.0, y: 22.0),
+            VectorPathPoint(x: 7.0, y: 22.0),
+            VectorPathPoint(x: 7.0, y: 2.0),
+          ]);
+          _strokes.add([
+            VectorPathPoint(x: 11.0, y: 19.0, isMoveTo: true),
+            VectorPathPoint(x: 13.0, y: 19.0),
+          ]);
+        } else {
+          _loadPreset('check');
+        }
+      }
+    }
+  }
 
   void _addPoint(Offset localPos, Size canvasSize, {bool isStart = false}) {
     // Canvas is square, normalize to 0.0 ~ 24.0 (Material Design 24dp)
@@ -72,25 +130,36 @@ class _IconDrawingModalState extends State<IconDrawingModal> {
         .map((stroke) => stroke.map((pt) => pt.toJson()).toList())
         .toList();
 
-    final id = 'icon_${DateTime.now().millisecondsSinceEpoch}';
-    final elem = DeckElement(
-      id: id,
-      type: ElementType.vectorIcon,
-      name: _iconName.trim().isEmpty ? '벡터 아이콘' : _iconName.trim(),
-      x: 300,
-      y: 300,
-      width: 64,
-      height: 64,
-      props: {
-        'iconStrokes': rawStrokes,
-        'strokeColor': _strokeColor.toARGB32(),
-        'strokeWidth': _strokeWidth,
-        'isFilled': _isFilled,
-        'fillColor': _fillColor.toARGB32(),
-      },
-    );
-
-    widget.onSaveComponent(elem);
+    if (widget.initialElement != null) {
+      final elem = widget.initialElement!;
+      elem.type = ElementType.vectorIcon;
+      elem.name = _iconName.trim().isEmpty ? '벡터 아이콘' : _iconName.trim();
+      elem.props['iconStrokes'] = rawStrokes;
+      elem.props['strokeColor'] = _strokeColor.toARGB32();
+      elem.props['strokeWidth'] = _strokeWidth;
+      elem.props['isFilled'] = _isFilled;
+      elem.props['fillColor'] = _fillColor.toARGB32();
+      widget.onSaveComponent(elem);
+    } else {
+      final id = 'icon_${DateTime.now().millisecondsSinceEpoch}';
+      final elem = DeckElement(
+        id: id,
+        type: ElementType.vectorIcon,
+        name: _iconName.trim().isEmpty ? '벡터 아이콘' : _iconName.trim(),
+        x: 300,
+        y: 300,
+        width: 64,
+        height: 64,
+        props: {
+          'iconStrokes': rawStrokes,
+          'strokeColor': _strokeColor.toARGB32(),
+          'strokeWidth': _strokeWidth,
+          'isFilled': _isFilled,
+          'fillColor': _fillColor.toARGB32(),
+        },
+      );
+      widget.onSaveComponent(elem);
+    }
     Navigator.pop(context);
   }
 
@@ -407,7 +476,10 @@ class _IconDrawingModalState extends State<IconDrawingModal> {
                 const SizedBox(width: 12),
                 ElevatedButton.icon(
                   icon: const Icon(Icons.check, size: 16),
-                  label: const Text('컴포넌트화하여 캔버스에 배치', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                  label: Text(
+                    widget.initialElement != null ? '아이콘 변경사항 적용' : '컴포넌트화하여 캔버스에 배치',
+                    style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                  ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF0052FF),
                     foregroundColor: Colors.white,
