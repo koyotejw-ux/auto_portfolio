@@ -23,3 +23,4 @@ if images:
         optimize=True
     )
     print(f"Generated PDF: {PDF_PATH} ({len(images)} slides)")
+

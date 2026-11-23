@@ -152,3 +152,4 @@ def save_slide(im, slide_idx):
         p = os.path.join(d, fname)
         im.save(p, 'PNG', optimize=True)
     print(f"Rendered: {fname}")
+

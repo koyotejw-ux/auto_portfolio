@@ -264,6 +264,10 @@ class DeckElement {
   SizingMode verticalSizing; // Fixed / Hug(Auto) / Fill
   List<DeckElement> children;
 
+  // Figma Component & Instance Architecture
+  bool isComponent; // True if this element is a Main Component (Master)
+  String? componentId; // If this element is an Instance, points to the master component's id
+
   DeckElement({
     required this.id,
     required this.type,
@@ -285,6 +289,8 @@ class DeckElement {
     this.isAutoSpacing = false,
     this.horizontalSizing = SizingMode.fixed,
     this.verticalSizing = SizingMode.fixed,
+    this.isComponent = false,
+    this.componentId,
     List<DeckElement>? children,
   })  : textStyle = textStyle ?? DeckTextStyle(),
         boxStyle = boxStyle ?? DeckBoxStyle(),
@@ -416,6 +422,8 @@ class DeckElement {
         'isAutoSpacing': isAutoSpacing,
         'horizontalSizing': horizontalSizing.name,
         'verticalSizing': verticalSizing.name,
+        'isComponent': isComponent,
+        'componentId': componentId,
         'children': children.map((c) => c.toJson()).toList(),
       };
 
@@ -460,6 +468,8 @@ class DeckElement {
         (s) => s.name == json['verticalSizing'],
         orElse: () => SizingMode.fixed,
       ),
+      isComponent: json['isComponent'] ?? false,
+      componentId: json['componentId'],
       children: (json['children'] as List? ?? [])
           .map((c) => DeckElement.fromJson(Map<String, dynamic>.from(c)))
           .toList(),
@@ -467,14 +477,64 @@ class DeckElement {
   }
 
   /// Deep-clone element with new unique IDs for entire children tree
-  DeckElement deepClone({double deltaX = 24.0, double deltaY = 24.0}) {
+  DeckElement deepClone({double deltaX = 24.0, double deltaY = 24.0, bool makeInstance = false}) {
     final rawJson = toJson();
     _reassignIds(rawJson);
     final cloned = DeckElement.fromJson(rawJson);
     cloned.x += deltaX;
     cloned.y += deltaY;
-    cloned.name = '$name (복제)';
+
+    if (makeInstance && (isComponent || componentId != null)) {
+      // Cloned copy becomes an Instance of the main component
+      cloned.componentId = isComponent ? id : componentId;
+      cloned.isComponent = false;
+      cloned.name = '$name (인스턴스)';
+    } else {
+      cloned.name = '$name (복제)';
+    }
     return cloned;
+  }
+
+  /// Create an instance element linked to this main component
+  DeckElement createInstance({double deltaX = 24.0, double deltaY = 24.0}) {
+    final rawJson = toJson();
+    _reassignIds(rawJson);
+    final instance = DeckElement.fromJson(rawJson);
+    instance.x += deltaX;
+    instance.y += deltaY;
+    instance.componentId = isComponent ? id : (componentId ?? id);
+    instance.isComponent = false;
+    instance.name = '$name (인스턴스)';
+    return instance;
+  }
+
+  /// Sync properties from master component to this instance
+  void syncFromMaster(DeckElement master) {
+    width = master.width;
+    height = master.height;
+    textStyle = master.textStyle.copyWith();
+    boxStyle = master.boxStyle.copyWith();
+    iconName = master.iconName;
+    autoLayoutDirection = master.autoLayoutDirection;
+    autoLayoutSpacing = master.autoLayoutSpacing;
+    autoLayoutPadding = master.autoLayoutPadding;
+    autoLayoutAlignment = master.autoLayoutAlignment;
+    isAutoSpacing = master.isAutoSpacing;
+    horizontalSizing = master.horizontalSizing;
+    verticalSizing = master.verticalSizing;
+
+    // Sync non-instance specific props
+    for (final key in master.props.keys) {
+      if (!props.containsKey(key)) {
+        props[key] = master.props[key];
+      }
+    }
+    // Also sync styling keys inside props if any
+    for (final styleKey in ['strokeColor', 'strokeWidth', 'isFilled', 'fillColor', 'iconStrokes', 'icon', 'mockupType']) {
+      if (master.props.containsKey(styleKey)) {
+        props[styleKey] = master.props[styleKey];
+      }
+    }
   }
 
   static void _reassignIds(Map<String, dynamic> map) {
@@ -550,6 +610,49 @@ class PortfolioProject {
           .map((s) => DeckSlide.fromJson(Map<String, dynamic>.from(s)))
           .toList(),
     );
+  }
+
+  /// Find all instances of a component across all slides and sync them
+  int syncComponentInstances(DeckElement master) {
+    int updatedCount = 0;
+    for (final slide in slides) {
+      updatedCount += _syncInList(slide.elements, master);
+    }
+    return updatedCount;
+  }
+
+  int _syncInList(List<DeckElement> list, DeckElement master) {
+    int count = 0;
+    for (final elem in list) {
+      if (elem.componentId == master.id) {
+        elem.syncFromMaster(master);
+        count++;
+      }
+      if (elem.children.isNotEmpty) {
+        count += _syncInList(elem.children, master);
+      }
+    }
+    return count;
+  }
+
+  /// Find master component by componentId
+  DeckElement? findMasterComponent(String compId) {
+    for (final slide in slides) {
+      final found = _findInList(slide.elements, compId);
+      if (found != null) return found;
+    }
+    return null;
+  }
+
+  DeckElement? _findInList(List<DeckElement> list, String compId) {
+    for (final elem in list) {
+      if (elem.id == compId && elem.isComponent) return elem;
+      if (elem.children.isNotEmpty) {
+        final found = _findInList(elem.children, compId);
+        if (found != null) return found;
+      }
+    }
+    return null;
   }
 
   String toJsonString() {

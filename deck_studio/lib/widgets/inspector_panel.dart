@@ -8,12 +8,20 @@ class InspectorPanel extends StatefulWidget {
   final DeckElement? element;
   final VoidCallback onElementUpdated;
   final VoidCallback onElementDeleted;
+  final VoidCallback? onToggleMainComponent;
+  final VoidCallback? onEditMainComponent;
+  final VoidCallback? onDetachInstance;
+  final VoidCallback? onPushToComponent;
 
   const InspectorPanel({
     super.key,
     required this.element,
     required this.onElementUpdated,
     required this.onElementDeleted,
+    this.onToggleMainComponent,
+    this.onEditMainComponent,
+    this.onDetachInstance,
+    this.onPushToComponent,
   });
 
   @override
