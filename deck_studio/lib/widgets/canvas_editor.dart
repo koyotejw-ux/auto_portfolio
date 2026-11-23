@@ -22,6 +22,52 @@ class CanvasEditor extends StatefulWidget {
 
 class _CanvasEditorState extends State<CanvasEditor> {
   double _scale = 0.55;
+  String? _editingElementId;
+  final TextEditingController _inlineTextController = TextEditingController();
+  final FocusNode _inlineFocusNode = FocusNode();
+
+  @override
+  void dispose() {
+    _inlineTextController.dispose();
+    _inlineFocusNode.dispose();
+    super.dispose();
+  }
+
+  void _startEditing(DeckElement elem) {
+    final textValue = (elem.props['title'] ??
+            elem.props['text'] ??
+            (elem.props['titleBlack'] != null || elem.props['titleBlue'] != null
+                ? '${elem.props['titleBlack'] ?? ''}${elem.props['titleBlue'] ?? ''}'
+                : elem.props['subtitle'] ?? elem.props['badge'] ?? elem.props['num'] ?? elem.props['tag'] ?? elem.name))
+        .toString();
+
+    setState(() {
+      _editingElementId = elem.id;
+      _inlineTextController.text = textValue;
+      _inlineTextController.selection = TextSelection(baseOffset: 0, extentOffset: textValue.length);
+    });
+    widget.onElementSelected(elem);
+    _inlineFocusNode.requestFocus();
+  }
+
+  void _finishEditing(DeckElement elem) {
+    if (_editingElementId != elem.id) return;
+    final newText = _inlineTextController.text;
+    setState(() {
+      _editingElementId = null;
+      if (elem.props.containsKey('title') || (!elem.props.containsKey('titleBlack') && !elem.props.containsKey('subtitle'))) {
+        elem.props['title'] = newText;
+      } else if (elem.props.containsKey('titleBlack') || elem.props.containsKey('titleBlue')) {
+        elem.props['titleBlack'] = newText;
+        elem.props['titleBlue'] = '';
+      } else if (elem.props.containsKey('subtitle')) {
+        elem.props['subtitle'] = newText;
+      } else {
+        elem.name = newText;
+      }
+    });
+    widget.onSlideModified();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -158,7 +204,8 @@ class _CanvasEditorState extends State<CanvasEditor> {
                             height: elem.height,
                             child: GestureDetector(
                               onTap: () => widget.onElementSelected(elem),
-                              onPanUpdate: elem.isLocked
+                              onDoubleTap: () => _startEditing(elem),
+                              onPanUpdate: elem.isLocked || _editingElementId == elem.id
                                   ? null
                                   : (details) {
                                       setState(() {
@@ -328,6 +375,40 @@ class _CanvasEditorState extends State<CanvasEditor> {
   }
 
   Widget _buildText(DeckElement elem) {
+    if (_editingElementId == elem.id) {
+      final ts = elem.textStyle;
+      return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(4),
+          border: Border.all(color: const Color(0xFF0052FF), width: 2),
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0xFF0052FF).withValues(alpha: 0.18),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: TextField(
+          controller: _inlineTextController,
+          focusNode: _inlineFocusNode,
+          autofocus: true,
+          maxLines: null,
+          textAlign: ts.flutterTextAlign,
+          style: ts.toTextStyle(),
+          decoration: const InputDecoration(
+            isDense: true,
+            contentPadding: EdgeInsets.zero,
+            border: InputBorder.none,
+          ),
+          onSubmitted: (_) => _finishEditing(elem),
+          onTapOutside: (_) => _finishEditing(elem),
+        ),
+      );
+    }
+
     final category = elem.props['category'];
     final titleBlack = elem.props['titleBlack'] ?? '';
     final titleBlue = elem.props['titleBlue'] ?? '';
@@ -1474,6 +1555,7 @@ class _CanvasEditorState extends State<CanvasEditor> {
           ),
           child: GestureDetector(
             onTap: () => widget.onElementSelected(child),
+            onDoubleTap: () => _startEditing(child),
             behavior: HitTestBehavior.opaque,
             child: contentWidget,
           ),
