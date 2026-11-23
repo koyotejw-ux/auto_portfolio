@@ -29,6 +29,7 @@ enum SizingMode {
 }
 
 enum TextAlignOption { left, center, right }
+enum TextVerticalAlign { top, middle, bottom }
 
 class DeckTextStyle {
   String fontFamily;
@@ -39,6 +40,7 @@ class DeckTextStyle {
   double height; // 행간
   double wordSpacing; // 장평/어간
   TextAlignOption textAlign;
+  TextVerticalAlign verticalAlign;
 
   DeckTextStyle({
     this.fontFamily = 'Pretendard',
@@ -49,6 +51,7 @@ class DeckTextStyle {
     this.height = 1.4,
     this.wordSpacing = 0.0,
     this.textAlign = TextAlignOption.left,
+    this.verticalAlign = TextVerticalAlign.middle,
   });
 
   TextAlign get flutterTextAlign {
@@ -59,6 +62,38 @@ class DeckTextStyle {
         return TextAlign.right;
       default:
         return TextAlign.left;
+    }
+  }
+
+  Alignment get flutterAlignment {
+    switch (verticalAlign) {
+      case TextVerticalAlign.top:
+        switch (textAlign) {
+          case TextAlignOption.center:
+            return Alignment.topCenter;
+          case TextAlignOption.right:
+            return Alignment.topRight;
+          default:
+            return Alignment.topLeft;
+        }
+      case TextVerticalAlign.bottom:
+        switch (textAlign) {
+          case TextAlignOption.center:
+            return Alignment.bottomCenter;
+          case TextAlignOption.right:
+            return Alignment.bottomRight;
+          default:
+            return Alignment.bottomLeft;
+        }
+      default: // middle
+        switch (textAlign) {
+          case TextAlignOption.center:
+            return Alignment.center;
+          case TextAlignOption.right:
+            return Alignment.centerRight;
+          default:
+            return Alignment.centerLeft;
+        }
     }
   }
 
@@ -83,6 +118,7 @@ class DeckTextStyle {
         'height': height,
         'wordSpacing': wordSpacing,
         'textAlign': textAlign.name,
+        'verticalAlign': verticalAlign.name,
       };
 
   factory DeckTextStyle.fromJson(Map<String, dynamic> json) {
@@ -97,6 +133,10 @@ class DeckTextStyle {
       textAlign: TextAlignOption.values.firstWhere(
         (t) => t.name == json['textAlign'],
         orElse: () => TextAlignOption.left,
+      ),
+      verticalAlign: TextVerticalAlign.values.firstWhere(
+        (v) => v.name == json['verticalAlign'],
+        orElse: () => TextVerticalAlign.middle,
       ),
     );
   }

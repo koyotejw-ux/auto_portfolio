@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>대한한국사 (Korea History Quiz) - Behance Edutech Case Study & UX/UI Architecture</title>
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="stylesheet" href="style.css?v=20261123_history_v1">
+  <style>
+    :root {
+      --accent-primary: #DC2626;
+      --accent-glow: rgba(220, 38, 38, 0.35);
+      --border-accent: rgba(220, 38, 38, 0.45);
+    }
+    .dock-left .btn-dock-hub {
+      border-color: rgba(220, 38, 38, 0.4);
+    }
+    .dock-left .btn-dock-hub:hover {
+      background: rgba(220, 38, 38, 0.15);
+      border-color: #DC2626;
+      color: #F87171;
+    }
+    .dock-left .live-status-pill .status-dot {
+      background: #EF4444;
+      box-shadow: 0 0 10px #EF4444;
+    }
+    .slide-nav-rail .nav-dot.active {
+      background: #DC2626;
+      box-shadow: 0 0 12px #DC2626;
+    }
+    .btn-print {
+      border-color: rgba(245, 158, 11, 0.4);
+      color: #FCD34D;
+    }
+    .btn-print:hover {
+      background: rgba(245, 158, 11, 0.15);
+      border-color: #F59E0B;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient Aura Layer -->
+  <div class="cyber-aura-layer" aria-hidden="true" style="background: radial-gradient(circle at 80% 20%, rgba(220, 38, 38, 0.15) 0%, transparent 60%), radial-gradient(circle at 20% 80%, rgba(245, 158, 11, 0.1) 0%, transparent 50%);"></div>
+
+  <!-- Floating Navigation & Master Control Dock (Bottom Fixed) -->
+  <aside class="global-control-bar" aria-label="Deck Controls">
+    <div class="dock-left">
+      <a href="../index.html" class="btn-dock-hub" title="메인 포트폴리오 허브로 이동" aria-label="메인 허브로 이동">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        <span>허브</span>
+      </a>
+      <span class="live-status-pill">
+        <span class="status-dot"></span>
+        Google Play 출시 라이브 (심화 기출 100%)
+      </span>
+      <span class="deck-title">대한한국사 (Korea History Quiz) · Behance Case Study</span>
+    </div>
+
+    <div class="dock-center">
+      <button class="nav-arrow-btn" id="btn-prev" title="이전 슬라이드 (← 키)" aria-label="Previous Slide">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <span class="slide-counter" id="slide-counter">SLIDE <strong id="curr-num">01</strong> / 12</span>
+      <button class="nav-arrow-btn" id="btn-next" title="다음 슬라이드 (→ 키 / Space)" aria-label="Next Slide">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+    </div>
+
+    <div class="dock-right">
+      <button class="btn-icon" id="btn-fitscreen" title="화면 높이 맞춤 토글 (W)" aria-label="Toggle Fit Window">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+          <line x1="8" y1="21" x2="16" y2="21"/>
+          <line x1="12" y1="17" x2="12" y2="21"/>
+        </svg>
+      </button>
+      <button class="btn-icon" id="btn-fullscreen" title="전체화면 (F)" aria-label="Toggle Fullscreen">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+      </button>
+      <a href="Korea_History_Quiz_Portfolio.pdf" download="Korea_History_Quiz_Portfolio.pdf" target="_blank" class="btn-print" style="text-decoration: none;" title="12슬라이드 1920x1080 고해상도 포트폴리오 PDF 다운로드">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+        </svg>
+        포트폴리오 PDF 다운로드
+      </a>
+    </div>
+  </aside>
+
+  <!-- Right Slide Dot Navigation Rail -->
+  <nav class="slide-nav-rail" id="nav-rail" aria-label="Slide Jump Dots"></nav>
+
+  <!-- Keyboard Hint Floating Toast -->
+  <div class="key-hint-pill" id="key-hint">
+    <span>키보드 방향키 <kbd>←</kbd> <kbd>→</kbd> 슬라이드 이동 · <kbd>W</kbd> 화면 맞춤 · <kbd>F</kbd> 전체화면</span>
+  </div>
+
+  <!-- Main Slide Stream -->
+  <main class="deck-main-container" id="deck-container">
+    <section class="slide-frame" id="slide-1" data-index="1" data-title="01. Hero Cover">
+      <img src="behance_slides/slide_01.png" alt="Slide 01 - Hero Cover" loading="eager" />
+    </section>
+
+    <section class="slide-frame" id="slide-2" data-index="2" data-title="02. Market & Problem">
+      <img src="behance_slides/slide_02.png" alt="Slide 02 - Market & Problem Study" loading="lazy" />
+    </section>
+
+    <section class="slide-frame" id="slide-3" data-index="3" data-title="03. Persona Matrix">
+      <img src="behance_slides/slide_03.png" alt="Slide 03 - Target Persona Matrix" loading="lazy" />
+    </section>
+
+    <section class="slide-frame" id="slide-4" data-index="4" data-title="04. Architecture">
+      <img src="behance_slides/slide_04.png" alt="Slide 04 - Information Architecture (IA)" loading="lazy" />
+    </section>
+
+    <section class="slide-frame" id="slide-5" data-index="5" data-title="05. User Flow">
+      <img src="behance_slides/slide_05.png" alt="Slide 05 - User Flow & Experience Logic" loading="lazy" />
+    </section>
+
+    <section class="slide-frame" id="slide-6" data-index="6" data-title="06. Core 01 Home">
+      <img src="behance_slides/slide_06.png" alt="Slide 06 - Core Screen 01 Home Dashboard" loading="lazy" />
+    </section>
+
+    <section class="slide-frame" id="slide-7" data-index="7" data-title="07. Core 02 Exam">
+      <img src="behance_slides/slide_07.png" alt="Slide 07 - Core Screen 02 Exam Center" loading="lazy" />
+    </section>
+
+    <section class="slide-frame" id="slide-8" data-index="8" data-title="08. Core 03 Quiz">
+      <img src="behance_slides/slide_08.png" alt="Slide 08 - Core Screen 03 Quiz Commentary" loading="lazy" />
+    </section>
+
+    <section class="slide-frame" id="slide-9" data-index="9" data-title="09. Core 04 Study">
+      <img src="behance_slides/slide_09.png" alt="Slide 09 - Core Screen 04 Study Hall" loading="lazy" />
+    </section>
+
+    <section class="slide-frame" id="slide-10" data-index="10" data-title="10. Core 05 Vault">
+      <img src="behance_slides/slide_10.png" alt="Slide 10 - Core Screen 05 Incorrect Note Vault" loading="lazy" />
+    </section>
+
+    <section class="slide-frame" id="slide-11" data-index="11" data-title="11. Design System">
+      <img src="behance_slides/slide_11.png" alt="Slide 11 - Design System & Multi-Device Specs" loading="lazy" />
+    </section>
+
+    <section class="slide-frame" id="slide-12" data-index="12" data-title="12. Retrospective">
+      <img src="behance_slides/slide_12.png" alt="Slide 12 - Outcome Metrics & STAR Retrospective" loading="lazy" />
+    </section>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const slides = Array.from(document.querySelectorAll('.slide-frame'));
+      const currNumEl = document.getElementById('curr-num');
+      const btnPrev = document.getElementById('btn-prev');
+      const btnNext = document.getElementById('btn-next');
+      const navRail = document.getElementById('nav-rail');
+      const btnFit = document.getElementById('btn-fitscreen');
+      const btnFull = document.getElementById('btn-fullscreen');
+
+      let currentIdx = 0;
+      let isFitHeight = false;
+
+      // 1. Build Navigation Rail Dots
+      slides.forEach((slide, idx) => {
+        const dot = document.createElement('button');
+        dot.className = 'nav-dot' + (idx === 0 ? ' active' : '');
+        dot.title = slide.getAttribute('data-title') || `Slide ${idx + 1}`;
+        dot.setAttribute('aria-label', dot.title);
+        dot.addEventListener('click', () => {
+          scrollToSlide(idx);
+        });
+        navRail.appendChild(dot);
+      });
+
+      const dots = Array.from(navRail.querySelectorAll('.nav-dot'));
+
+      // 2. Scroll and Active State Observation
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const idx = parseInt(entry.target.getAttribute('data-index'), 10) - 1;
+            if (idx >= 0 && idx < slides.length) {
+              currentIdx = idx;
+              updateActiveUI(currentIdx);
+            }
+          }
+        });
+      }, {
+        root: null,
+        threshold: 0.5
+      });
+
+      slides.forEach(s => observer.observe(s));
+
+      function updateActiveUI(idx) {
+        currNumEl.textContent = String(idx + 1).padStart(2, '0');
+        dots.forEach((d, i) => {
+          d.classList.toggle('active', i === idx);
+        });
+      }
+
+      function scrollToSlide(idx) {
+        if (idx < 0 || idx >= slides.length) return;
+        slides[idx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+
+      btnPrev.addEventListener('click', () => {
+        if (currentIdx > 0) scrollToSlide(currentIdx - 1);
+      });
+
+      btnNext.addEventListener('click', () => {
+        if (currentIdx < slides.length - 1) scrollToSlide(currentIdx + 1);
+      });
+
+      // Keyboard Shortcuts
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ') {
+          e.preventDefault();
+          if (currentIdx < slides.length - 1) scrollToSlide(currentIdx + 1);
+        } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+          e.preventDefault();
+          if (currentIdx > 0) scrollToSlide(currentIdx - 1);
+        } else if (e.key === 'w' || e.key === 'W') {
+          toggleFitWindow();
+        } else if (e.key === 'f' || e.key === 'F') {
+          toggleFullscreen();
+        }
+      });
+
+      function toggleFitWindow() {
+        isFitHeight = !isFitHeight;
+        document.body.classList.toggle('fit-window-mode', isFitHeight);
+        btnFit.classList.toggle('active', isFitHeight);
+        scrollToSlide(currentIdx);
+      }
+      btnFit.addEventListener('click', toggleFitWindow);
+
+      function toggleFullscreen() {
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen().catch(() => {});
+        } else {
+          document.exitFullscreen().catch(() => {});
+        }
+      }
+      btnFull.addEventListener('click', toggleFullscreen);
+    });
+  </script>
+</body>
+</html>
