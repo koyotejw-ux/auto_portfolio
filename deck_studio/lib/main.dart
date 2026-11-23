@@ -165,6 +165,30 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
     });
   }
 
+  void _openFlutterProjectLoader() {
+    showDialog(
+      context: context,
+      builder: (ctx) => FlutterProjectLoaderModal(
+        onProjectLoaded: (loadedProject) {
+          _recordUndoState();
+          setState(() {
+            _project = loadedProject;
+            _activeSlideIndex = 0;
+            _selectedElement = null;
+            _selectedElementIds.clear();
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Flutter 프로젝트 [${loadedProject.title}] UI를 캔버스에 성공적으로 불러왔습니다! (${loadedProject.slides.length}개 화면 복원됨)'),
+              backgroundColor: const Color(0xFF0052FF),
+              duration: const Duration(seconds: 3),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
   void _showProjectSwitchDialog() {
     showDialog(
       context: context,
@@ -206,6 +230,21 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
                   _selectedElement = null;
                 });
                 Navigator.pop(ctx);
+              },
+            ),
+            const SizedBox(height: 12),
+            ListTile(
+              tileColor: const Color(0xFF0052FF).withOpacity(0.2),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+                side: const BorderSide(color: Color(0xFF0052FF)),
+              ),
+              leading: const Icon(Icons.folder_open, color: Color(0xFF38BDF8)),
+              title: const Text('실제 Flutter 프로젝트 폴더에서 UI 불러오기', style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold)),
+              subtitle: const Text('기존에 개발된 Flutter 앱의 Dart 소스 코드를 읽어와 원본 UI를 캔버스에 복원하고 수정 및 편집합니다.', style: TextStyle(color: Color(0xFF93C5FD), fontSize: 10)),
+              onTap: () {
+                Navigator.pop(ctx);
+                _openFlutterProjectLoader();
               },
             ),
           ],
@@ -1511,6 +1550,22 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
             constraints: const BoxConstraints(minWidth: 28, minHeight: 28),
           ),
           const SizedBox(width: 4),
+          ElevatedButton.icon(
+            icon: const Icon(Icons.folder_open, size: 14, color: Color(0xFF38BDF8)),
+            label: const Text('Flutter UI 불러오기', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF1E293B),
+              foregroundColor: Colors.white,
+              elevation: 0,
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(6),
+                side: const BorderSide(color: Color(0xFF0052FF)),
+              ),
+            ),
+            onPressed: _openFlutterProjectLoader,
+          ),
+          const SizedBox(width: 6),
           ElevatedButton.icon(
             icon: const Icon(Icons.swap_horiz, size: 14),
             label: const Text('프로젝트 전환', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),

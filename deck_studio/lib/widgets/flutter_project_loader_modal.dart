@@ -28,7 +28,7 @@ class _FlutterProjectLoaderModalState extends State<FlutterProjectLoaderModal> {
   ];
 
   Future<void> _pickDirectory() async {
-    final selectedDir = await FilePicker.platform.getDirectoryPath(
+    final selectedDir = await FilePicker.getDirectoryPath(
       dialogTitle: '로드할 플러터(Flutter) 프로젝트 폴더 선택',
     );
     if (selectedDir != null) {
@@ -49,7 +49,7 @@ class _FlutterProjectLoaderModalState extends State<FlutterProjectLoaderModal> {
       final files = await FlutterProjectParser.findScreenFiles(path);
       // Filter primarily screens and widgets
       final prioritized = files.where((f) {
-        final p = f.path.replaceAll('\\', '/').toLowerCase();
+        final p = f.path.replaceAll(r'\', '/').toLowerCase();
         return p.contains('/screen') || p.contains('/page') || p.contains('/view') || p.contains('/widget') || p.endsWith('main.dart');
       }).toList();
 
@@ -130,7 +130,7 @@ class _FlutterProjectLoaderModalState extends State<FlutterProjectLoaderModal> {
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF0052FF).withOpacity(0.15),
+                    color: const Color(0xFF0052FF).withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: const Icon(Icons.folder_open, color: Color(0xFF38BDF8), size: 22),
@@ -290,7 +290,7 @@ class _FlutterProjectLoaderModalState extends State<FlutterProjectLoaderModal> {
                                     final file = _foundFiles[idx];
                                     final isChecked = _selectedFiles.contains(file.path);
                                     final fileName = file.uri.pathSegments.last;
-                                    final relPath = file.path.replaceAll('\\', '/');
+                                    final relPath = file.path.replaceAll(r'\', '/');
 
                                     return CheckboxListTile(
                                       value: isChecked,

@@ -44,7 +44,7 @@ class FlutterProjectParser {
     await for (final entity in targetDir.list(recursive: true, followLinks: false)) {
       if (entity is File && entity.path.endsWith('.dart')) {
         // Exclude generated files or pure tests
-        final p = entity.path.replaceAll('\\', '/');
+        final p = entity.path.replaceAll(r'\', '/');
         if (p.contains('.g.dart') || p.contains('.freezed.dart') || p.contains('/test/')) {
           continue;
         }
@@ -127,7 +127,7 @@ class FlutterProjectParser {
     curY = 96.0;
 
     // 3. Extract AppBar if present
-    final appBarTitleRegex = RegExp(r"AppBar\s*\([^)]*title:\s*(?:const\s*)?Text\(\s*['"'"']([^'"'"']+)['"'"']");
+    final appBarTitleRegex = RegExp(r"AppBar\s*\([^)]*title:\s*(?:const\s*)?Text\(\s*[']([^'\n\r]+)[']");
     final appBarMatch = appBarTitleRegex.firstMatch(content);
     if (appBarMatch != null || content.contains('AppBar(')) {
       final titleText = appBarMatch != null ? appBarMatch.group(1)! : screenName;
@@ -155,7 +155,7 @@ class FlutterProjectParser {
     }
 
     // 4. Extract Text(...) widgets
-    final textWidgetRegex = RegExp(r"Text\(\s*['"'"']([^'"'"'\n\r]{2,80})['"'"']");
+    final textWidgetRegex = RegExp(r"Text\(\s*[']([^'\n\r]{2,80})[']");
     final textMatches = textWidgetRegex.allMatches(content).toList();
     final seenTexts = <String>{};
 
@@ -190,7 +190,7 @@ class FlutterProjectParser {
     }
 
     // 5. Extract Buttons (ElevatedButton, OutlinedButton, TextButton)
-    final buttonRegex = RegExp(r"(ElevatedButton|OutlinedButton|TextButton|FilledButton)(?:\.icon)?\s*\([^)]*child:\s*(?:const\s*)?Text\(\s*['"'"']([^'"'"']+)['"'"']");
+    final buttonRegex = RegExp(r"(ElevatedButton|OutlinedButton|TextButton|FilledButton)(?:\.icon)?\s*\([^)]*child:\s*(?:const\s*)?Text\(\s*[']([^'\n\r]+)[']");
     for (final bm in buttonRegex.allMatches(content)) {
       final btnType = bm.group(1)!;
       final btnLabel = bm.group(2)!.trim();
@@ -228,7 +228,7 @@ class FlutterProjectParser {
     }
 
     // 6. Extract Cards, Containers, or Metric Tiles
-    if (content.contains('Card(') || content.contains('Container(') && content.contains('BoxDecoration')) {
+    if (content.contains('Card(') || (content.contains('Container(') && content.contains('BoxDecoration'))) {
       if (curY <= 680) {
         elements.add(
           DeckElement(
