@@ -648,6 +648,10 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
           if (event is KeyDownEvent) {
             final isCtrl = HardwareKeyboard.instance.isControlPressed ||
                 HardwareKeyboard.instance.isMetaPressed;
+            final isShift = HardwareKeyboard.instance.isShiftPressed;
+            final isAlt = HardwareKeyboard.instance.isAltPressed;
+
+            // 1. Copy / Paste / Duplicate
             if (isCtrl && event.logicalKey == LogicalKeyboardKey.keyC) {
               if (_selectedElement != null) {
                 _copySelected();
@@ -663,34 +667,102 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
                 _duplicateSelected();
                 return KeyEventResult.handled;
               }
+            // 2. Undo / Redo
             } else if (isCtrl && event.logicalKey == LogicalKeyboardKey.keyZ) {
-              _undo();
+              if (isShift) {
+                _redo();
+              } else {
+                _undo();
+              }
               return KeyEventResult.handled;
             } else if (isCtrl && event.logicalKey == LogicalKeyboardKey.keyY) {
               _redo();
               return KeyEventResult.handled;
+            // 3. Group / Ungroup
             } else if (isCtrl && event.logicalKey == LogicalKeyboardKey.keyG) {
-              final isShift = HardwareKeyboard.instance.isShiftPressed;
               if (isShift) {
                 _ungroupSelected();
               } else {
                 _groupSelected();
               }
               return KeyEventResult.handled;
-            } else if (HardwareKeyboard.instance.isShiftPressed && event.logicalKey == LogicalKeyboardKey.keyA) {
+            // 4. AutoLayout Toggle (Shift + A)
+            } else if (isShift && event.logicalKey == LogicalKeyboardKey.keyA) {
               _toggleAutoLayout();
               return KeyEventResult.handled;
+            // 5. Delete (Delete or Backspace)
             } else if (event.logicalKey == LogicalKeyboardKey.delete || event.logicalKey == LogicalKeyboardKey.backspace) {
               if (_selectedElement != null) {
                 _deleteSelected();
                 return KeyEventResult.handled;
               }
+            // 6. Layer Stacking Order: Bring to Front (]) / Send to Back ([)
+            } else if (event.logicalKey == LogicalKeyboardKey.bracketRight) {
+              if (_selectedElement != null) {
+                _bringToFront();
+                return KeyEventResult.handled;
+              }
+            } else if (event.logicalKey == LogicalKeyboardKey.bracketLeft) {
+              if (_selectedElement != null) {
+                _sendToBack();
+                return KeyEventResult.handled;
+              }
+            // 7. Figma Zoom Shortcuts (Ctrl + + / Ctrl + - / Shift + 1 / Shift + 2 / Shift + 0)
+            } else if (isCtrl && (event.logicalKey == LogicalKeyboardKey.equal || event.logicalKey == LogicalKeyboardKey.numpadAdd)) {
+              setState(() {
+                if (_zoomScale < 2.0) _zoomScale += 0.05;
+              });
+              return KeyEventResult.handled;
+            } else if (isCtrl && (event.logicalKey == LogicalKeyboardKey.minus || event.logicalKey == LogicalKeyboardKey.numpadSubtract)) {
+              setState(() {
+                if (_zoomScale > 0.2) _zoomScale -= 0.05;
+              });
+              return KeyEventResult.handled;
+            } else if (isShift && (event.logicalKey == LogicalKeyboardKey.digit1 || event.logicalKey == LogicalKeyboardKey.digit0)) {
+              setState(() => _zoomScale = 0.55); // Zoom to Fit
+              return KeyEventResult.handled;
+            // 8. Tool Mode Shortcuts (V, T, R, F, H)
+            } else if (!isCtrl && !isShift && !isAlt) {
+              if (event.logicalKey == LogicalKeyboardKey.keyV) {
+                setState(() => _currentToolMode = FigmaToolMode.select);
+                return KeyEventResult.handled;
+              } else if (event.logicalKey == LogicalKeyboardKey.keyT) {
+                _insertElement(ElementType.text);
+                return KeyEventResult.handled;
+              } else if (event.logicalKey == LogicalKeyboardKey.keyR) {
+                _insertElement(ElementType.shape);
+                return KeyEventResult.handled;
+              } else if (event.logicalKey == LogicalKeyboardKey.keyF) {
+                _addNewSlide();
+                return KeyEventResult.handled;
+              } else if (event.logicalKey == LogicalKeyboardKey.keyH) {
+                setState(() => _currentToolMode = FigmaToolMode.hand);
+                return KeyEventResult.handled;
+              } else if (event.logicalKey == LogicalKeyboardKey.escape) {
+                setState(() => _selectedElement = null);
+                return KeyEventResult.handled;
+              // Tab / Shift+Tab to Cycle Elements on Canvas
+              } else if (event.logicalKey == LogicalKeyboardKey.tab) {
+                if (_currentSlide.elements.isNotEmpty) {
+                  final idx = _selectedElement == null ? -1 : _currentSlide.elements.indexOf(_selectedElement!);
+                  setState(() {
+                    if (idx == -1) {
+                      _selectedElement = _currentSlide.elements.first;
+                    } else {
+                      final nextIdx = (idx + 1) % _currentSlide.elements.length;
+                      _selectedElement = _currentSlide.elements[nextIdx];
+                    }
+                  });
+                  return KeyEventResult.handled;
+                }
+              }
+            // 9. Nudge Arrow Keys (1px / 10px)
             } else if (event.logicalKey == LogicalKeyboardKey.arrowLeft ||
                 event.logicalKey == LogicalKeyboardKey.arrowRight ||
                 event.logicalKey == LogicalKeyboardKey.arrowUp ||
                 event.logicalKey == LogicalKeyboardKey.arrowDown) {
               if (_selectedElement != null && !_selectedElement!.isLocked) {
-                final delta = HardwareKeyboard.instance.isShiftPressed ? 10.0 : 1.0;
+                final delta = isShift ? 10.0 : 1.0;
                 _recordUndoState();
                 setState(() {
                   if (event.logicalKey == LogicalKeyboardKey.arrowLeft) _selectedElement!.x -= delta;
@@ -709,7 +781,7 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
             // 1. Figma UI3 Global App Top Header
             _buildGlobalAppBar(),
 
-            // 2. Main Workspace: Slide Thumbnails + Figma Layers + Canvas Editor (with Floating UI3 Dock) + Inspector Panel
+            // 2. Main Workspace: Slide Thumbnails + Figma Layers + Canvas Editor + Inspector Panel
             Expanded(
               child: Row(
                 children: [
@@ -734,81 +806,18 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
                     canPaste: _clipboardElement != null,
                   ),
 
-                  // Center: 1920x1080 Interactive Canvas with Figma UI3 Floating Bottom Dock
+                  // Center: 1920x1080 Interactive Canvas
                   Expanded(
-                    child: Stack(
-                      children: [
-                        Positioned.fill(
-                          child: CanvasEditor(
-                            slide: _currentSlide,
-                            selectedElement: _selectedElement,
-                            onElementSelected: (elem) {
-                              setState(() => _selectedElement = elem);
-                            },
-                            onSlideModified: () {
-                              _recordUndoState();
-                              setState(() {});
-                            },
-                          ),
-                        ),
-
-                        // Figma UI3 Modern Floating Bottom Dock
-                        Positioned(
-                          bottom: 20,
-                          left: 0,
-                          right: 0,
-                          child: Center(
-                            child: FigmaToolbar(
-                              activeMode: _currentToolMode,
-                              onModeChanged: (mode) {
-                                setState(() => _currentToolMode = mode);
-                              },
-                              selectedElement: _selectedElement,
-                              onAddText: () => _insertElement(ElementType.text),
-                              onAddCard: () => _insertElement(ElementType.shape),
-                              onAddFrame: _addNewSlide,
-                              onOpenComponentLibrary: _openElementLibrary,
-                              onOpenDesignSystem: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (ctx) => const DesignSystemLibraryModal(),
-                                );
-                              },
-                              onDuplicateSelected: _duplicateSelected,
-                              onCopySelected: _copySelected,
-                              onPasteSelected: _pasteClipboard,
-                              canPaste: _clipboardElement != null,
-                              onDeleteSelected: _deleteSelected,
-                              onBringToFront: _bringToFront,
-                              onSendToBack: _sendToBack,
-                              onGroupSelected: _groupSelected,
-                              onUngroupSelected: _ungroupSelected,
-                              onToggleAutoLayout: _toggleAutoLayout,
-                              onAlignSelected: _alignSelected,
-                              onUndo: _undo,
-                              onRedo: _redo,
-                              canUndo: _undoStack.isNotEmpty,
-                              canRedo: _redoStack.isNotEmpty,
-                              zoomScale: _zoomScale,
-                              onZoomIn: () {
-                                setState(() {
-                                  if (_zoomScale < 1.5) _zoomScale += 0.05;
-                                });
-                              },
-                              onZoomOut: () {
-                                setState(() {
-                                  if (_zoomScale > 0.25) _zoomScale -= 0.05;
-                                });
-                              },
-                              onZoomFit: () {
-                                setState(() {
-                                  _zoomScale = 0.55;
-                                });
-                              },
-                            ),
-                          ),
-                        ),
-                      ],
+                    child: CanvasEditor(
+                      slide: _currentSlide,
+                      selectedElement: _selectedElement,
+                      onElementSelected: (elem) {
+                        setState(() => _selectedElement = elem);
+                      },
+                      onSlideModified: () {
+                        _recordUndoState();
+                        setState(() {});
+                      },
                     ),
                   ),
 
@@ -822,6 +831,65 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
                     onElementDeleted: _deleteSelected,
                   ),
                 ],
+              ),
+            ),
+
+            // 3. Persistent Modern Figma Bottom Dock Bar (Always Visible & Accessible)
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              decoration: const BoxDecoration(
+                color: Color(0xFF141414),
+                border: Border(top: BorderSide(color: Color(0xFF262626))),
+              ),
+              child: Center(
+                child: FigmaToolbar(
+                  activeMode: _currentToolMode,
+                  onModeChanged: (mode) {
+                    setState(() => _currentToolMode = mode);
+                  },
+                  selectedElement: _selectedElement,
+                  onAddText: () => _insertElement(ElementType.text),
+                  onAddCard: () => _insertElement(ElementType.shape),
+                  onAddFrame: _addNewSlide,
+                  onOpenComponentLibrary: _openElementLibrary,
+                  onOpenDesignSystem: () {
+                    showDialog(
+                      context: context,
+                      builder: (ctx) => const DesignSystemLibraryModal(),
+                    );
+                  },
+                  onDuplicateSelected: _duplicateSelected,
+                  onCopySelected: _copySelected,
+                  onPasteSelected: _pasteClipboard,
+                  canPaste: _clipboardElement != null,
+                  onDeleteSelected: _deleteSelected,
+                  onBringToFront: _bringToFront,
+                  onSendToBack: _sendToBack,
+                  onGroupSelected: _groupSelected,
+                  onUngroupSelected: _ungroupSelected,
+                  onToggleAutoLayout: _toggleAutoLayout,
+                  onAlignSelected: _alignSelected,
+                  onUndo: _undo,
+                  onRedo: _redo,
+                  canUndo: _undoStack.isNotEmpty,
+                  canRedo: _redoStack.isNotEmpty,
+                  zoomScale: _zoomScale,
+                  onZoomIn: () {
+                    setState(() {
+                      if (_zoomScale < 1.5) _zoomScale += 0.05;
+                    });
+                  },
+                  onZoomOut: () {
+                    setState(() {
+                      if (_zoomScale > 0.25) _zoomScale -= 0.05;
+                    });
+                  },
+                  onZoomFit: () {
+                    setState(() {
+                      _zoomScale = 0.55;
+                    });
+                  },
+                ),
               ),
             ),
           ],
