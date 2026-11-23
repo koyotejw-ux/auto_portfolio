@@ -131,7 +131,7 @@ class _DesignSystemLibraryModalState extends State<DesignSystemLibraryModal> wit
                             const Text('컬렉션 / 그룹', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Color(0xFF475569))),
                             const SizedBox(height: 6),
                             DropdownButtonFormField<String>(
-                              value: varGroup,
+                              initialValue: varGroup,
                               isExpanded: true,
                               decoration: const InputDecoration(isDense: true, border: OutlineInputBorder()),
                               items: ['Colors', 'Spacing', 'Radius', 'Typography']

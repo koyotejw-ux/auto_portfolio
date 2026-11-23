@@ -469,6 +469,117 @@ class PortfolioProject {
       ],
     ));
 
+    // 08. Deep Dive 01: 0.8s Tablet Kiosk Attendance & Sync Engine
+    proj.slides.add(DeckSlide(
+      id: 'slide_8',
+      title: '08. Deep Dive 01 · 0.8초 태블릿 키오스크 출결 & 메인 동기화 엔진',
+      pageNumber: 8,
+      backgroundColor: const Color(0xFFFAFCFF),
+      elements: [
+        DeckElement(
+          id: 's8_header',
+          type: ElementType.header,
+          name: '헤더 인디케이터',
+          x: 100,
+          y: 70,
+          width: 1720,
+          height: 60,
+          iconName: 'tablet_mac',
+          textStyle: DeckTextStyle(fontSize: 13, fontWeight: FontWeight.w600, letterSpacing: -0.2),
+          props: {
+            'badge': '08 CORE FEATURE',
+            'meta': '0.8S TABLET KIOSK ATTENDANCE & MOBILE INTERACTION ENGINE · 태블릿 출결 키오스크',
+          },
+        ),
+        DeckElement(
+          id: 's8_title',
+          type: ElementType.text,
+          name: '헤드라인 타이틀',
+          x: 100,
+          y: 150,
+          width: 1200,
+          height: 120,
+          textStyle: DeckTextStyle(fontSize: 30, fontWeight: FontWeight.w900, letterSpacing: -0.8, height: 1.25),
+          props: {
+            'category': '초고속 무인 출결 파이프라인 · TABLET KIOSK UX',
+            'titleBlack': '원생 4자리 번호 터치부터 ',
+            'titleBlue': '원장님 메인 출결 동기화까지 0.8초 완결.',
+            'subtitle': '10인치 태블릿 무인 키오스크에서 전화번호 4자리를 입력하는 즉시 0.8초 초고속 인증과 회차 차감이 완결되며,\n원장님 모바일 \'출결 체크\' 메인 화면의 실시간 카운터 및 대기 목록에 100% 무선 동기화되어 즉각 반영됩니다.',
+          },
+        ),
+        DeckElement(
+          id: 's8_kiosk_flow',
+          type: ElementType.flowchart,
+          name: '태블릿 키오스크 3단계 출결 프로세스',
+          x: 100,
+          y: 290,
+          width: 1720,
+          height: 520,
+          props: {
+            'isKioskCarousel': true,
+            'stages': [
+              {
+                'step': 'STEP 01',
+                'title': '대기 및 진입 (Standby Engine)',
+                'sub': '원생 진입 감지 & 실시간 디지털 클록 연동',
+                'badge': '무인 대기 모드',
+                'img_path': 'zeropass/assets/kiosk_mockups/real_tablet_kiosk_standby.png',
+                'features': [
+                  '옵시디언 다크 테마 & 100% 고대비 시인성',
+                  '학원/스튜디오 브랜드 및 실시간 시계 연동',
+                  '10인치 태블릿 반응형 가로/세로 오토레이아웃'
+                ],
+                'interaction': '진입 대기: 4자리 입력 박스가 Clear 상태로 원생 터치 대기 (CPU 점유율 < 1%)'
+              },
+              {
+                'step': 'STEP 02',
+                'title': '인체공학 터치 다이얼 (Dialing & Indexing)',
+                'sub': '116dp 대형 텐키패드 & 10ms 초고속 인덱스 트리거',
+                'badge': '고속 햅틱 입력',
+                'img_path': 'zeropass/assets/kiosk_mockups/real_tablet_kiosk_dial.png',
+                'features': [
+                  '116dp 대형 터치 그리드로 유아 오터치 원천 차단',
+                  '네온 글로우 햅틱 피드백으로 입력 즉시 시각 반응',
+                  'SQLite substr(phone, -4) 인메모리 10ms 즉각 매칭'
+                ],
+                'interaction': '입력 파이프라인: 4자리 터치 완료 시 10ms 내 로컬 DB 원생 식별 트리거 가동'
+              },
+              {
+                'step': 'STEP 03',
+                'title': '0.8초 완결 & 메인 동기화 (Sync Celebration)',
+                'sub': '원생 식별 · 잔여 회차 즉시 차감 · 모바일 실시간 반영',
+                'badge': '출결 및 차감 완결',
+                'img_path': 'zeropass/assets/kiosk_mockups/real_tablet_kiosk_success.png',
+                'features': [
+                  '강지훈 원생 식별 및 1회 즉시 차감 (잔여 1회/총 12회)',
+                  '학부모 안심 등하원 알림톡 큐 자동 적립 및 발송',
+                  '원장님 모바일 출결 헤더 카운터 10ms 내 무선 동기화'
+                ],
+                'interaction': '상태 인터랙션: 태블릿 성공 완료 즉시 모바일 \'출결 체크\' 헤더 카운터 자동 갱신'
+              }
+            ]
+          },
+        ),
+        DeckElement(
+          id: 's8_kpi_strip',
+          type: ElementType.kpiStrip,
+          name: '키오스크 출결 엔진 실측 지표 바',
+          x: 100,
+          y: 840,
+          width: 1720,
+          height: 120,
+          props: {
+            'items': [
+              {'title': '출결 완결 속도', 'val': '0.8초', 'sub': '기존 수기 체크 대비 98% 단축'},
+              {'title': '모바일 실시간 동기화', 'val': '< 10ms', 'sub': '로컬 소켓 & 이벤트 버스 무지연'},
+              {'title': '오프라인 보존율', 'val': '100%', 'sub': '무손실 온디바이스 SQLite 볼트'},
+              {'title': 'UI 렌더링 무지연', 'val': '60 fps', 'sub': 'Flutter 프레임 드랍 0%'},
+            ]
+          },
+        ),
+      ],
+    ));
+
     return proj;
   }
 }
