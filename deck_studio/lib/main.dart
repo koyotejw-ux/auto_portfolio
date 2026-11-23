@@ -991,8 +991,8 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
                           child: _leftSidebarTabIndex == 0
                               ? Column(
                                   children: [
-                                    // 1. Figma Pages Collapsible Section (Top of Layers Tab)
-                                    _buildFigmaPagesSection(),
+                                    // 1. Figma Page Dropdown Selector (Compact 1-line bar)
+                                    _buildFigmaPageDropdownBar(),
 
                                     // 2. Figma Objects / Layers Hierarchy Tree
                                     Expanded(
@@ -1263,118 +1263,61 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
     );
   }
 
-  Widget _buildFigmaPagesSection() {
+  Widget _buildFigmaPageDropdownBar() {
     return Container(
+      height: 36,
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       decoration: const BoxDecoration(
+        color: Color(0xFF1E1E1E),
         border: Border(bottom: BorderSide(color: Color(0xFF2C2C2C))),
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
+      child: Row(
         children: [
-          // Collapsible Header: "Pages (12)" + Expand/Collapse chevron + Add Page (+)
-          InkWell(
-            onTap: () => setState(() => _isPagesExpanded = !_isPagesExpanded),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-              child: Row(
-                children: [
-                  Icon(
-                    _isPagesExpanded ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_right,
-                    size: 16,
-                    color: const Color(0xFFA3A3A3),
-                  ),
-                  const SizedBox(width: 4),
-                  const Text(
-                    'Pages',
-                    style: TextStyle(color: Colors.white, fontSize: 11.5, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(width: 6),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF2C2C2C),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
+          const Icon(Icons.description_outlined, color: Color(0xFF38BDF8), size: 13),
+          const SizedBox(width: 6),
+          Expanded(
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton<int>(
+                value: _activeSlideIndex,
+                isExpanded: true,
+                dropdownColor: const Color(0xFF262626),
+                style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.bold),
+                icon: const Icon(Icons.arrow_drop_down, color: Color(0xFFA3A3A3), size: 16),
+                items: _project.slides.asMap().entries.map((entry) {
+                  final idx = entry.key;
+                  final slide = entry.value;
+                  return DropdownMenuItem<int>(
+                    value: idx,
                     child: Text(
-                      '${_project.slides.length}',
-                      style: const TextStyle(color: Color(0xFFA3A3A3), fontSize: 10, fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                  const Spacer(),
-                  IconButton(
-                    icon: const Icon(Icons.add, size: 15, color: Color(0xFF38BDF8)),
-                    onPressed: _addNewSlide,
-                    tooltip: '새 페이지 추가',
-                    visualDensity: VisualDensity.compact,
-                    padding: EdgeInsets.zero,
-                    constraints: const BoxConstraints(minWidth: 20, minHeight: 20),
-                  ),
-                ],
-              ),
-            ),
-          ),
-
-          // Collapsible Pages List (Height-constrained or collapsed)
-          if (_isPagesExpanded)
-            ConstrainedBox(
-              constraints: const BoxConstraints(maxHeight: 180),
-              child: ListView.builder(
-                shrinkWrap: true,
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                itemCount: _project.slides.length,
-                itemBuilder: (context, index) {
-                  final slide = _project.slides[index];
-                  final isActive = index == _activeSlideIndex;
-
-                  return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _activeSlideIndex = index;
-                        _selectedElement = null;
-                      });
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.only(bottom: 2),
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-                      decoration: BoxDecoration(
-                        color: isActive ? const Color(0xFF2C2C2C) : Colors.transparent,
-                        borderRadius: BorderRadius.circular(4),
-                        border: Border.all(
-                          color: isActive ? const Color(0xFF0052FF) : Colors.transparent,
-                          width: 1,
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.grid_view,
-                            size: 12,
-                            color: isActive ? const Color(0xFF0052FF) : const Color(0xFF737373),
-                          ),
-                          const SizedBox(width: 6),
-                          Expanded(
-                            child: Text(
-                              slide.title,
-                              style: TextStyle(
-                                color: isActive ? Colors.white : const Color(0xFFA3A3A3),
-                                fontSize: 11,
-                                fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          Text(
-                            '${slide.elements.length}',
-                            style: const TextStyle(color: Color(0xFF525252), fontSize: 9.5),
-                          ),
-                        ],
+                      'Page ${idx + 1}: ${slide.title}',
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: idx == _activeSlideIndex ? const Color(0xFF38BDF8) : Colors.white,
+                        fontWeight: idx == _activeSlideIndex ? FontWeight.bold : FontWeight.normal,
                       ),
                     ),
                   );
+                }).toList(),
+                onChanged: (newIdx) {
+                  if (newIdx != null) {
+                    setState(() {
+                      _activeSlideIndex = newIdx;
+                      _selectedElement = null;
+                    });
+                  }
                 },
               ),
             ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.add, size: 15, color: Color(0xFF38BDF8)),
+            onPressed: _addNewSlide,
+            tooltip: '새 페이지 추가',
+            visualDensity: VisualDensity.compact,
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(minWidth: 20, minHeight: 20),
+          ),
         ],
       ),
     );
