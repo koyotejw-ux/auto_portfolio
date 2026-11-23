@@ -56,6 +56,7 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
   double _zoomScale = 0.55;
   DeckElement? _clipboardElement;
   final FocusNode _keyboardFocusNode = FocusNode();
+  bool _showLayoutGrid = false;
 
   @override
   void initState() {
@@ -638,6 +639,71 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
     });
   }
 
+  void _showShortcutsDialog() {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: const Color(0xFF1E1E1E),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: const BorderSide(color: Color(0xFF333333))),
+        title: const Row(
+          children: [
+            Icon(Icons.keyboard, color: Color(0xFF0052FF), size: 20),
+            SizedBox(width: 8),
+            Text('Figma 완전 단축키 치트시트 (Figma Keyboard Shortcuts)', style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)),
+          ],
+        ),
+        content: SizedBox(
+          width: 580,
+          height: 440,
+          child: ListView(
+            children: const [
+              _ShortcutGroup(title: '도구 선택 (Tools)', items: [
+                _ShortcutItem(keys: 'V', desc: '선택 및 이동 도구 (Move Tool)'),
+                _ShortcutItem(keys: 'T', desc: '텍스트 레이어 추가 (Text Tool)'),
+                _ShortcutItem(keys: 'R', desc: '사각형 / 카드 박스 (Rectangle)'),
+                _ShortcutItem(keys: 'F', desc: '새 프레임 / 섹션 (Frame)'),
+                _ShortcutItem(keys: 'H / Space', desc: '핸드 이동 툴 (Hand Tool)'),
+              ]),
+              _ShortcutGroup(title: '객체 탐색 & 포커싱 (Focus & Selection)', items: [
+                _ShortcutItem(keys: 'Tab', desc: '다음 레이어로 순차 포커스 이동 (Cycle Next)'),
+                _ShortcutItem(keys: 'Esc', desc: '선택 해제 (Deselect)'),
+                _ShortcutItem(keys: 'Ctrl + A', desc: '전체 객체 탐색 활성화 (Select All)'),
+                _ShortcutItem(keys: '더블 클릭 (Double Tap)', desc: '텍스트 제자리 인라인 편집 (Edit Text)'),
+              ]),
+              _ShortcutGroup(title: '그리드 & 가이드 (View & Grid)', items: [
+                _ShortcutItem(keys: 'Ctrl + \' (or Ctrl+Shift+4)', desc: '피그마 12컬럼 / 8pt 레이아웃 그리드 토글'),
+                _ShortcutItem(keys: 'Ctrl + + / Ctrl + -', desc: '화면 확대 / 축소 (Zoom In/Out)'),
+                _ShortcutItem(keys: 'Shift + 1 (or 0)', desc: '캔버스 100% 핏 맞춤 (Zoom to Fit)'),
+              ]),
+              _ShortcutGroup(title: '정밀 이동 & 변형 (Nudge & Layout)', items: [
+                _ShortcutItem(keys: '방향키 (↑/↓/←/→)', desc: '1px 정밀 미세 이동 (Nudge)'),
+                _ShortcutItem(keys: 'Shift + 방향키', desc: '10px 고속 이동 (Big Nudge)'),
+                _ShortcutItem(keys: 'Shift + A', desc: '오토레이아웃 토글 (AutoLayout H/V/None)'),
+                _ShortcutItem(keys: 'Ctrl + G / Ctrl + Shift + G', desc: '그룹화 (Group) / 그룹 해제 (Ungroup)'),
+              ]),
+              _ShortcutGroup(title: '레이어 & 편집 (Edit & Hierarchy)', items: [
+                _ShortcutItem(keys: 'Ctrl + C / Ctrl + V', desc: '하위 트리 포함 컴포넌트 복사 & 붙여넣기'),
+                _ShortcutItem(keys: 'Ctrl + D', desc: '제자리 오프셋 복제 (Duplicate)'),
+                _ShortcutItem(keys: 'Ctrl + Z / Ctrl + Y', desc: '실행 취소 (Undo) / 다시 실행 (Redo)'),
+                _ShortcutItem(keys: '] / [', desc: '맨 앞으로 가져오기 / 맨 뒤로 보내기'),
+                _ShortcutItem(keys: 'Ctrl + Shift + L', desc: '선택 요소 잠금 / 해제 토글 (Lock/Unlock)'),
+                _ShortcutItem(keys: 'Ctrl + Shift + H', desc: '선택 요소 숨김 / 보이기 토글 (Hide/Show)'),
+                _ShortcutItem(keys: 'Delete / Backspace', desc: '선택 요소 삭제 (Delete)'),
+              ]),
+            ],
+          ),
+        ),
+        actions: [
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF0052FF), foregroundColor: Colors.white),
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('닫기'),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -696,6 +762,51 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
                 _deleteSelected();
                 return KeyEventResult.handled;
               }
+            // 5.1 Select All (Ctrl + A)
+            } else if (isCtrl && event.logicalKey == LogicalKeyboardKey.keyA) {
+              if (_currentSlide.elements.isNotEmpty) {
+                setState(() => _selectedElement = _currentSlide.elements.first);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('전체 객체 탐색 활성화 (Tab 키로 순회 선택 가능)'),
+                    duration: Duration(seconds: 1),
+                  ),
+                );
+                return KeyEventResult.handled;
+              }
+            // 5.2 Layout Grid Toggle (Ctrl + Shift + 4 or Ctrl + ')
+            } else if ((isCtrl && isShift && event.logicalKey == LogicalKeyboardKey.digit4) ||
+                       (isCtrl && event.logicalKey == LogicalKeyboardKey.quote)) {
+              setState(() => _showLayoutGrid = !_showLayoutGrid);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(_showLayoutGrid ? 'Figma 레이아웃 그리드 (12컬럼 / 8pt 그리드) 켜짐' : '레이아웃 그리드 꺼짐'),
+                  duration: const Duration(seconds: 1),
+                  backgroundColor: const Color(0xFF0052FF),
+                ),
+              );
+              return KeyEventResult.handled;
+            // 5.3 Lock / Unlock Selected (Ctrl + Shift + L)
+            } else if (isCtrl && isShift && event.logicalKey == LogicalKeyboardKey.keyL) {
+              if (_selectedElement != null) {
+                _recordUndoState();
+                setState(() => _selectedElement!.isLocked = !_selectedElement!.isLocked);
+                return KeyEventResult.handled;
+              }
+            // 5.4 Hide / Show Selected (Ctrl + Shift + H)
+            } else if (isCtrl && isShift && event.logicalKey == LogicalKeyboardKey.keyH) {
+              if (_selectedElement != null) {
+                _recordUndoState();
+                setState(() {
+                  _selectedElement!.isVisible = !_selectedElement!.isVisible;
+                  if (!_selectedElement!.isVisible) _selectedElement = null;
+                });
+                return KeyEventResult.handled;
+              }
+            // 5.5 Show Figma Shortcuts CheatSheet (Ctrl + / or ?)
+            } else if (isCtrl && (event.logicalKey == LogicalKeyboardKey.slash || event.logicalKey == LogicalKeyboardKey.question)) {
+              _showShortcutsDialog();
+              return KeyEventResult.handled;
             // 6. Layer Stacking Order: Bring to Front (]) / Send to Back ([)
             } else if (event.logicalKey == LogicalKeyboardKey.bracketRight) {
               if (_selectedElement != null) {
@@ -811,6 +922,7 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
                     child: CanvasEditor(
                       slide: _currentSlide,
                       selectedElement: _selectedElement,
+                      showLayoutGrid: _showLayoutGrid,
                       onElementSelected: (elem) {
                         setState(() => _selectedElement = elem);
                       },
@@ -937,13 +1049,40 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
           ),
           const Spacer(),
           ElevatedButton.icon(
+            icon: Icon(_showLayoutGrid ? Icons.grid_on : Icons.grid_off, size: 14, color: _showLayoutGrid ? const Color(0xFF38BDF8) : const Color(0xFFA3A3A3)),
+            label: Text(_showLayoutGrid ? 'Grid ON' : 'Grid', style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: _showLayoutGrid ? const Color(0xFF0038A8) : const Color(0xFF2C2C2C),
+              foregroundColor: Colors.white,
+              elevation: 0,
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(6),
+                side: BorderSide(color: _showLayoutGrid ? const Color(0xFF0052FF) : const Color(0xFF404040)),
+              ),
+            ),
+            onPressed: () {
+              setState(() => _showLayoutGrid = !_showLayoutGrid);
+            },
+          ),
+          const SizedBox(width: 6),
+          IconButton(
+            icon: const Icon(Icons.keyboard, color: Color(0xFFA3A3A3), size: 18),
+            tooltip: '피그마 전체 단축키 모음 (Ctrl+/)',
+            onPressed: _showShortcutsDialog,
+            visualDensity: VisualDensity.compact,
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(minWidth: 28, minHeight: 28),
+          ),
+          const SizedBox(width: 4),
+          ElevatedButton.icon(
             icon: const Icon(Icons.swap_horiz, size: 14),
             label: const Text('프로젝트 전환', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF2C2C2C),
               foregroundColor: Colors.white,
               elevation: 0,
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(6),
                 side: const BorderSide(color: Color(0xFF404040)),
@@ -951,15 +1090,15 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
             ),
             onPressed: _showProjectSwitchDialog,
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: 6),
           ElevatedButton.icon(
             icon: const Icon(Icons.tune, size: 14, color: Color(0xFF38BDF8)),
-            label: const Text('Variables (디자인 시스템)', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
+            label: const Text('Variables', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF2C2C2C),
               foregroundColor: Colors.white,
               elevation: 0,
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(6),
                 side: const BorderSide(color: Color(0xFF404040)),
@@ -972,7 +1111,7 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
               );
             },
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: 6),
           ElevatedButton.icon(
             icon: const Icon(Icons.add_box_outlined, size: 14),
             label: const Text('컴포넌트 삽입', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
@@ -980,20 +1119,20 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
               backgroundColor: const Color(0xFF0052FF),
               foregroundColor: Colors.white,
               elevation: 0,
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
             ),
             onPressed: _openElementLibrary,
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: 6),
           ElevatedButton.icon(
             icon: const Icon(Icons.play_arrow, size: 14, color: Colors.white),
-            label: const Text('Present (전체화면 / 출력)', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
+            label: const Text('Present', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF10B981),
               foregroundColor: Colors.white,
               elevation: 0,
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
             ),
             onPressed: () {
@@ -1105,4 +1244,64 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
       ),
     );
   }
+}
+
+class _ShortcutGroup extends StatelessWidget {
+  final String title;
+  final List<_ShortcutItem> items;
+
+  const _ShortcutGroup({required this.title, required this.items});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(color: Color(0xFF38BDF8), fontSize: 12, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 6),
+          Container(
+            decoration: BoxDecoration(
+              color: const Color(0xFF262626),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: const Color(0xFF333333)),
+            ),
+            child: Column(
+              children: items.map<Widget>((item) => Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(item.desc, style: const TextStyle(color: Color(0xFFD4D4D4), fontSize: 11.5)),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF171717),
+                        borderRadius: BorderRadius.circular(4),
+                        border: Border.all(color: const Color(0xFF404040)),
+                      ),
+                      child: Text(
+                        item.keys,
+                        style: const TextStyle(color: Color(0xFFE5E5E5), fontSize: 10.5, fontWeight: FontWeight.bold, fontFamily: 'Consolas'),
+                      ),
+                    ),
+                  ],
+                ),
+              )).toList(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ShortcutItem {
+  final String keys;
+  final String desc;
+  const _ShortcutItem({required this.keys, required this.desc});
 }

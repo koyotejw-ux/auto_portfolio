@@ -7,6 +7,8 @@ class CanvasEditor extends StatefulWidget {
   final DeckElement? selectedElement;
   final ValueChanged<DeckElement?> onElementSelected;
   final VoidCallback onSlideModified;
+  final bool showLayoutGrid;
+  final bool showRulers;
 
   const CanvasEditor({
     super.key,
@@ -14,6 +16,8 @@ class CanvasEditor extends StatefulWidget {
     required this.selectedElement,
     required this.onElementSelected,
     required this.onSlideModified,
+    this.showLayoutGrid = false,
+    this.showRulers = true,
   });
 
   @override
@@ -193,6 +197,16 @@ class _CanvasEditorState extends State<CanvasEditor> {
                             },
                           ),
                         ),
+
+                        // Figma Layout Grid Overlay (Ctrl + Shift + 4 or Ctrl + ')
+                        if (widget.showLayoutGrid)
+                          Positioned.fill(
+                            child: IgnorePointer(
+                              child: CustomPaint(
+                                painter: _FigmaLayoutGridPainter(),
+                              ),
+                            ),
+                          ),
 
                         // Interactive Elements
                         ...widget.slide.elements.where((elem) => elem.isVisible).map((elem) {
@@ -1629,4 +1643,37 @@ class _CanvasEditorState extends State<CanvasEditor> {
       },
     );
   }
+}
+
+class _FigmaLayoutGridPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    // 1. Figma 12-Column Grid (Electric Red/Pink Transparent Overlay)
+    const columns = 12;
+    const gutter = 20.0;
+    const margin = 100.0;
+    final totalWidth = size.width - (margin * 2);
+    final colWidth = (totalWidth - (gutter * (columns - 1))) / columns;
+
+    final colPaint = Paint()
+      ..color = const Color(0xFFFF0055).withValues(alpha: 0.08)
+      ..style = PaintingStyle.fill;
+
+    for (int i = 0; i < columns; i++) {
+      final left = margin + (i * (colWidth + gutter));
+      canvas.drawRect(Rect.fromLTWH(left, 0, colWidth, size.height), colPaint);
+    }
+
+    // 2. Figma 8pt Baseline Grid Lines
+    final linePaint = Paint()
+      ..color = const Color(0xFFFF0055).withValues(alpha: 0.12)
+      ..strokeWidth = 1.0;
+
+    for (double y = 0; y < size.height; y += 40.0) {
+      canvas.drawLine(Offset(0, y), Offset(size.width, y), linePaint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
