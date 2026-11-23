@@ -12,6 +12,7 @@ import 'widgets/fullscreen_export_modal.dart';
 import 'widgets/figma_layers_panel.dart';
 import 'widgets/figma_assets_panel.dart';
 import 'widgets/icon_drawing_modal.dart';
+import 'widgets/flutter_project_loader_modal.dart';
 
 void main() {
   runApp(const DeckStudioApp());

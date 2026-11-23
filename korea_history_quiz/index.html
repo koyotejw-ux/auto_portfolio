@@ -3,45 +3,42 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>대한한국사 (Korea History Quiz) - Behance Edutech Case Study & UX/UI Architecture</title>
+  <title>대한한국사 (Korea History Quiz) - Behance Enterprise Case Study & UX/UI Architecture</title>
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-  <link rel="stylesheet" href="style.css?v=20261123_history_v1">
+  <link rel="stylesheet" href="style.css?v=20261123_history_smart_dca_aligned_v1">
   <style>
     :root {
-      --accent-primary: #DC2626;
-      --accent-glow: rgba(220, 38, 38, 0.35);
-      --border-accent: rgba(220, 38, 38, 0.45);
+      --accent-primary: #1D4ED8;
+      --accent-glow: rgba(29, 78, 216, 0.35);
+      --border-accent: rgba(29, 78, 216, 0.45);
     }
     .dock-left .btn-dock-hub {
-      border-color: rgba(220, 38, 38, 0.4);
+      border-color: rgba(29, 78, 216, 0.4);
     }
     .dock-left .btn-dock-hub:hover {
-      background: rgba(220, 38, 38, 0.15);
-      border-color: #DC2626;
-      color: #F87171;
+      background: rgba(29, 78, 216, 0.15);
+      border-color: #1D4ED8;
+      color: #60A5FA;
     }
     .dock-left .live-status-pill .status-dot {
-      background: #EF4444;
-      box-shadow: 0 0 10px #EF4444;
+      background: #10B981;
+      box-shadow: 0 0 10px #10B981;
     }
     .slide-nav-rail .nav-dot.active {
-      background: #DC2626;
-      box-shadow: 0 0 12px #DC2626;
+      background: #1D4ED8;
+      box-shadow: 0 0 12px #1D4ED8;
     }
     .btn-print {
-      border-color: rgba(245, 158, 11, 0.4);
+      border-color: rgba(217, 119, 6, 0.4);
       color: #FCD34D;
     }
     .btn-print:hover {
-      background: rgba(245, 158, 11, 0.15);
-      border-color: #F59E0B;
+      background: rgba(217, 119, 6, 0.15);
+      border-color: #D97706;
     }
   </style>
 </head>
 <body>
-
-  <!-- Ambient Aura Layer -->
-  <div class="cyber-aura-layer" aria-hidden="true" style="background: radial-gradient(circle at 80% 20%, rgba(220, 38, 38, 0.15) 0%, transparent 60%), radial-gradient(circle at 20% 80%, rgba(245, 158, 11, 0.1) 0%, transparent 50%);"></div>
 
   <!-- Floating Navigation & Master Control Dock (Bottom Fixed) -->
   <aside class="global-control-bar" aria-label="Deck Controls">
@@ -52,7 +49,7 @@
       </a>
       <span class="live-status-pill">
         <span class="status-dot"></span>
-        Google Play 출시 라이브 (심화 기출 100%)
+        Google Play Store Production
       </span>
       <span class="deck-title">대한한국사 (Korea History Quiz) · Behance Case Study</span>
     </div>
@@ -95,60 +92,60 @@
     <span>키보드 방향키 <kbd>←</kbd> <kbd>→</kbd> 슬라이드 이동 · <kbd>W</kbd> 화면 맞춤 · <kbd>F</kbd> 전체화면</span>
   </div>
 
-  <!-- Main Slide Stream -->
-  <main class="deck-main-container" id="deck-container">
-    <section class="slide-frame" id="slide-1" data-index="1" data-title="01. Hero Cover">
-      <img src="behance_slides/slide_01.png" alt="Slide 01 - Hero Cover" loading="eager" />
+  <!-- Main Slide Deck Viewport -->
+  <main class="deck-viewport" id="deck-viewport">
+    <section class="behance-slide-container" id="slide-1" data-title="01. Hero Cover">
+      <img class="behance-slide-img" src="behance_slides/slide_01.png?v=20261123_real_mockup_v1" alt="Slide 01: Hero Cover" loading="eager" />
     </section>
 
-    <section class="slide-frame" id="slide-2" data-index="2" data-title="02. Market & Problem">
-      <img src="behance_slides/slide_02.png" alt="Slide 02 - Market & Problem Study" loading="lazy" />
+    <section class="behance-slide-container" id="slide-2" data-title="02. Market & Problem">
+      <img class="behance-slide-img" src="behance_slides/slide_02.png?v=20261123_real_mockup_v1" alt="Slide 02: Market & Problem Study" loading="lazy" />
     </section>
 
-    <section class="slide-frame" id="slide-3" data-index="3" data-title="03. Persona Matrix">
-      <img src="behance_slides/slide_03.png" alt="Slide 03 - Target Persona Matrix" loading="lazy" />
+    <section class="behance-slide-container" id="slide-3" data-title="03. Persona Matrix">
+      <img class="behance-slide-img" src="behance_slides/slide_03.png?v=20261123_real_mockup_v1" alt="Slide 03: Target Persona Matrix" loading="lazy" />
     </section>
 
-    <section class="slide-frame" id="slide-4" data-index="4" data-title="04. Architecture">
-      <img src="behance_slides/slide_04.png" alt="Slide 04 - Information Architecture (IA)" loading="lazy" />
+    <section class="behance-slide-container" id="slide-4" data-title="04. Architecture">
+      <img class="behance-slide-img" src="behance_slides/slide_04.png?v=20261123_real_mockup_v1" alt="Slide 04: Information Architecture" loading="lazy" />
     </section>
 
-    <section class="slide-frame" id="slide-5" data-index="5" data-title="05. User Flow">
-      <img src="behance_slides/slide_05.png" alt="Slide 05 - User Flow & Experience Logic" loading="lazy" />
+    <section class="behance-slide-container" id="slide-5" data-title="05. User Flow">
+      <img class="behance-slide-img" src="behance_slides/slide_05.png?v=20261123_real_mockup_v1" alt="Slide 05: User Flow & Experience Logic" loading="lazy" />
     </section>
 
-    <section class="slide-frame" id="slide-6" data-index="6" data-title="06. Core 01 Home">
-      <img src="behance_slides/slide_06.png" alt="Slide 06 - Core Screen 01 Home Dashboard" loading="lazy" />
+    <section class="behance-slide-container" id="slide-6" data-title="06. Core 01 Home">
+      <img class="behance-slide-img" src="behance_slides/slide_06.png?v=20261123_real_mockup_v1" alt="Slide 06: Core Screen 01 Home Dashboard" loading="lazy" />
     </section>
 
-    <section class="slide-frame" id="slide-7" data-index="7" data-title="07. Core 02 Exam">
-      <img src="behance_slides/slide_07.png" alt="Slide 07 - Core Screen 02 Exam Center" loading="lazy" />
+    <section class="behance-slide-container" id="slide-7" data-title="07. Core 02 Exam">
+      <img class="behance-slide-img" src="behance_slides/slide_07.png?v=20261123_real_mockup_v1" alt="Slide 07: Core Screen 02 Exam Center" loading="lazy" />
     </section>
 
-    <section class="slide-frame" id="slide-8" data-index="8" data-title="08. Core 03 Quiz">
-      <img src="behance_slides/slide_08.png" alt="Slide 08 - Core Screen 03 Quiz Commentary" loading="lazy" />
+    <section class="behance-slide-container" id="slide-8" data-title="08. Core 03 Quiz">
+      <img class="behance-slide-img" src="behance_slides/slide_08.png?v=20261123_real_mockup_v1" alt="Slide 08: Core Screen 03 Quiz Commentary" loading="lazy" />
     </section>
 
-    <section class="slide-frame" id="slide-9" data-index="9" data-title="09. Core 04 Study">
-      <img src="behance_slides/slide_09.png" alt="Slide 09 - Core Screen 04 Study Hall" loading="lazy" />
+    <section class="behance-slide-container" id="slide-9" data-title="09. Core 04 Study">
+      <img class="behance-slide-img" src="behance_slides/slide_09.png?v=20261123_real_mockup_v1" alt="Slide 09: Core Screen 04 Study Hall" loading="lazy" />
     </section>
 
-    <section class="slide-frame" id="slide-10" data-index="10" data-title="10. Core 05 Vault">
-      <img src="behance_slides/slide_10.png" alt="Slide 10 - Core Screen 05 Incorrect Note Vault" loading="lazy" />
+    <section class="behance-slide-container" id="slide-10" data-title="10. Core 05 Vault">
+      <img class="behance-slide-img" src="behance_slides/slide_10.png?v=20261123_real_mockup_v1" alt="Slide 10: Core Screen 05 Incorrect Note Vault" loading="lazy" />
     </section>
 
-    <section class="slide-frame" id="slide-11" data-index="11" data-title="11. Design System">
-      <img src="behance_slides/slide_11.png" alt="Slide 11 - Design System & Multi-Device Specs" loading="lazy" />
+    <section class="behance-slide-container" id="slide-11" data-title="11. Design System">
+      <img class="behance-slide-img" src="behance_slides/slide_11.png?v=20261123_real_mockup_v1" alt="Slide 11: Visual Identity & Design System" loading="lazy" />
     </section>
 
-    <section class="slide-frame" id="slide-12" data-index="12" data-title="12. Retrospective">
-      <img src="behance_slides/slide_12.png" alt="Slide 12 - Outcome Metrics & STAR Retrospective" loading="lazy" />
+    <section class="behance-slide-container" id="slide-12" data-title="12. Retrospective">
+      <img class="behance-slide-img" src="behance_slides/slide_12.png?v=20261123_real_mockup_v1" alt="Slide 12: Outcome Metrics & STAR Retrospective" loading="lazy" />
     </section>
   </main>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const slides = Array.from(document.querySelectorAll('.slide-frame'));
+      const slides = Array.from(document.querySelectorAll('.behance-slide-container'));
       const currNumEl = document.getElementById('curr-num');
       const btnPrev = document.getElementById('btn-prev');
       const btnNext = document.getElementById('btn-next');
@@ -177,7 +174,7 @@
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            const idx = parseInt(entry.target.getAttribute('data-index'), 10) - 1;
+            const idx = parseInt(entry.target.getAttribute('id').replace('slide-', ''), 10) - 1;
             if (idx >= 0 && idx < slides.length) {
               currentIdx = idx;
               updateActiveUI(currentIdx);
@@ -246,4 +243,3 @@
   </script>
 </body>
 </html>
-
