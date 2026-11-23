@@ -1,0 +1,902 @@
+[
+  {
+    "question": "[최근 5개년 기출 포맷 1번] 여주 흔암리·반달 돌칼·탄화미가 가리키는 시대의 모습으로 옳은 것은?",
+    "prompt": null,
+    "options": [
+      "빗살무늬 토기를 처음 제작하였다",
+      "많은 인력을 동원해 고인돌을 축조하였다",
+      "명도전을 교역에 사용하였다",
+      "주먹도끼를 제작하였다",
+      "골품제를 운영하였다"
+    ],
+    "correctIndex": 1,
+    "answer": "많은 인력을 동원해 고인돌을 축조하였다",
+    "era": "prehistoric",
+    "category": "청동기",
+    "source": null,
+    "sourceUrl": "https://tok.historyexam.go.kr/",
+    "examRound": "77회",
+    "examYear": 2026,
+    "questionFormat": "photo",
+    "difficulty": "중",
+    "clues": [
+      "반달 돌칼은 청동기 수확 도구",
+      "탄화미는 벼농사 단서",
+      "민무늬 토기는 청동기 대표 토기"
+    ],
+    "optionExplanations": [
+      "빗살무늬 토기는 신석기 대표 토기입니다.",
+      "청동기에는 벼농사가 본격화되고 계급 발생으로 고인돌이 축조됩니다.",
+      "명도전은 초기 철기 교류 단서입니다.",
+      "주먹도끼는 구석기 대표 도구입니다.",
+      "골품제는 신라 신분 제도입니다."
+    ],
+    "level": 3,
+    "points": 1,
+    "background": "■ 최근 5개년 기출 포맷\n한능검 심화에서 반복되는 선사 유물 판독형입니다. 유물 1개보다 유물 세트를 보고 시대를 확정해야 합니다.",
+    "deepContext": "■ 100점 방어 포인트\n반달 돌칼·민무늬 토기·고인돌은 청동기, 빗살무늬 토기·가락바퀴·뼈바늘은 신석기, 명도전·반량전·붓은 철기입니다.",
+    "commentary": "[공공누리 사료 심층 해설] [기출 포맷 학습]\n실전에서는 먼저 사료 속 물건을 동그라미 치고, 도구-주거-경제-사회 특징을 한 번에 연결하세요.",
+    "views": null,
+    "imageUrl": null,
+    "materialBody": "핵심 사료 및 출제 키워드: 반달 돌칼은 청동기 수확 도구, 탄화미는 벼농사 단서, 민무늬 토기는 청동기 대표 토기",
+    "materials": [
+      {
+        "title": null,
+        "body": "핵심 사료 및 출제 키워드: 반달 돌칼은 청동기 수확 도구, 탄화미는 벼농사 단서, 민무늬 토기는 청동기 대표 토기",
+        "source": null
+      }
+    ],
+    "materialType": null
+  },
+  {
+    "question": "[최근 5개년 기출 포맷 2번] 섭하와 우거왕 관련 사료가 가리키는 나라에 대한 설명으로 옳은 것은?",
+    "prompt": null,
+    "options": [
+      "민며느리제가 있었다",
+      "정사암에서 국가 중대사를 논의하였다",
+      "사출도가 있었다",
+      "범금 8조를 두었다",
+      "읍군과 삼로가 다스렸다"
+    ],
+    "correctIndex": 3,
+    "answer": "범금 8조를 두었다",
+    "era": "prehistoric",
+    "category": "고조선",
+    "source": null,
+    "sourceUrl": "https://tok.historyexam.go.kr/",
+    "examRound": "77회",
+    "examYear": 2026,
+    "questionFormat": "sourceAnalysis",
+    "difficulty": "중",
+    "clues": [
+      "섭하",
+      "우거왕",
+      "한 무제 침공",
+      "범금 8조"
+    ],
+    "optionExplanations": [
+      "민며느리제는 옥저 풍습입니다.",
+      "정사암 회의는 백제 귀족 회의입니다.",
+      "사출도는 부여의 지방 지배 방식입니다.",
+      "섭하·우거왕·한 무제 침공은 고조선 멸망 과정이며 고조선은 8조법을 두었습니다.",
+      "읍군·삼로는 삼한 지배자입니다."
+    ],
+    "level": 3,
+    "points": 1,
+    "background": "■ 고조선 단골 사료\n우거왕·왕검성·한 무제·섭하는 위만 조선 멸망 과정의 결정 단서입니다.",
+    "deepContext": "■ 100점 방어 포인트\n8조법은 생명 존중, 사유 재산 보호, 노동력 중시, 계급 사회 존재를 추론하게 하는 핵심 사료입니다.",
+    "commentary": "[공공누리 사료 심층 해설] [기출 포맷 학습]\n초기 국가 선택지는 서로 섞여 나오므로 부여=영고·사출도, 옥저=민며느리제·골장제, 삼한=소도·천군까지 함께 분리하세요.",
+    "views": null,
+    "imageUrl": null,
+    "materialBody": "핵심 사료 및 출제 키워드: 섭하, 우거왕, 한 무제 침공, 범금 8조",
+    "materials": [
+      {
+        "title": null,
+        "body": "핵심 사료 및 출제 키워드: 섭하, 우거왕, 한 무제 침공, 범금 8조",
+        "source": null
+      }
+    ],
+    "materialType": null
+  },
+  {
+    "question": "[최근 5개년 기출 포맷 3번] 영고·사출도·순장이 단서인 나라로 옳은 것은?",
+    "prompt": null,
+    "options": [
+      "부여",
+      "고구려",
+      "옥저",
+      "동예",
+      "삼한"
+    ],
+    "correctIndex": 0,
+    "answer": "부여",
+    "era": "prehistoric",
+    "category": "초기 국가",
+    "source": null,
+    "sourceUrl": "https://tok.historyexam.go.kr/",
+    "examRound": "76회",
+    "examYear": 2025,
+    "questionFormat": "matching",
+    "difficulty": "하",
+    "clues": [
+      "영고",
+      "사출도",
+      "순장"
+    ],
+    "optionExplanations": [
+      "영고와 사출도는 부여의 결정 단서입니다.",
+      "고구려는 동맹·서옥제·제가 회의가 핵심입니다.",
+      "옥저는 민며느리제·골장제가 핵심입니다.",
+      "동예는 무천·책화가 핵심입니다.",
+      "삼한은 소도·천군·제정 분리가 핵심입니다."
+    ],
+    "level": 2,
+    "points": 1,
+    "background": "■ 초기 국가 풍습 비교\n최근 회차에서는 풍습 2~3개를 묶어 나라를 찾는 문제가 반복됩니다.",
+    "deepContext": "■ 100점 방어 포인트\n부여·고구려·옥저·동예·삼한은 제천 행사와 혼인·장례 풍습을 한 표로 정리해야 실수가 줄어듭니다.",
+    "commentary": "[공공누리 사료 심층 해설] [기출 포맷 학습]\n제천 행사만 외우지 말고 지방 지배 방식과 풍습까지 함께 연결하세요.",
+    "views": null,
+    "imageUrl": null,
+    "materialBody": "핵심 사료 및 출제 키워드: 영고, 사출도, 순장",
+    "materials": [
+      {
+        "title": null,
+        "body": "핵심 사료 및 출제 키워드: 영고, 사출도, 순장",
+        "source": null
+      }
+    ],
+    "materialType": null
+  },
+  {
+    "question": "[최근 5개년 기출 포맷 4번] 광개토 대왕의 업적으로 옳은 것은?",
+    "prompt": null,
+    "options": [
+      "평양으로 천도하였다",
+      "한강 유역을 차지하였다",
+      "신라를 도와 왜를 격퇴하였다",
+      "국학을 설립하였다",
+      "9주 5소경을 정비하였다"
+    ],
+    "correctIndex": 2,
+    "answer": "신라를 도와 왜를 격퇴하였다",
+    "era": "threeKingdoms",
+    "category": "고구려",
+    "source": null,
+    "sourceUrl": "https://tok.historyexam.go.kr/",
+    "examRound": "77회",
+    "examYear": 2026,
+    "questionFormat": "person",
+    "difficulty": "중",
+    "clues": [
+      "영락",
+      "왜 격퇴",
+      "광개토 대왕릉비"
+    ],
+    "optionExplanations": [
+      "평양 천도는 장수왕입니다.",
+      "한강 유역 장악은 장수왕의 남진 정책 결과입니다.",
+      "광개토 대왕은 신라 요청으로 왜를 격퇴하고 만주 방면을 확장했습니다.",
+      "국학 설립은 신문왕입니다.",
+      "9주 5소경은 통일 신라 지방 제도입니다."
+    ],
+    "level": 3,
+    "points": 1,
+    "background": "■ 왕 업적 판독형\n최근 기출은 비문·금석문·지도 단서를 통해 왕의 업적을 묻습니다.",
+    "deepContext": "■ 100점 방어 포인트\n고구려는 소수림왕-광개토 대왕-장수왕 순서로 율령·불교·태학, 만주 확장, 평양 천도·남진을 구분하세요.",
+    "commentary": "[공공누리 사료 심층 해설] [기출 포맷 학습]\n왕 이름이 직접 나오지 않아도 연호·비석·전쟁 단서를 통해 업적을 연결해야 합니다.",
+    "views": null,
+    "imageUrl": null,
+    "materialBody": "핵심 사료 및 출제 키워드: 영락, 왜 격퇴, 광개토 대왕릉비",
+    "materials": [
+      {
+        "title": null,
+        "body": "핵심 사료 및 출제 키워드: 영락, 왜 격퇴, 광개토 대왕릉비",
+        "source": null
+      }
+    ],
+    "materialType": null
+  },
+  {
+    "question": "[최근 5개년 기출 포맷 5번] 백제 수도 변천 순서로 옳은 것은?",
+    "prompt": null,
+    "options": [
+      "웅진-한성-사비",
+      "한성-웅진-사비",
+      "사비-한성-웅진",
+      "한성-사비-웅진",
+      "웅진-사비-한성"
+    ],
+    "correctIndex": 1,
+    "answer": "한성-웅진-사비",
+    "era": "threeKingdoms",
+    "category": "백제",
+    "source": null,
+    "sourceUrl": "https://tok.historyexam.go.kr/",
+    "examRound": "76회",
+    "examYear": 2025,
+    "questionFormat": "chronology",
+    "difficulty": "중",
+    "clues": [
+      "한성",
+      "웅진",
+      "사비",
+      "문주왕",
+      "성왕"
+    ],
+    "optionExplanations": [
+      "처음 수도는 한성입니다.",
+      "한성에서 웅진, 다시 사비로 천도한 순서가 정답입니다.",
+      "사비가 처음이 아닙니다.",
+      "웅진과 사비 순서가 바뀌었습니다.",
+      "한성은 마지막 수도가 아닙니다."
+    ],
+    "level": 3,
+    "points": 1,
+    "background": "■ 순서형 기출\n수도 이동, 왕 업적, 전쟁 순서는 한능검 심화에서 자주 출제됩니다.",
+    "deepContext": "■ 100점 방어 포인트\n백제는 고이왕-근초고왕-무령왕-성왕 흐름과 한성-웅진-사비 수도 변천을 함께 암기하세요.",
+    "commentary": "[공공누리 사료 심층 해설] [기출 포맷 학습]\n순서 문제는 하나의 연도보다 사건의 인과 관계를 묶어 기억하는 방식이 안정적입니다.",
+    "views": null,
+    "imageUrl": null,
+    "materialBody": "핵심 사료 및 출제 키워드: 한성, 웅진, 사비, 문주왕, 성왕",
+    "materials": [
+      {
+        "title": null,
+        "body": "핵심 사료 및 출제 키워드: 한성, 웅진, 사비, 문주왕, 성왕",
+        "source": null
+      }
+    ],
+    "materialType": null
+  },
+  {
+    "question": "[최근 5개년 기출 포맷 6번] 발해의 중앙 정치 조직에 대한 설명으로 옳은 것은?",
+    "prompt": null,
+    "options": [
+      "정당성이 국정을 총괄하였다",
+      "집사부가 기밀 사무를 맡았다",
+      "도병마사가 국방을 담당하였다",
+      "비변사가 군국 기무를 총괄하였다",
+      "중추원이 왕명 출납을 맡았다"
+    ],
+    "correctIndex": 0,
+    "answer": "정당성이 국정을 총괄하였다",
+    "era": "threeKingdoms",
+    "category": "발해",
+    "source": null,
+    "sourceUrl": "https://tok.historyexam.go.kr/",
+    "examRound": "72회",
+    "examYear": 2024,
+    "questionFormat": "institution",
+    "difficulty": "중",
+    "clues": [
+      "발해",
+      "정당성",
+      "3성 6부",
+      "독자성"
+    ],
+    "optionExplanations": [
+      "발해는 3성 6부 중 정당성 중심 운영이 특징입니다.",
+      "집사부는 신라의 관청입니다.",
+      "도병마사는 고려의 회의 기구입니다.",
+      "비변사는 조선 후기 기구입니다.",
+      "중추원은 고려 왕명 출납·군사 기밀 담당입니다."
+    ],
+    "level": 3,
+    "points": 1,
+    "background": "■ 남북국 제도 비교\n발해는 당 제도를 받아들였지만 정당성 중심의 독자 운영을 했다는 점이 자주 출제됩니다.",
+    "deepContext": "■ 100점 방어 포인트\n발해를 통일 신라와 비교할 때 중앙 정치 조직, 지방 5경 15부 62주, 고구려 계승 의식을 함께 보세요.",
+    "commentary": "[공공누리 사료 심층 해설] [기출 포맷 학습]\n제도 이름은 시대별로 비슷해 보이므로 집사부=신라, 정당성=발해, 도병마사=고려, 비변사=조선 후기로 분리하세요.",
+    "views": null,
+    "imageUrl": null,
+    "materialBody": "핵심 사료 및 출제 키워드: 발해, 정당성, 3성 6부, 독자성",
+    "materials": [
+      {
+        "title": null,
+        "body": "핵심 사료 및 출제 키워드: 발해, 정당성, 3성 6부, 독자성",
+        "source": null
+      }
+    ],
+    "materialType": null
+  },
+  {
+    "question": "[최근 5개년 기출 포맷 7번] 광종의 왕권 강화 정책으로 옳은 것은?",
+    "prompt": null,
+    "options": [
+      "기인 제도를 실시하였다",
+      "노비안검법을 시행하였다",
+      "삼별초를 조직하였다",
+      "전시과를 폐지하였다",
+      "직전법을 실시하였다"
+    ],
+    "correctIndex": 1,
+    "answer": "노비안검법을 시행하였다",
+    "era": "goryeo",
+    "category": "고려 전기",
+    "source": null,
+    "sourceUrl": "https://tok.historyexam.go.kr/",
+    "examRound": "77회",
+    "examYear": 2026,
+    "questionFormat": "policy",
+    "difficulty": "중",
+    "clues": [
+      "광종",
+      "노비안검법",
+      "과거제",
+      "왕권 강화"
+    ],
+    "optionExplanations": [
+      "기인 제도는 태조의 호족 견제책입니다.",
+      "광종은 노비안검법과 과거제로 왕권을 강화했습니다.",
+      "삼별초는 무신 정권기 군사 조직입니다.",
+      "전시과는 고려 토지 제도이며 폐지는 조선 전기 이후 흐름입니다.",
+      "직전법은 조선 세조 때입니다."
+    ],
+    "level": 3,
+    "points": 1,
+    "background": "■ 고려 국왕 정책\n고려 전기 왕권 강화와 통치 체제 정비는 매년 반복되는 핵심 범위입니다.",
+    "deepContext": "■ 100점 방어 포인트\n태조=사심관·기인, 광종=노비안검법·과거제, 성종=최승로·12목·2성 6부로 구분하세요.",
+    "commentary": "[공공누리 사료 심층 해설] [기출 포맷 학습]\n오답 선택지가 다른 왕의 정책으로 구성되므로 왕별 정책표를 만들어야 합니다.",
+    "views": null,
+    "imageUrl": null,
+    "materialBody": "핵심 사료 및 출제 키워드: 광종, 노비안검법, 과거제, 왕권 강화",
+    "materials": [
+      {
+        "title": null,
+        "body": "핵심 사료 및 출제 키워드: 광종, 노비안검법, 과거제, 왕권 강화",
+        "source": null
+      }
+    ],
+    "materialType": null
+  },
+  {
+    "question": "[최근 5개년 기출 포맷 8번] 거란 침입에 대한 고려의 대응으로 옳은 것은?",
+    "prompt": null,
+    "options": [
+      "강동 6주를 반환하였다",
+      "서희가 외교 담판으로 강동 6주를 확보하였다",
+      "윤관이 별무반으로 귀주 대첩을 이끌었다",
+      "최영이 요동 정벌에 성공하였다",
+      "이성계가 위화도에서 왜군을 격퇴하였다"
+    ],
+    "correctIndex": 1,
+    "answer": "서희가 외교 담판으로 강동 6주를 확보하였다",
+    "era": "goryeo",
+    "category": "대외 관계",
+    "source": null,
+    "sourceUrl": "https://tok.historyexam.go.kr/",
+    "examRound": "76회",
+    "examYear": 2025,
+    "questionFormat": "chronology",
+    "difficulty": "상",
+    "clues": [
+      "거란",
+      "서희",
+      "강동 6주",
+      "강감찬",
+      "귀주 대첩"
+    ],
+    "optionExplanations": [
+      "강동 6주는 확보한 지역입니다.",
+      "서희의 외교 담판은 1차 거란 침입의 대표 결과입니다.",
+      "윤관은 여진 정벌과 동북 9성입니다.",
+      "최영은 요동 정벌 추진 인물이나 성공하지 못했습니다.",
+      "위화도 회군은 요동 정벌 과정입니다."
+    ],
+    "level": 4,
+    "points": 2,
+    "background": "■ 고려 대외 관계 순서형\n거란-여진-몽골-홍건적·왜구 순서와 인물을 연결하는 유형입니다.",
+    "deepContext": "■ 100점 방어 포인트\n서희=강동 6주, 강감찬=귀주 대첩, 윤관=별무반·동북 9성, 최영·이성계=요동 정벌·위화도 회군입니다.",
+    "commentary": "[공공누리 사료 심층 해설] [기출 포맷 학습]\n대외 관계는 침입 세력과 대응 인물이 섞여 출제되므로 세력별 대표 인물을 먼저 고정하세요.",
+    "views": null,
+    "imageUrl": null,
+    "materialBody": "핵심 사료 및 출제 키워드: 거란, 서희, 강동 6주, 강감찬, 귀주 대첩",
+    "materials": [
+      {
+        "title": null,
+        "body": "핵심 사료 및 출제 키워드: 거란, 서희, 강동 6주, 강감찬, 귀주 대첩",
+        "source": null
+      }
+    ],
+    "materialType": null
+  },
+  {
+    "question": "[최근 5개년 기출 포맷 9번] 공민왕의 개혁 정치로 옳은 것은?",
+    "prompt": null,
+    "options": [
+      "쌍성총관부를 수복하였다",
+      "만권당을 설치하였다",
+      "노비안검법을 실시하였다",
+      "훈련도감을 설치하였다",
+      "비변사를 폐지하였다"
+    ],
+    "correctIndex": 0,
+    "answer": "쌍성총관부를 수복하였다",
+    "era": "goryeo",
+    "category": "고려 후기",
+    "source": null,
+    "sourceUrl": "https://tok.historyexam.go.kr/",
+    "examRound": "73회",
+    "examYear": 2024,
+    "questionFormat": "person",
+    "difficulty": "상",
+    "clues": [
+      "공민왕",
+      "쌍성총관부",
+      "전민변정도감",
+      "반원 자주"
+    ],
+    "optionExplanations": [
+      "공민왕은 쌍성총관부 수복, 정동행성 이문소 폐지, 전민변정도감 설치를 추진했습니다.",
+      "만권당은 충선왕 때 원의 수도에 설치되었습니다.",
+      "노비안검법은 광종입니다.",
+      "훈련도감은 임진왜란 중 설치되었습니다.",
+      "비변사 폐지는 흥선 대원군입니다."
+    ],
+    "level": 4,
+    "points": 2,
+    "background": "■ 고려 후기 개혁 정치\n원 간섭기 구조와 공민왕의 반원 개혁은 선택지 함정이 많은 단원입니다.",
+    "deepContext": "■ 100점 방어 포인트\n공민왕은 반원 자주 정책과 권문세족 견제를 동시에 추진했지만, 신돈 제거 후 개혁 동력이 약화되었습니다.",
+    "commentary": "[공공누리 사료 심층 해설] [기출 포맷 학습]\n개혁 군주는 정책의 목적까지 묻습니다. 공민왕은 원 간섭 탈피와 왕권 회복이라는 방향으로 정리하세요.",
+    "views": null,
+    "imageUrl": null,
+    "materialBody": "핵심 사료 및 출제 키워드: 공민왕, 쌍성총관부, 전민변정도감, 반원 자주",
+    "materials": [
+      {
+        "title": null,
+        "body": "핵심 사료 및 출제 키워드: 공민왕, 쌍성총관부, 전민변정도감, 반원 자주",
+        "source": null
+      }
+    ],
+    "materialType": null
+  },
+  {
+    "question": "[최근 5개년 기출 포맷 10번] 세종 대의 업적으로 옳은 것은?",
+    "prompt": null,
+    "options": [
+      "경국대전을 완성하였다",
+      "훈민정음을 창제하였다",
+      "대전회통을 편찬하였다",
+      "탕평비를 세웠다",
+      "균역법을 실시하였다"
+    ],
+    "correctIndex": 1,
+    "answer": "훈민정음을 창제하였다",
+    "era": "joseon",
+    "category": "조선 전기",
+    "source": null,
+    "sourceUrl": "https://tok.historyexam.go.kr/",
+    "examRound": "77회",
+    "examYear": 2026,
+    "questionFormat": "person",
+    "difficulty": "중",
+    "clues": [
+      "세종",
+      "집현전",
+      "훈민정음",
+      "측우기"
+    ],
+    "optionExplanations": [
+      "경국대전 완성은 성종 때입니다.",
+      "세종은 훈민정음 창제, 집현전 육성, 과학 기술 진흥이 핵심입니다.",
+      "대전회통은 흥선 대원군 때입니다.",
+      "탕평비는 영조입니다.",
+      "균역법은 영조입니다."
+    ],
+    "level": 3,
+    "points": 1,
+    "background": "■ 조선 왕별 업적\n조선 전기 왕 업적은 정책·법전·제도 순서를 함께 묻습니다.",
+    "deepContext": "■ 100점 방어 포인트\n태종=6조 직계제·호패법, 세종=집현전·훈민정음, 세조=직전법, 성종=경국대전 완성입니다.",
+    "commentary": "[공공누리 사료 심층 해설] [기출 포맷 학습]\n왕 이름이 숨겨져도 기관·저술·제도 단서로 판정할 수 있어야 합니다.",
+    "views": null,
+    "imageUrl": null,
+    "materialBody": "핵심 사료 및 출제 키워드: 세종, 집현전, 훈민정음, 측우기",
+    "materials": [
+      {
+        "title": null,
+        "body": "핵심 사료 및 출제 키워드: 세종, 집현전, 훈민정음, 측우기",
+        "source": null
+      }
+    ],
+    "materialType": null
+  },
+  {
+    "question": "[최근 5개년 기출 포맷 11번] 임진왜란 중 설치된 군사 기구로 옳은 것은?",
+    "prompt": null,
+    "options": [
+      "훈련도감",
+      "비변사",
+      "장용영",
+      "별무반",
+      "삼별초"
+    ],
+    "correctIndex": 0,
+    "answer": "훈련도감",
+    "era": "joseon",
+    "category": "임진왜란",
+    "source": null,
+    "sourceUrl": "https://tok.historyexam.go.kr/",
+    "examRound": "75회",
+    "examYear": 2025,
+    "questionFormat": "institution",
+    "difficulty": "중",
+    "clues": [
+      "임진왜란",
+      "조총 대응",
+      "삼수병",
+      "훈련도감"
+    ],
+    "optionExplanations": [
+      "훈련도감은 임진왜란 중 설치된 중앙 군영입니다.",
+      "비변사는 조선 후기 군국 기무 기구로 확대되었습니다.",
+      "장용영은 정조의 친위 부대입니다.",
+      "별무반은 고려 윤관이 여진 정벌을 위해 편성했습니다.",
+      "삼별초는 고려 무신 정권 군사 조직입니다."
+    ],
+    "level": 3,
+    "points": 1,
+    "background": "■ 전쟁과 제도 변화\n전쟁을 계기로 생긴 군사 제도는 시대 혼동 선택지로 자주 출제됩니다.",
+    "deepContext": "■ 100점 방어 포인트\n훈련도감=임진왜란, 별무반=고려 여진 정벌, 삼별초=고려 무신 정권, 장용영=정조로 고정하세요.",
+    "commentary": "[공공누리 사료 심층 해설] [기출 포맷 학습]\n군사 조직 문제는 이름만 보지 말고 설치 배경을 반드시 확인하세요.",
+    "views": null,
+    "imageUrl": null,
+    "materialBody": "핵심 사료 및 출제 키워드: 임진왜란, 조총 대응, 삼수병, 훈련도감",
+    "materials": [
+      {
+        "title": null,
+        "body": "핵심 사료 및 출제 키워드: 임진왜란, 조총 대응, 삼수병, 훈련도감",
+        "source": null
+      }
+    ],
+    "materialType": null
+  },
+  {
+    "question": "[최근 5개년 기출 포맷 12번] 대동법 시행 결과로 옳은 것은?",
+    "prompt": null,
+    "options": [
+      "전세가 1결당 4두로 고정되었다",
+      "공인이 성장하였다",
+      "군포가 1필로 줄었다",
+      "지계가 발급되었다",
+      "호포제가 실시되었다"
+    ],
+    "correctIndex": 1,
+    "answer": "공인이 성장하였다",
+    "era": "joseon",
+    "category": "경제·사회",
+    "source": null,
+    "sourceUrl": "https://tok.historyexam.go.kr/",
+    "examRound": "72회",
+    "examYear": 2024,
+    "questionFormat": "policy",
+    "difficulty": "중",
+    "clues": [
+      "대동법",
+      "공인",
+      "상품 화폐 경제"
+    ],
+    "optionExplanations": [
+      "전세 1결당 4두는 영정법입니다.",
+      "대동법은 공납을 쌀·베·동전으로 내게 하여 공인 성장을 촉진했습니다.",
+      "군포 1필은 균역법입니다.",
+      "지계 발급은 대한 제국 광무개혁입니다.",
+      "호포제는 흥선 대원군입니다."
+    ],
+    "level": 3,
+    "points": 1,
+    "background": "■ 조선 후기 수취 제도\n대동법·영정법·균역법은 매년 나오는 세금 제도 3종 세트입니다.",
+    "deepContext": "■ 100점 방어 포인트\n대동법=공납 개혁·공인, 영정법=전세 4두, 균역법=군포 1필로 즉시 연결하세요.",
+    "commentary": "[공공누리 사료 심층 해설] [기출 포맷 학습]\n세금 제도는 시행 결과와 연결됩니다. 대동법은 상품 화폐 경제 발달까지 함께 봐야 합니다.",
+    "views": null,
+    "imageUrl": null,
+    "materialBody": "핵심 사료 및 출제 키워드: 대동법, 공인, 상품 화폐 경제",
+    "materials": [
+      {
+        "title": null,
+        "body": "핵심 사료 및 출제 키워드: 대동법, 공인, 상품 화폐 경제",
+        "source": null
+      }
+    ],
+    "materialType": null
+  },
+  {
+    "question": "[최근 5개년 기출 포맷 13번] 14개조 정강을 발표한 사건에 대한 설명으로 옳은 것은?",
+    "prompt": null,
+    "options": [
+      "우정총국 개국 축하연을 이용하였다",
+      "일본의 황무지 개간권 요구에 반대하였다",
+      "고부 관아를 습격하며 시작되었다",
+      "만민 공동회를 개최하였다",
+      "헤이그에 특사를 파견하였다"
+    ],
+    "correctIndex": 0,
+    "answer": "우정총국 개국 축하연을 이용하였다",
+    "era": "modern",
+    "category": "갑신정변",
+    "source": null,
+    "sourceUrl": "https://tok.historyexam.go.kr/",
+    "examRound": "76회",
+    "examYear": 2025,
+    "questionFormat": "sourceAnalysis",
+    "difficulty": "중",
+    "clues": [
+      "14개조 정강",
+      "급진 개화파",
+      "우정총국",
+      "청 간섭 배제"
+    ],
+    "optionExplanations": [
+      "갑신정변은 우정총국 개국 축하연을 이용해 일어났습니다.",
+      "보안회 활동입니다.",
+      "동학 농민 운동의 시작입니다.",
+      "독립 협회 활동입니다.",
+      "헤이그 특사는 대한 제국 고종의 외교 노력입니다."
+    ],
+    "level": 3,
+    "points": 1,
+    "background": "■ 근대 개혁 운동\n갑신정변은 인물·장소·정강·한계가 모두 출제 대상입니다.",
+    "deepContext": "■ 100점 방어 포인트\n갑신정변은 급진 개화파, 청 간섭 배제, 문벌 폐지, 지조법 개혁, 입헌 군주제 지향으로 정리하세요.",
+    "commentary": "[공공누리 사료 심층 해설] [기출 포맷 학습]\n근대사는 사건 이름보다 선언문·정강·조약 문구가 단서로 나오는 경우가 많습니다.",
+    "views": null,
+    "imageUrl": null,
+    "materialBody": "핵심 사료 및 출제 키워드: 14개조 정강, 급진 개화파, 우정총국, 청 간섭 배제",
+    "materials": [
+      {
+        "title": null,
+        "body": "핵심 사료 및 출제 키워드: 14개조 정강, 급진 개화파, 우정총국, 청 간섭 배제",
+        "source": null
+      }
+    ],
+    "materialType": null
+  },
+  {
+    "question": "[최근 5개년 기출 포맷 14번] 동학 농민 운동의 전개 순서로 옳은 것은?",
+    "prompt": null,
+    "options": [
+      "고부 봉기-백산 봉기-전주 화약-우금치 전투",
+      "백산 봉기-고부 봉기-우금치 전투-전주 화약",
+      "전주 화약-고부 봉기-백산 봉기-우금치 전투",
+      "우금치 전투-전주 화약-고부 봉기-백산 봉기",
+      "고부 봉기-우금치 전투-전주 화약-백산 봉기"
+    ],
+    "correctIndex": 0,
+    "answer": "고부 봉기-백산 봉기-전주 화약-우금치 전투",
+    "era": "modern",
+    "category": "동학 농민 운동",
+    "source": null,
+    "sourceUrl": "https://tok.historyexam.go.kr/",
+    "examRound": "75회",
+    "examYear": 2025,
+    "questionFormat": "chronology",
+    "difficulty": "상",
+    "clues": [
+      "고부 봉기",
+      "백산 봉기",
+      "전주 화약",
+      "집강소",
+      "우금치 전투"
+    ],
+    "optionExplanations": [
+      "고부 봉기에서 시작해 백산 봉기, 전주성 점령과 전주 화약, 이후 2차 봉기와 우금치 전투로 이어집니다.",
+      "고부 봉기가 먼저입니다.",
+      "전주 화약은 전주성 점령 뒤입니다.",
+      "우금치 전투는 후반부입니다.",
+      "우금치 전투가 전주 화약보다 뒤입니다."
+    ],
+    "level": 4,
+    "points": 2,
+    "background": "■ 근대 순서형 고난도\n동학 농민 운동은 1차 봉기, 정부와의 타협, 일본군 축출을 위한 2차 봉기를 구분해야 합니다.",
+    "deepContext": "■ 100점 방어 포인트\n전주 화약 이후 집강소가 설치되었고, 청·일 군대 개입은 갑오개혁과 청일 전쟁으로 이어졌습니다.",
+    "commentary": "[공공누리 사료 심층 해설] [기출 포맷 학습]\n순서형은 사건의 원인과 결과를 연결해야 안정적으로 풀립니다.",
+    "views": null,
+    "imageUrl": null,
+    "materialBody": "핵심 사료 및 출제 키워드: 고부 봉기, 백산 봉기, 전주 화약, 집강소, 우금치 전투",
+    "materials": [
+      {
+        "title": null,
+        "body": "핵심 사료 및 출제 키워드: 고부 봉기, 백산 봉기, 전주 화약, 집강소, 우금치 전투",
+        "source": null
+      }
+    ],
+    "materialType": null
+  },
+  {
+    "question": "[최근 5개년 기출 포맷 15번] 광무개혁의 내용으로 옳은 것은?",
+    "prompt": null,
+    "options": [
+      "홍범 14조를 반포하였다",
+      "지계를 발급하였다",
+      "교육입국 조서를 발표하였다",
+      "원수부를 폐지하였다",
+      "통감부를 설치하였다"
+    ],
+    "correctIndex": 1,
+    "answer": "지계를 발급하였다",
+    "era": "modern",
+    "category": "대한 제국",
+    "source": null,
+    "sourceUrl": "https://tok.historyexam.go.kr/",
+    "examRound": "74회",
+    "examYear": 2025,
+    "questionFormat": "policy",
+    "difficulty": "중",
+    "clues": [
+      "광무개혁",
+      "구본신참",
+      "양전 사업",
+      "지계"
+    ],
+    "optionExplanations": [
+      "홍범 14조는 갑오개혁입니다.",
+      "광무개혁은 양전 사업과 지계 발급이 핵심입니다.",
+      "교육입국 조서는 갑오개혁 시기입니다.",
+      "원수부는 대한 제국 군권 강화 기구입니다.",
+      "통감부 설치는 을사늑약 이후 일제 침탈입니다."
+    ],
+    "level": 3,
+    "points": 1,
+    "background": "■ 대한 제국 개혁\n광무개혁은 근대화와 황제권 강화를 함께 추진한 개혁으로 출제됩니다.",
+    "deepContext": "■ 100점 방어 포인트\n갑오개혁의 홍범 14조·신분제 폐지와 광무개혁의 구본신참·양전·지계를 확실히 구분하세요.",
+    "commentary": "[공공누리 사료 심층 해설] [기출 포맷 학습]\n근대 개혁은 갑오개혁, 독립 협회, 광무개혁 선택지가 자주 섞입니다.",
+    "views": null,
+    "imageUrl": null,
+    "materialBody": "핵심 사료 및 출제 키워드: 광무개혁, 구본신참, 양전 사업, 지계",
+    "materials": [
+      {
+        "title": null,
+        "body": "핵심 사료 및 출제 키워드: 광무개혁, 구본신참, 양전 사업, 지계",
+        "source": null
+      }
+    ],
+    "materialType": null
+  },
+  {
+    "question": "[최근 5개년 기출 포맷 16번] 1920년대 문화 통치 시기 민족 운동으로 옳은 것은?",
+    "prompt": null,
+    "options": [
+      "물산 장려 운동이 전개되었다",
+      "국채 보상 운동이 시작되었다",
+      "독립 의군부가 조직되었다",
+      "을미의병이 일어났다",
+      "대한 자강회가 창립되었다"
+    ],
+    "correctIndex": 0,
+    "answer": "물산 장려 운동이 전개되었다",
+    "era": "contemporary",
+    "category": "일제 강점기",
+    "source": null,
+    "sourceUrl": "https://tok.historyexam.go.kr/",
+    "examRound": "77회",
+    "examYear": 2026,
+    "questionFormat": "sourceAnalysis",
+    "difficulty": "중",
+    "clues": [
+      "문화 통치",
+      "회사령 폐지",
+      "산미 증식 계획",
+      "물산 장려 운동"
+    ],
+    "optionExplanations": [
+      "물산 장려 운동은 1920년대 실력 양성 운동입니다.",
+      "국채 보상 운동은 1907년입니다.",
+      "독립 의군부는 1910년대 복벽주의 단체입니다.",
+      "을미의병은 1895년입니다.",
+      "대한 자강회는 1906년 애국 계몽 단체입니다."
+    ],
+    "level": 3,
+    "points": 1,
+    "background": "■ 일제 통치 방식별 민족 운동\n1910년대 무단 통치, 1920년대 문화 통치, 1930년대 이후 민족 말살 통치를 분리해야 합니다.",
+    "deepContext": "■ 100점 방어 포인트\n1920년대는 물산 장려 운동, 민립 대학 설립 운동, 6·10 만세 운동, 신간회, 광주 학생 항일 운동을 묶어 보세요.",
+    "commentary": "[공공누리 사료 심층 해설] [기출 포맷 학습]\n시기 단서와 정책 단서를 동시에 잡으면 독립운동 단체 오답을 빠르게 제거할 수 있습니다.",
+    "views": null,
+    "imageUrl": null,
+    "materialBody": "핵심 사료 및 출제 키워드: 문화 통치, 회사령 폐지, 산미 증식 계획, 물산 장려 운동",
+    "materials": [
+      {
+        "title": null,
+        "body": "핵심 사료 및 출제 키워드: 문화 통치, 회사령 폐지, 산미 증식 계획, 물산 장려 운동",
+        "source": null
+      }
+    ],
+    "materialType": null
+  },
+  {
+    "question": "[최근 5개년 기출 포맷 17번] 1920년대 만주 무장 독립 전쟁의 순서로 옳은 것은?",
+    "prompt": null,
+    "options": [
+      "봉오동 전투-청산리 대첩-간도 참변",
+      "청산리 대첩-봉오동 전투-간도 참변",
+      "간도 참변-봉오동 전투-청산리 대첩",
+      "봉오동 전투-간도 참변-청산리 대첩",
+      "청산리 대첩-간도 참변-봉오동 전투"
+    ],
+    "correctIndex": 0,
+    "answer": "봉오동 전투-청산리 대첩-간도 참변",
+    "era": "contemporary",
+    "category": "무장 독립 전쟁",
+    "source": null,
+    "sourceUrl": "https://tok.historyexam.go.kr/",
+    "examRound": "76회",
+    "examYear": 2025,
+    "questionFormat": "chronology",
+    "difficulty": "상",
+    "clues": [
+      "봉오동 전투",
+      "홍범도",
+      "청산리 대첩",
+      "김좌진",
+      "간도 참변"
+    ],
+    "optionExplanations": [
+      "1920년 봉오동 전투, 청산리 대첩, 이후 일제의 보복인 간도 참변 순서입니다.",
+      "봉오동이 청산리보다 먼저입니다.",
+      "간도 참변은 두 전투 뒤입니다.",
+      "간도 참변은 청산리 뒤입니다.",
+      "봉오동이 마지막이 아닙니다."
+    ],
+    "level": 4,
+    "points": 2,
+    "background": "■ 무장 독립 전쟁 순서형\n전투명과 지휘 인물, 이후 결과를 함께 묻는 고난도 단골 유형입니다.",
+    "deepContext": "■ 100점 방어 포인트\n봉오동=홍범도, 청산리=김좌진·북로 군정서, 이후 간도 참변·자유시 참변·3부 성립으로 이어집니다.",
+    "commentary": "[공공누리 사료 심층 해설] [기출 포맷 학습]\n독립전쟁은 승리 전투와 일제 보복, 독립군 재편 순서를 연결하세요.",
+    "views": null,
+    "imageUrl": null,
+    "materialBody": "핵심 사료 및 출제 키워드: 봉오동 전투, 홍범도, 청산리 대첩, 김좌진, 간도 참변",
+    "materials": [
+      {
+        "title": null,
+        "body": "핵심 사료 및 출제 키워드: 봉오동 전투, 홍범도, 청산리 대첩, 김좌진, 간도 참변",
+        "source": null
+      }
+    ],
+    "materialType": null
+  },
+  {
+    "question": "[최근 5개년 기출 포맷 18번] 6월 민주 항쟁의 결과로 옳은 것은?",
+    "prompt": null,
+    "options": [
+      "4·19 혁명이 일어났다",
+      "10월 유신이 선포되었다",
+      "6·29 민주화 선언이 발표되었다",
+      "5·16 군사 정변이 발생하였다",
+      "3선 개헌이 단행되었다"
+    ],
+    "correctIndex": 2,
+    "answer": "6·29 민주화 선언이 발표되었다",
+    "era": "contemporary",
+    "category": "민주화 운동",
+    "source": null,
+    "sourceUrl": "https://tok.historyexam.go.kr/",
+    "examRound": "73회",
+    "examYear": 2024,
+    "questionFormat": "sourceAnalysis",
+    "difficulty": "중",
+    "clues": [
+      "박종철 고문치사",
+      "이한열",
+      "대통령 직선제",
+      "6·29 선언"
+    ],
+    "optionExplanations": [
+      "4·19 혁명은 1960년 이승만 정부를 무너뜨렸습니다.",
+      "10월 유신은 1972년 박정희 정부입니다.",
+      "1987년 6월 민주 항쟁의 결과 6·29 민주화 선언과 대통령 직선제 개헌이 이루어졌습니다.",
+      "5·16 군사 정변은 1961년입니다.",
+      "3선 개헌은 1969년입니다."
+    ],
+    "level": 3,
+    "points": 1,
+    "background": "■ 현대 민주화 운동\n현대사는 사건의 연도와 직접 결과를 묻는 문제가 반복됩니다.",
+    "deepContext": "■ 100점 방어 포인트\n4·19-5·16-유신-부마 항쟁-5·18-6월 민주 항쟁 순서를 고정하고, 각 사건의 결과를 한 줄로 정리하세요.",
+    "commentary": "[공공누리 사료 심층 해설] [기출 포맷 학습]\n민주화 문제는 구호와 요구, 헌법 변화, 정부 시기를 함께 확인해야 합니다.",
+    "views": null,
+    "imageUrl": null,
+    "materialBody": "핵심 사료 및 출제 키워드: 박종철 고문치사, 이한열, 대통령 직선제, 6·29 선언",
+    "materials": [
+      {
+        "title": null,
+        "body": "핵심 사료 및 출제 키워드: 박종철 고문치사, 이한열, 대통령 직선제, 6·29 선언",
+        "source": null
+      }
+    ],
+    "materialType": null
+  }
+]

@@ -308,8 +308,8 @@ def draw_slide_footer(draw, slide_num, total_slides=12, dark_mode=False):
     brand_col = (56, 189, 248) if dark_mode else (0, 81, 255)
     draw.text((100, 1018), "KOREA HISTORY QUIZ", font=get_font(11, 'bold'), fill=brand_col)
     meta_col = (100, 116, 139) if dark_mode else (148, 163, 184)
-    draw.text((270, 1018), "·   Behance Enterprise Case Study  ·  Quant Inversion Engine", font=get_font(11, 'medium'), fill=meta_col)
-    draw.text((960, 1018), "Flutter 3.38+ Mobile & Web  ·  Closed-Form Math  ·  Google Play Live", font=get_font(10.5, 'medium'), fill=meta_col, anchor='mt')
+    draw.text((270, 1018), "·   비핸스 엔터프라이즈 케이스 스터디  ·  실전 한능검 기출 솔루션", font=get_font(11, 'medium'), fill=meta_col)
+    draw.text((960, 1018), "Flutter 3.47+ 모바일 & 웹  ·  SQLite 1,500제 완비  ·  구글 플레이 출시", font=get_font(10.5, 'medium'), fill=meta_col, anchor='mt')
     
     page_col = (148, 163, 184) if dark_mode else (100, 116, 139)
     page_str = f"PAGE {slide_num:02d} / {total_slides:02d}"
@@ -522,14 +522,14 @@ def make_slide_01():
     draw.line([(100, 52), (1820, 52)], fill=(226, 232, 240), width=1)
     
     # Top Kicker & Metadata
-    draw_pill_badge(draw, left_x=100, cy=76, text="2026 CASE STUDY", font=get_font(11.5, 'bold'), theme='blue', has_dot=True, pad_x=12, height=28)
+    draw_pill_badge(draw, left_x=100, cy=76, text="2026 포트폴리오 케이스 스터디", font=get_font(11.5, 'bold'), theme='blue', has_dot=True, pad_x=12, height=28)
     
     meta_txt = "기획(PM) · UI/UX 디자인 · Android Live (v2.0) · Web Prototype"
     w_meta = draw.textlength(meta_txt, font=get_font(13.5, 'medium'))
     draw.text((1820 - w_meta, 68), meta_txt, font=get_font(13.5, 'medium'), fill=(100, 116, 139))
     
     # Category Label
-    draw.text((100, 146), "KOREA HISTORY QUIZ · EDUTECH UX/UI", font=get_font(14, 'bold'), fill=(0, 82, 255))
+    draw.text((100, 146), "대한국사 · 에듀테크 모바일 UX/UI 아키텍처", font=get_font(14, 'bold'), fill=(0, 82, 255))
     
     # Big Clean Headline
     title_p1 = "방대한 역사를, "
@@ -667,7 +667,7 @@ def make_slide_02():
     draw_slide_header(
         draw, 
         slide_num=2, 
-        category_en="USER RESEARCH | DESK RESEARCH & 수험생 학습 행태 분석", 
+        category_en="사용자 리서치 | 데스크 리서치 & 수험생 학습 행태 분석", 
         title_black="한능검·공무원 수험생의 학습 병목과 ", 
         title_blue="휘발성 암기 극복을 위한 3대 전략", 
         subtitle_kr="수험생 520명 심층 인터뷰 및 에빙하우스 망각곡선 기반 3대 학습 솔루션 도출"
@@ -849,7 +849,7 @@ def make_slide_03():
     draw_slide_header(
         draw, 
         slide_num=3, 
-        category_en="TARGET & PERSONA | SEGMENTATION MATRIX & BENCHMARK", 
+        category_en="타깃 & 페르소나 | 세그멘테이션 매트릭스 & 경쟁사 벤치마킹", 
         title_black="타깃 세그먼트 매트릭스와 ", 
         title_blue="경쟁사 벤치마킹 분석", 
         subtitle_kr="2x2 타깃 포지셔닝 매트릭스와 4대 플랫폼 벤치마크, 그리고 대표 페르소나 행동 지표"
@@ -1016,7 +1016,7 @@ def make_slide_04():
     draw_slide_header(
         draw, 
         slide_num=4, 
-        category_en="INFORMATION ARCHITECTURE · SERVICE STRUCTURE", 
+        category_en="정보 구조 설계 | 5대 핵심 메뉴 구조도", 
         title_black="누구나 바로 이해하고 쓰는 ", 
         title_blue="5대 핵심 합격 내비게이션", 
         subtitle_kr="홈 대시보드부터 실전 기출, 사료 서고, 오답 볼트까지 합격에 필요한 기능을 한눈에 찾는 쉬운 화면 구조"
@@ -1195,7 +1195,7 @@ def make_slide_05():
     draw_slide_header(
         draw, 
         slide_num=5, 
-        category_en="USER FLOW | SERVICE INTERACTION FLOWCHART", 
+        category_en="사용자 플로우 | 5단계 서비스 인터랙션 플로우차트", 
         title_black="사용자 행동과 판단을 이끄는 ", 
         title_blue="5단계 서비스 UX 플로우차트", 
         subtitle_kr="앱 실행부터 모의고사 회차 선택, 50:50 찬스 추론 풀이, 사료 키워드 판독, 오답 자동 인덱싱까지 이어지는 실전 학습 여정"
@@ -1474,7 +1474,7 @@ def make_slide_06():
     draw_slide_header(
         draw, 
         slide_num=6, 
-        category_en="WIREFRAME | MOBILE UX & ERGONOMIC ARCHITECTURE", 
+        category_en="와이어프레임 | 4대 모바일 UX & 인체공학적 설계", 
         title_black="대한국사 앱 구조를 그대로 반영한 ", 
         title_blue="4대 모바일 와이어프레임과 인체공학적 설계", 
         subtitle_kr="홈 대시보드·실전 시험센터·실전 문제풀이(50:50 찬스)·스마트 오답볼트 4대 핵심 화면의 골격 구조와 한 손 조작 엄지 영역(Thumb-Zone) 인체공학 설계"
@@ -1815,7 +1815,7 @@ def make_slide_07():
     draw_slide_header(
         draw, 
         slide_num=7, 
-        category_en="DESIGN SYSTEM | TAEGEUK HERITAGE & EDUTECH COMPONENT ARCHITECTURE", 
+        category_en="디자인 시스템 | 태극 헤리티지 & 컴포넌트 아키텍처", 
         title_black="한국 전통 헤리티지와 현대적 사용성을 결합한 ", 
         title_blue="대한국사 비주얼 디자인 시스템", 
         subtitle_kr="태극 헤리티지 컬러 토큰(코발트·크림슨·단청), 기하학 와이어프레임 앱 아이콘, 24dp 수험 아이콘 체계 & 프로덕션 위젯 킷"
@@ -2219,7 +2219,7 @@ def make_slide_08():
     lw = 490
     
     # 1-A. Unified Kicker Badge
-    draw_pill_badge(draw, left_x=lx, cy=78, text="08 CORE FEATURE | 80-MIN EXAM CENTER & TIMER", font=get_font(10.5, 'bold'), theme='blue', has_dot=True, dark_mode=False, pad_x=10, height=26)
+    draw_pill_badge(draw, left_x=lx, cy=78, text="08 핵심 기능 | 80분 공인 시험센터 & 실전 타이머", font=get_font(10.5, 'bold'), theme='blue', has_dot=True, dark_mode=False, pad_x=10, height=26)
     
     # Headline
     t1_a = "무거운 기출집 대신 "
@@ -2399,7 +2399,7 @@ def make_slide_09():
     lw = 540
     
     # 1-A. Unified Kicker Badge
-    draw_pill_badge(draw, left_x=lx, cy=78, text="09 CORE FEATURE | PASSAGE HIGHLIGHT & 50:50 CHANCE", font=get_font(10.5, 'bold'), theme='blue', has_dot=True, dark_mode=False, pad_x=10, height=26)
+    draw_pill_badge(draw, left_x=lx, cy=78, text="09 핵심 기능 | 사료 키워드 판독 & 50:50 추론 찬스", font=get_font(10.5, 'bold'), theme='blue', has_dot=True, dark_mode=False, pad_x=10, height=26)
     
     # Headline
     t1_a = "어려운 사료 원문도 "
@@ -2646,7 +2646,7 @@ def make_slide_10():
     draw_slide_header(
         draw, 
         slide_num=10, 
-        category_en="MOBILE SCREENS | 6대 상용 프로덕션 화면 쇼케이스", 
+        category_en="프로덕션 화면 | 6대 상용 화면 쇼케이스", 
         title_black="기출 모의고사부터 시대별 사료관까지, ", 
         title_blue="완성도 높은 6대 프로덕션 화면이에요.", 
         subtitle_kr="수험생의 실전 시험 준비와 오답 보완을 빈틈없이 지원하도록 피그마 디자인 시스템과 플러터 위젯 트리로 구현한 6대 상용 화면입니다."
@@ -2722,7 +2722,7 @@ def make_slide_11():
     draw_slide_header(
         draw, 
         slide_num=11, 
-        category_en="BUSINESS IMPACT | QUANTITATIVE TELEMETRY & STRATEGIC RETROSPECTIVE", 
+        category_en="비즈니스 임팩트 | 정량적 텔레메트리 & 전략적 회고", 
         title_black="수험생 완주율 78.4%와 0초 오답 정리, ", 
         title_blue="실측 텔레메트리로 검증된 에듀테크 가치예요.", 
         subtitle_kr="한능검 기출 1,500제 학습 텔레메트리 데이터 분석과 4대 핵심 지표 및 STAR 기법 기반 시니어 프로덕트 회고입니다.",
@@ -2876,7 +2876,7 @@ def make_slide_12():
     draw_slide_header(
         draw, 
         slide_num=12, 
-        category_en="LIVE INTERACTIVE PROTOTYPE | FLUTTER WEB ENGINE", 
+        category_en="라이브 프로토타입 | 플러터 웹 인터랙티브 허브", 
         title_black="화면을 터치하듯, ", 
         title_blue="실제 플러터 웹 프로토타입을 직접 조작해 보세요.", 
         subtitle_kr="정적인 슬라이드를 넘어 스마트폰 뷰포트에서 4대 핵심 한능검 학습 여정을 직접 터치하고 검증할 수 있는 인터랙티브 허브입니다.",
@@ -2948,7 +2948,7 @@ def make_slide_12():
     # ---------------------------------------------------------
     rx = 800
     rw = 1020
-    proto_entry_url = "https://koyotejw-ux.github.io/auto_portfolio/korea_history_quiz/app/index.html"
+    proto_entry_url = "https://koyotejw-ux.github.io/auto_portfolio/korea_history_quiz/prototype.html"
     
     # 1. PRIMARY HERO (TOP): MASTER LAUNCHER with Iconic Blue Gradient (y=234 to 348, h=114)
     my = 234
