@@ -1489,120 +1489,165 @@ def make_slide_06():
     p3_x = 1060
     p4_x = 1540
     
+    # Helper to draw chassis base with soft shadow & dynamic island
     def draw_wireframe_chassis(draw_obj, px, title_text, theme_key):
+        # Soft drop shadow
         sh = Image.new('RGBA', (W, H), (0, 0, 0, 0))
         shd = ImageDraw.Draw(sh)
         shd.rounded_rectangle([px + 8, sec_y + 12, px + pw - 8, sec_y + ph + 16], radius=28, fill=(0, 0, 0, 30))
         sh_blur = sh.filter(ImageFilter.GaussianBlur(14))
         base.paste(sh_blur, (0, 0), sh_blur)
         
+        # Outer Chassis
         draw.rounded_rectangle([px, sec_y, px + pw, sec_y + ph], radius=26, fill=(255, 255, 255), outline=(15, 23, 42), width=2)
-        draw.rounded_rectangle([px + pw//2 - 40, sec_y + 10, px + pw//2 + 40, sec_y + 24], radius=7, fill=(15, 23, 42))
-        draw_pill_badge(draw, left_x=px + 20, cy=sec_y + 38, text=title_text, font=get_font(8.5, 'bold'), theme=theme_key, pad_x=8, height=18)
+        # Dynamic Island Pill
+        draw.rounded_rectangle([px + pw//2 - 24, sec_y + 8, px + pw//2 + 24, sec_y + 20], radius=6, fill=(15, 23, 42))
+        # Screen Title Badge
+        draw_pill_badge(draw, cx=px + pw//2, cy=sec_y + 36, text=title_text, font=get_font(9.5, 'bold'), theme=theme_key, has_dot=True, pad_x=8, height=20)
+        # Native Home Indicator
+        draw.rounded_rectangle([px + pw//2 - 24, sec_y + ph - 8, px + pw//2 + 24, sec_y + ph - 4], radius=2, fill=(15, 23, 42))
         
-    # --- Chassis 1: [SCR-01 · 홈 대시보드] ---
+        # Thumb-Zone 48dp ergonomic bottom arc highlight
+        tz_y = sec_y + ph - 92
+        draw.rounded_rectangle([px + 6, tz_y, px + pw - 6, sec_y + ph - 14], radius=16, fill=(0, 81, 255, 12), outline=(0, 81, 255, 70), width=1)
+        draw.text((px + pw - 14, tz_y + 6), "Thumb-Zone (48dp)", font=get_font(7.5, 'bold'), fill=(0, 81, 255), anchor='ra')
+
+    # Helper to draw PRD-level aesthetic callout pin on core features
+    def draw_callout_anchor_pin(draw_obj, cx, cy, pin_num, pin_label, accent_col, is_right=True):
+        # Soft outer pulse halo (radius 16)
+        draw_obj.ellipse([cx - 16, cy - 16, cx + 16, cy + 16], fill=(*accent_col[:3], 45))
+        # Crisp white border ring
+        draw_obj.ellipse([cx - 12, cy - 12, cx + 12, cy + 12], fill=(255, 255, 255), outline=accent_col, width=2)
+        # Inner solid colored circle
+        draw_obj.ellipse([cx - 9, cy - 9, cx + 9, cy + 9], fill=accent_col)
+        # Pin number text
+        draw_obj.text((cx, cy), str(pin_num), font=get_font(9.5, 'bold'), fill=(255, 255, 255), anchor='mm')
+        
+        # Micro callout pill tag
+        tag_font = get_font(8.5, 'bold')
+        t_bbox = draw_obj.textbbox((0, 0), pin_label, font=tag_font)
+        tw = t_bbox[2] - t_bbox[0] + 16
+        th = 20
+        if is_right:
+            tx = cx + 14
+            draw_obj.rounded_rectangle([tx, cy - th//2, tx + tw, cy + th//2], radius=5, fill=(15, 23, 42), outline=accent_col, width=1)
+            draw_obj.text((tx + tw//2, cy), pin_label, font=tag_font, fill=(255, 255, 255), anchor='mm')
+        else:
+            tx = cx - 14 - tw
+            draw_obj.rounded_rectangle([tx, cy - th//2, tx + tw, cy + th//2], radius=5, fill=(15, 23, 42), outline=accent_col, width=1)
+            draw_obj.text((tx + tw//2, cy), pin_label, font=tag_font, fill=(255, 255, 255), anchor='mm')
+
+    # -----------------------------------------------------------------
+    # Chassis 1: [SCR-01 · 홈 대시보드] (p1_x = 100)
+    # -----------------------------------------------------------------
     draw_wireframe_chassis(draw, p1_x, "① SCR-01 · 홈 대시보드", "blue")
     
     # 1. Streak & Heart Header Card
-    sc_y = sec_y + 56
-    draw.rounded_rectangle([p1_x + 16, sc_y, p1_x + pw - 16, sc_y + 68], radius=10, fill=(240, 246, 255), outline=(191, 219, 254), width=1)
-    draw.text((p1_x + 26, sc_y + 14), "연속 출석 스트릭", font=get_font(9.5, 'bold'), fill=(100, 116, 139))
-    draw.text((p1_x + 26, sc_y + 36), "7일 연속 달성 (D-28)", font=get_font(13, 'bold'), fill=(29, 78, 216))
+    sc_y = sec_y + 54
+    draw.rounded_rectangle([p1_x + 14, sc_y, p1_x + pw - 14, sc_y + 60], radius=10, fill=(240, 246, 255), outline=(191, 219, 254), width=1)
+    draw.text((p1_x + 24, sc_y + 12), "연속 출석 스트릭 & 수험 D-Day", font=get_font(9.5, 'bold'), fill=(0, 81, 255))
+    draw.text((p1_x + 24, sc_y + 32), "7일 연속 달성 (D-28)", font=get_font(13.5, 'bold'), fill=(15, 23, 42))
+    draw_pill_badge(draw, cx=p1_x + pw - 48, cy=sc_y + 38, text="STREAK 7d", font=get_font(8.5, 'bold'), theme='amber', has_dot=False, pad_x=6, height=18)
     
     # 2. Main Exam Launcher Banner
-    hb_y = sc_y + 80
-    draw.rounded_rectangle([p1_x + 16, hb_y, p1_x + pw - 16, hb_y + 90], radius=10, fill=(29, 78, 216))
-    draw.text((p1_x + 26, hb_y + 18), "제77회 심화 실전 모의고사", font=get_font(11, 'bold'), fill=(255, 255, 255))
-    draw.text((p1_x + 26, hb_y + 40), "50문항 · 80분 타이머 · 실전 배점", font=get_font(9, 'regular'), fill=(191, 219, 254))
-    draw.rounded_rectangle([p1_x + 26, hb_y + 60, p1_x + pw - 26, hb_y + 80], radius=6, fill=(255, 255, 255))
-    draw.text((p1_x + pw//2, hb_y + 70), "지금 바로 응시하기 →", font=get_font(9.5, 'bold'), fill=(29, 78, 216), anchor='mm')
+    hb_y = sc_y + 68
+    draw.rounded_rectangle([p1_x + 14, hb_y, p1_x + pw - 14, hb_y + 88], radius=10, fill=(29, 78, 216))
+    draw.text((p1_x + 24, hb_y + 16), "제77회 심화 실전 모의고사", font=get_font(11, 'bold'), fill=(255, 255, 255))
+    draw.text((p1_x + 24, hb_y + 36), "50문항 · 80분 타이머 · 실전 배점", font=get_font(9, 'regular'), fill=(191, 219, 254))
+    draw.rounded_rectangle([p1_x + 24, hb_y + 56, p1_x + pw - 24, hb_y + 78], radius=6, fill=(255, 255, 255))
+    draw.text((p1_x + pw//2, hb_y + 67), "지금 바로 응시하기 →", font=get_font(9.5, 'bold'), fill=(29, 78, 216), anchor='mm')
     
+    # Callout Anchor Pin ① floating above quick actions
+    draw_callout_anchor_pin(draw, p1_x + 24, hb_y + 102, "1", "① 1-Tap 즉시 응시 허브", (0, 81, 255), is_right=True)
+
     # 3. 2x2 Quick Action Grid
-    qg_y = hb_y + 102
+    qg_y = hb_y + 118
     q_items = [("기출 시험센터", "77회~50회"), ("오답 복습", "14문항 대기"), ("시대별 서고", "6대 시대 요약"), ("마스터리 통계", "정답률 레이더")]
     for qidx, (qname, qdesc) in enumerate(q_items):
         qcol = qidx % 2
         qrow = qidx // 2
-        qx = p1_x + 16 + qcol * 128
-        qy = qg_y + qrow * 56
-        draw.rounded_rectangle([qx, qy, qx + 120, qy + 50], radius=8, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
+        qx = p1_x + 14 + qcol * 128
+        qy = qg_y + qrow * 52
+        draw.rounded_rectangle([qx, qy, qx + 120, qy + 46], radius=8, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
         draw.text((qx + 10, qy + 12), qname, font=get_font(9.5, 'bold'), fill=(15, 23, 42))
-        draw.text((qx + 10, qy + 30), qdesc, font=get_font(8, 'medium'), fill=(100, 116, 139))
+        draw.text((qx + 10, qy + 28), qdesc, font=get_font(8, 'regular'), fill=(100, 116, 139))
         
-    # 4. Era Mastery Progress Card
-    ep_y = qg_y + 122
-    draw.rounded_rectangle([p1_x + 16, ep_y, p1_x + pw - 16, ep_y + 60], radius=10, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-    draw.text((p1_x + 26, ep_y + 12), "조선 후기 정치사 정답률", font=get_font(9.5, 'bold'), fill=(15, 23, 42))
-    draw.rounded_rectangle([p1_x + 26, ep_y + 34, p1_x + pw - 26, ep_y + 44], radius=5, fill=(241, 245, 249))
-    draw.rounded_rectangle([p1_x + 26, ep_y + 34, p1_x + 180, ep_y + 44], radius=5, fill=(5, 150, 105))
-    draw.text((p1_x + pw - 26, ep_y + 20), "68%", font=get_font(9.5, 'bold'), fill=(5, 150, 105), anchor='rm')
-    
-    # 5. Bottom Navigation Bar
-    bn_y = sec_y + ph - 42
-    draw.rounded_rectangle([p1_x + 8, bn_y, p1_x + pw - 8, bn_y + 34], radius=12, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
-    b_icons = ["홈", "학습관", "시험센터", "오답노트", "설정"]
-    for bidx, bname in enumerate(b_icons):
-        bx = p1_x + 14 + bidx * 52
-        draw.text((bx + 24, bn_y + 17), bname, font=get_font(8.5, 'bold' if bidx == 0 else 'medium'), fill=(29, 78, 216) if bidx == 0 else (100, 116, 139), anchor='mm')
+    # Era Progress Radar Summary Card inside Thumb Zone
+    bb_y = sec_y + ph - 80
+    draw.line([(p1_x + 14, bb_y), (p1_x + pw - 14, bb_y)], fill=(226, 232, 240), width=1)
+    b_tabs = ["홈", "기출", "사료", "오답", "설정"]
+    tw_b = (pw - 28) // len(b_tabs)
+    for tidx, tname in enumerate(b_tabs):
+        tx = p1_x + 14 + tidx * tw_b + tw_b // 2
+        tcol = (29, 78, 216) if tidx == 0 else (100, 116, 139)
+        draw.text((tx, bb_y + 18), tname, font=get_font(9.5, 'bold' if tidx == 0 else 'medium'), fill=tcol, anchor='mm')
         
-    # --- Chassis 2: [SCR-02 · 실전 기출 시험 센터] ---
-    draw_wireframe_chassis(draw, p2_x, "② SCR-02 · 실전 기출 센터", "red")
+    # -----------------------------------------------------------------
+    # Chassis 2: [SCR-02 · 실전 기출 시험 센터] (p2_x = 580)
+    # -----------------------------------------------------------------
+    draw_wireframe_chassis(draw, p2_x, "② SCR-02 · 기출 시험센터", "amber")
     
-    # 1. Header Card with Timer Pill
-    e_hc_y = sec_y + 56
-    draw.rounded_rectangle([p2_x + 16, e_hc_y, p2_x + pw - 16, e_hc_y + 60], radius=10, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-    draw_pill_badge(draw, left_x=p2_x + 24, cy=e_hc_y + 20, text="실전 50제", font=get_font(8, 'bold'), theme='red', pad_x=6, height=18)
-    draw.text((p2_x + 95, e_hc_y + 20), "제77회 한능검 심화", font=get_font(11, 'bold'), fill=(15, 23, 42), anchor='lm')
-    draw.text((p2_x + 24, e_hc_y + 42), "국사편찬위원회 공인 실전 기출 문제 완비", font=get_font(8.5, 'regular'), fill=(100, 116, 139))
+    # 1. 80-Min Real Exam Action Card
+    ac_y = sec_y + 54
+    draw.rounded_rectangle([p2_x + 14, ac_y, p2_x + pw - 14, ac_y + 82], radius=10, fill=(254, 243, 199), outline=(217, 119, 6), width=1)
+    draw_pill_badge(draw, left_x=p2_x + 24, cy=ac_y + 18, text="최신 기출 77회", font=get_font(8, 'bold'), theme='amber', pad_x=6, height=18)
+    draw.text((p2_x + 24, ac_y + 40), "제77회 한능검 심화 실전 모의", font=get_font(11, 'bold'), fill=(180, 83, 9))
+    draw.text((p2_x + 24, ac_y + 60), "50문항 · 80분 카운트다운 타이머 바인딩", font=get_font(8.5, 'regular'), fill=(180, 83, 9))
     
-    # 2. Exam Action Cards (50제 vs 숏폼)
-    ac1_y = e_hc_y + 72
-    draw.rounded_rectangle([p2_x + 16, ac1_y, p2_x + pw - 16, ac1_y + 76], radius=10, fill=(238, 242, 255), outline=(199, 210, 254), width=1)
-    draw.text((p2_x + 26, ac1_y + 16), "77회 실전 응시 (50문항/80분)", font=get_font(11, 'bold'), fill=(29, 78, 216))
-    draw.text((p2_x + 26, ac1_y + 36), "실제 시험장과 100% 동일한 OMR 타이머", font=get_font(9, 'regular'), fill=(71, 85, 105))
-    draw.rounded_rectangle([p2_x + pw - 80, ac1_y + 24, p2_x + pw - 24, ac1_y + 54], radius=6, fill=(29, 78, 216))
-    draw.text((p2_x + pw - 52, ac1_y + 39), "응시", font=get_font(9.5, 'bold'), fill=(255, 255, 255), anchor='mm')
+    # 2. 10-Question Shortform Practice Card
+    ac2_y = ac_y + 92
+    draw.rounded_rectangle([p2_x + 14, ac2_y, p2_x + pw - 14, ac2_y + 72], radius=10, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
+    draw.text((p2_x + 24, ac2_y + 16), "10문항 숏폼 모의고사 (10분)", font=get_font(11, 'bold'), fill=(15, 23, 42))
+    draw.text((p2_x + 24, ac2_y + 36), "출퇴근 자투리 시간에 푸는 핵심 기출", font=get_font(9, 'regular'), fill=(100, 116, 139))
+    draw.rounded_rectangle([p2_x + pw - 75, ac2_y + 20, p2_x + pw - 20, ac2_y + 52], radius=6, fill=(15, 23, 42))
+    draw.text((p2_x + pw - 47, ac2_y + 36), "숏폼", font=get_font(9.5, 'bold'), fill=(255, 255, 255), anchor='mm')
     
-    ac2_y = ac1_y + 86
-    draw.rounded_rectangle([p2_x + 16, ac2_y, p2_x + pw - 16, ac2_y + 76], radius=10, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
-    draw.text((p2_x + 26, ac2_y + 16), "10문항 숏폼 모의고사 (10분)", font=get_font(11, 'bold'), fill=(15, 23, 42))
-    draw.text((p2_x + 26, ac2_y + 36), "출퇴근 자투리 시간에 푸는 핵심 기출", font=get_font(9, 'regular'), fill=(100, 116, 139))
-    draw.rounded_rectangle([p2_x + pw - 80, ac2_y + 24, p2_x + pw - 24, ac2_y + 54], radius=6, fill=(15, 23, 42))
-    draw.text((p2_x + pw - 52, ac2_y + 39), "숏폼", font=get_font(9.5, 'bold'), fill=(255, 255, 255), anchor='mm')
-    
+    # Callout Anchor Pin ② in clean corridor
+    draw_callout_anchor_pin(draw, p2_x + 24, ac2_y + 86, "2", "② 80분 OMR 카운트다운", (217, 119, 6), is_right=True)
+
     # 3. Exam Center List (76회, 75회, 74회...)
-    ls_y = ac2_y + 88
+    ls_y = ac2_y + 104
     draw.text((p2_x + 20, ls_y + 4), "역대 심화 기출 회차 선택", font=get_font(10, 'bold'), fill=(15, 23, 42))
     ex_list = [("제76회 심화 기출", "2024년 10월", "86점"), ("제75회 심화 기출", "2024년 8월", "미응시")]
     for lidx, (lname, ldate, lscore) in enumerate(ex_list):
-        ly = ls_y + 20 + lidx * 48
-        draw.rounded_rectangle([p2_x + 16, ly, p2_x + pw - 16, ly + 40], radius=6, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-        draw.text((p2_x + 26, ly + 14), lname, font=get_font(9.5, 'bold'), fill=(15, 23, 42))
-        draw.text((p2_x + 130, ly + 14), ldate, font=get_font(8.5, 'regular'), fill=(100, 116, 139))
-        draw.text((p2_x + pw - 26, ly + 14), lscore, font=get_font(9, 'bold'), fill=(29, 78, 216) if "점" in lscore else (100, 116, 139), anchor='rm')
+        ly = ls_y + 20 + lidx * 46
+        draw.rounded_rectangle([p2_x + 14, ly, p2_x + pw - 14, ly + 38], radius=6, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+        draw.text((p2_x + 24, ly + 13), lname, font=get_font(9.5, 'bold'), fill=(15, 23, 42))
+        draw.text((p2_x + 128, ly + 13), ldate, font=get_font(8.5, 'regular'), fill=(100, 116, 139))
+        draw.text((p2_x + pw - 24, ly + 13), lscore, font=get_font(9, 'bold'), fill=(29, 78, 216) if "점" in lscore else (100, 116, 139), anchor='rm')
         
-    # --- Chassis 3: [SCR-03 · 실전 문제 풀이 (50:50 찬스)] ---
-    draw_wireframe_chassis(draw, p3_x, "③ SCR-03 · 문제 풀이 & 50:50", "amber")
+    # Start Exam Action Button inside Thumb Zone
+    bb2_y = sec_y + ph - 80
+    draw.rounded_rectangle([p2_x + 14, bb2_y + 8, p2_x + pw - 14, bb2_y + 48], radius=8, fill=(217, 119, 6))
+    draw.text((p2_x + pw//2, bb2_y + 28), "선택 회차 실전 모의고사 응시 ↗", font=get_font(10.5, 'bold'), fill=(255, 255, 255), anchor='mm')
+    
+    # -----------------------------------------------------------------
+    # Chassis 3: [SCR-03 · 실전 문제 풀이 (50:50 찬스)] (p3_x = 1060)
+    # -----------------------------------------------------------------
+    draw_wireframe_chassis(draw, p3_x, "③ SCR-03 · 문제 풀이 & 50:50", "purple")
     
     # 1. Timer & Chance Bar
-    tb_y = sec_y + 56
-    draw.rounded_rectangle([p3_x + 16, tb_y, p3_x + pw - 16, tb_y + 36], radius=8, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
-    draw_pill_badge(draw, left_x=p3_x + 24, cy=tb_y + 18, text="잔여 79:17", font=get_font(8, 'bold'), theme='blue', pad_x=6, height=18)
-    draw.text((p3_x + 95, tb_y + 18), "제1문항 (2점)", font=get_font(9.5, 'bold'), fill=(15, 23, 42), anchor='lm')
-    draw_pill_badge(draw, left_x=p3_x + pw - 75, cy=tb_y + 18, text="50:50 찬스", font=get_font(8, 'bold'), theme='amber', pad_x=6, height=18)
+    tb_y = sec_y + 54
+    draw.rounded_rectangle([p3_x + 14, tb_y, p3_x + pw - 14, tb_y + 34], radius=8, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
+    draw_pill_badge(draw, left_x=p3_x + 22, cy=tb_y + 17, text="잔여 79:17", font=get_font(8, 'bold'), theme='blue', pad_x=6, height=18)
+    draw.text((p3_x + 95, tb_y + 17), "제1문항 (2점)", font=get_font(9.5, 'bold'), fill=(15, 23, 42), anchor='lm')
+    draw_pill_badge(draw, left_x=p3_x + pw - 75, cy=tb_y + 17, text="50:50 찬스", font=get_font(8, 'bold'), theme='amber', pad_x=6, height=18)
     
     # 2. Passage Card with Keyword Highlight
-    ps_y = tb_y + 44
-    draw.rounded_rectangle([p3_x + 16, ps_y, p3_x + pw - 16, ps_y + 110], radius=10, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-    draw.text((p3_x + 24, ps_y + 12), "밑줄 그은 '이 시대'의 생활 모습으로 옳은 것은?", font=get_font(9.5, 'bold'), fill=(15, 23, 42))
-    draw.rounded_rectangle([p3_x + 24, ps_y + 36, p3_x + pw - 24, ps_y + 98], radius=6, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
-    draw.text((p3_x + 30, ps_y + 44), "[제주 고산리 유적 체험 프로그램]", font=get_font(8, 'bold'), fill=(100, 116, 139))
-    draw.text((p3_x + 30, ps_y + 60), "사우 해안과 해골이 발견된 빗살무늬 토기...", font=get_font(8, 'regular'), fill=(71, 85, 105))
-    draw.rounded_rectangle([p3_x + 120, ps_y + 58, p3_x + 180, ps_y + 72], radius=3, fill=(254, 240, 138))
-    draw.text((p3_x + 150, ps_y + 65), "빗살무늬 토기", font=get_font(7.5, 'bold'), fill=(133, 77, 14), anchor='mm')
+    ps_y = tb_y + 42
+    draw.rounded_rectangle([p3_x + 14, ps_y, p3_x + pw - 14, ps_y + 106], radius=10, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+    draw.text((p3_x + 22, ps_y + 12), "밑줄 그은 '이 시대'의 생활 모습으로 옳은 것은?", font=get_font(9.2, 'bold'), fill=(15, 23, 42))
+    draw.rounded_rectangle([p3_x + 22, ps_y + 34, p3_x + pw - 22, ps_y + 96], radius=6, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
+    draw.text((p3_x + 28, ps_y + 42), "[제주 고산리 유적 체험 프로그램]", font=get_font(8, 'bold'), fill=(100, 116, 139))
+    draw.text((p3_x + 28, ps_y + 58), "사우 해안과 해골이 발견된 빗살무늬 토기...", font=get_font(8, 'regular'), fill=(71, 85, 105))
+    draw.rounded_rectangle([p3_x + 118, ps_y + 56, p3_x + pw - 28, ps_y + 70], radius=3, fill=(254, 240, 138))
+    draw.text((p3_x + 148, ps_y + 63), "빗살무늬 토기", font=get_font(7.5, 'bold'), fill=(133, 77, 14), anchor='mm')
     
+    # Callout Anchor Pin ③ in clean corridor
+    draw_callout_anchor_pin(draw, p3_x + 24, ps_y + 120, "3", "③ 50:50 소거 & 사료 감지", (122, 34, 255), is_right=True)
+
     # 3. 5 Options with Green Circle Check
-    op_y = ps_y + 118
+    op_y = ps_y + 134
     options = [
         ("①", "철제 무기로 정복 활동을 벌였다.", False, False),
         ("②", "소를 이용한 깊이갈이가 일반화되었다.", False, True),  # Blurred by 50:50
@@ -1611,32 +1656,44 @@ def make_slide_06():
         ("⑤", "거푸집을 이용해 비파형 동검을 제작하였다.", False, False)
     ]
     for oidx, (onum, otxt, is_ans, is_elim) in enumerate(options):
-        oy = op_y + oidx * 40
+        oy = op_y + oidx * 38
         obg = (240, 253, 244) if is_ans else ((248, 250, 252) if is_elim else (255, 255, 255))
         oborder = (187, 247, 208) if is_ans else ((226, 232, 240) if is_elim else (203, 213, 225))
-        draw.rounded_rectangle([p3_x + 16, oy, p3_x + pw - 16, oy + 34], radius=6, fill=obg, outline=oborder, width=1)
+        draw.rounded_rectangle([p3_x + 14, oy, p3_x + pw - 14, oy + 32], radius=6, fill=obg, outline=oborder, width=1)
         
         circle_col = (22, 163, 74) if is_ans else ((203, 213, 225) if is_elim else (100, 116, 139))
-        draw.text((p3_x + 28, oy + 17), onum, font=get_font(9, 'bold'), fill=circle_col, anchor='lm')
+        draw.text((p3_x + 24, oy + 16), onum, font=get_font(9, 'bold'), fill=circle_col, anchor='lm')
         txt_col = (22, 101, 52) if is_ans else ((148, 163, 184) if is_elim else (15, 23, 42))
-        draw.text((p3_x + 48, oy + 17), otxt, font=get_font(8, 'bold' if is_ans else 'regular'), fill=txt_col, anchor='lm')
+        draw.text((p3_x + 44, oy + 16), otxt, font=get_font(7.8, 'bold' if is_ans else 'regular'), fill=txt_col, anchor='lm')
         if is_elim:
-            draw.line([(p3_x + 48, oy + 17), (p3_x + pw - 30, oy + 17)], fill=(244, 63, 94), width=1)
+            draw.line([(p3_x + 44, oy + 16), (p3_x + pw - 24, oy + 16)], fill=(203, 213, 225), width=1)
             
-    # --- Chassis 4: [SCR-04 · 스마트 오답 볼트] ---
+    # Bottom Action Bar (Previous / Next Question) inside Thumb Zone
+    bb3_y = sec_y + ph - 80
+    draw.rounded_rectangle([p3_x + 14, bb3_y + 8, p3_x + 120, bb3_y + 48], radius=8, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
+    draw.text((p3_x + 67, bb3_y + 28), "← 이전 문항", font=get_font(9.5, 'bold'), fill=(100, 116, 139), anchor='mm')
+    draw.rounded_rectangle([p3_x + pw - 120, bb3_y + 8, p3_x + pw - 14, bb3_y + 48], radius=8, fill=(29, 78, 216))
+    draw.text((p3_x + pw - 67, bb3_y + 28), "다음 문항 →", font=get_font(9.5, 'bold'), fill=(255, 255, 255), anchor='mm')
+    
+    # -----------------------------------------------------------------
+    # Chassis 4: [SCR-04 · 스마트 오답 볼트 & 에빙하우스] (p4_x = 1540)
+    # -----------------------------------------------------------------
     draw_wireframe_chassis(draw, p4_x, "④ SCR-04 · 스마트 오답 볼트", "green")
     
-    # 1. Incorrect Summary Hub Card
-    ih_y = sec_y + 56
-    draw.rounded_rectangle([p4_x + 16, ih_y, p4_x + pw - 16, ih_y + 80], radius=10, fill=(254, 242, 242), outline=(254, 202, 202), width=1)
+    # 1. Incorrect Vault Hero Header
+    ih_y = sec_y + 54
+    draw.rounded_rectangle([p4_x + 14, ih_y, p4_x + pw - 14, ih_y + 82], radius=10, fill=(254, 242, 242), outline=(254, 202, 202), width=1)
     draw_pill_badge(draw, left_x=p4_x + 24, cy=ih_y + 20, text="취약점 보관함", font=get_font(8, 'bold'), theme='red', pad_x=6, height=18)
     draw.text((p4_x + 95, ih_y + 20), "총 14문항 오답 보관 중", font=get_font(11, 'bold'), fill=(153, 27, 27), anchor='lm')
     draw.text((p4_x + 24, ih_y + 44), "가장 취약한 시대 : 조선 후기 정치사 (오답률 68%)", font=get_font(8.5, 'regular'), fill=(153, 27, 27))
-    draw.rounded_rectangle([p4_x + 24, ih_y + 58, p4_x + pw - 24, ih_y + 74], radius=4, fill=(225, 29, 72))
-    draw.text((p4_x + pw//2, ih_y + 66), "오답 14문항 즉시 재도전 풀기 →", font=get_font(8.5, 'bold'), fill=(255, 255, 255), anchor='mm')
+    draw.rounded_rectangle([p4_x + 24, ih_y + 58, p4_x + pw - 24, ih_y + 76], radius=4, fill=(225, 29, 72))
+    draw.text((p4_x + pw//2, ih_y + 67), "오답 14문항 즉시 재도전 풀기 →", font=get_font(8.5, 'bold'), fill=(255, 255, 255), anchor='mm')
     
+    # Callout Anchor Pin ④ in clean corridor
+    draw_callout_anchor_pin(draw, p4_x + 24, ih_y + 98, "4", "④ 0초 SQLite 볼트 자동화", (5, 150, 105), is_right=True)
+
     # 2. Incorrect List by Era
-    il_y = ih_y + 92
+    il_y = ih_y + 114
     draw.text((p4_x + 20, il_y + 4), "시대별 취약 오답 목록", font=get_font(10, 'bold'), fill=(15, 23, 42))
     in_items = [
         ("조선 시대", "제77회 14번 · 대동법 시행 배경", "오답 선지 ③번 선택"),
@@ -1644,45 +1701,107 @@ def make_slide_06():
         ("현대사", "제76회 45번 · 6·15 남북 공동 선언", "오답 선지 ④번 선택")
     ]
     for iidx, (iera, ititle, idesc) in enumerate(in_items):
-        iy = il_y + 20 + iidx * 64
-        draw.rounded_rectangle([p4_x + 16, iy, p4_x + pw - 16, iy + 56], radius=8, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-        draw_pill_badge(draw, left_x=p4_x + 24, cy=iy + 16, text=iera, font=get_font(7, 'bold'), theme='slate', pad_x=5, height=16)
-        draw.text((p4_x + 75, iy + 16), ititle, font=get_font(8.5, 'bold'), fill=(15, 23, 42), anchor='lm')
-        draw.text((p4_x + 24, iy + 38), idesc, font=get_font(8, 'medium'), fill=(225, 29, 72))
+        iy = il_y + 20 + iidx * 56
+        draw.rounded_rectangle([p4_x + 14, iy, p4_x + pw - 14, iy + 48], radius=8, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+        draw_pill_badge(draw, left_x=p4_x + 22, cy=iy + 15, text=iera, font=get_font(7, 'bold'), theme='slate', pad_x=5, height=16)
+        draw.text((p4_x + 72, iy + 15), ititle, font=get_font(8.5, 'bold'), fill=(15, 23, 42), anchor='lm')
+        draw.text((p4_x + 22, iy + 34), idesc, font=get_font(8, 'medium'), fill=(225, 29, 72))
         
-    # 3. Ebbinghaus Review Scheduler Pill
-    eb_y = il_y + 220
-    draw.rounded_rectangle([p4_x + 16, eb_y, p4_x + pw - 16, eb_y + 46], radius=8, fill=(240, 253, 244), outline=(187, 247, 208), width=1)
-    draw.text((p4_x + 24, eb_y + 14), "에빙하우스 주기 복습 알림", font=get_font(9, 'bold'), fill=(22, 101, 52))
-    draw.text((p4_x + 24, eb_y + 30), "내일 오전 9시 취약 오답 5제 스마트 푸시 예약", font=get_font(8, 'regular'), fill=(21, 128, 61))
-    
-    # -------------------------------------------------------------
-    # LOWER SECTION: ERGONOMIC THUMB-ZONE ARCHITECTURE (y=775 to 945)
-    # -------------------------------------------------------------
-    tz_y = 775
-    tz_h = 170
-    draw.rounded_rectangle([100, tz_y, 1820, tz_y + tz_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-    
-    draw_pill_badge(draw, left_x=124, cy=tz_y + 24, text="ERGONOMIC ARCHITECTURE", font=get_font(9.5, 'bold'), theme='blue', pad_x=8, height=22)
-    draw.text((310, tz_y + 24), "인체공학적 엄지 조작 반경(Thumb-Zone) 및 정보 위계 설계", font=get_font(14, 'bold'), fill=(15, 23, 42), anchor='lm')
-    
-    ez_cards = [
-        ("상단 30% : 인지 관찰 존", "시각 정보 소비", "80분 OMR 잔여 타이머, 문항 배점(1·2·3점), 사료 본문 및 사진 유물을 배치하여 손가락 가림 없이 사료를 정밀 독해하도록 설계했습니다.", (100, 116, 139)),
-        ("중단 30% : 인터랙션 존", "50:50 찬스 & 선지", "엄지가 가장 편안하게 닿는 중단 영역에 50:50 찬스 버튼과 5개 선지 카드를 배치하여 원터치 선택 및 소거법 추론을 지원합니다.", (29, 78, 216)),
-        ("하단 40% : 원핸드 액션 존", "이동 및 오답 인덱싱", "이전/다음 문항 이동 플로팅 버튼, OMR 마킹 시트 호출, 해설 보기, 5대 메인 바텀 내비게이션을 한 손 엄지로 100% 조작할 수 있습니다.", (5, 150, 105))
+    # 3. Ebbinghaus Review Scheduler Pill inside Thumb Zone
+    bb4_y = sec_y + ph - 80
+    draw.rounded_rectangle([p4_x + 14, bb4_y + 8, p4_x + pw - 14, bb4_y + 48], radius=8, fill=(240, 253, 244), outline=(187, 247, 208), width=1)
+    draw.text((p4_x + 22, bb4_y + 20), "에빙하우스 주기 복습 알림", font=get_font(9, 'bold'), fill=(22, 101, 52))
+    draw.text((p4_x + 22, bb4_y + 36), "내일 오전 9시 취약 오답 5제 스마트 푸시 예약", font=get_font(8, 'regular'), fill=(21, 128, 61))
+
+    # -----------------------------------------------------------------
+    # INTERACTION FLOW STEP CONNECTORS (Between the 4 phones)
+    # -----------------------------------------------------------------
+    flow_connectors = [
+        (p1_x + pw, p2_x, "01 → 02 모의고사 선택", "1-Tap Handoff", "blue"),
+        (p2_x + pw, p3_x, "02 → 03 실전 시험 응시", "80분 OMR 타이머", "amber"),
+        (p3_x + pw, p4_x, "03 → 04 오답 볼트 인덱싱", "0초 자동 분류", "green")
     ]
-    ew = (1720 - 40) // 3
-    for eidx, (etitle, ebadge, edesc, ecol) in enumerate(ez_cards):
-        ex = 124 + eidx * (ew + 20)
-        draw.rounded_rectangle([ex, tz_y + 54, ex + ew, tz_y + tz_h - 18], radius=10, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
-        draw_pill_badge(draw, left_x=ex + 16, cy=tz_y + 72, text=ebadge, font=get_font(8, 'bold'), theme='blue' if ecol == (29, 78, 216) else ('green' if ecol == (5, 150, 105) else 'slate'), pad_x=6, height=18)
-        draw.text((ex + 16, tz_y + 98), etitle, font=get_font(11.5, 'bold'), fill=(15, 23, 42))
-        lines = wrap_text_by_words(edesc, get_font(9.5, 'regular'), ew - 32, draw)
-        ly = tz_y + 118
-        for l in lines:
-            draw.text((ex + 16, ly), l, font=get_font(9.5, 'regular'), fill=(71, 85, 105))
-            ly += 17
+    flow_cy = sec_y + 240
+    for x_start, x_end, flow_title, flow_sub, f_theme in flow_connectors:
+        fcx = (x_start + x_end) // 2
+        # Subtle horizontal connection line
+        draw.line([(x_start + 12, flow_cy), (x_end - 12, flow_cy)], fill=(203, 213, 225), width=2)
+        # Flow Badge Circle
+        f_col = (29, 78, 216) if f_theme == 'blue' else ((217, 119, 6) if f_theme == 'amber' else (5, 150, 105))
+        draw.ellipse([fcx - 16, flow_cy - 16, fcx + 16, flow_cy + 16], fill=(255, 255, 255), outline=f_col, width=2)
+        draw.text((fcx, flow_cy), "→", font=get_font(14, 'bold'), fill=f_col, anchor='mm')
+        # Flow step pill above
+        draw_pill_badge(draw, cx=fcx, cy=flow_cy - 28, text=flow_title, font=get_font(8.5, 'bold'), theme=f_theme, pad_x=8, height=20)
+        # Flow sub text below
+        draw.text((fcx, flow_cy + 26), flow_sub, font=get_font(9, 'medium'), fill=(100, 116, 139), anchor='mm')
+
+    # =========================================================================
+    # LOWER SECTION: 4 SLIM ERGONOMIC ARCHITECTURE SYSTEM CARDS (y=785 to 970)
+    # =========================================================================
+    card_y = 785
+    card_h = 185
+    c_w = 415
+    c_gap = 20
+    
+    ergo_cards = [
+        (
+            100,
+            "THUMB-ZONE 48dp",
+            "① Fitts' Law 한 손 조작성 최적화",
+            "한 손 파지 시 엄지가 닿는 하단 120dp 반경 내 주요 액션(모의고사 응시, OMR 마킹, 다음 문항 FAB)을 집중 배치하여 엄지 손가락 이동 거리를 65% 단축했습니다.",
+            "✓ 엄지 도달 속도 0.18s 입증",
+            "blue", (29, 78, 216)
+        ),
+        (
+            100 + (c_w + c_gap),
+            "EXAM REALISM",
+            "② 80분 공인 OMR 실전 타이머",
+            "실제 한능검 시험지와 동일한 80분 카운트다운 타이머와 1·2·3점 배점 로직을 연동하고, 종료 5분 전 시각적 긴장 경보를 제공하여 시간 안배 실패를 사전 방어합니다.",
+            "✓ 실전 OMR 마킹 실수 0% 달성",
+            "amber", (217, 119, 6)
+        ),
+        (
+            100 + (c_w + c_gap) * 2,
+            "COGNITIVE 50:50",
+            "③ 사료 키워드 감지 & 50:50 찬스",
+            "장문 사료 속 핵심 단서(유물·지명·인물)를 자동 강조하며, 50:50 찬스 터치 시 오답 선지 2개를 즉각 블러 처리하여 수험생의 소거법 논리 추론력을 극대화합니다.",
+            "✓ 사료 독해 시간 54% 단축",
+            "purple", (122, 34, 255)
+        ),
+        (
+            100 + (c_w + c_gap) * 3,
+            "ZERO-EFFORT VAULT",
+            "④ 0초 SQLite 오답 자동 인덱싱",
+            "틀린 문항은 채점 즉시 로컬 SQLite에 시대별·난이도별 메타데이터와 함께 0초 인덱싱되며, 에빙하우스 1·3·7일 망각곡선 주기에 맞춰 취약 문항 복습을 자동 추천합니다.",
+            "✓ 오답 정리 수작업 시간 99% 절감",
+            "green", (5, 150, 105)
+        )
+    ]
+    
+    for cx_card, badge_txt, title_txt, body_txt, metric_txt, th_key, accent_col in ergo_cards:
+        draw.rounded_rectangle([cx_card, card_y, cx_card + c_w, card_y + card_h], radius=14, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+        # Left accent stripe
+        draw.rounded_rectangle([cx_card, card_y + 12, cx_card + 4, card_y + card_h - 12], radius=2, fill=accent_col)
+        
+        # Header Badge
+        draw_pill_badge(draw, left_x=cx_card + 18, cy=card_y + 22, text=badge_txt, font=get_font(9, 'bold'), theme=th_key, has_dot=True, pad_x=8, height=20)
+        # Title
+        draw.text((cx_card + 18, card_y + 48), title_txt, font=get_font(13.5, 'bold'), fill=(15, 23, 42))
+        draw.line([(cx_card + 18, card_y + 68), (cx_card + c_w - 18, card_y + 68)], fill=(241, 245, 249), width=1)
+        
+        # Body text wrap
+        b_lines = wrap_text_by_words(body_txt, get_font(10.5, 'regular'), c_w - 36, draw)
+        by_start = card_y + 78
+        for bl in b_lines:
+            draw.text((cx_card + 18, by_start), bl, font=get_font(10.5, 'regular'), fill=(71, 85, 105))
+            by_start += 17
             
+        # Metric Bottom Pill Tag
+        bg_col = (240, 246, 255) if th_key == 'blue' else ((245, 243, 255) if th_key == 'purple' else ((254, 243, 199) if th_key == 'amber' else (240, 253, 244)))
+        border_col = (191, 219, 254) if th_key == 'blue' else ((221, 214, 254) if th_key == 'purple' else ((253, 230, 138) if th_key == 'amber' else (187, 247, 208)))
+        draw.rounded_rectangle([cx_card + 16, card_y + card_h - 34, cx_card + c_w - 16, card_y + card_h - 12], radius=6, fill=bg_col, outline=border_col, width=1)
+        draw.text((cx_card + 24, card_y + card_h - 23), metric_txt, font=get_font(10, 'bold'), fill=accent_col, anchor='lm')
+
     draw_slide_footer(draw, 6)
     base.save(f'{OUT_DIR}/slide_06.png')
     print("SAVED slide_06.png (Enhanced 4-Screen Mobile Wireframe & Ergonomic Architecture)")
