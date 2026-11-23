@@ -1245,12 +1245,12 @@ class _CanvasEditorState extends State<CanvasEditor> {
     widget.onSlideModified();
   }
 
-  Widget _buildGroup(DeckElement elem) {
+    Widget _buildGroup(DeckElement elem) {
     if (elem.children.isEmpty) {
       return DragTarget<DeckElement>(
         onWillAcceptWithDetails: (details) => details.data.id != elem.id,
         onAcceptWithDetails: (details) {
-          _reorderOrMoveChild(elem, details.data, elem.children.length);
+          _reorderOrMoveChild(elem, details.data, 0);
         },
         builder: (context, candidateData, rejectedData) {
           final isHovered = candidateData.isNotEmpty;
@@ -1275,6 +1275,17 @@ class _CanvasEditorState extends State<CanvasEditor> {
     }
 
     if (elem.autoLayoutDirection == AutoLayoutDirection.horizontal) {
+      final childrenList = <Widget>[];
+      // 1. Drop target before the first item (Index 0)
+      childrenList.add(_buildBetweenGapDropZone(elem, 0, isHorizontal: true));
+
+      for (int idx = 0; idx < elem.children.length; idx++) {
+        // Child item wrapper
+        childrenList.add(_buildAutoLayoutChildWrapper(elem, elem.children[idx], idx));
+        // Drop target between item idx and idx+1 (Index idx + 1)
+        childrenList.add(_buildBetweenGapDropZone(elem, idx + 1, isHorizontal: true));
+      }
+
       return Padding(
         padding: EdgeInsets.all(elem.autoLayoutPadding),
         child: SingleChildScrollView(
@@ -1284,15 +1295,22 @@ class _CanvasEditorState extends State<CanvasEditor> {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              for (int idx = 0; idx < elem.children.length; idx++) ...[
-                _buildAutoLayoutChildWrapper(elem, elem.children[idx], idx),
-              ],
-            ],
+            children: childrenList,
           ),
         ),
       );
     } else if (elem.autoLayoutDirection == AutoLayoutDirection.vertical) {
+      final childrenList = <Widget>[];
+      // 1. Drop target before the first item (Index 0)
+      childrenList.add(_buildBetweenGapDropZone(elem, 0, isHorizontal: false));
+
+      for (int idx = 0; idx < elem.children.length; idx++) {
+        // Child item wrapper
+        childrenList.add(_buildAutoLayoutChildWrapper(elem, elem.children[idx], idx));
+        // Drop target between item idx and idx+1 (Index idx + 1)
+        childrenList.add(_buildBetweenGapDropZone(elem, idx + 1, isHorizontal: false));
+      }
+
       return Padding(
         padding: EdgeInsets.all(elem.autoLayoutPadding),
         child: SingleChildScrollView(
@@ -1301,11 +1319,7 @@ class _CanvasEditorState extends State<CanvasEditor> {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              for (int idx = 0; idx < elem.children.length; idx++) ...[
-                _buildAutoLayoutChildWrapper(elem, elem.children[idx], idx),
-              ],
-            ],
+            children: childrenList,
           ),
         ),
       );
@@ -1345,9 +1359,73 @@ class _CanvasEditorState extends State<CanvasEditor> {
     );
   }
 
+  /// Gap Drop Zone between elements for Figma-style precision insertion
+  Widget _buildBetweenGapDropZone(DeckElement parent, int insertIndex, {required bool isHorizontal}) {
+    final gapSize = (parent.autoLayoutSpacing > 8.0 ? parent.autoLayoutSpacing : 12.0);
+
+    return DragTarget<DeckElement>(
+      onWillAcceptWithDetails: (details) => true,
+      onAcceptWithDetails: (details) {
+        _reorderOrMoveChild(parent, details.data, insertIndex);
+      },
+      builder: (context, candidateData, rejectedData) {
+        final isHovered = candidateData.isNotEmpty;
+
+        if (isHorizontal) {
+          return AnimatedContainer(
+            duration: const Duration(milliseconds: 150),
+            width: isHovered ? (gapSize + 16.0) : gapSize,
+            height: parent.height > 30 ? (parent.height * 0.8) : 32.0,
+            alignment: Alignment.center,
+            child: isHovered
+                ? Container(
+                    width: 4,
+                    height: double.infinity,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF0052FF),
+                      borderRadius: BorderRadius.circular(2),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color(0x660052FF),
+                          blurRadius: 8,
+                          spreadRadius: 2,
+                        ),
+                      ],
+                    ),
+                  )
+                : const SizedBox.shrink(),
+          );
+        } else {
+          return AnimatedContainer(
+            duration: const Duration(milliseconds: 150),
+            height: isHovered ? (gapSize + 16.0) : gapSize,
+            width: parent.width > 50 ? (parent.width * 0.9) : 60.0,
+            alignment: Alignment.center,
+            child: isHovered
+                ? Container(
+                    height: 4,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF0052FF),
+                      borderRadius: BorderRadius.circular(2),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color(0x660052FF),
+                          blurRadius: 8,
+                          spreadRadius: 2,
+                        ),
+                      ],
+                    ),
+                  )
+                : const SizedBox.shrink(),
+          );
+        }
+      },
+    );
+  }
+
   Widget _buildAutoLayoutChildWrapper(DeckElement parent, DeckElement child, int index) {
     final isChildSelected = widget.selectedElement?.id == child.id;
-    final isHorizontal = parent.autoLayoutDirection == AutoLayoutDirection.horizontal;
 
     return DragTarget<DeckElement>(
       onWillAcceptWithDetails: (details) => details.data.id != child.id,
@@ -1372,42 +1450,39 @@ class _CanvasEditorState extends State<CanvasEditor> {
           ),
         );
 
-        return Padding(
-          padding: EdgeInsets.only(
-            right: isHorizontal ? parent.autoLayoutSpacing : 0.0,
-            bottom: !isHorizontal ? parent.autoLayoutSpacing : 0.0,
-          ),
-          child: Draggable<DeckElement>(
-            data: child,
-            feedback: Material(
-              color: Colors.transparent,
-              elevation: 6,
-              child: Opacity(
-                opacity: 0.85,
-                child: Container(
-                  padding: const EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.9),
-                    border: Border.all(color: const Color(0xFF0052FF), width: 2),
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: SizedBox(
-                    width: child.width,
-                    height: child.height,
-                    child: _buildInnerElement(child),
-                  ),
+        return Draggable<DeckElement>(
+          data: child,
+          feedback: Material(
+            color: Colors.transparent,
+            elevation: 8,
+            child: Opacity(
+              opacity: 0.9,
+              child: Container(
+                padding: const EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(color: const Color(0xFF0052FF), width: 2),
+                  borderRadius: BorderRadius.circular(6),
+                  boxShadow: const [
+                    BoxShadow(color: Color(0x33000000), blurRadius: 16, offset: Offset(0, 6)),
+                  ],
+                ),
+                child: SizedBox(
+                  width: child.width,
+                  height: child.height,
+                  child: _buildInnerElement(child),
                 ),
               ),
             ),
-            childWhenDragging: Opacity(
-              opacity: 0.25,
-              child: contentWidget,
-            ),
-            child: GestureDetector(
-              onTap: () => widget.onElementSelected(child),
-              behavior: HitTestBehavior.opaque,
-              child: contentWidget,
-            ),
+          ),
+          childWhenDragging: Opacity(
+            opacity: 0.2,
+            child: contentWidget,
+          ),
+          child: GestureDetector(
+            onTap: () => widget.onElementSelected(child),
+            behavior: HitTestBehavior.opaque,
+            child: contentWidget,
           ),
         );
       },
