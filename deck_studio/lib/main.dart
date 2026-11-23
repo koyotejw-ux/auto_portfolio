@@ -10,6 +10,8 @@ import 'widgets/element_library_modal.dart';
 import 'widgets/design_system_library_modal.dart';
 import 'widgets/fullscreen_export_modal.dart';
 import 'widgets/figma_layers_panel.dart';
+import 'widgets/figma_assets_panel.dart';
+import 'widgets/icon_drawing_modal.dart';
 
 void main() {
   runApp(const DeckStudioApp());
@@ -57,6 +59,7 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
   DeckElement? _clipboardElement;
   final FocusNode _keyboardFocusNode = FocusNode();
   bool _showLayoutGrid = false;
+  int _leftSidebarTabIndex = 0; // 0: Layers, 1: Assets (Design System)
 
   @override
   void initState() {
@@ -899,22 +902,112 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
                   // Left 1: Slide Thumbnails Navigator (Pages)
                   _buildSlideNavigator(),
 
-                  // Left 2: Figma Object Layers Tree
-                  FigmaLayersPanel(
-                    slide: _currentSlide,
-                    selectedElement: _selectedElement,
-                    onElementSelected: (elem) {
-                      setState(() => _selectedElement = elem);
-                    },
-                    onSlideModified: () {
-                      _recordUndoState();
-                      setState(() {});
-                    },
-                    onGroupSelected: _groupSelected,
-                    onUngroupSelected: _ungroupSelected,
-                    onCopySelected: _copySelected,
-                    onPasteSelected: _pasteClipboard,
-                    canPaste: _clipboardElement != null,
+                  // Left 2: Figma Object Layers Tree OR Assets / Design System Panel
+                  Container(
+                    width: 250,
+                    decoration: const BoxDecoration(
+                      color: Color(0xFF1E1E1E),
+                      border: Border(right: BorderSide(color: Color(0xFF2C2C2C))),
+                    ),
+                    child: Column(
+                      children: [
+                        // UI3 Left Sidebar Tabs: Layers / Assets
+                        Container(
+                          height: 38,
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: const BoxDecoration(
+                            border: Border(bottom: BorderSide(color: Color(0xFF2C2C2C))),
+                          ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: InkWell(
+                                  borderRadius: BorderRadius.circular(4),
+                                  onTap: () => setState(() => _leftSidebarTabIndex = 0),
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      color: _leftSidebarTabIndex == 0 ? const Color(0xFF2C2C2C) : Colors.transparent,
+                                      borderRadius: BorderRadius.circular(4),
+                                    ),
+                                    child: Text(
+                                      'Layers',
+                                      style: TextStyle(
+                                        color: _leftSidebarTabIndex == 0 ? Colors.white : const Color(0xFFA3A3A3),
+                                        fontSize: 11,
+                                        fontWeight: _leftSidebarTabIndex == 0 ? FontWeight.bold : FontWeight.normal,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 4),
+                              Expanded(
+                                child: InkWell(
+                                  borderRadius: BorderRadius.circular(4),
+                                  onTap: () => setState(() => _leftSidebarTabIndex = 1),
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      color: _leftSidebarTabIndex == 1 ? const Color(0xFF2C2C2C) : Colors.transparent,
+                                      borderRadius: BorderRadius.circular(4),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.widgets_outlined,
+                                          size: 12,
+                                          color: _leftSidebarTabIndex == 1 ? const Color(0xFF38BDF8) : const Color(0xFFA3A3A3),
+                                        ),
+                                        const SizedBox(width: 4),
+                                        Text(
+                                          'Assets',
+                                          style: TextStyle(
+                                            color: _leftSidebarTabIndex == 1 ? Colors.white : const Color(0xFFA3A3A3),
+                                            fontSize: 11,
+                                            fontWeight: _leftSidebarTabIndex == 1 ? FontWeight.bold : FontWeight.normal,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        // Tab Content Body
+                        Expanded(
+                          child: _leftSidebarTabIndex == 0
+                              ? FigmaLayersPanel(
+                                  slide: _currentSlide,
+                                  selectedElement: _selectedElement,
+                                  onElementSelected: (elem) {
+                                    setState(() => _selectedElement = elem);
+                                  },
+                                  onSlideModified: () {
+                                    _recordUndoState();
+                                    setState(() {});
+                                  },
+                                  onGroupSelected: _groupSelected,
+                                  onUngroupSelected: _ungroupSelected,
+                                  onCopySelected: _copySelected,
+                                  onPasteSelected: _pasteClipboard,
+                                  canPaste: _clipboardElement != null,
+                                )
+                              : FigmaAssetsPanel(
+                                  onAddElement: (newElem) {
+                                    _recordUndoState();
+                                    setState(() {
+                                      _currentSlide.elements.add(newElem);
+                                      _selectedElement = newElem;
+                                    });
+                                  },
+                                ),
+                        ),
+                      ],
+                    ),
                   ),
 
                   // Center: 1920x1080 Interactive Canvas

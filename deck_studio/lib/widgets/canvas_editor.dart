@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import '../models/deck_model.dart';
+import 'figma_assets_panel.dart';
 
 class CanvasEditor extends StatefulWidget {
   final DeckSlide slide;
@@ -169,24 +170,72 @@ class _CanvasEditorState extends State<CanvasEditor> {
                     child: Stack(
                       clipBehavior: Clip.none,
                       children: [
-                        // Slide Background Click to Deselect & Drop Target from AutoLayout to Canvas
+                        // Slide Background Click to Deselect & Drop Target from AutoLayout to Canvas & Assets Drop
                         Positioned.fill(
-                          child: DragTarget<DeckElement>(
+                          child: DragTarget<Object>(
                             onWillAcceptWithDetails: (details) => true,
                             onAcceptWithDetails: (details) {
-                              setState(() {
-                                final dropped = details.data;
-                                final oldParent = _findParentOf(widget.slide.elements, dropped);
-                                if (oldParent != null) {
-                                  oldParent.children.removeWhere((c) => c.id == dropped.id);
-                                  oldParent.applyAutoLayout();
-                                  dropped.x = (oldParent.x + dropped.x).clamp(50.0, 1800.0);
-                                  dropped.y = (oldParent.y + dropped.y + 60.0).clamp(50.0, 1000.0);
-                                  widget.slide.elements.add(dropped);
-                                  widget.onElementSelected(dropped);
-                                }
-                              });
-                              widget.onSlideModified();
+                              final droppedData = details.data;
+                              if (droppedData is DeckElement) {
+                                setState(() {
+                                  final dropped = droppedData;
+                                  final oldParent = _findParentOf(widget.slide.elements, dropped);
+                                  if (oldParent != null) {
+                                    oldParent.children.removeWhere((c) => c.id == dropped.id);
+                                    oldParent.applyAutoLayout();
+                                    dropped.x = (oldParent.x + dropped.x).clamp(50.0, 1800.0);
+                                    dropped.y = (oldParent.y + dropped.y + 60.0).clamp(50.0, 1000.0);
+                                    widget.slide.elements.add(dropped);
+                                    widget.onElementSelected(dropped);
+                                  }
+                                });
+                                widget.onSlideModified();
+                              } else if (droppedData is AssetDragData) {
+                                setState(() {
+                                  final renderBox = context.findRenderObject() as RenderBox?;
+                                  Offset localPos = const Offset(200, 200);
+                                  if (renderBox != null) {
+                                    try {
+                                      localPos = renderBox.globalToLocal(details.offset);
+                                    } catch (_) {}
+                                  }
+
+                                  if (droppedData.type == AssetDragType.color) {
+                                    widget.slide.backgroundColor = droppedData.payload as Color;
+                                  } else if (droppedData.type == AssetDragType.icon) {
+                                    final iconVal = droppedData.payload as String;
+                                    final newElem = DeckElement(
+                                      id: 'icon_${DateTime.now().millisecondsSinceEpoch}',
+                                      type: ElementType.shape,
+                                      name: droppedData.title,
+                                      x: localPos.dx.clamp(50.0, 1750.0),
+                                      y: localPos.dy.clamp(50.0, 950.0),
+                                      width: 64.0,
+                                      height: 64.0,
+                                      textStyle: DeckTextStyle(color: const Color(0xFF0052FF), fontSize: 48),
+                                      props: {'icon': iconVal, 'title': ''},
+                                    );
+                                    widget.slide.elements.add(newElem);
+                                    widget.onElementSelected(newElem);
+                                  } else if (droppedData.type == AssetDragType.component) {
+                                    final comp = droppedData.payload as Map<String, dynamic>;
+                                    final newElem = DeckElement(
+                                      id: 'comp_${DateTime.now().millisecondsSinceEpoch}',
+                                      type: comp['type'] as ElementType,
+                                      name: droppedData.title,
+                                      x: localPos.dx.clamp(50.0, 1600.0),
+                                      y: localPos.dy.clamp(50.0, 900.0),
+                                      width: comp['width'] as double,
+                                      height: comp['height'] as double,
+                                      boxStyle: comp['boxStyle'] as DeckBoxStyle?,
+                                      props: Map<String, dynamic>.from(comp['props'] ?? {}),
+                                    );
+                                    widget.slide.elements.add(newElem);
+                                    widget.onElementSelected(newElem);
+                                  }
+                                });
+                                widget.onSlideModified();
+                              }
                             },
                             builder: (context, candidateData, rejectedData) {
                               return GestureDetector(
@@ -401,6 +450,8 @@ class _CanvasEditorState extends State<CanvasEditor> {
         return _buildGroup(elem);
       case ElementType.badge:
         return _buildBadge(elem);
+      case ElementType.vectorIcon:
+        return _buildVectorIcon(elem);
       default:
         return Container(
           padding: EdgeInsets.all(elem.boxStyle.padding),
@@ -675,6 +726,32 @@ class _CanvasEditorState extends State<CanvasEditor> {
                 fontSize: 12,
                 fontWeight: FontWeight.bold,
               ),
+      ),
+    );
+  }
+
+  Widget _buildVectorIcon(DeckElement elem) {
+    final rawStrokes = elem.props['iconStrokes'] as List? ?? [];
+    final strokeColor = Color(elem.props['strokeColor'] as int? ?? 0xFF0052FF);
+    final strokeWidth = (elem.props['strokeWidth'] as num?)?.toDouble() ?? 2.0;
+    final isFilled = elem.props['isFilled'] == true;
+    final fillColor = Color(elem.props['fillColor'] as int? ?? 0x00000000);
+
+    return Container(
+      width: elem.width,
+      height: elem.height,
+      decoration: elem.boxStyle.backgroundColor != Colors.transparent || elem.boxStyle.borderWidth > 0
+          ? elem.boxStyle.toDecoration()
+          : null,
+      child: CustomPaint(
+        size: Size(elem.width, elem.height),
+        painter: _VectorIconElementPainter(
+          rawStrokes: rawStrokes,
+          strokeColor: strokeColor,
+          strokeWidth: strokeWidth,
+          isFilled: isFilled,
+          fillColor: fillColor,
+        ),
       ),
     );
   }
@@ -1676,4 +1753,46 @@ class _FigmaLayoutGridPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
+class _VectorIconElementPainter extends CustomPainter {
+  final List rawStrokes;
+  final Color strokeColor;
+  final double strokeWidth;
+  final bool isFilled;
+  final Color fillColor;
+
+  _VectorIconElementPainter({
+    required this.rawStrokes,
+    required this.strokeColor,
+    required this.strokeWidth,
+    required this.isFilled,
+    required this.fillColor,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final scale = size.width / 24.0;
+    final vectorPaint = Paint()
+      ..color = strokeColor
+      ..strokeWidth = strokeWidth * (scale / 16.0).clamp(1.0, 8.0)
+      ..strokeCap = StrokeCap.round
+      ..strokeJoin = StrokeJoin.round
+      ..style = isFilled ? PaintingStyle.fill : PaintingStyle.stroke;
+
+    for (final stroke in rawStrokes) {
+      if (stroke is! List || stroke.isEmpty) continue;
+      final path = Path();
+      final first = stroke.first as Map;
+      path.moveTo((first['x'] as num).toDouble() * scale, (first['y'] as num).toDouble() * scale);
+      for (int i = 1; i < stroke.length; i++) {
+        final pt = stroke[i] as Map;
+        path.lineTo((pt['x'] as num).toDouble() * scale, (pt['y'] as num).toDouble() * scale);
+      }
+      canvas.drawPath(path, vectorPaint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _VectorIconElementPainter old) => true;
 }

@@ -16,6 +16,7 @@ enum ElementType {
   kpiStrip,
   shape,
   group, // Figma Group / AutoLayout Frame
+  vectorIcon, // Google Material Guide 24dp Vector Icon Component
 }
 
 enum AutoLayoutDirection { none, horizontal, vertical }

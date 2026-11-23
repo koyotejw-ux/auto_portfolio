@@ -60,10 +60,8 @@ class _FigmaLayersPanelState extends State<FigmaLayersPanel> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 250,
       decoration: const BoxDecoration(
         color: Color(0xFF1E1E1E), // Figma UI3 Dark Theme
-        border: Border(right: BorderSide(color: Color(0xFF2C2C2C))),
       ),
       child: Column(
         children: [
