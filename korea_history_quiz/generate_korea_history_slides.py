@@ -3203,12 +3203,12 @@ def make_slide_10():
     )
     
     screens = [
-        ('d:/097.flutter_project/auto_portfolio/korea_history_quiz/iphone_mockups/iphone_01_home.png', '01. 홈 대시보드', '자산 현황 한눈에 보기', '& AI 음성 도크'),
-        ('d:/097.flutter_project/auto_portfolio/korea_history_quiz/iphone_mockups/iphone_08_voice.png', '02. AI 음성 비서', '0.2초 자연어 음성 인식', '& 호가 프리셋 칩'),
-        ('d:/097.flutter_project/auto_portfolio/korea_history_quiz/iphone_mockups/iphone_03_target.png', '03. 목표 역산 엔진', '손익분기점 탈출', '필요 수량·자금 즉시 역산'),
-        ('d:/097.flutter_project/auto_portfolio/korea_history_quiz/iphone_mockups/iphone_04_report.png', '04. 리스크 진단 리포트', '자산 쏠림 경고', '& 안전 계좌 진단'),
-        ('d:/097.flutter_project/auto_portfolio/korea_history_quiz/iphone_mockups/iphone_05_dark_home.png', '05. OLED 다크 테마', '야간 장세 최적화', '초고대비 다크 모드'),
-        ('d:/097.flutter_project/auto_portfolio/korea_history_quiz/iphone_mockups/iphone_06_dark_settings.png', '06. 맞춤 환경 설정', '글로벌 7개 다국어', '& 100% 온디바이스')
+        ('d:/097.flutter_project/auto_portfolio/korea_history_quiz/iphone_mockups/screen_01_home.png', '01. 홈 대시보드', '학습 진도율 & 스트릭', '한눈에 파악하는 허브'),
+        ('d:/097.flutter_project/auto_portfolio/korea_history_quiz/iphone_mockups/screen_02_exam.png', '02. 실전 시험 센터', '최신 77회 한능검 심화', '50문항 80분 타이머'),
+        ('d:/097.flutter_project/auto_portfolio/korea_history_quiz/iphone_mockups/screen_03_quiz.png', '03. 실전 문제 풀이', '원터치 선지 선택 & 채점', '50:50 찬스 인터랙션'),
+        ('d:/097.flutter_project/auto_portfolio/korea_history_quiz/iphone_mockups/screen_04_commentary.png', '04. 정답 사료 해설', '사료 키워드 하이라이트', '& 전 선지 오답 분석'),
+        ('d:/097.flutter_project/auto_portfolio/korea_history_quiz/iphone_mockups/screen_05_study.png', '05. 시대별 서고', '선사부터 현대사까지', '유물 갤러리 & 오디오'),
+        ('d:/097.flutter_project/auto_portfolio/korea_history_quiz/iphone_mockups/screen_06_notes.png', '06. 스마트 오답 볼트', '오답 자동 인덱싱', '취약 시대 선별 재응시')
     ]
     
     # 6 Modern Flagship 19.5:9 Mobile Screens Grid
@@ -3246,12 +3246,12 @@ def make_slide_10():
     draw_pill_badge(draw, 190, 945, "USER JOURNEY", font=get_font(11, 'bold'), pad_x=12, height=26)
     
     flow_steps = [
-        ("01 자산 상태 진단", 300),
-        ("02 음성 빠른 입력", 560),
-        ("03 탈출 평단 역산", 830),
-        ("04 계좌 리스크 점검", 1100),
-        ("05 야간 장세 몰입", 1370),
-        ("06 맞춤 환경 설정", 1630)
+        ("01 학습 대시보드", 300),
+        ("02 실전 회차 선택", 560),
+        ("03 50문항 실전 응시", 830),
+        ("04 사료 단서 판독", 1100),
+        ("05 시대별 연표 탐색", 1370),
+        ("06 취약 오답 정복", 1630)
     ]
     for step_txt, sx in flow_steps:
         draw.text((sx, 945), step_txt, font=get_font(13.5, 'bold'), fill=(15, 23, 42), anchor='lm')

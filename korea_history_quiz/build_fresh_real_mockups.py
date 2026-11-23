@@ -2,16 +2,21 @@ import os
 from PIL import Image, ImageDraw, ImageFilter
 
 MOCKUP_DIR = "d:/097.flutter_project/auto_portfolio/korea_history_quiz/assets/iphone_mockups"
+STANDARD_DIR = "d:/097.flutter_project/auto_portfolio/korea_history_quiz/iphone_mockups"
 BRAIN_DIR = r"C:\Users\coyot\.gemini\antigravity\brain\1ef9de17-1396-4a70-8442-94124acd932e"
-os.makedirs(MOCKUP_DIR, exist_ok=True)
 
-# 5 Freshly Captured Real App Screenshots from simulator (904 x 2316 Light Mode)
+os.makedirs(MOCKUP_DIR, exist_ok=True)
+os.makedirs(STANDARD_DIR, exist_ok=True)
+
+# 7 distinct production screens from simulator (904 x 2316 Light Mode)
 RAW_SCREENS = {
     'mockup_01_home.png': os.path.join(BRAIN_DIR, 'real_test_03_home_allowed.png'),
     'mockup_02_exam.png': os.path.join(BRAIN_DIR, 'real_test_13_exam_center.png'),
     'mockup_03_quiz.png': os.path.join(BRAIN_DIR, 'real_test_32_opt3_center.png'),
-    'mockup_04_study.png': os.path.join(BRAIN_DIR, 'real_test_18_study_tab.png'),
-    'mockup_05_notes.png': os.path.join(BRAIN_DIR, 'device_incorrect_hub_sheet.png'),
+    'mockup_04_commentary.png': os.path.join(BRAIN_DIR, 'real_test_33_commentary.png'),
+    'mockup_05_study.png': os.path.join(BRAIN_DIR, 'real_test_18_study_tab.png'),
+    'mockup_06_notes.png': os.path.join(BRAIN_DIR, 'device_incorrect_hub_sheet.png'),
+    'mockup_07_settings.png': os.path.join(BRAIN_DIR, 'real_test_04_settings.png'),
 }
 
 def make_pristine_light_phone_mockup(screen_path, target_screen_w=720):
@@ -96,13 +101,33 @@ def make_pristine_light_phone_mockup(screen_path, target_screen_w=720):
     
     return device
 
-print("Generating Fresh Real App Screenshots Mockups...")
+print("Generating 7 Pristine Real App Mockups...")
 for name, raw_p in RAW_SCREENS.items():
     if os.path.exists(raw_p):
         out_img = make_pristine_light_phone_mockup(raw_p)
         out_p = os.path.join(MOCKUP_DIR, name)
         out_img.save(out_p, 'PNG')
-        print(f"Saved Real Mockup: {out_p} ({out_img.size})")
+        print(f"Saved: {out_p}")
     else:
         print(f"Missing Raw Screen: {raw_p}")
 
+# Standard directory mapping for slide generator
+mappings = {
+    'iphone_01_home.png': 'mockup_01_home.png',
+    'iphone_02_sim.png': 'mockup_02_exam.png',
+    'iphone_03_target.png': 'mockup_03_quiz.png',
+    'iphone_04_report.png': 'mockup_04_commentary.png',
+    'iphone_05_dark_home.png': 'mockup_05_study.png',
+    'iphone_06_dark_settings.png': 'mockup_06_notes.png',
+    'iphone_07_settings.png': 'mockup_07_settings.png',
+    'iphone_08_voice.png': 'mockup_02_exam.png', # distinct exam center
+}
+
+for std_name, src_name in mappings.items():
+    p = os.path.join(MOCKUP_DIR, src_name)
+    im = Image.open(p)
+    dest_p = os.path.join(STANDARD_DIR, std_name)
+    im.save(dest_p, 'PNG')
+    print(f"Mapped {src_name} -> {dest_p}")
+
+print("All mockups generated and mapped perfectly!")

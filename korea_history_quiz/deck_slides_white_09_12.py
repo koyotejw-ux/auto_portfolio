@@ -44,7 +44,9 @@ def make_slide_09():
             draw.text((lx + 46, fy + 48 + l_idx * 22), l, font=get_font(13, 'regular'), fill=C_TEXT_BODY)
         fy += 140
 
-    phone_path = os.path.join(MOCKUP_DIR, 'mockup_04_study.png')
+    phone_path = os.path.join(MOCKUP_DIR, 'mockup_05_study.png')
+    if not os.path.exists(phone_path):
+        phone_path = os.path.join(MOCKUP_DIR, 'mockup_04_study.png')
     if os.path.exists(phone_path):
         p = Image.open(phone_path).convert('RGBA')
         scale = 0.54
@@ -90,7 +92,9 @@ def make_slide_10():
             draw.text((lx + 46, fy + 48 + l_idx * 22), l, font=get_font(13, 'regular'), fill=C_TEXT_BODY)
         fy += 140
 
-    phone_path = os.path.join(MOCKUP_DIR, 'mockup_05_notes.png')
+    phone_path = os.path.join(MOCKUP_DIR, 'mockup_06_notes.png')
+    if not os.path.exists(phone_path):
+        phone_path = os.path.join(MOCKUP_DIR, 'mockup_05_notes.png')
     if os.path.exists(phone_path):
         p = Image.open(phone_path).convert('RGBA')
         scale = 0.54
@@ -140,14 +144,15 @@ def make_slide_11():
     strip_screens = [
         ('01. 홈 대시보드', 'mockup_01_home.png'),
         ('02. 실전 시험 센터', 'mockup_02_exam.png'),
-        ('03. 정답 사료 해설', 'mockup_03_quiz.png'),
-        ('04. 시대별 서고', 'mockup_04_study.png'),
-        ('05. 오답 볼트', 'mockup_05_notes.png'),
+        ('03. 실전 문제 풀이', 'mockup_03_quiz.png'),
+        ('04. 정답 사료 해설', 'mockup_04_commentary.png'),
+        ('05. 시대별 서고', 'mockup_05_study.png'),
+        ('06. 오답 볼트', 'mockup_06_notes.png'),
     ]
-    sw_mini = 180
+    sw_mini = 160
     sh_mini = 290
     sx_start = 140
-    gap = 80
+    gap = 48
     for s_idx, (sname, sfname) in enumerate(strip_screens):
         spath = os.path.join(MOCKUP_DIR, sfname)
         cur_x = sx_start + s_idx * (sw_mini + gap)
@@ -158,7 +163,7 @@ def make_slide_11():
             m_crop = m_sc.crop((0, 0, sw_mini, sh_mini))
             base.paste(m_crop, (cur_x, cur_y), m_crop)
             draw.rounded_rectangle([cur_x, cur_y, cur_x + sw_mini, cur_y + sh_mini], radius=16, outline=C_BORDER_LINE, width=1)
-            draw.text((cur_x + 10, cur_y + sh_mini + 10), sname, font=get_font(12, 'bold'), fill=C_NAVY_HERO)
+            draw.text((cur_x + 6, cur_y + sh_mini + 10), sname, font=get_font(11.5, 'bold'), fill=C_NAVY_HERO)
             
     draw_slide_footer(draw, meta_tags="DESIGN SYSTEM & REAL ASSETS · 11/12")
     save_slide(base, 11)

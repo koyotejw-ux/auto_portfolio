@@ -188,7 +188,9 @@ def make_slide_08():
             draw.text((lx + 46, fy + 48 + l_idx * 22), l, font=get_font(13, 'regular'), fill=C_TEXT_BODY)
         fy += 140
 
-    phone_path = os.path.join(MOCKUP_DIR, 'mockup_03_quiz.png')
+    phone_path = os.path.join(MOCKUP_DIR, 'mockup_04_commentary.png')
+    if not os.path.exists(phone_path):
+        phone_path = os.path.join(MOCKUP_DIR, 'mockup_03_quiz.png')
     if os.path.exists(phone_path):
         p = Image.open(phone_path).convert('RGBA')
         scale = 0.54
