@@ -61,6 +61,8 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
   final List<String> _redoStack = [];
   double _zoomScale = 0.55;
   DeckElement? _clipboardElement;
+  DeckTextStyle? _clipboardTextStyle;
+  DeckBoxStyle? _clipboardBoxStyle;
   final FocusNode _keyboardFocusNode = FocusNode();
   bool _showLayoutGrid = false;
   int _leftSidebarTabIndex = 0; // 0: Layers, 1: Assets (Design System)
@@ -379,6 +381,84 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
   }
 
   // --- Quick Figma Actions ---
+  void _cutSelected() {
+    final targets = _currentSlide.elements.where((e) => _selectedElementIds.contains(e.id)).toList();
+    if (targets.isEmpty && _selectedElement != null) {
+      targets.add(_selectedElement!);
+    }
+    if (targets.isEmpty) return;
+
+    _copySelected();
+    _recordUndoState();
+    setState(() {
+      for (final t in targets) {
+        _currentSlide.elements.removeWhere((e) => e.id == t.id);
+      }
+      _selectedElement = null;
+      _selectedElementIds = {};
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('요소 잘라내기 완료 (Ctrl+V로 원하는 위치에 붙여넣기)', style: TextStyle(fontWeight: FontWeight.bold)),
+        backgroundColor: Color(0xFF0052FF),
+        duration: Duration(seconds: 1),
+      ),
+    );
+  }
+
+  void _copyProperties() {
+    if (_selectedElement == null) return;
+    _clipboardTextStyle = _selectedElement!.textStyle.copyWith();
+    _clipboardBoxStyle = _selectedElement!.boxStyle.copyWith();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          children: [
+            const Icon(Icons.palette, color: Colors.white, size: 16),
+            const SizedBox(width: 8),
+            Text(
+              '[${_selectedElement!.name}] 속성/스타일 복사 완료! (Ctrl+Alt+V로 붙여넣기)',
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+        backgroundColor: const Color(0xFF0052FF),
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
+  void _pasteProperties() {
+    if (_clipboardTextStyle == null && _clipboardBoxStyle == null) return;
+    final targets = _currentSlide.elements.where((e) => _selectedElementIds.contains(e.id)).toList();
+    if (targets.isEmpty && _selectedElement != null) {
+      targets.add(_selectedElement!);
+    }
+    if (targets.isEmpty) return;
+
+    _recordUndoState();
+    setState(() {
+      for (final t in targets) {
+        if (_clipboardTextStyle != null) {
+          t.textStyle = _clipboardTextStyle!.copyWith();
+        }
+        if (_clipboardBoxStyle != null) {
+          t.boxStyle = _clipboardBoxStyle!.copyWith();
+        }
+      }
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          '${targets.length}개 요소에 스타일 및 속성 붙여넣기 완료!',
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+        backgroundColor: const Color(0xFF10B981),
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
   void _copySelected() {
     if (_selectedElement == null) return;
     _clipboardElement = _selectedElement!.deepClone(deltaX: 0, deltaY: 0);
@@ -760,6 +840,9 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
               ]),
               _ShortcutGroup(title: '레이어 & 편집 (Edit & Hierarchy)', items: [
                 _ShortcutItem(keys: 'Ctrl + C / Ctrl + V', desc: '하위 트리 포함 컴포넌트 복사 & 붙여넣기'),
+                _ShortcutItem(keys: 'Ctrl + X', desc: '선택 요소 오려내기 / 잘라내기 (Cut)'),
+                _ShortcutItem(keys: 'Ctrl + Alt + C', desc: '속성 / 스타일만 복사 (Copy Properties)'),
+                _ShortcutItem(keys: 'Ctrl + Alt + V', desc: '속성 / 스타일만 붙여넣기 (Paste Properties)'),
                 _ShortcutItem(keys: 'Ctrl + D', desc: '제자리 오프셋 복제 (Duplicate)'),
                 _ShortcutItem(keys: 'Ctrl + Z / Ctrl + Y', desc: '실행 취소 (Undo) / 다시 실행 (Redo)'),
                 _ShortcutItem(keys: '] / [', desc: '맨 앞으로 가져오기 / 맨 뒤로 보내기'),
@@ -806,9 +889,15 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
               return;
             }
 
-            // 1. Copy / Paste / Duplicate
-            if (isCtrl && event.logicalKey == LogicalKeyboardKey.keyC) {
-              if (_selectedElement != null) {
+            // 1. Copy / Paste / Cut / Copy Properties / Paste Properties / Duplicate
+            if (isCtrl && isAlt && event.logicalKey == LogicalKeyboardKey.keyC) {
+              _copyProperties();
+            } else if (isCtrl && isAlt && event.logicalKey == LogicalKeyboardKey.keyV) {
+              _pasteProperties();
+            } else if (isCtrl && event.logicalKey == LogicalKeyboardKey.keyX) {
+              _cutSelected();
+            } else if (isCtrl && event.logicalKey == LogicalKeyboardKey.keyC) {
+              if (_selectedElement != null || _selectedElementIds.isNotEmpty) {
                 _copySelected();
               }
             } else if (isCtrl && event.logicalKey == LogicalKeyboardKey.keyV) {
@@ -816,7 +905,7 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
                 _pasteClipboard();
               }
             } else if (isCtrl && event.logicalKey == LogicalKeyboardKey.keyD) {
-              if (_selectedElement != null) {
+              if (_selectedElement != null || _selectedElementIds.isNotEmpty) {
                 _duplicateSelected();
               }
             // 2. Undo / Redo
@@ -1169,9 +1258,13 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
                                 );
                               },
                               onDuplicateSelected: _duplicateSelected,
+                              onCutSelected: _cutSelected,
                               onCopySelected: _copySelected,
                               onPasteSelected: _pasteClipboard,
                               canPaste: _clipboardElement != null,
+                              onCopyProperties: _copyProperties,
+                              onPasteProperties: _pasteProperties,
+                              canPasteProperties: _clipboardTextStyle != null || _clipboardBoxStyle != null,
                               onDeleteSelected: _deleteSelected,
                               onBringToFront: _bringToFront,
                               onSendToBack: _sendToBack,

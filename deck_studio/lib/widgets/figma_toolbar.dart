@@ -20,9 +20,13 @@ class FigmaToolbar extends StatelessWidget {
   final VoidCallback onOpenComponentLibrary;
   final VoidCallback onOpenDesignSystem;
   final VoidCallback onDuplicateSelected;
+  final VoidCallback onCutSelected;
   final VoidCallback onCopySelected;
   final VoidCallback onPasteSelected;
+  final VoidCallback onCopyProperties;
+  final VoidCallback onPasteProperties;
   final bool canPaste;
+  final bool canPasteProperties;
   final VoidCallback onDeleteSelected;
   final VoidCallback onBringToFront;
   final VoidCallback onSendToBack;
@@ -50,9 +54,13 @@ class FigmaToolbar extends StatelessWidget {
     required this.onOpenComponentLibrary,
     required this.onOpenDesignSystem,
     required this.onDuplicateSelected,
+    required this.onCutSelected,
     required this.onCopySelected,
     required this.onPasteSelected,
+    required this.onCopyProperties,
+    required this.onPasteProperties,
     required this.canPaste,
+    this.canPasteProperties = false,
     required this.onDeleteSelected,
     required this.onBringToFront,
     required this.onSendToBack,
@@ -160,6 +168,13 @@ class FigmaToolbar extends StatelessWidget {
 
           // 4. Quick Actions for Selected Element
           _buildIconButton(
+            icon: Icons.content_cut,
+            tooltip: '요소 오려내기 / 잘라내기 (Ctrl+X)',
+            enabled: selectedElement != null,
+            color: selectedElement != null ? const Color(0xFFF43F5E) : null,
+            onPressed: onCutSelected,
+          ),
+          _buildIconButton(
             icon: Icons.copy,
             tooltip: '컴포넌트 복사 (Ctrl+C)',
             enabled: selectedElement != null,
@@ -172,6 +187,20 @@ class FigmaToolbar extends StatelessWidget {
             enabled: canPaste,
             color: canPaste ? const Color(0xFF0052FF) : null,
             onPressed: onPasteSelected,
+          ),
+          _buildIconButton(
+            icon: Icons.format_paint_outlined,
+            tooltip: '속성 / 스타일만 복사 (Ctrl+Alt+C)',
+            enabled: selectedElement != null,
+            color: selectedElement != null ? const Color(0xFFA855F7) : null,
+            onPressed: onCopyProperties,
+          ),
+          _buildIconButton(
+            icon: Icons.brush_outlined,
+            tooltip: '속성 / 스타일만 붙여넣기 (Ctrl+Alt+V)',
+            enabled: canPasteProperties,
+            color: canPasteProperties ? const Color(0xFF10B981) : null,
+            onPressed: onPasteProperties,
           ),
           _buildIconButton(
             icon: Icons.control_point_duplicate,

@@ -97,6 +97,30 @@ class DeckTextStyle {
     }
   }
 
+  DeckTextStyle copyWith({
+    String? fontFamily,
+    double? fontSize,
+    FontWeight? fontWeight,
+    Color? color,
+    double? letterSpacing,
+    double? height,
+    double? wordSpacing,
+    TextAlignOption? textAlign,
+    TextVerticalAlign? verticalAlign,
+  }) {
+    return DeckTextStyle(
+      fontFamily: fontFamily ?? this.fontFamily,
+      fontSize: fontSize ?? this.fontSize,
+      fontWeight: fontWeight ?? this.fontWeight,
+      color: color ?? this.color,
+      letterSpacing: letterSpacing ?? this.letterSpacing,
+      height: height ?? this.height,
+      wordSpacing: wordSpacing ?? this.wordSpacing,
+      textAlign: textAlign ?? this.textAlign,
+      verticalAlign: verticalAlign ?? this.verticalAlign,
+    );
+  }
+
   TextStyle toTextStyle() {
     return TextStyle(
       fontFamily: fontFamily,
@@ -184,6 +208,24 @@ class DeckBoxStyle {
         'padding': padding,
         'hasShadow': hasShadow,
       };
+
+  DeckBoxStyle copyWith({
+    Color? backgroundColor,
+    Color? borderColor,
+    double? borderWidth,
+    double? borderRadius,
+    double? padding,
+    bool? hasShadow,
+  }) {
+    return DeckBoxStyle(
+      backgroundColor: backgroundColor ?? this.backgroundColor,
+      borderColor: borderColor ?? this.borderColor,
+      borderWidth: borderWidth ?? this.borderWidth,
+      borderRadius: borderRadius ?? this.borderRadius,
+      padding: padding ?? this.padding,
+      hasShadow: hasShadow ?? this.hasShadow,
+    );
+  }
 
   factory DeckBoxStyle.fromJson(Map<String, dynamic> json) {
     return DeckBoxStyle(
