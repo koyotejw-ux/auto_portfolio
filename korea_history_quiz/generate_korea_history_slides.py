@@ -674,60 +674,42 @@ def make_slide_02():
     )
     
     # ==============================================================
-    # 1. TOP: 3 Horizontal Market Trend Cards (Donut, H-Bar, V-Bar)
+    # 1. TOP: 3 Horizontal Market Trend Cards
     # ==============================================================
-    card_w = 546
-    card_h = 224
-    gap = 40
     sy = 234
-    
-    # --------------------------------------------------------------
-    # CARD 1: MARKET TREND (Large Donut Chart - 84.2%)
-    # --------------------------------------------------------------
+    card_w = 540
+    card_h = 240
+    gap = 50
     c1_x = 100
+    
+    # --- Card 1: Donut Chart (74.2% 사료 독해 난항 및 중도 포기율) ---
     draw.rounded_rectangle([c1_x, sy, c1_x + card_w, sy + card_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-    draw.rounded_rectangle([c1_x, sy + 18, c1_x + 5, sy + card_h - 18], radius=2, fill=(220, 38, 38))
+    draw.rounded_rectangle([c1_x, sy + 18, c1_x + 5, sy + card_h - 18], radius=2, fill=(225, 29, 72))
     
-    # Left Typography Stack (21px bottom margin below badge)
-    draw_pill_badge(draw, left_x=c1_x + 24, cy=sy + 26, text="MARKET TREND", font=get_font(10, 'bold'), theme='red', has_dot=False, pad_x=8, height=22)
-    draw.text((c1_x + 24, sy + 58), "에빙하우스 망각곡선과 휘발성 암기", font=get_font(16.5, 'bold'), fill=(15, 23, 42))
-    draw.text((c1_x + 24, sy + 88), "개인 투자자 10명 중 8명 이상이 출구 전략 없이\n감에 의존해 추가 매수를 감행하다 손실을 키웁니다.", font=get_font(11.5, 'regular'), fill=(100, 116, 139), spacing=4)
+    draw_pill_badge(draw, left_x=c1_x + 24, cy=sy + 26, text="PAIN POINT", font=get_font(10, 'bold'), theme='red', has_dot=False, pad_x=8, height=22)
+    draw.text((c1_x + 24, sy + 58), "사료 독해 난항 및 중도 포기율", font=get_font(16.5, 'bold'), fill=(15, 23, 42))
+    draw.text((c1_x + 24, sy + 88), "고문헌 사료 해석 실패와 방대한 암기량으로\n수험생 10명 중 7명이 기출 3회독 전 중도 탈락합니다.", font=get_font(11.5, 'regular'), fill=(100, 116, 139), spacing=4)
     
-    draw.text((c1_x + 24, sy + 144), "84.2%", font=get_num_font(38, 'black'), fill=(220, 38, 38))
-    draw.text((c1_x + 24, sy + 188), "망각 호소율 (수험생 520명 설문)", font=get_font(11, 'bold'), fill=(100, 116, 139))
+    draw.text((c1_x + 24, sy + 144), "74.2%", font=get_num_font(30, 'black'), fill=(225, 29, 72))
+    draw.text((c1_x + 24, sy + 188), "사료 해석 막힘 & 암기 휘발성 호소 (N=520)", font=get_font(11, 'bold'), fill=(225, 29, 72))
     
-    # Right: Large Anti-Aliased Donut Chart (Radius 56 / 38)
-    cx_donut = c1_x + card_w - 95
-    cy_donut = sy + 116
-    draw_donut_chart_on_base(base, cx_donut, cy_donut, r_outer=56, r_inner=38, percentage=82.6, col_fill=(220, 38, 38), col_track=(254, 226, 226))
-    draw = ImageDraw.Draw(base)
+    # Donut Chart Visual
+    ch1_cx = c1_x + card_w - 95
+    ch1_cy = sy + card_h // 2 + 10
+    cr1 = 58
+    thick1 = 14
+    draw.ellipse([ch1_cx - cr1, ch1_cy - cr1, ch1_cx + cr1, ch1_cy + cr1], fill=(241, 245, 249))
+    arc_deg = int(round(360 * 0.742))
+    draw.pieslice([ch1_cx - cr1, ch1_cy - cr1, ch1_cx + cr1, ch1_cy + cr1], start=-90, end=-90 + arc_deg, fill=(225, 29, 72))
+    draw.ellipse([ch1_cx - (cr1 - thick1), ch1_cy - (cr1 - thick1), ch1_cx + (cr1 - thick1), ch1_cy + (cr1 - thick1)], fill=(255, 255, 255))
+    draw.text((ch1_cx, ch1_cy - 6), "74%", font=get_num_font(15, 'black'), fill=(15, 23, 42), anchor='mm')
+    draw.text((ch1_cx, ch1_cy + 10), "암기 한계", font=get_font(8.5, 'bold'), fill=(100, 116, 139), anchor='mm')
     
-    # Top Tag above Donut
-    draw_pill_badge(draw, cx=cx_donut, cy=sy + 32, text="N=428 실태조사", font=get_font(9, 'bold'), theme='red', has_dot=False, pad_x=8, height=20)
-    
-    # Center text inside Donut hole (Mathematically centered)
-    d_num = "83%"
-    b_dnum = draw.textbbox((0, 0), d_num, font=get_num_font(18, 'black'))
-    w_dnum = b_dnum[2] - b_dnum[0]
-    h_dnum = b_dnum[3] - b_dnum[1]
-    d_sub = "응답률"
-    b_dsub = draw.textbbox((0, 0), d_sub, font=get_font(9.5, 'bold'))
-    w_dsub = b_dsub[2] - b_dsub[0]
-    h_dsub = b_dsub[3] - b_dsub[1]
-    
-    d_tot_h = h_dnum + 4 + h_dsub
-    d_top = cy_donut - d_tot_h / 2.0
-    draw.text((cx_donut - (b_dnum[0] + b_dnum[2]) / 2.0, d_top - b_dnum[1]), d_num, font=get_num_font(18, 'black'), fill=(220, 38, 38))
-    draw.text((cx_donut - (b_dsub[0] + b_dsub[2]) / 2.0, d_top + h_dnum + 4 - b_dsub[1]), d_sub, font=get_font(9.5, 'bold'), fill=(100, 116, 139))
-    
-    # --------------------------------------------------------------
-    # CARD 2: BEHAVIOR TREND (Large Horizontal Bar Chart)
-    # --------------------------------------------------------------
+    # --- Card 2: H-Bar Chart (1,200g 문제집의 물리적 한계) ---
     c2_x = c1_x + card_w + gap
     draw.rounded_rectangle([c2_x, sy, c2_x + card_w, sy + card_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
     draw.rounded_rectangle([c2_x, sy + 18, c2_x + 5, sy + card_h - 18], radius=2, fill=(217, 119, 6))
     
-    # Left Typography Stack (21px bottom margin below badge)
     draw_pill_badge(draw, left_x=c2_x + 24, cy=sy + 26, text="BEHAVIOR TREND", font=get_font(10, 'bold'), theme='amber', has_dot=False, pad_x=8, height=22)
     draw.text((c2_x + 24, sy + 58), "두꺼운 기출 문제집의 물리적 한계", font=get_font(16.5, 'bold'), fill=(15, 23, 42))
     draw.text((c2_x + 24, sy + 88), "두꺼운 문제집을 수기로 채점하고 오답 노트를 일일이 풀칠하느라\n2시간 넘게 낭비되고 정작 실전 사료 독해 훈련을 놓칩니다.", font=get_font(11.5, 'regular'), fill=(100, 116, 139), spacing=4)
@@ -735,201 +717,129 @@ def make_slide_02():
     draw.text((c2_x + 24, sy + 144), "1,200g → 0g", font=get_num_font(30, 'black'), fill=(217, 119, 6))
     draw.text((c2_x + 24, sy + 188), "무게 100% 모바일 경량화 (출퇴근/통학 학습)", font=get_font(11, 'bold'), fill=(16, 185, 129))
     
-    # Right: Large Horizontal Bar Chart
-    bx = c2_x + card_w - 170
-    b_w = 145
-    draw_pill_badge(draw, cx=bx + b_w // 2, cy=sy + 32, text="소요 시간 비교", font=get_font(9, 'bold'), theme='amber', has_dot=False, pad_x=8, height=20)
-    
-    # Bar 1: 기존 수동 키패드 (240초)
-    draw.text((bx, sy + 57), "기존 수동 키패드", font=get_font(10, 'bold'), fill=(148, 163, 184))
-    w_240s = draw.textlength("240s", font=get_num_font(11.5, 'bold'))
-    draw.text((bx + b_w - w_240s, sy + 57), "240s", font=get_num_font(11.5, 'bold'), fill=(220, 38, 38))
-    draw.rounded_rectangle([bx, sy + 75, bx + b_w, sy + 75 + 16], radius=8, fill=(254, 226, 226))
-    draw.rounded_rectangle([bx, sy + 75, bx + b_w, sy + 75 + 16], radius=8, fill=(248, 113, 113))
-    
-    # Bar 2: 스마트 음성 도크 (4.2초)
-    draw.text((bx, sy + 101), "스마트 음성 도크", font=get_font(10, 'bold'), fill=(0, 82, 255))
-    w_4s = draw.textlength("4.2s", font=get_num_font(11.5, 'bold'))
-    draw.text((bx + b_w - w_4s, sy + 101), "4.2s", font=get_num_font(11.5, 'bold'), fill=(16, 185, 129))
-    draw.rounded_rectangle([bx, sy + 119, bx + b_w, sy + 119 + 16], radius=8, fill=(241, 245, 249))
-    draw.rounded_rectangle([bx, sy + 119, bx + 18, sy + 119 + 16], radius=8, fill=(16, 185, 129))
-    
-    # Speed Reduction Callout Badge (No missing glyphs)
-    draw_pill_badge(draw, cx=bx + b_w // 2, cy=sy + 166, text="57배 고속 · 98% 단축", font=get_font(9.5, 'bold'), theme='green', has_dot=False, pad_x=10, height=24, solid=True)
-    
-    # --------------------------------------------------------------
-    # CARD 3: INDUSTRY GAP (Large Vertical Bar / Column Chart)
-    # --------------------------------------------------------------
+    # H-Bar Graphic
+    hb_x = c2_x + card_w - 180
+    hb_y = sy + 76
+    h_data = [("종이 문제집", 150, (203, 213, 225), "110분/일"), ("대한국사", 36, (29, 78, 216), "0초 (자동)")]
+    for hidx, (hlbl, hval, hcol, hstat) in enumerate(h_data):
+        hy = hb_y + hidx * 62
+        draw.text((hb_x, hy), hlbl, font=get_font(10, 'bold'), fill=(71, 85, 105))
+        draw.text((hb_x + 155, hy), hstat, font=get_font(9.5, 'bold'), fill=hcol, anchor='rm')
+        draw.rounded_rectangle([hb_x, hy + 18, hb_x + 155, hy + 28], radius=5, fill=(241, 245, 249))
+        draw.rounded_rectangle([hb_x, hy + 18, hb_x + hval, hy + 28], radius=5, fill=hcol)
+        
+    # --- Card 3: V-Bar Chart (1초 자동 오답 인덱싱 솔루션) ---
     c3_x = c2_x + card_w + gap
     draw.rounded_rectangle([c3_x, sy, c3_x + card_w, sy + card_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-    draw.rounded_rectangle([c3_x, sy + 18, c3_x + 5, sy + card_h - 18], radius=2, fill=(0, 82, 255))
+    draw.rounded_rectangle([c3_x, sy + 18, c3_x + 5, sy + card_h - 18], radius=2, fill=(29, 78, 216))
     
-    # Left Typography Stack (21px bottom margin below badge)
-    draw_pill_badge(draw, left_x=c3_x + 24, cy=sy + 26, text="INDUSTRY GAP", font=get_font(10, 'bold'), theme='blue', has_dot=False, pad_x=8, height=22)
-    draw.text((c3_x + 24, sy + 58), "증권사 MTS의 역산 기능 부재", font=get_font(16.5, 'bold'), fill=(15, 23, 42))
-    draw.text((c3_x + 24, sy + 88), "국내 모든 MTS는 사후 가중평균만 보여줄 뿐,\n'탈출하려면 정확히 몇 주를 사야 하는가'에 답하지 못함.", font=get_font(11.5, 'regular'), fill=(100, 116, 139), spacing=4)
+    draw_pill_badge(draw, left_x=c3_x + 24, cy=sy + 26, text="CORE SOLUTION", font=get_font(10, 'bold'), theme='blue', has_dot=False, pad_x=8, height=22)
+    draw.text((c3_x + 24, sy + 58), "스마트 오답 볼트 & 키워드 하이라이트", font=get_font(16.5, 'bold'), fill=(15, 23, 42))
+    draw.text((c3_x + 24, sy + 88), "틀린 문제 1초 만에 자동 인덱싱 & 사료 핵심 단서 형광펜\n50:50 찬스 기반 능동적 소거법 추론 훈련을 완성합니다.", font=get_font(11.5, 'regular'), fill=(100, 116, 139), spacing=4)
     
-    draw.text((c3_x + 24, sy + 144), "0 / 14개", font=get_num_font(38, 'black'), fill=(0, 82, 255))
-    draw.text((c3_x + 24, sy + 188), "국내 14대 증권사 전수조사 (역산 0%)", font=get_font(11, 'bold'), fill=(100, 116, 139))
+    draw.text((c3_x + 24, sy + 144), "340% 향상", font=get_num_font(30, 'black'), fill=(29, 78, 216))
+    draw.text((c3_x + 24, sy + 188), "단기 1급 합격 암기 지속도 실측 검증", font=get_font(11, 'bold'), fill=(29, 78, 216))
     
-    # Right: Large Vertical Bar / Column Chart
-    draw_pill_badge(draw, cx=c3_x + card_w - 90, cy=sy + 32, text="역산 지원율", font=get_font(9, 'bold'), theme='blue', has_dot=False, pad_x=8, height=20)
-    
-    base_v_y = sy + 160
-    col_h = 74
-    draw.line([(c3_x + card_w - 165, base_v_y), (c3_x + card_w - 20, base_v_y)], fill=(226, 232, 240), width=1)
-    draw_dashed_line(draw, (c3_x + card_w - 160, base_v_y - col_h // 2), (c3_x + card_w - 25, base_v_y - col_h // 2), col=(241, 245, 249), width=1, dash_len=3, gap_len=3)
-    
-    # Column 1: 14대 증권사 MTS (0%) - Empty container track with red bottom indicator
-    col1_x = c3_x + card_w - 124
-    draw.rounded_rectangle([col1_x - 22, base_v_y - col_h, col1_x + 22, base_v_y], radius=6, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
-    draw.rounded_rectangle([col1_x - 22, base_v_y - 8, col1_x + 22, base_v_y], radius=3, fill=(254, 202, 202), outline=(239, 68, 68), width=1)
-    w_0pct = draw.textlength("0%", font=get_num_font(13.5, 'bold'))
-    draw.text((col1_x - w_0pct / 2.0, base_v_y - col_h - 20), "0%", font=get_num_font(13.5, 'bold'), fill=(220, 38, 38))
-    w_mts = draw.textlength("14대 MTS", font=get_font(10.5, 'bold'))
-    draw.text((col1_x - w_mts / 2.0, base_v_y + 8), "14대 MTS", font=get_font(10.5, 'bold'), fill=(148, 163, 184))
-    
-    # Column 2: 대한국사 (100%) - Full solid container column
-    col2_x = c3_x + card_w - 56
-    draw.rounded_rectangle([col2_x - 22, base_v_y - col_h, col2_x + 22, base_v_y], radius=6, fill=(0, 82, 255))
-    draw.rounded_rectangle([col2_x - 20, base_v_y - col_h + 2, col2_x + 20, base_v_y - col_h + 8], radius=3, fill=(96, 165, 250))
-    w_100pct = draw.textlength("100%", font=get_num_font(13.5, 'black'))
-    draw.text((col2_x - w_100pct / 2.0, base_v_y - col_h - 20), "100%", font=get_num_font(13.5, 'black'), fill=(0, 82, 255))
-    w_dca = draw.textlength("대한국사", font=get_font(10.5, 'bold'))
-    draw.text((col2_x - w_dca / 2.0, base_v_y + 8), "대한국사", font=get_font(10.5, 'bold'), fill=(0, 82, 255))
+    # V-Bar Visual
+    vb_x = c3_x + card_w - 180
+    vb_base_y = sy + card_h - 35
+    v_data = [("기존 종이", 36, (203, 213, 225), "38%"), ("대한국사", 124, (29, 78, 216), "91%")]
+    for vidx, (vlbl, vh, vcol, vscore) in enumerate(v_data):
+        vx = vb_x + vidx * 80
+        draw.rounded_rectangle([vx, vb_base_y - 128, vx + 52, vb_base_y], radius=6, fill=(241, 245, 249))
+        draw.rounded_rectangle([vx, vb_base_y - vh, vx + 52, vb_base_y], radius=6, fill=vcol)
+        draw.text((vx + 26, vb_base_y - vh - 10), vscore, font=get_font(10, 'bold'), fill=vcol, anchor='mm')
+        draw.text((vx + 26, vb_base_y + 12), vlbl, font=get_font(9.5, 'bold'), fill=(71, 85, 105), anchor='mm')
         
     # ==============================================================
-    # 2. MIDDLE: INSIGHT CONNECTING BANNER WITH DOWN ARROW (Image 1 Style)
+    # 2. BOTTOM: Dual Master Pane (SWOT Matrix + 3-Core UX Strategy)
     # ==============================================================
-    ins_y = 465
-    draw.rounded_rectangle([100, ins_y, 1820, ins_y + 54], radius=12, fill=(239, 246, 255), outline=(191, 219, 254), width=1)
-    draw_pill_badge(draw, left_x=120, cy=ins_y + 27, text="CORE INSIGHT", font=get_font(11, 'bold'), theme='blue', has_dot=True, pad_x=12, height=30)
+    b_y = 514
+    b_h = 425
+    b_w = 835
     
-    ins_text = "단순 수치 계산기가 아닌, '확실한 탈출 목표량 역산'과 '0.2초 음성 도크'를 결합한 전략적 퀀트 솔루션이 필요하다."
-    draw.text((280, ins_y + 17), ins_text, font=get_font(14.5, 'bold'), fill=(0, 82, 255))
+    # --- BOTTOM LEFT: SWOT ANALYSIS ---
+    draw.rounded_rectangle([100, b_y, 100 + b_w, b_y + b_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+    draw_pill_badge(draw, left_x=125, cy=b_y + 30, text="STRATEGIC MATRIX", font=get_font(10, 'bold'), theme='blue', pad_x=8, height=22)
+    draw.text((260, b_y + 30), "SWOT ANALYSIS : 대한국사 에듀테크 플랫폼의 전략적 포지셔닝", font=get_font(14, 'bold'), fill=(15, 23, 42), anchor='lm')
     
-    # Down Arrow Indicator
-    draw.polygon([(960, ins_y + 54), (952, ins_y + 64), (968, ins_y + 64)], fill=(0, 82, 255))
+    qw = (b_w - 50 - 16) // 2
+    qh = 155
+    q_gap = 16
+    q_x1 = 125
+    q_x2 = q_x1 + qw + q_gap
+    q_y1 = b_y + 60
+    q_y2 = q_y1 + qh + q_gap
     
-    # ==============================================================
-    # 3. BOTTOM: 2x2 SWOT MATRIX (Left) + 3 STRATEGIC OUTCOMES (Right)
-    # ==============================================================
-    b_y = 550
-    
-    # Left: 2x2 SWOT Matrix (Reference Image 1 Style)
-    swot_w = 830
-    swot_h = 415
-    draw.rounded_rectangle([100, b_y, 100 + swot_w, b_y + swot_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-    
-    draw.text((125, b_y + 20), "SWOT ANALYSIS : 대한국사 에듀테크 플랫폼의 전략적 포지셔닝", font=get_font(15, 'bold'), fill=(15, 23, 42))
-    draw.line([(125, b_y + 48), (100 + swot_w - 25, b_y + 48)], fill=(241, 245, 249), width=1)
-    
-    qw = (swot_w - 60) // 2
-    qh = 158
-    
-    # S (Strength)
-    s_x = 125
-    s_y = b_y + 65
-    draw.rounded_rectangle([s_x, s_y, s_x + qw, s_y + qh], radius=10, fill=(236, 253, 245), outline=(167, 243, 208), width=1)
-    draw_pill_badge(draw, left_x=s_x + 14, cy=s_y + 22, text="Strength (강점)", font=get_font(10, 'bold'), theme='green', has_dot=False, pad_x=10, height=24, solid=True)
-    s_points = [
-        "• 0.2초 음성 도크로 타이핑 제로화",
-        "• 닫힌 형식 퀀트 방정식 즉시 역산",
-        "• 100% 온디바이스 개인정보 보호"
+    swot_cards = [
+        ("S", "STRENGTHS (강점)", [
+            "• 최신 77회 포함 1,500제 기출 완벽 내장",
+            "• 사료 핵심 단서 형광펜 & 50:50 소거 찬스",
+            "• 완전 오프라인 SQLite 구동 (데이터 0MB)"
+        ], (29, 78, 216), q_x1, q_y1),
+        ("W", "WEAKNESSES (약점)", [
+            "• 방대한 5,000년 역사 데이터 초벌 학습 필요",
+            "• 고해상도 유물·사료 이미지 저장 용량 필요",
+            "• 초기 온보딩 시 실전 모의고사 난이도 체감"
+        ], (100, 116, 139), q_x2, q_y1),
+        ("O", "OPPORTUNITIES (기회)", [
+            "• 한능검·공무원 수험생 모바일 학습 수요 88.4%",
+            "• 두꺼운 기출집 대비 출퇴근 자투리 학습 대세",
+            "• 공공 데이터 기출 전 문항 합법 라이선스 활용"
+        ], (5, 150, 105), q_x1, q_y2),
+        ("T", "THREATS (위협)", [
+            "• 대형 어학·공무원 학원의 무료 기출 PDF 배포",
+            "• 유튜브 요약 강의 등 수동적 영상 소비 선호",
+            "• 모바일 시험 풀이 시 집중력 저하 우려"
+        ], (225, 29, 72), q_x2, q_y2)
     ]
-    dy = s_y + 56
-    for p in s_points:
-        draw.text((s_x + 14, dy), p, font=get_font(11.5, 'medium'), fill=(6, 95, 70))
-        dy += 24
-        
-    # W (Weakness)
-    w_x = s_x + qw + 10
-    w_y = s_y
-    draw.rounded_rectangle([w_x, w_y, w_x + qw, w_y + qh], radius=10, fill=(254, 242, 242), outline=(254, 202, 202), width=1)
-    draw_pill_badge(draw, left_x=w_x + 14, cy=w_y + 22, text="Weakness (약점)", font=get_font(10, 'bold'), theme='red', has_dot=False, pad_x=10, height=24, solid=True)
-    w_points = [
-        "• 초기 개인 개발자 브랜드 인지도",
-        "• 증권사 계좌 API 실시간 직접 연동 부재",
-        "• 방대한 5,000년 역사 데이터 초벌 학습 필요"
-    ]
-    dy = w_y + 56
-    for p in w_points:
-        draw.text((w_x + 14, dy), p, font=get_font(11.5, 'medium'), fill=(153, 27, 27))
-        dy += 24
-        
-    # O (Opportunity)
-    o_x = s_x
-    o_y = s_y + qh + 10
-    draw.rounded_rectangle([o_x, o_y, o_x + qw, o_y + qh], radius=10, fill=(239, 246, 255), outline=(191, 219, 254), width=1)
-    draw_pill_badge(draw, left_x=o_x + 14, cy=o_y + 22, text="Opportunity (기회)", font=get_font(10, 'bold'), theme='blue', has_dot=False, pad_x=10, height=24, solid=True)
-    o_points = [
-        "• 한능검·공무원 수험생 모바일 학습 수요 88.4%",
-        "• 복잡한 수식 없는 직관적 모바일 도구 요구",
-        "• 1인 가구 및 주린이 투자자의 리스크 관리 니즈"
-    ]
-    dy = o_y + 56
-    for p in o_points:
-        draw.text((o_x + 14, dy), p, font=get_font(11.5, 'medium'), fill=(30, 64, 175))
-        dy += 24
-        
-    # T (Threat)
-    t_x = w_x
-    t_y = o_y
-    draw.rounded_rectangle([t_x, t_y, t_x + qw, t_y + qh], radius=10, fill=(254, 243, 199), outline=(253, 230, 138), width=1)
-    draw_pill_badge(draw, left_x=t_x + 14, cy=t_y + 22, text="Threat (위협)", font=get_font(10, 'bold'), theme='amber', has_dot=False, pad_x=10, height=24, solid=True)
-    t_points = [
-        "• 대형 증권사의 유사 퀀트 기능 복제",
-        "• 급격한 하락장 장기화로 투자 심리 위축",
-        "• 타사 금융 앱의 무료 광고 공세"
-    ]
-    dy = t_y + 56
-    for p in t_points:
-        draw.text((t_x + 14, dy), p, font=get_font(11.5, 'medium'), fill=(146, 64, 14))
-        dy += 24
-        
-    # Right: 3 Strategic Outcome Cards (Reference Image 1 Style)
-    strat_x = 100 + swot_w + 30
-    strat_w = 860
-    strat_h = 415
-    draw.rounded_rectangle([strat_x, b_y, strat_x + strat_w, b_y + strat_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
     
-    draw.text((strat_x + 25, b_y + 20), "STRATEGIC OUTCOMES : 도출된 3대 제품 혁신 전략", font=get_font(15, 'bold'), fill=(15, 23, 42))
-    draw.line([(strat_x + 25, b_y + 48), (strat_x + strat_w - 25, b_y + 48)], fill=(241, 245, 249), width=1)
+    for s_code, s_title, s_bullets, s_col, sx_pos, sy_pos in swot_cards:
+        draw.rounded_rectangle([sx_pos, sy_pos, sx_pos + qw, sy_pos + qh], radius=10, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
+        draw.ellipse([sx_pos + 12, sy_pos + 12, sx_pos + 36, sy_pos + 36], fill=s_col)
+        draw.text((sx_pos + 24, sy_pos + 24), s_code, font=get_font(12, 'black'), fill=(255, 255, 255), anchor='mm')
+        draw.text((sx_pos + 44, sy_pos + 24), s_title, font=get_font(11, 'bold'), fill=(15, 23, 42), anchor='lm')
+        b_ly = sy_pos + 46
+        for b_txt in s_bullets:
+            draw.text((sx_pos + 12, b_ly), b_txt, font=get_font(9.5, 'regular'), fill=(71, 85, 105))
+            b_ly += 26
+            
+    # --- BOTTOM RIGHT: 3-CORE OUTCOME STRATEGY ---
+    rx = 100 + b_w + gap
+    draw.rounded_rectangle([rx, b_y, rx + b_w, b_y + b_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+    draw_pill_badge(draw, left_x=rx + 25, cy=b_y + 30, text="UX STRATEGY", font=get_font(10, 'bold'), theme='green', pad_x=8, height=22)
+    draw.text((rx + 160, b_y + 30), "OUTCOME STRATEGY : 수험생 합격을 완성하는 3대 UX 원칙", font=get_font(14, 'bold'), fill=(15, 23, 42), anchor='lm')
     
-    outcomes = [
+    strat_cards = [
         ("01", "기출 1,500제 완벽 분석 및 오답 자동 인덱싱",
          "AS-IS : 두꺼운 문제집 들고 다니며 오답 체크에 2시간 이상 낭비되는 비효율",
          "TO-BE : 틀린 문제 1초 만에 오답 볼트로 인덱싱 & 취약 시대 타겟 숏폼 복습",
-         "blue"),
+         (29, 78, 216)),
         ("02", "사료 판독 키워드 하이라이트 & 50:50 찬스",
-         "AS-IS : 급락 순간 키보드로 가격을 치다 지지선을 놓치고 -6.4% 추가 손실",
-         "TO-BE : 0.2초 음성 도크 & ±5% 원터치 프리셋 칩으로 4.2초 만에 파라미터 세팅",
-         "cyan"),
+         "AS-IS : 고문헌 한자/초서 사료 해석에 막혀 문제 전체를 포기하는 수험생 좌절",
+         "TO-BE : 사료 속 핵심 단서 자동 형광펜 + 50:50 확률 찬스로 수험생 추론 훈련",
+         (217, 119, 6)),
         ("03", "시대별 마스터리 레이더 & 실전 80분 시험장 시뮬레이션",
-         "AS-IS : 원금 회복을 위해 몇 주를 사야 하는지 계산할 수 없어 맹목적 매수",
-         "TO-BE : 폐쇄형(Closed-Form) 퀀트 역산 엔진으로 목표 탈출가 도달 수량 0ms 즉각 산출",
-         "green")
+         "AS-IS : 시험장 시간 배분 연습 부족으로 마지막 10문항 OMR 마킹 실패 다수",
+         "TO-BE : 50문항 80분 공인 시험 OMR 타이머 및 6대 시대별 취약점 레이더 분석",
+         (5, 150, 105))
     ]
     
-    sy_out = b_y + 65
-    for num, o_title, o_asis, o_tobe, o_theme in outcomes:
-        draw.rounded_rectangle([strat_x + 25, sy_out, strat_x + strat_w - 25, sy_out + 102], radius=12, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
-        
-        # Number Badge & Aligned Title
-        draw.rounded_rectangle([strat_x + 40, sy_out + 14, strat_x + 68, sy_out + 38], radius=6, fill=(15, 23, 42))
-        draw.text((strat_x + 54, sy_out + 26), num, font=get_font(12, 'bold'), fill=(255, 255, 255), anchor='mm')
-        draw.text((strat_x + 78, sy_out + 26), o_title, font=get_font(14, 'bold'), fill=(15, 23, 42), anchor='lm')
-        
-        # As-is line
-        draw.text((strat_x + 40, sy_out + 46), o_asis, font=get_font(11.5, 'regular'), fill=(220, 38, 38))
-        # To-be line
-        draw.text((strat_x + 40, sy_out + 70), o_tobe, font=get_font(11.5, 'bold'), fill=(0, 82, 255))
-        
-        sy_out += 114
+    st_y = b_y + 60
+    st_h = 105
+    for scode, stitle, asis, tobe, scol in strat_cards:
+        draw.rounded_rectangle([rx + 25, st_y, rx + b_w - 25, st_y + st_h], radius=10, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
+        draw.ellipse([rx + 42, st_y + 24, rx + 74, st_y + 56], fill=scol)
+        draw.text((rx + 58, st_y + 40), scode, font=get_font(13, 'black'), fill=(255, 255, 255), anchor='mm')
+        draw.text((rx + 86, st_y + 30), stitle, font=get_font(12.5, 'bold'), fill=(15, 23, 42), anchor='lm')
+        draw.text((rx + 86, st_y + 54), asis, font=get_font(10, 'regular'), fill=(225, 29, 72))
+        draw.text((rx + 86, st_y + 76), tobe, font=get_font(10, 'bold'), fill=(29, 78, 216))
+        st_y += st_h + 16
         
     draw_slide_footer(draw, 2)
     base.save(f'{OUT_DIR}/slide_02.png')
     print("SAVED diverse Slide 02 (Desk Research + Insight + SWOT Matrix + Outcomes) successfully!")
+
 
 def make_slide_03():
     base = Image.new('RGBA', (W, H), (248, 250, 252, 255))
@@ -945,383 +855,263 @@ def make_slide_03():
         subtitle_kr="2x2 타깃 포지셔닝 매트릭스와 4대 플랫폼 벤치마크, 그리고 대표 페르소나 행동 지표"
     )
     
-    # ==============================================================
-    # 1. TOP-LEFT: 2x2 Target Segmentation Matrix (Reference Image 2 Style)
-    # ==============================================================
-    t_x = 100
-    t_y = 234
-    t_w = 780
-    t_h = 378
-    draw.rounded_rectangle([t_x, t_y, t_x + t_w, t_y + t_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+    # -------------------------------------------------------------
+    # 1. TOP-LEFT: 2x2 Target Segmentation Matrix
+    # -------------------------------------------------------------
+    mx_x = 100
+    mx_y = 234
+    mx_w = 840
+    mx_h = 320
     
-    draw.text((t_x + 24, t_y + 18), "TARGET SEGMENTATION MATRIX (타깃 세그먼트 분석)", font=get_font(14, 'bold'), fill=(15, 23, 42))
-    draw.text((t_x + 24, t_y + 38), "매매 빈도와 퀀트 도구 수용도에 따른 4대 투자자 유형 분류", font=get_font(11.5, 'medium'), fill=(100, 116, 139))
+    draw.rounded_rectangle([mx_x, mx_y, mx_x + mx_w, mx_y + mx_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+    draw_pill_badge(draw, left_x=mx_x + 24, cy=mx_y + 26, text="TARGET MATRIX", font=get_font(10, 'bold'), theme='blue', pad_x=8, height=22)
+    draw.text((mx_x + 155, mx_y + 26), "2x2 세그멘테이션 : 학습 집중도 vs. 시험 목표 레벨", font=get_font(14, 'bold'), fill=(15, 23, 42), anchor='lm')
     
-    # 2x2 Quadrant Grid - Centered Horizontally & Vertically within card
-    grid_w = 540
-    grid_h = 260
-    grid_x = t_x + (t_w - grid_w) // 2 # 220
-    grid_y = t_y + 76 # 310
-    qw = (grid_w - 16) // 2 # 262
-    qh = (grid_h - 16) // 2 # 122
+    # Quadrant Boxes
+    qw = 385
+    qh = 115
+    q1_x = mx_x + 24
+    q1_y = mx_y + 60
+    q2_x = q1_x + qw + 22
+    q2_y = q1_y
+    q3_x = q1_x
+    q3_y = q1_y + qh + 16
+    q4_x = q2_x
+    q4_y = q3_y
     
-    # Axis lines & labels
-    axis_x = grid_x + qw + 8 # 490
-    axis_y = grid_y + qh + 8 # 430
-    draw.line([(axis_x, grid_y), (axis_x, grid_y + grid_h)], fill=(203, 213, 225), width=2)
-    draw.line([(grid_x, axis_y), (grid_x + grid_w, axis_y)], fill=(203, 213, 225), width=2)
+    # Q1: 직장인 숏폼 암기형
+    draw.rounded_rectangle([q1_x, q1_y, q1_x + qw, q1_y + qh], radius=10, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
+    draw_pill_badge(draw, left_x=q1_x + 12, cy=q1_y + 18, text="Q1 · 통근/자투리 수험생", font=get_font(8.5, 'bold'), theme='slate', pad_x=6, height=18)
+    draw.text((q1_x + 12, q1_y + 44), "자투리 10분 활용 & 핵심 기출 요약 선호", font=get_font(11, 'bold'), fill=(15, 23, 42))
+    draw.text((q1_x + 12, q1_y + 68), "• 두꺼운 기출집 휴대 불가, 지하철 한 손 풀이\n• 솔루션 : 10문항 숏폼 & 원터치 50:50 찬스", font=get_font(9.5, 'regular'), fill=(71, 85, 105), spacing=3)
     
-    # Axis Direction Labels with anchor alignment (Protected well inside card boundaries)
-    draw.text((axis_x, grid_y - 12), "▲ 실시간 모멘텀 (초단위)", font=get_font(10, 'bold'), fill=(0, 82, 255), anchor='ms')
-    draw.text((axis_x, grid_y + grid_h + 16), "▼ 적립식 장기 (월단위)", font=get_font(10, 'bold'), fill=(100, 116, 139), anchor='ma')
-    draw.text((grid_x - 12, axis_y), "◀ 직관/감", font=get_font(10, 'bold'), fill=(100, 116, 139), anchor='rm')
-    draw.text((grid_x + grid_w + 12, axis_y), "데이터/역산 ▶", font=get_font(10, 'bold'), fill=(0, 82, 255), anchor='lm')
+    # Q2: 전업 공시생 실전형 (PRIMARY TARGET)
+    draw.rounded_rectangle([q2_x, q2_y, q2_x + qw, q2_y + qh], radius=10, fill=(238, 242, 255), outline=(199, 210, 254), width=1)
+    draw_pill_badge(draw, left_x=q2_x + 12, cy=q2_y + 18, text="Q2 · 한능검 1급 실전형 (PRIMARY)", font=get_font(8.5, 'bold'), theme='blue', pad_x=6, height=18)
+    draw.text((q2_x + 12, q2_y + 44), "50문항 80분 시험장 시뮬레이션 및 80점 돌파", font=get_font(11, 'bold'), fill=(29, 78, 216))
+    draw.text((q2_x + 12, q2_y + 68), "• 실제 시험과 동일한 OMR 타이머 및 1,500제 기출 완벽 대비\n• 솔루션 : 50문항 실전 시험 센터 & OMR 시간 안배", font=get_font(9.5, 'regular'), fill=(30, 58, 138), spacing=3)
     
-    # Quadrant 1: Top-Right (Active Momentum Quant) - CORE TARGET
-    q1_x = grid_x + qw + 16
-    q1_y = grid_y
-    draw.rounded_rectangle([q1_x, q1_y, q1_x + qw, q1_y + qh], radius=8, fill=(239, 246, 255), outline=(147, 197, 253), width=1)
-    draw_pill_badge(draw, left_x=q1_x + 12, cy=q1_y + 22, text="CORE TARGET", font=get_font(9.5, 'bold'), theme='blue', has_dot=True, pad_x=8, height=22, solid=True)
-    draw.text((q1_x + 12, q1_y + 44), "실시간 모멘텀 퀀트", font=get_font(13, 'bold'), fill=(0, 82, 255))
-    draw.text((q1_x + 12, q1_y + 68), "• 두꺼운 기출집 휴대 피로 극심\n• 10문항 숏폼 & 즉시 채점 최우선 수용", font=get_font(11, 'regular'), fill=(51, 65, 85), spacing=3)
+    # Q3: 고교 내신/수능 기초형
+    draw.rounded_rectangle([q3_x, q3_y, q3_x + qw, q3_y + qh], radius=10, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
+    draw_pill_badge(draw, left_x=q3_x + 12, cy=q3_y + 18, text="Q3 · 내신/수능 기초 학습생", font=get_font(8.5, 'bold'), theme='slate', pad_x=6, height=18)
+    draw.text((q3_x + 12, q3_y + 44), "시대별 흐름 파악 및 유물 시각 자료 중심", font=get_font(11, 'bold'), fill=(15, 23, 42))
+    draw.text((q3_x + 12, q3_y + 68), "• 단순 연도 암기 한계, 사진 유물 연계 부족\n• 솔루션 : 6대 시대별 서고 & 고해상도 유물 갤러리", font=get_font(9.5, 'regular'), fill=(71, 85, 105), spacing=3)
     
-    # Quadrant 2: Bottom-Right (Systematic Exam Taker) - PRIMARY TARGET
-    q2_x = q1_x
-    q2_y = grid_y + qh + 16
-    draw.rounded_rectangle([q2_x, q2_y, q2_x + qw, q2_y + qh], radius=8, fill=(236, 253, 245), outline=(167, 243, 208), width=1)
-    draw_pill_badge(draw, left_x=q2_x + 12, cy=q2_y + 22, text="PRIMARY TARGET", font=get_font(9.5, 'bold'), theme='green', has_dot=True, pad_x=8, height=22, solid=True)
-    draw.text((q2_x + 12, q2_y + 44), "안정 적립식 플래너", font=get_font(13, 'bold'), fill=(5, 150, 105))
-    draw.text((q2_x + 12, q2_y + 68), "• 계획적 실전 시험 및 시간 안배 중시\n• 80분 OMR 타이머 및 실전 회차 풀이", font=get_font(11, 'regular'), fill=(51, 65, 85), spacing=3)
+    # Q4: 취약 시대 집중 보완형
+    draw.rounded_rectangle([q4_x, q4_y, q4_x + qw, q4_y + qh], radius=10, fill=(254, 242, 242), outline=(254, 202, 202), width=1)
+    draw_pill_badge(draw, left_x=q4_x + 12, cy=q4_y + 18, text="Q4 · 오답 반복 보완형", font=get_font(8.5, 'bold'), theme='red', pad_x=6, height=18)
+    draw.text((q4_x + 12, q4_y + 44), "틀린 사료·근현대사 집중 오답 박멸", font=get_font(11, 'bold'), fill=(225, 29, 72))
+    draw.text((q4_x + 12, q4_y + 68), "• 틀린 문제를 다시 틀리는 암기 누수 현상 극심\n• 솔루션 : 원터치 스마트 오답 볼트 & 에빙하우스 복습", font=get_font(9.5, 'regular'), fill=(153, 27, 27), spacing=3)
     
-    # Quadrant 3: Top-Left (Impulsive Scalper) - SECONDARY TARGET
-    q3_x = grid_x
-    q3_y = grid_y
-    draw.rounded_rectangle([q3_x, q3_y, q3_x + qw, q3_y + qh], radius=8, fill=(254, 243, 199), outline=(253, 230, 138), width=1)
-    draw_pill_badge(draw, left_x=q3_x + 12, cy=q3_y + 22, text="SECONDARY TARGET", font=get_font(9.5, 'bold'), theme='amber', has_dot=True, pad_x=8, height=22, solid=True)
-    draw.text((q3_x + 12, q3_y + 44), "충동적 모멘텀 스캘퍼", font=get_font(13, 'bold'), fill=(180, 83, 9))
-    draw.text((q3_x + 12, q3_y + 68), "• 사료 독해 난항으로 오답 반복\n• 솔루션 : 핵심 단서 하이라이트 & 50:50 찬스", font=get_font(11, 'regular'), fill=(120, 53, 15), spacing=3)
+    # -------------------------------------------------------------
+    # 2. TOP-RIGHT: 4-Competitor Benchmark Table
+    # -------------------------------------------------------------
+    bm_x = mx_x + mx_w + 40
+    bm_y = 234
+    bm_w = 840
+    bm_h = 320
     
-    # Quadrant 4: Bottom-Left (Blind Averager) - POTENTIAL TARGET
-    q4_x = grid_x
-    q4_y = grid_y + qh + 16
-    draw.rounded_rectangle([q4_x, q4_y, q4_x + qw, q4_y + qh], radius=8, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
-    draw_pill_badge(draw, left_x=q4_x + 12, cy=q4_y + 22, text="POTENTIAL TARGET", font=get_font(9.5, 'bold'), theme='slate', has_dot=True, pad_x=8, height=22, solid=True)
-    draw.text((q4_x + 12, q4_y + 44), "비이성적 맹목 매수자", font=get_font(13, 'bold'), fill=(71, 85, 105))
-    draw.text((q4_x + 12, q4_y + 68), "• 특정 시대(근현대사 등) 취약 누적\n• 솔루션 : 시대별 레이더 & 오답 볼트", font=get_font(11, 'regular'), fill=(71, 85, 105), spacing=3)
-
-    # ==============================================================
-    # 2. TOP-RIGHT: Competitive Benchmark Table (Reference Image 2 Style)
-    # ==============================================================
-    c_x = 910
-    c_y = 234
-    c_w = 810
-    c_h = 378
-    draw.rounded_rectangle([c_x, c_y, c_x + c_w, c_y + c_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+    draw.rounded_rectangle([bm_x, bm_y, bm_x + bm_w, bm_y + bm_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+    draw_pill_badge(draw, left_x=bm_x + 24, cy=bm_y + 26, text="BENCHMARK", font=get_font(10, 'bold'), theme='amber', pad_x=8, height=22)
+    draw.text((bm_x + 145, bm_y + 26), "국내 주요 에듀테크 앱 대비 대한국사의 5대 핵심 차별점", font=get_font(14, 'bold'), fill=(15, 23, 42), anchor='lm')
     
-    draw.text((c_x + 24, c_y + 18), "COMPETITIVE BENCHMARK (경쟁사 비교 분석)", font=get_font(14, 'bold'), fill=(15, 23, 42))
-    draw.text((c_x + 24, c_y + 38), "국내 주요 에듀테크 앱 대비 대한국사의 5대 핵심 차별점", font=get_font(11.5, 'medium'), fill=(100, 116, 139))
-    
-    # Table layout dimensions
-    tbl_x = c_x + 20
-    tbl_w = c_w - 40
-    th_y = c_y + 64
-    th_h = 36
-    th_cy = th_y + th_h // 2
-    
-    x1 = tbl_x + 16
-    x2 = tbl_x + 155
-    x3 = tbl_x + 335
-    col4_x = tbl_x + 520
-    col4_w = tbl_w - 520
-    
-    # Table Header Row background
-    draw.rounded_rectangle([tbl_x, th_y, tbl_x + tbl_w, th_y + th_h], radius=8, fill=(241, 245, 249))
-    
-    # DAEHANGUKSA Column 4 Highlight Card (Runs behind header & all data rows)
-    draw.rounded_rectangle([col4_x, th_y - 2, col4_x + col4_w, th_y + th_h + 5 * 46 + 4], radius=10, fill=(240, 246, 255), outline=(191, 219, 254), width=1)
-    
-    # Header Labels
-    draw.text((x1, th_cy), "비교 차원 (Dimensions)", font=get_font(11.5, 'bold'), fill=(71, 85, 105), anchor='lm')
-    draw.text((x2, th_cy), "증권사 MTS", font=get_font(11.5, 'bold'), fill=(71, 85, 105), anchor='lm')
-    draw.text((x3, th_cy), "일반 계산기 웹/앱", font=get_font(11.5, 'bold'), fill=(71, 85, 105), anchor='lm')
-    draw_pill_badge(draw, cx=col4_x + col4_w // 2, cy=th_cy, text="대한국사 (본 앱)", font=get_font(11, 'bold'), theme='blue', solid=True, has_dot=True, height=26, pad_x=12)
-    
-    rows = [
-        ("학습 모드", "단순 PDF 문제 나열", "광고 팝업 지연 풀이", "실전 모의고사 + 10문항 숏폼"),
-        ("연산 엔진", "사후 단순 가중평균", "1회성 수동 단일 수식", "닫힌 형식(Closed-Form) 역산"),
-        ("의사결정", "단순 평가액 나열", "결과 저장 미지원", "A vs B 시뮬레이션 매트릭스"),
-        ("오답 관리", "수동 스크랩 캡처", "별도 노트 작성 필요", "원터치 자동 인덱싱 오답 볼트"),
-        ("프라이버시", "서버 공인인증 필수", "임시 세션 리셋", "100% 온디바이스 로컬 암호화")
+    cols = [
+        ("비교 항목", 130),
+        ("E사 기출앱", 140),
+        ("C사 모바일", 140),
+        ("H사 공무원", 140),
+        ("대한국사 (본 앱)", 220)
     ]
     
-    row_h = 46
-    r_y = th_y + th_h + 6
-    for dim, r_mts, r_app, r_smart in rows:
-        row_cy = r_y + row_h // 2
-        # Clean horizontal divider line across entire table
-        draw.line([(tbl_x + 10, r_y), (tbl_x + tbl_w - 10, r_y)], fill=(235, 240, 245), width=1)
+    # Header Row
+    th_y = bm_y + 54
+    cur_x = bm_x + 24
+    for cname, cwidth in cols:
+        draw.text((cur_x + cwidth // 2, th_y + 10), cname, font=get_font(10.5, 'bold'), fill=(15, 23, 42) if "본 앱" not in cname else (29, 78, 216), anchor='mm')
+        cur_x += cwidth + 10
         
-        draw.text((x1, row_cy), dim, font=get_font(12, 'bold'), fill=(15, 23, 42), anchor='lm')
-        draw.text((x2, row_cy), r_mts, font=get_font(11.5, 'regular'), fill=(100, 116, 139), anchor='lm')
-        draw.text((x3, row_cy), r_app, font=get_font(11.5, 'regular'), fill=(100, 116, 139), anchor='lm')
-        
-        # Col 4: dot + bold blue text
-        dot_r = 3.5
-        draw.ellipse([int(round(col4_x + 16 - dot_r)), int(round(row_cy - dot_r)), int(round(col4_x + 16 + dot_r)), int(round(row_cy + dot_r))], fill=(0, 82, 255))
-        draw.text((col4_x + 28, row_cy), r_smart, font=get_font(11.5, 'bold'), fill=(0, 82, 255), anchor='lm')
-        r_y += row_h
-        
-    # ==============================================================
-    # 3. BOTTOM: 2 PERSONA CARDS WITH BEHAVIOR SLIDERS (Image 3 Style)
-    # ==============================================================
-    p_y = 632
-    pw = 800
-    ph = 338
+    draw.line([(bm_x + 24, th_y + 24), (bm_x + bm_w - 24, th_y + 24)], fill=(226, 232, 240), width=1)
     
-    # Persona A (김투자)
-    draw.rounded_rectangle([100, p_y, 100 + pw, p_y + ph], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-    draw_pill_badge(draw, left_x=128, cy=p_y + 26, text="ARCHETYPE A", font=get_font(10, 'bold'), theme='blue', has_dot=True, pad_x=10, height=24)
-    draw.text((260, p_y + 26), "김투자 (34세, 적립식 직장인 투자자)", font=get_font(16.5, 'bold'), fill=(15, 23, 42), anchor='lm')
-    
-    # 22px bottom margin below badge
-    draw.text((128, p_y + 60), '"월급날마다 분할 매수하지만, 내 자금이 언제 바닥날지 늘 불안합니다."', font=get_font(13.5, 'bold'), fill=(0, 82, 255))
-    
-    desc_a = [
-        "• 투자 성향 : 계획적 분할 매수를 원하나 모바일에서 계산 수식 관리가 어려움",
-        "• 주요 고통 : 추가 매수로 인해 특정 종목 비중이 커져 포트폴리오 균형 붕괴",
-        "• 핵심 목표 : 출퇴근 자투리 시간 10분 활용 한능검 1급 80점 이상 단기 취득"
+    b_rows = [
+        ("학습 모드", "단순 PDF 나열", "웹 뷰어 풀이", "강의 연계 퀴즈", "실전 50제 + 10문항 숏폼"),
+        ("사료 분석", "텍스트 원문만", "단순 정답 표시", "강의 유도 링크", "핵심 단서 형광펜 + 50:50 찬스"),
+        ("오답 관리", "수동 스크랩", "단순 체크 리스트", "별도 노트 작성", "1초 자동 인덱싱 오답 볼트"),
+        ("오프라인", "네트워크 필수", "로그인 세션 만료", "데이터 1.2GB 소모", "SQLite 100% 온디바이스"),
+        ("UI/UX 완성도", "전면 배너 광고 피로", "정적인 텍스트 테이블", "복잡한 학원 결제창", "Flutter 60FPS 네이티브 UI")
     ]
-    dy = p_y + 84
-    for d in desc_a:
-        draw.text((128, dy), d, font=get_font(12, 'regular'), fill=(71, 85, 105))
-        dy += 22
+    
+    row_y = th_y + 32
+    for r_idx, row in enumerate(b_rows):
+        cur_x = bm_x + 24
+        bg_color = (248, 250, 252) if r_idx % 2 == 0 else (255, 255, 255)
+        draw.rounded_rectangle([bm_x + 20, row_y - 4, bm_x + bm_w - 20, row_y + 26], radius=4, fill=bg_color)
         
-    draw.line([(128, p_y + 160), (100 + pw - 28, p_y + 160)], fill=(241, 245, 249), width=1)
-    draw.text((128, p_y + 172), "BEHAVIOR SPECTRUM (투자 행동 성향 지표)", font=get_font(10.5, 'bold'), fill=(100, 116, 139))
+        for c_idx, cell in enumerate(row):
+            cwidth = cols[c_idx][1]
+            txt_col = (29, 78, 216) if c_idx == 4 else ((15, 23, 42) if c_idx == 0 else (100, 116, 139))
+            txt_weight = 'bold' if (c_idx == 0 or c_idx == 4) else 'regular'
+            draw.text((cur_x + cwidth // 2, row_y + 11), cell, font=get_font(9.5, txt_weight), fill=txt_col, anchor='mm')
+            cur_x += cwidth + 10
+        row_y += 38
+        
+    # -------------------------------------------------------------
+    # 3. BOTTOM: Detailed Representative Personas
+    # -------------------------------------------------------------
+    p_y = 574
+    p_h = 365
+    p_w = 840
     
-    draw_behavior_slider(draw, 128, p_y + 204, 350, "매매 주기", "안정 적립", "공격 단타", 0.20, theme='blue')
-    draw_behavior_slider(draw, 500, p_y + 204, 350, "자금 운용", "계획 분할", "몰빵 집중", 0.25, theme='blue')
-    draw_behavior_slider(draw, 128, p_y + 250, 350, "계산 도구", "수동 암산", "퀀트 역산", 0.35, theme='blue')
-    draw_behavior_slider(draw, 500, p_y + 250, 350, "모바일 긴급", "여유 조망", "초단위 긴급", 0.60, theme='blue')
+    # Persona 1: 직장인 이수진 (자투리 1급 도전형)
+    px1 = 100
+    draw.rounded_rectangle([px1, p_y, px1 + p_w, p_y + p_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+    draw_pill_badge(draw, left_x=px1 + 24, cy=p_y + 26, text="PRIMARY PERSONA 01", font=get_font(10, 'bold'), theme='blue', pad_x=8, height=22)
+    draw.text((px1 + 190, p_y + 26), "이수진 (29세 · 공기업 이직 준비 직장인)", font=get_font(14, 'bold'), fill=(15, 23, 42), anchor='lm')
     
-    # Persona B (박스캘퍼)
-    pb_x = 100 + pw + 20
-    draw.rounded_rectangle([pb_x, p_y, pb_x + pw, p_y + ph], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-    draw_pill_badge(draw, left_x=pb_x + 28, cy=p_y + 26, text="ARCHETYPE B", font=get_font(10, 'bold'), theme='amber', has_dot=True, pad_x=10, height=24)
-    draw.text((pb_x + 160, p_y + 26), "박스캘퍼 (28세, 실시간 모멘텀 트레이더)", font=get_font(16.5, 'bold'), fill=(15, 23, 42), anchor='lm')
-    
-    # 22px bottom margin below badge
-    draw.text((pb_x + 28, p_y + 60), '"초 단위로 쏟아지는 급락장에서 가격을 치고 있을 여유가 없습니다."', font=get_font(13.5, 'bold'), fill=(217, 119, 6))
-    
-    desc_b = [
-        "• 학습 성향 : 실전 기출 반복 풀이, 사료 키워드 중심의 직관적 암기 선호",
-        "• 주요 고통 : 두꺼운 문제집과 사료집 분권으로 이동 중 학습 불가 및 오답 정리 피로",
-        "• 핵심 목표 : 말 한마디로 끝나는 0.2초 음성 입력과 목표 탈출 수량 즉시 확인"
+    p1_details = [
+        ("• 핵심 목표 : 출퇴근 지하철 20분 활용하여 3주 만에 한능검 심화 1급(80점↑) 취득", (15, 23, 42)),
+        ("• 주요 고통 : 두꺼운 기출 문제집 휴대 불가, 채점 및 오답 정리 시간이 부족하여 진도 정체", (225, 29, 72)),
+        ("• 학습 행태 : 환승 구간 등 짧은 시간에 5~10문제씩 빠르게 풀고 즉각 채점 확인 선호", (71, 85, 105)),
+        ("• 핵심 니즈 : 10문항 숏폼 테스트, 헷갈리는 선지 2개 지워주는 50:50 찬스, 모바일 오답 자동 정리", (29, 78, 216))
     ]
-    dy = p_y + 84
-    for d in desc_b:
-        draw.text((pb_x + 28, dy), d, font=get_font(12, 'regular'), fill=(71, 85, 105))
-        dy += 22
+    p1_ly = p_y + 64
+    for ptxt, pcol in p1_details:
+        draw.text((px1 + 24, p1_ly), ptxt, font=get_font(11, 'bold' if pcol != (71, 85, 105) else 'regular'), fill=pcol)
+        p1_ly += 30
         
-    draw.line([(pb_x + 28, p_y + 160), (pb_x + pw - 28, p_y + 160)], fill=(241, 245, 249), width=1)
-    draw.text((pb_x + 28, p_y + 172), "BEHAVIOR SPECTRUM (투자 행동 성향 지표)", font=get_font(10.5, 'bold'), fill=(100, 116, 139))
+    draw.rounded_rectangle([px1 + 24, p_y + 200, px1 + p_w - 24, p_y + p_h - 20], radius=10, fill=(238, 242, 255), outline=(199, 210, 254), width=1)
+    draw.text((px1 + 40, p_y + 220), "KEY SCENARIO & UX SOLUTION", font=get_font(10.5, 'bold'), fill=(29, 78, 216))
+    draw.text((px1 + 40, p_y + 248), "지하철 2호선 만원 전철에서 한 손으로 앱을 켜고, 10문항 숏폼 모의고사를 실행합니다.\n생소한 사료가 나왔을 때 '50:50 찬스'로 함정 선지 2개를 날리고 소거법으로 정답을 맞힙니다.\n틀린 문제는 '스마트 오답 볼트'에 1초 만에 저장되어 퇴근길에 3분 만에 복습을 완료합니다.", font=get_font(10.5, 'regular'), fill=(30, 58, 138), spacing=6)
     
-    draw_behavior_slider(draw, pb_x + 28, p_y + 204, 350, "매매 주기", "안정 적립", "공격 단타", 0.95, theme='amber')
-    draw_behavior_slider(draw, pb_x + 400, p_y + 204, 350, "자금 운용", "계획 분할", "몰빵 집중", 0.85, theme='amber')
-    draw_behavior_slider(draw, pb_x + 28, p_y + 250, 350, "계산 도구", "수동 암산", "퀀트 역산", 0.85, theme='amber')
-    draw_behavior_slider(draw, pb_x + 400, p_y + 250, 350, "모바일 긴급", "여유 조망", "초단위 긴급", 1.00, theme='amber')
+    # Persona 2: 전업 수험생 박민우 (공무원 실전 고득점형)
+    px2 = px1 + p_w + 40
+    draw.rounded_rectangle([px2, p_y, px2 + p_w, p_y + p_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+    draw_pill_badge(draw, left_x=px2 + 24, cy=p_y + 26, text="PRIMARY PERSONA 02", font=get_font(10, 'bold'), theme='amber', pad_x=8, height=22)
+    draw.text((px2 + 190, p_y + 26), "박민우 (26세 · 7/9급 공무원 전업 수험생)", font=get_font(14, 'bold'), fill=(15, 23, 42), anchor='lm')
+    
+    p2_details = [
+        ("• 핵심 목표 : 최신 77회 한능검 심화 95점 이상 달성 및 킬러 사료 완벽 정복", (15, 23, 42)),
+        ("• 주요 고통 : 지문이 길고 사료 단서가 숨겨진 3점짜리 킬러 문항에서 오답 발생 빈번", (225, 29, 72)),
+        ("• 학습 행태 : 매일 아침 실제 시험과 동일한 80분 타이머로 50문항 전 회차 실전 풀이", (71, 85, 105)),
+        ("• 핵심 니즈 : 80분 OMR 타이머, 사료 속 핵심 키워드 형광펜 분석, 시대별 마스터리 레이더", (217, 119, 6))
+    ]
+    p2_ly = p_y + 64
+    for ptxt, pcol in p2_details:
+        draw.text((px2 + 24, p2_ly), ptxt, font=get_font(11, 'bold' if pcol != (71, 85, 105) else 'regular'), fill=pcol)
+        p2_ly += 30
+        
+    draw.rounded_rectangle([px2 + 24, p_y + 200, px2 + p_w - 24, p_y + p_h - 20], radius=10, fill=(254, 243, 199), outline=(253, 230, 138), width=1)
+    draw.text((px2 + 40, p_y + 220), "KEY SCENARIO & UX SOLUTION", font=get_font(10.5, 'bold'), fill=(180, 83, 9))
+    draw.text((px2 + 40, p_y + 248), "독서실에서 '실전 시험 센터'의 제77회 심화 모의고사를 실행하여 80분 OMR 카운트다운을 시작합니다.\n시간 안배 훈련을 거쳐 50문항을 완주한 후, 실시간 점수 환산과 오답 사료 분석을 확인합니다.\n조선 후기 정치사 등 취약 시대를 레이더 차트로 확인하고 서고에서 핵심 사료를 즉시 복습합니다.", font=get_font(10.5, 'regular'), fill=(146, 64, 14), spacing=6)
     
     draw_slide_footer(draw, 3)
     base.save(f'{OUT_DIR}/slide_03.png')
     print("SAVED diverse Slide 03 (Target 2x2 Matrix + Benchmark + Personas) successfully!")
 
+
 def make_slide_04():
     base = Image.new('RGBA', (W, H), (248, 250, 252, 255))
     draw = ImageDraw.Draw(base)
     
-    # Unified Header - Simplified title
     draw_slide_header(
         draw, 
         slide_num=4, 
         category_en="INFORMATION ARCHITECTURE · 5대 핵심 메뉴 구조", 
         title_black="수험생이 한눈에 파악하는 ", 
         title_blue="5대 합격 학습 내비게이션", 
-        subtitle_kr="실전 모의고사부터 시대별 핵심 요약, AI 오답 노트까지 학습 흐름이 끊기지 않는 최적의 정보 구조"
+        subtitle_kr="홈·학습관·시험센터·오답노트·설정 5대 핵심 바텀 내비게이션 기반 한 손 완결형 정보 아키텍처"
     )
     
-    # Top-Right Badge: Clean, Compact Overview (w=340, h=60, nicely proportioned)
+    # Top-Right Badge
     top_badge_x = 1480
     top_badge_y = 65
     draw.rounded_rectangle([top_badge_x, top_badge_y, top_badge_x + 340, top_badge_y + 60], radius=10, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
     draw_pill_badge(draw, left_x=top_badge_x + 16, cy=top_badge_y + 30, text="서비스 구성", font=get_font(9.5, 'bold'), theme='blue', has_dot=True, pad_x=8, height=24)
     draw.text((top_badge_x + 110, top_badge_y + 20), "5대 메인 탭", font=get_font(12, 'bold'), fill=(15, 23, 42))
-    draw.text((top_badge_x + 110, top_badge_y + 39), "총 15개 직관적 화면 설계", font=get_font(10.5, 'medium'), fill=(100, 116, 139))
+    draw.text((top_badge_x + 110, top_badge_y + 38), "Flutter IndexedStack 구조", font=get_font(10, 'regular'), fill=(100, 116, 139))
     
-    # Level 0 Root Node: Compact, Centered, Clean Korean!
-    # Width: 460px (x: 730 to 1190) - NOT overly wide!
-    root_x1, root_y1, root_x2, root_y2 = 730, 226, 1190, 286
-    draw.rounded_rectangle([root_x1, root_y1, root_x2, root_y2], radius=12, fill=(255, 255, 255), outline=(0, 82, 255), width=2)
-    b_root = draw_pill_badge(draw, left_x=root_x1 + 18, cy=root_y1 + 30, text="시작 화면", font=get_font(10, 'bold'), theme='blue', has_dot=True, pad_x=10, height=26)
-    draw.text((b_root[2] + 16, root_y1 + 19), "대한국사 전체 5대 핵심 메뉴 구조", font=get_font(14.5, 'bold'), fill=(15, 23, 42))
-    draw.text((b_root[2] + 16, root_y1 + 41), "한 손으로 편리하게 이용하는 5대 핵심 메뉴와 기능 안내", font=get_font(10.5, 'medium'), fill=(71, 85, 105))
-    
-    # Connectors from Root Node to 5 Level 1 Columns
-    cw = 328
-    cgap = 20
-    cols_x = [100 + i * (cw + cgap) for i in range(5)]
-    col_centers = [cx + cw // 2 for cx in cols_x]
-    
-    draw.line([(960, root_y2), (960, 308)], fill=(0, 82, 255), width=2)
-    draw.ellipse([956, 304, 964, 312], fill=(0, 82, 255))
-    draw.line([(col_centers[0], 308), (col_centers[-1], 308)], fill=(0, 82, 255, 180), width=2)
-    for cx in col_centers:
-        draw.ellipse([cx - 4, 308 - 4, cx + 4, 308 + 4], fill=(0, 82, 255))
-        draw_arrow(draw, (cx, 308), (cx, 330), col=(0, 82, 255), width=2, arrow_size=4)
-        
-    # 5 Domains Data (Clean Korean, easily understandable terms, zero developer jargon!)
-    domains_data = [
-        ("01. 홈 대시보드", "학습 현황 종합 관제", "출석 스트릭, 오늘의 추천 기출, 시대별 진도율을 한눈에 조회", [
-            ("기본 화면", "자산 현황 요약", "내 투자금과 총 수익률, 현재 환율을 한눈에 확인", False),
-            ("스트릭 현황", "연속 학습 달성", "매일 이어지는 학습 습관과 잔여 목표 일수 확인", False),
-            ("입력 창", "음성 간편 입력", "숫자를 직접 치지 않고 말 한마디로 단가와 수량 입력", True)
-        ]),
-        ("02. 실전 기출 센터", "회차별 모의고사", "최신 77회 한능검 심화 50문항 실전 응시 및 80분 타이머", [
-            ("실전 50제", "공인 시험 모의고사", "실제 시험지와 동일한 배점 및 80분 OMR 마킹 시뮬레이션", False),
-            ("숏폼 10제", "자투리 10문항", "출퇴근길 5분 만에 푸는 핵심 기출 압축 테스트", False),
-            ("비교 화면", "매수 방식 비교", "한 번에 몰아서 살 때와 나눠서 살 때의 결과 비교", True)
-        ]),
-        ("03. 시대별 서고", "선사부터 현대사까지", "6대 시대별 요약 카드, 유물 고해상도 갤러리 및 오디오", [
-            ("시대별 요약", "핵심 사료 정리", "선사·삼국·고려·조선·근대·현대사 마스터 노트", True),
-            ("안내 팝업", "현실적인 목표 안내", "도달하기 어려운 무리한 목표일 때 실현 가능한 수치 안내", True),
-            ("유물 갤러리", "시각 자료 도감", "시험에 빈출되는 국보·보물 유물 고화질 사진 및 해설", True)
-        ]),
-        ("04. 위험 진단", "안전한 계좌 관리", "무리한 추가 매수를 막고 현금 비중을 안전하게 유지", [
-            ("진단 화면", "종목 비중 점검", "특정 종목에 투자금이 너무 쏠리지 않도록 비중 점검", True),
-            ("알림 창", "안전 잔고 알림", "무리한 매수로 현금이 바닥나지 않도록 안전 가이드 제공", True),
-            ("예측 화면", "시장 변동 점검", "주가가 더 떨어졌을 때 내 계좌에 미치는 영향 미리 확인", True)
-        ]),
-        ("05. 맞춤 설정", "편리한 환경 설정", "통화 변경, 다국어 지원, 안전한 내 기기 데이터 보관", [
-            ("설정 화면", "통화 및 환율 선택", "원화(KRW), 달러(USD) 등 원하는 화폐 단위로 자유롭게 변환", False),
-            ("안내 화면", "광고 없는 안심 모드", "방해 요소 없이 깔끔하고 쾌적하게 계산기 이용", True),
-            ("보안 화면", "안전한 기기 내 보관", "모든 자산 정보는 외부 전송 없이 내 폰에만 안전하게 보관", True)
-        ])
+    # 5 Tab Columns
+    cols_data = [
+        ("01. 홈 대시보드", "종합 학습 관제", "출석 스트릭, D-Day, 오늘의 추천 기출 및 시대별 정답률 레이더", [
+            ("스트릭 카드", "연속 출석 달성", "매일 이어지는 학습 습관과 잔여 목표 일수 확인", False),
+            ("추천 기출", "1-Tap 즉시 응시", "최신 77회 심화 기출 및 추천 숏폼 바로가기", True),
+            ("마스터리 레이더", "시대별 완성도", "6대 시대별 취약 영역과 정답률 실시간 분석", False)
+        ], (29, 78, 216)),
+        ("02. 학습관 (서고)", "시대별 사료 바이블", "선사부터 현대사까지 6대 시대별 핵심 요약 노트 및 고해상도 유물 도감", [
+            ("시대별 요약관", "6대 시대 마스터", "선사·삼국·고려·조선·근대·현대사 핵심 정리", True),
+            ("유물 갤러리", "시각 사료 도감", "시험 빈출 국보·보물 유물 고화질 사진 및 해설", False),
+            ("사료 힌트 바이블", "빈출 키워드", "사료 속 인물·연호·관직·지명 핵심 단서 사전", False)
+        ], (217, 119, 6)),
+        ("03. 실전 시험 센터", "공인 기출 모의고사", "최신 77회 한능검 심화 50문항 실전 응시, 80분 OMR 타이머, 숏폼 10제", [
+            ("77회 실전 응시", "50문항 80분", "실제 시험지와 100% 동일한 배점 및 OMR 카운트다운", True),
+            ("랜덤 50제", "전 범위 무작위", "1,500제 기출 풀에서 무작위 50문항 추출 모의고사", False),
+            ("10문항 숏폼", "자투리 10분", "출퇴근길 5분 만에 푸는 핵심 기출 압축 테스트", True)
+        ], (225, 29, 72)),
+        ("04. 스마트 오답 볼트", "취약점 자동 인덱싱", "틀린 문제 1초 만에 자동 분류, 에빙하우스 망각곡선 주기 복습, 1:1 해설", [
+            ("오답 보관함", "자동 인덱싱", "틀린 문제의 문항 번호, 시대, 정답률 자동 태깅", True),
+            ("AI 취약 트레이닝", "오답만 골라 풀기", "누적된 오답 중 취약 시대만 선별하여 즉시 재도전", True),
+            ("사료 단서 형광펜", "정답 키워드 식별", "오답 문제 사료 속 결정적 정답 키워드 형광펜 분석", False)
+        ], (5, 150, 105)),
+        ("05. 수험 환경 설정", "학습 편의 커스텀", "목표 급수 설정, 시험 D-Day 카운트다운, 음성 낭독 속도, OLED 다크 테마", [
+            ("목표 급수 관리", "1급/2급/3급", "목표 급수별 커트라인 및 시험 일정 자동 동기화", False),
+            ("오디오 낭독 설정", "TTS 배속 조절", "사료 및 해설 음성 낭독 재생 속도(1.0x~2.0x) 설정", False),
+            ("OLED 다크 테마", "야간 학습 배려", "어두운 독서실 및 이동 중 눈의 피로를 덜어주는 테마", True)
+        ], (71, 85, 105))
     ]
     
-    # Render 5 Columns
-    for i, (dom_code, dom_name, dom_desc, containers) in enumerate(domains_data):
-        cx = cols_x[i]
-        
-        # Level 1 Domain Header Card (y=330 to 402, h=72)
-        draw.rounded_rectangle([cx, 330, cx + cw, 402], radius=10, fill=(240, 246, 255), outline=(191, 219, 254), width=1)
-        draw.text((cx + 18, 344), dom_code, font=get_font(10, 'bold'), fill=(0, 82, 255))
-        draw.text((cx + 18, 363), dom_name, font=get_font(13.5, 'bold'), fill=(15, 23, 42))
-        draw.text((cx + 18, 383), dom_desc, font=get_font(9, 'medium'), fill=(100, 116, 139))
-        
-        # Vertical Tree Line
-        tree_x = cx + 16
-        draw.line([(tree_x, 402), (tree_x, 672)], fill=(0, 82, 255, 100), width=2)
-        
-        # 3 L2 Cards per column (card_h = 82, gap = 10)
-        card_w = cw - 32
-        card_x = cx + 32
-        cy = 414
-        card_h = 82
-        gap = 10
-        
-        for scr_type, title, desc, is_new in containers:
-            draw.line([(tree_x, cy + 20), (card_x, cy + 20)], fill=(0, 82, 255, 120), width=2)
-            draw.ellipse([tree_x - 3, cy + 20 - 3, tree_x + 3, cy + 20 + 3], fill=(0, 82, 255))
-            
-            card_bg = (255, 255, 255) if not is_new else (250, 252, 255)
-            card_bd = (226, 232, 240) if not is_new else (191, 219, 254)
-            draw.rounded_rectangle([card_x, cy, card_x + card_w, cy + card_h], radius=8, fill=card_bg, outline=card_bd, width=1)
-            
-            # Row 1: Friendly Korean Type tag + NEW badge
-            draw_pill_badge(draw, left_x=card_x + 14, cy=cy + 15, text=scr_type, font=get_font(8.5, 'bold'), theme='gray', pad_x=6, height=18)
-            if is_new:
-                draw_pill_badge(draw, left_x=card_x + card_w - 46, cy=cy + 15, text="핵심", font=get_font(8, 'bold'), theme='blue', pad_x=6, height=18, solid=True)
-                
-            # Row 2: Title with breathing room
-            draw.text((card_x + 14, cy + 39), title, font=get_font(12, 'bold'), fill=(15, 23, 42), anchor='lm')
-            
-            # Row 3: Description in clear, friendly Korean
-            draw.text((card_x + 14, cy + 62), desc, font=get_font(9.5, 'regular'), fill=(71, 85, 105), anchor='lm')
-            
-            cy += card_h + gap
-            
-    # 3. Bottom Architecture Principles: 4 Clean, Well-Proportioned Cards!
-    bar_y = 730
-    bp_w = 415
-    bp_gap = 20
-    bp_h = 195
+    col_w = 328
+    col_gap = 20
+    sy = 234
+    col_h = 700
     
-    pillars = [
-        ("01", "명확한 5대 메뉴 분리", "찾고 싶은 기능을 헤매지 않고 바로 접근할 수 있도록 5개 핵심 메뉴를 명확하게 분리했습니다.",
-         ["· 모의고사 응시, 시대별 학습, 오답 복습을 3탭 이내로 완결", "· 불필요한 탐색 없이 목표 회차로 1초 만에 진입"]),
-        ("02", "한 손 조작 최적화", "엄지손가락이 닿기 쉬운 화면 하단에 핵심 입력과 조작 버튼을 집중 배치했습니다.",
-         ["· 이동 중에도 한 손으로 흔들림 없이 편안한 입력", "· 자연어 음성 인식으로 숫자 자판 입력 부담 해소"]),
-        ("03", "실전 사료 단서 판독", "복잡한 한문 사료도 핵심 키워드 하이라이트로 정답의 결정적 단서를 0.5초 만에 포착합니다.",
-         ["· 직관적인 모의고사 진행으로 실시간 점수 피드백", "· 취약 시대를 집중 공략하는 맞춤형 오답 볼트 제공"]),
-        ("04", "100% 기기 내 안심 보관", "개인 금융 데이터나 자산 정보를 외부 서버로 보내지 않고 내 폰 안에서만 안전하게 보관합니다.",
-         ["· 회원가입이나 로그인 없이 즉시 사용 가능한 안심 구조", "· 외부 유출 걱정 없는 완벽한 프라이버시 보장"])
-    ]
-    
-    for pidx, (pnum, ptitle, pdesc, psub_lines) in enumerate(pillars):
-        px = 100 + pidx * (bp_w + bp_gap)
-        draw.rounded_rectangle([px, bar_y, px + bp_w, bar_y + bp_h], radius=12, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+    for c_idx, (t_name, t_sub, t_desc, sub_items, t_col) in enumerate(cols_data):
+        cx = 100 + c_idx * (col_w + col_gap)
+        draw.rounded_rectangle([cx, sy, cx + col_w, sy + col_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
         
-        # Number chip + Title
-        draw.rounded_rectangle([px + 18, bar_y + 18, px + 52, bar_y + 44], radius=6, fill=(239, 246, 255), outline=(191, 219, 254), width=1)
-        draw.text((px + 35, bar_y + 31), pnum, font=get_font(11, 'bold'), fill=(0, 82, 255), anchor='mm')
+        # Header Badge
+        draw.rounded_rectangle([cx, sy, cx + col_w, sy + 70], radius=16, fill=(248, 250, 252))
+        draw.rectangle([cx, sy + 54, cx + col_w, sy + 70], fill=(248, 250, 252))
+        draw.line([(cx, sy + 70), (cx + col_w, sy + 70)], fill=(226, 232, 240), width=1)
         
-        draw.text((px + 62, bar_y + 31), ptitle, font=get_font(13.5, 'bold'), fill=(15, 23, 42), anchor='lm')
-        draw.line([(px + 18, bar_y + 54), (px + bp_w - 18, bar_y + 54)], fill=(241, 245, 249), width=1)
+        draw.text((cx + 18, sy + 18), t_name, font=get_font(13.5, 'bold'), fill=(15, 23, 42))
+        draw.text((cx + 18, sy + 42), t_sub, font=get_font(10.5, 'bold'), fill=t_col)
         
-        # Description
-        words = pdesc.split(' ')
-        lines = []
-        cur_l = ""
-        for w in words:
-            test = (cur_l + ' ' + w).strip()
-            if draw.textlength(test, font=get_font(10.5, 'regular')) <= bp_w - 36:
-                cur_l = test
-            else:
-                lines.append(cur_l)
-                cur_l = w
-        if cur_l:
-            lines.append(cur_l)
+        # Tab Purpose Description
+        draw.text((cx + 18, sy + 84), t_desc, font=get_font(9.5, 'regular'), fill=(100, 116, 139))
+        draw.line([(cx + 18, sy + 130), (cx + col_w - 18, sy + 130)], fill=(241, 245, 249), width=1)
+        
+        # Sub Cards
+        card_y = sy + 144
+        card_h = 160
+        for s_title, s_badge, s_detail, is_core in sub_items:
+            card_bg = (238, 242, 255) if is_core and c_idx in [0, 2, 3] else (248, 250, 252)
+            card_border = (199, 210, 254) if is_core and c_idx in [0, 2, 3] else (226, 232, 240)
+            draw.rounded_rectangle([cx + 14, card_y, cx + col_w - 14, card_y + card_h], radius=10, fill=card_bg, outline=card_border, width=1)
             
-        dy = bar_y + 70
-        for l in lines[:2]:
-            draw.text((px + 18, dy), l, font=get_font(10.5, 'regular'), fill=(51, 65, 85))
-            dy += 20
-            
-        # Bullet details
-        dy += 6
-        for subl in psub_lines:
-            draw.text((px + 18, dy), subl, font=get_font(9.5, 'medium'), fill=(100, 116, 139))
-            dy += 18
+            draw_pill_badge(draw, left_x=cx + 26, cy=card_y + 22, text=s_badge, font=get_font(8, 'bold'), theme='blue' if is_core else 'slate', pad_x=6, height=18)
+            draw.text((cx + 26, card_y + 48), s_title, font=get_font(12, 'bold'), fill=(15, 23, 42))
+            draw.text((cx + 26, card_y + 74), s_detail, font=get_font(9.5, 'regular'), fill=(71, 85, 105), spacing=4)
+            card_y += card_h + 16
             
     draw_slide_footer(draw, 4)
     base.save(f'{OUT_DIR}/slide_04.png')
-    # auto_out stripped
     print("SAVED new Slide 04 to both locations successfully!")
+
 
 def make_slide_05():
     base = Image.new('RGBA', (W, H), (248, 250, 252, 255))
     draw = ImageDraw.Draw(base)
     
-    # Unified Header - Simplified title
+    # Unified Header
     draw_slide_header(
         draw, 
         slide_num=5, 
         category_en="USER FLOW | SERVICE INTERACTION FLOWCHART", 
         title_black="사용자 행동과 판단을 이끄는 ", 
         title_blue="5단계 서비스 UX 플로우차트", 
-        subtitle_kr="진입 온보딩부터 멀티모달 입력, 퀀트 역산, 리스크 가드, 포트폴리오 저장까지 이어지는 핵심 사용자 여정"
+        subtitle_kr="앱 실행부터 모의고사 회차 선택, 50:50 찬스 추론 풀이, 사료 키워드 판독, 오답 자동 인덱싱까지 이어지는 실전 학습 여정"
     )
     
-    # Top-Right Legend: Compact Diagram Notation (w=540, h=78)
+    # Top-Right Legend
     leg_x = 1280
     leg_y = 65
     leg_w = 540
@@ -1330,8 +1120,7 @@ def make_slide_05():
     draw_pill_badge(draw, left_x=leg_x + 16, cy=leg_y + 20, text="NOTATION", font=get_font(8, 'bold'), theme='blue', has_dot=True, pad_x=6, height=18)
     draw.text((leg_x + 105, leg_y + 20), "플로우차트 기호 범례", font=get_font(11, 'bold'), fill=(15, 23, 42), anchor='lm')
     
-    # 4 compact legend items with comfortable margins
-    draw.rounded_rectangle([leg_x + 16, leg_y + 44, leg_x + 70, leg_y + 68], radius=10, fill=(0, 82, 255))
+    draw.rounded_rectangle([leg_x + 16, leg_y + 44, leg_x + 70, leg_y + 68], radius=10, fill=(29, 78, 216))
     draw.text((leg_x + 43, leg_y + 56), "Start/End", font=get_font(7, 'bold'), fill=(255, 255, 255), anchor='mm')
     draw.text((leg_x + 76, leg_y + 56), "시작/종료", font=get_font(9.5, 'medium'), fill=(71, 85, 105), anchor='lm')
     
@@ -1339,467 +1128,268 @@ def make_slide_05():
     draw.text((leg_x + 167, leg_y + 56), "Screen", font=get_font(7.5, 'bold'), fill=(15, 23, 42), anchor='mm')
     draw.text((leg_x + 198, leg_y + 56), "화면/접점", font=get_font(9.5, 'medium'), fill=(71, 85, 105), anchor='lm')
     
-    draw.rounded_rectangle([leg_x + 268, leg_y + 44, leg_x + 318, leg_y + 68], radius=4, fill=(240, 246, 255), outline=(0, 82, 255), width=1)
-    draw.text((leg_x + 293, leg_y + 56), "Action", font=get_font(7.5, 'bold'), fill=(0, 82, 255), anchor='mm')
+    draw.rounded_rectangle([leg_x + 268, leg_y + 44, leg_x + 318, leg_y + 68], radius=4, fill=(238, 242, 255), outline=(29, 78, 216), width=1)
+    draw.text((leg_x + 293, leg_y + 56), "Action", font=get_font(7.5, 'bold'), fill=(29, 78, 216), anchor='mm')
     draw.text((leg_x + 325, leg_y + 56), "사용자 행동", font=get_font(9.5, 'medium'), fill=(71, 85, 105), anchor='lm')
     
     draw_diamond(draw, cx=leg_x + 410, cy=leg_y + 56, w=34, h=22, fill=(254, 243, 199), outline=(217, 119, 6), width=1)
     draw.text((leg_x + 410, leg_y + 56), "Decide", font=get_font(6.5, 'bold'), fill=(180, 83, 9), anchor='mm')
     draw.text((leg_x + 434, leg_y + 56), "판단 분기", font=get_font(9.5, 'medium'), fill=(71, 85, 105), anchor='lm')
     
-    # -----------------------------------------------------------------
-    # BODY GROUP: Generous 52px Clearance from Subtitle (y = 234)
-    # -----------------------------------------------------------------
     # 5 STAGE COLUMNS
     cw = 328
     cgap = 20
     cols_x = [100 + i * (cw + cgap) for i in range(5)]
-    col_centers = [cx + cw // 2 for cx in cols_x]  # [264, 612, 960, 1308, 1656]
+    col_centers = [cx + cw // 2 for cx in cols_x]
     
     stages_info = [
-        ("STAGE 01", "진입 & 온보딩", "Launch & Onboarding"),
-        ("STAGE 02", "멀티모달 입력", "Multi-Modal Input"),
-        ("STAGE 03", "퀀트 목표 역산", "Goal Inversion"),
-        ("STAGE 04", "리스크 안전 가드", "Risk Guardrail"),
-        ("STAGE 05", "플랜 확정 & 저장", "Plan Finalize & Save")
+        ("STAGE 01", "진입 & 온보딩", "Launch & Streak Check"),
+        ("STAGE 02", "기출 모드 선택", "Exam Mode & Locus Select"),
+        ("STAGE 03", "실전 문제 풀이", "Quiz Solve & 50:50 Chance"),
+        ("STAGE 04", "사료 단서 식별", "Passage Analysis & Feedback"),
+        ("STAGE 05", "오답 볼트 인덱싱", "Auto-Vault & Mastery Loop")
     ]
     
-    # Stage Headers (y=234 to 284, h=50) - Generous 52px whitespace below subtitle!
     for i, (st_code, st_name, st_en) in enumerate(stages_info):
         cx = cols_x[i]
-        # Inner padding: 16px left, 12px top
         draw.rounded_rectangle([cx, 234, cx + cw, 284], radius=8, fill=(240, 246, 255), outline=(191, 219, 254), width=1)
         draw_pill_badge(draw, left_x=cx + 16, cy=249, text=st_code, font=get_font(7.5, 'bold'), theme='blue', pad_x=5, height=16)
         draw.text((cx + 86, 249), st_name, font=get_font(11, 'bold'), fill=(15, 23, 42), anchor='lm')
         draw.text((cx + 16, 269), st_en, font=get_font(8.5, 'medium'), fill=(100, 116, 139), anchor='lm')
         
-        # Inter-stage advance arrow with comfortable margin
         if i < 4:
-            arrow_start_x = cx + cw
-            arrow_end_x = cols_x[i + 1]
-            draw_arrow(draw, (arrow_start_x + 2, 259), (arrow_end_x - 2, 259), col=(0, 82, 255), width=2, arrow_size=4)
+            draw_arrow(draw, (cx + cw + 2, 259), (cols_x[i + 1] - 2, 259), col=(29, 78, 216), width=2, arrow_size=4)
             
-    # Node width: 260px (Margin inside 328px column is 34px left and 34px right)
     nw = 260
     
-    # =============================================================
-    # DIAGRAM TRACK 1: STAGE 01 (Center: 264)
-    # =============================================================
+    # --- STAGE 01 (Center: col_centers[0]) ---
     c0 = col_centers[0]
-    
-    # 1. Start Capsule (y=300 to 328, h=28)
-    draw.rounded_rectangle([c0 - 75, 300, c0 + 75, 328], radius=14, fill=(0, 82, 255))
+    draw.rounded_rectangle([c0 - 75, 300, c0 + 75, 328], radius=14, fill=(29, 78, 216))
     draw.text((c0, 314), "Start : 앱 실행", font=get_font(9.5, 'bold'), fill=(255, 255, 255), anchor='mm')
-    draw_arrow(draw, (c0, 328), (c0, 344), col=(0, 82, 255), width=2, arrow_size=4)
+    draw_arrow(draw, (c0, 328), (c0, 344), col=(29, 78, 216), width=2, arrow_size=4)
     
-    # 2. Screen: 스플래시 & 홈 화면 (y=344 to 388, h=44)
-    # Inner padding: 14px left, 10px top
     draw.rounded_rectangle([c0 - nw // 2, 344, c0 + nw // 2, 388], radius=6, fill=(255, 255, 255), outline=(203, 213, 225), width=1)
     draw_pill_badge(draw, left_x=c0 - 114, cy=358, text="SCREEN", font=get_font(6.5, 'bold'), theme='slate', pad_x=4, height=14)
-    draw.text((c0 - 54, 358), "스플래시 & 로컬 환경 동기화", font=get_font(9, 'bold'), fill=(15, 23, 42), anchor='lm')
-    draw.text((c0, 375), "SQLite 로컬 DB 로드 및 환경설정 바인딩", font=get_font(8, 'medium'), fill=(100, 116, 139), anchor='mm')
-    draw_arrow(draw, (c0, 388), (c0, 406), col=(0, 82, 255), width=2, arrow_size=4)
+    draw.text((c0 - 54, 358), "스플래시 & SQLite DB 초기화", font=get_font(9, 'bold'), fill=(15, 23, 42), anchor='lm')
+    draw.text((c0, 375), "1,500제 기출 데이터셋 및 스트릭 바인딩", font=get_font(8, 'medium'), fill=(100, 116, 139), anchor='mm')
+    draw_arrow(draw, (c0, 388), (c0, 406), col=(29, 78, 216), width=2, arrow_size=4)
     
-    # 3. Decision Diamond: 최초 실행 여부? (cy=432, w=176, h=52)
     draw_diamond(draw, cx=c0, cy=432, w=176, h=52, fill=(254, 243, 199), outline=(217, 119, 6), width=2)
-    draw.text((c0, 432), "최초 실행 여부?", font=get_font(9.5, 'bold'), fill=(180, 83, 9), anchor='mm')
+    draw.text((c0, 432), "이전 응시 기록 존재?", font=get_font(9, 'bold'), fill=(180, 83, 9), anchor='mm')
     
-    # Branch Yes (Right -> Onboarding loop)
-    draw_dashed_line(draw, (c0 + 88, 432), (cols_x[0] + cw - 16, 432), col=(244, 63, 94), width=1)
-    draw.text(((c0 + 88 + cols_x[0] + cw - 16) // 2, 422), "Yes (신규)", font=get_font(7.5, 'bold'), fill=(220, 38, 38), anchor='mm')
-    draw_dashed_arrow(draw, (cols_x[0] + cw - 16, 432), (cols_x[0] + cw - 16, 464), col=(244, 63, 94), width=1, arrow_size=3)
-    draw.rounded_rectangle([cols_x[0] + cw - 88, 464, cols_x[0] + cw - 6, 496], radius=5, fill=(254, 242, 242), outline=(244, 63, 94), width=1)
-    draw.text((cols_x[0] + cw - 47, 475), "온보딩 4단계", font=get_font(7.5, 'bold'), fill=(153, 27, 27), anchor='mm')
-    draw.text((cols_x[0] + cw - 47, 486), "핵심 인터랙션", font=get_font(7, 'medium'), fill=(153, 27, 27), anchor='mm')
-    draw_dashed_line(draw, (cols_x[0] + cw - 47, 496), (cols_x[0] + cw - 47, 524), col=(244, 63, 94), width=1)
-    draw_dashed_arrow(draw, (cols_x[0] + cw - 47, 524), (c0 + nw // 2, 524), col=(244, 63, 94), width=1, arrow_size=3)
+    # Yes -> 이어풀기
+    draw_arrow(draw, (c0, 458), (c0, 502), col=(29, 78, 216), width=2, arrow_size=4)
+    draw.text((c0 - 30, 480), "No (새로)", font=get_font(8, 'bold'), fill=(29, 78, 216), anchor='mm')
     
-    # Branch No (Straight down -> Home Dashboard)
-    draw_arrow(draw, (c0, 458), (c0, 502), col=(0, 82, 255), width=2, arrow_size=4)
-    draw.text((c0 - 30, 480), "No (기존)", font=get_font(8, 'bold'), fill=(0, 82, 255), anchor='mm')
-    
-    # 4. Screen: 홈 대시보드 화면 로드 (y=502 to 546, h=44)
     draw.rounded_rectangle([c0 - nw // 2, 502, c0 + nw // 2, 546], radius=6, fill=(255, 255, 255), outline=(203, 213, 225), width=1)
     draw_pill_badge(draw, left_x=c0 - 114, cy=516, text="SCREEN", font=get_font(6.5, 'bold'), theme='slate', pad_x=4, height=14)
     draw.text((c0 - 54, 516), "홈 대시보드 화면 로드", font=get_font(9, 'bold'), fill=(15, 23, 42), anchor='lm')
-    draw.text((c0, 533), "학습 스트릭 · 모의고사 진도 · 취약 시대 1초 조망", font=get_font(8, 'medium'), fill=(100, 116, 139), anchor='mm')
-    draw_arrow(draw, (c0, 546), (c0, 564), col=(0, 82, 255), width=2, arrow_size=4)
+    draw.text((c0, 533), "출석 스트릭 · D-Day · 추천 모의고사 확인", font=get_font(8, 'medium'), fill=(100, 116, 139), anchor='mm')
+    draw_arrow(draw, (c0, 546), (c0, 564), col=(29, 78, 216), width=2, arrow_size=4)
     
-    # 5. Action: 손실 종목 카드 원터치 탭 (y=564 to 608, h=44)
-    draw.rounded_rectangle([c0 - nw // 2, 564, c0 + nw // 2, 608], radius=6, fill=(240, 246, 255), outline=(0, 82, 255), width=1)
+    draw.rounded_rectangle([c0 - nw // 2, 564, c0 + nw // 2, 608], radius=6, fill=(240, 246, 255), outline=(29, 78, 216), width=1)
     draw_pill_badge(draw, left_x=c0 - 114, cy=578, text="ACTION", font=get_font(6.5, 'bold'), theme='blue', pad_x=4, height=14)
-    draw.text((c0 - 54, 578), "손실 종목 카드 원터치 탭", font=get_font(9, 'bold'), fill=(0, 82, 255), anchor='lm')
-    draw.text((c0, 595), "실전 50제 / 숏폼 10제 모의고사 진입 (회차 선택)", font=get_font(8, 'medium'), fill=(71, 85, 105), anchor='mm')
-    draw_arrow(draw, (c0, 608), (c0, 626), col=(0, 82, 255), width=2, arrow_size=4)
+    draw.text((c0 - 54, 578), "시험센터 탭 또는 배너 탭", font=get_font(9, 'bold'), fill=(29, 78, 216), anchor='lm')
+    draw.text((c0, 595), "최신 77회 심화 기출 1-Tap 진입", font=get_font(8, 'medium'), fill=(71, 85, 105), anchor='mm')
+    draw_arrow(draw, (c0, 608), (c0, 626), col=(29, 78, 216), width=2, arrow_size=4)
     
-    # 6. Feedback: 파라미터 번들 0ms 연동 (y=626 to 672, h=46)
     draw.rounded_rectangle([c0 - nw // 2, 626, c0 + nw // 2, 672], radius=6, fill=(240, 253, 244), outline=(187, 247, 208), width=1)
     draw_pill_badge(draw, left_x=c0 - 114, cy=640, text="FEEDBACK", font=get_font(6.5, 'bold'), theme='green', pad_x=4, height=14)
-    draw.text((c0 - 44, 640), "파라미터 번들 0ms 연동 완료", font=get_font(9, 'bold'), fill=(22, 101, 52), anchor='lm')
-    draw.text((c0, 656), "회차별 배점 및 80분 시험 타이머 즉시 초기화", font=get_font(7.5, 'medium'), fill=(21, 128, 61), anchor='mm')
+    draw.text((c0 - 44, 640), "시험 정보 번들 초기화 완료", font=get_font(9, 'bold'), fill=(22, 101, 52), anchor='lm')
+    draw.text((c0, 656), "50문항 배점 및 80분 카운트다운 타이머 바인딩", font=get_font(7.5, 'medium'), fill=(21, 128, 61), anchor='mm')
     
-    # Inter-Stage Handover Arrow to Stage 02
-    draw_arrow(draw, (cols_x[0] + cw, 647), (cols_x[1], 647), col=(0, 82, 255), width=2, arrow_size=4)
-    draw.text(((cols_x[0] + cw + cols_x[1]) // 2, 635), "연동 →", font=get_font(8, 'bold'), fill=(0, 82, 255), anchor='mm')
+    draw_arrow(draw, (cols_x[0] + cw, 647), (cols_x[1], 647), col=(29, 78, 216), width=2, arrow_size=4)
     
-    # =============================================================
-    # DIAGRAM TRACK 2: STAGE 02 (Center: 612)
-    # =============================================================
+    # --- STAGE 02 (Center: col_centers[1]) ---
     c1 = col_centers[1]
+    draw.rounded_rectangle([c1 - nw // 2, 344, c1 + nw // 2, 388], radius=6, fill=(255, 255, 255), outline=(203, 213, 225), width=1)
+    draw_pill_badge(draw, left_x=c1 - 114, cy=358, text="SCREEN", font=get_font(6.5, 'bold'), theme='slate', pad_x=4, height=14)
+    draw.text((c1 - 54, 358), "기출 시험 센터 화면", font=get_font(9, 'bold'), fill=(15, 23, 42), anchor='lm')
+    draw.text((c1, 375), "회차별 실전 기출 / 랜덤 50제 / 10문항 숏폼", font=get_font(8, 'medium'), fill=(100, 116, 139), anchor='mm')
+    draw_arrow(draw, (c1, 388), (c1, 406), col=(29, 78, 216), width=2, arrow_size=4)
     
-    # 1. Screen: 바텀시트 전개 (y=300 to 344, h=44)
-    draw.rounded_rectangle([c1 - nw // 2, 300, c1 + nw // 2, 344], radius=6, fill=(255, 255, 255), outline=(203, 213, 225), width=1)
-    draw_pill_badge(draw, left_x=c1 - 114, cy=314, text="SCREEN", font=get_font(6.5, 'bold'), theme='slate', pad_x=4, height=14)
-    draw.text((c1 - 54, 314), "0.2초 스마트 입력 시트 전개", font=get_font(9, 'bold'), fill=(15, 23, 42), anchor='lm')
-    draw.text((c1, 331), "엄지 조작 영역(Thumb Zone) 최적화 바텀시트", font=get_font(8, 'medium'), fill=(100, 116, 139), anchor='mm')
-    draw_arrow(draw, (c1, 344), (c1, 360), col=(0, 82, 255), width=2, arrow_size=4)
+    draw_diamond(draw, cx=c1, cy=432, w=176, h=52, fill=(254, 243, 199), outline=(217, 119, 6), width=2)
+    draw.text((c1, 432), "모의고사 모드 선택", font=get_font(9, 'bold'), fill=(180, 83, 9), anchor='mm')
     
-    # 2. Decision Container: 3대 멀티모달 입력 채널 (y=360 to 464, h=104)
-    draw.rounded_rectangle([c1 - nw // 2, 360, c1 + nw // 2, 464], radius=6, fill=(250, 252, 255), outline=(191, 219, 254), width=1)
-    draw_pill_badge(draw, left_x=c1 - 114, cy=374, text="DECISION", font=get_font(6.5, 'bold'), theme='amber', pad_x=4, height=14)
-    draw.text((c1 - 48, 374), "3대 멀티모달 입력 채널 선택", font=get_font(8.5, 'bold'), fill=(180, 83, 9), anchor='lm')
+    draw_arrow(draw, (c1, 458), (c1, 502), col=(29, 78, 216), width=2, arrow_size=4)
+    draw.text((c1 + 35, 480), "50문항 실전", font=get_font(8, 'bold'), fill=(29, 78, 216), anchor='lm')
     
-    # Channel rows with generous inner margins
-    draw.rounded_rectangle([c1 - 114, 387, c1 + 114, 408], radius=4, fill=(255, 255, 255), outline=(191, 219, 254), width=1)
-    draw_pill_badge(draw, left_x=c1 - 110, cy=397, text="음성", font=get_font(6.5, 'bold'), theme='blue', pad_x=3, height=12)
-    draw.text((c1 - 72, 397), "AI 음성 STT '15,000원에 100주' 발화", font=get_font(7.5, 'bold'), fill=(15, 23, 42), anchor='lm')
+    draw.rounded_rectangle([c1 - nw // 2, 502, c1 + nw // 2, 546], radius=6, fill=(240, 246, 255), outline=(29, 78, 216), width=1)
+    draw_pill_badge(draw, left_x=c1 - 114, cy=516, text="ACTION", font=get_font(6.5, 'bold'), theme='blue', pad_x=4, height=14)
+    draw.text((c1 - 54, 516), "제77회 심화 실전 응시 탭", font=get_font(9, 'bold'), fill=(29, 78, 216), anchor='lm')
+    draw.text((c1, 533), "실제 공인 시험지 배열 및 배점(1·2·3점) 로드", font=get_font(8, 'medium'), fill=(71, 85, 105), anchor='mm')
+    draw_arrow(draw, (c1, 546), (c1, 564), col=(29, 78, 216), width=2, arrow_size=4)
     
-    draw.rounded_rectangle([c1 - 114, 411, c1 + 114, 432], radius=4, fill=(255, 255, 255), outline=(191, 219, 254), width=1)
-    draw_pill_badge(draw, left_x=c1 - 110, cy=421, text="50:50찬스", font=get_font(6.5, 'bold'), theme='cyan', pad_x=3, height=12)
-    draw.text((c1 - 68, 421), "원터치 50:50 확률 찬스로 오답 2개 소거", font=get_font(7.5, 'bold'), fill=(15, 23, 42), anchor='lm')
+    draw.rounded_rectangle([c1 - nw // 2, 564, c1 + nw // 2, 608], radius=6, fill=(255, 255, 255), outline=(203, 213, 225), width=1)
+    draw_pill_badge(draw, left_x=c1 - 114, cy=578, text="SCREEN", font=get_font(6.5, 'bold'), theme='slate', pad_x=4, height=14)
+    draw.text((c1 - 54, 578), "실전 퀴즈 풀이 뷰포트 진입", font=get_font(9, 'bold'), fill=(15, 23, 42), anchor='lm')
+    draw.text((c1, 595), "사료 본문 · 사진 유물 · 5개 선지 레이아웃", font=get_font(8, 'medium'), fill=(100, 116, 139), anchor='mm')
+    draw_arrow(draw, (c1, 608), (c1, 626), col=(29, 78, 216), width=2, arrow_size=4)
     
-    draw.rounded_rectangle([c1 - 114, 435, c1 + 114, 456], radius=4, fill=(255, 255, 255), outline=(191, 219, 254), width=1)
-    draw_pill_badge(draw, left_x=c1 - 110, cy=445, text="키패드", font=get_font(6.5, 'bold'), theme='slate', pad_x=3, height=12)
-    draw.text((c1 - 68, 445), "정밀 5개 선지 중 정답 즉시 선택 및 마킹", font=get_font(7.5, 'bold'), fill=(15, 23, 42), anchor='lm')
-    draw_arrow(draw, (c1, 464), (c1, 478), col=(0, 82, 255), width=2, arrow_size=4)
-    
-    # 3. Action: 파라미터 주입 (y=478 to 522, h=44)
-    draw.rounded_rectangle([c1 - nw // 2, 478, c1 + nw // 2, 522], radius=6, fill=(240, 246, 255), outline=(0, 82, 255), width=1)
-    draw_pill_badge(draw, left_x=c1 - 114, cy=492, text="ACTION", font=get_font(6.5, 'bold'), theme='blue', pad_x=4, height=14)
-    draw.text((c1 - 54, 492), "추가 매수가 & 목표단가 주입", font=get_font(9, 'bold'), fill=(0, 82, 255), anchor='lm')
-    draw.text((c1, 509), "1-Tap 또는 발화 종료 즉시 입력 번들 완성", font=get_font(7.5, 'medium'), fill=(71, 85, 105), anchor='mm')
-    draw_arrow(draw, (c1, 522), (c1, 540), col=(0, 82, 255), width=2, arrow_size=4)
-    
-    # 4. Diamond Decision: 입력값 유효성 검증? (cy=566, w=196, h=52)
-    draw_diamond(draw, cx=c1, cy=566, w=196, h=52, fill=(254, 243, 199), outline=(217, 119, 6), width=2)
-    draw.text((c1, 560), "입력값 유효성 검증?", font=get_font(9, 'bold'), fill=(180, 83, 9), anchor='mm')
-    draw.text((c1, 574), "결측치 & 음수 방어", font=get_font(7, 'medium'), fill=(146, 64, 14), anchor='mm')
-    
-    # Branch No (Left loop)
-    draw_dashed_line(draw, (c1 - 98, 566), (cols_x[1] + 16, 566), col=(244, 63, 94), width=1)
-    draw_dashed_arrow(draw, (cols_x[1] + 16, 566), (cols_x[1] + 16, 524), col=(244, 63, 94), width=1, arrow_size=3)
-    draw.rounded_rectangle([cols_x[1] + 4, 496, cols_x[1] + 80, 524], radius=5, fill=(254, 242, 242), outline=(244, 63, 94), width=1)
-    draw.text((cols_x[1] + 42, 510), "햅틱 진동 피드백", font=get_font(7, 'bold'), fill=(153, 27, 27), anchor='mm')
-    draw_dashed_line(draw, (cols_x[1] + 42, 496), (cols_x[1] + 42, 482), col=(244, 63, 94), width=1)
-    draw_dashed_arrow(draw, (cols_x[1] + 42, 482), (c1 - nw // 2, 482), col=(244, 63, 94), width=1, arrow_size=3)
-    
-    # Branch Yes (Down)
-    draw_arrow(draw, (c1, 592), (c1, 626), col=(0, 82, 255), width=2, arrow_size=4)
-    draw.text((c1 + 32, 609), "Yes (정상)", font=get_font(7.5, 'bold'), fill=(5, 150, 105), anchor='mm')
-    
-    # 5. Feedback: 데이터 정규화 완료 (y=626 to 672, h=46)
     draw.rounded_rectangle([c1 - nw // 2, 626, c1 + nw // 2, 672], radius=6, fill=(240, 253, 244), outline=(187, 247, 208), width=1)
     draw_pill_badge(draw, left_x=c1 - 114, cy=640, text="FEEDBACK", font=get_font(6.5, 'bold'), theme='green', pad_x=4, height=14)
-    draw.text((c1 - 44, 640), "실시간 데이터 정규화 완료", font=get_font(9, 'bold'), fill=(22, 101, 52), anchor='lm')
-    draw.text((c1, 656), "정답 여부 즉시 판별 및 사료 단서 형광펜 호출", font=get_font(7.5, 'medium'), fill=(21, 128, 61), anchor='mm')
+    draw.text((c1 - 44, 640), "80분 시험 타이머 시작", font=get_font(9, 'bold'), fill=(22, 101, 52), anchor='lm')
+    draw.text((c1, 656), "문항당 권장 1분 36초 카운트다운 가동", font=get_font(7.5, 'medium'), fill=(21, 128, 61), anchor='mm')
     
-    # Inter-Stage Handover Arrow to Stage 03
-    draw_arrow(draw, (cols_x[1] + cw, 647), (cols_x[2], 647), col=(0, 82, 255), width=2, arrow_size=4)
-    draw.text(((cols_x[1] + cw + cols_x[2]) // 2, 635), "연산 →", font=get_font(8, 'bold'), fill=(0, 82, 255), anchor='mm')
+    draw_arrow(draw, (cols_x[1] + cw, 647), (cols_x[2], 647), col=(29, 78, 216), width=2, arrow_size=4)
     
-    # =============================================================
-    # DIAGRAM TRACK 3: STAGE 03 (Center: 960)
-    # =============================================================
+    # --- STAGE 03 (Center: col_centers[2]) ---
     c2 = col_centers[2]
+    draw.rounded_rectangle([c2 - nw // 2, 344, c2 + nw // 2, 388], radius=6, fill=(255, 255, 255), outline=(203, 213, 225), width=1)
+    draw_pill_badge(draw, left_x=c2 - 114, cy=358, text="SCREEN", font=get_font(6.5, 'bold'), theme='slate', pad_x=4, height=14)
+    draw.text((c2 - 54, 358), "사료 독해 및 선지 탐색", font=get_font(9, 'bold'), fill=(15, 23, 42), anchor='lm')
+    draw.text((c2, 375), "한문 사료 · 국보 유물 사진 정밀 대조", font=get_font(8, 'medium'), fill=(100, 116, 139), anchor='mm')
+    draw_arrow(draw, (c2, 388), (c2, 406), col=(29, 78, 216), width=2, arrow_size=4)
     
-    # 1. Quant Engine Process (y=300 to 344, h=44)
-    draw.rounded_rectangle([c2 - nw // 2, 300, c2 + nw // 2, 344], radius=6, fill=(239, 246, 255), outline=(0, 82, 255), width=2)
-    draw_pill_badge(draw, left_x=c2 - 114, cy=314, text="QUANT", font=get_font(6.5, 'bold'), theme='blue', pad_x=4, height=14)
-    draw.text((c2 - 54, 314), "폐쇄형 퀀트 역산 가동 (0ms)", font=get_font(9, 'bold'), fill=(15, 23, 42), anchor='lm')
-    draw.text((c2, 331), "단일 수식 대수 전개로 필요 수량 0ms 즉시 산출", font=get_font(8, 'medium'), fill=(0, 82, 255), anchor='mm')
-    draw_arrow(draw, (c2, 344), (c2, 362), col=(0, 82, 255), width=2, arrow_size=4)
+    draw_diamond(draw, cx=c2, cy=432, w=176, h=52, fill=(254, 243, 199), outline=(217, 119, 6), width=2)
+    draw.text((c2, 432), "선지 헷갈림 발생?", font=get_font(9, 'bold'), fill=(180, 83, 9), anchor='mm')
     
-    # 2. Diamond Decision: 목표가 실현 가능 범위? (cy=390, w=216, h=56)
-    draw_diamond(draw, cx=c2, cy=390, w=216, h=56, fill=(254, 243, 199), outline=(217, 119, 6), width=2)
-    draw.text((c2, 384), "목표가 실현 가능 범위?", font=get_font(9, 'bold'), fill=(180, 83, 9), anchor='mm')
-    draw.text((c2, 397), "정답 선지 일치 여부 판별 (1~5번)", font=get_font(7, 'medium'), fill=(146, 64, 14), anchor='mm')
+    draw_arrow(draw, (c2, 458), (c2, 502), col=(29, 78, 216), width=2, arrow_size=4)
+    draw.text((c2 + 35, 480), "Yes (찬스)", font=get_font(8, 'bold'), fill=(217, 119, 6), anchor='lm')
     
-    # Branch No (Left loop)
-    draw_dashed_line(draw, (c2 - 108, 390), (cols_x[2] + 16, 390), col=(244, 63, 94), width=1)
-    draw_dashed_arrow(draw, (cols_x[2] + 16, 390), (cols_x[2] + 16, 416), col=(244, 63, 94), width=1, arrow_size=3)
-    draw.rounded_rectangle([cols_x[2] + 4, 416, cols_x[2] + 80, 452], radius=5, fill=(254, 242, 242), outline=(244, 63, 94), width=1)
-    draw.text((cols_x[2] + 42, 428), "비정상 목표 경고", font=get_font(7, 'bold'), fill=(153, 27, 27), anchor='mm')
-    draw.text((cols_x[2] + 42, 440), "오답 해설 즉시 표시", font=get_font(6.5, 'medium'), fill=(153, 27, 27), anchor='mm')
-    draw_dashed_line(draw, (cols_x[2] + 42, 452), (cols_x[2] + 42, 474), col=(244, 63, 94), width=1)
-    draw_dashed_arrow(draw, (cols_x[2] + 42, 474), (cols_x[1] + cw - 10, 474), col=(244, 63, 94), width=1, arrow_size=3)
-    draw.text(((cols_x[2] + 42 + cols_x[1] + cw) // 2, 464), "재설정", font=get_font(7, 'bold'), fill=(220, 38, 38), anchor='mm')
+    draw.rounded_rectangle([c2 - nw // 2, 502, c2 + nw // 2, 546], radius=6, fill=(254, 243, 199), outline=(253, 230, 138), width=1)
+    draw_pill_badge(draw, left_x=c2 - 114, cy=516, text="CHANCE", font=get_font(6.5, 'bold'), theme='amber', pad_x=4, height=14)
+    draw.text((c2 - 54, 516), "50:50 확률 찬스 버튼 탭", font=get_font(9, 'bold'), fill=(180, 83, 9), anchor='lm')
+    draw.text((c2, 533), "오답 함정 선지 2개 즉시 블러/소거 처리", font=get_font(8, 'medium'), fill=(146, 64, 14), anchor='mm')
+    draw_arrow(draw, (c2, 546), (c2, 564), col=(29, 78, 216), width=2, arrow_size=4)
     
-    # Branch Yes (Down)
-    draw_arrow(draw, (c2, 418), (c2, 454), col=(0, 82, 255), width=2, arrow_size=4)
-    draw.text((c2 + 30, 436), "Yes (통과)", font=get_font(7.5, 'bold'), fill=(0, 82, 255), anchor='mm')
+    draw.rounded_rectangle([c2 - nw // 2, 564, c2 + nw // 2, 608], radius=6, fill=(240, 246, 255), outline=(29, 78, 216), width=1)
+    draw_pill_badge(draw, left_x=c2 - 114, cy=578, text="ACTION", font=get_font(6.5, 'bold'), theme='blue', pad_x=4, height=14)
+    draw.text((c2 - 54, 578), "정답 선지 선택 & 마킹", font=get_font(9, 'bold'), fill=(29, 78, 216), anchor='lm')
+    draw.text((c2, 595), "소거법 추론 후 최종 1개 선지 터치", font=get_font(8, 'medium'), fill=(71, 85, 105), anchor='mm')
+    draw_arrow(draw, (c2, 608), (c2, 626), col=(29, 78, 216), width=2, arrow_size=4)
     
-    # 3. Screen: 역산 결과 시뮬레이션 (y=454 to 498, h=44)
-    draw.rounded_rectangle([c2 - nw // 2, 454, c2 + nw // 2, 498], radius=6, fill=(255, 255, 255), outline=(203, 213, 225), width=1)
-    draw_pill_badge(draw, left_x=c2 - 114, cy=468, text="SCREEN", font=get_font(6.5, 'bold'), theme='slate', pad_x=4, height=14)
-    draw.text((c2 - 54, 468), "목표 역산 시뮬레이터 뷰", font=get_font(9, 'bold'), fill=(15, 23, 42), anchor='lm')
-    draw.text((c2, 485), "필요 매수 수량 & 소요 자금 오차 0.00% 산출", font=get_font(7.5, 'medium'), fill=(100, 116, 139), anchor='mm')
-    draw_arrow(draw, (c2, 498), (c2, 518), col=(0, 82, 255), width=2, arrow_size=4)
-    
-    # 4. Action: 차수별 분할 조절 (y=518 to 562, h=44)
-    draw.rounded_rectangle([c2 - nw // 2, 518, c2 + nw // 2, 562], radius=6, fill=(240, 246, 255), outline=(0, 82, 255), width=1)
-    draw_pill_badge(draw, left_x=c2 - 114, cy=532, text="ACTION", font=get_font(6.5, 'bold'), theme='blue', pad_x=4, height=14)
-    draw.text((c2 - 54, 532), "차수별 분할 매수 비중 조절", font=get_font(9, 'bold'), fill=(0, 82, 255), anchor='lm')
-    draw.text((c2, 549), "문항별 사료 키워드 판독 & 상세 해설 시뮬레이션", font=get_font(7.5, 'medium'), fill=(71, 85, 105), anchor='mm')
-    draw_arrow(draw, (c2, 562), (c2, 626), col=(0, 82, 255), width=2, arrow_size=4)
-    
-    # 5. Feedback: 분할 매수 확정 (y=626 to 672, h=46)
     draw.rounded_rectangle([c2 - nw // 2, 626, c2 + nw // 2, 672], radius=6, fill=(240, 253, 244), outline=(187, 247, 208), width=1)
     draw_pill_badge(draw, left_x=c2 - 114, cy=640, text="FEEDBACK", font=get_font(6.5, 'bold'), theme='green', pad_x=4, height=14)
-    draw.text((c2 - 44, 640), "차수별 분할 매수 분배 완료", font=get_font(9, 'bold'), fill=(22, 101, 52), anchor='lm')
-    draw.text((c2, 656), "1차~N차 분할 가중치 & 계좌 방어율 매핑", font=get_font(7.5, 'medium'), fill=(21, 128, 61), anchor='mm')
+    draw.text((c2 - 44, 640), "정답 여부 즉시 판별 & 채점", font=get_font(9, 'bold'), fill=(22, 101, 52), anchor='lm')
+    draw.text((c2, 656), "진동 햅틱 피드백 및 실시간 획득 점수 누적", font=get_font(7.5, 'medium'), fill=(21, 128, 61), anchor='mm')
     
-    # Inter-Stage Handover Arrow to Stage 04
-    draw_arrow(draw, (cols_x[2] + cw, 647), (cols_x[3], 647), col=(0, 82, 255), width=2, arrow_size=4)
-    draw.text(((cols_x[2] + cw + cols_x[3]) // 2, 635), "검증 →", font=get_font(8, 'bold'), fill=(0, 82, 255), anchor='mm')
+    draw_arrow(draw, (cols_x[2] + cw, 647), (cols_x[3], 647), col=(29, 78, 216), width=2, arrow_size=4)
     
-    # =============================================================
-    # DIAGRAM TRACK 4: STAGE 04 (Center: 1308)
-    # =============================================================
+    # --- STAGE 04 (Center: col_centers[3]) ---
     c3 = col_centers[3]
+    draw.rounded_rectangle([c3 - nw // 2, 344, c3 + nw // 2, 388], radius=6, fill=(255, 255, 255), outline=(203, 213, 225), width=1)
+    draw_pill_badge(draw, left_x=c3 - 114, cy=358, text="SCREEN", font=get_font(6.5, 'bold'), theme='slate', pad_x=4, height=14)
+    draw.text((c3 - 54, 358), "정답 해설 바텀시트 호출", font=get_font(9, 'bold'), fill=(15, 23, 42), anchor='lm')
+    draw.text((c3, 375), "사료 단서 형광펜 & 전 선지 코멘터리", font=get_font(8, 'medium'), fill=(100, 116, 139), anchor='mm')
+    draw_arrow(draw, (c3, 388), (c3, 406), col=(29, 78, 216), width=2, arrow_size=4)
     
-    # 1. Screen: 포트폴리오 리스크 시트 (y=300 to 344, h=44)
-    draw.rounded_rectangle([c3 - nw // 2, 300, c3 + nw // 2, 344], radius=6, fill=(255, 255, 255), outline=(203, 213, 225), width=1)
-    draw_pill_badge(draw, left_x=c3 - 114, cy=314, text="SCREEN", font=get_font(6.5, 'bold'), theme='slate', pad_x=4, height=14)
-    draw.text((c3 - 54, 314), "포트폴리오 리스크 시뮬레이션", font=get_font(9, 'bold'), fill=(15, 23, 42), anchor='lm')
-    draw.text((c3, 331), "모의고사 완료 후 총점 및 시대별 취약 레이더 산출", font=get_font(7.5, 'medium'), fill=(100, 116, 139), anchor='mm')
-    draw_arrow(draw, (c3, 344), (c3, 362), col=(0, 82, 255), width=2, arrow_size=4)
+    draw_diamond(draw, cx=c3, cy=432, w=176, h=52, fill=(254, 242, 242), outline=(225, 29, 72), width=2)
+    draw.text((c3, 432), "오답 발생 여부?", font=get_font(9, 'bold'), fill=(225, 29, 72), anchor='mm')
     
-    # 2. Diamond Decision: 오답 발생 여부 판정 (cy=390, w=216, h=56)
-    draw_diamond(draw, cx=c3, cy=390, w=216, h=56, fill=(254, 243, 199), outline=(217, 119, 6), width=2)
-    draw.text((c3, 384), "오답 발생 판정 (Auto Vault)", font=get_font(9, 'bold'), fill=(180, 83, 9), anchor='mm')
-    draw.text((c3, 397), "틀린 문항 자동 감지 여부 ?", font=get_font(7, 'medium'), fill=(146, 64, 14), anchor='mm')
+    draw_arrow(draw, (c3, 458), (c3, 502), col=(225, 29, 72), width=2, arrow_size=4)
+    draw.text((c3 + 30, 480), "Yes (오답)", font=get_font(8, 'bold'), fill=(225, 29, 72), anchor='lm')
     
-    # Branch Yes (Left warning)
-    draw_dashed_line(draw, (c3 - 108, 390), (cols_x[3] + 16, 390), col=(244, 63, 94), width=1)
-    draw_dashed_arrow(draw, (cols_x[3] + 16, 390), (cols_x[3] + 16, 416), col=(244, 63, 94), width=1, arrow_size=3)
-    draw.rounded_rectangle([cols_x[3] + 4, 416, cols_x[3] + 80, 452], radius=5, fill=(254, 242, 242), outline=(244, 63, 94), width=1)
-    draw.text((cols_x[3] + 42, 428), "자금 고갈 주의", font=get_font(7, 'bold'), fill=(153, 27, 27), anchor='mm')
-    draw.text((cols_x[3] + 42, 440), "분할 차수 확대 권고", font=get_font(6.5, 'medium'), fill=(153, 27, 27), anchor='mm')
-    draw_dashed_line(draw, (cols_x[3] + 42, 452), (cols_x[3] + 42, 474), col=(244, 63, 94), width=1)
-    draw_dashed_arrow(draw, (cols_x[3] + 42, 474), (c3 - nw // 2, 474), col=(244, 63, 94), width=1, arrow_size=3)
+    draw.rounded_rectangle([c3 - nw // 2, 502, c3 + nw // 2, 546], radius=6, fill=(254, 242, 242), outline=(254, 202, 202), width=1)
+    draw_pill_badge(draw, left_x=c3 - 114, cy=516, text="AUTO-VAULT", font=get_font(6.5, 'bold'), theme='red', pad_x=4, height=14)
+    draw.text((c3 - 44, 516), "스마트 오답 볼트 자동 인덱싱", font=get_font(9, 'bold'), fill=(153, 27, 27), anchor='lm')
+    draw.text((c3, 533), "문항 번호 · 시대 태그 · 선택 오답 자동 기록", font=get_font(8, 'medium'), fill=(153, 27, 27), anchor='mm')
+    draw_arrow(draw, (c3, 546), (c3, 564), col=(29, 78, 216), width=2, arrow_size=4)
     
-    # Branch No (Down: Safe)
-    draw_arrow(draw, (c3, 418), (c3, 454), col=(0, 82, 255), width=2, arrow_size=4)
-    draw.text((c3 + 30, 436), "No (안전)", font=get_font(7.5, 'bold'), fill=(5, 150, 105), anchor='mm')
+    draw.rounded_rectangle([c3 - nw // 2, 564, c3 + nw // 2, 608], radius=6, fill=(254, 243, 199), outline=(253, 230, 138), width=1)
+    draw_pill_badge(draw, left_x=c3 - 114, cy=578, text="ANALYSIS", font=get_font(6.5, 'bold'), theme='amber', pad_x=4, height=14)
+    draw.text((c3 - 54, 578), "사료 핵심 단서 형광펜 확인", font=get_font(9, 'bold'), fill=(180, 83, 9), anchor='lm')
+    draw.text((c3, 595), "연호/인물/관직 키워드 하이라이트 분석", font=get_font(8, 'medium'), fill=(146, 64, 14), anchor='mm')
+    draw_arrow(draw, (c3, 608), (c3, 626), col=(29, 78, 216), width=2, arrow_size=4)
     
-    # 3. Action: 하락 스트레스 테스트 검증 (y=454 to 498, h=44)
-    draw.rounded_rectangle([c3 - nw // 2, 454, c3 + nw // 2, 498], radius=6, fill=(240, 246, 255), outline=(0, 82, 255), width=1)
-    draw_pill_badge(draw, left_x=c3 - 114, cy=468, text="ACTION", font=get_font(6.5, 'bold'), theme='blue', pad_x=4, height=14)
-    draw.text((c3 - 54, 468), "하락 스트레스 테스트 검증", font=get_font(9, 'bold'), fill=(0, 82, 255), anchor='lm')
-    draw.text((c3, 485), "시장 -10%~-30% 급락 시 계좌 충격도 점검", font=get_font(7.5, 'medium'), fill=(71, 85, 105), anchor='mm')
-    draw_arrow(draw, (c3, 498), (c3, 524), col=(0, 82, 255), width=2, arrow_size=4)
-    
-    # 4. Diamond Decision: 리스크 허용 한도 승인? (cy=550, w=186, h=52)
-    draw_diamond(draw, cx=c3, cy=550, w=186, h=52, fill=(254, 243, 199), outline=(217, 119, 6), width=2)
-    draw.text((c3, 544), "리스크 허용 한도 승인?", font=get_font(9, 'bold'), fill=(180, 83, 9), anchor='mm')
-    draw.text((c3, 558), "객관적 방어선 충족 판정", font=get_font(7, 'medium'), fill=(146, 64, 14), anchor='mm')
-    draw_arrow(draw, (c3, 576), (c3, 626), col=(0, 82, 255), width=2, arrow_size=4)
-    draw.text((c3 + 30, 601), "승인 완료", font=get_font(7.5, 'bold'), fill=(0, 82, 255), anchor='mm')
-    
-    # 5. Feedback: 최종 승인 완료 (y=626 to 672, h=46)
     draw.rounded_rectangle([c3 - nw // 2, 626, c3 + nw // 2, 672], radius=6, fill=(240, 253, 244), outline=(187, 247, 208), width=1)
     draw_pill_badge(draw, left_x=c3 - 114, cy=640, text="FEEDBACK", font=get_font(6.5, 'bold'), theme='green', pad_x=4, height=14)
-    draw.text((c3 - 44, 640), "안전 가이드 적합 최종 승인", font=get_font(9, 'bold'), fill=(22, 101, 52), anchor='lm')
-    draw.text((c3, 656), "리스크 검증 완료 및 최종 분할 매수안 확정", font=get_font(7.5, 'medium'), fill=(21, 128, 61), anchor='mm')
+    draw.text((c3 - 44, 640), "오답 원인 분석 완료", font=get_font(9, 'bold'), fill=(22, 101, 52), anchor='lm')
+    draw.text((c3, 656), "매력적 오답 함정 원리 및 팩트 체크 습득", font=get_font(7.5, 'medium'), fill=(21, 128, 61), anchor='mm')
     
-    # Inter-Stage Handover Arrow to Stage 05
-    draw_arrow(draw, (cols_x[3] + cw, 647), (cols_x[4], 647), col=(0, 82, 255), width=2, arrow_size=4)
-    draw.text(((cols_x[3] + cw + cols_x[4]) // 2, 635), "승인 →", font=get_font(8, 'bold'), fill=(0, 82, 255), anchor='mm')
+    draw_arrow(draw, (cols_x[3] + cw, 647), (cols_x[4], 647), col=(29, 78, 216), width=2, arrow_size=4)
     
-    # =============================================================
-    # DIAGRAM TRACK 5: STAGE 05 (Center: 1656)
-    # =============================================================
+    # --- STAGE 05 (Center: col_centers[4]) ---
     c4 = col_centers[4]
+    draw.rounded_rectangle([c4 - nw // 2, 344, c4 + nw // 2, 388], radius=6, fill=(255, 255, 255), outline=(203, 213, 225), width=1)
+    draw_pill_badge(draw, left_x=c4 - 114, cy=358, text="SCREEN", font=get_font(6.5, 'bold'), theme='slate', pad_x=4, height=14)
+    draw.text((c4 - 54, 358), "모의고사 최종 성적 리포트", font=get_font(9, 'bold'), fill=(15, 23, 42), anchor='lm')
+    draw.text((c4, 375), "총점(100점 만점) · 합격 급수 판정 (1~3급)", font=get_font(8, 'medium'), fill=(100, 116, 139), anchor='mm')
+    draw_arrow(draw, (c4, 388), (c4, 406), col=(29, 78, 216), width=2, arrow_size=4)
     
-    # 1. Action: 1-Tap 포트폴리오 저장 (y=300 to 344, h=44)
-    draw.rounded_rectangle([c4 - nw // 2, 300, c4 + nw // 2, 344], radius=6, fill=(239, 246, 255), outline=(0, 82, 255), width=2)
-    draw_pill_badge(draw, left_x=c4 - 114, cy=314, text="ACTION", font=get_font(6.5, 'bold'), theme='blue', pad_x=4, height=14)
-    draw.text((c4 - 54, 314), "1-Tap 포트폴리오 저장", font=get_font(9, 'bold'), fill=(0, 82, 255), anchor='lm')
-    draw.text((c4, 331), "최적 매수 플랜 & 시나리오를 내 자산에 즉시 반영", font=get_font(7.5, 'medium'), fill=(15, 23, 42), anchor='mm')
-    draw_arrow(draw, (c4, 344), (c4, 362), col=(0, 82, 255), width=2, arrow_size=4)
+    draw.rounded_rectangle([c4 - nw // 2, 412, c4 + nw // 2, 456], radius=6, fill=(238, 242, 255), outline=(199, 210, 254), width=1)
+    draw_pill_badge(draw, left_x=c4 - 114, cy=426, text="RADAR", font=get_font(6.5, 'bold'), theme='blue', pad_x=4, height=14)
+    draw.text((c4 - 54, 426), "시대별 마스터리 레이더 갱신", font=get_font(9, 'bold'), fill=(29, 78, 216), anchor='lm')
+    draw.text((c4, 443), "선사~현대사 6대 시대 완성도 시각화", font=get_font(8, 'medium'), fill=(30, 58, 138), anchor='mm')
+    draw_arrow(draw, (c4, 456), (c4, 502), col=(29, 78, 216), width=2, arrow_size=4)
     
-    # 2. Feedback: 저장 완료 스낵바 (y=362 to 406, h=44)
-    draw.rounded_rectangle([c4 - nw // 2, 362, c4 + nw // 2, 406], radius=6, fill=(240, 253, 244), outline=(187, 247, 208), width=1)
-    draw_pill_badge(draw, left_x=c4 - 114, cy=376, text="FEEDBACK", font=get_font(6.5, 'bold'), theme='green', pad_x=4, height=14)
-    draw.text((c4 - 44, 376), "저장 완료 스낵바 & 자산 연동", font=get_font(9, 'bold'), fill=(22, 101, 52), anchor='lm')
-    draw.text((c4, 393), "스마트 오답 볼트 보관 및 취약 시대 집중 트레이닝 개시", font=get_font(7.5, 'medium'), fill=(21, 128, 61), anchor='mm')
-    draw_arrow(draw, (c4, 406), (c4, 426), col=(0, 82, 255), width=2, arrow_size=4)
+    draw.rounded_rectangle([c4 - nw // 2, 502, c4 + nw // 2, 546], radius=6, fill=(240, 246, 255), outline=(29, 78, 216), width=1)
+    draw_pill_badge(draw, left_x=c4 - 114, cy=516, text="ACTION", font=get_font(6.5, 'bold'), theme='blue', pad_x=4, height=14)
+    draw.text((c4 - 54, 516), "취약 오답 집중 트레이닝 시작", font=get_font(9, 'bold'), fill=(29, 78, 216), anchor='lm')
+    draw.text((c4, 533), "오답 볼트에서 틀린 문제만 10개 재응시", font=get_font(8, 'medium'), fill=(71, 85, 105), anchor='mm')
+    draw_arrow(draw, (c4, 546), (c4, 564), col=(29, 78, 216), width=2, arrow_size=4)
     
-    # 3. Decision Diamond: 데이터 무결성 검증 (cy=454, w=206, h=56)
-    draw_diamond(draw, cx=c4, cy=454, w=206, h=56, fill=(254, 243, 199), outline=(217, 119, 6), width=2)
-    draw.text((c4, 448), "데이터 무결성 검증?", font=get_font(9, 'bold'), fill=(180, 83, 9), anchor='mm')
-    draw.text((c4, 461), "외부 서버 전송 0건 & 로컬 암호화", font=get_font(7, 'medium'), fill=(146, 64, 14), anchor='mm')
-    draw_arrow(draw, (c4, 482), (c4, 514), col=(0, 82, 255), width=2, arrow_size=4)
-    draw.text((c4 + 32, 498), "100% 무결", font=get_font(7.5, 'bold'), fill=(5, 150, 105), anchor='mm')
+    draw.rounded_rectangle([c4 - nw // 2, 564, c4 + nw // 2, 608], radius=6, fill=(240, 253, 244), outline=(187, 247, 208), width=1)
+    draw_pill_badge(draw, left_x=c4 - 114, cy=578, text="FEEDBACK", font=get_font(6.5, 'bold'), theme='green', pad_x=4, height=14)
+    draw.text((c4 - 44, 578), "에빙하우스 망각곡선 복습 예약", font=get_font(9, 'bold'), fill=(22, 101, 52), anchor='lm')
+    draw.text((c4, 595), "1일·3일·7일 후 맞춤형 스마트 복습 알림", font=get_font(8, 'medium'), fill=(21, 128, 61), anchor='mm')
+    draw_arrow(draw, (c4, 608), (c4, 638), col=(29, 78, 216), width=2, arrow_size=4)
     
-    # 4. Storage Node (y=514 to 562, h=48)
-    draw_database_node(draw, cx=c4, cy=538, w=nw, h=48, fill=(255, 255, 255), outline=(203, 213, 225), width=1)
-    draw_pill_badge(draw, left_x=c4 - 114, cy=530, text="STORAGE", font=get_font(6.5, 'bold'), theme='slate', pad_x=4, height=14)
-    draw.text((c4 - 48, 530), "100% 온디바이스 로컬 암호화", font=get_font(9, 'bold'), fill=(15, 23, 42), anchor='lm')
-    draw.text((c4, 550), "외부 서버 전송 0건, 개인 금융 데이터 완전 보호", font=get_font(7.5, 'medium'), fill=(100, 116, 139), anchor='mm')
-    draw_arrow(draw, (c4, 562), (c4, 586), col=(0, 82, 255), width=2, arrow_size=4)
-    
-    # 5. Finish Terminal Capsule (y=586 to 622, h=36)
-    draw.rounded_rectangle([c4 - 90, 586, c4 + 90, 622], radius=18, fill=(0, 82, 255))
-    draw.text((c4, 604), "Finish : 최적 방어 플랜 저장", font=get_font(10, 'bold'), fill=(255, 255, 255), anchor='mm')
+    draw.rounded_rectangle([c4 - 75, 638, c4 + 75, 666], radius=14, fill=(29, 78, 216))
+    draw.text((c4, 652), "End : 1급 합격 루프", font=get_font(9.5, 'bold'), fill=(255, 255, 255), anchor='mm')
     
     # -------------------------------------------------------------
-    # SIMPLIFIED BOTTOM SUMMARY STRIP (y=706 to 826, h=120)
-    # Generous margin from diagram (cy ended at 668, gap = 38px)
+    # BOTTOM BAR: METRICS & TELMETRY (y=720 to 920)
     # -------------------------------------------------------------
-    bar_x = 100
-    # -------------------------------------------------------------
-    bar_x = 100
-    bar_y = 698
+    bar_y = 720
+    bar_h = 200
     bar_w = 1720
-    bar_h = 142
-    draw.rounded_rectangle([bar_x, bar_y, bar_x + bar_w, bar_y + bar_h], radius=12, fill=(255, 255, 255), outline=(203, 213, 225), width=1)
+    draw.rounded_rectangle([100, bar_y, 100 + bar_w, bar_y + bar_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
     
-    # Left Half: Emotional Curve (w = 860) with generous internal padding
-    draw_pill_badge(draw, left_x=bar_x + 24, cy=bar_y + 20, text="USER MINDSET", font=get_font(8, 'bold'), theme='amber', has_dot=True, pad_x=7, height=18)
-    draw.text((bar_x + 150, bar_y + 20), "5단계 심리 변화 여정 (불안에서 확신까지)", font=get_font(11.5, 'bold'), fill=(15, 23, 42), anchor='lm')
-    draw.text((bar_x + 24, bar_y + 40), "급락장 패닉 상태의 투자자가 객관적 퀀트 가이드를 통해 평정심을 되찾고 최적 플랜을 확정하는 여정", font=get_font(8.5, 'regular'), fill=(100, 116, 139))
+    # Left Half: Flowchart Summary
+    draw_pill_badge(draw, left_x=124, cy=bar_y + 24, text="UX ARCHITECTURE", font=get_font(9.5, 'bold'), theme='blue', pad_x=8, height=22)
+    draw.text((275, bar_y + 24), "5단계 완결형 에듀테크 사용자 인터랙션 루프", font=get_font(14, 'bold'), fill=(15, 23, 42), anchor='lm')
     
-    emotions = [
-        ("STAGE 01", "불안 & 막막함", "red"),
-        ("STAGE 02", "긴박 & 촉박", "amber"),
-        ("STAGE 03", "명확한 목표 발견", "blue"),
-        ("STAGE 04", "안도 & 통제감 회복", "cyan"),
-        ("STAGE 05", "확신 & 플랜 확정", "green")
+    f_bullets = [
+        "• 진입 온보딩 : 앱 실행 0.4초 만에 스트릭 및 이전 모의고사 이어풀기 즉시 바인딩",
+        "• 실전 50제 응시 : 80분 카운트다운 타이머와 실제 시험지와 동일한 1·2·3점 배점 적용",
+        "• 50:50 확률 찬스 : 수험생이 고민하는 오답 2개를 소거하여 실전 추론 및 소거법 훈련",
+        "• 스마트 오답 볼트 : 틀린 문제 1초 만에 자동 인덱싱 및 에빙하우스 주기 복습 루프 완성"
     ]
-    node_w = 145
-    node_y = bar_y + 58
-    node_h = 68
-    for e_idx, (ecode, ename, etheme) in enumerate(emotions):
-        nx = bar_x + 24 + e_idx * (node_w + 22)
-        draw.rounded_rectangle([nx, node_y, nx + node_w, node_y + node_h], radius=8, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
-        # Inner padding inside emotion node: 12px left, 12px top, generous 15px bottom margin
-        draw_pill_badge(draw, left_x=nx + 12, cy=node_y + 18, text=ecode, font=get_font(7.5, 'bold'), theme=etheme, pad_x=4, height=16)
-        draw.text((nx + 12, node_y + 42), ename, font=get_font(9.5, 'bold'), fill=(15, 23, 42))
-        if e_idx < 4:
-            arrow_sx = nx + node_w + 2
-            arrow_ex = nx + node_w + 20
-            draw_arrow(draw, (arrow_sx, node_y + node_h // 2), (arrow_ex, node_y + node_h // 2), col=(148, 163, 184), width=1, arrow_size=3)
-            
-    # Vertical Divider Line
-    draw.line([(bar_x + 890, bar_y + 14), (bar_x + 890, bar_y + bar_h - 14)], fill=(226, 232, 240), width=1)
+    bly = bar_y + 60
+    for fb in f_bullets:
+        draw.text((124, bly), fb, font=get_font(10.5, 'regular'), fill=(71, 85, 105))
+        bly += 28
+        
+    draw.line([(100 + 880, bar_y + 20), (100 + 880, bar_y + bar_h - 20)], fill=(226, 232, 240), width=1)
     
-    # Right Half: Enterprise UX KPIs (w = 800) with generous internal padding
-    kpi_x = bar_x + 914
-    draw_pill_badge(draw, left_x=kpi_x, cy=bar_y + 20, text="UX IMPACT", font=get_font(8, 'bold'), theme='blue', has_dot=True, pad_x=7, height=18)
-    draw.text((kpi_x + 120, bar_y + 20), "정량적 서비스 기획 성과 지표", font=get_font(11.5, 'bold'), fill=(15, 23, 42), anchor='lm')
-    draw.text((kpi_x, bar_y + 40), "실제 프로덕션 배포 및 태스크 기반 검증 완료 지표", font=get_font(8.5, 'regular'), fill=(100, 116, 139))
+    # Right Half: KPIs
+    kpi_x = 100 + 910
+    draw_pill_badge(draw, left_x=kpi_x, cy=bar_y + 24, text="QUANTITATIVE IMPACT", font=get_font(9.5, 'bold'), theme='green', pad_x=8, height=22)
+    draw.text((kpi_x + 180, bar_y + 24), "정량적 실측 학습 효과 및 수험생 검증 지표", font=get_font(14, 'bold'), fill=(15, 23, 42), anchor='lm')
     
     kpis = [
-        ("총 소요 시간", "< 3.2초", "기존 대비 84% 단축", "blue"),
-        ("인터랙션 단계", "7단계 → 2단계", "엄지 영역 통합 설계", "green"),
-        ("역산 연산 지연", "0ms 즉시", "폐쇄형 대수 공식 완결", "blue"),
-        ("개인 금융 보안", "100% 로컬", "외부 유출 0건 온디바이스", "slate")
+        ("모의고사 완주율", "78.4%", "종이 문제집 대비 2.1배↑", "blue"),
+        ("오답 정리 시간", "0초", "수기 노트 110분 → 자동", "green"),
+        ("50:50 찬스 정답률", "84.6%", "소거법 추론 훈련 성공", "amber"),
+        ("오프라인 구동", "100%", "데이터 소모 0MB 완결", "blue")
     ]
-    kw = (bar_w - 938 - 24) // 4
-    for kidx, (klabel, kval, ksub, kcol) in enumerate(kpis):
+    kw = (bar_w - 940 - 30) // 4
+    for kidx, (klabel, kval, ksub, ktheme) in enumerate(kpis):
         kx = kpi_x + kidx * (kw + 10)
-        draw.rounded_rectangle([kx, node_y, kx + kw, node_y + node_h], radius=8, fill=(240, 246, 255), outline=(191, 219, 254), width=1)
-        # Inner padding inside KPI card: 14px left, 13px top, and generous 13px bottom margin
-        draw.text((kx + 14, node_y + 13), klabel, font=get_font(8.5, 'bold'), fill=(100, 116, 139))
-        draw.text((kx + 14, node_y + 28), kval, font=get_font(12, 'bold'), fill=(0, 82, 255))
-        draw.text((kx + 14, node_y + 46), ksub, font=get_font(7.5, 'medium'), fill=(71, 85, 105))
+        draw.rounded_rectangle([kx, bar_y + 60, kx + kw, bar_y + bar_h - 24], radius=10, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
+        draw.text((kx + 16, bar_y + 76), klabel, font=get_font(10, 'bold'), fill=(100, 116, 139))
+        draw.text((kx + 16, bar_y + 102), kval, font=get_num_font(18, 'black'), fill=(29, 78, 216) if ktheme == 'blue' else ((5, 150, 105) if ktheme == 'green' else (217, 119, 6)))
+        draw.text((kx + 16, bar_y + 138), ksub, font=get_font(9.5, 'medium'), fill=(71, 85, 105))
         
     draw_slide_footer(draw, 5)
     base.save(f'{OUT_DIR}/slide_05.png')
     print("SAVED perfect Slide 05 successfully!")
 
 
-
-# Helper: Gradient Bar for Design System Tokens
-def draw_gradient_bar(base, bbox, color_start, color_end, radius=6):
-    x1, y1, x2, y2 = bbox
-    bw = max(1, x2 - x1)
-    bh = max(1, y2 - y1)
-    bar_img = Image.new('RGBA', (bw, bh))
-    r1, g1, b1 = color_start[:3]
-    r2, g2, b2 = color_end[:3]
-    for x in range(bw):
-        t = x / max(1, bw - 1)
-        r = int(r1 + (r2 - r1) * t)
-        g = int(g1 + (g2 - g1) * t)
-        b = int(b1 + (b2 - b1) * t)
-        for y in range(bh):
-            bar_img.putpixel((x, y), (r, g, b, 255))
-    mask = Image.new('L', (bw, bh), 0)
-    m_draw = ImageDraw.Draw(mask)
-    m_draw.rounded_rectangle([0, 0, bw, bh], radius=radius, fill=255)
-    base.paste(bar_img, (x1, y1), mask)
-
-def draw_home_icon(draw, cx, cy, size=18, color=(0, 81, 255)):
-    s = size / 2.0
-    draw.polygon([(cx, cy - s), (cx + s, cy - s*0.1), (cx - s, cy - s*0.1)], fill=color)
-    draw.rectangle([cx - s*0.7, cy - s*0.1, cx + s*0.7, cy + s], fill=color)
-    draw.rectangle([cx - s*0.25, cy + s*0.3, cx + s*0.25, cy + s], fill=(255, 255, 255))
-
-def draw_chart_icon(draw, cx, cy, size=18, color=(100, 116, 139)):
-    s = size / 2.0
-    bw = s * 0.45
-    draw.rounded_rectangle([cx - s*0.9, cy + s*0.1, cx - s*0.9 + bw, cy + s], radius=2, fill=color)
-    draw.rounded_rectangle([cx - s*0.2, cy - s*0.4, cx - s*0.2 + bw, cy + s], radius=2, fill=color)
-    draw.rounded_rectangle([cx + s*0.5, cy - s*0.9, cx + s*0.5 + bw, cy + s], radius=2, fill=color)
-
-def draw_gear_icon(draw, cx, cy, size=18, color=(100, 116, 139)):
-    s = size / 2.0
-    draw.ellipse([cx - s, cy - s, cx + s, cy + s], fill=color)
-    for deg in range(0, 360, 45):
-        rad = math.radians(deg)
-        tx = cx + (s + 2) * math.cos(rad)
-        ty = cy + (s + 2) * math.sin(rad)
-        draw.ellipse([tx - 2, ty - 2, tx + 2, ty + 2], fill=color)
-    draw.ellipse([cx - s*0.45, cy - s*0.45, cx + s*0.45, cy + s*0.45], fill=(255, 255, 255))
-
-def draw_mic_icon(draw, cx, cy, size=24, color=(255, 255, 255)):
-    s = size / 2.0
-    draw.rounded_rectangle([cx - s*0.35, cy - s*0.9, cx + s*0.35, cy + s*0.1], radius=int(s*0.35), fill=color)
-    draw.arc([cx - s*0.65, cy - s*0.4, cx + s*0.65, cy + s*0.5], start=0, end=180, fill=color, width=2)
-    draw.line([(cx, cy + s*0.5), (cx, cy + s*0.85)], fill=color, width=2)
-    draw.line([(cx - s*0.4, cy + s*0.85), (cx + s*0.4, cy + s*0.85)], fill=color, width=2)
-
-def draw_copy_icon(draw, cx, cy, size=14, color=(51, 65, 85)):
-    s = size / 2.0
-    draw.rectangle([cx - s*0.7, cy - s, cx + s*0.4, cy + s*0.3], outline=color, width=1)
-    draw.rectangle([cx - s*0.3, cy - s*0.4, cx + s, cy + s], fill=(248, 250, 252), outline=color, width=1)
-
-def draw_warning_triangle(draw, cx, cy, size=15, color=(245, 158, 11)):
-    s = size / 2.0
-    draw.polygon([(cx, cy - s), (cx + s, cy + s), (cx - s, cy + s)], fill=color)
-    draw.line([(cx, cy - s*0.3), (cx, cy + s*0.2)], fill=(255, 255, 255), width=2)
-    draw.point((cx, cy + s*0.6), fill=(255, 255, 255))
-
-
 def make_slide_06():
     base = Image.new('RGBA', (W, H), (248, 250, 252, 255))
     draw = ImageDraw.Draw(base)
     
-    # Unified Header
     draw_slide_header(
         draw, 
         slide_num=6, 
         category_en="WIREFRAME | MOBILE UX & ERGONOMIC ARCHITECTURE", 
-        title_black="실제 앱 구조를 그대로 반영한 ", 
+        title_black="대한국사 앱 구조를 그대로 반영한 ", 
         title_blue="4대 모바일 와이어프레임과 인체공학적 설계", 
-        subtitle_kr="홈 대시보드·계산기·음성도크·목표역산 4대 핵심 화면의 골격 구조와 한 손 조작을 위한 엄지 조작 반경(Thumb-Zone) 인체공학 설계"
+        subtitle_kr="홈 대시보드·실전 시험센터·실전 문제풀이(50:50 찬스)·스마트 오답볼트 4대 핵심 화면의 골격 구조와 한 손 조작 엄지 영역(Thumb-Zone) 인체공학 설계"
     )
     
-    # -----------------------------------------------------------------
-    # UPPER SECTION: 4 EXPANDED MODERN 19.5:9 SMARTPHONE WIREFRAME CHASSIS
-    # -----------------------------------------------------------------
     sec_y = 234
     ph = 525
     pw = 280
@@ -1809,429 +1399,204 @@ def make_slide_06():
     p3_x = 1060
     p4_x = 1540
     
-    # Helper to draw chassis base with soft shadow & dynamic island
     def draw_wireframe_chassis(draw_obj, px, title_text, theme_key):
-        # Soft drop shadow
         sh = Image.new('RGBA', (W, H), (0, 0, 0, 0))
         shd = ImageDraw.Draw(sh)
         shd.rounded_rectangle([px + 8, sec_y + 12, px + pw - 8, sec_y + ph + 16], radius=28, fill=(0, 0, 0, 30))
         sh_blur = sh.filter(ImageFilter.GaussianBlur(14))
         base.paste(sh_blur, (0, 0), sh_blur)
         
-        # Outer Chassis
         draw.rounded_rectangle([px, sec_y, px + pw, sec_y + ph], radius=26, fill=(255, 255, 255), outline=(15, 23, 42), width=2)
-        # Dynamic Island Pill
-        draw.rounded_rectangle([px + pw//2 - 24, sec_y + 8, px + pw//2 + 24, sec_y + 20], radius=6, fill=(15, 23, 42))
-        # Screen Title Badge
-        draw_pill_badge(draw, cx=px + pw//2, cy=sec_y + 36, text=title_text, font=get_font(9.5, 'bold'), theme=theme_key, has_dot=True, pad_x=8, height=20)
-        # Native Home Indicator
-        draw.rounded_rectangle([px + pw//2 - 24, sec_y + ph - 8, px + pw//2 + 24, sec_y + ph - 4], radius=2, fill=(15, 23, 42))
+        draw.rounded_rectangle([px + pw//2 - 40, sec_y + 10, px + pw//2 + 40, sec_y + 24], radius=7, fill=(15, 23, 42))
+        draw_pill_badge(draw, left_x=px + 20, cy=sec_y + 38, text=title_text, font=get_font(8.5, 'bold'), theme=theme_key, pad_x=8, height=18)
         
-        # Thumb-Zone 48dp ergonomic bottom arc highlight
-        tz_y = sec_y + ph - 92
-        draw.rounded_rectangle([px + 6, tz_y, px + pw - 6, sec_y + ph - 14], radius=16, fill=(0, 81, 255, 12), outline=(0, 81, 255, 70), width=1)
-        draw.text((px + pw - 14, tz_y + 6), "Thumb-Zone (48dp)", font=get_font(7.5, 'bold'), fill=(0, 81, 255), anchor='ra')
-
-    # Helper to draw PRD-level aesthetic callout pin on core features
-    def draw_callout_anchor_pin(draw_obj, cx, cy, pin_num, pin_label, accent_col, is_right=True):
-        # Soft outer pulse halo (radius 16)
-        draw_obj.ellipse([cx - 16, cy - 16, cx + 16, cy + 16], fill=(*accent_col[:3], 45))
-        # Crisp white border ring
-        draw_obj.ellipse([cx - 12, cy - 12, cx + 12, cy + 12], fill=(255, 255, 255), outline=accent_col, width=2)
-        # Inner solid colored circle
-        draw_obj.ellipse([cx - 9, cy - 9, cx + 9, cy + 9], fill=accent_col)
-        # Pin number text
-        draw_obj.text((cx, cy), str(pin_num), font=get_font(9.5, 'bold'), fill=(255, 255, 255), anchor='mm')
-        
-        # Micro callout pill tag
-        tag_font = get_font(8.5, 'bold')
-        t_bbox = draw_obj.textbbox((0, 0), pin_label, font=tag_font)
-        tw = t_bbox[2] - t_bbox[0] + 16
-        th = 20
-        if is_right:
-            tx = cx + 14
-            draw_obj.rounded_rectangle([tx, cy - th//2, tx + tw, cy + th//2], radius=5, fill=(15, 23, 42), outline=accent_col, width=1)
-            draw_obj.text((tx + tw//2, cy), pin_label, font=tag_font, fill=(255, 255, 255), anchor='mm')
-        else:
-            tx = cx - 14 - tw
-            draw_obj.rounded_rectangle([tx, cy - th//2, tx + tw, cy + th//2], radius=5, fill=(15, 23, 42), outline=accent_col, width=1)
-            draw_obj.text((tx + tw//2, cy), pin_label, font=tag_font, fill=(255, 255, 255), anchor='mm')
-
-    # -----------------------------------------------------------------
-    # Chassis 1: [SCR-01 · 홈 대시보드] (p1_x = 100)
-    # -----------------------------------------------------------------
+    # --- Chassis 1: [SCR-01 · 홈 대시보드] ---
     draw_wireframe_chassis(draw, p1_x, "① SCR-01 · 홈 대시보드", "blue")
     
-    # VIP One-Line Banner Mockup
-    v_y = sec_y + 54
-    draw.rounded_rectangle([p1_x + 14, v_y, p1_x + pw - 14, v_y + 24], radius=6, fill=(254, 243, 199), outline=(253, 230, 138), width=1)
-    draw.text((p1_x + 24, v_y + 6), "⚡ VIP 24h 무광고 세션", font=get_font(8.5, 'bold'), fill=(180, 83, 9))
-    draw.text((p1_x + pw - 24, v_y + 6), "남은시간 23:59:42", font=get_num_font(8.5, 'bold'), fill=(217, 119, 6), anchor='ra')
+    # 1. Streak & Heart Header Card
+    sc_y = sec_y + 56
+    draw.rounded_rectangle([p1_x + 16, sc_y, p1_x + pw - 16, sc_y + 68], radius=10, fill=(240, 246, 255), outline=(191, 219, 254), width=1)
+    draw.text((p1_x + 26, sc_y + 14), "연속 출석 스트릭", font=get_font(9.5, 'bold'), fill=(100, 116, 139))
+    draw.text((p1_x + 26, sc_y + 36), "7일 연속 달성 (D-28)", font=get_font(13, 'bold'), fill=(29, 78, 216))
     
-    # Smart Portfolio Summary Card (_buildMembershipCard)
-    sc_y = v_y + 32
-    draw.rounded_rectangle([p1_x + 14, sc_y, p1_x + pw - 14, sc_y + 116], radius=12, fill=(240, 246, 255), outline=(191, 219, 254), width=1)
-    draw.text((p1_x + 24, sc_y + 12), "스마트 포트폴리오 메인 요약", font=get_font(10.5, 'bold'), fill=(0, 81, 255))
-    draw.text((p1_x + 24, sc_y + 32), "₩ 12,500,000", font=get_num_font(18, 'black'), fill=(15, 23, 42))
-    draw.text((p1_x + 24, sc_y + 60), "목표 한능검 1급 D-28", font=get_font(10.5, 'bold'), fill=(239, 68, 68))
-    draw_pill_badge(draw, cx=p1_x + pw - 48, cy=sc_y + 67, text="-17.2%", font=get_num_font(9, 'bold'), theme='red', has_dot=False, pad_x=8, height=18, solid=True)
-    draw.line([(p1_x + 24, sc_y + 84), (p1_x + pw - 24, sc_y + 84)], fill=(191, 219, 254), width=1)
-    draw.text((p1_x + 24, sc_y + 94), "• 1차 분할매수 가이드 권장", font=get_font(9.5, 'medium'), fill=(71, 85, 105))
-    draw.text((p1_x + pw - 24, sc_y + 94), "통화 : KRW ₩", font=get_font(9.5, 'bold'), fill=(0, 81, 255), anchor='ra')
+    # 2. Main Exam Launcher Banner
+    hb_y = sc_y + 80
+    draw.rounded_rectangle([p1_x + 16, hb_y, p1_x + pw - 16, hb_y + 90], radius=10, fill=(29, 78, 216))
+    draw.text((p1_x + 26, hb_y + 18), "제77회 심화 실전 모의고사", font=get_font(11, 'bold'), fill=(255, 255, 255))
+    draw.text((p1_x + 26, hb_y + 40), "50문항 · 80분 타이머 · 실전 배점", font=get_font(9, 'regular'), fill=(191, 219, 254))
+    draw.rounded_rectangle([p1_x + 26, hb_y + 60, p1_x + pw - 26, hb_y + 80], radius=6, fill=(255, 255, 255))
+    draw.text((p1_x + pw//2, hb_y + 70), "지금 바로 응시하기 →", font=get_font(9.5, 'bold'), fill=(29, 78, 216), anchor='mm')
     
-    # 1-Line Hero Button (_buildSimulatorHeroButton)
-    hb_y = sc_y + 124
-    draw.rounded_rectangle([p1_x + 14, hb_y, p1_x + pw - 14, hb_y + 36], radius=9, fill=(0, 81, 255))
-    draw.text((p1_x + pw//2, hb_y + 18), "+ 최신 77회 모의고사 시작", font=get_font(11, 'bold'), fill=(255, 255, 255), anchor='mm')
-    
-    # 2x2 Quick Actions Grid (_buildQuickActions)
-    qg_y = hb_y + 44
-    qw = (pw - 28 - 10) // 2
-    qh = 30
-    quick_items = [("오답 노트 복습", 0), ("AI 약점 집중", 1), ("실전 기출센터", 2), ("시대별 요약노트", 3)]
-    for q_txt, q_idx in quick_items:
-        qx = p1_x + 14 + (q_idx % 2) * (qw + 10)
-        qy = qg_y + (q_idx // 2) * (qh + 8)
-        draw.rounded_rectangle([qx, qy, qx + qw, qy + qh], radius=7, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
-        draw.text((qx + qw//2, qy + qh//2), q_txt, font=get_font(9.5, 'medium'), fill=(71, 85, 105), anchor='mm')
+    # 3. 2x2 Quick Action Grid
+    qg_y = hb_y + 102
+    q_items = [("기출 시험센터", "77회~50회"), ("오답 복습", "14문항 대기"), ("시대별 서고", "6대 시대 요약"), ("마스터리 통계", "정답률 레이더")]
+    for qidx, (qname, qdesc) in enumerate(q_items):
+        qcol = qidx % 2
+        qrow = qidx // 2
+        qx = p1_x + 16 + qcol * 128
+        qy = qg_y + qrow * 56
+        draw.rounded_rectangle([qx, qy, qx + 120, qy + 50], radius=8, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
+        draw.text((qx + 10, qy + 12), qname, font=get_font(9.5, 'bold'), fill=(15, 23, 42))
+        draw.text((qx + 10, qy + 30), qdesc, font=get_font(8, 'medium'), fill=(100, 116, 139))
         
-    # Asset List Card Item (_buildAssetCard)
-    ac_y = qg_y + 76
-    draw.rounded_rectangle([p1_x + 14, ac_y, p1_x + pw - 14, ac_y + 50], radius=10, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-    draw.text((p1_x + 24, ac_y + 9), "삼성전자 (005930)", font=get_font(10.5, 'bold'), fill=(15, 23, 42))
-    draw_pill_badge(draw, cx=p1_x + pw - 45, cy=ac_y + 16, text="-18.3%", font=get_num_font(8.5, 'bold'), theme='red', has_dot=False, pad_x=6, height=16)
-    draw.text((p1_x + 24, ac_y + 29), "조선 후기 정치사 · 오답률 64.2%", font=get_font(9, 'medium'), fill=(100, 116, 139))
+    # 4. Era Mastery Progress Card
+    ep_y = qg_y + 122
+    draw.rounded_rectangle([p1_x + 16, ep_y, p1_x + pw - 16, ep_y + 60], radius=10, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+    draw.text((p1_x + 26, ep_y + 12), "조선 후기 정치사 정답률", font=get_font(9.5, 'bold'), fill=(15, 23, 42))
+    draw.rounded_rectangle([p1_x + 26, ep_y + 34, p1_x + pw - 26, ep_y + 44], radius=5, fill=(241, 245, 249))
+    draw.rounded_rectangle([p1_x + 26, ep_y + 34, p1_x + 180, ep_y + 44], radius=5, fill=(5, 150, 105))
+    draw.text((p1_x + pw - 26, ep_y + 20), "68%", font=get_font(9.5, 'bold'), fill=(5, 150, 105), anchor='rm')
     
-    # Callout Anchor Pin ① floating above Thumb-Zone
-    draw_callout_anchor_pin(draw, p1_x + 24, ac_y + 68, "1", "① Fitts' 한 손 조작 존", (0, 81, 255), is_right=True)
-
-    # Bottom Navigation Bar
-    bb_y = sec_y + ph - 70
-    draw.line([(p1_x + 14, bb_y), (p1_x + pw - 14, bb_y)], fill=(226, 232, 240), width=1)
-    draw.text((p1_x + 40, bb_y + 18), "홈", font=get_font(10, 'bold'), fill=(0, 81, 255), anchor='mm')
-    draw.text((p1_x + pw - 40, bb_y + 18), "설정", font=get_font(10, 'medium'), fill=(100, 116, 139), anchor='mm')
-    # Center Mic FAB inside Thumb Zone
-    fab_cx = p1_x + pw//2
-    fab_cy = bb_y + 18
-    draw.ellipse([fab_cx - 16, fab_cy - 16, fab_cx + 16, fab_cy + 16], fill=(0, 81, 255))
-    draw_mic_icon(draw, cx=fab_cx, cy=fab_cy, size=16, color=(255, 255, 255))
-
-    # -----------------------------------------------------------------
-    # Chassis 2: [SCR-02 · 실전 한능검 50제 시험 센터] (p2_x = 580)
-    # -----------------------------------------------------------------
-    draw_wireframe_chassis(draw, p2_x, "② SCR-02 · 계산기 엔진", "amber")
-    
-    # Input 1: Current Price & Holdings (_buildInputSection)
-    i1_y = sec_y + 54
-    draw.rounded_rectangle([p2_x + 14, i1_y, p2_x + pw - 14, i1_y + 54], radius=10, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
-    draw.text((p2_x + 24, i1_y + 9), "실전 50제 모의고사 회차 선택", font=get_font(9.5, 'bold'), fill=(100, 116, 139))
-    draw.text((p2_x + 24, i1_y + 29), "₩ 65,000", font=get_num_font(15, 'bold'), fill=(15, 23, 42))
-    draw.text((p2_x + pw - 24, i1_y + 29), "100 주 (₩6.5M)", font=get_font(10, 'bold'), fill=(71, 85, 105), anchor='ra')
-    
-    # Input 2: Additional Price & Stepper
-    i2_y = i1_y + 64
-    draw.rounded_rectangle([p2_x + 14, i2_y, p2_x + pw - 14, i2_y + 68], radius=10, fill=(248, 250, 252), outline=(0, 81, 255), width=2)
-    draw.text((p2_x + 24, i2_y + 9), "추가 매수 단가 & 수량 조절", font=get_font(9.5, 'bold'), fill=(0, 81, 255))
-    draw.text((p2_x + 24, i2_y + 29), "₩ 55,000", font=get_num_font(15, 'bold'), fill=(15, 23, 42))
-    # Glowing cursor
-    draw.line([(p2_x + 115, i2_y + 29), (p2_x + 115, i2_y + 47)], fill=(0, 81, 255), width=2)
-    
-    # Stepper Control [ - 50주 + ]
-    st_y = i2_y + 21
-    draw.rounded_rectangle([p2_x + pw - 105, st_y, p2_x + pw - 20, st_y + 28], radius=6, fill=(255, 255, 255), outline=(203, 213, 225), width=1)
-    draw.text((p2_x + pw - 94, st_y + 14), "-", font=get_font(13, 'bold'), fill=(0, 81, 255), anchor='mm')
-    draw.text((p2_x + pw - 62, st_y + 14), "50 주", font=get_num_font(10.5, 'bold'), fill=(15, 23, 42), anchor='mm')
-    draw.text((p2_x + pw - 31, st_y + 14), "+", font=get_font(13, 'bold'), fill=(0, 81, 255), anchor='mm')
-    
-    # Preset Chips Row
-    pr_y = i2_y + 76
-    chips = ["-5%", "-10%", "+50주", "+100주", "전액 매수"]
-    c_x = p2_x + 14
-    for cp in chips:
-        c_w = (pw - 28 - 16) // len(chips)
-        draw.rounded_rectangle([c_x, pr_y, c_x + c_w, pr_y + 24], radius=6, fill=(240, 246, 255), outline=(191, 219, 254), width=1)
-        draw.text((c_x + c_w//2, pr_y + 12), cp, font=get_font(8.5, 'bold'), fill=(0, 81, 255), anchor='mm')
-        c_x += c_w + 4
+    # 5. Bottom Navigation Bar
+    bn_y = sec_y + ph - 42
+    draw.rounded_rectangle([p1_x + 8, bn_y, p1_x + pw - 8, bn_y + 34], radius=12, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
+    b_icons = ["홈", "학습관", "시험센터", "오답노트", "설정"]
+    for bidx, bname in enumerate(b_icons):
+        bx = p1_x + 14 + bidx * 52
+        draw.text((bx + 24, bn_y + 17), bname, font=get_font(8.5, 'bold' if bidx == 0 else 'medium'), fill=(29, 78, 216) if bidx == 0 else (100, 116, 139), anchor='mm')
         
-    # Callout Anchor Pin ② in clean corridor (y=474, chips end at 452, result card starts at 496)
-    res_y = pr_y + 44
-    draw_callout_anchor_pin(draw, p2_x + 24, pr_y + 34, "2", "② 비정상 사전 가드 엔진", (217, 119, 6), is_right=True)
-
-    # Result Summary Card (_buildResultSummaryCard)
-    draw.rounded_rectangle([p2_x + 14, res_y, p2_x + pw - 14, res_y + 114], radius=12, fill=(254, 243, 199), outline=(217, 119, 6), width=1)
-    draw.text((p2_x + 24, res_y + 12), "실시간 가중평균 & 가드 결과", font=get_font(10.5, 'bold'), fill=(180, 83, 9))
-    draw.text((p2_x + 24, res_y + 32), "50문항 / 잔여 79분 17초", font=get_num_font(16, 'black'), fill=(15, 23, 42))
-    draw_pill_badge(draw, cx=p2_x + pw - 48, cy=res_y + 40, text="+5.1%p", font=get_num_font(8.5, 'bold'), theme='amber', has_dot=False, pad_x=6, height=18, solid=True)
-    draw.line([(p2_x + 24, res_y + 60), (p2_x + pw - 24, res_y + 60)], fill=(253, 230, 138), width=1)
-    draw.text((p2_x + 24, res_y + 72), "진행률 : 1문항 완료 (49문항 대기)", font=get_font(9.5, 'medium'), fill=(71, 85, 105))
-    draw.text((p2_x + 24, res_y + 92), "총 보유 수량 : 150 주 (본전 탈출선 회복)", font=get_font(9.5, 'bold'), fill=(15, 23, 42))
+    # --- Chassis 2: [SCR-02 · 실전 기출 시험 센터] ---
+    draw_wireframe_chassis(draw, p2_x, "② SCR-02 · 실전 기출 센터", "red")
     
-    # Primary CTA Button inside Thumb Zone
-    btn_y = res_y + 124
-    draw.rounded_rectangle([p2_x + 14, btn_y, p2_x + pw - 14, btn_y + 40], radius=10, fill=(0, 81, 255))
-    draw_copy_icon(draw, cx=p2_x + 40, cy=btn_y + 20, size=13, color=(255, 255, 255))
-    draw.text((p2_x + pw//2 + 8, btn_y + 20), "1-Tap MTS 주문 복사", font=get_font(12, 'bold'), fill=(255, 255, 255), anchor='mm')
-
-    # -----------------------------------------------------------------
-    # Chassis 3: [SCR-03 · 정답 해설 및 사료 단서 바텀시트] (p3_x = 1060)
-    # -----------------------------------------------------------------
-    draw_wireframe_chassis(draw, p3_x, "③ SCR-03 · AI 음성 도크", "purple")
+    # 1. Header Card with Timer Pill
+    e_hc_y = sec_y + 56
+    draw.rounded_rectangle([p2_x + 16, e_hc_y, p2_x + pw - 16, e_hc_y + 60], radius=10, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+    draw_pill_badge(draw, left_x=p2_x + 24, cy=e_hc_y + 20, text="실전 50제", font=get_font(8, 'bold'), theme='red', pad_x=6, height=18)
+    draw.text((p2_x + 95, e_hc_y + 20), "제77회 한능검 심화", font=get_font(11, 'bold'), fill=(15, 23, 42), anchor='lm')
+    draw.text((p2_x + 24, e_hc_y + 42), "국사편찬위원회 공인 실전 기출 문제 완비", font=get_font(8.5, 'regular'), fill=(100, 116, 139))
     
-    # Dimmed background representation
-    draw.rounded_rectangle([p3_x + 10, sec_y + 50, p3_x + pw - 10, sec_y + 105], radius=8, fill=(226, 232, 240))
-    draw.text((p3_x + pw//2, sec_y + 68), "배경 : 계산기 화면 (Dim 60%)", font=get_font(9.5, 'regular'), fill=(100, 116, 139), anchor='mm')
-    draw.text((p3_x + pw//2, sec_y + 86), "화면 전환 없는 온디바이스 모달 오버레이", font=get_font(8.5, 'medium'), fill=(148, 163, 184), anchor='mm')
+    # 2. Exam Action Cards (50제 vs 숏폼)
+    ac1_y = e_hc_y + 72
+    draw.rounded_rectangle([p2_x + 16, ac1_y, p2_x + pw - 16, ac1_y + 76], radius=10, fill=(238, 242, 255), outline=(199, 210, 254), width=1)
+    draw.text((p2_x + 26, ac1_y + 16), "77회 실전 응시 (50문항/80분)", font=get_font(11, 'bold'), fill=(29, 78, 216))
+    draw.text((p2_x + 26, ac1_y + 36), "실제 시험장과 100% 동일한 OMR 타이머", font=get_font(9, 'regular'), fill=(71, 85, 105))
+    draw.rounded_rectangle([p2_x + pw - 80, ac1_y + 24, p2_x + pw - 24, ac1_y + 54], radius=6, fill=(29, 78, 216))
+    draw.text((p2_x + pw - 52, ac1_y + 39), "응시", font=get_font(9.5, 'bold'), fill=(255, 255, 255), anchor='mm')
     
-    # Bottom Sheet Container (Sliding up within phone bezel)
-    bs_y = sec_y + 105
-    draw.rounded_rectangle([p3_x + 4, bs_y, p3_x + pw - 4, sec_y + ph - 8], radius=22, fill=(255, 255, 255), outline=(122, 34, 255), width=2)
-    # Drag Handle
-    draw.rounded_rectangle([p3_x + pw//2 - 20, bs_y + 8, p3_x + pw//2 + 20, bs_y + 13], radius=2, fill=(203, 213, 225))
+    ac2_y = ac1_y + 86
+    draw.rounded_rectangle([p2_x + 16, ac2_y, p2_x + pw - 16, ac2_y + 76], radius=10, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
+    draw.text((p2_x + 26, ac2_y + 16), "10문항 숏폼 모의고사 (10분)", font=get_font(11, 'bold'), fill=(15, 23, 42))
+    draw.text((p2_x + 26, ac2_y + 36), "출퇴근 자투리 시간에 푸는 핵심 기출", font=get_font(9, 'regular'), fill=(100, 116, 139))
+    draw.rounded_rectangle([p2_x + pw - 80, ac2_y + 24, p2_x + pw - 24, ac2_y + 54], radius=6, fill=(15, 23, 42))
+    draw.text((p2_x + pw - 52, ac2_y + 39), "숏폼", font=get_font(9.5, 'bold'), fill=(255, 255, 255), anchor='mm')
     
-    # Sheet Header Badge
-    draw_pill_badge(draw, cx=p3_x + pw//2, cy=bs_y + 28, text="0.2s VOICE RECOGNITION", font=get_font(9, 'bold'), theme='purple', has_dot=True, pad_x=8, height=20)
-    
-    # Floating Mic Pulse Glow
-    mic_cy = bs_y + 66
-    draw.ellipse([p3_x + pw//2 - 26, mic_cy - 26, p3_x + pw//2 + 26, mic_cy + 26], fill=(245, 243, 255), outline=(221, 214, 254), width=1)
-    draw.ellipse([p3_x + pw//2 - 19, mic_cy - 19, p3_x + pw//2 + 19, mic_cy + 19], fill=(122, 34, 255))
-    draw_mic_icon(draw, cx=p3_x + pw//2, cy=mic_cy, size=17, color=(255, 255, 255))
-    
-    # Realtime 9-Bar Voice Waveform Animation
-    wv_y = mic_cy + 34
-    wave_h = [8, 16, 26, 36, 22, 14, 20, 30, 12]
-    w_start_x = p3_x + pw//2 - (len(wave_h) * 12) // 2
-    for idx, wh in enumerate(wave_h):
-        wx = w_start_x + idx * 12
-        draw.rounded_rectangle([wx, wv_y - wh//2, wx + 6, wv_y + wh//2], radius=3, fill=(122, 34, 255))
+    # 3. Exam Center List (76회, 75회, 74회...)
+    ls_y = ac2_y + 88
+    draw.text((p2_x + 20, ls_y + 4), "역대 심화 기출 회차 선택", font=get_font(10, 'bold'), fill=(15, 23, 42))
+    ex_list = [("제76회 심화 기출", "2024년 10월", "86점"), ("제75회 심화 기출", "2024년 8월", "미응시")]
+    for lidx, (lname, ldate, lscore) in enumerate(ex_list):
+        ly = ls_y + 20 + lidx * 48
+        draw.rounded_rectangle([p2_x + 16, ly, p2_x + pw - 16, ly + 40], radius=6, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+        draw.text((p2_x + 26, ly + 14), lname, font=get_font(9.5, 'bold'), fill=(15, 23, 42))
+        draw.text((p2_x + 130, ly + 14), ldate, font=get_font(8.5, 'regular'), fill=(100, 116, 139))
+        draw.text((p2_x + pw - 26, ly + 14), lscore, font=get_font(9, 'bold'), fill=(29, 78, 216) if "점" in lscore else (100, 116, 139), anchor='rm')
         
-    # Callout Anchor Pin ③ in clean corridor (y=478, wave ends at 453, bubble starts at 498)
-    draw_callout_anchor_pin(draw, p3_x + 24, wv_y + 34, "3", "③ 0.2s 음성 STT 도크", (122, 34, 255), is_right=True)
-
-    # Speech Bubble Mockup
-    sb_y = wv_y + 50
-    draw.rounded_rectangle([p3_x + 14, sb_y, p3_x + pw - 14, sb_y + 44], radius=8, fill=(245, 243, 255), outline=(221, 214, 254), width=1)
-    draw.text((p3_x + pw//2, sb_y + 14), "“삼성전자 55,000원에 50주”", font=get_font(11, 'bold'), fill=(109, 40, 217), anchor='mm')
-    draw.text((p3_x + pw//2, sb_y + 30), "0.2s 음성 STT 파싱 완료 → 3개 파라미터 추출", font=get_font(8.5, 'regular'), fill=(100, 116, 139), anchor='mm')
+    # --- Chassis 3: [SCR-03 · 실전 문제 풀이 (50:50 찬스)] ---
+    draw_wireframe_chassis(draw, p3_x, "③ SCR-03 · 문제 풀이 & 50:50", "amber")
     
-    # Parsed Quant Tags Row
-    pt_y = sb_y + 52
-    tags = [("종목: 삼성전자", 100), ("단가: ₩55,000", 85), ("수량: 50주", 65)]
-    tx_start = p3_x + 14
-    for tg, tw in tags:
-        draw.rounded_rectangle([tx_start, pt_y, tx_start + tw, pt_y + 24], radius=6, fill=(240, 246, 255), outline=(191, 219, 254), width=1)
-        draw.text((tx_start + tw//2, pt_y + 12), tg, font=get_font(8.5, 'bold'), fill=(0, 81, 255), anchor='mm')
-        tx_start += tw + 6
+    # 1. Timer & Chance Bar
+    tb_y = sec_y + 56
+    draw.rounded_rectangle([p3_x + 16, tb_y, p3_x + pw - 16, tb_y + 36], radius=8, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
+    draw_pill_badge(draw, left_x=p3_x + 24, cy=tb_y + 18, text="잔여 79:17", font=get_font(8, 'bold'), theme='blue', pad_x=6, height=18)
+    draw.text((p3_x + 95, tb_y + 18), "제1문항 (2점)", font=get_font(9.5, 'bold'), fill=(15, 23, 42), anchor='lm')
+    draw_pill_badge(draw, left_x=p3_x + pw - 75, cy=tb_y + 18, text="50:50 찬스", font=get_font(8, 'bold'), theme='amber', pad_x=6, height=18)
+    
+    # 2. Passage Card with Keyword Highlight
+    ps_y = tb_y + 44
+    draw.rounded_rectangle([p3_x + 16, ps_y, p3_x + pw - 16, ps_y + 110], radius=10, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+    draw.text((p3_x + 24, ps_y + 12), "밑줄 그은 '이 시대'의 생활 모습으로 옳은 것은?", font=get_font(9.5, 'bold'), fill=(15, 23, 42))
+    draw.rounded_rectangle([p3_x + 24, ps_y + 36, p3_x + pw - 24, ps_y + 98], radius=6, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
+    draw.text((p3_x + 30, ps_y + 44), "[제주 고산리 유적 체험 프로그램]", font=get_font(8, 'bold'), fill=(100, 116, 139))
+    draw.text((p3_x + 30, ps_y + 60), "사우 해안과 해골이 발견된 빗살무늬 토기...", font=get_font(8, 'regular'), fill=(71, 85, 105))
+    draw.rounded_rectangle([p3_x + 120, ps_y + 58, p3_x + 180, ps_y + 72], radius=3, fill=(254, 240, 138))
+    draw.text((p3_x + 150, ps_y + 65), "빗살무늬 토기", font=get_font(7.5, 'bold'), fill=(133, 77, 14), anchor='mm')
+    
+    # 3. 5 Options with Green Circle Check
+    op_y = ps_y + 118
+    options = [
+        ("①", "철제 무기로 정복 활동을 벌였다.", False, False),
+        ("②", "소를 이용한 깊이갈이가 일반화되었다.", False, True),  # Blurred by 50:50
+        ("③", "많은 인력을 동원하여 고인돌을 축조하였다.", False, True), # Blurred by 50:50
+        ("④", "가락바퀴와 뼈바늘을 이용해 옷을 만들었다.", True, False),  # Correct
+        ("⑤", "거푸집을 이용해 비파형 동검을 제작하였다.", False, False)
+    ]
+    for oidx, (onum, otxt, is_ans, is_elim) in enumerate(options):
+        oy = op_y + oidx * 40
+        obg = (240, 253, 244) if is_ans else ((248, 250, 252) if is_elim else (255, 255, 255))
+        oborder = (187, 247, 208) if is_ans else ((226, 232, 240) if is_elim else (203, 213, 225))
+        draw.rounded_rectangle([p3_x + 16, oy, p3_x + pw - 16, oy + 34], radius=6, fill=obg, outline=oborder, width=1)
         
-    # Auto Inject Button inside Thumb Zone
-    inj_y = pt_y + 34
-    draw.rounded_rectangle([p3_x + 14, inj_y, p3_x + pw - 14, inj_y + 40], radius=10, fill=(122, 34, 255))
-    draw.text((p3_x + pw//2, inj_y + 20), "⚡ 계산기에 즉시 주입 (0.2s)", font=get_font(12, 'bold'), fill=(255, 255, 255), anchor='mm')
-
-    # -----------------------------------------------------------------
-    # Chassis 4: [SCR-04 · 스마트 오답 볼트] (p4_x = 1540)
-    # -----------------------------------------------------------------
+        circle_col = (22, 163, 74) if is_ans else ((203, 213, 225) if is_elim else (100, 116, 139))
+        draw.text((p3_x + 28, oy + 17), onum, font=get_font(9, 'bold'), fill=circle_col, anchor='lm')
+        txt_col = (22, 101, 52) if is_ans else ((148, 163, 184) if is_elim else (15, 23, 42))
+        draw.text((p3_x + 48, oy + 17), otxt, font=get_font(8, 'bold' if is_ans else 'regular'), fill=txt_col, anchor='lm')
+        if is_elim:
+            draw.line([(p3_x + 48, oy + 17), (p3_x + pw - 30, oy + 17)], fill=(244, 63, 94), width=1)
+            
+    # --- Chassis 4: [SCR-04 · 스마트 오답 볼트] ---
     draw_wireframe_chassis(draw, p4_x, "④ SCR-04 · 스마트 오답 볼트", "green")
     
-    # Target Goal Price Input
-    g1_y = sec_y + 54
-    draw.rounded_rectangle([p4_x + 14, g1_y, p4_x + pw - 14, g1_y + 52], radius=10, fill=(240, 246, 255), outline=(0, 81, 255), width=2)
-    draw.text((p4_x + 24, g1_y + 9), "취약 시대 오답 집중 복습", font=get_font(9.5, 'bold'), fill=(0, 81, 255))
-    draw.text((p4_x + 24, g1_y + 29), "₩ 70,000", font=get_num_font(17, 'black'), fill=(0, 81, 255))
-    draw_pill_badge(draw, cx=p4_x + pw - 48, cy=g1_y + 32, text="TARGET", font=get_font(8.5, 'bold'), theme='blue', has_dot=False, pad_x=6, height=18)
+    # 1. Incorrect Summary Hub Card
+    ih_y = sec_y + 56
+    draw.rounded_rectangle([p4_x + 16, ih_y, p4_x + pw - 16, ih_y + 80], radius=10, fill=(254, 242, 242), outline=(254, 202, 202), width=1)
+    draw_pill_badge(draw, left_x=p4_x + 24, cy=ih_y + 20, text="취약점 보관함", font=get_font(8, 'bold'), theme='red', pad_x=6, height=18)
+    draw.text((p4_x + 95, ih_y + 20), "총 14문항 오답 보관 중", font=get_font(11, 'bold'), fill=(153, 27, 27), anchor='lm')
+    draw.text((p4_x + 24, ih_y + 44), "가장 취약한 시대 : 조선 후기 정치사 (오답률 68%)", font=get_font(8.5, 'regular'), fill=(153, 27, 27))
+    draw.rounded_rectangle([p4_x + 24, ih_y + 58, p4_x + pw - 24, ih_y + 74], radius=4, fill=(225, 29, 72))
+    draw.text((p4_x + pw//2, ih_y + 66), "오답 14문항 즉시 재도전 풀기 →", font=get_font(8.5, 'bold'), fill=(255, 255, 255), anchor='mm')
     
-    # Callout Anchor Pin ④ in clean corridor (g1 ends at 340, solution starts at 368)
-    sol_y = g1_y + 76
-    draw_callout_anchor_pin(draw, p4_x + 24, g1_y + 61, "4", "④ 0ms 닫힌 형식 역산", (5, 150, 105), is_right=True)
-
-    # Closed-Form Solution Box (Green Theme)
-    draw.rounded_rectangle([p4_x + 14, sol_y, p4_x + pw - 14, sol_y + 104], radius=12, fill=(236, 253, 245), outline=(167, 243, 208), width=1)
-    draw.text((p4_x + 24, sol_y + 12), "닫힌 형식(Closed-Form) 역산 결과", font=get_font(10, 'bold'), fill=(5, 150, 105))
-    draw.text((p4_x + 24, sol_y + 32), "필요 매수량 : +42.5 주", font=get_font(14, 'bold'), fill=(5, 150, 105))
-    draw.text((p4_x + 24, sol_y + 54), "오답 누적 : 총 14문항 보관", font=get_font(14, 'bold'), fill=(217, 119, 6))
-    draw.line([(p4_x + 24, sol_y + 78), (p4_x + pw - 24, sol_y + 78)], fill=(167, 243, 208), width=1)
-    draw.text((p4_x + 24, sol_y + 88), "✓ 오차율 0.00% · 단일 대수 방정식 도출", font=get_font(8.5, 'bold'), fill=(5, 150, 105))
-    
-    # Risk Telemetry & Boundary Check Card
-    rk_y = sol_y + 112
-    draw.rounded_rectangle([p4_x + 14, rk_y, p4_x + pw - 14, rk_y + 80], radius=10, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
-    draw.text((p4_x + 24, rk_y + 10), "시대별 취약 분석 레이더", font=get_font(10, 'bold'), fill=(15, 23, 42))
-    draw.text((p4_x + 24, rk_y + 29), "• 자산 쏠림도 : 42.5% (안전 한도 65% 이하)", font=get_font(9, 'medium'), fill=(71, 85, 105))
-    draw.text((p4_x + 24, rk_y + 46), "• 근현대사 취약도 68% (집중 보완 필요)", font=get_font(9, 'medium'), fill=(5, 150, 105))
-    draw.text((p4_x + 24, rk_y + 62), "• 뇌동매매 방어 : 비정상 주문 사전 차단 완료", font=get_font(9, 'medium'), fill=(71, 85, 105))
-    
-    # Confirm Plan Action Button inside Thumb Zone
-    cf_y = rk_y + 90
-    draw.rounded_rectangle([p4_x + 14, cf_y, p4_x + pw - 14, cf_y + 40], radius=10, fill=(0, 81, 255))
-    draw.text((p4_x + pw//2, cf_y + 20), "최종 분할 매수 플랜 확정 ↗", font=get_font(12, 'bold'), fill=(255, 255, 255), anchor='mm')
-
-    # -----------------------------------------------------------------
-    # INTERACTION FLOW STEP CONNECTORS (Between the 4 phones)
-    # -----------------------------------------------------------------
-    flow_connectors = [
-        (p1_x + pw, p2_x, "01 → 02 계산기 실행", "1-Tap Handoff", "blue"),
-        (p2_x + pw, p3_x, "02 → 03 음성 도크 호출", "0.2s STT 파싱", "purple"),
-        (p3_x + pw, p4_x, "03 → 04 목표 역산 연동", "닫힌 공식 도출", "blue")
+    # 2. Incorrect List by Era
+    il_y = ih_y + 92
+    draw.text((p4_x + 20, il_y + 4), "시대별 취약 오답 목록", font=get_font(10, 'bold'), fill=(15, 23, 42))
+    in_items = [
+        ("조선 시대", "제77회 14번 · 대동법 시행 배경", "오답 선지 ③번 선택"),
+        ("근대 개항기", "제77회 28번 · 갑신정변 14개조 혁신안", "오답 선지 ①번 선택"),
+        ("현대사", "제76회 45번 · 6·15 남북 공동 선언", "오답 선지 ④번 선택")
     ]
-    flow_cy = sec_y + 240
-    for x_start, x_end, flow_title, flow_sub, f_theme in flow_connectors:
-        fcx = (x_start + x_end) // 2
-        # Subtle horizontal connection line
-        draw.line([(x_start + 12, flow_cy), (x_end - 12, flow_cy)], fill=(203, 213, 225), width=2)
-        # Flow Badge Circle
-        draw.ellipse([fcx - 16, flow_cy - 16, fcx + 16, flow_cy + 16], fill=(255, 255, 255), outline=(0, 81, 255) if f_theme=='blue' else (122, 34, 255), width=2)
-        draw.text((fcx, flow_cy), "→", font=get_font(14, 'bold'), fill=(0, 81, 255) if f_theme=='blue' else (122, 34, 255), anchor='mm')
-        # Flow step pill above
-        draw_pill_badge(draw, cx=fcx, cy=flow_cy - 28, text=flow_title, font=get_font(8.5, 'bold'), theme=f_theme, pad_x=8, height=20)
-        # Flow sub text below
-        draw.text((fcx, flow_cy + 26), flow_sub, font=get_font(9, 'medium'), fill=(100, 116, 139), anchor='mm')
-
-    # =========================================================================
-    # LOWER SECTION: 4 SLIM ERGONOMIC ARCHITECTURE SYSTEM CARDS (y=785 to 970)
-    # =========================================================================
-    card_y = 785
-    card_h = 185
-    c_w = 415
-    c_gap = 20
+    for iidx, (iera, ititle, idesc) in enumerate(in_items):
+        iy = il_y + 20 + iidx * 64
+        draw.rounded_rectangle([p4_x + 16, iy, p4_x + pw - 16, iy + 56], radius=8, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+        draw_pill_badge(draw, left_x=p4_x + 24, cy=iy + 16, text=iera, font=get_font(7, 'bold'), theme='slate', pad_x=5, height=16)
+        draw.text((p4_x + 75, iy + 16), ititle, font=get_font(8.5, 'bold'), fill=(15, 23, 42), anchor='lm')
+        draw.text((p4_x + 24, iy + 38), idesc, font=get_font(8, 'medium'), fill=(225, 29, 72))
+        
+    # 3. Ebbinghaus Review Scheduler Pill
+    eb_y = il_y + 220
+    draw.rounded_rectangle([p4_x + 16, eb_y, p4_x + pw - 16, eb_y + 46], radius=8, fill=(240, 253, 244), outline=(187, 247, 208), width=1)
+    draw.text((p4_x + 24, eb_y + 14), "에빙하우스 주기 복습 알림", font=get_font(9, 'bold'), fill=(22, 101, 52))
+    draw.text((p4_x + 24, eb_y + 30), "내일 오전 9시 취약 오답 5제 스마트 푸시 예약", font=get_font(8, 'regular'), fill=(21, 128, 61))
     
-    ergo_cards = [
-        (
-            100,
-            "THUMB-ZONE 48dp",
-            "① Fitts' Law 한 손 조작성 최적화",
-            "한 손 파지 시 엄지가 닿는 하단 120dp 반경 내 주요 액션(계산 실행, MTS 복사, 음성 FAB)을 집중 배치하여 손가락 이동 거리를 65% 단축했습니다.",
-            "✓ 엄지 도달 속도 0.18s 입증",
-            "blue", (0, 81, 255)
-        ),
-        (
-            100 + (c_w + c_gap),
-            "BOUNDARY GUARD",
-            "② 비정상 입력 사전 가드 엔진",
-            "수험생의 오답 패턴과 취약 시대를 정밀 분석하여, 최적의 복습 타이밍과 맞춤형 사료 키워드를 추천합니다.",
-            "✓ 주문 실수 및 뇌동매매 100% 차단",
-            "amber", (217, 119, 6)
-        ),
-        (
-            100 + (c_w + c_gap) * 2,
-            "VOICE STT ENGINE",
-            "③ 0.2초 온디바이스 음성 도크",
-            "방대한 5,000년 역사 기출 문제와 사료를 1초 만에 검색하고, 50:50 찬스로 핵심 추론 훈련을 완성합니다.",
-            "✓ 키패드 타이핑 피로 78% 절감",
-            "purple", (122, 34, 255)
-        ),
-        (
-            100 + (c_w + c_gap) * 3,
-            "ZERO-LOSS HANDOFF",
-            "④ 0ms 무손실 파라미터 인계",
-            "역산으로 도출된 수치를 시뮬레이터와 MTS 클립보드로 0ms 자동 주입하여 수기 재입력 오류 및 시장가 매수 실수를 원천 방어합니다.",
-            "✓ 파라미터 전달 손실률 0.00%",
-            "green", (5, 150, 105)
-        )
+    # -------------------------------------------------------------
+    # LOWER SECTION: ERGONOMIC THUMB-ZONE ARCHITECTURE (y=775 to 945)
+    # -------------------------------------------------------------
+    tz_y = 775
+    tz_h = 170
+    draw.rounded_rectangle([100, tz_y, 1820, tz_y + tz_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+    
+    draw_pill_badge(draw, left_x=124, cy=tz_y + 24, text="ERGONOMIC ARCHITECTURE", font=get_font(9.5, 'bold'), theme='blue', pad_x=8, height=22)
+    draw.text((310, tz_y + 24), "인체공학적 엄지 조작 반경(Thumb-Zone) 및 정보 위계 설계", font=get_font(14, 'bold'), fill=(15, 23, 42), anchor='lm')
+    
+    ez_cards = [
+        ("상단 30% : 인지 관찰 존", "시각 정보 소비", "80분 OMR 잔여 타이머, 문항 배점(1·2·3점), 사료 본문 및 사진 유물을 배치하여 손가락 가림 없이 사료를 정밀 독해하도록 설계했습니다.", (100, 116, 139)),
+        ("중단 30% : 인터랙션 존", "50:50 찬스 & 선지", "엄지가 가장 편안하게 닿는 중단 영역에 50:50 찬스 버튼과 5개 선지 카드를 배치하여 원터치 선택 및 소거법 추론을 지원합니다.", (29, 78, 216)),
+        ("하단 40% : 원핸드 액션 존", "이동 및 오답 인덱싱", "이전/다음 문항 이동 플로팅 버튼, OMR 마킹 시트 호출, 해설 보기, 5대 메인 바텀 내비게이션을 한 손 엄지로 100% 조작할 수 있습니다.", (5, 150, 105))
     ]
-    
-    for cx_card, badge_txt, title_txt, body_txt, metric_txt, th_key, accent_col in ergo_cards:
-        draw.rounded_rectangle([cx_card, card_y, cx_card + c_w, card_y + card_h], radius=14, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-        # Left accent stripe
-        draw.rounded_rectangle([cx_card, card_y + 12, cx_card + 4, card_y + card_h - 12], radius=2, fill=accent_col)
-        
-        # Header Badge
-        draw_pill_badge(draw, left_x=cx_card + 18, cy=card_y + 22, text=badge_txt, font=get_font(9, 'bold'), theme=th_key, has_dot=True, pad_x=8, height=20)
-        # Title
-        draw.text((cx_card + 18, card_y + 48), title_txt, font=get_font(13.5, 'bold'), fill=(15, 23, 42))
-        draw.line([(cx_card + 18, card_y + 68), (cx_card + c_w - 18, card_y + 68)], fill=(241, 245, 249), width=1)
-        
-        # Body text wrap
-        b_lines = wrap_text_by_words(body_txt, get_font(10.5, 'regular'), c_w - 36, draw)
-        by_start = card_y + 78
-        for bl in b_lines:
-            draw.text((cx_card + 18, by_start), bl, font=get_font(10.5, 'regular'), fill=(71, 85, 105))
-            by_start += 17
+    ew = (1720 - 40) // 3
+    for eidx, (etitle, ebadge, edesc, ecol) in enumerate(ez_cards):
+        ex = 124 + eidx * (ew + 20)
+        draw.rounded_rectangle([ex, tz_y + 54, ex + ew, tz_y + tz_h - 18], radius=10, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
+        draw_pill_badge(draw, left_x=ex + 16, cy=tz_y + 72, text=ebadge, font=get_font(8, 'bold'), theme='blue' if ecol == (29, 78, 216) else ('green' if ecol == (5, 150, 105) else 'slate'), pad_x=6, height=18)
+        draw.text((ex + 16, tz_y + 98), etitle, font=get_font(11.5, 'bold'), fill=(15, 23, 42))
+        lines = wrap_text_by_words(edesc, get_font(9.5, 'regular'), ew - 32, draw)
+        ly = tz_y + 118
+        for l in lines:
+            draw.text((ex + 16, ly), l, font=get_font(9.5, 'regular'), fill=(71, 85, 105))
+            ly += 17
             
-        # Metric Bottom Pill Tag
-        draw.rounded_rectangle([cx_card + 16, card_y + card_h - 34, cx_card + c_w - 16, card_y + card_h - 12], radius=6, fill=(240, 246, 255) if th_key=='blue' else ((245, 243, 255) if th_key=='purple' else (248, 250, 252)), outline=(191, 219, 254) if th_key=='blue' else (226, 232, 240), width=1)
-        draw.text((cx_card + 24, card_y + card_h - 23), metric_txt, font=get_font(10, 'bold'), fill=accent_col, anchor='lm')
-
     draw_slide_footer(draw, 6)
     base.save(f'{OUT_DIR}/slide_06.png')
     print("SAVED slide_06.png (Enhanced 4-Screen Mobile Wireframe & Ergonomic Architecture)")
 
-
-# -----------------------------------------------------------------------------
-# 24dp Financial Line Iconography Drawers (Uniform 1.5dp Stroke & 2dp Radius)
-# -----------------------------------------------------------------------------
-def draw_line_chart_icon(draw, cx, cy, size=24, color=(0, 81, 255)):
-    s = size / 2.0
-    draw.line([(cx - s*0.8, cy + s*0.8), (cx + s*0.8, cy + s*0.8)], fill=color, width=2)
-    pts = [(cx - s*0.7, cy + s*0.4), (cx - s*0.2, cy + s*0.2), (cx + s*0.2, cy - s*0.1), (cx + s*0.7, cy - s*0.6)]
-    draw.line(pts, fill=color, width=2)
-    for px, py in pts:
-        draw.ellipse([px - 2, py - 2, px + 2, py + 2], fill=(255, 255, 255), outline=color, width=1)
-    draw.polygon([(cx + s*0.7, cy - s*0.6), (cx + s*0.4, cy - s*0.6), (cx + s*0.7, cy - s*0.3)], fill=color)
-
-def draw_line_target_icon(draw, cx, cy, size=24, color=(0, 81, 255)):
-    s = size / 2.0
-    draw.ellipse([cx - s*0.8, cy - s*0.8, cx + s*0.8, cy + s*0.8], outline=color, width=2)
-    draw.ellipse([cx - s*0.35, cy - s*0.35, cx + s*0.35, cy + s*0.35], outline=color, width=1)
-    draw.ellipse([cx - 2, cy - 2, cx + 2, cy + 2], fill=color)
-    draw.line([(cx - s*0.95, cy), (cx - s*0.6, cy)], fill=color, width=2)
-    draw.line([(cx + s*0.6, cy), (cx + s*0.95, cy)], fill=color, width=2)
-    draw.line([(cx, cy - s*0.95), (cx, cy - s*0.6)], fill=color, width=2)
-    draw.line([(cx, cy + s*0.6), (cx, cy + s*0.95)], fill=color, width=2)
-
-def draw_line_mic_icon(draw, cx, cy, size=24, color=(0, 81, 255)):
-    s = size / 2.0
-    draw.rounded_rectangle([cx - s*0.35, cy - s*0.8, cx + s*0.35, cy + s*0.1], radius=int(s*0.35), outline=color, width=2)
-    draw.arc([cx - s*0.65, cy - s*0.35, cx + s*0.65, cy + s*0.45], start=0, end=180, fill=color, width=2)
-    draw.line([(cx, cy + s*0.45), (cx, cy + s*0.8)], fill=color, width=2)
-    draw.line([(cx - s*0.4, cy + s*0.8), (cx + s*0.4, cy + s*0.8)], fill=color, width=2)
-
-def draw_line_shield_icon(draw, cx, cy, size=24, color=(0, 81, 255)):
-    s = size / 2.0
-    pts = [
-        (cx - s*0.75, cy - s*0.75),
-        (cx + s*0.75, cy - s*0.75),
-        (cx + s*0.75, cy + s*0.1),
-        (cx, cy + s*0.85),
-        (cx - s*0.75, cy + s*0.1)
-    ]
-    draw.polygon(pts, outline=color, fill=(240, 246, 255))
-    draw.line([(cx - s*0.3, cy), (cx - s*0.05, cy + s*0.3), (cx + s*0.4, cy - s*0.3)], fill=color, width=2)
-
-def draw_line_wallet_icon(draw, cx, cy, size=24, color=(0, 81, 255)):
-    s = size / 2.0
-    draw.rounded_rectangle([cx - s*0.8, cy - s*0.6, cx + s*0.8, cy + s*0.7], radius=3, outline=color, width=2)
-    draw.line([(cx - s*0.8, cy - s*0.2), (cx + s*0.8, cy - s*0.2)], fill=color, width=1)
-    draw.rounded_rectangle([cx + s*0.2, cy - s*0.05, cx + s*0.85, cy + s*0.4], radius=2, fill=(240, 246, 255), outline=color, width=1)
-    draw.ellipse([cx + s*0.45, cy + s*0.12, cx + s*0.6, cy + s*0.25], fill=color)
-
-def draw_line_calc_icon(draw, cx, cy, size=24, color=(0, 81, 255)):
-    s = size / 2.0
-    draw.rounded_rectangle([cx - s*0.7, cy - s*0.85, cx + s*0.7, cy + s*0.85], radius=3, outline=color, width=2)
-    draw.rounded_rectangle([cx - s*0.5, cy - s*0.65, cx + s*0.5, cy - s*0.25], radius=1, fill=(240, 246, 255), outline=color, width=1)
-    draw.text((cx - s*0.35, cy - s*0.05), "+", font=get_font(7, 'bold'), fill=color, anchor='mm')
-    draw.text((cx + s*0.35, cy - s*0.05), "-", font=get_font(7, 'bold'), fill=color, anchor='mm')
-    draw.text((cx - s*0.35, cy + s*0.45), "×", font=get_font(7, 'bold'), fill=color, anchor='mm')
-    draw.text((cx + s*0.35, cy + s*0.45), "=", font=get_font(7, 'bold'), fill=color, anchor='mm')
-
-def draw_line_lock_icon(draw, cx, cy, size=24, color=(0, 81, 255)):
-    s = size / 2.0
-    draw.arc([cx - s*0.45, cy - s*0.85, cx + s*0.45, cy - s*0.05], start=180, end=0, fill=color, width=2)
-    draw.rounded_rectangle([cx - s*0.65, cy - s*0.2, cx + s*0.65, cy + s*0.75], radius=3, fill=(240, 246, 255), outline=color, width=2)
-    draw.ellipse([cx - 2, cy + s*0.05, cx + 2, cy + s*0.25], fill=color)
-    draw.line([(cx, cy + s*0.2), (cx, cy + s*0.45)], fill=color, width=2)
-
-def draw_line_tag_icon(draw, cx, cy, size=24, color=(0, 81, 255)):
-    s = size / 2.0
-    pts = [
-        (cx - s*0.7, cy - s*0.3),
-        (cx - s*0.2, cy - s*0.8),
-        (cx + s*0.7, cy + s*0.1),
-        (cx + s*0.2, cy + s*0.8),
-        (cx - s*0.7, cy + s*0.3)
-    ]
-    draw.polygon(pts, outline=color, fill=(240, 246, 255), width=2)
-    draw.ellipse([cx - s*0.35, cy - s*0.35, cx - s*0.15, cy - s*0.15], fill=color)
-    draw.text((cx + s*0.1, cy + s*0.15), "%", font=get_font(7, 'bold'), fill=color, anchor='mm')
 
 def make_slide_07():
     base = Image.new('RGBA', (W, H), (248, 250, 252, 255))
