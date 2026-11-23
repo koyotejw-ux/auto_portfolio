@@ -332,7 +332,7 @@ class _CanvasEditorState extends State<CanvasEditor> {
     final titleBlack = elem.props['titleBlack'] ?? '';
     final titleBlue = elem.props['titleBlue'] ?? '';
     final subtitle = elem.props['subtitle'] ?? '';
-    final plainTitle = elem.props['title'] as String?;
+    final plainTitle = (elem.props['title'] ?? elem.props['text']) as String?;
 
     final ts = elem.textStyle;
     final align = ts.flutterTextAlign;
@@ -342,7 +342,7 @@ class _CanvasEditorState extends State<CanvasEditor> {
             ? CrossAxisAlignment.end
             : CrossAxisAlignment.start);
 
-    // If it's a decomposed title component with only plain title / subtitle
+    // If it's a decomposed title component or pure single text element
     if (plainTitle != null && category == null && titleBlack.isEmpty && titleBlue.isEmpty) {
       return Text(
         plainTitle,
@@ -379,7 +379,7 @@ class _CanvasEditorState extends State<CanvasEditor> {
                   style: TextStyle(
                     fontFamily: ts.fontFamily,
                     color: ts.color,
-                    fontSize: ts.fontSize > 24 ? ts.fontSize : 32,
+                    fontSize: ts.fontSize,
                     fontWeight: ts.fontWeight,
                     letterSpacing: ts.letterSpacing,
                     height: ts.height,
@@ -391,7 +391,7 @@ class _CanvasEditorState extends State<CanvasEditor> {
                   style: TextStyle(
                     fontFamily: ts.fontFamily,
                     color: const Color(0xFF0052FF),
-                    fontSize: ts.fontSize > 24 ? ts.fontSize : 32,
+                    fontSize: ts.fontSize,
                     fontWeight: ts.fontWeight,
                     letterSpacing: ts.letterSpacing,
                     height: ts.height,
@@ -1217,13 +1217,6 @@ class _CanvasEditorState extends State<CanvasEditor> {
       if (found != null) return found;
     }
     return null;
-  }
-
-  void _removeElementFromHierarchy(List<DeckElement> elements, DeckElement target) {
-    elements.removeWhere((e) => e.id == target.id);
-    for (final elem in elements) {
-      _removeElementFromHierarchy(elem.children, target);
-    }
   }
 
   void _reorderOrMoveChild(DeckElement container, DeckElement draggedItem, int targetIndex) {

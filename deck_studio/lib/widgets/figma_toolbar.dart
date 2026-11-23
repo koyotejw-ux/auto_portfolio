@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import '../models/deck_model.dart';
-import 'element_library_modal.dart';
-import 'design_system_library_modal.dart';
 
 enum FigmaToolMode {
   select, // V

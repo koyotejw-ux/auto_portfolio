@@ -380,7 +380,7 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
             const Icon(Icons.check_circle, color: Colors.white, size: 16),
             const SizedBox(width: 8),
             Text(
-              '컴포넌트 [] 및 하위 요소(개)가 클립보드에 복사되었습니다. (Ctrl+V로 붙여넣기)',
+              '컴포넌트 [${_selectedElement!.name}] 및 하위 요소(${_selectedElement!.children.length}개)가 클립보드에 복사되었습니다. (Ctrl+V로 붙여넣기)',
               style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
             ),
           ],
@@ -405,7 +405,7 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-          '컴포넌트 [] 붙여넣기 완료!',
+          '컴포넌트 [${_selectedElement!.name}] 붙여넣기 완료!',
           style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
         ),
         backgroundColor: const Color(0xFF0052FF),

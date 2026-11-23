@@ -284,12 +284,12 @@ class DeckElement {
     final cloned = DeckElement.fromJson(rawJson);
     cloned.x += deltaX;
     cloned.y += deltaY;
-    cloned.name = '\ (복제)';
+    cloned.name = '$name (복제)';
     return cloned;
   }
 
   static void _reassignIds(Map<String, dynamic> map) {
-    map['id'] = 'elem_\_';
+    map['id'] = 'elem_${DateTime.now().microsecondsSinceEpoch}';
     if (map['children'] is List) {
       for (final child in map['children']) {
         if (child is Map<String, dynamic>) {

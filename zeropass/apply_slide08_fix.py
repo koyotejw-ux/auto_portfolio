@@ -157,3 +157,4 @@ with open(script_path, 'w', encoding='utf-8') as f:
     f.write(new_text)
 
 print('Updated deck_slides_white_05_08.py successfully!')
+

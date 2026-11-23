@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class FigmaDesignSystemExporter {
   /// Figma 및 웹 개발용 완전한 디자인 시스템 토큰 & 컴포넌트 라이브러리 소스 생성
   static String generateFullFigmaDesignSystem() {

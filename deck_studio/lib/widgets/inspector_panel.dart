@@ -231,6 +231,22 @@ class _InspectorPanelState extends State<InspectorPanel> {
                 ),
                 const SizedBox(height: 18),
 
+                // 2.5 오토레이아웃 상위/내부 정렬 (Parent/Self Alignment)
+                _buildSectionHeader(Icons.align_horizontal_left, '오토레이아웃 축 정렬 (AutoLayout Align)'),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    _buildAutoLayoutAlignBtn('시작 (Start)', AutoLayoutAlignment.start, Icons.align_horizontal_left, elem.autoLayoutAlignment),
+                    const SizedBox(width: 6),
+                    _buildAutoLayoutAlignBtn('중앙 (Center)', AutoLayoutAlignment.center, Icons.align_horizontal_center, elem.autoLayoutAlignment),
+                    const SizedBox(width: 6),
+                    _buildAutoLayoutAlignBtn('끝 (End)', AutoLayoutAlignment.end, Icons.align_horizontal_right, elem.autoLayoutAlignment),
+                    const SizedBox(width: 6),
+                    _buildAutoLayoutAlignBtn('균등 (Between)', AutoLayoutAlignment.spaceBetween, Icons.space_bar, elem.autoLayoutAlignment),
+                  ],
+                ),
+                const SizedBox(height: 18),
+
                 // 3. 아이콘 선택 (Icon Selector)
                 _buildSectionHeader(Icons.interests, '아이콘 삽입 및 변경 (Icon Selector)'),
                 const SizedBox(height: 8),
@@ -631,6 +647,50 @@ class _InspectorPanelState extends State<InspectorPanel> {
     );
   }
 
+  Widget _buildAutoLayoutAlignBtn(String label, AutoLayoutAlignment align, IconData icon, AutoLayoutAlignment current) {
+    final isSelected = current == align;
+    return Expanded(
+      child: InkWell(
+        onTap: () {
+          setState(() {
+            widget.element!.autoLayoutAlignment = align;
+            widget.element!.applyAutoLayout();
+          });
+          widget.onElementUpdated();
+        },
+        borderRadius: BorderRadius.circular(8),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          decoration: BoxDecoration(
+            color: isSelected ? const Color(0xFFEFF6FF) : const Color(0xFFF8FAFC),
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(
+              color: isSelected ? const Color(0xFF0052FF) : const Color(0xFFE2E8F0),
+              width: isSelected ? 1.5 : 1,
+            ),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(icon, size: 14, color: isSelected ? const Color(0xFF0052FF) : const Color(0xFF64748B)),
+              const SizedBox(height: 3),
+              Text(
+                label,
+                style: TextStyle(
+                  color: isSelected ? const Color(0xFF0052FF) : const Color(0xFF64748B),
+                  fontSize: 9.5,
+                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildAlignButton(String label, TextAlignOption opt, IconData icon, TextAlignOption current) {
     final isSelected = current == opt;
     return Expanded(
@@ -712,7 +772,7 @@ class _InspectorPanelState extends State<InspectorPanel> {
               border: Border.all(color: const Color(0xFFE2E8F0)),
             ),
             child: TextFormField(
-              key: ValueKey('\${widget.element!.id}_\${label}_\$val'),
+              key: ValueKey('${widget.element!.id}_${label}_$val'),
               initialValue: step < 1.0 ? val.toStringAsFixed(2) : val.toInt().toString(),
               keyboardType: const TextInputType.numberWithOptions(decimal: true),
               style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
@@ -748,7 +808,7 @@ class _InspectorPanelState extends State<InspectorPanel> {
               ),
               const SizedBox(height: 6),
               TextFormField(
-                key: ValueKey('\${elem.id}_\$key'),
+                key: ValueKey('${elem.id}_$key'),
                 initialValue: value,
                 maxLines: value.contains('\n') || value.length > 30 ? 3 : 1,
                 style: const TextStyle(fontSize: 12),
@@ -838,7 +898,7 @@ class _InspectorPanelState extends State<InspectorPanel> {
                                 ),
                                 Expanded(
                                   child: TextFormField(
-                                    key: ValueKey('\${elem.id}_\${key}_\${idx}_\${fEntry.key}'),
+                                    key: ValueKey('${elem.id}_${key}_${idx}_${fEntry.key}'),
                                     initialValue: fEntry.value as String,
                                     style: const TextStyle(fontSize: 11),
                                     decoration: InputDecoration(

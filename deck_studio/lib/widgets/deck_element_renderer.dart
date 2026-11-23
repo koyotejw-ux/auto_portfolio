@@ -138,53 +138,86 @@ class DeckElementRenderer extends StatelessWidget {
     final titleBlack = element.props['titleBlack'] ?? '';
     final titleBlue = element.props['titleBlue'] ?? '';
     final subtitle = element.props['subtitle'] ?? '';
+    final plainTitle = (element.props['title'] ?? element.props['text']) as String?;
+
+    final ts = element.textStyle;
+    final align = ts.flutterTextAlign;
+    final crossAlign = align == TextAlign.center
+        ? CrossAxisAlignment.center
+        : (align == TextAlign.right
+            ? CrossAxisAlignment.end
+            : CrossAxisAlignment.start);
+
+    // If it's a decomposed title component or pure single text element
+    if (plainTitle != null && category == null && titleBlack.isEmpty && titleBlue.isEmpty) {
+      return Text(
+        plainTitle,
+        textAlign: align,
+        style: ts.toTextStyle(),
+      );
+    }
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: crossAlign,
+      mainAxisSize: MainAxisSize.min,
       children: [
         if (category != null) ...[
           Text(
             category,
-            style: const TextStyle(
-              color: Color(0xFF0052FF),
+            textAlign: align,
+            style: TextStyle(
+              fontFamily: ts.fontFamily,
+              color: const Color(0xFF0052FF),
               fontSize: 14,
               fontWeight: FontWeight.bold,
+              letterSpacing: ts.letterSpacing,
             ),
           ),
           const SizedBox(height: 8),
         ],
-        RichText(
-          text: TextSpan(
-            children: [
-              TextSpan(
-                text: titleBlack,
-                style: const TextStyle(
-                  color: Color(0xFF0F172A),
-                  fontSize: 32,
-                  fontWeight: FontWeight.w900,
-                  height: 1.2,
+        if (titleBlack.isNotEmpty || titleBlue.isNotEmpty)
+          RichText(
+            textAlign: align,
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: titleBlack,
+                  style: TextStyle(
+                    fontFamily: ts.fontFamily,
+                    color: ts.color,
+                    fontSize: ts.fontSize,
+                    fontWeight: ts.fontWeight,
+                    letterSpacing: ts.letterSpacing,
+                    height: ts.height,
+                    wordSpacing: ts.wordSpacing,
+                  ),
                 ),
-              ),
-              TextSpan(
-                text: titleBlue,
-                style: const TextStyle(
-                  color: Color(0xFF0052FF),
-                  fontSize: 32,
-                  fontWeight: FontWeight.w900,
-                  height: 1.2,
+                TextSpan(
+                  text: titleBlue,
+                  style: TextStyle(
+                    fontFamily: ts.fontFamily,
+                    color: const Color(0xFF0052FF),
+                    fontSize: ts.fontSize,
+                    fontWeight: ts.fontWeight,
+                    letterSpacing: ts.letterSpacing,
+                    height: ts.height,
+                    wordSpacing: ts.wordSpacing,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
         if (subtitle.isNotEmpty) ...[
-          const SizedBox(height: 14),
+          const SizedBox(height: 8),
           Text(
             subtitle,
-            style: const TextStyle(
-              color: Color(0xFF475569),
+            textAlign: align,
+            style: TextStyle(
+              fontFamily: ts.fontFamily,
+              color: const Color(0xFF475569),
               fontSize: 13.5,
               height: 1.5,
+              letterSpacing: ts.letterSpacing,
             ),
           ),
         ],
