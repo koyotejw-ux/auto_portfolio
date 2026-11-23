@@ -119,8 +119,8 @@ def draw_pill_badge(draw, left_x=None, cx=None, cy=None, text="", font=None, the
     if cx is not None:
         draw.text((cx, cy), text, font=font, anchor='mm', fill=text_col)
     else:
-        target_top = by1 + (bh - th) / 2.0
-        draw.text((tx - bbox[0], target_top - bbox[1]), text, font=font, fill=text_col)
+        # anchor='lm' guarantees precision optical vertical centering across all font sizes
+        draw.text((tx, cy), text, font=font, anchor='lm', fill=text_col)
         
     return bx1, by1, bx2, by2
 

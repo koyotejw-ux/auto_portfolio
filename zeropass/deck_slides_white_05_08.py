@@ -1339,7 +1339,8 @@ def make_slide_08():
     draw.line([(100, 52), (1820, 52)], fill=(226, 232, 240), width=1)
     
     lx = 100
-    draw_pill_badge(draw, left_x=lx, cy=78, text="08 CORE FEATURE | 0.8S TABLET KIOSK ATTENDANCE & MOBILE INTERACTION ENGINE", font=get_font(10.5, 'bold'), theme='blue', pad_x=10, height=26)
+    # Top header badge pill - optically centered with pad_x=12, height=26
+    draw_pill_badge(draw, left_x=lx, cy=78, text="08 CORE FEATURE | 0.8S TABLET KIOSK ATTENDANCE & MOBILE INTERACTION ENGINE", font=get_font(10.5, 'bold'), theme='blue', pad_x=12, height=26)
     
     t1_a = "원생 4자리 번호 터치부터 "
     t1_b = "원장님 메인 출결 동기화까지,"
@@ -1359,12 +1360,12 @@ def make_slide_08():
     draw.text((lx, 196), desc_sub_1, font=get_font(12, 'regular'), fill=(71, 85, 105))
     draw.text((lx, 216), desc_sub_2, font=get_font(12, 'regular'), fill=(71, 85, 105))
 
-    # Top-Right Live Sync Status Pill
+    # Top-Right Live Sync Status Pill - balanced vertical centering
     sync_badge_x = 1420
-    draw.rounded_rectangle([sync_badge_x, 116, 1820, 166], radius=10, fill=(239, 246, 255), outline=(191, 219, 254), width=1)
-    draw.ellipse([sync_badge_x + 18, 137, sync_badge_x + 28, 147], fill=(16, 185, 129))
-    draw.text((sync_badge_x + 36, 142), "키오스크 ⇄ 모바일 양방향 실시간 동기화", font=get_font(10.5, 'bold'), fill=(0, 82, 255), anchor='lm')
-    draw.text((sync_badge_x + 36, 156), "로컬 소켓 & 이벤트 버스 무지연 파이프라인 (지연 < 10ms)", font=get_font(8.5, 'regular'), fill=(100, 116, 139), anchor='lm')
+    draw.rounded_rectangle([sync_badge_x, 114, 1820, 168], radius=10, fill=(239, 246, 255), outline=(191, 219, 254), width=1)
+    draw.ellipse([sync_badge_x + 18, 136, sync_badge_x + 28, 146], fill=(16, 185, 129))
+    draw.text((sync_badge_x + 36, 132), "키오스크 ⇄ 모바일 양방향 실시간 동기화", font=get_font(11, 'bold'), fill=(0, 82, 255), anchor='lm')
+    draw.text((sync_badge_x + 36, 150), "로컬 소켓 & 이벤트 버스 무지연 파이프라인 (지연 < 10ms)", font=get_font(9, 'medium'), fill=(100, 116, 139), anchor='lm')
 
     # -------------------------------------------------------------
     # 3-Stage Interactive Columns with Expanded Screen Mockups
@@ -1426,35 +1427,34 @@ def make_slide_08():
         # Outer Card Container
         draw.rounded_rectangle([cx, card_y, cx + card_w, card_y + card_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
 
-        # Step Header Pill & Badge
-        draw_pill_badge(draw, left_x=cx + 20, cy=card_y + 24, text=stage["step"], font=get_font(9.5, 'bold'), theme='blue', pad_x=8, height=22)
-        # Removed redundant top-right badge per user UX request
+        # Step Header Pill & Subtitles
+        draw_pill_badge(draw, left_x=cx + 22, cy=card_y + 25, text=stage["step"], font=get_font(9.5, 'bold'), theme='blue', pad_x=10, height=22)
 
-        draw.text((cx + 20, card_y + 44), stage["title"], font=get_font(13.5, 'bold'), fill=(15, 23, 42))
-        draw.text((cx + 20, card_y + 65), stage["sub"], font=get_font(10, 'regular'), fill=(100, 116, 139))
+        draw.text((cx + 22, card_y + 44), stage["title"], font=get_font(13.5, 'bold'), fill=(15, 23, 42))
+        draw.text((cx + 22, card_y + 65), stage["sub"], font=get_font(10, 'regular'), fill=(100, 116, 139))
 
-        # Tablet Device Mockup Placement
+        # Tablet Device Mockup Placement (target_h=315 for balanced spacing)
         img_p = stage["img_path"]
         if os.path.exists(img_p):
             raw_screen = Image.open(img_p).convert('RGBA')
 
             if idx < 2:
-                # Steps 1 & 2: Large Expanded Tablet Mockup (target_h=340)
-                framed_tab = make_tablet_kiosk_frame(raw_screen, target_h=340)
+                # Steps 1 & 2: Large Expanded Tablet Mockup (target_h=315, ends at card_y+75+315 = card_y+390)
+                framed_tab = make_tablet_kiosk_frame(raw_screen, target_h=315)
                 tab_x = cx + (card_w - framed_tab.width) // 2
-                tab_y = card_y + 80
+                tab_y = card_y + 75
 
-                sh_tab, pad_tab = make_shadow(framed_tab, blur=24, offset=(10, 16), alpha=70)
+                sh_tab, pad_tab = make_shadow(framed_tab, blur=20, offset=(8, 12), alpha=60)
                 base.paste(sh_tab, (tab_x - pad_tab[0], tab_y - pad_tab[1]), sh_tab)
                 base.paste(framed_tab, (tab_x, tab_y), framed_tab)
 
             else:
                 # STEP 03: Dual Mockup (Tablet Kiosk Success + Real-Time Mobile "출결 체크" Sync Phone)
-                framed_tab = make_tablet_kiosk_frame(raw_screen, target_h=340)
-                tab_x = cx + 22
-                tab_y = card_y + 80
+                framed_tab = make_tablet_kiosk_frame(raw_screen, target_h=315)
+                tab_x = cx + 24
+                tab_y = card_y + 75
 
-                sh_tab, pad_tab = make_shadow(framed_tab, blur=22, offset=(8, 14), alpha=65)
+                sh_tab, pad_tab = make_shadow(framed_tab, blur=18, offset=(6, 10), alpha=55)
                 base.paste(sh_tab, (tab_x - pad_tab[0], tab_y - pad_tab[1]), sh_tab)
                 base.paste(framed_tab, (tab_x, tab_y), framed_tab)
 
@@ -1462,45 +1462,49 @@ def make_slide_08():
                 phone_p = 'zeropass/assets/iphone_mockups/clean_android_upright_mockup.png'
                 if os.path.exists(phone_p):
                     phone_img = Image.open(phone_p).convert('RGBA')
-                    p_scale = 300 / phone_img.height
+                    p_scale = 285 / phone_img.height
                     pw_scaled = int(phone_img.width * p_scale)
-                    phone_scaled = phone_img.resize((pw_scaled, 300), Image.Resampling.LANCZOS)
+                    phone_scaled = phone_img.resize((pw_scaled, 285), Image.Resampling.LANCZOS)
 
-                    px_pos = cx + card_w - pw_scaled - 20
-                    py_pos = card_y + 138
+                    px_pos = cx + card_w - pw_scaled - 24
+                    py_pos = card_y + 105
 
-                    sh_phone, pad_ph = make_shadow(phone_scaled, blur=20, offset=(10, 16), alpha=85)
+                    sh_phone, pad_ph = make_shadow(phone_scaled, blur=18, offset=(8, 12), alpha=75)
                     base.paste(sh_phone, (px_pos - pad_ph[0], py_pos - pad_ph[1]), sh_phone)
                     base.paste(phone_scaled, (px_pos, py_pos), phone_scaled)
 
                     # Floating Real-Time Sync Indicator Pill on Phone
-                    pill_w = 142
+                    pill_w = 138
                     pill_h = 24
                     pill_x = px_pos + (pw_scaled - pill_w) // 2
                     pill_y = py_pos - 12
                     draw.rounded_rectangle([pill_x, pill_y, pill_x + pill_w, pill_y + pill_h], radius=12, fill=(0, 82, 255), outline=(255, 255, 255), width=2)
                     draw.text((pill_x + pill_w // 2, pill_y + 12), "⚡ 메인 즉시 동기화", font=get_font(8.5, 'bold'), fill=(255, 255, 255), anchor='mm')
 
-        # 3 Structured Micro Feature Chips
-        chip_y = card_y + 452
-        chip_h = 26
+        # 3 Structured Micro Feature Chips with Spacious Margins & Optical Centering
+        chip_y = card_y + 418
+        chip_h = 28
+        chip_gap = 35
         for c_idx, (c_label, c_sub) in enumerate(stage["chips"]):
-            cy_pos = chip_y + c_idx * 32
-            draw.rounded_rectangle([cx + 16, cy_pos, cx + card_w - 16, cy_pos + chip_h], radius=6, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
-            draw.ellipse([cx + 26, cy_pos + 10, cx + 32, cy_pos + 16], fill=(0, 81, 255))
-            draw.text((cx + 38, cy_pos + 13), c_label, font=get_font(9.5, 'bold'), fill=(30, 41, 59), anchor='lm')
-            draw.text((cx + card_w - 26, cy_pos + 13), c_sub, font=get_font(8.5, 'medium'), fill=(0, 82, 255), anchor='rm')
+            cy_pos = chip_y + c_idx * chip_gap
+            draw.rounded_rectangle([cx + 18, cy_pos, cx + card_w - 18, cy_pos + chip_h], radius=7, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
+            # Dot indicator centered at cy_pos + 14
+            draw.ellipse([cx + 28, cy_pos + 11, cx + 34, cy_pos + 17], fill=(0, 81, 255))
+            # Text optically centered with anchor='lm' / 'rm'
+            draw.text((cx + 42, cy_pos + 14), c_label, font=get_font(9.5, 'bold'), fill=(30, 41, 59), anchor='lm')
+            draw.text((cx + card_w - 28, cy_pos + 14), c_sub, font=get_font(8.5, 'medium'), fill=(0, 82, 255), anchor='rm')
 
-        # Interactive Relationship Box
-        rel_y = card_y + card_h - 44
-        draw.rounded_rectangle([cx + 16, rel_y, cx + card_w - 16, rel_y + 32], radius=6, fill=(239, 246, 255), outline=(191, 219, 254), width=1)
-        draw.text((cx + card_w // 2, rel_y + 16), stage["interaction"], font=get_font(8.5, 'bold'), fill=(0, 82, 255), anchor='mm')
+        # Interactive Relationship Box with Generous Bottom Margin
+        rel_y = card_y + 538
+        rel_h = 36
+        draw.rounded_rectangle([cx + 18, rel_y, cx + card_w - 18, rel_y + rel_h], radius=8, fill=(239, 246, 255), outline=(191, 219, 254), width=1)
+        draw.text((cx + card_w // 2, rel_y + rel_h // 2), stage["interaction"], font=get_font(8.5, 'bold'), fill=(0, 82, 255), anchor='mm')
 
     # Draw Inter-Stage Flow Arrows Between Step 1 -> Step 2 and Step 2 -> Step 3
     for a_idx in range(2):
         ax1 = start_x + (a_idx + 1) * card_w + a_idx * card_gap - 6
         ax2 = ax1 + 48
-        ay = card_y + 250
+        ay = card_y + 232
         draw_arrow(draw, (ax1, ay), (ax2, ay), col=(0, 82, 255), width=2, arrow_size=6)
         draw.rounded_rectangle([ax1 + 8, ay - 14, ax2 - 8, ay + 14], radius=10, fill=(255, 255, 255), outline=(191, 219, 254), width=1)
         draw.text((ax1 + 20, ay), "0.4s", font=get_font(8, 'bold'), fill=(0, 82, 255), anchor='mm')
@@ -1508,13 +1512,13 @@ def make_slide_08():
     # -------------------------------------------------------------
     # Bottom Horizontal KPI & Telemetry Performance Strip
     # -------------------------------------------------------------
-    tel_y = 832
-    tel_h = 142
+    tel_y = 852
+    tel_h = 136
     draw.rounded_rectangle([lx, tel_y, lx + 1720, tel_y + tel_h], radius=14, fill=(240, 246, 255), outline=(191, 219, 254), width=1)
     
     # Left Header in Strip
-    draw.text((lx + 32, tel_y + 24), "키오스크 출결 엔진 & 메인 동기화 실측 지표", font=get_font(12, 'bold'), fill=(0, 82, 255))
-    draw_pill_badge(draw, left_x=lx + 32, cy=tel_y + 60, text="10인치 태블릿 + 모바일 양방향 최적화", font=get_font(9.5, 'bold'), theme='blue', pad_x=10, height=24)
+    draw.text((lx + 32, tel_y + 22), "키오스크 출결 엔진 & 메인 동기화 실측 지표", font=get_font(12, 'bold'), fill=(0, 82, 255))
+    draw_pill_badge(draw, left_x=lx + 32, cy=tel_y + 58, text="10인치 태블릿 + 모바일 양방향 최적화", font=get_font(9.5, 'bold'), theme='blue', pad_x=10, height=24)
     draw.text((lx + 32, tel_y + 88), "무인 태블릿 키오스크 ⇄ 모바일 출결 실시간 연동", font=get_font(10, 'regular'), fill=(100, 116, 139))
     
     # 4 KPI Blocks
@@ -1532,11 +1536,11 @@ def make_slide_08():
         
         # Divider line
         if kidx > 0:
-            draw.line([(kx - 18, tel_y + 24), (kx - 18, tel_y + tel_h - 24)], fill=(203, 213, 225), width=1)
+            draw.line([(kx - 18, tel_y + 22), (kx - 18, tel_y + tel_h - 22)], fill=(203, 213, 225), width=1)
             
-        draw.text((kx, tel_y + 26), k_name, font=get_font(11, 'medium'), fill=(100, 116, 139))
-        draw.text((kx, tel_y + 50), k_val, font=get_num_font(26, 'black'), fill=(0, 82, 255))
-        draw.text((kx, tel_y + 92), k_sub, font=get_font(10, 'regular'), fill=(71, 85, 105))
+        draw.text((kx, tel_y + 24), k_name, font=get_font(11, 'medium'), fill=(100, 116, 139))
+        draw.text((kx, tel_y + 48), k_val, font=get_num_font(26, 'black'), fill=(0, 82, 255))
+        draw.text((kx, tel_y + 90), k_sub, font=get_font(10, 'regular'), fill=(71, 85, 105))
 
     draw_slide_footer(draw, 8)
     save_slide(base.convert('RGB'), 8)
