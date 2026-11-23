@@ -705,88 +705,19 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
           return KeyEventResult.ignored;
         },
         child: Column(
-        children: [
-          // 1. Global App Bar
-          _buildGlobalAppBar(),
+          children: [
+            // 1. Figma UI3 Global App Top Header
+            _buildGlobalAppBar(),
 
-          // 2. Figma-Style Quick Toolbar (추가/수정/삭제/정렬/되돌리기/도구 모음)
-          FigmaToolbar(
-            activeMode: _currentToolMode,
-            onModeChanged: (mode) {
-              setState(() => _currentToolMode = mode);
-            },
-            selectedElement: _selectedElement,
-            onAddText: () => _insertElement(ElementType.text),
-            onAddCard: () => _insertElement(ElementType.shape),
-            onAddFrame: _addNewSlide,
-            onOpenComponentLibrary: _openElementLibrary,
-            onOpenDesignSystem: () {
-              showDialog(
-                context: context,
-                builder: (ctx) => const DesignSystemLibraryModal(),
-              );
-            },
-            onDuplicateSelected: _duplicateSelected,
-            onCopySelected: _copySelected,
-            onPasteSelected: _pasteClipboard,
-            canPaste: _clipboardElement != null,
-            onDeleteSelected: _deleteSelected,
-            onBringToFront: _bringToFront,
-            onSendToBack: _sendToBack,
-            onGroupSelected: _groupSelected,
-            onUngroupSelected: _ungroupSelected,
-            onToggleAutoLayout: _toggleAutoLayout,
-            onAlignSelected: _alignSelected,
-            onUndo: _undo,
-            onRedo: _redo,
-            canUndo: _undoStack.isNotEmpty,
-            canRedo: _redoStack.isNotEmpty,
-            zoomScale: _zoomScale,
-            onZoomIn: () {
-              setState(() {
-                if (_zoomScale < 1.5) _zoomScale += 0.05;
-              });
-            },
-            onZoomOut: () {
-              setState(() {
-                if (_zoomScale > 0.25) _zoomScale -= 0.05;
-              });
-            },
-            onZoomFit: () {
-              setState(() {
-                _zoomScale = 0.55;
-              });
-            },
-          ),
+            // 2. Main Workspace: Slide Thumbnails + Figma Layers + Canvas Editor (with Floating UI3 Dock) + Inspector Panel
+            Expanded(
+              child: Row(
+                children: [
+                  // Left 1: Slide Thumbnails Navigator (Pages)
+                  _buildSlideNavigator(),
 
-          // 3. Main Workspace: Slide Thumbnails + Figma Layers + Canvas Editor + Inspector Panel
-          Expanded(
-            child: Row(
-              children: [
-                // Left 1: Slide Thumbnails Navigator (Width: 200)
-                _buildSlideNavigator(),
-
-                // Left 2: Figma Object Layers Tree (Width: 260)
-                FigmaLayersPanel(
-                  slide: _currentSlide,
-                  selectedElement: _selectedElement,
-                  onElementSelected: (elem) {
-                    setState(() => _selectedElement = elem);
-                  },
-                  onSlideModified: () {
-                    _recordUndoState();
-                    setState(() {});
-                  },
-                  onGroupSelected: _groupSelected,
-                  onUngroupSelected: _ungroupSelected,
-                  onCopySelected: _copySelected,
-                  onPasteSelected: _pasteClipboard,
-                  canPaste: _clipboardElement != null,
-                ),
-
-                // Center: 1920x1080 Interactive Canvas
-                Expanded(
-                  child: CanvasEditor(
+                  // Left 2: Figma Object Layers Tree
+                  FigmaLayersPanel(
                     slide: _currentSlide,
                     selectedElement: _selectedElement,
                     onElementSelected: (elem) {
@@ -796,83 +727,175 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
                       _recordUndoState();
                       setState(() {});
                     },
+                    onGroupSelected: _groupSelected,
+                    onUngroupSelected: _ungroupSelected,
+                    onCopySelected: _copySelected,
+                    onPasteSelected: _pasteClipboard,
+                    canPaste: _clipboardElement != null,
                   ),
-                ),
 
-                // Right: Inspector Panel (Width: 380)
-                InspectorPanel(
-                  element: _selectedElement,
-                  onElementUpdated: () {
-                    _recordUndoState();
-                    setState(() {});
-                  },
-                  onElementDeleted: _deleteSelected,
-                ),
-              ],
+                  // Center: 1920x1080 Interactive Canvas with Figma UI3 Floating Bottom Dock
+                  Expanded(
+                    child: Stack(
+                      children: [
+                        Positioned.fill(
+                          child: CanvasEditor(
+                            slide: _currentSlide,
+                            selectedElement: _selectedElement,
+                            onElementSelected: (elem) {
+                              setState(() => _selectedElement = elem);
+                            },
+                            onSlideModified: () {
+                              _recordUndoState();
+                              setState(() {});
+                            },
+                          ),
+                        ),
+
+                        // Figma UI3 Modern Floating Bottom Dock
+                        Positioned(
+                          bottom: 20,
+                          left: 0,
+                          right: 0,
+                          child: Center(
+                            child: FigmaToolbar(
+                              activeMode: _currentToolMode,
+                              onModeChanged: (mode) {
+                                setState(() => _currentToolMode = mode);
+                              },
+                              selectedElement: _selectedElement,
+                              onAddText: () => _insertElement(ElementType.text),
+                              onAddCard: () => _insertElement(ElementType.shape),
+                              onAddFrame: _addNewSlide,
+                              onOpenComponentLibrary: _openElementLibrary,
+                              onOpenDesignSystem: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (ctx) => const DesignSystemLibraryModal(),
+                                );
+                              },
+                              onDuplicateSelected: _duplicateSelected,
+                              onCopySelected: _copySelected,
+                              onPasteSelected: _pasteClipboard,
+                              canPaste: _clipboardElement != null,
+                              onDeleteSelected: _deleteSelected,
+                              onBringToFront: _bringToFront,
+                              onSendToBack: _sendToBack,
+                              onGroupSelected: _groupSelected,
+                              onUngroupSelected: _ungroupSelected,
+                              onToggleAutoLayout: _toggleAutoLayout,
+                              onAlignSelected: _alignSelected,
+                              onUndo: _undo,
+                              onRedo: _redo,
+                              canUndo: _undoStack.isNotEmpty,
+                              canRedo: _redoStack.isNotEmpty,
+                              zoomScale: _zoomScale,
+                              onZoomIn: () {
+                                setState(() {
+                                  if (_zoomScale < 1.5) _zoomScale += 0.05;
+                                });
+                              },
+                              onZoomOut: () {
+                                setState(() {
+                                  if (_zoomScale > 0.25) _zoomScale -= 0.05;
+                                });
+                              },
+                              onZoomFit: () {
+                                setState(() {
+                                  _zoomScale = 0.55;
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  // Right: Inspector Panel (Width: 380)
+                  InspectorPanel(
+                    element: _selectedElement,
+                    onElementUpdated: () {
+                      _recordUndoState();
+                      setState(() {});
+                    },
+                    onElementDeleted: _deleteSelected,
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
-      ),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildGlobalAppBar() {
     return Container(
-      height: 52,
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      height: 46,
+      padding: const EdgeInsets.symmetric(horizontal: 14),
       decoration: const BoxDecoration(
-        color: Color(0xFF0F172A),
-        border: Border(bottom: BorderSide(color: Color(0xFF1E293B))),
+        color: Color(0xFF1E1E1E), // Figma UI3 Dark Slate
+        border: Border(bottom: BorderSide(color: Color(0xFF2C2C2C))),
       ),
       child: Row(
         children: [
+          // Figma UI3 App Icon & Document Title
           Container(
-            padding: const EdgeInsets.all(7),
+            padding: const EdgeInsets.all(5),
             decoration: BoxDecoration(
-              color: const Color(0xFF0052FF),
-              borderRadius: BorderRadius.circular(8),
+              color: const Color(0xFF2C2C2C),
+              borderRadius: BorderRadius.circular(6),
             ),
-            child: const Icon(Icons.dashboard_customize, color: Colors.white, size: 16),
+            child: const Icon(Icons.dashboard_customize, color: Color(0xFF0052FF), size: 15),
           ),
-          const SizedBox(width: 12),
-          const Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
+          const SizedBox(width: 10),
+          Row(
             children: [
-              Text(
+              const Text(
                 'DeckStudio (데스크탑 포트폴리오 에디터)',
-                style: TextStyle(color: Colors.white, fontSize: 13.5, fontWeight: FontWeight.bold),
+                style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold),
               ),
-              Text(
-                'Figma 표준 툴바 · 도식/플로우차트/디자인시스템/목업 실시간 커스텀 툴',
-                style: TextStyle(color: Color(0xFF94A3B8), fontSize: 10),
+              const SizedBox(width: 8),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF2C2C2C),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: const Text('Drafts', style: TextStyle(color: Color(0xFFA3A3A3), fontSize: 10, fontWeight: FontWeight.w500)),
               ),
             ],
           ),
           const Spacer(),
           ElevatedButton.icon(
-            icon: const Icon(Icons.swap_horiz, size: 15),
-            label: const Text('프로젝트 템플릿 전환', style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.bold)),
+            icon: const Icon(Icons.swap_horiz, size: 14),
+            label: const Text('프로젝트 전환', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF334155),
+              backgroundColor: const Color(0xFF2C2C2C),
               foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+              elevation: 0,
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(6),
+                side: const BorderSide(color: Color(0xFF404040)),
+              ),
             ),
-            onPressed: () {
-              _showProjectSwitchDialog();
-            },
+            onPressed: _showProjectSwitchDialog,
           ),
           const SizedBox(width: 8),
           ElevatedButton.icon(
-            icon: const Icon(Icons.style, size: 15),
-            label: const Text('디자인 시스템 라이브러리', style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.bold)),
+            icon: const Icon(Icons.tune, size: 14, color: Color(0xFF38BDF8)),
+            label: const Text('Variables (디자인 시스템)', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF0891B2),
+              backgroundColor: const Color(0xFF2C2C2C),
               foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+              elevation: 0,
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(6),
+                side: const BorderSide(color: Color(0xFF404040)),
+              ),
             ),
             onPressed: () {
               showDialog(
@@ -883,24 +906,26 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
           ),
           const SizedBox(width: 8),
           ElevatedButton.icon(
-            icon: const Icon(Icons.add_box_outlined, size: 15),
-            label: const Text('컴포넌트 삽입', style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.bold)),
+            icon: const Icon(Icons.add_box_outlined, size: 14),
+            label: const Text('컴포넌트 삽입', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF0052FF),
               foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              elevation: 0,
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
             ),
             onPressed: _openElementLibrary,
           ),
           const SizedBox(width: 8),
-          OutlinedButton.icon(
-            icon: const Icon(Icons.file_download_outlined, size: 15, color: Color(0xFF38BDF8)),
-            label: const Text('전체화면 HTML / Flutter 웹 / PDF 출력', style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.bold, color: Colors.white)),
-            style: OutlinedButton.styleFrom(
-              backgroundColor: const Color(0xFF1E293B),
-              side: const BorderSide(color: Color(0xFF0052FF)),
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+          ElevatedButton.icon(
+            icon: const Icon(Icons.play_arrow, size: 14, color: Colors.white),
+            label: const Text('Present (전체화면 / 출력)', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF10B981),
+              foregroundColor: Colors.white,
+              elevation: 0,
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
             ),
             onPressed: () {
@@ -917,36 +942,43 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
 
   Widget _buildSlideNavigator() {
     return Container(
-      width: 190,
+      width: 220,
       decoration: const BoxDecoration(
-        color: Colors.white,
-        border: Border(right: BorderSide(color: Color(0xFFE2E8F0))),
+        color: Color(0xFF1E1E1E), // Figma UI3 Dark Slate
+        border: Border(right: BorderSide(color: Color(0xFF2C2C2C))),
       ),
       child: Column(
         children: [
           Container(
-            padding: const EdgeInsets.all(14),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
             decoration: const BoxDecoration(
-              border: Border(bottom: BorderSide(color: Color(0xFFE2E8F0))),
+              border: Border(bottom: BorderSide(color: Color(0xFF2C2C2C))),
             ),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  '슬라이드 목록',
-                  style: TextStyle(color: Color(0xFF0F172A), fontSize: 13, fontWeight: FontWeight.bold),
+                const Icon(Icons.description_outlined, color: Color(0xFFA3A3A3), size: 14),
+                const SizedBox(width: 6),
+                const Expanded(
+                  child: Text(
+                    'Pages / Frames',
+                    style: TextStyle(color: Colors.white, fontSize: 11.5, fontWeight: FontWeight.bold),
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
                 IconButton(
-                  icon: const Icon(Icons.add, size: 20, color: Color(0xFF0052FF)),
+                  icon: const Icon(Icons.add, size: 16, color: Color(0xFF38BDF8)),
                   onPressed: _addNewSlide,
-                  tooltip: '새 슬라이드 추가',
+                  tooltip: '새 페이지 추가',
+                  visualDensity: VisualDensity.compact,
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(minWidth: 22, minHeight: 22),
                 ),
               ],
             ),
           ),
           Expanded(
             child: ListView.builder(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
               itemCount: _project.slides.length,
               itemBuilder: (context, index) {
                 final slide = _project.slides[index];
@@ -960,53 +992,39 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
                     });
                   },
                   child: Container(
-                    margin: const EdgeInsets.only(bottom: 12),
-                    padding: const EdgeInsets.all(10),
+                    margin: const EdgeInsets.only(bottom: 4),
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
                     decoration: BoxDecoration(
-                      color: isActive ? const Color(0xFFEFF6FF) : const Color(0xFFF8FAFC),
-                      borderRadius: BorderRadius.circular(10),
+                      color: isActive ? const Color(0xFF2C2C2C) : Colors.transparent,
+                      borderRadius: BorderRadius.circular(6),
                       border: Border.all(
-                        color: isActive ? const Color(0xFF0052FF) : const Color(0xFFE2E8F0),
-                        width: isActive ? 1.5 : 1,
+                        color: isActive ? const Color(0xFF0052FF) : Colors.transparent,
+                        width: 1,
                       ),
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    child: Row(
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                              decoration: BoxDecoration(
-                                color: isActive ? const Color(0xFF0052FF) : const Color(0xFFE2E8F0),
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                              child: Text(
-                                'P.${slide.pageNumber}',
-                                style: TextStyle(
-                                  color: isActive ? Colors.white : const Color(0xFF64748B),
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            Text(
-                              '${slide.elements.length}개 요소',
-                              style: const TextStyle(color: Color(0xFF94A3B8), fontSize: 10),
-                            ),
-                          ],
+                        Icon(
+                          Icons.grid_view,
+                          size: 13,
+                          color: isActive ? const Color(0xFF0052FF) : const Color(0xFF737373),
                         ),
-                        const SizedBox(height: 8),
-                        Text(
-                          slide.title,
-                          style: TextStyle(
-                            color: isActive ? const Color(0xFF0052FF) : const Color(0xFF0F172A),
-                            fontSize: 11.5,
-                            fontWeight: isActive ? FontWeight.bold : FontWeight.w500,
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            slide.title,
+                            style: TextStyle(
+                              color: isActive ? Colors.white : const Color(0xFFA3A3A3),
+                              fontSize: 11.5,
+                              fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Text(
+                          '${slide.elements.length}',
+                          style: const TextStyle(color: Color(0xFF525252), fontSize: 10),
                         ),
                       ],
                     ),

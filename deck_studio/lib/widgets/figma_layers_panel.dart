@@ -60,10 +60,10 @@ class _FigmaLayersPanelState extends State<FigmaLayersPanel> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 270,
+      width: 250,
       decoration: const BoxDecoration(
-        color: Color(0xFF1E293B), // Figma dark slate panel
-        border: Border(right: BorderSide(color: Color(0xFF334155))),
+        color: Color(0xFF1E1E1E), // Figma UI3 Dark Theme
+        border: Border(right: BorderSide(color: Color(0xFF2C2C2C))),
       ),
       child: Column(
         children: [
@@ -71,7 +71,7 @@ class _FigmaLayersPanelState extends State<FigmaLayersPanel> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
             decoration: const BoxDecoration(
-              border: Border(bottom: BorderSide(color: Color(0xFF334155))),
+              border: Border(bottom: BorderSide(color: Color(0xFF2C2C2C))),
             ),
             child: Row(
               children: [

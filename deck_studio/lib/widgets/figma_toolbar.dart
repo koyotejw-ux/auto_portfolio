@@ -74,31 +74,35 @@ class FigmaToolbar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 48,
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      decoration: const BoxDecoration(
-        color: Color(0xFF1E293B), // Figma dark toolbar slate
-        border: Border(bottom: BorderSide(color: Color(0xFF334155))),
-        boxShadow: [
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        color: const Color(0xFF1E1E1E), // Modern Figma UI3 Dark Charcoal Dock
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: const Color(0xFF2C2C2C), width: 1),
+        boxShadow: const [
           BoxShadow(
-            color: Color(0x33000000),
-            blurRadius: 4,
-            offset: Offset(0, 2),
+            color: Color(0x66000000),
+            blurRadius: 24,
+            spreadRadius: 2,
+            offset: Offset(0, 10),
           ),
         ],
       ),
-      child: Row(
-        children: [
-          // 1. Figma Logo / Menu Icon
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+          // 1. Figma UI3 Logo / Main Menu Icon
           Container(
-            padding: const EdgeInsets.all(6),
+            padding: const EdgeInsets.all(5),
             decoration: BoxDecoration(
-              color: const Color(0xFF0F172A),
-              borderRadius: BorderRadius.circular(6),
-              border: Border.all(color: const Color(0xFF334155)),
+              color: const Color(0xFF2C2C2C),
+              borderRadius: BorderRadius.circular(8),
             ),
-            child: const Icon(Icons.layers, color: Color(0xFF0052FF), size: 16),
+            child: const Icon(Icons.widgets, color: Color(0xFF0052FF), size: 16),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: 6),
 
           // 2. Undo / Redo
           _buildIconButton(
@@ -131,33 +135,33 @@ class FigmaToolbar extends StatelessWidget {
           _buildToolButton(
             mode: FigmaToolMode.rect,
             icon: Icons.rectangle_outlined,
-            tooltip: '카드 / 박스 추가 (R)',
+            tooltip: '카드 / 사각형 (R)',
             onSpecialPress: onAddCard,
           ),
           _buildToolButton(
             mode: FigmaToolMode.text,
             icon: Icons.text_fields,
-            tooltip: '텍스트 추가 (T)',
+            tooltip: '텍스트 레이어 추가 (T)',
             onSpecialPress: onAddText,
           ),
           _buildToolButton(
             mode: FigmaToolMode.component,
             icon: Icons.dashboard_customize_outlined,
-            tooltip: '컴포넌트 삽입 라이브러리 (Shift+I)',
+            tooltip: '컴포넌트 라이브러리 (Shift+I)',
             onSpecialPress: onOpenComponentLibrary,
           ),
           _buildToolButton(
             mode: FigmaToolMode.hand,
             icon: Icons.pan_tool_outlined,
-            tooltip: '캔버스 이동 핸드 툴 (H / Space)',
+            tooltip: '핸드 이동 툴 (H / Space)',
           ),
 
           _buildDivider(),
 
-          // 4. Quick Actions for Selected Element (Copy/Paste Component, Duplicate, Delete, Layer Order)
+          // 4. Quick Actions for Selected Element
           _buildIconButton(
             icon: Icons.copy,
-            tooltip: '컴포넌트 복사 (Ctrl+C, 하위 요소 포함)',
+            tooltip: '컴포넌트 복사 (Ctrl+C)',
             enabled: selectedElement != null,
             color: selectedElement != null ? const Color(0xFF38BDF8) : null,
             onPressed: onCopySelected,
@@ -176,20 +180,8 @@ class FigmaToolbar extends StatelessWidget {
             onPressed: onDuplicateSelected,
           ),
           _buildIconButton(
-            icon: Icons.flip_to_front,
-            tooltip: '맨 앞으로 가져오기 (])',
-            enabled: selectedElement != null,
-            onPressed: onBringToFront,
-          ),
-          _buildIconButton(
-            icon: Icons.flip_to_back,
-            tooltip: '맨 뒤로 보내기 ([)',
-            enabled: selectedElement != null,
-            onPressed: onSendToBack,
-          ),
-          _buildIconButton(
             icon: Icons.folder_open,
-            tooltip: '선택 요소 그룹화 (Ctrl+G)',
+            tooltip: '그룹화 (Ctrl+G)',
             enabled: selectedElement != null,
             color: selectedElement != null ? const Color(0xFFFBBF24) : null,
             onPressed: onGroupSelected,
@@ -261,76 +253,36 @@ class FigmaToolbar extends StatelessWidget {
             onPressed: () => onAlignSelected('bottom'),
           ),
 
-          const Spacer(),
+          _buildDivider(),
 
-          // 6. Design System & Export Shortcuts
+          // 6. Figma Local Variables (Design System)
           ElevatedButton.icon(
-            icon: const Icon(Icons.auto_awesome, size: 14, color: Color(0xFF38BDF8)),
-            label: const Text('Design System', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
+            icon: const Icon(Icons.tune, size: 14, color: Color(0xFF38BDF8)),
+            label: const Text('Variables', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF0F172A),
+              backgroundColor: const Color(0xFF2C2C2C),
               foregroundColor: Colors.white,
               elevation: 0,
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(6),
-                side: const BorderSide(color: Color(0xFF334155)),
+                borderRadius: BorderRadius.circular(8),
+                side: const BorderSide(color: Color(0xFF404040)),
               ),
             ),
             onPressed: onOpenDesignSystem,
           ),
-
-          const SizedBox(width: 10),
-          _buildDivider(),
-
-          // 7. Zoom & Canvas Controls (Zoom In/Out/Fit)
-          IconButton(
-            icon: const Icon(Icons.remove, size: 16, color: Color(0xFF94A3B8)),
-            onPressed: onZoomOut,
-            tooltip: '화면 축소',
-            visualDensity: VisualDensity.compact,
-            padding: EdgeInsets.zero,
-            constraints: const BoxConstraints(minWidth: 28, minHeight: 28),
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-            decoration: BoxDecoration(
-              color: const Color(0xFF0F172A),
-              borderRadius: BorderRadius.circular(4),
-              border: Border.all(color: const Color(0xFF334155)),
-            ),
-            child: Text(
-              '${(zoomScale * 100).toInt()}%',
-              style: const TextStyle(color: Color(0xFFE2E8F0), fontSize: 11, fontWeight: FontWeight.bold),
-            ),
-          ),
-          IconButton(
-            icon: const Icon(Icons.add, size: 16, color: Color(0xFF94A3B8)),
-            onPressed: onZoomIn,
-            tooltip: '화면 확대',
-            visualDensity: VisualDensity.compact,
-            padding: EdgeInsets.zero,
-            constraints: const BoxConstraints(minWidth: 28, minHeight: 28),
-          ),
-          IconButton(
-            icon: const Icon(Icons.fullscreen, size: 18, color: Color(0xFF94A3B8)),
-            onPressed: onZoomFit,
-            tooltip: '캔버스 크기 맞춤 (100% Fit)',
-            visualDensity: VisualDensity.compact,
-            padding: EdgeInsets.zero,
-            constraints: const BoxConstraints(minWidth: 28, minHeight: 28),
-          ),
         ],
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _buildDivider() {
     return Container(
       width: 1,
       height: 20,
-      margin: const EdgeInsets.symmetric(horizontal: 8),
-      color: const Color(0xFF334155),
+      margin: const EdgeInsets.symmetric(horizontal: 6),
+      color: const Color(0xFF2C2C2C),
     );
   }
 
@@ -350,19 +302,19 @@ class FigmaToolbar extends StatelessWidget {
             onSpecialPress();
           }
         },
-        borderRadius: BorderRadius.circular(6),
+        borderRadius: BorderRadius.circular(8),
         child: Container(
           width: 32,
           height: 32,
           margin: const EdgeInsets.symmetric(horizontal: 2),
           decoration: BoxDecoration(
             color: isActive ? const Color(0xFF0052FF) : Colors.transparent,
-            borderRadius: BorderRadius.circular(6),
+            borderRadius: BorderRadius.circular(8),
           ),
           child: Icon(
             icon,
-            size: 18,
-            color: isActive ? Colors.white : const Color(0xFF94A3B8),
+            size: 17,
+            color: isActive ? Colors.white : const Color(0xFFA3A3A3),
           ),
         ),
       ),
@@ -380,7 +332,7 @@ class FigmaToolbar extends StatelessWidget {
       message: tooltip,
       child: InkWell(
         onTap: enabled ? onPressed : null,
-        borderRadius: BorderRadius.circular(6),
+        borderRadius: BorderRadius.circular(8),
         child: Container(
           width: 30,
           height: 30,
@@ -388,10 +340,10 @@ class FigmaToolbar extends StatelessWidget {
           alignment: Alignment.center,
           child: Icon(
             icon,
-            size: 17,
+            size: 16,
             color: enabled
-                ? (color ?? const Color(0xFFCBD5E1))
-                : const Color(0xFF475569),
+                ? (color ?? const Color(0xFFD4D4D4))
+                : const Color(0xFF525252),
           ),
         ),
       ),
