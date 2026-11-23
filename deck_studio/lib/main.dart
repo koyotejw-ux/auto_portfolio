@@ -60,6 +60,7 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
   final FocusNode _keyboardFocusNode = FocusNode();
   bool _showLayoutGrid = false;
   int _leftSidebarTabIndex = 0; // 0: Layers, 1: Assets (Design System)
+  bool _isPagesExpanded = true; // Figma-style collapsible Pages header in Layers tab
 
   @override
   void initState() {
@@ -899,12 +900,9 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
             Expanded(
               child: Row(
                 children: [
-                  // Left 1: Slide Thumbnails Navigator (Pages)
-                  _buildSlideNavigator(),
-
-                  // Left 2: Figma Object Layers Tree OR Assets / Design System Panel
+                  // Unified Left Sidebar: Figma UI3 (Tabs: Layers & Pages / Assets)
                   Container(
-                    width: 250,
+                    width: 260,
                     decoration: const BoxDecoration(
                       color: Color(0xFF1E1E1E),
                       border: Border(right: BorderSide(color: Color(0xFF2C2C2C))),
@@ -930,13 +928,24 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
                                       color: _leftSidebarTabIndex == 0 ? const Color(0xFF2C2C2C) : Colors.transparent,
                                       borderRadius: BorderRadius.circular(4),
                                     ),
-                                    child: Text(
-                                      'Layers',
-                                      style: TextStyle(
-                                        color: _leftSidebarTabIndex == 0 ? Colors.white : const Color(0xFFA3A3A3),
-                                        fontSize: 11,
-                                        fontWeight: _leftSidebarTabIndex == 0 ? FontWeight.bold : FontWeight.normal,
-                                      ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.layers_outlined,
+                                          size: 13,
+                                          color: _leftSidebarTabIndex == 0 ? const Color(0xFF38BDF8) : const Color(0xFFA3A3A3),
+                                        ),
+                                        const SizedBox(width: 4),
+                                        Text(
+                                          'Layers',
+                                          style: TextStyle(
+                                            color: _leftSidebarTabIndex == 0 ? Colors.white : const Color(0xFFA3A3A3),
+                                            fontSize: 11,
+                                            fontWeight: _leftSidebarTabIndex == 0 ? FontWeight.bold : FontWeight.normal,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
@@ -957,7 +966,7 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
                                       children: [
                                         Icon(
                                           Icons.widgets_outlined,
-                                          size: 12,
+                                          size: 13,
                                           color: _leftSidebarTabIndex == 1 ? const Color(0xFF38BDF8) : const Color(0xFFA3A3A3),
                                         ),
                                         const SizedBox(width: 4),
@@ -980,21 +989,31 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
                         // Tab Content Body
                         Expanded(
                           child: _leftSidebarTabIndex == 0
-                              ? FigmaLayersPanel(
-                                  slide: _currentSlide,
-                                  selectedElement: _selectedElement,
-                                  onElementSelected: (elem) {
-                                    setState(() => _selectedElement = elem);
-                                  },
-                                  onSlideModified: () {
-                                    _recordUndoState();
-                                    setState(() {});
-                                  },
-                                  onGroupSelected: _groupSelected,
-                                  onUngroupSelected: _ungroupSelected,
-                                  onCopySelected: _copySelected,
-                                  onPasteSelected: _pasteClipboard,
-                                  canPaste: _clipboardElement != null,
+                              ? Column(
+                                  children: [
+                                    // 1. Figma Pages Collapsible Section (Top of Layers Tab)
+                                    _buildFigmaPagesSection(),
+
+                                    // 2. Figma Objects / Layers Hierarchy Tree
+                                    Expanded(
+                                      child: FigmaLayersPanel(
+                                        slide: _currentSlide,
+                                        selectedElement: _selectedElement,
+                                        onElementSelected: (elem) {
+                                          setState(() => _selectedElement = elem);
+                                        },
+                                        onSlideModified: () {
+                                          _recordUndoState();
+                                          setState(() {});
+                                        },
+                                        onGroupSelected: _groupSelected,
+                                        onUngroupSelected: _ungroupSelected,
+                                        onCopySelected: _copySelected,
+                                        onPasteSelected: _pasteClipboard,
+                                        canPaste: _clipboardElement != null,
+                                      ),
+                                    ),
+                                  ],
                                 )
                               : FigmaAssetsPanel(
                                   onAddElement: (newElem) {
@@ -1010,19 +1029,82 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
                     ),
                   ),
 
-                  // Center: 1920x1080 Interactive Canvas
+                  // Center: 1920x1080 Interactive Canvas with Floating Figma UI3 Bottom Dock Toolbar
                   Expanded(
-                    child: CanvasEditor(
-                      slide: _currentSlide,
-                      selectedElement: _selectedElement,
-                      showLayoutGrid: _showLayoutGrid,
-                      onElementSelected: (elem) {
-                        setState(() => _selectedElement = elem);
-                      },
-                      onSlideModified: () {
-                        _recordUndoState();
-                        setState(() {});
-                      },
+                    child: Stack(
+                      children: [
+                        Positioned.fill(
+                          child: CanvasEditor(
+                            slide: _currentSlide,
+                            selectedElement: _selectedElement,
+                            showLayoutGrid: _showLayoutGrid,
+                            onElementSelected: (elem) {
+                              setState(() => _selectedElement = elem);
+                            },
+                            onSlideModified: () {
+                              _recordUndoState();
+                              setState(() {});
+                            },
+                          ),
+                        ),
+
+                        // Figma UI3 Floating Pill Bottom Toolbar (Floating Above Canvas)
+                        Positioned(
+                          left: 0,
+                          right: 0,
+                          bottom: 20,
+                          child: Center(
+                            child: FigmaToolbar(
+                              activeMode: _currentToolMode,
+                              onModeChanged: (mode) {
+                                setState(() => _currentToolMode = mode);
+                              },
+                              selectedElement: _selectedElement,
+                              onAddText: () => _insertElement(ElementType.text),
+                              onAddCard: () => _insertElement(ElementType.shape),
+                              onAddFrame: _addNewSlide,
+                              onOpenComponentLibrary: _openElementLibrary,
+                              onOpenDesignSystem: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (ctx) => const DesignSystemLibraryModal(),
+                                );
+                              },
+                              onDuplicateSelected: _duplicateSelected,
+                              onCopySelected: _copySelected,
+                              onPasteSelected: _pasteClipboard,
+                              canPaste: _clipboardElement != null,
+                              onDeleteSelected: _deleteSelected,
+                              onBringToFront: _bringToFront,
+                              onSendToBack: _sendToBack,
+                              onGroupSelected: _groupSelected,
+                              onUngroupSelected: _ungroupSelected,
+                              onToggleAutoLayout: _toggleAutoLayout,
+                              onAlignSelected: _alignSelected,
+                              onUndo: _undo,
+                              onRedo: _redo,
+                              canUndo: _undoStack.isNotEmpty,
+                              canRedo: _redoStack.isNotEmpty,
+                              zoomScale: _zoomScale,
+                              onZoomIn: () {
+                                setState(() {
+                                  if (_zoomScale < 1.5) _zoomScale += 0.05;
+                                });
+                              },
+                              onZoomOut: () {
+                                setState(() {
+                                  if (_zoomScale > 0.25) _zoomScale -= 0.05;
+                                });
+                              },
+                              onZoomFit: () {
+                                setState(() {
+                                  _zoomScale = 0.55;
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
 
@@ -1036,65 +1118,6 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
                     onElementDeleted: _deleteSelected,
                   ),
                 ],
-              ),
-            ),
-
-            // 3. Persistent Modern Figma Bottom Dock Bar (Always Visible & Accessible)
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              decoration: const BoxDecoration(
-                color: Color(0xFF141414),
-                border: Border(top: BorderSide(color: Color(0xFF262626))),
-              ),
-              child: Center(
-                child: FigmaToolbar(
-                  activeMode: _currentToolMode,
-                  onModeChanged: (mode) {
-                    setState(() => _currentToolMode = mode);
-                  },
-                  selectedElement: _selectedElement,
-                  onAddText: () => _insertElement(ElementType.text),
-                  onAddCard: () => _insertElement(ElementType.shape),
-                  onAddFrame: _addNewSlide,
-                  onOpenComponentLibrary: _openElementLibrary,
-                  onOpenDesignSystem: () {
-                    showDialog(
-                      context: context,
-                      builder: (ctx) => const DesignSystemLibraryModal(),
-                    );
-                  },
-                  onDuplicateSelected: _duplicateSelected,
-                  onCopySelected: _copySelected,
-                  onPasteSelected: _pasteClipboard,
-                  canPaste: _clipboardElement != null,
-                  onDeleteSelected: _deleteSelected,
-                  onBringToFront: _bringToFront,
-                  onSendToBack: _sendToBack,
-                  onGroupSelected: _groupSelected,
-                  onUngroupSelected: _ungroupSelected,
-                  onToggleAutoLayout: _toggleAutoLayout,
-                  onAlignSelected: _alignSelected,
-                  onUndo: _undo,
-                  onRedo: _redo,
-                  canUndo: _undoStack.isNotEmpty,
-                  canRedo: _redoStack.isNotEmpty,
-                  zoomScale: _zoomScale,
-                  onZoomIn: () {
-                    setState(() {
-                      if (_zoomScale < 1.5) _zoomScale += 0.05;
-                    });
-                  },
-                  onZoomOut: () {
-                    setState(() {
-                      if (_zoomScale > 0.25) _zoomScale -= 0.05;
-                    });
-                  },
-                  onZoomFit: () {
-                    setState(() {
-                      _zoomScale = 0.55;
-                    });
-                  },
-                ),
               ),
             ),
           ],
@@ -1235,6 +1258,123 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
               );
             },
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFigmaPagesSection() {
+    return Container(
+      decoration: const BoxDecoration(
+        border: Border(bottom: BorderSide(color: Color(0xFF2C2C2C))),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Collapsible Header: "Pages (12)" + Expand/Collapse chevron + Add Page (+)
+          InkWell(
+            onTap: () => setState(() => _isPagesExpanded = !_isPagesExpanded),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+              child: Row(
+                children: [
+                  Icon(
+                    _isPagesExpanded ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_right,
+                    size: 16,
+                    color: const Color(0xFFA3A3A3),
+                  ),
+                  const SizedBox(width: 4),
+                  const Text(
+                    'Pages',
+                    style: TextStyle(color: Colors.white, fontSize: 11.5, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(width: 6),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF2C2C2C),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Text(
+                      '${_project.slides.length}',
+                      style: const TextStyle(color: Color(0xFFA3A3A3), fontSize: 10, fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                  const Spacer(),
+                  IconButton(
+                    icon: const Icon(Icons.add, size: 15, color: Color(0xFF38BDF8)),
+                    onPressed: _addNewSlide,
+                    tooltip: '새 페이지 추가',
+                    visualDensity: VisualDensity.compact,
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(minWidth: 20, minHeight: 20),
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          // Collapsible Pages List (Height-constrained or collapsed)
+          if (_isPagesExpanded)
+            ConstrainedBox(
+              constraints: const BoxConstraints(maxHeight: 180),
+              child: ListView.builder(
+                shrinkWrap: true,
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                itemCount: _project.slides.length,
+                itemBuilder: (context, index) {
+                  final slide = _project.slides[index];
+                  final isActive = index == _activeSlideIndex;
+
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _activeSlideIndex = index;
+                        _selectedElement = null;
+                      });
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.only(bottom: 2),
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                      decoration: BoxDecoration(
+                        color: isActive ? const Color(0xFF2C2C2C) : Colors.transparent,
+                        borderRadius: BorderRadius.circular(4),
+                        border: Border.all(
+                          color: isActive ? const Color(0xFF0052FF) : Colors.transparent,
+                          width: 1,
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.grid_view,
+                            size: 12,
+                            color: isActive ? const Color(0xFF0052FF) : const Color(0xFF737373),
+                          ),
+                          const SizedBox(width: 6),
+                          Expanded(
+                            child: Text(
+                              slide.title,
+                              style: TextStyle(
+                                color: isActive ? Colors.white : const Color(0xFFA3A3A3),
+                                fontSize: 11,
+                                fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          Text(
+                            '${slide.elements.length}',
+                            style: const TextStyle(color: Color(0xFF525252), fontSize: 9.5),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
         ],
       ),
     );

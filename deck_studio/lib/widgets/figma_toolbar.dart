@@ -76,15 +76,15 @@ class FigmaToolbar extends StatelessWidget {
       height: 48,
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        color: const Color(0xFF1E1E1E), // Modern Figma UI3 Dark Charcoal Dock
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: const Color(0xFF2C2C2C), width: 1),
+        color: const Color(0xFF1E1E1E).withOpacity(0.96), // Modern Figma UI3 Floating Dock
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: const Color(0xFF383838), width: 1),
         boxShadow: const [
           BoxShadow(
-            color: Color(0x66000000),
-            blurRadius: 24,
+            color: Color(0x88000000),
+            blurRadius: 30,
             spreadRadius: 2,
-            offset: Offset(0, 10),
+            offset: Offset(0, 12),
           ),
         ],
       ),
