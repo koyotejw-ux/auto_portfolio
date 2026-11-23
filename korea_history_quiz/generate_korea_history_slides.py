@@ -1012,89 +1012,179 @@ def make_slide_04():
     base = Image.new('RGBA', (W, H), (248, 250, 252, 255))
     draw = ImageDraw.Draw(base)
     
+    # Unified Header
     draw_slide_header(
         draw, 
         slide_num=4, 
-        category_en="INFORMATION ARCHITECTURE · 5대 핵심 메뉴 구조", 
-        title_black="수험생이 한눈에 파악하는 ", 
-        title_blue="5대 합격 학습 내비게이션", 
-        subtitle_kr="홈·학습관·시험센터·오답노트·설정 5대 핵심 바텀 내비게이션 기반 한 손 완결형 정보 아키텍처"
+        category_en="INFORMATION ARCHITECTURE · SERVICE STRUCTURE", 
+        title_black="누구나 바로 이해하고 쓰는 ", 
+        title_blue="5대 핵심 합격 내비게이션", 
+        subtitle_kr="홈 대시보드부터 실전 기출, 사료 서고, 오답 볼트까지 합격에 필요한 기능을 한눈에 찾는 쉬운 화면 구조"
     )
     
-    # Top-Right Badge
+    # Top-Right Badge: Clean, Compact Overview (w=340, h=60)
     top_badge_x = 1480
     top_badge_y = 65
     draw.rounded_rectangle([top_badge_x, top_badge_y, top_badge_x + 340, top_badge_y + 60], radius=10, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
     draw_pill_badge(draw, left_x=top_badge_x + 16, cy=top_badge_y + 30, text="서비스 구성", font=get_font(9.5, 'bold'), theme='blue', has_dot=True, pad_x=8, height=24)
     draw.text((top_badge_x + 110, top_badge_y + 20), "5대 메인 탭", font=get_font(12, 'bold'), fill=(15, 23, 42))
-    draw.text((top_badge_x + 110, top_badge_y + 38), "Flutter IndexedStack 구조", font=get_font(10, 'regular'), fill=(100, 116, 139))
+    draw.text((top_badge_x + 110, top_badge_y + 39), "총 15개 직관적 화면 설계", font=get_font(10.5, 'medium'), fill=(100, 116, 139))
     
-    # 5 Tab Columns
-    cols_data = [
-        ("01. 홈 대시보드", "종합 학습 관제", "출석 스트릭, D-Day, 오늘의 추천 기출 및 시대별 정답률 레이더", [
-            ("스트릭 카드", "연속 출석 달성", "매일 이어지는 학습 습관과 잔여 목표 일수 확인", False),
-            ("추천 기출", "1-Tap 즉시 응시", "최신 77회 심화 기출 및 추천 숏폼 바로가기", True),
-            ("마스터리 레이더", "시대별 완성도", "6대 시대별 취약 영역과 정답률 실시간 분석", False)
-        ], (29, 78, 216)),
-        ("02. 학습관 (서고)", "시대별 사료 바이블", "선사부터 현대사까지 6대 시대별 핵심 요약 노트 및 고해상도 유물 도감", [
-            ("시대별 요약관", "6대 시대 마스터", "선사·삼국·고려·조선·근대·현대사 핵심 정리", True),
-            ("유물 갤러리", "시각 사료 도감", "시험 빈출 국보·보물 유물 고화질 사진 및 해설", False),
-            ("사료 힌트 바이블", "빈출 키워드", "사료 속 인물·연호·관직·지명 핵심 단서 사전", False)
-        ], (217, 119, 6)),
-        ("03. 실전 시험 센터", "공인 기출 모의고사", "최신 77회 한능검 심화 50문항 실전 응시, 80분 OMR 타이머, 숏폼 10제", [
-            ("77회 실전 응시", "50문항 80분", "실제 시험지와 100% 동일한 배점 및 OMR 카운트다운", True),
-            ("랜덤 50제", "전 범위 무작위", "1,500제 기출 풀에서 무작위 50문항 추출 모의고사", False),
-            ("10문항 숏폼", "자투리 10분", "출퇴근길 5분 만에 푸는 핵심 기출 압축 테스트", True)
-        ], (225, 29, 72)),
-        ("04. 스마트 오답 볼트", "취약점 자동 인덱싱", "틀린 문제 1초 만에 자동 분류, 에빙하우스 망각곡선 주기 복습, 1:1 해설", [
-            ("오답 보관함", "자동 인덱싱", "틀린 문제의 문항 번호, 시대, 정답률 자동 태깅", True),
-            ("AI 취약 트레이닝", "오답만 골라 풀기", "누적된 오답 중 취약 시대만 선별하여 즉시 재도전", True),
-            ("사료 단서 형광펜", "정답 키워드 식별", "오답 문제 사료 속 결정적 정답 키워드 형광펜 분석", False)
-        ], (5, 150, 105)),
-        ("05. 수험 환경 설정", "학습 편의 커스텀", "목표 급수 설정, 시험 D-Day 카운트다운, 음성 낭독 속도, OLED 다크 테마", [
-            ("목표 급수 관리", "1급/2급/3급", "목표 급수별 커트라인 및 시험 일정 자동 동기화", False),
-            ("오디오 낭독 설정", "TTS 배속 조절", "사료 및 해설 음성 낭독 재생 속도(1.0x~2.0x) 설정", False),
-            ("OLED 다크 테마", "야간 학습 배려", "어두운 독서실 및 이동 중 눈의 피로를 덜어주는 테마", True)
-        ], (71, 85, 105))
+    # Level 0 Root Node: Compact, Centered, Clean Korean!
+    # Width: 460px (x: 730 to 1190)
+    root_x1, root_y1, root_x2, root_y2 = 730, 226, 1190, 286
+    draw.rounded_rectangle([root_x1, root_y1, root_x2, root_y2], radius=12, fill=(255, 255, 255), outline=(29, 78, 216), width=2)
+    b_root = draw_pill_badge(draw, left_x=root_x1 + 18, cy=root_y1 + 30, text="시작 화면", font=get_font(10, 'bold'), theme='blue', has_dot=True, pad_x=10, height=26)
+    draw.text((b_root[2] + 16, root_y1 + 19), "대한국사 전체 5대 핵심 메뉴 구조", font=get_font(14.5, 'bold'), fill=(15, 23, 42))
+    draw.text((b_root[2] + 16, root_y1 + 41), "한 손으로 편리하게 이용하는 5대 핵심 메뉴와 기능 안내", font=get_font(10.5, 'medium'), fill=(71, 85, 105))
+    
+    # Connectors from Root Node to 5 Level 1 Columns
+    cw = 328
+    cgap = 20
+    cols_x = [100 + i * (cw + cgap) for i in range(5)]
+    col_centers = [cx + cw // 2 for cx in cols_x]
+    
+    draw.line([(960, root_y2), (960, 308)], fill=(29, 78, 216), width=2)
+    draw.ellipse([956, 304, 964, 312], fill=(29, 78, 216))
+    draw.line([(col_centers[0], 308), (col_centers[-1], 308)], fill=(29, 78, 216, 180), width=2)
+    for cx in col_centers:
+        draw.ellipse([cx - 4, 308 - 4, cx + 4, 308 + 4], fill=(29, 78, 216))
+        draw_arrow(draw, (cx, 308), (cx, 330), col=(29, 78, 216), width=2, arrow_size=4)
+        
+    # 5 Domains Data (대한국사 100% 맞춤)
+    domains_data = [
+        ("01. 홈 대시보드", "종합 학습 관제", "출석 스트릭, D-Day, 오늘의 추천 기출을 한눈에 조회", [
+            ("스트릭 화면", "출석 스트릭 관리", "매일 이어지는 연속 학습과 시험 목표 D-Day 확인", False),
+            ("추천 화면", "77회 실전 모의고사", "최신 한능검 심화 50문항 실전 시험 1-Tap 즉시 진입", True),
+            ("레이더 화면", "시대별 마스터리", "선사부터 현대사까지 6대 시대별 취약 영역 조망", False)
+        ]),
+        ("02. 학습관 (서고)", "시대별 사료 바이블", "6대 시대별 핵심 요약 노트와 고해상도 유물 도감", [
+            ("요약 화면", "6대 시대별 요약", "선사·삼국·고려·조선·근대·현대사 핵심 사료 정리", True),
+            ("갤러리", "시각 유물 도감", "시험에 빈출되는 국보·보물 유물 고화질 사진 및 해설", False),
+            ("단서 사전", "사료 힌트 바이블", "사료 속 인물·연호·관직·지명 핵심 단서 사전 열람", True)
+        ]),
+        ("03. 실전 시험 센터", "공인 기출 모의고사", "실제 시험과 동일한 50문항 80분 타이머와 숏폼 10제", [
+            ("실전 50제", "77회 실전 응시", "실제 시험지와 100% 동일한 배점 및 80분 카운트다운", True),
+            ("숏폼 10제", "자투리 10분 모의고사", "출퇴근길 5분 만에 푸는 핵심 기출 압축 테스트", True),
+            ("랜덤 모드", "무작위 50제 풀이", "1,500제 기출 풀에서 무작위 50문항 추출 실전 응시", False)
+        ]),
+        ("04. 오답 볼트", "취약점 자동 인덱싱", "틀린 문제 1초 만에 자동 분류 및 주기 복습 루프", [
+            ("보관함", "오답 자동 인덱싱", "틀린 문제의 문항 번호, 시대, 정답률 자동 태깅", True),
+            ("사료 해설", "키워드 형광펜 판독", "오답 문제 사료 속 결정적 정답 키워드 형광펜 분석", True),
+            ("AI 트레이닝", "취약 시대 집중 복습", "오답만 골라 10문항씩 무한 반복 재응시 트레이닝", True)
+        ]),
+        ("05. 수험 환경 설정", "학습 편의 맞춤", "목표 급수, 음성 낭독 속도, OLED 다크 테마 설정", [
+            ("급수 설정", "목표 급수 관리", "1급/2급/3급 커트라인 설정 및 시험 일정 동기화", False),
+            ("음성 설정", "사료 TTS 배속 조절", "사료 본문 및 해설 음성 낭독 속도(1.0x~2.0x) 조절", False),
+            ("테마 설정", "OLED 다크 테마", "야간 학습 및 독서실에서 눈의 피로를 덜어주는 테마", True)
+        ])
     ]
     
-    col_w = 328
-    col_gap = 20
-    sy = 234
-    col_h = 700
-    
-    for c_idx, (t_name, t_sub, t_desc, sub_items, t_col) in enumerate(cols_data):
-        cx = 100 + c_idx * (col_w + col_gap)
-        draw.rounded_rectangle([cx, sy, cx + col_w, sy + col_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+    # Render 5 Columns (Level 1 + Level 2 Tree)
+    for c_idx, (t_name, t_sub, t_desc, containers) in enumerate(domains_data):
+        cx = cols_x[c_idx]
         
-        # Header Badge
-        draw.rounded_rectangle([cx, sy, cx + col_w, sy + 70], radius=16, fill=(248, 250, 252))
-        draw.rectangle([cx, sy + 54, cx + col_w, sy + 70], fill=(248, 250, 252))
-        draw.line([(cx, sy + 70), (cx + col_w, sy + 70)], fill=(226, 232, 240), width=1)
+        # Level 1 Column Container
+        draw.rounded_rectangle([cx, 330, cx + cw, 696], radius=10, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
         
-        draw.text((cx + 18, sy + 18), t_name, font=get_font(13.5, 'bold'), fill=(15, 23, 42))
-        draw.text((cx + 18, sy + 42), t_sub, font=get_font(10.5, 'bold'), fill=t_col)
+        # L1 Header Box (y: 330 to 398, h=68)
+        draw.rounded_rectangle([cx, 330, cx + cw, 398], radius=10, fill=(240, 246, 255), outline=(191, 219, 254), width=1)
+        draw.rectangle([cx, 386, cx + cw, 398], fill=(240, 246, 255))
+        draw.line([(cx, 398), (cx + cw, 398)], fill=(191, 219, 254), width=1)
         
-        # Tab Purpose Description
-        draw.text((cx + 18, sy + 84), t_desc, font=get_font(9.5, 'regular'), fill=(100, 116, 139))
-        draw.line([(cx + 18, sy + 130), (cx + col_w - 18, sy + 130)], fill=(241, 245, 249), width=1)
+        # L1 Title & Subtitle
+        draw.text((cx + 14, 342), t_name, font=get_font(13.5, 'bold'), fill=(15, 23, 42))
+        draw.text((cx + 14, 362), t_sub, font=get_font(10.5, 'bold'), fill=(29, 78, 216))
+        draw.text((cx + 14, 380), t_desc, font=get_font(8.5, 'regular'), fill=(100, 116, 139))
         
-        # Sub Cards
-        card_y = sy + 144
-        card_h = 160
-        for s_title, s_badge, s_detail, is_core in sub_items:
-            card_bg = (238, 242, 255) if is_core and c_idx in [0, 2, 3] else (248, 250, 252)
-            card_border = (199, 210, 254) if is_core and c_idx in [0, 2, 3] else (226, 232, 240)
-            draw.rounded_rectangle([cx + 14, card_y, cx + col_w - 14, card_y + card_h], radius=10, fill=card_bg, outline=card_border, width=1)
+        # Tree Branch Line (Vertical spine)
+        tree_x = cx + 18
+        draw.line([(tree_x, 410), (tree_x, 665)], fill=(29, 78, 216, 100), width=2)
+        
+        # 3 L2 Cards per column (card_h = 82, gap = 10)
+        card_w = cw - 32
+        card_x = cx + 32
+        cy = 414
+        card_h = 82
+        gap = 10
+        
+        for scr_type, title, desc, is_core in containers:
+            draw.line([(tree_x, cy + 20), (card_x, cy + 20)], fill=(29, 78, 216, 120), width=2)
+            draw.ellipse([tree_x - 3, cy + 20 - 3, tree_x + 3, cy + 20 + 3], fill=(29, 78, 216))
             
-            draw_pill_badge(draw, left_x=cx + 26, cy=card_y + 22, text=s_badge, font=get_font(8, 'bold'), theme='blue' if is_core else 'slate', pad_x=6, height=18)
-            draw.text((cx + 26, card_y + 48), s_title, font=get_font(12, 'bold'), fill=(15, 23, 42))
-            draw.text((cx + 26, card_y + 74), s_detail, font=get_font(9.5, 'regular'), fill=(71, 85, 105), spacing=4)
-            card_y += card_h + 16
+            card_bg = (255, 255, 255) if not is_core else (250, 252, 255)
+            card_bd = (226, 232, 240) if not is_core else (191, 219, 254)
+            draw.rounded_rectangle([card_x, cy, card_x + card_w, cy + card_h], radius=8, fill=card_bg, outline=card_bd, width=1)
+            
+            # Row 1: Friendly Korean Type tag + CORE badge
+            draw_pill_badge(draw, left_x=card_x + 14, cy=cy + 15, text=scr_type, font=get_font(8.5, 'bold'), theme='slate', pad_x=6, height=18)
+            if is_core:
+                draw_pill_badge(draw, left_x=card_x + card_w - 46, cy=cy + 15, text="핵심", font=get_font(8, 'bold'), theme='blue', pad_x=6, height=18)
+                
+            # Row 2: Title with breathing room
+            draw.text((card_x + 14, cy + 39), title, font=get_font(12, 'bold'), fill=(15, 23, 42), anchor='lm')
+            
+            # Row 3: Description in clear, friendly Korean
+            draw.text((card_x + 14, cy + 62), desc, font=get_font(9.5, 'regular'), fill=(71, 85, 105), anchor='lm')
+            
+            cy += card_h + gap
+            
+    # 3. Bottom Architecture Principles: 4 Clean, Well-Proportioned Cards!
+    bar_y = 730
+    bp_w = 415
+    bp_gap = 20
+    bp_h = 195
+    
+    pillars = [
+        ("01", "명확한 5대 메뉴 분리", "수험생이 헤매지 않고 목표 회차에 1초 만에 접근할 수 있도록 5개 핵심 메뉴를 명확하게 분리했습니다.",
+         ["· 대시보드, 기출 시험, 사료 서고를 목적별로 직관화", "· 불필요한 단계 없이 원하는 메뉴로 1초 만에 이동"]),
+        ("02", "한 손 조작 최적화", "엄지손가락이 편안하게 닿는 화면 중하단에 50:50 찬스와 선지 선택 버튼을 집중 배치했습니다.",
+         ["· 출퇴근 만원 지하철에서도 한 손으로 흔들림 없는 풀이", "· 원터치 5개 선지 마킹으로 종이 OMR 마킹 피로 해소"]),
+        ("03", "실전 사료 단서 식별", "복잡한 고문헌 사료도 핵심 키워드 형광펜으로 정답의 결정적 단서를 0.5초 만에 포착합니다.",
+         ["· 헷갈리는 함정 선지 2개를 소거하는 50:50 찬스 연동", "· 전 선지 상세 해설로 왜 오답인지 명쾌한 팩트 체크"]),
+        ("04", "100% 기기 내 오답 보관", "네트워크 통신 없이도 1,500제 기출과 오답 노트가 내 스마트폰 안에서 즉시 구동됩니다.",
+         ["· 데이터 요금 걱정 없는 100% 완전 오프라인 SQLite 볼트", "· 에빙하우스 망각곡선 주기 복습 알림으로 단기 1급 합격"])
+    ]
+    
+    for pidx, (pnum, ptitle, pdesc, psub_lines) in enumerate(pillars):
+        px = 100 + pidx * (bp_w + bp_gap)
+        draw.rounded_rectangle([px, bar_y, px + bp_w, bar_y + bp_h], radius=12, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+        
+        # Number chip + Title
+        draw.rounded_rectangle([px + 18, bar_y + 18, px + 52, bar_y + 44], radius=6, fill=(239, 246, 255), outline=(191, 219, 254), width=1)
+        draw.text((px + 35, bar_y + 31), pnum, font=get_font(11, 'bold'), fill=(29, 78, 216), anchor='mm')
+        
+        draw.text((px + 62, bar_y + 31), ptitle, font=get_font(13.5, 'bold'), fill=(15, 23, 42), anchor='lm')
+        draw.line([(px + 18, bar_y + 54), (px + bp_w - 18, bar_y + 54)], fill=(241, 245, 249), width=1)
+        
+        # Description
+        words = pdesc.split(' ')
+        lines = []
+        cur_l = ""
+        for w in words:
+            test = (cur_l + ' ' + w).strip()
+            if draw.textlength(test, font=get_font(10.5, 'regular')) <= bp_w - 36:
+                cur_l = test
+            else:
+                lines.append(cur_l)
+                cur_l = w
+        if cur_l:
+            lines.append(cur_l)
+            
+        dy = bar_y + 70
+        for l in lines[:2]:
+            draw.text((px + 18, dy), l, font=get_font(10.5, 'regular'), fill=(51, 65, 85))
+            dy += 20
+            
+        # Bullet details
+        dy += 6
+        for subl in psub_lines:
+            draw.text((px + 18, dy), subl, font=get_font(9.5, 'medium'), fill=(100, 116, 139))
+            dy += 18
             
     draw_slide_footer(draw, 4)
     base.save(f'{OUT_DIR}/slide_04.png')
-    print("SAVED new Slide 04 to both locations successfully!")
+    print("SAVED new Slide 04 with exact Smart DCA Tree & 4-Pillar Layout!")
 
 
 def make_slide_05():

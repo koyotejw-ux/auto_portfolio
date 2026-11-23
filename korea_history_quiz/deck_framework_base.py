@@ -213,3 +213,4 @@ def draw_gradient_bar(base, bbox, color_start, color_end, radius=6):
     base.paste(bar_img, (x1, y1), mask)
 
 print("Core framework for Korea History Quiz initialized.")
+
