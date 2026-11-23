@@ -711,31 +711,40 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Focus(
+      body: KeyboardListener(
         focusNode: _keyboardFocusNode,
         autofocus: true,
-        onKeyEvent: (node, event) {
+        onKeyEvent: (event) {
           if (event is KeyDownEvent) {
+            // When an inline text field is actively editing or typing in inspector, let the text field handle the key
+            final currentFocus = FocusManager.instance.primaryFocus;
+            final isTextInput = currentFocus != null &&
+                currentFocus.context != null &&
+                (currentFocus.context!.widget is EditableText ||
+                 currentFocus.debugLabel?.contains('EditableText') == true);
+
             final isCtrl = HardwareKeyboard.instance.isControlPressed ||
                 HardwareKeyboard.instance.isMetaPressed;
             final isShift = HardwareKeyboard.instance.isShiftPressed;
             final isAlt = HardwareKeyboard.instance.isAltPressed;
 
+            // If user is typing in a text field, only allow Ctrl shortcuts or Escape
+            if (isTextInput && !isCtrl && event.logicalKey != LogicalKeyboardKey.escape) {
+              return;
+            }
+
             // 1. Copy / Paste / Duplicate
             if (isCtrl && event.logicalKey == LogicalKeyboardKey.keyC) {
               if (_selectedElement != null) {
                 _copySelected();
-                return KeyEventResult.handled;
               }
             } else if (isCtrl && event.logicalKey == LogicalKeyboardKey.keyV) {
               if (_clipboardElement != null) {
                 _pasteClipboard();
-                return KeyEventResult.handled;
               }
             } else if (isCtrl && event.logicalKey == LogicalKeyboardKey.keyD) {
               if (_selectedElement != null) {
                 _duplicateSelected();
-                return KeyEventResult.handled;
               }
             // 2. Undo / Redo
             } else if (isCtrl && event.logicalKey == LogicalKeyboardKey.keyZ) {
@@ -744,10 +753,8 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
               } else {
                 _undo();
               }
-              return KeyEventResult.handled;
             } else if (isCtrl && event.logicalKey == LogicalKeyboardKey.keyY) {
               _redo();
-              return KeyEventResult.handled;
             // 3. Group / Ungroup
             } else if (isCtrl && event.logicalKey == LogicalKeyboardKey.keyG) {
               if (isShift) {
@@ -755,16 +762,13 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
               } else {
                 _groupSelected();
               }
-              return KeyEventResult.handled;
             // 4. AutoLayout Toggle (Shift + A)
             } else if (isShift && event.logicalKey == LogicalKeyboardKey.keyA) {
               _toggleAutoLayout();
-              return KeyEventResult.handled;
             // 5. Delete (Delete or Backspace)
-            } else if (event.logicalKey == LogicalKeyboardKey.delete || event.logicalKey == LogicalKeyboardKey.backspace) {
+            } else if (event.logicalKey == LogicalKeyboardKey.delete || (!isTextInput && event.logicalKey == LogicalKeyboardKey.backspace)) {
               if (_selectedElement != null) {
                 _deleteSelected();
-                return KeyEventResult.handled;
               }
             // 5.1 Select All (Ctrl + A)
             } else if (isCtrl && event.logicalKey == LogicalKeyboardKey.keyA) {
@@ -776,7 +780,6 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
                     duration: Duration(seconds: 1),
                   ),
                 );
-                return KeyEventResult.handled;
               }
             // 5.2 Layout Grid Toggle (Ctrl + Shift + 4 or Ctrl + ')
             } else if ((isCtrl && isShift && event.logicalKey == LogicalKeyboardKey.digit4) ||
@@ -789,13 +792,11 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
                   backgroundColor: const Color(0xFF0052FF),
                 ),
               );
-              return KeyEventResult.handled;
             // 5.3 Lock / Unlock Selected (Ctrl + Shift + L)
             } else if (isCtrl && isShift && event.logicalKey == LogicalKeyboardKey.keyL) {
               if (_selectedElement != null) {
                 _recordUndoState();
                 setState(() => _selectedElement!.isLocked = !_selectedElement!.isLocked);
-                return KeyEventResult.handled;
               }
             // 5.4 Hide / Show Selected (Ctrl + Shift + H)
             } else if (isCtrl && isShift && event.logicalKey == LogicalKeyboardKey.keyH) {
@@ -805,57 +806,50 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
                   _selectedElement!.isVisible = !_selectedElement!.isVisible;
                   if (!_selectedElement!.isVisible) _selectedElement = null;
                 });
-                return KeyEventResult.handled;
               }
             // 5.5 Show Figma Shortcuts CheatSheet (Ctrl + / or ?)
             } else if (isCtrl && (event.logicalKey == LogicalKeyboardKey.slash || event.logicalKey == LogicalKeyboardKey.question)) {
               _showShortcutsDialog();
-              return KeyEventResult.handled;
             // 6. Layer Stacking Order: Bring to Front (]) / Send to Back ([)
             } else if (event.logicalKey == LogicalKeyboardKey.bracketRight) {
               if (_selectedElement != null) {
                 _bringToFront();
-                return KeyEventResult.handled;
               }
             } else if (event.logicalKey == LogicalKeyboardKey.bracketLeft) {
               if (_selectedElement != null) {
                 _sendToBack();
-                return KeyEventResult.handled;
               }
             // 7. Figma Zoom Shortcuts (Ctrl + + / Ctrl + - / Shift + 1 / Shift + 2 / Shift + 0)
             } else if (isCtrl && (event.logicalKey == LogicalKeyboardKey.equal || event.logicalKey == LogicalKeyboardKey.numpadAdd)) {
               setState(() {
                 if (_zoomScale < 2.0) _zoomScale += 0.05;
               });
-              return KeyEventResult.handled;
             } else if (isCtrl && (event.logicalKey == LogicalKeyboardKey.minus || event.logicalKey == LogicalKeyboardKey.numpadSubtract)) {
               setState(() {
                 if (_zoomScale > 0.2) _zoomScale -= 0.05;
               });
-              return KeyEventResult.handled;
             } else if (isShift && (event.logicalKey == LogicalKeyboardKey.digit1 || event.logicalKey == LogicalKeyboardKey.digit0)) {
               setState(() => _zoomScale = 0.55); // Zoom to Fit
-              return KeyEventResult.handled;
             // 8. Tool Mode Shortcuts (V, T, R, F, H)
-            } else if (!isCtrl && !isShift && !isAlt) {
+            } else if (!isCtrl && !isShift && !isAlt && !isTextInput) {
               if (event.logicalKey == LogicalKeyboardKey.keyV) {
                 setState(() => _currentToolMode = FigmaToolMode.select);
-                return KeyEventResult.handled;
               } else if (event.logicalKey == LogicalKeyboardKey.keyT) {
+                setState(() => _currentToolMode = FigmaToolMode.text);
                 _insertElement(ElementType.text);
-                return KeyEventResult.handled;
               } else if (event.logicalKey == LogicalKeyboardKey.keyR) {
+                setState(() => _currentToolMode = FigmaToolMode.rect);
                 _insertElement(ElementType.shape);
-                return KeyEventResult.handled;
               } else if (event.logicalKey == LogicalKeyboardKey.keyF) {
+                setState(() => _currentToolMode = FigmaToolMode.frame);
                 _addNewSlide();
-                return KeyEventResult.handled;
               } else if (event.logicalKey == LogicalKeyboardKey.keyH) {
                 setState(() => _currentToolMode = FigmaToolMode.hand);
-                return KeyEventResult.handled;
               } else if (event.logicalKey == LogicalKeyboardKey.escape) {
-                setState(() => _selectedElement = null);
-                return KeyEventResult.handled;
+                setState(() {
+                  _selectedElement = null;
+                  _currentToolMode = FigmaToolMode.select;
+                });
               // Tab / Shift+Tab to Cycle Elements on Canvas
               } else if (event.logicalKey == LogicalKeyboardKey.tab) {
                 if (_currentSlide.elements.isNotEmpty) {
@@ -868,14 +862,13 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
                       _selectedElement = _currentSlide.elements[nextIdx];
                     }
                   });
-                  return KeyEventResult.handled;
                 }
               }
             // 9. Nudge Arrow Keys (1px / 10px)
-            } else if (event.logicalKey == LogicalKeyboardKey.arrowLeft ||
+            } else if (!isTextInput && (event.logicalKey == LogicalKeyboardKey.arrowLeft ||
                 event.logicalKey == LogicalKeyboardKey.arrowRight ||
                 event.logicalKey == LogicalKeyboardKey.arrowUp ||
-                event.logicalKey == LogicalKeyboardKey.arrowDown) {
+                event.logicalKey == LogicalKeyboardKey.arrowDown)) {
               if (_selectedElement != null && !_selectedElement!.isLocked) {
                 final delta = isShift ? 10.0 : 1.0;
                 _recordUndoState();
@@ -885,11 +878,9 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
                   if (event.logicalKey == LogicalKeyboardKey.arrowUp) _selectedElement!.y -= delta;
                   if (event.logicalKey == LogicalKeyboardKey.arrowDown) _selectedElement!.y += delta;
                 });
-                return KeyEventResult.handled;
               }
             }
           }
-          return KeyEventResult.ignored;
         },
         child: Column(
           children: [
@@ -1317,104 +1308,6 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
             visualDensity: VisualDensity.compact,
             padding: EdgeInsets.zero,
             constraints: const BoxConstraints(minWidth: 20, minHeight: 20),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSlideNavigator() {
-    return Container(
-      width: 220,
-      decoration: const BoxDecoration(
-        color: Color(0xFF1E1E1E), // Figma UI3 Dark Slate
-        border: Border(right: BorderSide(color: Color(0xFF2C2C2C))),
-      ),
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-            decoration: const BoxDecoration(
-              border: Border(bottom: BorderSide(color: Color(0xFF2C2C2C))),
-            ),
-            child: Row(
-              children: [
-                const Icon(Icons.description_outlined, color: Color(0xFFA3A3A3), size: 14),
-                const SizedBox(width: 6),
-                const Expanded(
-                  child: Text(
-                    'Pages / Frames',
-                    style: TextStyle(color: Colors.white, fontSize: 11.5, fontWeight: FontWeight.bold),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.add, size: 16, color: Color(0xFF38BDF8)),
-                  onPressed: _addNewSlide,
-                  tooltip: '새 페이지 추가',
-                  visualDensity: VisualDensity.compact,
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(minWidth: 22, minHeight: 22),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-              itemCount: _project.slides.length,
-              itemBuilder: (context, index) {
-                final slide = _project.slides[index];
-                final isActive = index == _activeSlideIndex;
-
-                return GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      _activeSlideIndex = index;
-                      _selectedElement = null;
-                    });
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.only(bottom: 4),
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: isActive ? const Color(0xFF2C2C2C) : Colors.transparent,
-                      borderRadius: BorderRadius.circular(6),
-                      border: Border.all(
-                        color: isActive ? const Color(0xFF0052FF) : Colors.transparent,
-                        width: 1,
-                      ),
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.grid_view,
-                          size: 13,
-                          color: isActive ? const Color(0xFF0052FF) : const Color(0xFF737373),
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            slide.title,
-                            style: TextStyle(
-                              color: isActive ? Colors.white : const Color(0xFFA3A3A3),
-                              fontSize: 11.5,
-                              fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        Text(
-                          '${slide.elements.length}',
-                          style: const TextStyle(color: Color(0xFF525252), fontSize: 10),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
           ),
         ],
       ),
