@@ -119,12 +119,32 @@ class _CanvasEditorState extends State<CanvasEditor> {
                     child: Stack(
                       clipBehavior: Clip.none,
                       children: [
-                        // Slide Background Click to Deselect
+                        // Slide Background Click to Deselect & Drop Target from AutoLayout to Canvas
                         Positioned.fill(
-                          child: GestureDetector(
-                            onTap: () => widget.onElementSelected(null),
-                            behavior: HitTestBehavior.opaque,
-                            child: const SizedBox.expand(),
+                          child: DragTarget<DeckElement>(
+                            onWillAcceptWithDetails: (details) => true,
+                            onAcceptWithDetails: (details) {
+                              setState(() {
+                                final dropped = details.data;
+                                final oldParent = _findParentOf(widget.slide.elements, dropped);
+                                if (oldParent != null) {
+                                  oldParent.children.removeWhere((c) => c.id == dropped.id);
+                                  oldParent.applyAutoLayout();
+                                  dropped.x = (oldParent.x + dropped.x).clamp(50.0, 1800.0);
+                                  dropped.y = (oldParent.y + dropped.y + 60.0).clamp(50.0, 1000.0);
+                                  widget.slide.elements.add(dropped);
+                                  widget.onElementSelected(dropped);
+                                }
+                              });
+                              widget.onSlideModified();
+                            },
+                            builder: (context, candidateData, rejectedData) {
+                              return GestureDetector(
+                                onTap: () => widget.onElementSelected(null),
+                                behavior: HitTestBehavior.opaque,
+                                child: const SizedBox.expand(),
+                              );
+                            },
                           ),
                         ),
 
@@ -327,14 +347,7 @@ class _CanvasEditorState extends State<CanvasEditor> {
       return Text(
         plainTitle,
         textAlign: align,
-        style: TextStyle(
-          fontFamily: ts.fontFamily,
-          color: ts.color,
-          fontSize: ts.fontSize,
-          fontWeight: ts.fontWeight,
-          letterSpacing: ts.letterSpacing,
-          height: ts.height,
-        ),
+        style: ts.toTextStyle(),
       );
     }
 
@@ -412,75 +425,95 @@ class _CanvasEditorState extends State<CanvasEditor> {
     final badge = elem.props['badge'] as String?;
     final category = elem.props['category'] as String?;
     final title = elem.props['title'] as String? ?? elem.name;
+    final ts = elem.textStyle;
 
     if (num != null && num.isNotEmpty) {
       return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        decoration: BoxDecoration(
-          color: const Color(0xFFF1F5F9),
-          borderRadius: BorderRadius.circular(6),
-        ),
+        padding: EdgeInsets.all(elem.boxStyle.padding > 0 ? elem.boxStyle.padding : 4),
+        decoration: elem.boxStyle.backgroundColor != Colors.transparent || elem.boxStyle.borderWidth > 0
+            ? elem.boxStyle.toDecoration()
+            : BoxDecoration(
+                color: const Color(0xFFF1F5F9),
+                borderRadius: BorderRadius.circular(elem.boxStyle.borderRadius > 0 ? elem.boxStyle.borderRadius : 6),
+              ),
         child: Text(
           num,
-          style: const TextStyle(
-            color: Color(0xFF0052FF),
-            fontSize: 11,
-            fontWeight: FontWeight.bold,
-          ),
+          style: ts.fontSize != 16.0 || ts.color != const Color(0xFF0F172A)
+              ? ts.toTextStyle()
+              : const TextStyle(
+                  color: Color(0xFF0052FF),
+                  fontSize: 11,
+                  fontWeight: FontWeight.bold,
+                ),
         ),
       );
     }
 
     if (tag != null && tag.isNotEmpty) {
       return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        decoration: BoxDecoration(
-          color: const Color(0xFFEFF6FF),
-          borderRadius: BorderRadius.circular(12),
-        ),
+        padding: EdgeInsets.all(elem.boxStyle.padding > 0 ? elem.boxStyle.padding : 4),
+        decoration: elem.boxStyle.backgroundColor != Colors.transparent || elem.boxStyle.borderWidth > 0
+            ? elem.boxStyle.toDecoration()
+            : BoxDecoration(
+                color: const Color(0xFFEFF6FF),
+                borderRadius: BorderRadius.circular(elem.boxStyle.borderRadius > 0 ? elem.boxStyle.borderRadius : 12),
+              ),
         child: Text(
           tag,
-          style: const TextStyle(
-            color: Color(0xFF0052FF),
-            fontSize: 10,
-            fontWeight: FontWeight.bold,
-          ),
+          style: ts.fontSize != 16.0 || ts.color != const Color(0xFF0F172A)
+              ? ts.toTextStyle()
+              : const TextStyle(
+                  color: Color(0xFF0052FF),
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                ),
         ),
       );
     }
 
     if (badge != null && badge.isNotEmpty) {
       return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
-        decoration: BoxDecoration(
-          color: const Color(0xFFEFF6FF),
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: const Color(0xFFBFDBFE)),
+        padding: EdgeInsets.symmetric(
+          horizontal: elem.boxStyle.padding > 0 ? elem.boxStyle.padding : 14,
+          vertical: elem.boxStyle.padding > 0 ? elem.boxStyle.padding * 0.4 : 5,
         ),
+        decoration: elem.boxStyle.backgroundColor != Colors.transparent || elem.boxStyle.borderWidth > 0
+            ? elem.boxStyle.toDecoration()
+            : BoxDecoration(
+                color: const Color(0xFFEFF6FF),
+                borderRadius: BorderRadius.circular(elem.boxStyle.borderRadius > 0 ? elem.boxStyle.borderRadius : 20),
+                border: Border.all(color: const Color(0xFFBFDBFE)),
+              ),
         child: Text(
           badge,
-          style: const TextStyle(
-            color: Color(0xFF0052FF),
-            fontSize: 11,
-            fontWeight: FontWeight.bold,
-          ),
+          style: ts.fontSize != 16.0 || ts.color != const Color(0xFF0F172A)
+              ? ts.toTextStyle()
+              : const TextStyle(
+                  color: Color(0xFF0052FF),
+                  fontSize: 11,
+                  fontWeight: FontWeight.bold,
+                ),
         ),
       );
     }
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: const Color(0xFFEFF6FF),
-        borderRadius: BorderRadius.circular(6),
-      ),
+      padding: EdgeInsets.all(elem.boxStyle.padding > 0 ? elem.boxStyle.padding : 4),
+      decoration: elem.boxStyle.backgroundColor != Colors.transparent || elem.boxStyle.borderWidth > 0
+          ? elem.boxStyle.toDecoration()
+          : BoxDecoration(
+              color: const Color(0xFFEFF6FF),
+              borderRadius: BorderRadius.circular(elem.boxStyle.borderRadius > 0 ? elem.boxStyle.borderRadius : 6),
+            ),
       child: Text(
         category ?? title,
-        style: const TextStyle(
-          color: Color(0xFF0052FF),
-          fontSize: 12,
-          fontWeight: FontWeight.bold,
-        ),
+        style: ts.fontSize != 16.0 || ts.color != const Color(0xFF0F172A)
+            ? ts.toTextStyle()
+            : const TextStyle(
+                color: Color(0xFF0052FF),
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+              ),
       ),
     );
   }
@@ -1084,12 +1117,14 @@ class _CanvasEditorState extends State<CanvasEditor> {
                     children: [
                       Text(
                         title,
-                        style: TextStyle(
-                          fontFamily: elem.textStyle.fontFamily,
-                          color: elem.textStyle.color,
-                          fontSize: elem.textStyle.fontSize > 16 ? elem.textStyle.fontSize : 13,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: elem.textStyle.fontSize > 16 || elem.textStyle.letterSpacing != 0.0 || elem.textStyle.height != 1.4
+                            ? elem.textStyle.toTextStyle()
+                            : TextStyle(
+                                fontFamily: elem.textStyle.fontFamily,
+                                color: elem.textStyle.color,
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold,
+                              ),
                       ),
                       if (desc != null && desc.isNotEmpty) ...[
                         const SizedBox(height: 3),
@@ -1112,12 +1147,7 @@ class _CanvasEditorState extends State<CanvasEditor> {
               children: [
                 Text(
                   title,
-                  style: TextStyle(
-                    fontFamily: elem.textStyle.fontFamily,
-                    fontSize: elem.textStyle.fontSize,
-                    fontWeight: elem.textStyle.fontWeight,
-                    color: elem.textStyle.color,
-                  ),
+                  style: elem.textStyle.toTextStyle(),
                 ),
                 if (desc != null && desc.isNotEmpty) ...[
                   const SizedBox(height: 8),
@@ -1179,50 +1209,87 @@ class _CanvasEditorState extends State<CanvasEditor> {
     );
   }
 
+    // Drag-and-drop helpers for Figma-style nesting & reordering
+  DeckElement? _findParentOf(List<DeckElement> elements, DeckElement target) {
+    for (final elem in elements) {
+      if (elem.children.any((c) => c.id == target.id)) return elem;
+      final found = _findParentOf(elem.children, target);
+      if (found != null) return found;
+    }
+    return null;
+  }
+
+  void _removeElementFromHierarchy(List<DeckElement> elements, DeckElement target) {
+    elements.removeWhere((e) => e.id == target.id);
+    for (final elem in elements) {
+      _removeElementFromHierarchy(elem.children, target);
+    }
+  }
+
+  void _reorderOrMoveChild(DeckElement container, DeckElement draggedItem, int targetIndex) {
+    if (container.id == draggedItem.id) return;
+    setState(() {
+      final oldParent = _findParentOf(widget.slide.elements, draggedItem);
+      if (oldParent != null) {
+        oldParent.children.removeWhere((c) => c.id == draggedItem.id);
+        oldParent.applyAutoLayout();
+      } else {
+        widget.slide.elements.removeWhere((e) => e.id == draggedItem.id);
+      }
+
+      final insertIdx = targetIndex.clamp(0, container.children.length);
+      container.children.insert(insertIdx, draggedItem);
+      container.applyAutoLayout();
+      widget.onElementSelected(draggedItem);
+    });
+    widget.onSlideModified();
+  }
+
   Widget _buildGroup(DeckElement elem) {
     if (elem.children.isEmpty) {
-      return Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: const Color(0xFF38BDF8).withOpacity(0.4), width: 1),
-          borderRadius: BorderRadius.circular(elem.boxStyle.borderRadius),
-        ),
-        child: Center(
-          child: Text(
-            elem.name,
-            style: const TextStyle(color: Color(0xFF0284C7), fontSize: 11, fontWeight: FontWeight.bold),
-          ),
-        ),
+      return DragTarget<DeckElement>(
+        onWillAcceptWithDetails: (details) => details.data.id != elem.id,
+        onAcceptWithDetails: (details) {
+          _reorderOrMoveChild(elem, details.data, elem.children.length);
+        },
+        builder: (context, candidateData, rejectedData) {
+          final isHovered = candidateData.isNotEmpty;
+          return Container(
+            decoration: BoxDecoration(
+              color: isHovered ? const Color(0xFF0052FF).withOpacity(0.08) : Colors.transparent,
+              border: Border.all(
+                color: isHovered ? const Color(0xFF0052FF) : const Color(0xFF38BDF8).withOpacity(0.4),
+                width: isHovered ? 2 : 1,
+              ),
+              borderRadius: BorderRadius.circular(elem.boxStyle.borderRadius),
+            ),
+            child: Center(
+              child: Text(
+                isHovered ? '여기에 드롭하여 요소 추가' : elem.name,
+                style: const TextStyle(color: Color(0xFF0284C7), fontSize: 11, fontWeight: FontWeight.bold),
+              ),
+            ),
+          );
+        },
       );
     }
 
     if (elem.autoLayoutDirection == AutoLayoutDirection.horizontal) {
       return Padding(
         padding: EdgeInsets.all(elem.autoLayoutPadding),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: elem.children.map((child) {
-            final isChildSelected = widget.selectedElement?.id == child.id;
-            return Padding(
-              padding: EdgeInsets.only(right: elem.autoLayoutSpacing),
-              child: GestureDetector(
-                onTap: () => widget.onElementSelected(child),
-                behavior: HitTestBehavior.opaque,
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: isChildSelected
-                        ? Border.all(color: const Color(0xFF0052FF), width: 2)
-                        : null,
-                  ),
-                  child: SizedBox(
-                    width: child.width,
-                    height: child.height,
-                    child: _buildInnerElement(child),
-                  ),
-                ),
-              ),
-            );
-          }).toList(),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          physics: const NeverScrollableScrollPhysics(),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              for (int idx = 0; idx < elem.children.length; idx++) ...[
+                _buildAutoLayoutChildWrapper(elem, elem.children[idx], idx),
+              ],
+            ],
+          ),
         ),
       );
     } else if (elem.autoLayoutDirection == AutoLayoutDirection.vertical) {
@@ -1234,28 +1301,11 @@ class _CanvasEditorState extends State<CanvasEditor> {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: elem.children.map((child) {
-              final isChildSelected = widget.selectedElement?.id == child.id;
-              return Padding(
-                padding: EdgeInsets.only(bottom: elem.autoLayoutSpacing),
-                child: GestureDetector(
-                  onTap: () => widget.onElementSelected(child),
-                  behavior: HitTestBehavior.opaque,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: isChildSelected
-                          ? Border.all(color: const Color(0xFF0052FF), width: 2)
-                          : null,
-                    ),
-                    child: SizedBox(
-                      width: child.width,
-                      height: child.height,
-                      child: _buildInnerElement(child),
-                    ),
-                  ),
-                ),
-              );
-            }).toList(),
+            children: [
+              for (int idx = 0; idx < elem.children.length; idx++) ...[
+                _buildAutoLayoutChildWrapper(elem, elem.children[idx], idx),
+              ],
+            ],
           ),
         ),
       );
@@ -1294,5 +1344,73 @@ class _CanvasEditorState extends State<CanvasEditor> {
       }).toList(),
     );
   }
-}
 
+  Widget _buildAutoLayoutChildWrapper(DeckElement parent, DeckElement child, int index) {
+    final isChildSelected = widget.selectedElement?.id == child.id;
+    final isHorizontal = parent.autoLayoutDirection == AutoLayoutDirection.horizontal;
+
+    return DragTarget<DeckElement>(
+      onWillAcceptWithDetails: (details) => details.data.id != child.id,
+      onAcceptWithDetails: (details) {
+        _reorderOrMoveChild(parent, details.data, index);
+      },
+      builder: (context, candidateData, rejectedData) {
+        final isTargetHovered = candidateData.isNotEmpty;
+
+        Widget contentWidget = Container(
+          decoration: BoxDecoration(
+            border: isTargetHovered
+                ? Border.all(color: const Color(0xFF3B82F6), width: 2)
+                : (isChildSelected
+                    ? Border.all(color: const Color(0xFF0052FF), width: 2)
+                    : null),
+          ),
+          child: SizedBox(
+            width: child.width,
+            height: child.height,
+            child: _buildInnerElement(child),
+          ),
+        );
+
+        return Padding(
+          padding: EdgeInsets.only(
+            right: isHorizontal ? parent.autoLayoutSpacing : 0.0,
+            bottom: !isHorizontal ? parent.autoLayoutSpacing : 0.0,
+          ),
+          child: Draggable<DeckElement>(
+            data: child,
+            feedback: Material(
+              color: Colors.transparent,
+              elevation: 6,
+              child: Opacity(
+                opacity: 0.85,
+                child: Container(
+                  padding: const EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.9),
+                    border: Border.all(color: const Color(0xFF0052FF), width: 2),
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: SizedBox(
+                    width: child.width,
+                    height: child.height,
+                    child: _buildInnerElement(child),
+                  ),
+                ),
+              ),
+            ),
+            childWhenDragging: Opacity(
+              opacity: 0.25,
+              child: contentWidget,
+            ),
+            child: GestureDetector(
+              onTap: () => widget.onElementSelected(child),
+              behavior: HitTestBehavior.opaque,
+              child: contentWidget,
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
