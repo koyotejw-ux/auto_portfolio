@@ -14,6 +14,7 @@ class FigmaLayersPanel extends StatefulWidget {
   final VoidCallback? onCopySelected;
   final VoidCallback? onPasteSelected;
   final bool canPaste;
+  final VoidCallback? onToggleMainComponent;
 
   const FigmaLayersPanel({
     super.key,
@@ -28,6 +29,7 @@ class FigmaLayersPanel extends StatefulWidget {
     this.onCopySelected,
     this.onPasteSelected,
     this.canPaste = false,
+    this.onToggleMainComponent,
   });
 
   @override
@@ -110,6 +112,22 @@ class _FigmaLayersPanelState extends State<FigmaLayersPanel> {
                     padding: EdgeInsets.zero,
                     constraints: const BoxConstraints(minWidth: 20, minHeight: 20),
                     onPressed: widget.canPaste ? widget.onPasteSelected : null,
+                  ),
+                // Create Component (Ctrl+Alt+K)
+                if (widget.onToggleMainComponent != null)
+                  IconButton(
+                    icon: Icon(
+                      Icons.auto_awesome,
+                      size: 14,
+                      color: widget.selectedElement?.isComponent == true ? const Color(0xFFA78BFA) : const Color(0xFF94A3B8),
+                    ),
+                    tooltip: widget.selectedElement?.isComponent == true
+                        ? '메인 컴포넌트 해제'
+                        : '메인 컴포넌트로 등록 (Ctrl+Alt+K)',
+                    visualDensity: VisualDensity.compact,
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(minWidth: 20, minHeight: 20),
+                    onPressed: widget.selectedElement != null ? widget.onToggleMainComponent : null,
                   ),
                 // Group button (Ctrl+G)
                 IconButton(
@@ -244,14 +262,22 @@ class _FigmaLayersPanelState extends State<FigmaLayersPanel> {
                     else
                       const SizedBox(width: 8),
 
-                    // Icon
+                    // Icon (Figma Component: Purple Diamond / Instance: Empty Diamond)
                     Icon(
-                      hasChildren
-                          ? (isAutoLayout ? Icons.view_stream : Icons.folder_outlined)
-                          : _getElementIcon(elem.type),
-                      color: isSelected
-                          ? const Color(0xFF38BDF8)
-                          : (elem.isVisible ? const Color(0xFF94A3B8) : const Color(0xFF475569)),
+                      elem.isComponent
+                          ? Icons.auto_awesome
+                          : (elem.componentId != null
+                              ? Icons.diamond_outlined
+                              : (hasChildren
+                                  ? (isAutoLayout ? Icons.view_stream : Icons.folder_outlined)
+                                  : _getElementIcon(elem.type))),
+                      color: elem.isComponent
+                          ? const Color(0xFFA78BFA)
+                          : (elem.componentId != null
+                              ? const Color(0xFF60A5FA)
+                              : (isSelected
+                                  ? const Color(0xFF38BDF8)
+                                  : (elem.isVisible ? const Color(0xFF94A3B8) : const Color(0xFF475569)))),
                       size: 14,
                     ),
                     const SizedBox(width: 6),

@@ -486,18 +486,21 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
     if (_clipboardElement == null) return;
     _recordUndoState();
     setState(() {
-      final pasted = _clipboardElement!.deepClone(deltaX: 32.0, deltaY: 32.0);
+      // If copying a Main Component, pasting it creates a linked Instance
+      final pasted = _clipboardElement!.deepClone(deltaX: 32.0, deltaY: 32.0, makeInstance: true);
       _currentSlide.elements.add(pasted);
       _selectedElement = pasted;
-      _clipboardElement = pasted.deepClone(deltaX: 0, deltaY: 0);
+      _clipboardElement = pasted.deepClone(deltaX: 0, deltaY: 0, makeInstance: true);
     });
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-          '컴포넌트 [${_selectedElement!.name}] 붙여넣기 완료!',
+          _selectedElement!.componentId != null
+              ? '컴포넌트 인스턴스 [${_selectedElement!.name}] 붙여넣기 완료!'
+              : '요소 [${_selectedElement!.name}] 붙여넣기 완료!',
           style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
         ),
-        backgroundColor: const Color(0xFF0052FF),
+        backgroundColor: _selectedElement!.componentId != null ? const Color(0xFF7C3AED) : const Color(0xFF0052FF),
         duration: const Duration(seconds: 2),
         behavior: SnackBarBehavior.floating,
       ),
@@ -508,10 +511,119 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
     if (_selectedElement == null) return;
     _recordUndoState();
     setState(() {
-      final duplicated = _selectedElement!.deepClone(deltaX: 24.0, deltaY: 24.0);
+      // Duplicating a Component creates an Instance
+      final duplicated = _selectedElement!.deepClone(deltaX: 24.0, deltaY: 24.0, makeInstance: true);
       _currentSlide.elements.add(duplicated);
       _selectedElement = duplicated;
     });
+  }
+
+  void _toggleMainComponent() {
+    if (_selectedElement == null) return;
+    _recordUndoState();
+    setState(() {
+      final elem = _selectedElement!;
+      if (elem.isComponent) {
+        elem.isComponent = false;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('메인 컴포넌트 설정이 해제되었습니다.'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      } else {
+        elem.isComponent = true;
+        elem.componentId = null; // Cannot be an instance of another if it is master
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Row(
+              children: [
+                const Icon(Icons.auto_awesome, color: Color(0xFFA78BFA), size: 16),
+                const SizedBox(width: 8),
+                Text('메인 컴포넌트 [${elem.name}] 생성 완료! (인스턴스 복제 가능)'),
+              ],
+            ),
+            backgroundColor: const Color(0xFF7C3AED),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    });
+  }
+
+  void _editMainComponent() {
+    if (_selectedElement == null || _selectedElement!.componentId == null) return;
+    final compId = _selectedElement!.componentId!;
+    final master = _project.findMasterComponent(compId);
+    if (master != null) {
+      // Find which slide has the master component
+      for (int i = 0; i < _project.slides.length; i++) {
+        final slide = _project.slides[i];
+        if (slide.elements.any((e) => e.id == compId)) {
+          setState(() {
+            _activeSlideIndex = i;
+            _selectedElement = master;
+            _selectedElementIds = {master.id};
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('메인 컴포넌트 [${master.name}] 로 이동하여 편집 모드로 진입했습니다.'),
+              backgroundColor: const Color(0xFF7C3AED),
+              duration: const Duration(seconds: 2),
+            ),
+          );
+          return;
+        }
+      }
+    } else {
+      // Master might be on external/deleted slide: offer to promote this instance to Master
+      setState(() {
+        _selectedElement!.isComponent = true;
+        _selectedElement!.componentId = null;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('원본 메인 컴포넌트를 찾을 수 없어 현재 요소를 새로운 메인 컴포넌트로 승격했습니다.'),
+          backgroundColor: Color(0xFF7C3AED),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
+  }
+
+  void _detachInstance() {
+    if (_selectedElement == null || _selectedElement!.componentId == null) return;
+    _recordUndoState();
+    setState(() {
+      _selectedElement!.componentId = null;
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('컴포넌트 인스턴스 연결이 분해(Detach)되었습니다.'),
+        duration: Duration(seconds: 2),
+      ),
+    );
+  }
+
+  void _pushChangesToInstances() {
+    if (_selectedElement == null) return;
+    final master = _selectedElement!.isComponent
+        ? _selectedElement!
+        : (_selectedElement!.componentId != null
+            ? _project.findMasterComponent(_selectedElement!.componentId!)
+            : null);
+
+    if (master == null) return;
+    _recordUndoState();
+    final updatedCount = _project.syncComponentInstances(master);
+    setState(() {});
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('컴포넌트 변경사항이 전체 슬라이드의 인스턴스($updatedCount개)에 일괄 동기화되었습니다!'),
+        backgroundColor: const Color(0xFF7C3AED),
+        duration: const Duration(seconds: 2),
+      ),
+    );
   }
 
   void _deleteSelected() {
@@ -843,6 +955,7 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
                 _ShortcutItem(keys: 'Ctrl + X', desc: '선택 요소 오려내기 / 잘라내기 (Cut)'),
                 _ShortcutItem(keys: 'Ctrl + Alt + C', desc: '속성 / 스타일만 복사 (Copy Properties)'),
                 _ShortcutItem(keys: 'Ctrl + Alt + V', desc: '속성 / 스타일만 붙여넣기 (Paste Properties)'),
+                _ShortcutItem(keys: 'Ctrl + Alt + K', desc: '메인 컴포넌트 생성 / 해제 (Create Component)'),
                 _ShortcutItem(keys: 'Ctrl + D', desc: '제자리 오프셋 복제 (Duplicate)'),
                 _ShortcutItem(keys: 'Ctrl + Z / Ctrl + Y', desc: '실행 취소 (Undo) / 다시 실행 (Redo)'),
                 _ShortcutItem(keys: '] / [', desc: '맨 앞으로 가져오기 / 맨 뒤로 보내기'),
@@ -917,6 +1030,9 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
               }
             } else if (isCtrl && event.logicalKey == LogicalKeyboardKey.keyY) {
               _redo();
+            // 2.1 Create Main Component (Ctrl + Alt + K)
+            } else if (isCtrl && isAlt && event.logicalKey == LogicalKeyboardKey.keyK) {
+              _toggleMainComponent();
             // 3. Group / Ungroup
             } else if (isCtrl && event.logicalKey == LogicalKeyboardKey.keyG) {
               if (isShift) {
@@ -1181,6 +1297,7 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
                                         onCopySelected: _copySelected,
                                         onPasteSelected: _pasteClipboard,
                                         canPaste: _clipboardElement != null,
+                                        onToggleMainComponent: _toggleMainComponent,
                                       ),
                                     ),
                                   ],
@@ -1189,6 +1306,8 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
                                   onAddElement: (newElem) {
                                     _recordUndoState();
                                     setState(() {
+                                      // Added element from library becomes a Main Component
+                                      newElem.isComponent = true;
                                       _currentSlide.elements.add(newElem);
                                       _selectedElement = newElem;
                                     });
@@ -1272,6 +1391,7 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
                               onUngroupSelected: _ungroupSelected,
                               onToggleAutoLayout: _toggleAutoLayout,
                               onAlignSelected: _alignSelected,
+                              onToggleMainComponent: _toggleMainComponent,
                               onUndo: _undo,
                               onRedo: _redo,
                               canUndo: _undoStack.isNotEmpty,
@@ -1304,9 +1424,17 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
                     element: _selectedElement,
                     onElementUpdated: () {
                       _recordUndoState();
+                      // If the updated element is a Main Component, automatically sync its instances!
+                      if (_selectedElement != null && _selectedElement!.isComponent) {
+                        _project.syncComponentInstances(_selectedElement!);
+                      }
                       setState(() {});
                     },
                     onElementDeleted: _deleteSelected,
+                    onToggleMainComponent: _toggleMainComponent,
+                    onEditMainComponent: _editMainComponent,
+                    onDetachInstance: _detachInstance,
+                    onPushToComponent: _pushChangesToInstances,
                   ),
                 ],
               ),

@@ -259,16 +259,18 @@ class _CanvasEditorState extends State<CanvasEditor> {
                                     widget.onElementSelected(newElem);
                                   } else if (droppedData.type == AssetDragType.component) {
                                     final comp = droppedData.payload as Map<String, dynamic>;
+                                    final compId = comp['id'] as String? ?? 'comp_${droppedData.title}';
                                     final newElem = DeckElement(
-                                      id: 'comp_${DateTime.now().millisecondsSinceEpoch}',
+                                      id: 'inst_${DateTime.now().millisecondsSinceEpoch}',
                                       type: comp['type'] as ElementType,
-                                      name: droppedData.title,
+                                      name: '${droppedData.title} (인스턴스)',
                                       x: localPos.dx.clamp(50.0, 1600.0),
                                       y: localPos.dy.clamp(50.0, 900.0),
                                       width: comp['width'] as double,
                                       height: comp['height'] as double,
                                       boxStyle: comp['boxStyle'] as DeckBoxStyle?,
                                       props: Map<String, dynamic>.from(comp['props'] ?? {}),
+                                      componentId: compId,
                                     );
                                     widget.slide.elements.add(newElem);
                                     widget.onElementSelected(newElem);
@@ -380,10 +382,19 @@ class _CanvasEditorState extends State<CanvasEditor> {
                               child: Container(
                                 decoration: BoxDecoration(
                                   border: isSelected
-                                      ? Border.all(color: const Color(0xFF0052FF), width: 2)
-                                      : (elem.type == ElementType.group
-                                          ? Border.all(color: const Color(0xFF38BDF8).withOpacity(0.3), width: 1)
-                                          : null),
+                                      ? Border.all(
+                                          color: elem.isComponent
+                                              ? const Color(0xFF7C3AED)
+                                              : (elem.componentId != null ? const Color(0xFF60A5FA) : const Color(0xFF0052FF)),
+                                          width: 2,
+                                        )
+                                      : (elem.isComponent
+                                          ? Border.all(color: const Color(0xFF7C3AED).withOpacity(0.5), width: 1.5)
+                                          : (elem.componentId != null
+                                              ? Border.all(color: const Color(0xFF60A5FA).withOpacity(0.4), width: 1)
+                                              : (elem.type == ElementType.group
+                                                  ? Border.all(color: const Color(0xFF38BDF8).withOpacity(0.3), width: 1)
+                                                  : null))),
                                 ),
                                 child: Stack(
                                   clipBehavior: Clip.none,
@@ -396,7 +407,7 @@ class _CanvasEditorState extends State<CanvasEditor> {
                                         child: Container(
                                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                                           decoration: BoxDecoration(
-                                            color: elem.isLocked ? const Color(0xFFF59E0B) : const Color(0xFF0052FF),
+                                            color: elem.isLocked ? const Color(0xFFF59E0B) : (elem.isComponent ? const Color(0xFF7C3AED) : (elem.componentId != null ? const Color(0xFF2563EB) : const Color(0xFF0052FF))),
                                             borderRadius: BorderRadius.circular(4),
                                           ),
                                           child: Row(

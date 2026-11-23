@@ -168,6 +168,106 @@ class _InspectorPanelState extends State<InspectorPanel> {
             ),
           ),
 
+          // Figma Component & Instance Banner / Actions
+          if (elem.isComponent) ...[
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+              color: const Color(0xFF7C3AED).withOpacity(0.18),
+              child: Row(
+                children: [
+                  const Icon(Icons.auto_awesome, color: Color(0xFFA78BFA), size: 16),
+                  const SizedBox(width: 8),
+                  const Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '메인 컴포넌트 (Main Component)',
+                          style: TextStyle(color: Color(0xFFA78BFA), fontSize: 11, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          '편집 시 모든 인스턴스에 실시간 일괄 동기화됩니다.',
+                          style: TextStyle(color: Color(0xFFC4B5FD), fontSize: 9.5),
+                        ),
+                      ],
+                    ),
+                  ),
+                  TextButton.icon(
+                    icon: const Icon(Icons.sync, size: 12, color: Colors.white),
+                    label: const Text('인스턴스 일괄 반영', style: TextStyle(fontSize: 10, color: Colors.white)),
+                    style: TextButton.styleFrom(
+                      backgroundColor: const Color(0xFF7C3AED),
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      visualDensity: VisualDensity.compact,
+                    ),
+                    onPressed: widget.onPushToComponent,
+                  ),
+                ],
+              ),
+            ),
+          ] else if (elem.componentId != null) ...[
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+              color: const Color(0xFF0052FF).withOpacity(0.15),
+              child: Row(
+                children: [
+                  const Icon(Icons.diamond_outlined, color: Color(0xFF60A5FA), size: 16),
+                  const SizedBox(width: 8),
+                  const Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '컴포넌트 인스턴스 (Instance)',
+                          style: TextStyle(color: Color(0xFF60A5FA), fontSize: 11, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          '메인 컴포넌트 편집 시 일괄 동기화됩니다.',
+                          style: TextStyle(color: Color(0xFF93C5FD), fontSize: 9.5),
+                        ),
+                      ],
+                    ),
+                  ),
+                  ElevatedButton.icon(
+                    icon: const Icon(Icons.edit_note, size: 14),
+                    label: const Text('컴포넌트 편집', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF7C3AED),
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                      visualDensity: VisualDensity.compact,
+                    ),
+                    onPressed: widget.onEditMainComponent,
+                  ),
+                  const SizedBox(width: 6),
+                  IconButton(
+                    icon: const Icon(Icons.link_off, size: 16, color: Color(0xFF94A3B8)),
+                    tooltip: '인스턴스 분해 (Detach Instance)',
+                    visualDensity: VisualDensity.compact,
+                    onPressed: widget.onDetachInstance,
+                  ),
+                ],
+              ),
+            ),
+          ] else ...[
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+              color: const Color(0xFF181818),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text('컴포넌트 미지정 요소', style: TextStyle(color: Color(0xFF737373), fontSize: 10)),
+                  TextButton.icon(
+                    icon: const Icon(Icons.auto_awesome, size: 12, color: Color(0xFFA78BFA)),
+                    label: const Text('컴포넌트 만들기 (Ctrl+Alt+K)', style: TextStyle(fontSize: 10, color: Color(0xFFA78BFA))),
+                    style: TextButton.styleFrom(visualDensity: VisualDensity.compact),
+                    onPressed: widget.onToggleMainComponent,
+                  ),
+                ],
+              ),
+            ),
+          ],
+
           // Action Button: 원클릭 코드 내보내기 (Flutter / HTML / Figma)
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),

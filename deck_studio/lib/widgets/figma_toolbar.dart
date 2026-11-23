@@ -25,6 +25,7 @@ class FigmaToolbar extends StatelessWidget {
   final VoidCallback onPasteSelected;
   final VoidCallback onCopyProperties;
   final VoidCallback onPasteProperties;
+  final VoidCallback? onToggleMainComponent;
   final bool canPaste;
   final bool canPasteProperties;
   final VoidCallback onDeleteSelected;
@@ -59,6 +60,7 @@ class FigmaToolbar extends StatelessWidget {
     required this.onPasteSelected,
     required this.onCopyProperties,
     required this.onPasteProperties,
+    this.onToggleMainComponent,
     required this.canPaste,
     this.canPasteProperties = false,
     required this.onDeleteSelected,
@@ -207,6 +209,13 @@ class FigmaToolbar extends StatelessWidget {
             tooltip: '선택 요소 즉시 복제 (Ctrl+D)',
             enabled: selectedElement != null,
             onPressed: onDuplicateSelected,
+          ),
+          _buildIconButton(
+            icon: Icons.auto_awesome,
+            tooltip: selectedElement?.isComponent == true ? '메인 컴포넌트 해제' : '메인 컴포넌트로 생성 (Ctrl+Alt+K)',
+            enabled: selectedElement != null,
+            color: selectedElement?.isComponent == true ? const Color(0xFFA78BFA) : null,
+            onPressed: onToggleMainComponent ?? () {},
           ),
           _buildIconButton(
             icon: Icons.folder_open,
