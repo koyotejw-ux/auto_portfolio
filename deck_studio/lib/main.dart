@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'models/deck_model.dart';
@@ -53,6 +54,8 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
   final List<String> _undoStack = [];
   final List<String> _redoStack = [];
   double _zoomScale = 0.55;
+  DeckElement? _clipboardElement;
+  final FocusNode _keyboardFocusNode = FocusNode();
 
   @override
   void initState() {
@@ -367,18 +370,56 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
   }
 
   // --- Quick Figma Actions ---
+  void _copySelected() {
+    if (_selectedElement == null) return;
+    _clipboardElement = _selectedElement!.deepClone(deltaX: 0, deltaY: 0);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          children: [
+            const Icon(Icons.check_circle, color: Colors.white, size: 16),
+            const SizedBox(width: 8),
+            Text(
+              '컴포넌트 [] 및 하위 요소(개)가 클립보드에 복사되었습니다. (Ctrl+V로 붙여넣기)',
+              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+        backgroundColor: const Color(0xFF0052FF),
+        duration: const Duration(seconds: 2),
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+    setState(() {});
+  }
+
+  void _pasteClipboard() {
+    if (_clipboardElement == null) return;
+    _recordUndoState();
+    setState(() {
+      final pasted = _clipboardElement!.deepClone(deltaX: 32.0, deltaY: 32.0);
+      _currentSlide.elements.add(pasted);
+      _selectedElement = pasted;
+      _clipboardElement = pasted.deepClone(deltaX: 0, deltaY: 0);
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          '컴포넌트 [] 붙여넣기 완료!',
+          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+        ),
+        backgroundColor: const Color(0xFF0052FF),
+        duration: const Duration(seconds: 2),
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+  }
+
   void _duplicateSelected() {
     if (_selectedElement == null) return;
     _recordUndoState();
     setState(() {
-      final old = _selectedElement!;
-      final copyJson = old.toJson();
-      copyJson['id'] = 'elem_${DateTime.now().millisecondsSinceEpoch}';
-      copyJson['name'] = '${old.name} (복제)';
-      copyJson['x'] = old.x + 24.0;
-      copyJson['y'] = old.y + 24.0;
-
-      final duplicated = DeckElement.fromJson(copyJson);
+      final duplicated = _selectedElement!.deepClone(deltaX: 24.0, deltaY: 24.0);
       _currentSlide.elements.add(duplicated);
       _selectedElement = duplicated;
     });
@@ -600,7 +641,39 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      body: Focus(
+        focusNode: _keyboardFocusNode,
+        autofocus: true,
+        onKeyEvent: (node, event) {
+          if (event is KeyDownEvent) {
+            final isCtrl = HardwareKeyboard.instance.isControlPressed ||
+                HardwareKeyboard.instance.isMetaPressed;
+            if (isCtrl && event.logicalKey == LogicalKeyboardKey.keyC) {
+              if (_selectedElement != null) {
+                _copySelected();
+                return KeyEventResult.handled;
+              }
+            } else if (isCtrl && event.logicalKey == LogicalKeyboardKey.keyV) {
+              if (_clipboardElement != null) {
+                _pasteClipboard();
+                return KeyEventResult.handled;
+              }
+            } else if (isCtrl && event.logicalKey == LogicalKeyboardKey.keyD) {
+              if (_selectedElement != null) {
+                _duplicateSelected();
+                return KeyEventResult.handled;
+              }
+            } else if (isCtrl && event.logicalKey == LogicalKeyboardKey.keyZ) {
+              _undo();
+              return KeyEventResult.handled;
+            } else if (isCtrl && event.logicalKey == LogicalKeyboardKey.keyY) {
+              _redo();
+              return KeyEventResult.handled;
+            }
+          }
+          return KeyEventResult.ignored;
+        },
+        child: Column(
         children: [
           // 1. Global App Bar
           _buildGlobalAppBar(),
@@ -623,6 +696,9 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
               );
             },
             onDuplicateSelected: _duplicateSelected,
+            onCopySelected: _copySelected,
+            onPasteSelected: _pasteClipboard,
+            canPaste: _clipboardElement != null,
             onDeleteSelected: _deleteSelected,
             onBringToFront: _bringToFront,
             onSendToBack: _sendToBack,
@@ -672,6 +748,9 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
                   },
                   onGroupSelected: _groupSelected,
                   onUngroupSelected: _ungroupSelected,
+                  onCopySelected: _copySelected,
+                  onPasteSelected: _pasteClipboard,
+                  canPaste: _clipboardElement != null,
                 ),
 
                 // Center: 1920x1080 Interactive Canvas
@@ -702,6 +781,7 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
             ),
           ),
         ],
+      ),
       ),
     );
   }

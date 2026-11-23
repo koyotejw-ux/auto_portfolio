@@ -276,6 +276,28 @@ class DeckElement {
           .toList(),
     );
   }
+
+  /// Deep-clone element with new unique IDs for entire children tree
+  DeckElement deepClone({double deltaX = 24.0, double deltaY = 24.0}) {
+    final rawJson = toJson();
+    _reassignIds(rawJson);
+    final cloned = DeckElement.fromJson(rawJson);
+    cloned.x += deltaX;
+    cloned.y += deltaY;
+    cloned.name = '\ (복제)';
+    return cloned;
+  }
+
+  static void _reassignIds(Map<String, dynamic> map) {
+    map['id'] = 'elem_\_';
+    if (map['children'] is List) {
+      for (final child in map['children']) {
+        if (child is Map<String, dynamic>) {
+          _reassignIds(child);
+        }
+      }
+    }
+  }
 }
 
 class DeckSlide {

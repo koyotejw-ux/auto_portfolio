@@ -8,6 +8,9 @@ class FigmaLayersPanel extends StatefulWidget {
   final VoidCallback onSlideModified;
   final VoidCallback onGroupSelected;
   final VoidCallback onUngroupSelected;
+  final VoidCallback? onCopySelected;
+  final VoidCallback? onPasteSelected;
+  final bool canPaste;
 
   const FigmaLayersPanel({
     super.key,
@@ -17,6 +20,9 @@ class FigmaLayersPanel extends StatefulWidget {
     required this.onSlideModified,
     required this.onGroupSelected,
     required this.onUngroupSelected,
+    this.onCopySelected,
+    this.onPasteSelected,
+    this.canPaste = false,
   });
 
   @override
@@ -82,13 +88,33 @@ class _FigmaLayersPanelState extends State<FigmaLayersPanel> {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
+                // Copy Component (Ctrl+C)
+                if (widget.onCopySelected != null)
+                  IconButton(
+                    icon: const Icon(Icons.copy, size: 14, color: Color(0xFF38BDF8)),
+                    tooltip: '선택 컴포넌트 복사 (하위 포함, Ctrl+C)',
+                    visualDensity: VisualDensity.compact,
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(minWidth: 20, minHeight: 20),
+                    onPressed: widget.selectedElement != null ? widget.onCopySelected : null,
+                  ),
+                // Paste Component (Ctrl+V)
+                if (widget.onPasteSelected != null)
+                  IconButton(
+                    icon: Icon(Icons.paste, size: 14, color: widget.canPaste ? const Color(0xFF38BDF8) : const Color(0xFF475569)),
+                    tooltip: '컴포넌트 붙여넣기 (Ctrl+V)',
+                    visualDensity: VisualDensity.compact,
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(minWidth: 20, minHeight: 20),
+                    onPressed: widget.canPaste ? widget.onPasteSelected : null,
+                  ),
                 // Group button (Ctrl+G)
                 IconButton(
                   icon: const Icon(Icons.folder_open, size: 15, color: Color(0xFF94A3B8)),
                   tooltip: '그룹화 (Ctrl+G)',
                   visualDensity: VisualDensity.compact,
                   padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(minWidth: 22, minHeight: 22),
+                  constraints: const BoxConstraints(minWidth: 20, minHeight: 20),
                   onPressed: widget.onGroupSelected,
                 ),
                 // Ungroup button (Ctrl+Shift+G)
@@ -97,7 +123,7 @@ class _FigmaLayersPanelState extends State<FigmaLayersPanel> {
                   tooltip: '그룹 분해 (Ctrl+Shift+G)',
                   visualDensity: VisualDensity.compact,
                   padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(minWidth: 22, minHeight: 22),
+                  constraints: const BoxConstraints(minWidth: 20, minHeight: 20),
                   onPressed: widget.onUngroupSelected,
                 ),
               ],

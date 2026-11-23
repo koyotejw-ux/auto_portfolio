@@ -23,6 +23,9 @@ class FigmaToolbar extends StatelessWidget {
   final VoidCallback onOpenComponentLibrary;
   final VoidCallback onOpenDesignSystem;
   final VoidCallback onDuplicateSelected;
+  final VoidCallback onCopySelected;
+  final VoidCallback onPasteSelected;
+  final bool canPaste;
   final VoidCallback onDeleteSelected;
   final VoidCallback onBringToFront;
   final VoidCallback onSendToBack;
@@ -50,6 +53,9 @@ class FigmaToolbar extends StatelessWidget {
     required this.onOpenComponentLibrary,
     required this.onOpenDesignSystem,
     required this.onDuplicateSelected,
+    required this.onCopySelected,
+    required this.onPasteSelected,
+    required this.canPaste,
     required this.onDeleteSelected,
     required this.onBringToFront,
     required this.onSendToBack,
@@ -151,10 +157,24 @@ class FigmaToolbar extends StatelessWidget {
 
           _buildDivider(),
 
-          // 4. Quick Actions for Selected Element (Duplicate, Delete, Layer Order)
+          // 4. Quick Actions for Selected Element (Copy/Paste Component, Duplicate, Delete, Layer Order)
           _buildIconButton(
-            icon: Icons.content_copy,
-            tooltip: '선택 요소 복제 (Ctrl+D)',
+            icon: Icons.copy,
+            tooltip: '컴포넌트 복사 (Ctrl+C, 하위 요소 포함)',
+            enabled: selectedElement != null,
+            color: selectedElement != null ? const Color(0xFF38BDF8) : null,
+            onPressed: onCopySelected,
+          ),
+          _buildIconButton(
+            icon: Icons.paste,
+            tooltip: '컴포넌트 붙여넣기 (Ctrl+V)',
+            enabled: canPaste,
+            color: canPaste ? const Color(0xFF0052FF) : null,
+            onPressed: onPasteSelected,
+          ),
+          _buildIconButton(
+            icon: Icons.control_point_duplicate,
+            tooltip: '선택 요소 즉시 복제 (Ctrl+D)',
             enabled: selectedElement != null,
             onPressed: onDuplicateSelected,
           ),
