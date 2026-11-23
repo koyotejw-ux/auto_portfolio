@@ -1,4 +1,4 @@
-<!DOCTYPE html><html><head>
+﻿<!DOCTYPE html><html><head>
   <!--
     If you are serving your web app in a path other than the root, change the
     href value below to reflect the base path you are serving from.
@@ -12,15 +12,16 @@
     This is a placeholder for base href that will be replaced by the value of
     the `--base-href` argument provided to `flutter build`.
   -->
-  <!-- Dynamic Base href for GitHub Pages subfolder & localhost compatibility -->
+  <base href="/">
   <script>
     (function() {
-      var pathname = window.location.pathname;
-      var dir = pathname.substring(0, pathname.lastIndexOf('/') + 1);
-      var base = document.querySelector('base') || document.createElement('base');
-      base.href = dir;
-      if (!document.querySelector('base')) {
-        document.head.appendChild(base);
+      var base = document.querySelector('base');
+      if (base) {
+        var path = window.location.pathname;
+        if (!path.endsWith('/')) {
+          path = path.substring(0, path.lastIndexOf('/') + 1);
+        }
+        base.setAttribute('href', path);
       }
     })();
   </script>
@@ -32,13 +33,13 @@
   <!-- iOS meta tags & icons -->
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="체크앤페이">
+  <meta name="apple-mobile-web-app-title" content="泥댄겕?ㅽ럹??>
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png">
 
-  <title>체크앤페이 (Check &amp; Pay) - 원터치 출결 &amp; 수납장부</title>
+  <title>泥댄겕?ㅽ럹??(Check &amp; Pay) - ?먰꽣移?異쒓껐 &amp; ?섎궔?λ?</title>
   <link rel="manifest" href="manifest.json">
   
   
