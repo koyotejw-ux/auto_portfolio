@@ -1371,7 +1371,7 @@ def make_slide_08():
     # -------------------------------------------------------------
     card_y = 244
     card_w = 548
-    card_h = 572
+    card_h = 584
     card_gap = 38
     start_x = 100
 
@@ -1428,7 +1428,7 @@ def make_slide_08():
         
         # Step Header Pill & Badge
         draw_pill_badge(draw, left_x=cx + 20, cy=card_y + 24, text=stage["step"], font=get_font(9.5, 'bold'), theme='blue', pad_x=8, height=22)
-        draw_pill_badge(draw, left_x=cx + card_w - 116, cy=card_y + 24, text=stage["badge"], font=get_font(8.5, 'bold'), theme=stage["badge_theme"], pad_x=8, height=20)
+        # Removed redundant top-right badge per user UX request
         
         draw.text((cx + 20, card_y + 44), stage["title"], font=get_font(13.5, 'bold'), fill=(15, 23, 42))
         draw.text((cx + 20, card_y + 65), stage["sub"], font=get_font(10, 'regular'), fill=(100, 116, 139))
@@ -1439,10 +1439,10 @@ def make_slide_08():
             raw_screen = Image.open(img_p).convert('RGBA')
             
             if idx < 2:
-                # Steps 1 & 2: Large Expanded Tablet Mockup (target_h=370)
-                framed_tab = make_tablet_kiosk_frame(raw_screen, target_h=370)
+                # Steps 1 & 2: Large Expanded Tablet Mockup (target_h=356)
+                framed_tab = make_tablet_kiosk_frame(raw_screen, target_h=356)
                 tab_x = cx + (card_w - framed_tab.width) // 2
-                tab_y = card_y + 86
+                tab_y = card_y + 82
                 
                 sh_tab, pad_tab = make_shadow(framed_tab, blur=24, offset=(10, 16), alpha=70)
                 base.paste(sh_tab, (tab_x - pad_tab[0], tab_y - pad_tab[1]), sh_tab)
@@ -1452,7 +1452,7 @@ def make_slide_08():
                 # STEP 03: Dual Mockup (Tablet Kiosk Success + Real-Time Mobile "출결 체크" Sync Phone)
                 framed_tab = make_tablet_kiosk_frame(raw_screen, target_h=356)
                 tab_x = cx + 22
-                tab_y = card_y + 88
+                tab_y = card_y + 82
                 
                 sh_tab, pad_tab = make_shadow(framed_tab, blur=22, offset=(8, 14), alpha=65)
                 base.paste(sh_tab, (tab_x - pad_tab[0], tab_y - pad_tab[1]), sh_tab)
@@ -1482,17 +1482,17 @@ def make_slide_08():
                     draw.text((pill_x + pill_w // 2, pill_y + 12), "⚡ 메인 즉시 동기화", font=get_font(8.5, 'bold'), fill=(255, 255, 255), anchor='mm')
 
         # 3 Structured Micro Feature Chips
-        chip_y = card_y + 466
+        chip_y = card_y + 458
         chip_h = 24
         for c_idx, (c_label, c_sub) in enumerate(stage["chips"]):
-            cy_pos = chip_y + c_idx * 27
+            cy_pos = chip_y + c_idx * 28
             draw.rounded_rectangle([cx + 16, cy_pos, cx + card_w - 16, cy_pos + chip_h], radius=6, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
             draw.ellipse([cx + 26, cy_pos + 9, cx + 32, cy_pos + 15], fill=(0, 81, 255))
             draw.text((cx + 38, cy_pos + 12), c_label, font=get_font(9.5, 'bold'), fill=(30, 41, 59), anchor='lm')
             draw.text((cx + card_w - 26, cy_pos + 12), c_sub, font=get_font(8.5, 'medium'), fill=(0, 82, 255), anchor='rm')
 
         # Interactive Relationship Box
-        rel_y = card_y + card_h - 40
+        rel_y = card_y + card_h - 38
         draw.rounded_rectangle([cx + 16, rel_y, cx + card_w - 16, rel_y + 28], radius=6, fill=(239, 246, 255), outline=(191, 219, 254), width=1)
         draw.text((cx + card_w // 2, rel_y + 14), stage["interaction"], font=get_font(8.5, 'bold'), fill=(0, 82, 255), anchor='mm')
 
