@@ -22,6 +22,12 @@ enum ElementType {
 enum AutoLayoutDirection { none, horizontal, vertical }
 enum AutoLayoutAlignment { start, center, end, spaceBetween }
 
+enum SizingMode {
+  fixed, // 고정값 (Fixed)
+  hug, // 내용에 맞춤 (Hug contents - Auto)
+  fill, // 부모 영역 채움 (Fill container)
+}
+
 enum TextAlignOption { left, center, right }
 
 class DeckTextStyle {
@@ -171,6 +177,9 @@ class DeckElement {
   double autoLayoutSpacing;
   double autoLayoutPadding;
   AutoLayoutAlignment autoLayoutAlignment;
+  bool isAutoSpacing; // Auto gap (Space Between / Justify)
+  SizingMode horizontalSizing; // Fixed / Hug(Auto) / Fill
+  SizingMode verticalSizing; // Fixed / Hug(Auto) / Fill
   List<DeckElement> children;
 
   DeckElement({
@@ -191,31 +200,116 @@ class DeckElement {
     this.autoLayoutSpacing = 16.0,
     this.autoLayoutPadding = 16.0,
     this.autoLayoutAlignment = AutoLayoutAlignment.start,
+    this.isAutoSpacing = false,
+    this.horizontalSizing = SizingMode.fixed,
+    this.verticalSizing = SizingMode.fixed,
     List<DeckElement>? children,
   })  : textStyle = textStyle ?? DeckTextStyle(),
         boxStyle = boxStyle ?? DeckBoxStyle(),
         children = children ?? [];
 
-  /// Helper to trigger AutoLayout re-positioning of children
+  /// Helper to trigger AutoLayout re-positioning of children and auto-sizing
   void applyAutoLayout() {
-    if (autoLayoutDirection == AutoLayoutDirection.none || children.isEmpty) return;
+    if (children.isEmpty) {
+      if (horizontalSizing == SizingMode.hug) {
+        width = 100.0;
+      }
+      if (verticalSizing == SizingMode.hug) {
+        height = 40.0;
+      }
+      return;
+    }
+
+    if (autoLayoutDirection == AutoLayoutDirection.none) return;
 
     if (autoLayoutDirection == AutoLayoutDirection.horizontal) {
+      // 1. Calculate effective spacing
+      double effectiveSpacing = autoLayoutSpacing;
+      if (isAutoSpacing && children.length > 1) {
+        double totalChildW = 0.0;
+        for (final child in children) {
+          totalChildW += child.width;
+        }
+        final availableSpace = width - 2 * autoLayoutPadding - totalChildW;
+        if (availableSpace > 0) {
+          effectiveSpacing = availableSpace / (children.length - 1);
+        }
+      }
+
+      // 2. Handle Fill container for vertical axis
+      for (final child in children) {
+        if (child.verticalSizing == SizingMode.fill) {
+          child.height = (height - 2 * autoLayoutPadding).clamp(20.0, 1080.0);
+        }
+      }
+
+      // 3. Position children
       double curX = autoLayoutPadding;
+      double maxChildH = 0.0;
       for (final child in children) {
         child.x = curX;
-        child.y = autoLayoutPadding;
-        curX += child.width + autoLayoutSpacing;
+        if (autoLayoutAlignment == AutoLayoutAlignment.center) {
+          child.y = autoLayoutPadding + (height - 2 * autoLayoutPadding - child.height) / 2;
+        } else if (autoLayoutAlignment == AutoLayoutAlignment.end) {
+          child.y = height - autoLayoutPadding - child.height;
+        } else {
+          child.y = autoLayoutPadding;
+        }
+        if (child.height > maxChildH) maxChildH = child.height;
+        curX += child.width + effectiveSpacing;
       }
-      width = curX - autoLayoutSpacing + autoLayoutPadding;
+
+      // 4. Handle Hug contents (Auto width / height)
+      if (horizontalSizing == SizingMode.hug) {
+        width = (curX - effectiveSpacing + autoLayoutPadding).clamp(40.0, 1920.0);
+      }
+      if (verticalSizing == SizingMode.hug) {
+        height = (maxChildH + 2 * autoLayoutPadding).clamp(24.0, 1080.0);
+      }
     } else if (autoLayoutDirection == AutoLayoutDirection.vertical) {
-      double curY = autoLayoutPadding;
-      for (final child in children) {
-        child.x = autoLayoutPadding;
-        child.y = curY;
-        curY += child.height + autoLayoutSpacing;
+      // 1. Calculate effective spacing
+      double effectiveSpacing = autoLayoutSpacing;
+      if (isAutoSpacing && children.length > 1) {
+        double totalChildH = 0.0;
+        for (final child in children) {
+          totalChildH += child.height;
+        }
+        final availableSpace = height - 2 * autoLayoutPadding - totalChildH;
+        if (availableSpace > 0) {
+          effectiveSpacing = availableSpace / (children.length - 1);
+        }
       }
-      height = curY - autoLayoutSpacing + autoLayoutPadding;
+
+      // 2. Handle Fill container for horizontal axis
+      for (final child in children) {
+        if (child.horizontalSizing == SizingMode.fill) {
+          child.width = (width - 2 * autoLayoutPadding).clamp(40.0, 1920.0);
+        }
+      }
+
+      // 3. Position children
+      double curY = autoLayoutPadding;
+      double maxChildW = 0.0;
+      for (final child in children) {
+        child.y = curY;
+        if (autoLayoutAlignment == AutoLayoutAlignment.center) {
+          child.x = autoLayoutPadding + (width - 2 * autoLayoutPadding - child.width) / 2;
+        } else if (autoLayoutAlignment == AutoLayoutAlignment.end) {
+          child.x = width - autoLayoutPadding - child.width;
+        } else {
+          child.x = autoLayoutPadding;
+        }
+        if (child.width > maxChildW) maxChildW = child.width;
+        curY += child.height + effectiveSpacing;
+      }
+
+      // 4. Handle Hug contents (Auto width / height)
+      if (verticalSizing == SizingMode.hug) {
+        height = (curY - effectiveSpacing + autoLayoutPadding).clamp(24.0, 1080.0);
+      }
+      if (horizontalSizing == SizingMode.hug) {
+        width = (maxChildW + 2 * autoLayoutPadding).clamp(40.0, 1920.0);
+      }
     }
   }
 
@@ -237,6 +331,9 @@ class DeckElement {
         'autoLayoutSpacing': autoLayoutSpacing,
         'autoLayoutPadding': autoLayoutPadding,
         'autoLayoutAlignment': autoLayoutAlignment.name,
+        'isAutoSpacing': isAutoSpacing,
+        'horizontalSizing': horizontalSizing.name,
+        'verticalSizing': verticalSizing.name,
         'children': children.map((c) => c.toJson()).toList(),
       };
 
@@ -271,6 +368,15 @@ class DeckElement {
       autoLayoutAlignment: AutoLayoutAlignment.values.firstWhere(
         (a) => a.name == json['autoLayoutAlignment'],
         orElse: () => AutoLayoutAlignment.start,
+      ),
+      isAutoSpacing: json['isAutoSpacing'] ?? false,
+      horizontalSizing: SizingMode.values.firstWhere(
+        (s) => s.name == json['horizontalSizing'],
+        orElse: () => SizingMode.fixed,
+      ),
+      verticalSizing: SizingMode.values.firstWhere(
+        (s) => s.name == json['verticalSizing'],
+        orElse: () => SizingMode.fixed,
       ),
       children: (json['children'] as List? ?? [])
           .map((c) => DeckElement.fromJson(Map<String, dynamic>.from(c)))

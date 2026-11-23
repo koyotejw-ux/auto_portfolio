@@ -202,17 +202,82 @@ class _InspectorPanelState extends State<InspectorPanel> {
                   ],
                 ),
                 const SizedBox(height: 8),
+                // 너비 / 높이 수치 및 피그마식 Auto (Hug / Fill / Fixed) 리사이징 모드
                 Row(
                   children: [
-                    _buildNumField('너비 (Width)', elem.width, (val) {
-                      setState(() => elem.width = val);
-                      widget.onElementUpdated();
-                    }),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              _buildFieldLabel('너비 (W)'),
+                              _buildSizingModeDropdown(elem.horizontalSizing, (mode) {
+                                setState(() {
+                                  elem.horizontalSizing = mode;
+                                  elem.applyAutoLayout();
+                                });
+                                widget.onElementUpdated();
+                              }),
+                            ],
+                          ),
+                          _buildDimensionInputField(
+                            elem.width,
+                            elem.horizontalSizing,
+                            (val) {
+                              setState(() {
+                                if (val == -1) {
+                                  elem.horizontalSizing = SizingMode.hug;
+                                } else {
+                                  elem.horizontalSizing = SizingMode.fixed;
+                                  elem.width = val;
+                                }
+                                elem.applyAutoLayout();
+                              });
+                              widget.onElementUpdated();
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
                     const SizedBox(width: 8),
-                    _buildNumField('높이 (Height)', elem.height, (val) {
-                      setState(() => elem.height = val);
-                      widget.onElementUpdated();
-                    }),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              _buildFieldLabel('높이 (H)'),
+                              _buildSizingModeDropdown(elem.verticalSizing, (mode) {
+                                setState(() {
+                                  elem.verticalSizing = mode;
+                                  elem.applyAutoLayout();
+                                });
+                                widget.onElementUpdated();
+                              }),
+                            ],
+                          ),
+                          _buildDimensionInputField(
+                            elem.height,
+                            elem.verticalSizing,
+                            (val) {
+                              setState(() {
+                                if (val == -1) {
+                                  elem.verticalSizing = SizingMode.hug;
+                                } else {
+                                  elem.verticalSizing = SizingMode.fixed;
+                                  elem.height = val;
+                                }
+                                elem.applyAutoLayout();
+                              });
+                              widget.onElementUpdated();
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 18),
@@ -584,13 +649,90 @@ class _InspectorPanelState extends State<InspectorPanel> {
           const SizedBox(height: 10),
           Row(
             children: [
-              _buildNumField('간격 (Gap)', elem.autoLayoutSpacing, (val) {
-                setState(() {
-                  elem.autoLayoutSpacing = val;
-                  elem.applyAutoLayout();
-                });
-                widget.onElementUpdated();
-              }),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        _buildFieldLabel('간격 (Gap)'),
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              elem.isAutoSpacing = !elem.isAutoSpacing;
+                              elem.applyAutoLayout();
+                            });
+                            widget.onElementUpdated();
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1.5),
+                            decoration: BoxDecoration(
+                              color: elem.isAutoSpacing ? const Color(0xFF0052FF) : const Color(0xFFE2E8F0),
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: Text(
+                              'Auto',
+                              style: TextStyle(
+                                fontSize: 9.5,
+                                fontWeight: FontWeight.bold,
+                                color: elem.isAutoSpacing ? Colors.white : const Color(0xFF64748B),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: elem.isAutoSpacing ? const Color(0xFFEFF6FF) : const Color(0xFFF8FAFC),
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          color: elem.isAutoSpacing ? const Color(0xFF0052FF) : const Color(0xFFE2E8F0),
+                        ),
+                      ),
+                      child: elem.isAutoSpacing
+                          ? const Center(
+                              child: Text(
+                                'Auto (균등 분배)',
+                                style: TextStyle(fontSize: 11.5, color: Color(0xFF0052FF), fontWeight: FontWeight.bold),
+                              ),
+                            )
+                          : TextFormField(
+                              key: ValueKey('${elem.id}_gap_${elem.autoLayoutSpacing}'),
+                              initialValue: elem.autoLayoutSpacing.toInt().toString(),
+                              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+                              decoration: const InputDecoration(
+                                isDense: true,
+                                contentPadding: EdgeInsets.zero,
+                                border: InputBorder.none,
+                              ),
+                              onChanged: (text) {
+                                if (text.trim().toLowerCase() == 'auto') {
+                                  setState(() {
+                                    elem.isAutoSpacing = true;
+                                    elem.applyAutoLayout();
+                                  });
+                                  widget.onElementUpdated();
+                                  return;
+                                }
+                                final parsed = double.tryParse(text);
+                                if (parsed != null) {
+                                  setState(() {
+                                    elem.isAutoSpacing = false;
+                                    elem.autoLayoutSpacing = parsed;
+                                    elem.applyAutoLayout();
+                                  });
+                                  widget.onElementUpdated();
+                                }
+                              },
+                            ),
+                    ),
+                  ],
+                ),
+              ),
               const SizedBox(width: 8),
               _buildNumField('패딩 (Padding)', elem.autoLayoutPadding, (val) {
                 setState(() {
@@ -603,7 +745,7 @@ class _InspectorPanelState extends State<InspectorPanel> {
           ),
           const SizedBox(height: 8),
           Text(
-            '하위 요소: ${elem.children.length}개 자동 정렬 배치됨',
+            '하위 요소: ${elem.children.length}개 자동 정렬 배치됨 ${elem.isAutoSpacing ? "• Auto Spacing 적용 중" : ""}',
             style: const TextStyle(color: Color(0xFF0052FF), fontSize: 11, fontWeight: FontWeight.bold),
           ),
         ],
@@ -745,6 +887,96 @@ class _InspectorPanelState extends State<InspectorPanel> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildSizingModeDropdown(SizingMode mode, ValueChanged<SizingMode> onChanged) {
+    return Container(
+      height: 20,
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF1F5F9),
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<SizingMode>(
+          value: mode,
+          isDense: true,
+          style: const TextStyle(fontSize: 10, color: Color(0xFF0052FF), fontWeight: FontWeight.bold),
+          items: const [
+            DropdownMenuItem(value: SizingMode.fixed, child: Text('Fixed')),
+            DropdownMenuItem(value: SizingMode.hug, child: Text('Hug (Auto)')),
+            DropdownMenuItem(value: SizingMode.fill, child: Text('Fill')),
+          ],
+          onChanged: (val) {
+            if (val != null) onChanged(val);
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDimensionInputField(double val, SizingMode mode, ValueChanged<double> onChanged) {
+    if (mode == SizingMode.hug) {
+      return Container(
+        height: 36,
+        alignment: Alignment.centerLeft,
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        decoration: BoxDecoration(
+          color: const Color(0xFFEFF6FF),
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: const Color(0xFF0052FF)),
+        ),
+        child: const Text(
+          'Hug (내용 맞춤 Auto)',
+          style: TextStyle(fontSize: 11, color: Color(0xFF0052FF), fontWeight: FontWeight.bold),
+        ),
+      );
+    } else if (mode == SizingMode.fill) {
+      return Container(
+        height: 36,
+        alignment: Alignment.centerLeft,
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        decoration: BoxDecoration(
+          color: const Color(0xFFEFF6FF),
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: const Color(0xFF0052FF)),
+        ),
+        child: const Text(
+          'Fill (부모 채움)',
+          style: TextStyle(fontSize: 11, color: Color(0xFF0052FF), fontWeight: FontWeight.bold),
+        ),
+      );
+    }
+
+    return Container(
+      height: 36,
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF8FAFC),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: const Color(0xFFE2E8F0)),
+      ),
+      child: TextFormField(
+        key: ValueKey('${widget.element!.id}_dim_$val'),
+        initialValue: val.toInt().toString(),
+        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+        decoration: const InputDecoration(
+          isDense: true,
+          contentPadding: EdgeInsets.zero,
+          border: InputBorder.none,
+        ),
+        onChanged: (text) {
+          final trimmed = text.trim().toLowerCase();
+          if (trimmed == 'auto' || trimmed == 'hug') {
+            onChanged(-1); // Signal hug
+            return;
+          }
+          final parsed = double.tryParse(text);
+          if (parsed != null) onChanged(parsed);
+        },
+      ),
     );
   }
 
