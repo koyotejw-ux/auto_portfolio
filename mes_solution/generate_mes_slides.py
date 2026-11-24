@@ -1197,11 +1197,11 @@ def make_slide_07():
     draw.text((col1_x + col1_w // 2, r1_y + r1_h - 26), "Core Principles: Zero-Latency Ergonomics · Visual Hierarchy · Multi-Tenant Modularity", font=get_font(8.8, 'bold'), fill=(0, 81, 255), anchor='mm')
     
     # -------------------------------------------------------------
-    # CARD 02 (Upper Center): APP ICON GEOMETRIC DRAFTING GRID & SPEC
+    # CARD 02 (Upper Center): APP ICON GEOMETRIC DRAFTING GRID & SPEC (SAM S Symbol)
     # -------------------------------------------------------------
     draw.rounded_rectangle([col2_x, r1_y, col2_x + col2_w, r1_y + r1_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
     b2_box = draw_pill_badge(draw, left_x=col2_x + 24, cy=r1_y + 30, text="FOUNDATION 02", font=get_font(9.5, 'bold'), theme='blue', has_dot=True, pad_x=8, height=22)
-    draw.text((b2_box[2] + 14, r1_y + 30), "솔루션 아이콘 기하학 와이어프레임 & 조형 규격", font=get_font(13.5, 'bold'), fill=(15, 23, 42), anchor='lm')
+    draw.text((b2_box[2] + 14, r1_y + 30), "솔루션 S 심벌마크 기하학 와이어프레임 & 조형 규격", font=get_font(13.5, 'bold'), fill=(15, 23, 42), anchor='lm')
     draw.line([(col2_x + 24, r1_y + 52), (col2_x + col2_w - 24, r1_y + 52)], fill=(241, 245, 249), width=1)
     
     # Technical Drafting Blueprint Canvas Box
@@ -1244,7 +1244,7 @@ def make_slide_07():
     r_corner = int(round(S * 0.225))
     draw.rounded_rectangle([cx - R, cy - R, cx + R, cy + R], radius=r_corner, outline=grid_line_color, width=1)
     
-    # App Icon centered
+    # App Icon centered (SAM S-Symbol Icon)
     icon_path = r"d:\097.flutter_project\auto_portfolio\assets\mes_solution_app_icon.png"
     if os.path.exists(icon_path):
         try:
@@ -1276,9 +1276,9 @@ def make_slide_07():
     
     m_x = ic_box_x + ic_box_size + 16
     specs = [
-        ("01. 기하학 동심원 & 제조 파이프라인 심볼", 
-         "외접원과 내접원의 황금비 분할선 상에 데이터 스트림과",
-         "제조 설비(Manufacturing Gear) 모티프를 기하학적으로 배치"),
+        ("01. SAM 공식 헤더 S 심벌마크 (Smart Automation)", 
+         "실제 앱 헤더 전역에 적용된 정통 SAM(Smart Automation) 심벌",
+         "부드러운 곡선의 'S' 레터링으로 끊김 없는 공정 흐름을 형상화"),
         ("02. Dynamic Squircle Curvature (R22.5%)", 
          "모바일·태블릿 및 웹 데스크톱 런처에 일치하는 연속 곡률",
          "스쿼클 마스킹을 적용하여 디바이스별 선명도와 가독성 극대화"),
