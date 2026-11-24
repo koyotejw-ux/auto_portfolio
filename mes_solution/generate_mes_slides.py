@@ -241,6 +241,7 @@ def make_slide_01():
     base = Image.new('RGB', (W, H), (15, 23, 42))
     draw = ImageDraw.Draw(base)
     
+    # Ambient grid pattern
     for gx in range(0, W, 40):
         draw.line([(gx, 0), (gx, H)], fill=(23, 33, 56), width=1)
     for gy in range(0, H, 40):
@@ -256,7 +257,8 @@ def make_slide_01():
         dark_mode=True
     )
     
-    left_x, top_y, left_w, box_h = 100, 210, 520, 750
+    # Left Specification & Overview Card
+    left_x, top_y, left_w, box_h = 100, 210, 560, 750
     draw.rounded_rectangle([left_x, top_y, left_x + left_w, top_y + box_h], radius=16, fill=(30, 41, 59), outline=(51, 65, 85), width=1)
     
     draw_pill_badge(draw, left_x=left_x + 30, cy=top_y + 40, text="프로덕트 오버뷰", font=get_font(10.5, 'bold'), theme='cyan', dark_mode=True, pad_x=12, height=28)
@@ -280,22 +282,42 @@ def make_slide_01():
         draw.line([(left_x + 30, sy + 48), (left_x + left_w - 30, sy + 48)], fill=(51, 65, 85), width=1)
         sy += 66
         
-    clean_thumb = r"d:\097.flutter_project\auto_portfolio\assets\mes_solution_clean_devices.png"
-    if os.path.exists(clean_thumb):
-        right_x = 660
-        right_w = W - right_x - 100
-        right_h = box_h
-        thumb_img = Image.open(clean_thumb).convert('RGB')
-        thumb_resized = thumb_img.resize((right_w, right_h), Image.Resampling.LANCZOS)
-        base.paste(thumb_resized, (right_x, top_y))
-        draw.rounded_rectangle([right_x, top_y, right_x + right_w, top_y + right_h], radius=16, outline=(51, 65, 85), width=1)
+    # Right Device Mockup Trio Container (Matching User Uploaded Asset)
+    trio_thumb = r"d:\097.flutter_project\auto_portfolio\assets\mes_hero_device_trio.png"
+    right_x = 700
+    right_w = W - right_x - 100
+    right_h = box_h
+    
+    # Outer elegant glass container for the mockups
+    draw.rounded_rectangle([right_x, top_y, right_x + right_w, top_y + right_h], radius=16, fill=(20, 29, 47), outline=(51, 65, 85), width=1)
+    
+    # Subtle inner grid & glow in mockup box
+    for mx in range(right_x, right_x + right_w, 30):
+        draw.line([(mx, top_y), (mx, top_y + right_h)], fill=(26, 38, 60), width=1)
+        
+    # Top pill tag inside container
+    draw_pill_badge(draw, left_x=right_x + 24, cy=top_y + 32, text="RESPONSIVE MULTI-DEVICE SUITE", font=get_font(9.5, 'bold'), theme='blue', dark_mode=True, pad_x=10, height=24)
+    draw.text((right_x + right_w - 24, top_sy := top_y + 32), "Desktop (16:9) · Tablet (4:3) · Mobile (19.5:9)", font=get_font(11, 'medium'), fill=(148, 163, 184), anchor='rm')
+    
+    if os.path.exists(trio_thumb):
+        trio_img = Image.open(trio_thumb).convert('RGBA')
+        # Proportional contain scaling inside right box
+        avail_w = right_w - 40
+        avail_h = right_h - 70
+        scale = min(avail_w / trio_img.width, avail_h / trio_img.height)
+        new_w = int(round(trio_img.width * scale))
+        new_h = int(round(trio_img.height * scale))
+        trio_resized = trio_img.resize((new_w, new_h), Image.Resampling.LANCZOS)
+        
+        pos_x = right_x + (right_w - new_w) // 2
+        pos_y = top_y + 55 + (avail_h - new_h) // 2
+        
+        # Paste with alpha mask
+        base.paste(trio_resized, (pos_x, pos_y), trio_resized)
     
     draw_slide_footer(draw, 1, dark_mode=True)
     base.save(os.path.join(OUT_DIR, 'slide_01.png'))
-    print("SAVED slide_01.png")
-
-# ==============================================================
-# SLIDE 02: Research with Donut Chart, H-Bar Chart & Problem-Solution Pipeline
+    print("SAVED slide_01.png (Hero Trio Devices Matching User Spec)")
 def make_slide_02():
     base = Image.new('RGB', (W, H), (248, 250, 252))
     draw = ImageDraw.Draw(base)
