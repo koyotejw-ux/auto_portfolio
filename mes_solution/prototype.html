@@ -107,6 +107,27 @@
       align-items: center;
       gap: 10px;
     }
+    .mes-c-brand-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 4px 10px 4px 6px;
+      border-radius: 9999px;
+      background: linear-gradient(135deg, rgba(0, 81, 255, 0.18) 0%, rgba(0, 104, 179, 0.28) 100%);
+      border: 1px solid rgba(0, 140, 255, 0.4);
+      box-shadow: 0 0 12px rgba(0, 81, 255, 0.25);
+    }
+    .mes-c-brand-chip svg {
+      width: 17px;
+      height: 21px;
+      display: block;
+    }
+    .mes-c-brand-chip span {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: #60A5FA;
+    }
     .btn-tool {
       display: inline-flex;
       align-items: center;
@@ -234,6 +255,22 @@
         <span>새로고침</span>
       </button>
       <button class="btn-tool" onclick="toggleFullscreen()">전체화면</button>
+      <div class="mes-c-brand-chip" title="CodeBridgeX MES Official Brand">
+        <svg viewBox="0 0 104 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 25.6872C0 11.5005 11.5005 0 25.6872 0V0V25.6872H0V25.6872Z" fill="#38BDF8"/>
+          <rect x="25.6875" width="25.6872" height="25.6872" fill="#38BDF8"/>
+          <rect x="51.3828" width="25.6872" height="25.6872" fill="#38BDF8"/>
+          <path d="M77.0547 0V0C91.2413 0 102.742 11.5005 102.742 25.6872V25.6872H77.0547V0Z" fill="#0284C7"/>
+          <rect y="25.6865" width="25.6872" height="25.6872" fill="#38BDF8"/>
+          <rect y="51.375" width="25.6872" height="25.6872" fill="#38BDF8"/>
+          <rect y="77.0615" width="25.6872" height="25.6872" fill="#38BDF8"/>
+          <path d="M0 102.749H25.6872V128.436V128.436C11.5005 128.436 0 116.936 0 102.749V102.749Z" fill="#38BDF8"/>
+          <rect x="25.6875" y="102.749" width="25.6872" height="25.6872" fill="#38BDF8"/>
+          <rect x="51.3828" y="102.749" width="25.6872" height="25.6872" fill="#38BDF8"/>
+          <path d="M77.0547 102.749H102.742V102.749C102.742 116.936 91.2413 128.436 77.0547 128.436V128.436V102.749Z" fill="#0284C7"/>
+        </svg>
+        <span>MES</span>
+      </div>
     </div>
   </header>
 
