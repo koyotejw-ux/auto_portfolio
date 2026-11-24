@@ -111,3 +111,4 @@ if os.path.exists(phone_path):
 out_hub_thumb = r"d:\097.flutter_project\auto_portfolio\assets\mes_solution_clean_devices.png"
 img.save(out_hub_thumb, quality=95)
 print("SAVED assets/mes_solution_clean_devices.png!")
+
