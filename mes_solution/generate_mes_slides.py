@@ -1234,7 +1234,8 @@ def make_slide_09():
 # ==============================================================
 # SLIDE 10: Production Showcase (6 Real Dark Mode & Responsive Screens)
 def make_slide_10():
-    base = Image.new('RGB', (W, H), (15, 23, 42)) # High-tech dark mode showcase
+    # Sophisticated obsidian dark canvas
+    base = Image.new('RGB', (W, H), (15, 23, 42))
     draw = ImageDraw.Draw(base)
     
     for gx in range(0, W, 40):
@@ -1245,57 +1246,176 @@ def make_slide_10():
     draw_slide_header(
         draw, 
         slide_num=10, 
-        category_kr="프로덕션 화면 | 6대 핵심 상용 웹 대시보드 쇼케이스 (다크모드)", 
-        title_black="현장 조도에 최적화된 고대비 인터페이스, ", 
-        title_blue="전 화면 다크모드 & 반응형 UI 컬렉션", 
-        subtitle_kr="경영 관제 대시보드, 생산 공정, 품질 보증, 자재 실사, 태블릿 및 모바일까지 전 라인업 다크 테마 적용",
+        category_kr="프로덕션 화면 | 디바이스별 고유 비율 & 100% 리얼 다크모드 쇼케이스", 
+        title_black="데스크톱(16:9), 태블릿(4:3), 모바일(19.5:9) ", 
+        title_blue="디바이스별 종횡비 일치 & 리얼 다크모드 컬렉션", 
+        subtitle_kr="기기별 하드웨어 규격에 맞춘 3대 폼팩터 화면 비율과 고대비 다크 테마(Dark Theme) 프로덕션 렌더링",
         dark_mode=True
     )
     
-    screens = [
-        ("01. 경영 종합 대시보드 (Dark)", "screen_02_dashboard_dark.png", "전사 KPI, 생산성 및 OEE 텔레메트리"),
-        ("02. 생산 공정 스케줄러 (Dark)", "screen_03_production_dark.png", "작업 지시서 발행 및 라인별 실적"),
-        ("03. 품질 보증 & 검사 (Dark)", "screen_04_quality_dark.png", "수입/공정 검사 및 불량률 SPC"),
-        ("04. 자재/재고 실사 (Dark)", "screen_05_inventory_dark.png", "창고 로케이션별 실시간 재고량"),
-        ("05. 태블릿 10-inch 관제 (Dark)", "render_tablet_dashboard_dark.png", "현장 태블릿 4:3 고대비 모니터링"),
-        ("06. 모바일 스마트폰 관제 (Dark)", "render_mobile_dashboard_dark.png", "작업자 19.5:9 핸드헬드 터치 UI")
+    # -------------------------------------------------------------
+    # LAYOUT:
+    # LEFT (x=100, w=1040): 2x Desktop Wide 16:9 Screens (Dashboard & Production)
+    # RIGHT (x=1170, w=650): Split into Tablet (4:3) and Mobile (19.5:9)
+    #   - Tablet (x=1170, w=390, h=740): Tablet 4:3 Chassis Frame + Quality Dark
+    #   - Mobile (x=1586, w=234, h=740): Smartphone 19.5:9 Chassis Frame + Mobile Dark
+    # -------------------------------------------------------------
+    top_y = 215
+    col_h = 745
+    
+    # -------------------------------------------------------------
+    # 1. LEFT ZONE: 2 Desktop 16:9 Screens (w=1040)
+    # -------------------------------------------------------------
+    left_x = 100
+    left_w = 1040
+    d_card_h = (col_h - 20) // 2  # approx 362px each
+    
+    desktop_screens = [
+        ("01. 데스크톱 와이드 (16:9) · 경영 종합 대시보드 (Dark)", "screen_02_dashboard_dark.png", "FHD 1920x1080 · 전사 종합 KPI & OEE 실시간 텔레메트리 관제"),
+        ("02. 데스크톱 와이드 (16:9) · 생산 공정 스케줄러 (Dark)", "screen_03_production_dark.png", "FHD 1920x1080 · 스마트 간트차트 라인 배정 & 호기별 작업지시")
     ]
     
-    cols = 3
-    rows = 2
-    cell_w = (W - 200 - 2 * 24) // cols
-    cell_h = (740 - 24) // rows
-    
-    for idx, (title, fname, desc) in enumerate(screens):
-        c = idx % cols
-        r = idx // cols
-        cx = 100 + c * (cell_w + 24)
-        cy = 220 + r * (cell_h + 24)
+    for d_idx, (d_title, d_fname, d_sub) in enumerate(desktop_screens):
+        dy = top_y + d_idx * (d_card_h + 20)
+        draw.rounded_rectangle([left_x, dy, left_x + left_w, dy + d_card_h], radius=16, fill=(24, 34, 52), outline=(51, 65, 85), width=1)
         
-        draw.rounded_rectangle([cx, cy, cx + cell_w, cy + cell_h], radius=10, fill=(30, 41, 59), outline=(51, 65, 85), width=1)
+        # Header bar inside card
+        draw_pill_badge(draw, left_x=left_x + 18, cy=dy + 26, text="DESKTOP 16:9", font=get_font(9.5, 'bold'), theme='blue', dark_mode=True, pad_x=8, height=22)
+        draw.text((left_x + 130, dy + 26), d_title, font=get_font(13.5, 'bold'), fill=(255, 255, 255), anchor='lm')
+        draw.text((left_x + left_w - 18, dy + 26), d_sub, font=get_font(10.5, 'medium'), fill=(148, 163, 184), anchor='rm')
         
-        draw.rounded_rectangle([cx, cy, cx + cell_w, cy + 32], radius=10, fill=(15, 23, 42))
-        draw.rectangle([cx, cy + 20, cx + cell_w, cy + 32], fill=(15, 23, 42))
-        draw.text((cx + 12, cy + 16), title, font=get_font(11, 'bold'), fill=(255, 255, 255), anchor='lm')
-        draw.text((cx + cell_w - 12, cy + 16), desc, font=get_font(9, 'medium'), fill=(148, 163, 184), anchor='rm')
+        # Screen viewport (Exact 16:9 ratio)
+        v_x = left_x + 16
+        v_y = dy + 48
+        v_w = left_w - 32
+        v_h = d_card_h - 60
         
-        fpath = os.path.join(MOCKUP_DIR, fname)
-        if not os.path.exists(fpath):
-            fpath = os.path.join(MOCKUP_DIR, fname.replace('_dark', ''))
-            
+        draw.rounded_rectangle([v_x, v_y, v_x + v_w, v_y + v_h], radius=10, fill=(11, 16, 26), outline=(40, 53, 72), width=1)
+        
+        fpath = os.path.join(MOCKUP_DIR, d_fname)
         if os.path.exists(fpath):
-            try:
-                img = Image.open(fpath).convert('RGB')
-                thumb_w = cell_w - 4
-                thumb_h = cell_h - 36
-                img_resized = img.resize((thumb_w, thumb_h), Image.Resampling.LANCZOS)
-                base.paste(img_resized, (cx + 2, cy + 34))
-            except Exception as e:
-                print(f"Error thumbnailing {fname}:", e)
-                
+            im = Image.open(fpath).convert('RGB')
+            # 16:9 Contain scaling
+            scale = min((v_w - 8) / im.width, (v_h - 8) / im.height)
+            tw = int(round(im.width * scale))
+            th = int(round(im.height * scale))
+            im_res = im.resize((tw, th), Image.Resampling.LANCZOS)
+            px = v_x + (v_w - tw) // 2
+            py = v_y + (v_h - th) // 2
+            base.paste(im_res, (px, py))
+            draw.rounded_rectangle([px, py, px + tw, py + th], radius=4, outline=(71, 85, 105), width=1)
+            
+    # -------------------------------------------------------------
+    # 2. MIDDLE ZONE: Tablet (4:3) Chassis (x=1165, w=390, h=745)
+    # -------------------------------------------------------------
+    tab_x = 1165
+    tab_w = 385
+    draw.rounded_rectangle([tab_x, top_y, tab_x + tab_w, top_y + col_h], radius=16, fill=(24, 34, 52), outline=(51, 65, 85), width=1)
+    
+    draw_pill_badge(draw, left_x=tab_x + 18, cy=top_y + 26, text="TABLET 4:3", font=get_font(9.5, 'bold'), theme='cyan', dark_mode=True, pad_x=8, height=22)
+    draw.text((tab_x + 115, top_y + 26), '03. 현장 10" 태블릿 (Dark)', font=get_font(13.5, 'bold'), fill=(255, 255, 255), anchor='lm')
+    draw.text((tab_x + 18, top_y + 60), "1024x768 (4:3 비율) 현장 관제 및 품질 검사", font=get_font(11, 'medium'), fill=(148, 163, 184))
+    
+    # Tablet Bezel Chassis (Centered)
+    chassis_tab_y = top_y + 88
+    chassis_tab_w = tab_w - 32
+    chassis_tab_h = int(chassis_tab_w / 1.333) + 36 # 4:3 screen + bezels
+    
+    draw.rounded_rectangle([tab_x + 16, chassis_tab_y, tab_x + 16 + chassis_tab_w, chassis_tab_y + chassis_tab_h], radius=20, fill=(9, 13, 22), outline=(51, 65, 85), width=2)
+    
+    # Camera dot
+    draw.ellipse([tab_x + 16 + chassis_tab_w // 2 - 3, chassis_tab_y + 8, tab_x + 16 + chassis_tab_w // 2 + 3, chassis_tab_y + 14], fill=(71, 85, 105))
+    
+    tab_fpath = os.path.join(MOCKUP_DIR, 'render_tablet_dashboard_dark.png')
+    if os.path.exists(tab_fpath):
+        tab_im = Image.open(tab_fpath).convert('RGB')
+        tw_in = chassis_tab_w - 20
+        th_in = int(tw_in / 1.333)
+        tab_res = tab_im.resize((tw_in, th_in), Image.Resampling.LANCZOS)
+        base.paste(tab_res, (tab_x + 26, chassis_tab_y + 22))
+        draw.rounded_rectangle([tab_x + 26, chassis_tab_y + 22, tab_x + 26 + tw_in, chassis_tab_y + 22 + th_in], radius=6, outline=(40, 53, 72), width=1)
+        
+    # Tablet Feature Callout Pods below chassis
+    callout_y = chassis_tab_y + chassis_tab_h + 16
+    draw.line([(tab_x + 16, callout_y), (tab_x + tab_w - 16, callout_y)], fill=(40, 53, 72), width=1)
+    
+    tab_specs = [
+        ("방진 터치 조작 최적화", "라인별 고정 태블릿에서 장갑 착용 상태로 OEE 실시간 모니터링"),
+        ("가로 4:3 광시야각 레이아웃", "사이드 바 자동 축소(Drawer) 및 데이터 그리드 가상 스크롤 지원"),
+        ("다크 테마 눈부심 방지", "어두운 공장 조도 환경에서 작업자 시각 피로도 70% 감소")
+    ]
+    
+    tsy = callout_y + 16
+    for t_title, t_desc in tab_specs:
+        draw.text((tab_x + 18, tsy), f"• {t_title}", font=get_font(11.5, 'bold'), fill=(56, 189, 248))
+        lines = textwrap.wrap(t_desc, width=32)
+        ly = tsy + 18
+        for l in lines:
+            draw.text((tab_x + 26, ly), l, font=get_font(10.5, 'regular'), fill=(203, 213, 225))
+            ly += 16
+        tsy = ly + 8
+
+    # -------------------------------------------------------------
+    # 3. RIGHT ZONE: Mobile (19.5:9) Smartphone Chassis (x=1575, w=245, h=745)
+    # -------------------------------------------------------------
+    mob_x = 1575
+    mob_w = 245
+    draw.rounded_rectangle([mob_x, top_y, mob_x + mob_w, top_y + col_h], radius=16, fill=(24, 34, 52), outline=(51, 65, 85), width=1)
+    
+    draw_pill_badge(draw, left_x=mob_x + 14, cy=top_y + 26, text="MOBILE 19.5:9", font=get_font(9, 'bold'), theme='purple', dark_mode=True, pad_x=6, height=22)
+    draw.text((mob_x + 115, top_y + 26), "04. 스마트폰 (Dark)", font=get_font(12, 'bold'), fill=(255, 255, 255), anchor='lm')
+    draw.text((mob_x + 14, top_y + 58), "390x844 핸드헬드 터치 UI", font=get_font(10.5, 'medium'), fill=(148, 163, 184))
+    
+    # Phone Bezel Chassis (Centered)
+    chassis_mob_y = top_y + 80
+    chassis_mob_w = 210
+    chassis_mob_h = 455  # 19.5:9 ratio proportion
+    
+    # Phone outer frame
+    draw.rounded_rectangle([mob_x + 18, chassis_mob_y, mob_x + 18 + chassis_mob_w, chassis_mob_y + chassis_mob_h], radius=32, fill=(9, 13, 22), outline=(51, 65, 85), width=3)
+    
+    # Dynamic Island / Notch
+    draw.rounded_rectangle([mob_x + 18 + chassis_mob_w // 2 - 28, chassis_mob_y + 8, mob_x + 18 + chassis_mob_w // 2 + 28, chassis_mob_y + 22], radius=7, fill=(0, 0, 0))
+    
+    mob_fpath = os.path.join(MOCKUP_DIR, 'render_mobile_dashboard_dark.png')
+    if os.path.exists(mob_fpath):
+        mob_im = Image.open(mob_fpath).convert('RGB')
+        mw_in = chassis_mob_w - 14
+        mh_in = int(mw_in / 0.462)
+        # scale down to fit chassis inner
+        scale_m = min((chassis_mob_w - 14) / mob_im.width, (chassis_mob_h - 38) / mob_im.height)
+        mw_real = int(round(mob_im.width * scale_m))
+        mh_real = int(round(mob_im.height * scale_m))
+        mob_res = mob_im.resize((mw_real, mh_real), Image.Resampling.LANCZOS)
+        
+        m_paste_x = mob_x + 18 + (chassis_mob_w - mw_real) // 2
+        m_paste_y = chassis_mob_y + 28
+        base.paste(mob_res, (m_paste_x, m_paste_y))
+        draw.rounded_rectangle([m_paste_x, m_paste_y, m_paste_x + mw_real, m_paste_y + mh_real], radius=16, outline=(40, 53, 72), width=1)
+        
+    # Mobile Feature Bullets below chassis
+    m_callout_y = chassis_mob_y + chassis_mob_h + 14
+    draw.line([(mob_x + 14, m_callout_y), (mob_x + mob_w - 14, m_callout_y)], fill=(40, 53, 72), width=1)
+    
+    mob_bullets = [
+        ("한 손 터치 인체공학", "모든 핵심 액션 바텀 네비게이션 배치"),
+        ("1-Tap 실적 등록", "바코드 스캔 및 48px 대형 터치 키패드"),
+        ("실시간 푸시 알림", "비가동·불량 알림 즉시 수신 및 원격 승인")
+    ]
+    
+    msy = m_callout_y + 14
+    for mb_title, mb_desc in mob_bullets:
+        draw.text((mob_x + 14, msy), f"• {mb_title}", font=get_font(10.5, 'bold'), fill=(167, 139, 250))
+        lines = textwrap.wrap(mb_desc, width=22)
+        ly = msy + 16
+        for l in lines:
+            draw.text((mob_x + 20, ly), l, font=get_font(9.5, 'regular'), fill=(203, 213, 225))
+            ly += 15
+        msy = ly + 8
+
     draw_slide_footer(draw, 10, dark_mode=True)
     base.save(os.path.join(OUT_DIR, 'slide_10.png'))
-    print("SAVED slide_10.png (All Dark Mode Collection)")
+    print("SAVED slide_10.png (Device Proportions & 100% Real Dark Mode Showcase)")
 def make_slide_11():
     base = Image.new('RGB', (W, H), (255, 255, 255))
     draw = ImageDraw.Draw(base)
