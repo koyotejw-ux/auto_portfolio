@@ -1895,53 +1895,132 @@ def make_slide_11():
         subtitle_kr="데이터 수집 시간 단축, 불량률 감소, 납기 준수율 향상 등 검증된 엔터프라이즈 DX 지표와 설계 회고"
     )
     
+    # -------------------------------------------------------------
+    # 1. TOP METRICS CARDS (4 Columns)
+    # Total width: 1720px (left: 100, right: 100).
+    # -------------------------------------------------------------
     metrics = [
-        ("실적 집계 소요 시간", "24시간 → 1초", "▼ 99.9% 단축", "현장 종이 작업일지 취합 방식에서 웹 1-Tap 실시간 수집 체계로 전면 전환", "blue"),
-        ("공정 불량률 감소", "3.8% → 1.2%", "▼ 42% 감소", "3단계 품질 게이트와 SPC 실시간 이상 징후 감지로 불량 유출 사전 차단", "green"),
-        ("납기 준수율(OTD)", "84.2% → 98.7%", "▲ 14.5%p 향상", "스마트 간트 스케줄러와 BOM 자재 사전 결품 방지 알고리즘 적용", "purple"),
-        ("작업자 교육 시간", "2주 → 2일", "▼ 85% 단축", "아토믹 디자인 기반 일관된 3단 반응형 UI로 신규 작업자 진입 장벽 최소화", "amber"),
+        ("실적 집계 소요 시간", "24시간 → 1초", "▼ 99.9% 단축", "현장 종이 작업일지 취합에서\n웹 1-Tap 실시간 수집으로 전면 전환", "blue"),
+        ("공정 불량률 감소", "3.8% → 1.2%", "▼ 42.0% 감소", "3단계 품질 게이트와 실시간\nSPC 관리도로 불량 유출 사전 차단", "green"),
+        ("납기 준수율 (OTD)", "84.2% → 98.7%", "▲ 14.5%p 향상", "스마트 간트 스케줄러와 BOM\n자재 사전 결품 방지 알고리즘 적용", "purple"),
+        ("작업자 교육 시간", "2주 → 2일", "▼ 85.0% 단축", "3단 반응형 표준 UI/UX 도입으로\n현장 신규 작업자 진입 장벽 최소화", "amber"),
     ]
     
-    mw = (W - 200 - 3 * 24) // 4
-    top_y = 220
-    mh = 190
+    gap = 20
+    mw = (1720 - 3 * gap) // 4  # 415px
+    top_y = 205
+    mh = 195
     
     for i, (label, val, delta, desc, theme) in enumerate(metrics):
-        cx = 100 + i * (mw + 24)
-        draw.rounded_rectangle([cx, top_y, cx + mw, top_y + mh], radius=14, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
+        cx = 100 + i * (mw + gap)
         
-        draw_pill_badge(draw, left_x=cx + 20, cy=top_y + 32, text=label, font=get_font(10, 'bold'), theme=theme, pad_x=10, height=24)
-        draw.text((cx + 20, top_y + 80), val, font=get_font(21, 'bold'), fill=(15, 23, 42))
-        draw_pill_badge(draw, left_x=cx + 20, cy=top_y + 115, text=delta, font=get_font(9.5, 'bold'), theme='solid' if theme=='blue' else theme, solid=True, pad_x=8, height=20)
-        draw.text((cx + 20, top_y + 150), desc, font=get_font(10, 'medium'), fill=(71, 85, 105))
+        # White card with soft border
+        draw.rounded_rectangle([cx, top_y, cx + mw, top_y + mh], radius=14, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
         
-    star_y = top_y + mh + 30
-    star_h = 520
-    draw.rounded_rectangle([100, star_y, W - 100, star_y + star_h], radius=14, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
+        # Inner padding: 22px left/right
+        draw_pill_badge(draw, left_x=cx + 22, cy=top_y + 30, text=label, font=get_font(10.5, 'bold'), theme=theme, pad_x=10, height=24)
+        
+        # Primary Metric Value & Delta side-by-side or stacked cleanly
+        draw.text((cx + 22, top_y + 75), val, font=get_font(21, 'bold'), fill=(15, 23, 42), anchor='lm')
+        draw_pill_badge(draw, left_x=cx + 22, cy=top_y + 115, text=delta, font=get_font(10, 'bold'), theme='solid' if theme=='blue' else theme, solid=True, pad_x=10, height=22)
+        
+        # Description text
+        desc_lines = desc.split('\n')
+        d_y = top_y + 146
+        for dl in desc_lines:
+            draw.text((cx + 22, d_y), dl, font=get_font(10.5, 'regular'), fill=(100, 116, 139))
+            d_y += 18
+            
+    # -------------------------------------------------------------
+    # 2. BOTTOM STAR RETROSPECTIVE: 4 Modular Cards Grid (2x2)
+    # Outer frame: x=100, y=422, w=1720, h=595
+    # -------------------------------------------------------------
+    star_box_y = 422
+    star_box_h = 595
+    draw.rounded_rectangle([100, star_box_y, 100 + 1720, star_box_y + star_box_h], radius=16, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
     
-    draw_pill_badge(draw, left_x=130, cy=star_y + 36, text="STAR 기법 상세 회고 (200자 이상)", font=get_font(10.5, 'bold'), theme='blue', pad_x=12, height=28)
-    draw.text((130, star_y + 78), "스마트 팩토리 엔터프라이즈 UX/UI 아키텍처 구축 회고", font=get_font(20, 'bold'), fill=(15, 23, 42))
+    # Section Header inside Container
+    draw_pill_badge(draw, left_x=130, cy=star_box_y + 36, text="STAR METHOD RETROSPECTIVE", font=get_font(10, 'bold'), theme='blue', pad_x=12, height=26)
+    draw.text((370, star_box_y + 36), "스마트 팩토리 엔터프라이즈 UX/UI 아키텍처 구축 회고 (200자 이상)", font=get_font(18, 'bold'), fill=(15, 23, 42), anchor='lm')
+    draw.text((100 + 1720 - 30, star_box_y + 36), "기획 · 디자인 시스템 · 반응형 퍼블리싱 · 성능 최적화 100% 단독 수행", font=get_font(11.5, 'medium'), fill=(100, 116, 139), anchor='rm')
     
-    star_items = [
-        ("Situation (상황)", "중소·중견 제조 현장의 90% 이상이 종이 일지와 파편화된 엑셀로 생산 현황을 관리하여 재고 오차와 납기 지연이 만성화되어 있었으며, 외산 레거시 ERP의 난해한 조작성으로 인해 현장 작업자의 시스템 도입 기피 현상이 심각했습니다."),
-        ("Task (과제)", "경영진의 실시간 의사결정(OEE, 매출, 납기)을 지원하는 Executive Dashboard와 현장 오퍼레이터가 장갑을 착용한 상태에서도 3초 내에 직관적으로 실적을 등록할 수 있는 인체공학적 반응형 웹 MES 아키텍처를 100% 단독 설계해야 했습니다."),
-        ("Action (행동)", "Vite + React 18과 Tailwind CSS 기반으로 아토믹 디자인 토큰 150종을 정의하고, 13대 비즈니스 카테고리 및 59개 표준 화면 규격을 완성했습니다. 가상 스크롤 데이터 그리드와 간트차트 스케줄러, 실시간 SPC 관리도 및 1-Tap 바코드 LOT 추적 뷰어를 전면 구현했습니다."),
-        ("Result (결과)", "도입 기업 실측 결과 실적 집계 지연을 24시간에서 1초로 단축(99.9% 개선), 공정 불량률 42% 감소, 납기 준수율 98.7% 달성 및 신규 작업자 UI 교육 기간을 2주에서 2일로 85% 단축시키는 괄목할 만한 생산성 혁신을 이끌어냈습니다.")
+    # Divider line
+    draw.line([(130, star_box_y + 64), (100 + 1720 - 30, star_box_y + 64)], fill=(226, 232, 240), width=1)
+    
+    # 4 Modular Grid Cards (2x2)
+    grid_x = 130
+    grid_y = star_box_y + 80
+    grid_w = 1720 - 60 # 1660px
+    col_w = (grid_w - 20) // 2 # 820px
+    card_h = (star_box_h - 100) // 2 # 247px
+    
+    star_cards = [
+        {
+            "tag": "SITUATION",
+            "tag_theme": "blue",
+            "title": "Situation (도입 배경 및 현장 문제점)",
+            "subtitle": "파편화된 레거시 시스템과 수작업 일지 체계의 한계",
+            "body": "중소·중견 제조 현장의 90% 이상이 종이 작업 일지와 파편화된 엑셀 시트로 생산 실적을 관리하여 극심한 재고 오차와 납기 지연이 만성화되어 있었습니다. 특히 기존 외산 레거시 ERP의 복잡하고 난해한 메뉴 구조와 낮은 반응성으로 인해 공장 현장 오퍼레이터의 시스템 사용 기피 및 데이터 누락 문제가 심각했습니다."
+        },
+        {
+            "tag": "TASK",
+            "tag_theme": "purple",
+            "title": "Task (핵심 설계 과제 및 목표)",
+            "subtitle": "경영진-현장 작업자를 잇는 올인원 반응형 아키텍처",
+            "body": "경영진에게는 전사 KPI, OEE, 수주·출고를 초단위로 시각화하는 Executive 관제 대시보드를 제공하고, 현장 작업자에게는 안전 장갑을 착용한 상태에서도 3초 내에 실적을 1-Tap으로 등록할 수 있는 인체공학적 멀티 폼팩터(데스크톱, 태블릿, 모바일) 웹 MES 아키텍처를 100% 단독 설계·구축해야 했습니다."
+        },
+        {
+            "tag": "ACTION",
+            "tag_theme": "amber",
+            "title": "Action (구체적 실행 및 엔지니어링 전략)",
+            "subtitle": "아토믹 디자인 시스템 150종과 고성능 반응형 엔진 구현",
+            "body": "Vite + React 18 및 Tailwind CSS 기반으로 150여 종의 아토믹 디자인 토큰과 59개 표준 화면 규격을 설계했습니다. 수만 건의 LOT 이력을 렌더링 지연 없이 탐색할 수 있는 가상 스크롤 데이터 그리드, 스마트 간트차트 공정 스케줄러, 실시간 품질 SPC 이상 감지 차트 및 1-Tap 바코드 스캔 뷰어를 전면 구현했습니다."
+        },
+        {
+            "tag": "RESULT",
+            "tag_theme": "green",
+            "title": "Result (정량적 성과 및 정성적 회고)",
+            "subtitle": "검증된 DX 생산성 지표와 완성도 높은 엔터프라이즈 UX",
+            "body": "도입 기업 실측 결과 실적 집계 소요 시간을 24시간에서 1초(99.9% 단축)로 개선하고, 3단계 품질 게이트로 공정 불량률 42% 감소, 납기 준수율 98.7%를 달성했습니다. 직관적인 3단 반응형 UI 체계 덕분에 현장 신규 작업자의 적응 교육 기간을 2주에서 2일(85% 단축)로 획기적으로 경감시켰습니다."
+        }
     ]
     
-    sy = star_y + 125
-    for title, content in star_items:
-        draw.text((130, sy), title, font=get_font(13.5, 'bold'), fill=(0, 81, 255))
-        lines = textwrap.wrap(content, width=110)
-        ly = sy + 25
-        for l in lines:
-            draw.text((130, ly), l, font=get_font(12, 'medium'), fill=(51, 65, 85))
-            ly += 22
-        sy += 90
+    positions = [
+        (grid_x, grid_y),
+        (grid_x + col_w + 20, grid_y),
+        (grid_x, grid_y + card_h + 16),
+        (grid_x + col_w + 20, grid_y + card_h + 16)
+    ]
+    
+    for idx, (sc, (px, py)) in enumerate(zip(star_cards, positions)):
+        # Card Background
+        draw.rounded_rectangle([px, py, px + col_w, py + card_h], radius=12, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
         
+        # Left Accent Border
+        accent_color = (0, 81, 255) if sc['tag_theme'] == 'blue' else ((147, 51, 234) if sc['tag_theme'] == 'purple' else ((217, 119, 6) if sc['tag_theme'] == 'amber' else (22, 163, 74)))
+        draw.rounded_rectangle([px, py, px + 5, py + card_h], radius=3, fill=accent_color)
+        
+        # Card Header: Tag Badge + Title
+        draw_pill_badge(draw, left_x=px + 22, cy=py + 26, text=sc['tag'], font=get_font(9.5, 'bold'), theme=sc['tag_theme'], pad_x=8, height=22)
+        draw.text((px + 105, py + 26), sc['title'], font=get_font(13.5, 'bold'), fill=(15, 23, 42), anchor='lm')
+        
+        # Subtitle
+        draw.text((px + 22, py + 56), sc['subtitle'], font=get_font(11, 'bold'), fill=accent_color)
+        
+        # Inner Divider
+        draw.line([(px + 22, py + 74), (px + col_w - 22, py + 74)], fill=(241, 245, 249), width=1)
+        
+        # Body text wrapping with balanced line length (width=62)
+        lines = textwrap.wrap(sc['body'], width=62)
+        by = py + 90
+        for line in lines:
+            draw.text((px + 22, by), line, font=get_font(11, 'regular'), fill=(71, 85, 105))
+            by += 21
+
     draw_slide_footer(draw, 11)
     base.save(os.path.join(OUT_DIR, 'slide_11.png'))
-    print("SAVED slide_11.png")
+    print("SAVED slide_11.png (Redesigned STAR 4-Card Grid & High Density Margins)")
+
 
 # ==============================================================
 # SLIDE 12: Live Prototype & Interactive Hub (Dark Mode Finale)
