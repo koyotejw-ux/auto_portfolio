@@ -13,6 +13,7 @@ import 'widgets/figma_layers_panel.dart';
 import 'widgets/figma_assets_panel.dart';
 import 'widgets/icon_drawing_modal.dart';
 import 'widgets/flutter_project_loader_modal.dart';
+import 'utils/flutter_project_parser.dart';
 
 void main() {
   runApp(const DeckStudioApp());
@@ -163,6 +164,35 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
       _activeSlideIndex = _project.slides.length - 1;
       _selectedElement = null;
     });
+  }
+
+  void _saveChangesToFlutterFiles() {
+    _recordUndoState();
+    final updatedFiles = FlutterProjectParser.saveChangesToFlutterProject(_project);
+    if (updatedFiles > 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: [
+              const Icon(Icons.check_circle, color: Colors.white, size: 18),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text('총 $updatedFiles개의 Flutter Dart 소스 파일에 수정사항이 실시간 반영 저장되었습니다!'),
+              ),
+            ],
+          ),
+          backgroundColor: const Color(0xFF10B981),
+          duration: const Duration(seconds: 3),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('변경된 UI 텍스트나 속성이 없거나 원본 Dart 파일과 이미 일치합니다.'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
   }
 
   void _openFlutterProjectLoader() {
@@ -1088,6 +1118,9 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
               if (_selectedElement != null) {
                 _deleteSelected();
               }
+            // 5.1 Save changes back to Flutter files (Ctrl + S)
+            } else if (isCtrl && event.logicalKey == LogicalKeyboardKey.keyS) {
+              _saveChangesToFlutterFiles();
             // 5.1 Select All (Ctrl + A)
             } else if (isCtrl && event.logicalKey == LogicalKeyboardKey.keyA) {
               if (_currentSlide.elements.isNotEmpty) {
@@ -1493,147 +1526,166 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
         color: Color(0xFF1E1E1E), // Figma UI3 Dark Slate
         border: Border(bottom: BorderSide(color: Color(0xFF2C2C2C))),
       ),
-      child: Row(
-        children: [
-          // Figma UI3 App Icon & Document Title
-          Container(
-            padding: const EdgeInsets.all(5),
-            decoration: BoxDecoration(
-              color: const Color(0xFF2C2C2C),
-              borderRadius: BorderRadius.circular(6),
-            ),
-            child: const Icon(Icons.dashboard_customize, color: Color(0xFF0052FF), size: 15),
-          ),
-          const SizedBox(width: 10),
-          Row(
-            children: [
-              const Text(
-                'DeckStudio (데스크탑 포트폴리오 에디터)',
-                style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            // Figma UI3 App Icon & Document Title
+            Container(
+              padding: const EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                color: const Color(0xFF2C2C2C),
+                borderRadius: BorderRadius.circular(6),
               ),
-              const SizedBox(width: 8),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF2C2C2C),
-                  borderRadius: BorderRadius.circular(4),
+              child: const Icon(Icons.dashboard_customize, color: Color(0xFF0052FF), size: 15),
+            ),
+            const SizedBox(width: 10),
+            Row(
+              children: [
+                const Text(
+                  'DeckStudio (데스크탑 포트폴리오 에디터)',
+                  style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold),
                 ),
-                child: const Text('Drafts', style: TextStyle(color: Color(0xFFA3A3A3), fontSize: 10, fontWeight: FontWeight.w500)),
+                const SizedBox(width: 8),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF2C2C2C),
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: const Text('Drafts', style: TextStyle(color: Color(0xFFA3A3A3), fontSize: 10, fontWeight: FontWeight.w500)),
+                ),
+              ],
+            ),
+            const SizedBox(width: 16),
+            ElevatedButton.icon(
+              icon: Icon(_showLayoutGrid ? Icons.grid_on : Icons.grid_off, size: 14, color: _showLayoutGrid ? const Color(0xFF38BDF8) : const Color(0xFFA3A3A3)),
+              label: Text(_showLayoutGrid ? 'Grid ON' : 'Grid', style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: _showLayoutGrid ? const Color(0xFF0038A8) : const Color(0xFF2C2C2C),
+                foregroundColor: Colors.white,
+                elevation: 0,
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(6),
+                  side: BorderSide(color: _showLayoutGrid ? const Color(0xFF0052FF) : const Color(0xFF404040)),
+                ),
               ),
-            ],
-          ),
-          const Spacer(),
-          ElevatedButton.icon(
-            icon: Icon(_showLayoutGrid ? Icons.grid_on : Icons.grid_off, size: 14, color: _showLayoutGrid ? const Color(0xFF38BDF8) : const Color(0xFFA3A3A3)),
-            label: Text(_showLayoutGrid ? 'Grid ON' : 'Grid', style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: _showLayoutGrid ? const Color(0xFF0038A8) : const Color(0xFF2C2C2C),
-              foregroundColor: Colors.white,
-              elevation: 0,
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(6),
-                side: BorderSide(color: _showLayoutGrid ? const Color(0xFF0052FF) : const Color(0xFF404040)),
+              onPressed: () {
+                setState(() => _showLayoutGrid = !_showLayoutGrid);
+              },
+            ),
+            const SizedBox(width: 6),
+            IconButton(
+              icon: const Icon(Icons.keyboard, color: Color(0xFFA3A3A3), size: 18),
+              tooltip: '피그마 전체 단축키 모음 (Ctrl+/)',
+              onPressed: _showShortcutsDialog,
+              visualDensity: VisualDensity.compact,
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(minWidth: 28, minHeight: 28),
+            ),
+            const SizedBox(width: 6),
+            ElevatedButton.icon(
+              icon: const Icon(Icons.folder_open, size: 14, color: Color(0xFF38BDF8)),
+              label: const Text('Flutter UI 불러오기', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF1E293B),
+                foregroundColor: Colors.white,
+                elevation: 0,
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(6),
+                  side: const BorderSide(color: Color(0xFF0052FF)),
+                ),
               ),
+              onPressed: _openFlutterProjectLoader,
             ),
-            onPressed: () {
-              setState(() => _showLayoutGrid = !_showLayoutGrid);
-            },
-          ),
-          const SizedBox(width: 6),
-          IconButton(
-            icon: const Icon(Icons.keyboard, color: Color(0xFFA3A3A3), size: 18),
-            tooltip: '피그마 전체 단축키 모음 (Ctrl+/)',
-            onPressed: _showShortcutsDialog,
-            visualDensity: VisualDensity.compact,
-            padding: EdgeInsets.zero,
-            constraints: const BoxConstraints(minWidth: 28, minHeight: 28),
-          ),
-          const SizedBox(width: 4),
-          ElevatedButton.icon(
-            icon: const Icon(Icons.folder_open, size: 14, color: Color(0xFF38BDF8)),
-            label: const Text('Flutter UI 불러오기', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF1E293B),
-              foregroundColor: Colors.white,
-              elevation: 0,
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(6),
-                side: const BorderSide(color: Color(0xFF0052FF)),
+            const SizedBox(width: 6),
+            ElevatedButton.icon(
+              icon: const Icon(Icons.save_as, size: 14, color: Color(0xFF10B981)),
+              label: const Text('Flutter에 저장 (Ctrl+S)', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF064E3B),
+                foregroundColor: Colors.white,
+                elevation: 0,
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(6),
+                  side: const BorderSide(color: Color(0xFF10B981)),
+                ),
               ),
+              onPressed: _saveChangesToFlutterFiles,
             ),
-            onPressed: _openFlutterProjectLoader,
-          ),
-          const SizedBox(width: 6),
-          ElevatedButton.icon(
-            icon: const Icon(Icons.swap_horiz, size: 14),
-            label: const Text('프로젝트 전환', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF2C2C2C),
-              foregroundColor: Colors.white,
-              elevation: 0,
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(6),
-                side: const BorderSide(color: Color(0xFF404040)),
+            const SizedBox(width: 6),
+            ElevatedButton.icon(
+              icon: const Icon(Icons.swap_horiz, size: 14),
+              label: const Text('프로젝트 전환', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF2C2C2C),
+                foregroundColor: Colors.white,
+                elevation: 0,
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(6),
+                  side: const BorderSide(color: Color(0xFF404040)),
+                ),
               ),
+              onPressed: _showProjectSwitchDialog,
             ),
-            onPressed: _showProjectSwitchDialog,
-          ),
-          const SizedBox(width: 6),
-          ElevatedButton.icon(
-            icon: const Icon(Icons.tune, size: 14, color: Color(0xFF38BDF8)),
-            label: const Text('Variables', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF2C2C2C),
-              foregroundColor: Colors.white,
-              elevation: 0,
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(6),
-                side: const BorderSide(color: Color(0xFF404040)),
+            const SizedBox(width: 6),
+            ElevatedButton.icon(
+              icon: const Icon(Icons.tune, size: 14, color: Color(0xFF38BDF8)),
+              label: const Text('Variables', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF2C2C2C),
+                foregroundColor: Colors.white,
+                elevation: 0,
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(6),
+                  side: const BorderSide(color: Color(0xFF404040)),
+                ),
               ),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (ctx) => const DesignSystemLibraryModal(),
+                );
+              },
             ),
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (ctx) => const DesignSystemLibraryModal(),
-              );
-            },
-          ),
-          const SizedBox(width: 6),
-          ElevatedButton.icon(
-            icon: const Icon(Icons.add_box_outlined, size: 14),
-            label: const Text('컴포넌트 삽입', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF0052FF),
-              foregroundColor: Colors.white,
-              elevation: 0,
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+            const SizedBox(width: 6),
+            ElevatedButton.icon(
+              icon: const Icon(Icons.add_box_outlined, size: 14),
+              label: const Text('컴포넌트 삽입', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF0052FF),
+                foregroundColor: Colors.white,
+                elevation: 0,
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+              ),
+              onPressed: _openElementLibrary,
             ),
-            onPressed: _openElementLibrary,
-          ),
-          const SizedBox(width: 6),
-          ElevatedButton.icon(
-            icon: const Icon(Icons.play_arrow, size: 14, color: Colors.white),
-            label: const Text('Present', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF10B981),
-              foregroundColor: Colors.white,
-              elevation: 0,
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+            const SizedBox(width: 6),
+            ElevatedButton.icon(
+              icon: const Icon(Icons.play_arrow, size: 14, color: Colors.white),
+              label: const Text('Present', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF10B981),
+                foregroundColor: Colors.white,
+                elevation: 0,
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+              ),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (ctx) => FullscreenExportModal(project: _project),
+                );
+              },
             ),
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (ctx) => FullscreenExportModal(project: _project),
-              );
-            },
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

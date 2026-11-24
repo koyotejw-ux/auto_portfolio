@@ -16,9 +16,10 @@ class FlutterProjectLoaderModal extends StatefulWidget {
 class _FlutterProjectLoaderModalState extends State<FlutterProjectLoaderModal> {
   String? _selectedDirectory;
   bool _isLoading = false;
-  List<File> _foundFiles = [];
+  List<ParsedFlutterScreen> _parsedScreens = [];
   Set<String> _selectedFiles = {};
-  String _statusMessage = '플러터 프로젝트 루트 폴더(또는 lib 폴더)를 선택해주세요.';
+  FlutterComponentCategory? _filterCategory; // null = all
+  String _statusMessage = '플러터 프로젝트 루트 폴더를 선택해주세요.';
 
   // Recent sample projects list
   final List<String> _sampleProjects = [
@@ -40,26 +41,33 @@ class _FlutterProjectLoaderModalState extends State<FlutterProjectLoaderModal> {
     setState(() {
       _selectedDirectory = path;
       _isLoading = true;
-      _statusMessage = '플러터 Dart 소스코드 및 UI 구조 분석 중...';
-      _foundFiles = [];
+      _statusMessage = '플러터 전체 소스코드 스캔 및 페이지/모달/바텀시트 분류 중...';
+      _parsedScreens = [];
       _selectedFiles = {};
     });
 
     try {
       final files = await FlutterProjectParser.findScreenFiles(path);
-      // Filter primarily screens and widgets
-      final prioritized = files.where((f) {
-        final p = f.path.replaceAll(r'\', '/').toLowerCase();
-        return p.contains('/screen') || p.contains('/page') || p.contains('/view') || p.contains('/widget') || p.endsWith('main.dart');
-      }).toList();
+      final parsedList = <ParsedFlutterScreen>[];
 
-      final displayFiles = prioritized.isNotEmpty ? prioritized : files;
+      for (final f in files) {
+        try {
+          final parsed = FlutterProjectParser.parseDartFile(f);
+          parsedList.add(parsed);
+        } catch (_) {}
+      }
 
       setState(() {
         _isLoading = false;
-        _foundFiles = displayFiles;
-        _selectedFiles = displayFiles.map((f) => f.path).toSet();
-        _statusMessage = '총 ${displayFiles.length}개의 화면/위젯 파일을 성공적으로 감지했습니다.';
+        _parsedScreens = parsedList;
+        _selectedFiles = parsedList.map((s) => s.filePath).toSet();
+
+        final pageCount = parsedList.where((s) => s.category == FlutterComponentCategory.page).length;
+        final modalCount = parsedList.where((s) => s.category == FlutterComponentCategory.modal).length;
+        final sheetCount = parsedList.where((s) => s.category == FlutterComponentCategory.bottomSheet).length;
+        final widgetCount = parsedList.where((s) => s.category == FlutterComponentCategory.widget).length;
+
+        _statusMessage = '총 ${parsedList.length}개 발견 (페이지: $pageCount, 모달: $modalCount, 바텀시트: $sheetCount, 위젯: $widgetCount)';
       });
     } catch (e) {
       setState(() {
@@ -74,17 +82,12 @@ class _FlutterProjectLoaderModalState extends State<FlutterProjectLoaderModal> {
 
     setState(() => _isLoading = true);
 
-    final selectedList = _foundFiles.where((f) => _selectedFiles.contains(f.path)).toList();
+    final selectedScreens = _parsedScreens.where((s) => _selectedFiles.contains(s.filePath)).toList();
     final slides = <DeckSlide>[];
 
-    for (int i = 0; i < selectedList.length; i++) {
-      final file = selectedList[i];
-      try {
-        final parsed = FlutterProjectParser.parseDartFile(file);
-        slides.add(parsed.toDeckSlide(i + 1));
-      } catch (e) {
-        debugPrint('Error parsing ${file.path}: $e');
-      }
+    for (int i = 0; i < selectedScreens.length; i++) {
+      final s = selectedScreens[i];
+      slides.add(s.toDeckSlide(i + 1));
     }
 
     if (slides.isEmpty) {
@@ -101,7 +104,7 @@ class _FlutterProjectLoaderModalState extends State<FlutterProjectLoaderModal> {
 
     final project = PortfolioProject(
       title: 'Flutter UI: $projName',
-      author: 'Flutter Engine Live Parser',
+      author: 'Flutter Two-Way Sync Engine',
       slides: slides,
     );
 
@@ -109,8 +112,38 @@ class _FlutterProjectLoaderModalState extends State<FlutterProjectLoaderModal> {
     Navigator.pop(context);
   }
 
+  Color _getCategoryColor(FlutterComponentCategory cat) {
+    switch (cat) {
+      case FlutterComponentCategory.page:
+        return const Color(0xFF0052FF);
+      case FlutterComponentCategory.modal:
+        return const Color(0xFFA78BFA);
+      case FlutterComponentCategory.bottomSheet:
+        return const Color(0xFF38BDF8);
+      case FlutterComponentCategory.widget:
+        return const Color(0xFF10B981);
+    }
+  }
+
+  IconData _getCategoryIcon(FlutterComponentCategory cat) {
+    switch (cat) {
+      case FlutterComponentCategory.page:
+        return Icons.phone_android;
+      case FlutterComponentCategory.modal:
+        return Icons.picture_in_picture_alt;
+      case FlutterComponentCategory.bottomSheet:
+        return Icons.vertical_align_bottom;
+      case FlutterComponentCategory.widget:
+        return Icons.widgets_outlined;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final filteredScreens = _filterCategory == null
+        ? _parsedScreens
+        : _parsedScreens.where((s) => s.category == _filterCategory).toList();
+
     return Dialog(
       backgroundColor: const Color(0xFF1E1E1E),
       shape: RoundedRectangleBorder(
@@ -118,8 +151,8 @@ class _FlutterProjectLoaderModalState extends State<FlutterProjectLoaderModal> {
         side: const BorderSide(color: Color(0xFF333333)),
       ),
       child: Container(
-        width: 820,
-        height: 640,
+        width: 880,
+        height: 680,
         padding: const EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -133,7 +166,7 @@ class _FlutterProjectLoaderModalState extends State<FlutterProjectLoaderModal> {
                     color: const Color(0xFF0052FF).withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: const Icon(Icons.folder_open, color: Color(0xFF38BDF8), size: 22),
+                  child: const Icon(Icons.sync_alt, color: Color(0xFF38BDF8), size: 22),
                 ),
                 const SizedBox(width: 12),
                 const Expanded(
@@ -141,12 +174,12 @@ class _FlutterProjectLoaderModalState extends State<FlutterProjectLoaderModal> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '플러터(Flutter) 프로젝트 폴더 UI 로더',
+                        '플러터(Flutter) 프로젝트 전체 인식 & 양방향 UI 동기화 로더',
                         style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
                       ),
                       SizedBox(height: 2),
                       Text(
-                        '실제 Flutter 프로젝트의 Dart 소스 코드를 읽어 화면 레이아웃과 컴포넌트 구조를 피그마 캔버스로 즉시 복원합니다.',
+                        '프로젝트 전체를 인식하여 [페이지], [모달], [바텀시트]별로 캔버스에 생성하며, 수정 후 [저장] 시 Flutter 원본 코드가 실시간 업데이트됩니다.',
                         style: TextStyle(color: Color(0xFFA3A3A3), fontSize: 11),
                       ),
                     ],
@@ -158,7 +191,7 @@ class _FlutterProjectLoaderModalState extends State<FlutterProjectLoaderModal> {
                 ),
               ],
             ),
-            const SizedBox(height: 18),
+            const SizedBox(height: 16),
 
             // Directory Selection Bar
             Container(
@@ -195,7 +228,7 @@ class _FlutterProjectLoaderModalState extends State<FlutterProjectLoaderModal> {
                 ],
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 10),
 
             // Quick Samples Chips
             Row(
@@ -217,7 +250,36 @@ class _FlutterProjectLoaderModalState extends State<FlutterProjectLoaderModal> {
                 }),
               ],
             ),
-            const SizedBox(height: 14),
+            const SizedBox(height: 12),
+
+            // Category Filter Tabs
+            if (_parsedScreens.isNotEmpty)
+              Row(
+                children: [
+                  _buildCategoryFilterChip(null, '전체보기 (${_parsedScreens.length})'),
+                  const SizedBox(width: 6),
+                  _buildCategoryFilterChip(
+                    FlutterComponentCategory.page,
+                    '페이지 (${_parsedScreens.where((s) => s.category == FlutterComponentCategory.page).length})',
+                  ),
+                  const SizedBox(width: 6),
+                  _buildCategoryFilterChip(
+                    FlutterComponentCategory.modal,
+                    '모달 다이얼로그 (${_parsedScreens.where((s) => s.category == FlutterComponentCategory.modal).length})',
+                  ),
+                  const SizedBox(width: 6),
+                  _buildCategoryFilterChip(
+                    FlutterComponentCategory.bottomSheet,
+                    '바텀시트 (${_parsedScreens.where((s) => s.category == FlutterComponentCategory.bottomSheet).length})',
+                  ),
+                  const SizedBox(width: 6),
+                  _buildCategoryFilterChip(
+                    FlutterComponentCategory.widget,
+                    '위젯 (${_parsedScreens.where((s) => s.category == FlutterComponentCategory.widget).length})',
+                  ),
+                ],
+              ),
+            const SizedBox(height: 10),
 
             // Content Area: File Selection List
             Expanded(
@@ -234,11 +296,11 @@ class _FlutterProjectLoaderModalState extends State<FlutterProjectLoaderModal> {
                           children: [
                             CircularProgressIndicator(color: Color(0xFF0052FF)),
                             SizedBox(height: 14),
-                            Text('Flutter 프로젝트 UI 구문 분석 중...', style: TextStyle(color: Colors.white70, fontSize: 12)),
+                            Text('Flutter 프로젝트 전체 구조 및 모달/바텀시트 분석 중...', style: TextStyle(color: Colors.white70, fontSize: 12)),
                           ],
                         ),
                       )
-                    : _foundFiles.isEmpty
+                    : _parsedScreens.isEmpty
                         ? Center(
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
@@ -261,14 +323,14 @@ class _FlutterProjectLoaderModalState extends State<FlutterProjectLoaderModal> {
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      '불러올 UI 화면 / 위젯 (${_selectedFiles.length}/${_foundFiles.length}개 선택됨)',
+                                      '생성할 캔버스 슬라이드 (${_selectedFiles.length}/${_parsedScreens.length}개 선택됨)',
                                       style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.bold),
                                     ),
                                     Row(
                                       children: [
                                         TextButton(
                                           onPressed: () {
-                                            setState(() => _selectedFiles = _foundFiles.map((f) => f.path).toSet());
+                                            setState(() => _selectedFiles = _parsedScreens.map((f) => f.filePath).toSet());
                                           },
                                           child: const Text('전체 선택', style: TextStyle(fontSize: 10, color: Color(0xFF38BDF8))),
                                         ),
@@ -285,34 +347,55 @@ class _FlutterProjectLoaderModalState extends State<FlutterProjectLoaderModal> {
                               ),
                               Expanded(
                                 child: ListView.builder(
-                                  itemCount: _foundFiles.length,
+                                  itemCount: filteredScreens.length,
                                   itemBuilder: (ctx, idx) {
-                                    final file = _foundFiles[idx];
-                                    final isChecked = _selectedFiles.contains(file.path);
-                                    final fileName = file.uri.pathSegments.last;
-                                    final relPath = file.path.replaceAll(r'\', '/');
+                                    final screen = filteredScreens[idx];
+                                    final isChecked = _selectedFiles.contains(screen.filePath);
+                                    final relPath = screen.filePath.replaceAll(r'\', '/');
+                                    final catColor = _getCategoryColor(screen.category);
+                                    final catIcon = _getCategoryIcon(screen.category);
 
                                     return CheckboxListTile(
                                       value: isChecked,
                                       dense: true,
                                       activeColor: const Color(0xFF0052FF),
                                       checkColor: Colors.white,
-                                      title: Text(
-                                        fileName,
-                                        style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
+                                      title: Row(
+                                        children: [
+                                          Container(
+                                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                            decoration: BoxDecoration(
+                                              color: catColor.withValues(alpha: 0.2),
+                                              borderRadius: BorderRadius.circular(4),
+                                              border: Border.all(color: catColor, width: 0.8),
+                                            ),
+                                            child: Text(
+                                              screen.categoryLabel,
+                                              style: TextStyle(color: catColor, fontSize: 9.5, fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                          const SizedBox(width: 8),
+                                          Expanded(
+                                            child: Text(
+                                              '${screen.screenName} (${screen.fileName})',
+                                              style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                       subtitle: Text(
                                         relPath,
                                         style: const TextStyle(color: Color(0xFF737373), fontSize: 10),
                                         overflow: TextOverflow.ellipsis,
                                       ),
-                                      secondary: const Icon(Icons.phone_android, color: Color(0xFF38BDF8), size: 16),
+                                      secondary: Icon(catIcon, color: catColor, size: 18),
                                       onChanged: (val) {
                                         setState(() {
                                           if (val == true) {
-                                            _selectedFiles.add(file.path);
+                                            _selectedFiles.add(screen.filePath);
                                           } else {
-                                            _selectedFiles.remove(file.path);
+                                            _selectedFiles.remove(screen.filePath);
                                           }
                                         });
                                       },
@@ -330,9 +413,12 @@ class _FlutterProjectLoaderModalState extends State<FlutterProjectLoaderModal> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  _statusMessage,
-                  style: const TextStyle(color: Color(0xFF888888), fontSize: 11),
+                Expanded(
+                  child: Text(
+                    _statusMessage,
+                    style: const TextStyle(color: Color(0xFF888888), fontSize: 11),
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
                 Row(
                   children: [
@@ -342,9 +428,9 @@ class _FlutterProjectLoaderModalState extends State<FlutterProjectLoaderModal> {
                     ),
                     const SizedBox(width: 10),
                     ElevatedButton.icon(
-                      icon: const Icon(Icons.download_done, size: 16),
+                      icon: const Icon(Icons.sync, size: 16),
                       label: Text(
-                        '캔버스에 UI 복원 및 편집 모드 시작 (${_selectedFiles.length}개 화면)',
+                        '선택 화면 캔버스 로드 (${_selectedFiles.length}개 화면)',
                         style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
                       ),
                       style: ElevatedButton.styleFrom(
@@ -362,6 +448,24 @@ class _FlutterProjectLoaderModalState extends State<FlutterProjectLoaderModal> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildCategoryFilterChip(FlutterComponentCategory? cat, String label) {
+    final isSelected = _filterCategory == cat;
+    return ActionChip(
+      label: Text(
+        label,
+        style: TextStyle(
+          fontSize: 10,
+          color: isSelected ? Colors.white : const Color(0xFFA3A3A3),
+          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+        ),
+      ),
+      backgroundColor: isSelected ? const Color(0xFF0052FF) : const Color(0xFF262626),
+      side: BorderSide(color: isSelected ? const Color(0xFF0052FF) : const Color(0xFF383838)),
+      visualDensity: VisualDensity.compact,
+      onPressed: () => setState(() => _filterCategory = cat),
     );
   }
 }
