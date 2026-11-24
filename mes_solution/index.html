@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>코드브릿지엑스 (CodeBridgeX MES Solution) - Behance Enterprise Case Study & UX/UI Architecture</title>
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="stylesheet" href="style.css?v=20261124_mes_v1">
+  <style>
+    :root {
+      --accent-primary: #0051FF;
+      --accent-glow: rgba(0, 81, 255, 0.35);
+      --border-accent: rgba(0, 81, 255, 0.45);
+    }
+    .dock-left .btn-dock-hub {
+      border-color: rgba(0, 81, 255, 0.4);
+    }
+    .dock-left .btn-dock-hub:hover {
+      background: rgba(0, 81, 255, 0.15);
+      border-color: #0051FF;
+      color: #60A5FA;
+    }
+    .dock-left .live-status-pill .status-dot {
+      background: #10B981;
+      box-shadow: 0 0 10px #10B981;
+    }
+    .slide-nav-rail .nav-dot.active {
+      background: #0051FF;
+      box-shadow: 0 0 12px #0051FF;
+    }
+    .btn-print {
+      border-color: rgba(217, 119, 6, 0.4);
+      color: #FCD34D;
+    }
+    .btn-print:hover {
+      background: rgba(217, 119, 6, 0.15);
+      border-color: #D97706;
+    }
+  
+    .btn-live-proto {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border-radius: 9999px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #FFFFFF;
+      background: linear-gradient(135deg, #0051FF 0%, #2563EB 100%);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 2px 8px rgba(0, 81, 255, 0.4);
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn-live-proto:hover {
+      background: linear-gradient(135deg, #2563EB 0%, #3B82F6 100%);
+      box-shadow: 0 4px 14px rgba(0, 81, 255, 0.6);
+      transform: translateY(-1px);
+      color: #FFFFFF;
+    }
+  </style>
+</head>
+<body class="deck-body" data-fit-mode="contain">
+
+  <!-- TOP BAR -->
+  <header class="top-nav-bar" id="topNavBar">
+    <div class="dock-left">
+      <a href="../index.html" class="btn-dock-hub" title="마스터 포트폴리오 허브로 이동">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        <span>마스터 허브</span>
+      </a>
+
+      <div class="divider-v"></div>
+
+      <div class="project-identity">
+        <span class="project-chip">B2B SaaS</span>
+        <span class="project-code">MES-SAAS-251030</span>
+        <h1 class="project-title">CodeBridgeX MES Solution</h1>
+      </div>
+
+      <div class="live-status-pill" title="프로덕션 빌드 & 12개 슬라이드 완비">
+        <span class="status-dot"></span>
+        <span class="status-text">12-Slide Deck Ready</span>
+      </div>
+    </div>
+
+    <div class="dock-center">
+      <div class="stepper-cluster">
+        <button class="btn-step" id="btnPrev" title="이전 슬라이드 (◀ / A)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+
+        <div class="page-readout" id="pageReadout">
+          <span class="num current" id="numCurrent">01</span>
+          <span class="slash">/</span>
+          <span class="num total" id="numTotal">12</span>
+        </div>
+
+        <button class="btn-step" id="btnNext" title="다음 슬라이드 (▶ / D)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      </div>
+
+      <div class="slide-title-chip" id="slideTitleChip">
+        01 엔터프라이즈 제조 클라우드 플랫폼
+      </div>
+    </div>
+
+    <div class="dock-right">
+      <a href="MES_Solution_Portfolio.pdf" download="CodeBridgeX_MES_Solution_Portfolio.pdf" class="btn-action-tool btn-print" title="고해상도 12개 슬라이드 PDF 다운로드">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="7 10 12 15 17 10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+        <span>PDF 다운로드</span>
+      </a>
+
+      <button class="btn-action-tool" id="btnFitToggle" title="화면 맞춤 방식 전환 (Fit Contain / Width)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+        </svg>
+        <span id="fitLabel">화면맞춤</span>
+      </button>
+
+      <button class="btn-action-tool" id="btnFullscreen" title="전체화면 전환 (F)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 3 21 3 21 9"></polyline>
+          <polyline points="9 21 3 21 3 15"></polyline>
+          <line x1="21" y1="3" x2="14" y2="10"></line>
+          <line x1="3" y1="21" x2="10" y2="14"></line>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- STAGE VIEWPORT -->
+  <main class="deck-viewport" id="deckViewport">
+    <div class="deck-canvas-wrapper" id="deckWrapper">
+      <div class="deck-slide active" data-slide="1" data-title="01 엔터프라이즈 제조 클라우드 플랫폼">
+        <img src="behance_slides/slide_01.png" alt="01 엔터프라이즈 제조 클라우드 플랫폼" loading="eager">
+      </div>
+      <div class="deck-slide" data-slide="2" data-title="02 사용자 리서치 | 스마트 팩토리 전환 병목 분석">
+        <img src="behance_slides/slide_02.png" alt="02 사용자 리서치" loading="lazy">
+      </div>
+      <div class="deck-slide" data-slide="3" data-title="03 타깃 & 페르소나 | 엔터프라이즈 다중 사용자 정의">
+        <img src="behance_slides/slide_03.png" alt="03 타깃 & 페르소나" loading="lazy">
+      </div>
+      <div class="deck-slide" data-slide="4" data-title="04 정보 구조 설계 | 13대 비즈니스 모듈 & 멀티테넌트 아키텍처">
+        <img src="behance_slides/slide_04.png" alt="04 정보 구조 설계" loading="lazy">
+      </div>
+      <div class="deck-slide" data-slide="5" data-title="05 사용자 플로우 | 완결형 제조 실행 프로세스 파이프라인">
+        <img src="behance_slides/slide_05.png" alt="05 사용자 플로우" loading="lazy">
+      </div>
+      <div class="deck-slide" data-slide="6" data-title="06 와이어프레임 | 반응형 3단 그리드 & 인체공학적 조작성">
+        <img src="behance_slides/slide_06.png" alt="06 와이어프레임" loading="lazy">
+      </div>
+      <div class="deck-slide" data-slide="7" data-title="07 디자인 시스템 | 아토믹 디자인 토큰 & 재사용 컴포넌트">
+        <img src="behance_slides/slide_07.png" alt="07 디자인 시스템" loading="lazy">
+      </div>
+      <div class="deck-slide" data-slide="8" data-title="08 핵심 기능 | 실시간 생산 스케줄링 & 스마트 작업 지시">
+        <img src="behance_slides/slide_08.png" alt="08 핵심 기능: 생산 스케줄링" loading="lazy">
+      </div>
+      <div class="deck-slide" data-slide="9" data-title="09 핵심 기능 | 풀 트레이서빌리티 LOT 추적 & 무결점 품질 보증">
+        <img src="behance_slides/slide_09.png" alt="09 핵심 기능: 품질 & LOT 추적" loading="lazy">
+      </div>
+      <div class="deck-slide" data-slide="10" data-title="10 프로덕션 화면 | 6대 핵심 상용 웹 대시보드 쇼케이스">
+        <img src="behance_slides/slide_10.png" alt="10 프로덕션 화면 쇼케이스" loading="lazy">
+      </div>
+      <div class="deck-slide" data-slide="11" data-title="11 비즈니스 임팩트 | 정량적 성과 지표 & STAR 회고">
+        <img src="behance_slides/slide_11.png" alt="11 비즈니스 임팩트 & STAR 회고" loading="lazy">
+      </div>
+      <div class="deck-slide" data-slide="12" data-title="12 라이브 프로토타입 | 클라우드 MES 웹 인터랙티브 허브">
+        <img src="behance_slides/slide_12.png" alt="12 라이브 프로토타입" loading="lazy">
+      </div>
+    </div>
+  </main>
+
+  <!-- BOTTOM FLOATING NAV RAIL -->
+  <nav class="slide-nav-rail" id="navRail" aria-label="Slide thumbnail pagination">
+    <div class="rail-container" id="railContainer"></div>
+  </nav>
+
+  <script>
+    (function () {
+      const TOTAL_PAGES = 12;
+      let currentIndex = 1;
+      let fitMode = 'contain';
+
+      const deckWrapper = document.getElementById('deckWrapper');
+      const slides = Array.from(document.querySelectorAll('.deck-slide'));
+      const numCurrent = document.getElementById('numCurrent');
+      const slideTitleChip = document.getElementById('slideTitleChip');
+      const railContainer = document.getElementById('railContainer');
+      const btnPrev = document.getElementById('btnPrev');
+      const btnNext = document.getElementById('btnNext');
+      const btnFitToggle = document.getElementById('btnFitToggle');
+      const fitLabel = document.getElementById('fitLabel');
+      const btnFullscreen = document.getElementById('btnFullscreen');
+
+      for (let i = 1; i <= TOTAL_PAGES; i++) {
+        const dot = document.createElement('button');
+        dot.className = 'nav-dot' + (i === 1 ? ' active' : '');
+        dot.setAttribute('data-target', i);
+        dot.setAttribute('aria-label', `슬라이드 ${i}`);
+        dot.innerHTML = `<span class="dot-num">${String(i).padStart(2, '0')}</span>`;
+        dot.addEventListener('click', () => goToSlide(i));
+        railContainer.appendChild(dot);
+      }
+      const dots = Array.from(railContainer.querySelectorAll('.nav-dot'));
+
+      function goToSlide(target) {
+        if (target < 1) target = 1;
+        if (target > TOTAL_PAGES) target = TOTAL_PAGES;
+        if (target === currentIndex) return;
+
+        slides[currentIndex - 1].classList.remove('active');
+        dots[currentIndex - 1].classList.remove('active');
+
+        currentIndex = target;
+
+        const activeSlide = slides[currentIndex - 1];
+        activeSlide.classList.add('active');
+        dots[currentIndex - 1].classList.add('active');
+
+        numCurrent.textContent = String(currentIndex).padStart(2, '0');
+        const title = activeSlide.getAttribute('data-title') || `Slide ${currentIndex}`;
+        slideTitleChip.textContent = title;
+
+        btnPrev.disabled = (currentIndex === 1);
+        btnNext.disabled = (currentIndex === TOTAL_PAGES);
+      }
+
+      btnPrev.addEventListener('click', () => goToSlide(currentIndex - 1));
+      btnNext.addEventListener('click', () => goToSlide(currentIndex + 1));
+
+      window.addEventListener('keydown', (e) => {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+        if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ' || e.key === 'd' || e.key === 'D') {
+          e.preventDefault();
+          goToSlide(currentIndex + 1);
+        } else if (e.key === 'ArrowLeft' || e.key === 'PageUp' || e.key === 'a' || e.key === 'A') {
+          e.preventDefault();
+          goToSlide(currentIndex - 1);
+        } else if (e.key === 'Home') {
+          e.preventDefault();
+          goToSlide(1);
+        } else if (e.key === 'End') {
+          e.preventDefault();
+          goToSlide(TOTAL_PAGES);
+        } else if (e.key === 'f' || e.key === 'F') {
+          toggleFullscreen();
+        }
+      });
+
+      function toggleFullscreen() {
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen().catch(() => {});
+        } else {
+          document.exitFullscreen().catch(() => {});
+        }
+      }
+      btnFullscreen.addEventListener('click', toggleFullscreen);
+
+      function updateScale() {
+        const vp = document.getElementById('deckViewport');
+        const vw = vp.clientWidth;
+        const vh = vp.clientHeight;
+        const natW = 1920;
+        const natH = 1080;
+
+        if (fitMode === 'contain') {
+          const scale = Math.min(vw / natW, vh / natH);
+          deckWrapper.style.transform = `scale(${scale})`;
+        } else {
+          const scale = vw / natW;
+          deckWrapper.style.transform = `scale(${scale})`;
+        }
+      }
+      window.addEventListener('resize', updateScale);
+      updateScale();
+
+      btnFitToggle.addEventListener('click', () => {
+        if (fitMode === 'contain') {
+          fitMode = 'width';
+          fitLabel.textContent = '너비맞춤';
+          document.body.setAttribute('data-fit-mode', 'width');
+        } else {
+          fitMode = 'contain';
+          fitLabel.textContent = '화면맞춤';
+          document.body.setAttribute('data-fit-mode', 'contain');
+        }
+        updateScale();
+      });
+
+      btnPrev.disabled = true;
+    })();
+  </script>
+</body>
+</html>
