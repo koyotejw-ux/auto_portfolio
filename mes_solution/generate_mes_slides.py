@@ -237,87 +237,119 @@ def draw_browser_frame(draw, base_img, x, y, w, h, screenshot_path, title_bar_te
 print("MES slide helpers & graphic primitives initialized!")
 # ==============================================================
 # SLIDE 01: Hero Cover with Multi-Device Responsive Composition
+def make_shadow(im, radius=32, alpha=100):
+    sh = Image.new('RGBA', (im.width + 64, im.height + 64), (0, 0, 0, 0))
+    sd = ImageDraw.Draw(sh)
+    sd.rounded_rectangle([32, 32, 32 + im.width, 32 + im.height], radius=44, fill=(15, 23, 42, alpha))
+    return sh.filter(ImageFilter.GaussianBlur(radius))
+
 def make_slide_01():
-    base = Image.new('RGB', (W, H), (15, 23, 42))
+    # Pristine white executive canvas matching Korea History Quiz / Behance Standard
+    base = Image.new('RGB', (W, H), (255, 255, 255))
     draw = ImageDraw.Draw(base)
     
-    # Ambient grid pattern
-    for gx in range(0, W, 40):
-        draw.line([(gx, 0), (gx, H)], fill=(23, 33, 56), width=1)
-    for gy in range(0, H, 40):
-        draw.line([(0, gy), (W, gy)], fill=(23, 33, 56), width=1)
-        
-    draw_slide_header(
-        draw, 
-        slide_num=1, 
-        category_kr="엔터프라이즈 제조 클라우드 플랫폼", 
-        title_black="데스크톱·태블릿·모바일 반응형으로 완성된 ", 
-        title_blue="차세대 스마트 MES 솔루션", 
-        subtitle_kr="수주·발주부터 스마트 간트 공정 스케줄러, 설비 종합 효율(OEE) 텔레메트리, 무결점 LOT 추적까지 전 기기 반응형 제어",
-        dark_mode=True
-    )
+    # 1. Top Header Rule & Pills
+    draw.line([(100, 52), (1820, 52)], fill=(226, 232, 240), width=1)
+    draw_pill_badge(draw, left_x=100, cy=76, text="2026 ENTERPRISE CLOUD SAAS CASE STUDY", font=get_font(11.5, 'bold'), theme='blue', pad_x=14, height=28)
     
-    # Left Specification & Overview Card
-    left_x, top_y, left_w, box_h = 100, 210, 560, 750
-    draw.rounded_rectangle([left_x, top_y, left_x + left_w, top_y + box_h], radius=16, fill=(30, 41, 59), outline=(51, 65, 85), width=1)
+    meta_txt = "반응형 웹 아키텍처 · 13대 비즈니스 모듈 & 59개 표준 화면 · 실시간 OEE 텔레메트리 · 1인 단독 기획·디자인 총괄"
+    w_meta = draw.textlength(meta_txt, font=get_font(13.5, 'medium'))
+    draw.text((1820 - w_meta, 68), meta_txt, font=get_font(13.5, 'medium'), fill=(71, 85, 105))
     
-    draw_pill_badge(draw, left_x=left_x + 30, cy=top_y + 40, text="프로덕트 오버뷰", font=get_font(10.5, 'bold'), theme='cyan', dark_mode=True, pad_x=12, height=28)
-    draw.text((left_x + 30, top_y + 80), "CodeBridgeX MES Solution", font=get_font(22, 'bold'), fill=(255, 255, 255))
-    draw.text((left_x + 30, top_y + 115), "대화면 관제실부터 현장 터치 태블릿, 모바일 기기까지\n완벽하게 대응하는 반응형 스마트 팩토리 플랫폼입니다.", font=get_font(13.5, 'medium'), fill=(148, 163, 184))
+    # 2. Main Hero Title & Subtitle (Left)
+    draw.text((100, 138), "CODEBRIDGEX MES SOLUTION · 클라우드 제조 플랫폼", font=get_font(14, 'bold'), fill=(0, 81, 255))
     
-    specs = [
-        ("솔루션 도메인", "스마트 팩토리 통합 MES & ERP 제조 실행 시스템"),
-        ("디바이스 지원", "데스크톱(FHD/QHD), 10인치 태블릿, 스마트폰 반응형"),
-        ("비즈니스 모듈", "13대 엔터프라이즈 모듈 (생산/품질/자재/영업/회계 등)"),
-        ("화면 규격 설계", "59개 이상 표준 인터랙티브 화면 & 아토믹 컴포넌트"),
-        ("프론트엔드 스택", "Vite + React 18 + TypeScript + Tailwind CSS"),
-        ("UI 테마 지원", "현장 조도에 최적화된 라이트 / 다크 듀얼 테마 지원"),
-        ("프로덕트 기여도", "엔터프라이즈 UX/UI 아키텍처 및 디자인 총괄 (100%)"),
+    title_p1 = "분절된 제조 현장 데이터를 "
+    title_p2 = "반응형 원격 관제로 통합하다"
+    w_p1 = draw.textlength(title_p1, font=get_font(50, 'black'))
+    draw.text((100, 168), title_p1, font=get_font(50, 'black'), fill=(15, 23, 42))
+    draw.text((100 + w_p1, 168), title_p2, font=get_font(50, 'black'), fill=(0, 81, 255))
+    
+    sub1 = "대화면 관제실부터 10인치 현장 터치 태블릿, 모바일 스마트폰까지 완벽하게 대응하는 반응형 웹 아키텍처와"
+    sub2 = "수주·생산 실시간 MRP 파이프라인, 스마트 간트 공정 스케줄러, 무결점 LOT 추적으로 수기 취합 공수를 99.9% 절감한 B2B SaaS"
+    draw.text((100, 248), sub1, font=get_font(14.5, 'regular'), fill=(51, 65, 85))
+    draw.text((100, 274), sub2, font=get_font(14.5, 'regular'), fill=(51, 65, 85))
+    
+    # 3. 4 Key Impact Metric Pods (card_w=195, card_h=135)
+    metrics = [
+        ("99.9%", "실적 집계 소요 시간", "24시간 수기 일지 → 1초 즉시 수집", "blue"),
+        ("13대 모듈", "전사 엔터프라이즈", "59개 이상 인터랙티브 표준 화면", "purple"),
+        ("88.5%", "설비종합효율(OEE)", "실시간 텔레메트리 병목 해소", "green"),
+        ("Multi", "데스크톱·태블릿·모바일", "100% 반응형 최적화 인터페이스", "blue")
     ]
-    
-    sy = top_y + 185
-    for k, v in specs:
-        draw.text((left_x + 30, sy), k, font=get_font(12, 'bold'), fill=(203, 213, 225))
-        draw.text((left_x + 30, sy + 22), v, font=get_font(13, 'medium'), fill=(56, 189, 248) if "도메인" in k or "기여도" in k or "디바이스" in k else (148, 163, 184))
-        draw.line([(left_x + 30, sy + 48), (left_x + left_w - 30, sy + 48)], fill=(51, 65, 85), width=1)
-        sy += 66
+    card_y = 335
+    card_w = 195
+    card_h = 135
+    for idx, (m_val, m_lbl, m_desc, theme) in enumerate(metrics):
+        cx = 100 + idx * (card_w + 18)
+        draw.rounded_rectangle([cx, card_y, cx + card_w, card_y + card_h], radius=16, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
+        val_col = (0, 81, 255) if theme == 'blue' else ((124, 58, 237) if theme == 'purple' else (16, 185, 129))
+        draw.text((cx + 18, card_y + 18), m_val, font=get_num_font(30, 'black'), fill=val_col)
+        draw.text((cx + 18, card_y + 66), m_lbl, font=get_font(13, 'bold'), fill=(15, 23, 42))
+        draw.text((cx + 18, card_y + 92), m_desc, font=get_font(10.5, 'medium'), fill=(100, 116, 139))
         
-    # Right Device Mockup Trio Container (Matching User Uploaded Asset)
+    # 4. Project Specification & Architecture Pod (scope_w=834, scope_h=255)
+    scope_y = 495
+    scope_w = 834
+    scope_h = 255
+    draw.rounded_rectangle([100, scope_y, 100 + scope_w, scope_y + scope_h], radius=18, fill=(248, 250, 252), outline=(219, 234, 254), width=1)
+    draw.text((125, scope_y + 22), "PROJECT SPECIFICATION & ARCHITECTURE OVERVIEW", font=get_font(12, 'bold'), fill=(0, 81, 255))
+    
+    spec_rows = [
+        ("담당 역할", "엔터프라이즈 UX/UI 아키텍처, 디자인 시스템 구축, 기획 총괄 (100% 1인 단독)"),
+        ("핵심 과제", "데이터 파편화 극복, 복잡한 SI 구축 장벽 제거, 현장 터치 및 모바일 접근성 극대화"),
+        ("기술 스택", "Vite + React 18, TypeScript, Tailwind CSS, Atomic Design System (150+ Tokens)"),
+        ("지원 플랫폼", '데스크톱 브라우저 (1920x1080), 10" 현장 태블릿 (1024x768), 모바일 (390x844)'),
+        ("적용 상태", "엔터프라이즈 클라우드 SaaS 프로덕션 라이브 배포 및 현장 검증 완료")
+    ]
+    for r_idx, (k, v) in enumerate(spec_rows):
+        ry = scope_y + 54 + r_idx * 35
+        draw.text((125, ry), f"• {k}", font=get_font(12, 'bold'), fill=(0, 81, 255))
+        draw.text((225, ry), f":  {v}", font=get_font(12, 'medium'), fill=(51, 65, 85))
+        
+    # 5. Bottom Hashtags
+    tags = ["#스마트팩토리", "#클라우드_MES", "#반응형_웹", "#아토믹_디자인", "#OEE_텔레메트리", "#LOT_추적성"]
+    tx = 100
+    for t in tags:
+        draw_pill_badge(draw, left_x=tx, cy=785, text=t, font=get_font(11, 'bold'), theme='slate', height=28, pad_x=12)
+        tx += int(draw.textlength(t, font=get_font(11, 'bold')) + 24 + 10)
+
+    # 6. Hero Multi-Device Mockup Showcase on Right (Matching User Attached Device Trio)
     trio_thumb = r"d:\097.flutter_project\auto_portfolio\assets\mes_hero_device_trio.png"
-    right_x = 700
-    right_w = W - right_x - 100
-    right_h = box_h
-    
-    # Outer elegant glass container for the mockups
-    draw.rounded_rectangle([right_x, top_y, right_x + right_w, top_y + right_h], radius=16, fill=(20, 29, 47), outline=(51, 65, 85), width=1)
-    
-    # Subtle inner grid & glow in mockup box
-    for mx in range(right_x, right_x + right_w, 30):
-        draw.line([(mx, top_y), (mx, top_y + right_h)], fill=(26, 38, 60), width=1)
-        
-    # Top pill tag inside container
-    draw_pill_badge(draw, left_x=right_x + 24, cy=top_y + 32, text="RESPONSIVE MULTI-DEVICE SUITE", font=get_font(9.5, 'bold'), theme='blue', dark_mode=True, pad_x=10, height=24)
-    draw.text((right_x + right_w - 24, top_sy := top_y + 32), "Desktop (16:9) · Tablet (4:3) · Mobile (19.5:9)", font=get_font(11, 'medium'), fill=(148, 163, 184), anchor='rm')
-    
     if os.path.exists(trio_thumb):
         trio_img = Image.open(trio_thumb).convert('RGBA')
-        # Proportional contain scaling inside right box
-        avail_w = right_w - 40
-        avail_h = right_h - 70
-        scale = min(avail_w / trio_img.width, avail_h / trio_img.height)
+        
+        # Scale to hero right space (avail_w approx 850, avail_h approx 720)
+        scale = min(850 / trio_img.width, 700 / trio_img.height)
         new_w = int(round(trio_img.width * scale))
         new_h = int(round(trio_img.height * scale))
         trio_resized = trio_img.resize((new_w, new_h), Image.Resampling.LANCZOS)
         
-        pos_x = right_x + (right_w - new_w) // 2
-        pos_y = top_y + 55 + (avail_h - new_h) // 2
+        pos_x = 970 + (850 - new_w) // 2
+        pos_y = 145 + (700 - new_h) // 2
         
-        # Paste with alpha mask
+        # Soft elegant drop shadow for the 3 devices
+        sh = make_shadow(trio_resized, radius=40, alpha=85)
+        base.paste(sh, (pos_x - 32, pos_y - 20), sh)
         base.paste(trio_resized, (pos_x, pos_y), trio_resized)
+        
+    # 7. Official App / Solution Icon Floating Badge (Bottom-Right of Left Column)
+    icon_path = r"d:\097.flutter_project\auto_portfolio\assets\mes_solution_app_icon.png"
+    if os.path.exists(icon_path):
+        ic = Image.open(icon_path).convert('RGBA')
+        ic_w = 96
+        ic_sc = ic.resize((ic_w, ic_w), Image.Resampling.LANCZOS)
+        badge_im = Image.new('RGBA', (116, 116), (0, 0, 0, 0))
+        bd = ImageDraw.Draw(badge_im)
+        bd.rounded_rectangle([0, 0, 116, 116], radius=24, fill=(255, 255, 255, 250), outline=(226, 232, 240), width=2)
+        badge_im.paste(ic_sc, ((116 - ic_w)//2, (116 - ic_w)//2), ic_sc)
+        sh_b = make_shadow(badge_im, radius=20, alpha=70)
+        base.paste(sh_b, (900 - 32, 685 - 20), sh_b)
+        base.paste(badge_im, (900, 685), badge_im)
     
-    draw_slide_footer(draw, 1, dark_mode=True)
+    draw_slide_footer(draw, 1, dark_mode=False)
     base.save(os.path.join(OUT_DIR, 'slide_01.png'))
-    print("SAVED slide_01.png (Hero Trio Devices Matching User Spec)")
+    print("SAVED slide_01.png (Executive White Hero Cover Matching Behance Standard)")
 def make_slide_02():
     base = Image.new('RGB', (W, H), (248, 250, 252))
     draw = ImageDraw.Draw(base)
