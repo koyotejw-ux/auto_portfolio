@@ -991,20 +991,20 @@ def make_slide_06():
     )
     
     # -------------------------------------------------------------
-    # 4 Columns tailored to screen aspect ratios:
-    # Col 0: Tablet Land (16:10 wide) -> wider width (w=470)
-    # Col 1: Phone Production (9:16 portrait) -> w=390
-    # Col 2: Phone Quality (9:16 portrait) -> w=390
-    # Col 3: Phone Process (9:16 portrait) -> w=390
-    # Total = 470 + 390 + 390 + 390 + 3*26 = 1640 + 78 = 1718 (fits W=1920 with margin ~100)
+    # 4 High-Density Columns tailored to screen aspect ratios:
+    # Col 0: Tablet Land (16:10 wide) -> w=440
+    # Col 1: Phone Production -> w=400
+    # Col 2: Phone Quality -> w=400
+    # Col 3: Phone Process -> w=400
+    # Total = 440 + 3*400 + 3*26 = 1640 + 78 = 1718 (fits W=1920 with margin 101)
     # -------------------------------------------------------------
     wf_specs = [
         {
-            "col_w": 470,
+            "col_w": 440,
             "title": "01. 태블릿 종합 대시보드",
             "ratio_tag": "16:10 가로형 (5120x3200)",
             "device": "10-inch 현장 관제 태블릿",
-            "fname": "wireframe_tablet_dashboard.png",
+            "fname": "wf_clean_tablet.png",
             "desc": "경영진·공장장 실시간 OEE 및 종합 관제 뷰",
             "interactions": [
                 ("상단 종합 KPI 위젯", "오늘의 생산량, 불량률, 재고현황, 수주현황 4대 카드를 1-Tap 클릭 시 해당 상세 모듈로 즉시 드릴다운 전환."),
@@ -1013,11 +1013,11 @@ def make_slide_06():
             ]
         },
         {
-            "col_w": 390,
+            "col_w": 400,
             "title": "02. 모바일 생산 공정관리",
-            "ratio_tag": "9:16 세로형 (2484x4416)",
+            "ratio_tag": "9:16 세로형 (1242x2208)",
             "device": "작업자 스마트폰 / 핸드헬드",
-            "fname": "wireframe_phone_production.png",
+            "fname": "wf_clean_production.png",
             "desc": "호기별 작업지시서 배포 및 생산 실적 등록",
             "interactions": [
                 ("1-Tap 바코드 스캔 매핑", "카메라/스캐너 연동으로 투입 원자재 LOT 번호 자동 인식 및 호기별 작업지시서에 1초 매핑."),
@@ -1026,11 +1026,11 @@ def make_slide_06():
             ]
         },
         {
-            "col_w": 390,
+            "col_w": 400,
             "title": "03. 모바일 품질 보증/검사",
-            "ratio_tag": "9:16 세로형 (2484x4416)",
+            "ratio_tag": "9:16 세로형 (1242x2208)",
             "device": "품질 검사관 전용 단말",
-            "fname": "wireframe_phone_quality.png",
+            "fname": "wf_clean_quality.png",
             "desc": "AQL 샘플링 검사 및 부적합 판정 체계",
             "interactions": [
                 ("초·중·종물 AQL 규격 실측", "버니어 캘리퍼스 및 계측기 연동 블루투스 데이터 자동 수신으로 측정 오차 0% 달성."),
@@ -1039,11 +1039,11 @@ def make_slide_06():
             ]
         },
         {
-            "col_w": 390,
+            "col_w": 400,
             "title": "04. 공정 기준정보(라우팅)",
             "ratio_tag": "9:16 세로형 (2484x4416)",
             "device": "생산기술 엔지니어 단말",
-            "fname": "wireframe_phone_process.png",
+            "fname": "wf_clean_process.png",
             "desc": "표준 공순 설계 및 설비 사이클타임 매핑",
             "interactions": [
                 ("다단계 BOM 트리 탐색", "N단 제품 구성도를 아코디언 인터랙션으로 펼쳐 하위 반제품/원자재 소요량 즉시 파악."),
@@ -1053,68 +1053,51 @@ def make_slide_06():
         }
     ]
     
-    top_y = 215
-    card_h = 745
+    top_y = 205
+    card_h = 805
     gap = 26
     
     curr_x = 100
     for idx, item in enumerate(wf_specs):
         cw = item["col_w"]
         
-        # Outer Glass Card
+        # Outer Glass Card with clean rounded border
         draw.rounded_rectangle([curr_x, top_y, curr_x + cw, top_y + card_h], radius=16, fill=(24, 34, 52), outline=(51, 65, 85), width=1)
         
         # Badge & Header
-        draw_pill_badge(draw, left_x=curr_x + 18, cy=top_y + 30, text=item["ratio_tag"], font=get_font(9.5, 'bold'), theme='cyan', dark_mode=True, pad_x=8, height=22)
-        draw.text((curr_x + cw - 18, top_y + 30), item["device"], font=get_font(10.5, 'medium'), fill=(148, 163, 184), anchor='rm')
+        draw_pill_badge(draw, left_x=curr_x + 18, cy=top_y + 26, text=item["ratio_tag"], font=get_font(9.5, 'bold'), theme='cyan', dark_mode=True, pad_x=8, height=22)
+        draw.text((curr_x + cw - 18, top_y + 26), item["device"], font=get_font(10.5, 'medium'), fill=(148, 163, 184), anchor='rm')
         
-        draw.text((curr_x + 18, top_y + 60), item["title"], font=get_font(15, 'bold'), fill=(255, 255, 255))
-        draw.text((curr_x + 18, top_y + 84), item["desc"], font=get_font(10.5, 'medium'), fill=(148, 163, 184))
+        draw.text((curr_x + 18, top_y + 56), item["title"], font=get_font(15, 'bold'), fill=(255, 255, 255))
+        draw.text((curr_x + 18, top_y + 80), item["desc"], font=get_font(10.5, 'medium'), fill=(148, 163, 184))
         
-        # 1. Wireframe Screen Container (Focused View Area Matching Exact Screen Frame)
+        # 1. Wireframe Screen Container (Dedicated White Backdrop with Crisp Contrast)
         frame_x = curr_x + 14
-        frame_y = top_y + 108
+        frame_y = top_y + 104
         frame_w = cw - 28
-        frame_h = 320  # Dedicated visual zone
+        frame_h = 360  # Expanded height for maximum text legibility
         
-        draw.rounded_rectangle([frame_x, frame_y, frame_x + frame_w, frame_y + frame_h], radius=10, fill=(11, 16, 26), outline=(40, 53, 72), width=1)
+        # Pure White Backdrop for Crisp Blueprint Clarity
+        draw.rounded_rectangle([frame_x, frame_y, frame_x + frame_w, frame_y + frame_h], radius=10, fill=(255, 255, 255), outline=(56, 189, 248) if idx==0 else (71, 85, 105), width=1)
         
-        # Load focused screen directly (or crop tightly from full blueprint)
-        focused_name = f"focused_{item['fname']}"
-        focused_path = os.path.join(MOCKUP_DIR, focused_name)
         fpath = os.path.join(MOCKUP_DIR, item["fname"])
-        
-        wf_img = None
-        if os.path.exists(focused_path):
-            wf_img = Image.open(focused_path).convert('RGB')
-        elif os.path.exists(fpath):
-            raw_im = Image.open(fpath).convert('RGB')
-            if 'tablet' in item["fname"]:
-                wf_img = raw_im.crop((82, 90, 2551, 1584))
-            elif 'process' in item["fname"]:
-                wf_img = raw_im.crop((82, 80, 2403, 2069))
-            else:
-                wf_img = raw_im.crop((82, 80, 2384, 2187))
-                
-        if wf_img is not None:
-            try:
-                src_w, src_h = wf_img.size
-                avail_w = frame_w - 12
-                avail_h = frame_h - 12
-                scale = min(avail_w / src_w, avail_h / src_h)
-                target_w = int(round(src_w * scale))
-                target_h = int(round(src_h * scale))
-                wf_resized = wf_img.resize((target_w, target_h), Image.Resampling.LANCZOS)
-                
-                paste_x = frame_x + (frame_w - target_w) // 2
-                paste_y = frame_y + (frame_h - target_h) // 2
-                base.paste(wf_resized, (paste_x, paste_y))
-                draw.rounded_rectangle([paste_x - 1, paste_y - 1, paste_x + target_w + 1, paste_y + target_h + 1], radius=4, outline=(0, 140, 255) if idx==0 else (71, 85, 105), width=1)
-            except Exception as e:
-                print(f"Error loading {item['fname']}:", e)
+        if os.path.exists(fpath):
+            wf_img = Image.open(fpath).convert('RGB')
+            src_w, src_h = wf_img.size
+            avail_w = frame_w - 8
+            avail_h = frame_h - 8
+            scale = min(avail_w / src_w, avail_h / src_h)
+            target_w = int(round(src_w * scale))
+            target_h = int(round(src_h * scale))
+            wf_resized = wf_img.resize((target_w, target_h), Image.Resampling.LANCZOS)
+            
+            paste_x = frame_x + (frame_w - target_w) // 2
+            paste_y = frame_y + (frame_h - target_h) // 2
+            base.paste(wf_resized, (paste_x, paste_y))
+            draw.rounded_rectangle([paste_x - 1, paste_y - 1, paste_x + target_w + 1, paste_y + target_h + 1], radius=4, outline=(226, 232, 240), width=1)
                 
         # 2. Key Interaction Specifications Zone (Below Image)
-        inter_y = frame_y + frame_h + 14
+        inter_y = frame_y + frame_h + 16
         draw.line([(curr_x + 16, inter_y), (curr_x + cw - 16, inter_y)], fill=(40, 53, 72), width=1)
         
         draw_pill_badge(draw, left_x=curr_x + 18, cy=inter_y + 18, text="FUNCTION & INTERACTION SPEC", font=get_font(9, 'bold'), theme='blue', dark_mode=True, pad_x=8, height=20)
@@ -1122,26 +1105,29 @@ def make_slide_06():
         by = inter_y + 36
         for f_idx, (f_name, f_desc) in enumerate(item["interactions"]):
             # Small pill tag
-            draw.rounded_rectangle([curr_x + 16, by, curr_x + cw - 16, by + 76], radius=8, fill=(18, 25, 38), outline=(37, 49, 68), width=1)
+            draw.rounded_rectangle([curr_x + 16, by, curr_x + cw - 16, by + 82], radius=8, fill=(18, 25, 38), outline=(37, 49, 68), width=1)
             
             # Bullet Number Badge
-            draw.ellipse([curr_x + 24, by + 12, curr_x + 40, by + 28], fill=(0, 81, 255))
-            draw.text((curr_x + 32, by + 20), str(f_idx + 1), font=get_font(9, 'bold'), fill=(255, 255, 255), anchor='mm')
+            draw.ellipse([curr_x + 24, by + 14, curr_x + 40, by + 30], fill=(0, 81, 255))
+            draw.text((curr_x + 32, by + 22), str(f_idx + 1), font=get_font(9.5, 'bold'), fill=(255, 255, 255), anchor='mm')
             
-            draw.text((curr_x + 48, by + 20), f_name, font=get_font(11.5, 'bold'), fill=(56, 189, 248), anchor='lm')
+            draw.text((curr_x + 48, by + 22), f_name, font=get_font(12, 'bold'), fill=(56, 189, 248), anchor='lm')
             
             lines = textwrap.wrap(f_desc, width=int(cw * 0.088))
-            ly = by + 36
+            ly = by + 40
             for l in lines[:2]:
-                draw.text((curr_x + 26, ly), l, font=get_font(10, 'regular'), fill=(203, 213, 225))
-                ly += 16
-            by += 84
+                draw.text((curr_x + 24, ly), l, font=get_font(10.5, 'regular'), fill=(203, 213, 225))
+                ly += 18
+                
+            by += 88
             
         curr_x += cw + gap
-        
+
     draw_slide_footer(draw, 6, dark_mode=True)
     base.save(os.path.join(OUT_DIR, 'slide_06.png'))
     print("SAVED slide_06.png (Sectioned Wireframes with Exact Ratios & Function Interactions)")
+
+
 def make_slide_07():
     base = Image.new('RGB', (W, H), (255, 255, 255))
     draw = ImageDraw.Draw(base)
