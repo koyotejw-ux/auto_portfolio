@@ -1791,35 +1791,36 @@ def make_slide_10():
     
     # -------------------------------------------------------------
     # OPTIMIZED HIGH-DENSITY ZERO-WASTE LAYOUT:
-    # Canvas H=1080, Header ends ~180. Footer starts 1030.
-    # Total content area: top_y = 205, col_h = 810 (ends at y=1015, leaving clean 15px margin to footer)
+    # Canvas H=1080, top_y = 205, col_h = 810 (ends at y=1015)
     # Total width: 1720px (left_margin=100, right_margin=100)
     #
-    # 1. LEFT (x=100, w=960): 2 stacked 16:9 Desktop Cards
+    # 1. LEFT (x=100, w=640): 2 stacked 16:9 Desktop Cards
+    #    - Proportion-matched width eliminating awkward side margins
     #    - d_card_h = 394px each (with 22px gap)
-    #    - Screen viewport fits 16:9 perfectly with high-precision frame
+    #    - Screen viewport 616x324 tightly fits 16:9 (576x324) with NO dead margins
     #
-    # 2. MIDDLE (x=1080, w=480): Tablet (4:3) Showcase Card
-    #    - Large 4:3 Tablet chassis (w=444, h=358) with bezel & camera
-    #    - 3 rich spec pods below eliminating blank card body
+    # 2. MIDDLE (x=764, w=650): Tablet (4:3) Showcase Card
+    #    - Spacious, immersive 4:3 Tablet chassis (w=600, h=450) with bezel & camera
+    #    - 3 rich spec pods below
     #
-    # 3. RIGHT (x=1580, w=240): Mobile (19.5:9) Smartphone Card
-    #    - Tall smartphone chassis (w=208, h=470) with dynamic island
-    #    - 3 structured ergonomic badge cards below
+    # 3. RIGHT (x=1438, w=382): Mobile (19.5:9) Smartphone Card
+    #    - High-presence smartphone chassis (w=252, h=530) with dynamic island
+    #    - 3 ergonomic badge pods below
     # -------------------------------------------------------------
     top_y = 205
     col_h = 810
+    gap = 24
     
     # -------------------------------------------------------------
-    # 1. LEFT ZONE: 2 Desktop 16:9 Screens (w=960, col_h=810)
+    # 1. LEFT ZONE: 2 Desktop 16:9 Screens (w=640, col_h=810)
     # -------------------------------------------------------------
     left_x = 100
-    left_w = 960
+    left_w = 640
     d_card_h = (col_h - 22) // 2  # 394px
     
     desktop_screens = [
-        ("01. 데스크톱 와이드 (16:9) · 경영 종합 대시보드 (Dark)", "screen_02_dashboard_dark.png", "FHD 1920x1080 · 전사 종합 KPI & OEE 실시간 텔레메트리 관제"),
-        ("02. 데스크톱 와이드 (16:9) · 생산 공정 스케줄러 (Dark)", "screen_03_production_dark.png", "FHD 1920x1080 · 스마트 간트차트 라인 배정 & 호기별 작업지시")
+        ("01. 데스크톱 와이드 (16:9) · 경영 종합 대시보드 (Dark)", "screen_02_dashboard_dark.png", "FHD 1920x1080 · 전사 종합 KPI & OEE 실시간 관제"),
+        ("02. 데스크톱 와이드 (16:9) · 생산 공정 스케줄러 (Dark)", "screen_03_production_dark.png", "FHD 1920x1080 · 스마트 간트차트 라인 배정 & 작업지시")
     ]
     
     for d_idx, (d_title, d_fname, d_sub) in enumerate(desktop_screens):
@@ -1827,15 +1828,15 @@ def make_slide_10():
         draw.rounded_rectangle([left_x, dy, left_x + left_w, dy + d_card_h], radius=14, fill=(24, 34, 52), outline=(51, 65, 85), width=1)
         
         # Header bar inside card
-        draw_pill_badge(draw, left_x=left_x + 16, cy=dy + 24, text="DESKTOP 16:9", font=get_font(9.5, 'bold'), theme='blue', dark_mode=True, pad_x=8, height=22)
-        draw.text((left_x + 124, dy + 24), d_title, font=get_font(13.5, 'bold'), fill=(255, 255, 255), anchor='lm')
-        draw.text((left_x + left_w - 16, dy + 24), d_sub, font=get_font(10.5, 'medium'), fill=(148, 163, 184), anchor='rm')
+        draw_pill_badge(draw, left_x=left_x + 14, cy=dy + 24, text="DESKTOP 16:9", font=get_font(9.5, 'bold'), theme='blue', dark_mode=True, pad_x=8, height=22)
+        draw.text((left_x + 118, dy + 24), d_title, font=get_font(12, 'bold'), fill=(255, 255, 255), anchor='lm')
+        draw.text((left_x + left_w - 14, dy + 24), d_sub, font=get_font(9.5, 'medium'), fill=(148, 163, 184), anchor='rm')
         
-        # Screen viewport (Tight fit, maximizing screen area)
-        v_x = left_x + 14
-        v_y = dy + 46
-        v_w = left_w - 28  # 932px
-        v_h = d_card_h - 58 # 336px
+        # Screen viewport (Tight fit, eliminating awkward horizontal blank margins)
+        v_x = left_x + 12
+        v_y = dy + 48
+        v_w = left_w - 24   # 616px
+        v_h = d_card_h - 60 # 334px
         
         draw.rounded_rectangle([v_x, v_y, v_x + v_w, v_y + v_h], radius=8, fill=(11, 16, 26), outline=(40, 53, 72), width=1)
         
@@ -1843,7 +1844,7 @@ def make_slide_10():
         if os.path.exists(fpath):
             im = Image.open(fpath).convert('RGB')
             # 16:9 Scale to fit neatly inside viewport with minimal borders
-            scale = min((v_w - 8) / im.width, (v_h - 8) / im.height)
+            scale = min((v_w - 6) / im.width, (v_h - 6) / im.height)
             tw = int(round(im.width * scale))
             th = int(round(im.height * scale))
             im_res = im.resize((tw, th), Image.Resampling.LANCZOS)
@@ -1853,10 +1854,10 @@ def make_slide_10():
             draw.rounded_rectangle([px, py, px + tw, py + th], radius=4, outline=(71, 85, 105), width=1)
             
     # -------------------------------------------------------------
-    # 2. MIDDLE ZONE: Tablet (4:3) Chassis (x=1080, w=480, col_h=810)
+    # 2. MIDDLE ZONE: Tablet (4:3) Chassis (x=764, w=650, col_h=810)
     # -------------------------------------------------------------
-    tab_x = 1080
-    tab_w = 480
+    tab_x = left_x + left_w + gap # 764
+    tab_w = 650
     draw.rounded_rectangle([tab_x, top_y, tab_x + tab_w, top_y + col_h], radius=14, fill=(24, 34, 52), outline=(51, 65, 85), width=1)
     
     draw_pill_badge(draw, left_x=tab_x + 16, cy=top_y + 24, text="TABLET 4:3", font=get_font(9.5, 'bold'), theme='cyan', dark_mode=True, pad_x=8, height=22)
@@ -1866,10 +1867,10 @@ def make_slide_10():
     # Sub-caption
     draw.text((tab_x + 16, top_y + 54), "현장 방진 태블릿 마운트 최적화 · 실시간 라인 OEE & 품질 모니터링", font=get_font(10.5, 'medium'), fill=(148, 163, 184))
     
-    # Tablet Bezel Chassis (Scaled up to eliminate blank gaps)
+    # Tablet Bezel Chassis (Expanded to take advantage of wider column)
     chassis_tab_y = top_y + 78
-    chassis_tab_w = 444
-    chassis_tab_h = 358 # 4:3 display (424x318) + 40px bezels
+    chassis_tab_w = 600
+    chassis_tab_h = 450 # 4:3 display (576x432) + bezels
     chassis_tab_x = tab_x + (tab_w - chassis_tab_w) // 2
     
     # Outer tablet body
@@ -1881,13 +1882,13 @@ def make_slide_10():
     tab_fpath = os.path.join(MOCKUP_DIR, 'render_tablet_dashboard_dark.png')
     if os.path.exists(tab_fpath):
         tab_im = Image.open(tab_fpath).convert('RGB')
-        tw_in = chassis_tab_w - 20 # 424px
-        th_in = int(tw_in / 1.3333) # 318px
+        tw_in = chassis_tab_w - 24 # 576px
+        th_in = int(tw_in / 1.3333) # 432px
         tab_res = tab_im.resize((tw_in, th_in), Image.Resampling.LANCZOS)
-        base.paste(tab_res, (chassis_tab_x + 10, chassis_tab_y + 20))
-        draw.rounded_rectangle([chassis_tab_x + 10, chassis_tab_y + 20, chassis_tab_x + 10 + tw_in, chassis_tab_y + 20 + th_in], radius=6, outline=(40, 53, 72), width=1)
+        base.paste(tab_res, (chassis_tab_x + 12, chassis_tab_y + 16))
+        draw.rounded_rectangle([chassis_tab_x + 12, chassis_tab_y + 16, chassis_tab_x + 12 + tw_in, chassis_tab_y + 16 + th_in], radius=6, outline=(40, 53, 72), width=1)
         
-    # Tablet Feature Pods below chassis (Fills remaining height: ~340px)
+    # Tablet Feature Pods below chassis
     callout_y = chassis_tab_y + chassis_tab_h + 16
     draw.line([(tab_x + 16, callout_y), (tab_x + tab_w - 16, callout_y)], fill=(40, 53, 72), width=1)
     
@@ -1899,34 +1900,34 @@ def make_slide_10():
     
     pod_y = callout_y + 14
     for t_idx, (t_title, t_desc) in enumerate(tab_specs):
-        pod_h = 92
+        pod_h = 68
         draw.rounded_rectangle([tab_x + 16, pod_y, tab_x + tab_w - 16, pod_y + pod_h], radius=8, fill=(15, 23, 42), outline=(40, 53, 72), width=1)
         draw.ellipse([tab_x + 28, pod_y + 16, tab_x + 36, pod_y + 24], fill=(56, 189, 248))
         draw.text((tab_x + 44, pod_y + 12), t_title, font=get_font(11.5, 'bold'), fill=(56, 189, 248))
         
-        lines = textwrap.wrap(t_desc, width=42)
+        lines = textwrap.wrap(t_desc, width=54)
         ly = pod_y + 36
-        for l in lines:
+        for l in lines[:2]:
             draw.text((tab_x + 44, ly), l, font=get_font(10, 'regular'), fill=(203, 213, 225))
             ly += 16
             
         pod_y += pod_h + 10
         
     # -------------------------------------------------------------
-    # 3. RIGHT ZONE: Mobile (19.5:9) Smartphone Chassis (x=1580, w=240, col_h=810)
+    # 3. RIGHT ZONE: Mobile (19.5:9) Smartphone Chassis (x=1438, w=382, col_h=810)
     # -------------------------------------------------------------
-    mob_x = 1580
-    mob_w = 240
+    mob_x = tab_x + tab_w + gap # 1438
+    mob_w = 382
     draw.rounded_rectangle([mob_x, top_y, mob_x + mob_w, top_y + col_h], radius=14, fill=(24, 34, 52), outline=(51, 65, 85), width=1)
     
-    draw_pill_badge(draw, left_x=mob_x + 14, cy=top_y + 24, text="MOBILE 19.5:9", font=get_font(9, 'bold'), theme='purple', dark_mode=True, pad_x=6, height=22)
-    draw.text((mob_x + 115, top_y + 24), "04. 스마트폰", font=get_font(12, 'bold'), fill=(255, 255, 255), anchor='lm')
+    draw_pill_badge(draw, left_x=mob_x + 14, cy=top_y + 24, text="MOBILE 19.5:9", font=get_font(9.5, 'bold'), theme='purple', dark_mode=True, pad_x=6, height=22)
+    draw.text((mob_x + 115, top_y + 24), "04. 스마트폰 (Dark)", font=get_font(12, 'bold'), fill=(255, 255, 255), anchor='lm')
     draw.text((mob_x + 14, top_y + 54), "390x844 핸드헬드 터치 UI", font=get_font(10.5, 'medium'), fill=(148, 163, 184))
     
-    # Phone Bezel Chassis (Optimized height & placement)
+    # Phone Bezel Chassis (Expanded size for high presence)
     chassis_mob_y = top_y + 78
-    chassis_mob_w = 208
-    chassis_mob_h = 470  # 19.5:9 proportion
+    chassis_mob_w = 252
+    chassis_mob_h = 530  # 19.5:9 proportion
     chassis_mob_x = mob_x + (mob_w - chassis_mob_w) // 2
     
     # Phone outer frame
@@ -1948,27 +1949,28 @@ def make_slide_10():
         base.paste(mob_res, (m_paste_x, m_paste_y))
         draw.rounded_rectangle([m_paste_x, m_paste_y, m_paste_x + mw_real, m_paste_y + mh_real], radius=14, outline=(40, 53, 72), width=1)
         
-    # Mobile Feature Bullets below chassis (Fills remaining height: ~230px)
+    # Mobile Feature Bullets below chassis
     m_callout_y = chassis_mob_y + chassis_mob_h + 14
     draw.line([(mob_x + 14, m_callout_y), (mob_x + mob_w - 14, m_callout_y)], fill=(40, 53, 72), width=1)
     
     mob_pods = [
-        ("한 손 터치 인체공학", "핵심 액션 바텀 시트 배치", (167, 139, 250)),
-        ("1-Tap 실적 즉시 등록", "바코드 스캔 & 48px 대형 키패드", (56, 189, 248)),
-        ("실시간 긴급 푸시 알림", "비가동·불량 알림 즉시 수신/승인", (52, 211, 153))
+        ("한 손 터치 인체공학", "모든 핵심 액션 바텀 네비게이션 배치", (167, 139, 250)),
+        ("1-Tap 실적 즉시 등록", "바코드 스캔 및 48px 대형 터치 키패드", (56, 189, 248)),
+        ("실시간 긴급 푸시 알림", "비가동·불량 알림 즉시 수신 및 원격 승인", (52, 211, 153))
     ]
     
     m_pod_y = m_callout_y + 12
     for mp_title, mp_desc, mp_color in mob_pods:
-        mpod_h = 60
+        mpod_h = 46
         draw.rounded_rectangle([mob_x + 12, m_pod_y, mob_x + mob_w - 12, m_pod_y + mpod_h], radius=6, fill=(15, 23, 42), outline=(40, 53, 72), width=1)
-        draw.text((mob_x + 20, m_pod_y + 10), f"• {mp_title}", font=get_font(10.5, 'bold'), fill=mp_color)
-        draw.text((mob_x + 20, m_pod_y + 32), mp_desc, font=get_font(9.5, 'regular'), fill=(203, 213, 225))
+        draw.text((mob_x + 20, m_pod_y + 8), f"• {mp_title}", font=get_font(10.5, 'bold'), fill=mp_color)
+        draw.text((mob_x + 20, m_pod_y + 26), mp_desc, font=get_font(9.5, 'regular'), fill=(203, 213, 225))
         m_pod_y += mpod_h + 8
 
     draw_slide_footer(draw, 10, dark_mode=True)
     base.save(os.path.join(OUT_DIR, 'slide_10.png'))
     print("SAVED slide_10.png (Device Proportions & 100% Real Dark Mode Showcase)")
+
 
 def make_slide_11():
     base = Image.new('RGB', (W, H), (255, 255, 255))
