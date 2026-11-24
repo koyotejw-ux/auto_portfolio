@@ -211,6 +211,12 @@
     </div>
 
     <div class="proto-right">
+      <button class="btn-tool" id="btn-theme-toggle" onclick="toggleTheme()" title="라이트/다크 모드 전환">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+        <span id="theme-btn-text">다크모드</span>
+      </button>
       <a href="MES_Solution_Portfolio.pdf" download="CodeBridgeX_MES_Solution_Portfolio.pdf" class="btn-tool">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
@@ -268,6 +274,37 @@
     function reloadFrame() {
       frame.contentWindow.location.reload();
     }
+
+    let isDark = false;
+    function toggleTheme() {
+      isDark = !isDark;
+      const themeText = document.getElementById('theme-btn-text');
+      if (themeText) {
+        themeText.textContent = isDark ? '라이트모드' : '다크모드';
+      }
+      try {
+        const frameDoc = frame.contentDocument || frame.contentWindow.document;
+        if (isDark) {
+          frameDoc.documentElement.classList.add('dark');
+          frameDoc.body.classList.add('dark');
+        } else {
+          frameDoc.documentElement.classList.remove('dark');
+          frameDoc.body.classList.remove('dark');
+        }
+      } catch (e) {
+        console.log('Cannot access iframe internals due to origin restrictions:', e);
+      }
+    }
+
+    frame.addEventListener('load', () => {
+      if (isDark) {
+        try {
+          const frameDoc = frame.contentDocument || frame.contentWindow.document;
+          frameDoc.documentElement.classList.add('dark');
+          frameDoc.body.classList.add('dark');
+        } catch (e) {}
+      }
+    });
 
     function toggleFullscreen() {
       if (!document.fullscreenElement) {

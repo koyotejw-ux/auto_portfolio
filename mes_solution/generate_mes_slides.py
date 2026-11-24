@@ -892,16 +892,23 @@ def make_slide_05():
 # ==============================================================
 # SLIDE 06: Wireframe & Screen Spec with Proportional Fit
 def make_slide_06():
-    base = Image.new('RGB', (W, H), (255, 255, 255))
+    # Sophisticated obsidian dark background matching UI showcase slides
+    base = Image.new('RGB', (W, H), (15, 23, 42))
     draw = ImageDraw.Draw(base)
     
+    for gx in range(0, W, 40):
+        draw.line([(gx, 0), (gx, H)], fill=(23, 33, 56), width=1)
+    for gy in range(0, H, 40):
+        draw.line([(0, gy), (W, gy)], fill=(23, 33, 56), width=1)
+        
     draw_slide_header(
         draw, 
         slide_num=6, 
         category_kr="와이어프레임 & 화면 설계서 | 251229 엔터프라이즈 실물 규격", 
         title_black="태블릿 및 모바일 현장 터치에 최적화된 ", 
-        title_blue="실제 설계서 화면 와이어프레임", 
-        subtitle_kr="D:\\102_1.codebridgex\\MES Solution Website Structure 251229 프로젝트에서 직접 추출한 표준 화면 규격서와 현장 UI (비율 유지 1:1 정렬)"
+        title_blue="실제 설계서 화면 와이어프레임 (다크모드 규격)", 
+        subtitle_kr="D:\\102_1.codebridgex\\MES Solution Website Structure 251229 프로젝트에서 직접 추출한 표준 화면 규격서와 현장 다크 테마 UI",
+        dark_mode=True
     )
     
     wf_items = [
@@ -917,18 +924,19 @@ def make_slide_06():
     
     for i, (title, fname, desc) in enumerate(wf_items):
         cx = 100 + i * (card_w + 24)
-        draw.rounded_rectangle([cx, top_y, cx + card_w, top_y + card_h], radius=14, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
+        draw.rounded_rectangle([cx, top_y, cx + card_w, top_y + card_h], radius=14, fill=(30, 41, 59), outline=(51, 65, 85), width=1)
         
-        draw_pill_badge(draw, left_x=cx + 20, cy=top_y + 36, text="251229 화면설계서", font=get_font(10, 'bold'), theme='blue', pad_x=10, height=26)
-        draw.text((cx + 20, top_y + 76), title, font=get_font(16, 'bold'), fill=(15, 23, 42))
-        draw.text((cx + 20, top_y + 104), desc, font=get_font(11, 'medium'), fill=(71, 85, 105))
+        draw_pill_badge(draw, left_x=cx + 20, cy=top_y + 36, text="251229 화면설계서", font=get_font(10, 'bold'), theme='cyan', dark_mode=True, pad_x=10, height=26)
+        draw.text((cx + 20, top_y + 76), title, font=get_font(16, 'bold'), fill=(255, 255, 255))
+        draw.text((cx + 20, top_y + 104), desc, font=get_font(11, 'medium'), fill=(148, 163, 184))
         
         fpath = os.path.join(MOCKUP_DIR, fname)
         frame_y = top_y + 135
         frame_h = card_h - 155
         frame_w = card_w - 32
         
-        draw.rounded_rectangle([cx + 16, frame_y, cx + 16 + frame_w, frame_y + frame_h], radius=10, fill=(255, 255, 255), outline=(203, 213, 225), width=1)
+        # Inner dark card container
+        draw.rounded_rectangle([cx + 16, frame_y, cx + 16 + frame_w, frame_y + frame_h], radius=10, fill=(15, 23, 42), outline=(51, 65, 85), width=1)
         
         if os.path.exists(fpath):
             try:
@@ -944,11 +952,9 @@ def make_slide_06():
             except Exception as e:
                 print(f"Error loading {fname}:", e)
                 
-    draw_slide_footer(draw, 6)
+    draw_slide_footer(draw, 6, dark_mode=True)
     base.save(os.path.join(OUT_DIR, 'slide_06.png'))
-    print("SAVED slide_06.png")
-
-
+    print("SAVED slide_06.png (Dark Wireframes)")
 def make_slide_07():
     base = Image.new('RGB', (W, H), (255, 255, 255))
     draw = ImageDraw.Draw(base)
@@ -1148,20 +1154,20 @@ def make_slide_10():
     draw_slide_header(
         draw, 
         slide_num=10, 
-        category_kr="프로덕션 화면 | 6대 핵심 상용 웹 대시보드 쇼케이스", 
+        category_kr="프로덕션 화면 | 6대 핵심 상용 웹 대시보드 쇼케이스 (다크모드)", 
         title_black="현장 조도에 최적화된 고대비 인터페이스, ", 
-        title_blue="다크모드 & 반응형 UI 컬렉션", 
-        subtitle_kr="랜딩 포털, 다크모드 관제 대시보드, 다크 생산·품질·자재 관리 및 태블릿 화면을 아우르는 상용 인터페이스",
+        title_blue="전 화면 다크모드 & 반응형 UI 컬렉션", 
+        subtitle_kr="경영 관제 대시보드, 생산 공정, 품질 보증, 자재 실사, 태블릿 및 모바일까지 전 라인업 다크 테마 적용",
         dark_mode=True
     )
     
     screens = [
-        ("01. SaaS 랜딩 포털", "screen_01_landing.png", "솔루션 소개 및 데모 체험 신청"),
-        ("02. 경영 종합 대시보드 (Dark)", "screen_02_dashboard_dark.png", "전사 KPI, 생산성 및 OEE 텔레메트리"),
-        ("03. 생산 공정 관리 (Dark)", "screen_03_production_dark.png", "작업 지시서 발행 및 라인별 실적"),
-        ("04. 품질 보증 & 검사 (Dark)", "screen_04_quality_dark.png", "수입/공정 검사 및 불량률 SPC"),
-        ("05. 자재/재고 실사 (Dark)", "screen_05_inventory_dark.png", "창고 로케이션별 실시간 재고량"),
-        ("06. 태블릿 10-inch 관제 규격", "wireframe_tablet_dashboard.png", "현장 태블릿 반응형 랜드스케이프")
+        ("01. 경영 종합 대시보드 (Dark)", "screen_02_dashboard_dark.png", "전사 KPI, 생산성 및 OEE 텔레메트리"),
+        ("02. 생산 공정 스케줄러 (Dark)", "screen_03_production_dark.png", "작업 지시서 발행 및 라인별 실적"),
+        ("03. 품질 보증 & 검사 (Dark)", "screen_04_quality_dark.png", "수입/공정 검사 및 불량률 SPC"),
+        ("04. 자재/재고 실사 (Dark)", "screen_05_inventory_dark.png", "창고 로케이션별 실시간 재고량"),
+        ("05. 태블릿 10-inch 관제 (Dark)", "render_tablet_dashboard_dark.png", "현장 태블릿 4:3 고대비 모니터링"),
+        ("06. 모바일 스마트폰 관제 (Dark)", "render_mobile_dashboard_dark.png", "작업자 19.5:9 핸드헬드 터치 UI")
     ]
     
     cols = 3
@@ -1198,10 +1204,7 @@ def make_slide_10():
                 
     draw_slide_footer(draw, 10, dark_mode=True)
     base.save(os.path.join(OUT_DIR, 'slide_10.png'))
-    print("SAVED slide_10.png (Dark Mode Collection)")
-
-# ==============================================================
-# SLIDE 11: Business Impact & STAR Retrospective
+    print("SAVED slide_10.png (All Dark Mode Collection)")
 def make_slide_11():
     base = Image.new('RGB', (W, H), (255, 255, 255))
     draw = ImageDraw.Draw(base)
