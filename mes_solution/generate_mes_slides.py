@@ -123,101 +123,102 @@ def draw_slide_footer(draw, slide_num, total_slides=12, dark_mode=False):
     brand_col = (56, 189, 248) if dark_mode else (0, 81, 255)
     draw.text((100, 1018), "CODEBRIDGEX MES SOLUTION", font=get_font(11, 'bold'), fill=brand_col)
     meta_col = (100, 116, 139) if dark_mode else (148, 163, 184)
-    draw.text((310, 1018), "·   엔터프라이즈 SaaS 제조 실행 시스템  ·  스마트 팩토리 웹 플랫폼", font=get_font(11, 'medium'), fill=meta_col)
-    draw.text((960, 1018), "Vite + React 18 + TailwindCSS  ·  아토믹 디자인 시스템 150+ 컴포넌트", font=get_font(10.5, 'medium'), fill=meta_col, anchor='mt')
+    draw.text((310, 1018), "·   엔터프라이즈 SaaS 제조 실행 시스템  ·  스마트 팩토리 반응형 웹 플랫폼", font=get_font(11, 'medium'), fill=meta_col)
+    draw.text((960, 1018), "데스크톱 · 태블릿 · 모바일 반응형 완비  ·  아토믹 디자인 시스템 150+ 컴포넌트", font=get_font(10.5, 'medium'), fill=meta_col, anchor='mt')
     
     page_col = (148, 163, 184) if dark_mode else (100, 116, 139)
     page_str = f"PAGE {slide_num:02d} / {total_slides:02d}"
     draw.text((1820, 1018), page_str, font=get_num_font(11.5, 'black'), fill=page_col, anchor='rt')
 
-# Helper: Draw browser window frame around screenshot
-def draw_browser_frame(draw, base_img, x, y, w, h, screenshot_path, title_bar_text="CodeBridgeX Cloud MES Platform"):
-    # Window shadow & container
-    draw.rounded_rectangle([x, y, x + w, y + h], radius=12, fill=(255, 255, 255), outline=(203, 213, 225), width=1)
+def draw_browser_frame(draw, base_img, x, y, w, h, screenshot_path, title_bar_text="CodeBridgeX Cloud MES Platform", dark_mode=False):
+    bg_bar = (15, 23, 42) if dark_mode else (241, 245, 249)
+    border_col = (51, 65, 85) if dark_mode else (203, 213, 225)
+    line_col = (30, 41, 59) if dark_mode else (226, 232, 240)
     
-    # Title bar (h=38)
-    draw.rounded_rectangle([x, y, x + w, y + 38], radius=12, fill=(241, 245, 249))
-    draw.rectangle([x, y + 26, x + w, y + 38], fill=(241, 245, 249))
-    draw.line([(x, y + 38), (x + w, y + 38)], fill=(226, 232, 240), width=1)
+    draw.rounded_rectangle([x, y, x + w, y + h], radius=12, fill=(15, 23, 42) if dark_mode else (255, 255, 255), outline=border_col, width=1)
+    draw.rounded_rectangle([x, y, x + w, y + 38], radius=12, fill=bg_bar)
+    draw.rectangle([x, y + 26, x + w, y + 38], fill=bg_bar)
+    draw.line([(x, y + 38), (x + w, y + 38)], fill=line_col, width=1)
     
-    # Window controls (mac style dots)
     draw.ellipse([x + 14, y + 14, x + 24, y + 24], fill=(239, 68, 68))
     draw.ellipse([x + 30, y + 14, x + 40, y + 24], fill=(245, 158, 11))
     draw.ellipse([x + 46, y + 14, x + 56, y + 24], fill=(16, 185, 129))
     
-    # Address bar
     addr_w = int(w * 0.45)
     addr_x = x + (w - addr_w) // 2
-    draw.rounded_rectangle([addr_x, y + 7, addr_x + addr_w, y + 31], radius=6, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-    draw.text((addr_x + 14, y + 19), title_bar_text, font=get_font(9.5, 'medium'), fill=(100, 116, 139), anchor='lm')
+    draw.rounded_rectangle([addr_x, y + 7, addr_x + addr_w, y + 31], radius=6, fill=(30, 41, 59) if dark_mode else (255, 255, 255), outline=line_col, width=1)
+    draw.text((addr_x + 14, y + 19), title_bar_text, font=get_font(9.5, 'medium'), fill=(148, 163, 184) if dark_mode else (100, 116, 139), anchor='lm')
     
-    # Screenshot content
     if os.path.exists(screenshot_path):
         try:
             content_h = h - 39
             content_w = w - 2
             img = Image.open(screenshot_path).convert('RGB')
-            # Crop/Resize to fit exactly
             img_resized = img.resize((content_w, content_h), Image.Resampling.LANCZOS)
             base_img.paste(img_resized, (x + 1, y + 39))
         except Exception as e:
             print(f"Error loading screenshot {screenshot_path}:", e)
 
-print("Slide base helpers initialized!")
 # ==============================================================
-# SLIDE 01: Hero Cover
+# SLIDE 01: Hero Cover with Multi-Device Responsive Composition
 def make_slide_01():
-    base = Image.new('RGB', (W, H), (255, 255, 255))
+    base = Image.new('RGB', (W, H), (15, 23, 42)) # High-impact dark theme hero
     draw = ImageDraw.Draw(base)
     
-    # Background Subtle Grid
     for gx in range(0, W, 40):
-        draw.line([(gx, 0), (gx, H)], fill=(248, 250, 252), width=1)
+        draw.line([(gx, 0), (gx, H)], fill=(23, 33, 56), width=1)
     for gy in range(0, H, 40):
-        draw.line([(0, gy), (W, gy)], fill=(248, 250, 252), width=1)
+        draw.line([(0, gy), (W, gy)], fill=(23, 33, 56), width=1)
         
     draw_slide_header(
         draw, 
         slide_num=1, 
         category_kr="엔터프라이즈 제조 클라우드 플랫폼", 
-        title_black="생산 현장과 전사 경영을 실시간 연결하는 ", 
-        title_blue="스마트 MES 솔루션", 
-        subtitle_kr="수주·발주부터 공정 스케줄링, 설비 텔레메트리, 무결점 품질 검사까지 포괄하는 차세대 멀티테넌트 B2B SaaS"
+        title_black="데스크톱부터 모바일·태블릿까지 연결하는 ", 
+        title_blue="반응형 스마트 MES 솔루션", 
+        subtitle_kr="수주·발주부터 공정 스케줄링, 설비 텔레메트리, 무결점 품질 검사까지 전 기기 반응형으로 제어하는 올인원 B2B SaaS",
+        dark_mode=True
     )
     
     # Left Hero Specs Box
     left_x, top_y, left_w, box_h = 100, 210, 520, 750
-    draw.rounded_rectangle([left_x, top_y, left_x + left_w, top_y + box_h], radius=16, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
+    draw.rounded_rectangle([left_x, top_y, left_x + left_w, top_y + box_h], radius=16, fill=(30, 41, 59), outline=(51, 65, 85), width=1)
     
-    draw_pill_badge(draw, left_x=left_x + 30, cy=top_y + 40, text="프로덕트 오버뷰", font=get_font(10.5, 'bold'), theme='blue', pad_x=12, height=28)
-    draw.text((left_x + 30, top_y + 80), "CodeBridgeX MES Solution", font=get_font(22, 'bold'), fill=(15, 23, 42))
-    draw.text((left_x + 30, top_y + 115), "중소·중견 제조 기업의 디지털 전환(DX)을 가속화하는\n올인원 클라우드 생산 관리 및 실행 시스템입니다.", font=get_font(13.5, 'medium'), fill=(71, 85, 105))
+    draw_pill_badge(draw, left_x=left_x + 30, cy=top_y + 40, text="프로덕트 오버뷰", font=get_font(10.5, 'bold'), theme='cyan', dark_mode=True, pad_x=12, height=28)
+    draw.text((left_x + 30, top_y + 80), "CodeBridgeX MES Solution", font=get_font(22, 'bold'), fill=(255, 255, 255))
+    draw.text((left_x + 30, top_y + 115), "대화면 관제실부터 현장 터치 태블릿, 모바일 기기까지\n완벽하게 대응하는 반응형 스마트 팩토리 플랫폼입니다.", font=get_font(13.5, 'medium'), fill=(148, 163, 184))
     
     specs = [
-        ("솔루션 도메인", "제조 실행 시스템 (Smart Factory MES & ERP)"),
-        ("핵심 타깃", "정밀 가공, 조립, 전자 부품 제조업 및 스마트 공장"),
+        ("솔루션 도메인", "스마트 팩토리 통합 MES & ERP 제조 실행 시스템"),
+        ("디바이스 지원", "데스크톱(FHD/QHD), 10인치 태블릿, 스마트폰 반응형"),
         ("비즈니스 모듈", "13대 엔터프라이즈 모듈 (생산/품질/자재/영업/회계 등)"),
         ("화면 규격 설계", "59개 이상 표준 인터랙티브 화면 & 아토믹 컴포넌트"),
         ("프론트엔드 스택", "Vite + React 18 + TypeScript + Tailwind CSS"),
-        ("컴포넌트 체계", "Atomic Design System (150+ Design Tokens & Kits)"),
+        ("UI 테마 지원", "현장 조도에 최적화된 라이트 / 다크 듀얼 테마 지원"),
         ("프로덕트 기여도", "엔터프라이즈 UX/UI 아키텍처 및 디자인 총괄 (100%)"),
     ]
     
     sy = top_y + 185
     for k, v in specs:
-        draw.text((left_x + 30, sy), k, font=get_font(12, 'bold'), fill=(30, 41, 59))
-        draw.text((left_x + 30, sy + 22), v, font=get_font(13, 'medium'), fill=(0, 81, 255) if "도메인" in k or "기여도" in k else (71, 85, 105))
-        draw.line([(left_x + 30, sy + 48), (left_x + left_w - 30, sy + 48)], fill=(226, 232, 240), width=1)
+        draw.text((left_x + 30, sy), k, font=get_font(12, 'bold'), fill=(203, 213, 225))
+        draw.text((left_x + 30, sy + 22), v, font=get_font(13, 'medium'), fill=(56, 189, 248) if "도메인" in k or "기여도" in k or "디바이스" in k else (148, 163, 184))
+        draw.line([(left_x + 30, sy + 48), (left_x + left_w - 30, sy + 48)], fill=(51, 65, 85), width=1)
         sy += 66
         
-    # Right Browser Showcase (Landing & Executive Dashboard Composite)
-    right_x = 650
-    right_w = W - right_x - 100
-    draw_browser_frame(draw, base, right_x, top_y, right_w, box_h, os.path.join(MOCKUP_DIR, 'screen_01_landing.png'), "https://mes.codebridgex.com — 엔터프라이즈 SaaS 랜딩")
+    # Right Responsive Multi-Device Showcase
+    clean_thumb = r"d:\097.flutter_project\auto_portfolio\assets\mes_solution_clean_devices.png"
+    if os.path.exists(clean_thumb):
+        right_x = 660
+        right_w = W - right_x - 100
+        right_h = box_h
+        thumb_img = Image.open(clean_thumb).convert('RGB')
+        thumb_resized = thumb_img.resize((right_w, right_h), Image.Resampling.LANCZOS)
+        base.paste(thumb_resized, (right_x, top_y))
+        draw.rounded_rectangle([right_x, top_y, right_x + right_w, top_y + right_h], radius=16, outline=(51, 65, 85), width=1)
     
-    draw_slide_footer(draw, 1)
+    draw_slide_footer(draw, 1, dark_mode=True)
     base.save(os.path.join(OUT_DIR, 'slide_01.png'))
-    print("SAVED slide_01.png")
+    print("SAVED slide_01.png (Dark Multi-Device Hero)")
 
 # ==============================================================
 # SLIDE 02: User & Market Research
@@ -235,7 +236,7 @@ def make_slide_02():
     )
     
     cards = [
-        ("01", "수기 작업일지와 엑셀 취합의 지연", "현장 작업자가 종이 작업일지에 수기로 기입 후 퇴근 전 엑셀에 재입력하여 데이터 취합에 최소 24시간 이상 지연 발생.", "전 공정 태블릿/PC 1-Tap 실적 등록 및 즉시 중앙 DB 동기화 파이프라인 구축", "green"),
+        ("01", "수기 작업일지와 엑셀 취합의 지연", "현장 작업자가 종이 작업일지에 수기로 기입 후 퇴근 전 엑셀에 재입력하여 데이터 취합에 최소 24시간 이상 지연 발생.", "전 공정 모바일/태블릿 1-Tap 실적 등록 및 즉시 중앙 DB 동기화 파이프라인 구축", "green"),
         ("02", "설비 고장 및 비가동 시간 파악 불가", "설비 다운타임 원인과 가동률(OEE)이 실시간 집계되지 않아 병목 라인 조기 식별 불가 및 납기 지연 빈발.", "설비종합효율(OEE) 및 라인별 실시간 가동 상태 텔레메트리 대시보드 제공", "blue"),
         ("03", "LOT 추적 불능으로 인한 클레임 리스크", "불량품 발생 시 어느 원자재 LOT와 작업자가 투입되었는지 역추적하는 데 수일이 소요되어 고객사 신뢰도 하락.", "원자재 입고부터 완제품 출하까지 100% Full-Traceability 바코드/QR 추적 체계", "amber"),
         ("04", "과도하게 복잡한 레거시 ERP UI", "외산/레거시 ERP는 입력 필드가 수십 개에 달해 현장 작업자의 거부감이 심하고 교육 비용 과다 소요.", "아토믹 디자인 기반 직관적 데이터 그리드와 인체공학적 터치 최적화 UI", "purple")
@@ -252,7 +253,6 @@ def make_slide_02():
         draw_pill_badge(draw, left_x=cx + 24, cy=top_y + 36, text=f"페인포인트 {num}", font=get_font(10.5, 'bold'), theme=theme, pad_x=10, height=26)
         draw.text((cx + 24, top_y + 80), title, font=get_font(17, 'bold'), fill=(15, 23, 42))
         
-        # Pain box
         draw.rounded_rectangle([cx + 20, top_y + 140, cx + card_w - 20, top_y + 390], radius=10, fill=(255, 255, 255), outline=(239, 68, 68, 120), width=1)
         draw_pill_badge(draw, left_x=cx + 34, cy=top_y + 165, text="현장의 고질적 문제", font=get_font(9.5, 'bold'), theme='red', pad_x=8, height=22)
         lines = textwrap.wrap(pain, width=19)
@@ -261,7 +261,6 @@ def make_slide_02():
             draw.text((cx + 34, ly), l, font=get_font(12.5, 'medium'), fill=(51, 65, 85))
             ly += 25
             
-        # Solution box
         draw.rounded_rectangle([cx + 20, top_y + 410, cx + card_w - 20, top_y + 700], radius=10, fill=(239, 246, 255), outline=(0, 81, 255, 120), width=1)
         draw_pill_badge(draw, left_x=cx + 34, cy=top_y + 435, text="코드브릿지엑스 UX 해결책", font=get_font(9.5, 'bold'), theme='blue', pad_x=8, height=22)
         lines = textwrap.wrap(sol, width=19)
@@ -337,7 +336,7 @@ def make_slide_03():
     print("SAVED slide_03.png")
 
 # ==============================================================
-# SLIDE 04: Information Architecture (13 Modules)
+# SLIDE 04: Information Architecture (13 Modules) - Centered Alignment
 def make_slide_04():
     base = Image.new('RGB', (W, H), (255, 255, 255))
     draw = ImageDraw.Draw(base)
@@ -351,15 +350,14 @@ def make_slide_04():
         subtitle_kr="기준정보 설정부터 영업 수주, 생산 실행, 품질 보증, 출하 재고까지 유기적으로 연동된 엔터프라이즈 IA"
     )
     
-    # Root Node
-    root_x1, root_y1, root_x2, root_y2 = 700, 220, 1220, 280
+    # Root Node: Mathematically centered
+    root_x1, root_y1, root_x2, root_y2 = 700, 220, 1220, 284
     draw.rounded_rectangle([root_x1, root_y1, root_x2, root_y2], radius=12, fill=(255, 255, 255), outline=(0, 81, 255), width=2)
     root_cy = (root_y1 + root_y2) // 2
-    draw_pill_badge(draw, left_x=root_x1 + 18, cy=root_cy, text="통합 플랫폼", font=get_font(10, 'bold'), theme='blue', pad_x=10, height=26)
-    draw.text((root_x1 + 120, root_cy - 11), "CodeBridgeX Cloud MES & ERP 아키텍처", font=get_font(14, 'bold'), fill=(15, 23, 42), anchor='lm')
-    draw.text((root_x1 + 120, root_cy + 11), "멀티테넌트 SaaS 기반 13개 핵심 비즈니스 도메인 및 59개 표준 화면", font=get_font(10.5, 'medium'), fill=(71, 85, 105), anchor='lm')
+    b_root = draw_pill_badge(draw, left_x=root_x1 + 18, cy=root_cy, text="통합 플랫폼", font=get_font(10, 'bold'), theme='blue', pad_x=10, height=26)
+    draw.text((b_root[2] + 16, root_cy - 11), "CodeBridgeX Cloud MES & ERP 아키텍처", font=get_font(14, 'bold'), fill=(15, 23, 42), anchor='lm')
+    draw.text((b_root[2] + 16, root_cy + 11), "멀티테넌트 SaaS 기반 13개 핵심 비즈니스 도메인 및 59개 표준 화면", font=get_font(10.5, 'medium'), fill=(71, 85, 105), anchor='lm')
     
-    # 5 Main Columns
     cols_data = [
         ("01. 기준정보 관리", "Master Data", "품목 마스터, 다단계 BOM 등록, 공정 라우팅, 거래처 및 작업자 규격 관리", [
             ("품목 관리", "원부자재 및 완제품 마스터"),
@@ -404,13 +402,11 @@ def make_slide_04():
         center_x = cx + cw // 2
         draw.line([(center_x, 310), (center_x, 335)], fill=(0, 81, 255), width=2)
         
-        # Column Header Box
         draw.rounded_rectangle([cx, 335, cx + cw, 425], radius=10, fill=(239, 246, 255), outline=(0, 81, 255), width=1)
         draw.text((cx + 14, 348), title, font=get_font(13.5, 'bold'), fill=(15, 23, 42))
         draw.text((cx + 14, 370), en, font=get_font(10, 'medium'), fill=(0, 81, 255))
         draw.text((cx + 14, 392), desc, font=get_font(9.5, 'regular'), fill=(71, 85, 105))
         
-        # Sub Cards
         sy = 445
         for s_title, s_desc in subs:
             draw.rounded_rectangle([cx, sy, cx + cw, sy + 115], radius=8, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
@@ -456,11 +452,8 @@ def make_slide_05():
         
         draw_pill_badge(draw, left_x=sx + 20, cy=top_y + 36, text=f"단계 {i+1}", font=get_font(10.5, 'bold'), theme='blue', pad_x=10, height=26)
         draw.text((sx + 20, top_y + 80), num, font=get_font(15, 'bold'), fill=(15, 23, 42))
-        
-        # Responsible team pill
         draw_pill_badge(draw, left_x=sx + 20, cy=top_y + 130, text=team, font=get_font(10, 'bold'), theme='purple', pad_x=10, height=24)
         
-        # Primary Action Box
         draw.rounded_rectangle([sx + 16, top_y + 175, sx + step_w - 16, top_y + 400], radius=10, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
         draw_pill_badge(draw, left_x=sx + 30, cy=top_y + 200, text="주요 작업 액션", font=get_font(9.5, 'bold'), theme='cyan', pad_x=8, height=22)
         lines = textwrap.wrap(act, width=19)
@@ -469,7 +462,6 @@ def make_slide_05():
             draw.text((sx + 30, ly), l, font=get_font(13.5, 'bold'), fill=(15, 23, 42))
             ly += 26
             
-        # Outcome / System Automation
         draw.rounded_rectangle([sx + 16, top_y + 420, sx + step_w - 16, top_y + 670], radius=10, fill=(239, 246, 255), outline=(0, 81, 255, 120), width=1)
         draw_pill_badge(draw, left_x=sx + 30, cy=top_y + 445, text="시스템 자동 검증 및 기록", font=get_font(9.5, 'bold'), theme='blue', pad_x=8, height=22)
         lines = textwrap.wrap(sub, width=19)
@@ -478,7 +470,6 @@ def make_slide_05():
             draw.text((sx + 30, ly), l, font=get_font(12.5, 'medium'), fill=(51, 65, 85))
             ly += 25
             
-        # Arrow between steps
         if i < 4:
             arrow_x = sx + step_w + 14
             draw.text((arrow_x, top_y + 350), "▶", font=get_font(18, 'bold'), fill=(0, 81, 255), anchor='mm')
@@ -488,7 +479,7 @@ def make_slide_05():
     print("SAVED slide_05.png")
 
 # ==============================================================
-# SLIDE 06: Wireframe & Ergonomics
+# SLIDE 06: Wireframe & Screen Spec (Using D:\102_1.codebridgex\MES Solution Website Structure 251229)
 def make_slide_06():
     base = Image.new('RGB', (W, H), (255, 255, 255))
     draw = ImageDraw.Draw(base)
@@ -496,100 +487,52 @@ def make_slide_06():
     draw_slide_header(
         draw, 
         slide_num=6, 
-        category_kr="와이어프레임 | 반응형 3단 그리드 & 인체공학적 조작성", 
-        title_black="대화면 관제와 현장 태블릿을 동시에 만족하는 ", 
-        title_blue="유연한 레이아웃 시스템", 
-        subtitle_kr="좌측 네비게이션 트리, 중앙 인터랙티브 데이터 테이블, 우측 상세 액션 드로어로 구성된 일관된 작업 환경"
+        category_kr="와이어프레임 & 화면 설계서 | 251229 엔터프라이즈 실물 규격", 
+        title_black="태블릿 및 모바일 현장 터치에 최적화된 ", 
+        title_blue="실제 설계서 화면 와이어프레임", 
+        subtitle_kr="D:\\102_1.codebridgex\\MES Solution Website Structure 251229 프로젝트에서 직접 추출한 표준 화면 규격서와 현장 UI"
     )
     
-    # Left: Wireframe Structure Diagram
-    lx, ly, lw, lh = 100, 220, 1000, 740
-    draw.rounded_rectangle([lx, ly, lx + lw, ly + lh], radius=14, fill=(248, 250, 252), outline=(203, 213, 225), width=2)
-    
-    # Mock Header
-    draw.rounded_rectangle([lx + 10, ly + 10, lx + lw - 10, ly + 70], radius=8, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-    draw.text((lx + 30, ly + 40), "[Header] CodeBridgeX MES  |  생산관리 > 작업지시 현황", font=get_font(12, 'bold'), fill=(100, 116, 139), anchor='lm')
-    draw_pill_badge(draw, left_x=lx + lw - 140, cy=ly + 40, text="관리자 모드", font=get_font(9.5, 'bold'), theme='blue', pad_x=8, height=24)
-    
-    # Mock Sidebar
-    draw.rounded_rectangle([lx + 10, ly + 80, lx + 220, ly + lh - 10], radius=8, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-    draw.text((lx + 25, ly + 110), "[Sidebar L-Nav]", font=get_font(11, 'bold'), fill=(0, 81, 255))
-    menus = ["대시보드", "기준정보 관리", "생산관리 (Active)", "  └ 작업지시 등록", "  └ 생산 실적 현황", "품질관리", "자재/재고관리", "설비관리", "시스템 설정"]
-    my = ly + 145
-    for m in menus:
-        if "(Active)" in m:
-            draw.rounded_rectangle([lx + 18, my - 14, lx + 212, my + 14], radius=4, fill=(239, 246, 255))
-            draw.text((lx + 25, my), m, font=get_font(10.5, 'bold'), fill=(0, 81, 255), anchor='lm')
-        else:
-            draw.text((lx + 25, my), m, font=get_font(10, 'medium'), fill=(100, 116, 139), anchor='lm')
-        my += 36
-        
-    # Mock Main Content Area (Data Table)
-    draw.rounded_rectangle([lx + 230, ly + 80, lx + lw - 250, ly + lh - 10], radius=8, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-    draw.text((lx + 250, ly + 110), "[Center Workspace] 고밀도 실시간 데이터 그리드", font=get_font(12, 'bold'), fill=(15, 23, 42))
-    
-    # Filter Bar
-    draw.rounded_rectangle([lx + 250, ly + 140, lx + lw - 270, ly + 185], radius=6, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
-    draw.text((lx + 265, ly + 162), "조회 기간: 2026.11.01 ~ 11.24  |  라인: 전체  |  상태: 가동중  [검색]", font=get_font(10, 'medium'), fill=(100, 116, 139), anchor='lm')
-    
-    # Table rows
-    ty = ly + 205
-    headers = ["LOT 번호", "품목명", "지시수량", "양품", "불량", "진척률", "상태"]
-    draw.rounded_rectangle([lx + 250, ty, lx + lw - 270, ty + 30], radius=4, fill=(241, 245, 249))
-    hx_offsets = [265, 360, 480, 550, 610, 670, 740]
-    for h_txt, hx in zip(headers, hx_offsets):
-        draw.text((lx + hx, ty + 15), h_txt, font=get_font(9.5, 'bold'), fill=(71, 85, 105), anchor='lm')
-        
-    ty += 38
-    rows = [
-        ("LOT-2611-001", "SUS 브라켓 A형", "1,000", "985", "15", "98.5%", "완료"),
-        ("LOT-2611-002", "알루미늄 프레임 B", "500", "320", "4", "64.0%", "가동중"),
-        ("LOT-2611-003", "동판 쉴드 커버", "2,500", "1,200", "8", "48.0%", "가동중"),
-        ("LOT-2611-004", "정밀 샤프트 12Ø", "800", "0", "0", "0.0%", "대기"),
-        ("LOT-2611-005", "하우징 케이스 C", "1,500", "1,500", "12", "100.0%", "완료")
-    ]
-    for r in rows:
-        draw.rounded_rectangle([lx + 250, ty, lx + lw - 270, ty + 36], radius=4, fill=(255, 255, 255), outline=(241, 245, 249), width=1)
-        for val, hx in zip(r, hx_offsets):
-            draw.text((lx + hx, ty + 18), val, font=get_font(9.5, 'medium'), fill=(15, 23, 42), anchor='lm')
-        ty += 42
-        
-    # Mock Right Action Drawer
-    draw.rounded_rectangle([lx + lw - 240, ly + 80, lx + lw - 10, ly + lh - 10], radius=8, fill=(255, 255, 255), outline=(0, 81, 255), width=1)
-    draw.text((lx + lw - 225, ly + 110), "[Right Drawer]", font=get_font(11, 'bold'), fill=(0, 81, 255))
-    draw.text((lx + lw - 225, ly + 140), "작업 상세 & 빠른 액션", font=get_font(10, 'bold'), fill=(15, 23, 42))
-    draw.text((lx + lw - 225, ly + 170), "· 품목 규격 확인\n· 작업 지도서 PDF\n· 불량 유형 등록\n· 일시정지 / 교대\n· 작업 완료 승인", font=get_font(9.5, 'medium'), fill=(71, 85, 105))
-    
-    # Right: UX Ergonomic Explanations
-    rx = 1140
-    rw = W - rx - 100
-    ry = 220
-    draw.rounded_rectangle([rx, ry, rx + rw, ry + lh], radius=14, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
-    
-    draw_pill_badge(draw, left_x=rx + 28, cy=ry + 40, text="인체공학적 UX 설계 원칙", font=get_font(10.5, 'bold'), theme='blue', pad_x=12, height=28)
-    draw.text((rx + 28, ry + 80), "현장 실무 중심 3단 레이아웃", font=get_font(20, 'bold'), fill=(15, 23, 42))
-    
-    principles = [
-        ("고밀도 데이터 테이블 최적화", "한 화면에 최대 25개 이상의 행을 한눈에 식별할 수 있도록 컴팩트 행 높이(44px)와 고대비 폰트 웨이트 적용."),
-        ("반응형 드로어 & 사이드바 접기", "현장 터치 모니터 및 10인치 태블릿 접속 시 사이드바가 아이콘 모드로 자동 축소되어 데이터 작업 공간 100% 확보."),
-        ("상태별 컬러 코딩 규격화", "가동중(녹색), 대기(황색), 고장/비가동(적색), 완료(청색) 등 ISO 표준 산업 색채를 철저히 준수하여 인지 부하 최소화."),
-        ("터치 타깃 48dp 규격 준수", "장갑을 착용한 작업자가 실수 없이 버튼을 누를 수 있도록 주요 액션 버튼의 최소 터치 영역을 48×48px 이상으로 설계.")
+    # 4 Real Wireframe Screens from 251229
+    wf_items = [
+        ("01. 태블릿 대시보드 규격", "wireframe_tablet_dashboard.png", "10-inch Tablet (Land) CEO 종합 관제 화면"),
+        ("02. 모바일 생산관리 규격", "wireframe_phone_production.png", "Phone 해상도 호기별 작업지시 및 라인 제어"),
+        ("03. 모바일 품질관리 규격", "wireframe_phone_quality.png", "AQL 수입/공정 검사 및 불량 판정 규격"),
+        ("04. 공정 기준정보 규격", "wireframe_phone_process.png", "표준 작업 공순, 설비 매핑 및 사이클타임")
     ]
     
-    py = ry + 140
-    for title, desc in principles:
-        draw.rounded_rectangle([rx + 24, py, rx + rw - 24, py + 125], radius=10, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-        draw.text((rx + 40, py + 22), title, font=get_font(13.5, 'bold'), fill=(0, 81, 255))
-        lines = textwrap.wrap(desc, width=34)
-        ly = py + 52
-        for l in lines:
-            draw.text((rx + 40, ly), l, font=get_font(11.5, 'medium'), fill=(71, 85, 105))
-            ly += 22
-        py += 145
+    card_w = (W - 200 - 3 * 24) // 4
+    top_y = 220
+    card_h = 740
+    
+    for i, (title, fname, desc) in enumerate(wf_items):
+        cx = 100 + i * (card_w + 24)
+        draw.rounded_rectangle([cx, top_y, cx + card_w, top_y + card_h], radius=14, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
         
+        # Header in card
+        draw_pill_badge(draw, left_x=cx + 20, cy=top_y + 36, text="251229 화면설계서", font=get_font(10, 'bold'), theme='blue', pad_x=10, height=26)
+        draw.text((cx + 20, top_y + 76), title, font=get_font(16, 'bold'), fill=(15, 23, 42))
+        draw.text((cx + 20, top_y + 104), desc, font=get_font(11, 'medium'), fill=(71, 85, 105))
+        
+        # Real Wireframe Screenshot Container
+        fpath = os.path.join(MOCKUP_DIR, fname)
+        frame_y = top_y + 135
+        frame_h = card_h - 155
+        frame_w = card_w - 32
+        
+        draw.rounded_rectangle([cx + 16, frame_y, cx + 16 + frame_w, frame_y + frame_h], radius=10, fill=(255, 255, 255), outline=(203, 213, 225), width=1)
+        
+        if os.path.exists(fpath):
+            try:
+                wf_img = Image.open(fpath).convert('RGB')
+                wf_resized = wf_img.resize((frame_w - 4, frame_h - 4), Image.Resampling.LANCZOS)
+                base.paste(wf_resized, (cx + 18, frame_y + 2))
+            except Exception as e:
+                print(f"Error loading {fname}:", e)
+                
     draw_slide_footer(draw, 6)
     base.save(os.path.join(OUT_DIR, 'slide_06.png'))
-    print("SAVED slide_06.png")
+    print("SAVED slide_06.png (251229 Wireframe Showcase)")
 
 # ==============================================================
 # SLIDE 07: Atomic Design System & Tokens
@@ -606,7 +549,6 @@ def make_slide_07():
         subtitle_kr="원자(Atoms), 분자(Molecules), 유기체(Organisms), 템플릿(Templates) 계층으로 완성된 고품격 B2B UI 킷"
     )
     
-    # 4 Atomic Hierarchy Columns
     levels = [
         ("Level 1: Atoms", "원자 단위 토큰", "색상, 타이포그래피, 버튼, 배지, 입력 필드", [
             ("Color Tokens", "Primary Blue (#0051FF), Slate, Alert"),
@@ -664,27 +606,32 @@ def make_slide_07():
     print("SAVED slide_07.png")
 
 # ==============================================================
-# SLIDE 08: Core Feature: Production & Scheduling
+# SLIDE 08: Core Feature: Production & Scheduling (Dark UI Mode)
 def make_slide_08():
-    base = Image.new('RGB', (W, H), (255, 255, 255))
+    base = Image.new('RGB', (W, H), (15, 23, 42)) # Dark theme feature slide
     draw = ImageDraw.Draw(base)
     
+    for gx in range(0, W, 40):
+        draw.line([(gx, 0), (gx, H)], fill=(23, 33, 56), width=1)
+    for gy in range(0, H, 40):
+        draw.line([(0, gy), (W, gy)], fill=(23, 33, 56), width=1)
+        
     draw_slide_header(
         draw, 
         slide_num=8, 
         category_kr="핵심 기능 | 실시간 생산 스케줄링 & 스마트 작업 지시", 
         title_black="지연 없는 라인 가동을 실현하는 ", 
         title_blue="인텔리전트 공정 스케줄러", 
-        subtitle_kr="수주 납기와 설비 부하를 고려한 간트차트 드래그 앤 드롭 일정 조정 및 호기별 작업지시 자동 배포"
+        subtitle_kr="수주 납기와 설비 부하를 고려한 간트차트 드래그 앤 드롭 일정 조정 및 호기별 작업지시 자동 배포 (현장 다크모드 적용)",
+        dark_mode=True
     )
     
-    # Left Feature Card
     lx, ly, lw, lh = 100, 220, 520, 740
-    draw.rounded_rectangle([lx, ly, lx + lw, ly + lh], radius=14, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
+    draw.rounded_rectangle([lx, ly, lx + lw, ly + lh], radius=14, fill=(30, 41, 59), outline=(51, 65, 85), width=1)
     
-    draw_pill_badge(draw, left_x=lx + 30, cy=ly + 40, text="공정 관리 핵심 혁신", font=get_font(10.5, 'bold'), theme='blue', pad_x=12, height=28)
-    draw.text((lx + 30, ly + 80), "작업 지시 & 실시간 추적", font=get_font(20, 'bold'), fill=(15, 23, 42))
-    draw.text((lx + 30, ly + 115), "기존 엑셀 기반 배포 대비 지시서 생성 시간을 85% 단축하고,\n현장 호기별 진행 상태를 1초 단위로 실시간 관제합니다.", font=get_font(12.5, 'medium'), fill=(71, 85, 105))
+    draw_pill_badge(draw, left_x=lx + 30, cy=ly + 40, text="공정 관리 핵심 혁신", font=get_font(10.5, 'bold'), theme='cyan', dark_mode=True, pad_x=12, height=28)
+    draw.text((lx + 30, ly + 80), "작업 지시 & 실시간 추적", font=get_font(20, 'bold'), fill=(255, 255, 255))
+    draw.text((lx + 30, ly + 115), "기존 엑셀 기반 배포 대비 지시서 생성 시간을 85% 단축하고,\n현장 호기별 진행 상태를 1초 단위로 실시간 관제합니다.", font=get_font(12.5, 'medium'), fill=(148, 163, 184))
     
     feats = [
         ("스마트 간트차트 일정 조정", "라인별 가동 현황과 잔여 케파를 시각화하여 드래그 앤 드롭으로 작업 순서 즉시 재배치."),
@@ -695,46 +642,54 @@ def make_slide_08():
     
     fy = ly + 180
     for title, desc in feats:
-        draw.rounded_rectangle([lx + 24, fy, lx + lw - 24, fy + 120], radius=10, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-        draw.text((lx + 40, fy + 20), title, font=get_font(13.5, 'bold'), fill=(0, 81, 255))
+        draw.rounded_rectangle([lx + 24, fy, lx + lw - 24, fy + 120], radius=10, fill=(15, 23, 42), outline=(51, 65, 85), width=1)
+        draw.text((lx + 40, fy + 20), title, font=get_font(13.5, 'bold'), fill=(56, 189, 248))
         lines = textwrap.wrap(desc, width=33)
         ly_sub = fy + 48
         for l in lines:
-            draw.text((lx + 40, ly_sub), l, font=get_font(11.5, 'medium'), fill=(71, 85, 105))
+            draw.text((lx + 40, ly_sub), l, font=get_font(11.5, 'medium'), fill=(203, 213, 225))
             ly_sub += 22
         fy += 135
         
-    # Right: Real Production Management Screenshot
     rx = 650
     rw = W - rx - 100
-    draw_browser_frame(draw, base, rx, ly, rw, lh, os.path.join(MOCKUP_DIR, 'screen_03_production.png'), "CodeBridgeX MES — 생산관리 & 작업지시 현황")
+    dark_prod = os.path.join(MOCKUP_DIR, 'screen_03_production_dark.png')
+    if not os.path.exists(dark_prod):
+        dark_prod = os.path.join(MOCKUP_DIR, 'screen_03_production.png')
+        
+    draw_browser_frame(draw, base, rx, ly, rw, lh, dark_prod, "CodeBridgeX MES — 생산관리 & 작업지시 현황 (Dark Mode)", dark_mode=True)
     
-    draw_slide_footer(draw, 8)
+    draw_slide_footer(draw, 8, dark_mode=True)
     base.save(os.path.join(OUT_DIR, 'slide_08.png'))
-    print("SAVED slide_08.png")
+    print("SAVED slide_08.png (Dark Production Mode)")
 
 # ==============================================================
-# SLIDE 09: Core Feature: Full Traceability & Quality
+# SLIDE 09: Core Feature: Full Traceability & Quality (Dark UI Mode)
 def make_slide_09():
-    base = Image.new('RGB', (W, H), (255, 255, 255))
+    base = Image.new('RGB', (W, H), (15, 23, 42)) # Dark theme feature slide
     draw = ImageDraw.Draw(base)
     
+    for gx in range(0, W, 40):
+        draw.line([(gx, 0), (gx, H)], fill=(23, 33, 56), width=1)
+    for gy in range(0, H, 40):
+        draw.line([(0, gy), (W, gy)], fill=(23, 33, 56), width=1)
+        
     draw_slide_header(
         draw, 
         slide_num=9, 
         category_kr="핵심 기능 | 풀 트레이서빌리티 LOT 추적 & 무결점 품질 보증", 
         title_black="원자재 입고부터 고객사 납품까지, ", 
         title_blue="100% 추적 가능한 무결점 품질 체계", 
-        subtitle_kr="SPC 관리도, 공정별 AQL 검사, 부적합품 시정조치(CAPA) 및 원터치 LOT 역추적 뷰어 제공"
+        subtitle_kr="SPC 관리도, 공정별 AQL 검사, 부적합품 시정조치(CAPA) 및 원터치 LOT 역추적 뷰어 제공 (현장 다크모드 적용)",
+        dark_mode=True
     )
     
-    # Left Feature Card
     lx, ly, lw, lh = 100, 220, 520, 740
-    draw.rounded_rectangle([lx, ly, lx + lw, ly + lh], radius=14, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
+    draw.rounded_rectangle([lx, ly, lx + lw, ly + lh], radius=14, fill=(30, 41, 59), outline=(51, 65, 85), width=1)
     
-    draw_pill_badge(draw, left_x=lx + 30, cy=ly + 40, text="품질 경영 핵심 기능", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=28)
-    draw.text((lx + 30, ly + 80), "품질 검사 & LOT 추적", font=get_font(20, 'bold'), fill=(15, 23, 42))
-    draw.text((lx + 30, ly + 115), "수입 검사, 공정 검사, 출하 검사를 일원화하여 불량률을 42% 감소시키고,\n클레임 발생 시 1초 만에 전체 이력을 역추적합니다.", font=get_font(12.5, 'medium'), fill=(71, 85, 105))
+    draw_pill_badge(draw, left_x=lx + 30, cy=ly + 40, text="품질 경영 핵심 기능", font=get_font(10.5, 'bold'), theme='green', dark_mode=True, pad_x=12, height=28)
+    draw.text((lx + 30, ly + 80), "품질 검사 & LOT 추적", font=get_font(20, 'bold'), fill=(255, 255, 255))
+    draw.text((lx + 30, ly + 115), "수입 검사, 공정 검사, 출하 검사를 일원화하여 불량률을 42% 감소시키고,\n클레임 발생 시 1초 만에 전체 이력을 역추적합니다.", font=get_font(12.5, 'medium'), fill=(148, 163, 184))
     
     q_feats = [
         ("3단계 품질 게이트 (수입·공정·출하)", "검사 기준서(Inspection Standard) 마스터 기반 공정별 자동 합부 판정 및 측정 데이터 기록."),
@@ -745,46 +700,55 @@ def make_slide_09():
     
     qy = ly + 180
     for title, desc in q_feats:
-        draw.rounded_rectangle([lx + 24, qy, lx + lw - 24, qy + 120], radius=10, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-        draw.text((lx + 40, qy + 20), title, font=get_font(13.5, 'bold'), fill=(16, 185, 129))
+        draw.rounded_rectangle([lx + 24, qy, lx + lw - 24, qy + 120], radius=10, fill=(15, 23, 42), outline=(51, 65, 85), width=1)
+        draw.text((lx + 40, qy + 20), title, font=get_font(13.5, 'bold'), fill=(52, 211, 153))
         lines = textwrap.wrap(desc, width=33)
         ly_sub = qy + 48
         for l in lines:
-            draw.text((lx + 40, ly_sub), l, font=get_font(11.5, 'medium'), fill=(71, 85, 105))
+            draw.text((lx + 40, ly_sub), l, font=get_font(11.5, 'medium'), fill=(203, 213, 225))
             ly_sub += 22
         qy += 135
         
-    # Right: Real Quality Screenshot
     rx = 650
     rw = W - rx - 100
-    draw_browser_frame(draw, base, rx, ly, rw, lh, os.path.join(MOCKUP_DIR, 'screen_04_quality.png'), "CodeBridgeX MES — 품질관리 & 수입/공정 검사 현황")
+    dark_qual = os.path.join(MOCKUP_DIR, 'screen_04_quality_dark.png')
+    if not os.path.exists(dark_qual):
+        dark_qual = os.path.join(MOCKUP_DIR, 'screen_04_quality.png')
+        
+    draw_browser_frame(draw, base, rx, ly, rw, lh, dark_qual, "CodeBridgeX MES — 품질관리 & 수입/공정 검사 현황 (Dark Mode)", dark_mode=True)
     
-    draw_slide_footer(draw, 9)
+    draw_slide_footer(draw, 9, dark_mode=True)
     base.save(os.path.join(OUT_DIR, 'slide_09.png'))
-    print("SAVED slide_09.png")
+    print("SAVED slide_09.png (Dark Quality Mode)")
 
 # ==============================================================
-# SLIDE 10: Production Showcase (6 Real Captured Screens)
+# SLIDE 10: Production Showcase (6 Real Dark Mode & Responsive Screens)
 def make_slide_10():
-    base = Image.new('RGB', (W, H), (255, 255, 255))
+    base = Image.new('RGB', (W, H), (15, 23, 42)) # High-tech dark mode showcase
     draw = ImageDraw.Draw(base)
     
+    for gx in range(0, W, 40):
+        draw.line([(gx, 0), (gx, H)], fill=(23, 33, 56), width=1)
+    for gy in range(0, H, 40):
+        draw.line([(0, gy), (W, gy)], fill=(23, 33, 56), width=1)
+        
     draw_slide_header(
         draw, 
         slide_num=10, 
         category_kr="프로덕션 화면 | 6대 핵심 상용 웹 대시보드 쇼케이스", 
-        title_black="실제 운영 중인 고해상도 웹 플랫폼, ", 
-        title_blue="실물 UI 인터페이스 컬렉션", 
-        subtitle_kr="랜딩 포털부터 관제 대시보드, 생산, 품질, 자재, 기준정보까지 실물 브라우저 환경에서 직접 캡처한 핵심 화면"
+        title_black="현장 조도에 최적화된 고대비 인터페이스, ", 
+        title_blue="다크모드 & 반응형 UI 컬렉션", 
+        subtitle_kr="랜딩 포털, 다크모드 관제 대시보드, 다크 생산·품질·자재 관리 및 태블릿 화면을 아우르는 상용 인터페이스",
+        dark_mode=True
     )
     
     screens = [
         ("01. SaaS 랜딩 포털", "screen_01_landing.png", "솔루션 소개 및 데모 체험 신청"),
-        ("02. 경영 종합 대시보드", "screen_02_dashboard.png", "전사 KPI, 생산성 및 OEE 텔레메트리"),
-        ("03. 생산 공정 관리", "screen_03_production.png", "작업 지시서 발행 및 라인별 실적"),
-        ("04. 품질 보증 & 검사", "screen_04_quality.png", "수입/공정 검사 및 불량률 SPC"),
-        ("05. 자재/재고 실사", "screen_05_inventory.png", "창고 로케이션별 실시간 재고량"),
-        ("06. 기준정보 마스터", "screen_06_master.png", "BOM, 공정 라우팅 및 코드 체계")
+        ("02. 경영 종합 대시보드 (Dark)", "screen_02_dashboard_dark.png", "전사 KPI, 생산성 및 OEE 텔레메트리"),
+        ("03. 생산 공정 관리 (Dark)", "screen_03_production_dark.png", "작업 지시서 발행 및 라인별 실적"),
+        ("04. 품질 보증 & 검사 (Dark)", "screen_04_quality_dark.png", "수입/공정 검사 및 불량률 SPC"),
+        ("05. 자재/재고 실사 (Dark)", "screen_05_inventory_dark.png", "창고 로케이션별 실시간 재고량"),
+        ("06. 태블릿 10-inch 관제 규격", "wireframe_tablet_dashboard.png", "현장 태블릿 반응형 랜드스케이프")
     ]
     
     cols = 3
@@ -798,17 +762,17 @@ def make_slide_10():
         cx = 100 + c * (cell_w + 24)
         cy = 220 + r * (cell_h + 24)
         
-        # Frame
-        draw.rounded_rectangle([cx, cy, cx + cell_w, cy + cell_h], radius=10, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
+        draw.rounded_rectangle([cx, cy, cx + cell_w, cy + cell_h], radius=10, fill=(30, 41, 59), outline=(51, 65, 85), width=1)
         
-        # Header bar in cell
-        draw.rounded_rectangle([cx, cy, cx + cell_w, cy + 32], radius=10, fill=(241, 245, 249))
-        draw.rectangle([cx, cy + 20, cx + cell_w, cy + 32], fill=(241, 245, 249))
-        draw.text((cx + 12, cy + 16), title, font=get_font(11, 'bold'), fill=(15, 23, 42), anchor='lm')
-        draw.text((cx + cell_w - 12, cy + 16), desc, font=get_font(9, 'medium'), fill=(100, 116, 139), anchor='rm')
+        draw.rounded_rectangle([cx, cy, cx + cell_w, cy + 32], radius=10, fill=(15, 23, 42))
+        draw.rectangle([cx, cy + 20, cx + cell_w, cy + 32], fill=(15, 23, 42))
+        draw.text((cx + 12, cy + 16), title, font=get_font(11, 'bold'), fill=(255, 255, 255), anchor='lm')
+        draw.text((cx + cell_w - 12, cy + 16), desc, font=get_font(9, 'medium'), fill=(148, 163, 184), anchor='rm')
         
-        # Screenshot content
         fpath = os.path.join(MOCKUP_DIR, fname)
+        if not os.path.exists(fpath):
+            fpath = os.path.join(MOCKUP_DIR, fname.replace('_dark', ''))
+            
         if os.path.exists(fpath):
             try:
                 img = Image.open(fpath).convert('RGB')
@@ -819,9 +783,9 @@ def make_slide_10():
             except Exception as e:
                 print(f"Error thumbnailing {fname}:", e)
                 
-    draw_slide_footer(draw, 10)
+    draw_slide_footer(draw, 10, dark_mode=True)
     base.save(os.path.join(OUT_DIR, 'slide_10.png'))
-    print("SAVED slide_10.png")
+    print("SAVED slide_10.png (Dark Mode Collection)")
 
 # ==============================================================
 # SLIDE 11: Business Impact & STAR Retrospective
@@ -838,7 +802,6 @@ def make_slide_11():
         subtitle_kr="데이터 수집 시간 단축, 불량률 감소, 납기 준수율 향상 등 검증된 엔터프라이즈 DX 지표와 설계 회고"
     )
     
-    # 4 Metric Cards
     metrics = [
         ("실적 집계 소요 시간", "24시간 → 1초", "▼ 99.9% 단축", "현장 종이 작업일지 취합 방식에서 웹 1-Tap 실시간 수집 체계로 전면 전환", "blue"),
         ("공정 불량률 감소", "3.8% → 1.2%", "▼ 42% 감소", "3단계 품질 게이트와 SPC 실시간 이상 징후 감지로 불량 유출 사전 차단", "green"),
@@ -859,7 +822,6 @@ def make_slide_11():
         draw_pill_badge(draw, left_x=cx + 20, cy=top_y + 115, text=delta, font=get_font(9.5, 'bold'), theme='solid' if theme=='blue' else theme, solid=True, pad_x=8, height=20)
         draw.text((cx + 20, top_y + 150), desc, font=get_font(10, 'medium'), fill=(71, 85, 105))
         
-    # Bottom: STAR Retrospective
     star_y = top_y + mh + 30
     star_h = 520
     draw.rounded_rectangle([100, star_y, W - 100, star_y + star_h], radius=14, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
@@ -894,7 +856,6 @@ def make_slide_12():
     base = Image.new('RGB', (W, H), (15, 23, 42))
     draw = ImageDraw.Draw(base)
     
-    # Grid pattern on dark
     for gx in range(0, W, 40):
         draw.line([(gx, 0), (gx, H)], fill=(23, 33, 56), width=1)
     for gy in range(0, H, 40):
@@ -910,7 +871,6 @@ def make_slide_12():
         dark_mode=True
     )
     
-    # Left Card
     lx, ly, lw, lh = 100, 220, 800, 740
     draw.rounded_rectangle([lx, ly, lx + lw, ly + lh], radius=16, fill=(30, 41, 59), outline=(51, 65, 85), width=1)
     
@@ -932,7 +892,6 @@ def make_slide_12():
         draw.text((lx + 46, fy + 48), desc, font=get_font(11.5, 'medium'), fill=(203, 213, 225))
         fy += 120
         
-    # Right: QR Code & Launch Details
     rx = 940
     rw = W - rx - 100
     draw.rounded_rectangle([rx, ly, rx + rw, ly + lh], radius=16, fill=(30, 41, 59), outline=(51, 65, 85), width=1)
@@ -940,7 +899,6 @@ def make_slide_12():
     draw_pill_badge(draw, left_x=rx + 36, cy=ly + 46, text="스마트 모바일 접속 QR", font=get_font(11, 'bold'), theme='blue', dark_mode=True, pad_x=12, height=28)
     draw.text((rx + 36, ly + 90), "스캔하여 포트폴리오 열람", font=get_font(22, 'bold'), fill=(255, 255, 255))
     
-    # Generate QR Code for MES portfolio
     qr_url = "https://koyotejw-ux.github.io/auto_portfolio/mes_solution/index.html"
     qr = qrcode.QRCode(box_size=8, border=2)
     qr.add_data(qr_url)
@@ -949,7 +907,6 @@ def make_slide_12():
     qr_size = 260
     qr_resized = qr_img.resize((qr_size, qr_size), Image.Resampling.LANCZOS)
     
-    # QR white container
     draw.rounded_rectangle([rx + (rw - qr_size - 24) // 2, ly + 150, rx + (rw + qr_size + 24) // 2, ly + 150 + qr_size + 24], radius=12, fill=(255, 255, 255))
     base.paste(qr_resized, (rx + (rw - qr_size) // 2, ly + 162))
     
@@ -962,9 +919,8 @@ def make_slide_12():
     base.save(os.path.join(OUT_DIR, 'slide_12.png'))
     print("SAVED slide_12.png")
 
-# Run all slides
 if __name__ == '__main__':
-    print("Generating all 12 CodeBridgeX MES Solution Behance slides...")
+    print("Generating enhanced CodeBridgeX MES Solution Behance slides...")
     make_slide_01()
     make_slide_02()
     make_slide_03()
@@ -977,4 +933,4 @@ if __name__ == '__main__':
     make_slide_10()
     make_slide_11()
     make_slide_12()
-    print("ALL 12 MES SLIDES GENERATED SUCCESSFULLY!")
+    print("ALL 12 ENHANCED MES SLIDES GENERATED SUCCESSFULLY!")
