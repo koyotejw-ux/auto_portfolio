@@ -1054,7 +1054,7 @@ def make_slide_06():
         draw.text((curr_x + 18, top_y + 60), item["title"], font=get_font(15, 'bold'), fill=(255, 255, 255))
         draw.text((curr_x + 18, top_y + 84), item["desc"], font=get_font(10.5, 'medium'), fill=(148, 163, 184))
         
-        # 1. Wireframe Screen Container (Proportional Contain)
+        # 1. Wireframe Screen Container (Focused View Area Matching Exact Screen Frame)
         frame_x = curr_x + 14
         frame_y = top_y + 108
         frame_w = cw - 28
@@ -1062,12 +1062,29 @@ def make_slide_06():
         
         draw.rounded_rectangle([frame_x, frame_y, frame_x + frame_w, frame_y + frame_h], radius=10, fill=(11, 16, 26), outline=(40, 53, 72), width=1)
         
+        # Load focused screen directly (or crop tightly from full blueprint)
+        focused_name = f"focused_{item['fname']}"
+        focused_path = os.path.join(MOCKUP_DIR, focused_name)
         fpath = os.path.join(MOCKUP_DIR, item["fname"])
-        if os.path.exists(fpath):
+        
+        wf_img = None
+        if os.path.exists(focused_path):
+            wf_img = Image.open(focused_path).convert('RGB')
+        elif os.path.exists(fpath):
+            raw_im = Image.open(fpath).convert('RGB')
+            if 'tablet' in item["fname"]:
+                wf_img = raw_im.crop((82, 90, 2551, 1584))
+            elif 'process' in item["fname"]:
+                wf_img = raw_im.crop((82, 80, 2403, 2069))
+            else:
+                wf_img = raw_im.crop((82, 80, 2384, 2187))
+                
+        if wf_img is not None:
             try:
-                wf_img = Image.open(fpath).convert('RGB')
                 src_w, src_h = wf_img.size
-                scale = min((frame_w - 12) / src_w, (frame_h - 12) / src_h)
+                avail_w = frame_w - 12
+                avail_h = frame_h - 12
+                scale = min(avail_w / src_w, avail_h / src_h)
                 target_w = int(round(src_w * scale))
                 target_h = int(round(src_h * scale))
                 wf_resized = wf_img.resize((target_w, target_h), Image.Resampling.LANCZOS)
@@ -1075,7 +1092,7 @@ def make_slide_06():
                 paste_x = frame_x + (frame_w - target_w) // 2
                 paste_y = frame_y + (frame_h - target_h) // 2
                 base.paste(wf_resized, (paste_x, paste_y))
-                draw.rounded_rectangle([paste_x, paste_y, paste_x + target_w, paste_y + target_h], radius=4, outline=(71, 85, 105), width=1)
+                draw.rounded_rectangle([paste_x - 1, paste_y - 1, paste_x + target_w + 1, paste_y + target_h + 1], radius=4, outline=(0, 140, 255) if idx==0 else (71, 85, 105), width=1)
             except Exception as e:
                 print(f"Error loading {item['fname']}:", e)
                 
