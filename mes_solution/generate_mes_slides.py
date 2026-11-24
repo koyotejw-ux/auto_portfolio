@@ -480,7 +480,7 @@ def make_slide_02():
     print("SAVED slide_02.png (Research with Exact Problem/Solution & 2 High-Density Charts)")
 
 # ==============================================================
-# SLIDE 03: Target Matrix & 3 Personas with Behavioral Sliders
+# SLIDE 03: Target Users & Roles (Executive Dashboard vs Field Touch)
 def make_slide_03():
     base = Image.new('RGB', (W, H), (248, 250, 252))
     draw = ImageDraw.Draw(base)
@@ -488,29 +488,76 @@ def make_slide_03():
     draw_slide_header(
         draw, 
         slide_num=3, 
-        category_kr="타깃 & 페르소나 | 2x2 세그멘테이션 매트릭스 & 역할별 페르소나", 
+        category_kr="Target Users & Roles | 사용자 역할별 맞춤형 접근성 및 페르소나 아키텍처", 
         title_black="경영진의 실시간 의사결정부터 현장 터치까지, ", 
-        title_blue="역할별 권한 기반 맞춤형 UX 아키텍처", 
-        subtitle_kr="데이터 조작 빈도와 현장성 축으로 분류한 2x2 타깃 매트릭스와 행동 지표 스펙트럼 슬라이더"
+        title_blue="Target Users & Roles 기반 맞춤형 인터페이스", 
+        subtitle_kr="경영진 및 현장 작업자의 직무 특성을 반영한 2대 핵심 사용자 프로필과 2x2 세그멘테이션 매트릭스"
     )
     
     # -------------------------------------------------------------
-    # 1. TOP-LEFT: 2x2 Target Segmentation Matrix (x=100, w=840, h=300)
+    # TOP: 2 Authentic User Role Cards (Matching Behance Deck Spec)
     # -------------------------------------------------------------
-    mx_x = 100
-    mx_y = 220
-    mx_w = 840
-    mx_h = 300
+    top_sy = 205
+    top_w = 845
+    top_h = 240
+    top_gap = 30
     
-    draw.rounded_rectangle([mx_x, mx_y, mx_x + mx_w, mx_y + mx_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-    draw_pill_badge(draw, left_x=mx_x + 24, cy=mx_y + 24, text="TARGET MATRIX", font=get_font(10, 'bold'), theme='blue', pad_x=8, height=22)
-    draw.text((mx_x + 155, mx_y + 24), "2x2 세그멘테이션 : 데이터 분석 깊이 vs. 현장 이동성", font=get_font(13.5, 'bold'), fill=(15, 23, 42), anchor='lm')
+    # Role 1: 공장 총괄 책임자 / 경영진
+    r1_x = 100
+    draw.rounded_rectangle([r1_x, top_sy, r1_x + top_w, top_sy + top_h], radius=16, fill=(240, 246, 255), outline=(219, 234, 254), width=1)
+    
+    # Avatar badge circle (Executive)
+    draw.ellipse([r1_x + 28, top_sy + 24, r1_x + 76, top_sy + 72], fill=(0, 81, 255))
+    draw.text((r1_x + 52, top_sy + 48), "CEO", font=get_font(12, 'bold'), fill=(255, 255, 255), anchor='mm')
+    
+    draw.text((r1_x + 92, top_sy + 28), "공장 총괄 책임자 / 경영진 (Executive)", font=get_font(16.5, 'bold'), fill=(15, 23, 42))
+    draw_pill_badge(draw, left_x=r1_x + 92, cy=top_sy + 60, text="실시간 손익 · 가동률 의사결정", font=get_font(10, 'bold'), theme='blue', pad_x=8, height=22)
+    
+    draw.line([(r1_x + 28, top_sy + 88), (r1_x + top_w - 28, top_sy + 88)], fill=(219, 234, 254), width=1)
+    draw.text((r1_x + 28, top_sy + 102), "주요 요구사항 및 페인포인트", font=get_font(12, 'bold'), fill=(0, 81, 255))
+    r1_desc = (
+        "· 유선 보고나 엑셀 수기 취합 없이 전 공장의 가동률(OEE) 및 납기 진척률을 1초 만에 확인\n"
+        "· 미수금, 매출 실적, 수주 대비 생산 병목 현상을 멀티 디바이스(PC/태블릿)로 실시간 원격 관제\n"
+        "· 불필요한 세부 입력 폼 대신 한눈에 파악 가능한 고밀도 KPI 위젯 중심의 인터페이스 선호"
+    )
+    draw.text((r1_x + 28, top_sy + 128), r1_desc, font=get_font(11.5, 'regular'), fill=(51, 65, 85))
+    
+    # Role 2: 현장 오퍼레이터 / 생산 라인 작업자
+    r2_x = r1_x + top_w + top_gap
+    draw.rounded_rectangle([r2_x, top_sy, r2_x + top_w, top_sy + top_h], radius=16, fill=(240, 246, 255), outline=(219, 234, 254), width=1)
+    
+    # Avatar badge circle (Operator)
+    draw.ellipse([r2_x + 28, top_sy + 24, r2_x + 76, top_sy + 72], fill=(16, 185, 129))
+    draw.text((r2_x + 52, top_sy + 48), "OP", font=get_font(12, 'bold'), fill=(255, 255, 255), anchor='mm')
+    
+    draw.text((r2_x + 92, top_sy + 28), "현장 작업자 / 생산 라인 오퍼레이터 (Field Operator)", font=get_font(16.5, 'bold'), fill=(15, 23, 42))
+    draw_pill_badge(draw, left_x=r2_x + 92, cy=top_sy + 60, text="1-Tap 간편 실적 등록 · 바코드 스캔", font=get_font(10, 'bold'), theme='green', pad_x=8, height=22)
+    
+    draw.line([(r2_x + 28, top_sy + 88), (r2_x + top_w - 28, top_sy + 88)], fill=(219, 234, 254), width=1)
+    draw.text((r2_x + 28, top_sy + 102), "주요 요구사항 및 페인포인트", font=get_font(12, 'bold'), fill=(16, 185, 129))
+    r2_desc = (
+        "· 방진 장갑을 착용한 터치 환경에서도 오입력 없는 48px 이상의 대형 버튼 및 숫자 키패드 지원\n"
+        "· 복잡한 텍스트 입력 없이 바코드 스캐너 연동으로 투입 원자재 LOT 매핑 및 작업 개시 즉시 처리\n"
+        "· 설비 비가동 및 불량 발생 시 3초 이내에 사유를 선택할 수 있는 간결한 바텀시트 모달 필요"
+    )
+    draw.text((r2_x + 28, top_sy + 128), r2_desc, font=get_font(11.5, 'regular'), fill=(51, 65, 85))
+    
+    # -------------------------------------------------------------
+    # BOTTOM: 2x2 Target Matrix & 4-Way Competitive Benchmark
+    # -------------------------------------------------------------
+    bot_sy = 475
+    bot_h = 495
+    
+    # 1. 2x2 Matrix (Left: w=845)
+    draw.rounded_rectangle([100, bot_sy, 100 + top_w, bot_sy + bot_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+    draw_pill_badge(draw, left_x=124, cy=bot_sy + 28, text="TARGET MATRIX", font=get_font(10, 'bold'), theme='blue', pad_x=8, height=22)
+    draw.text((250, bot_sy + 28), "데이터 조작 깊이 vs. 현장 이동성 세그멘테이션", font=get_font(14, 'bold'), fill=(15, 23, 42), anchor='lm')
     
     qw = 385
-    qh = 105
-    q1_x = mx_x + 24
-    q1_y = mx_y + 55
-    q2_x = q1_x + qw + 22
+    qh = 195
+    q1_x = 124
+    q1_y = bot_sy + 60
+    q2_x = q1_x + qw + 20
     q2_y = q1_y
     q3_x = q1_x
     q3_y = q1_y + qh + 16
@@ -518,120 +565,65 @@ def make_slide_03():
     q4_y = q3_y
     
     # Q1: CEO / 경영진
-    draw.rounded_rectangle([q1_x, q1_y, q1_x + qw, q1_y + qh], radius=10, fill=(239, 246, 255), outline=(0, 81, 255, 120), width=1)
-    draw.text((q1_x + 16, q1_y + 16), "경영진 / CEO (Executive Viewer)", font=get_font(12.5, 'bold'), fill=(0, 81, 255))
-    draw.text((q1_x + 16, q1_y + 40), "· 데이터 분석: 고도화 종합 KPI & 손익 분석\n· 디바이스: 모바일 / 태블릿 반응형 관제", font=get_font(10.5, 'medium'), fill=(71, 85, 105))
+    draw.rounded_rectangle([q1_x, q1_y, q1_x + qw, q1_y + qh], radius=12, fill=(239, 246, 255), outline=(0, 81, 255, 120), width=1)
+    draw.text((q1_x + 16, q1_y + 18), "경영진 / CEO (Executive)", font=get_font(13.5, 'bold'), fill=(0, 81, 255))
+    draw.text((q1_x + 16, q1_y + 44), "· 데이터 분석: 종합 KPI, 손익, OEE, 납기준수율\n· 디바이스: 모바일 / 태블릿 반응형 뷰포트\n· 사용 패턴: 이동 중 실시간 알림 수신 및 즉시 승인", font=get_font(11, 'medium'), fill=(71, 85, 105))
     
     # Q2: 생산/공정 관리자
-    draw.rounded_rectangle([q2_x, q2_y, q2_x + qw, q2_y + qh], radius=10, fill=(245, 243, 255), outline=(124, 58, 237, 120), width=1)
-    draw.text((q2_x + 16, q2_y + 16), "공장장 / 생산관리자 (Operational Planner)", font=get_font(12.5, 'bold'), fill=(124, 58, 237))
-    draw.text((q2_x + 16, q2_y + 40), "· 데이터 분석: 스마트 간트 스케줄링 & 설비 배정\n· 디바이스: 데스크톱 대화면 + 10인치 태블릿", font=get_font(10.5, 'medium'), fill=(71, 85, 105))
+    draw.rounded_rectangle([q2_x, q2_y, q2_x + qw, q2_y + qh], radius=12, fill=(245, 243, 255), outline=(124, 58, 237, 120), width=1)
+    draw.text((q2_x + 16, q2_y + 18), "공장장 / 생산관리자 (Operational Planner)", font=get_font(13.5, 'bold'), fill=(124, 58, 237))
+    draw.text((q2_x + 16, q2_y + 44), "· 데이터 조작: 스마트 간트 스케줄링, 호기별 배정\n· 디바이스: 데스크톱 대화면 + 현장 점검용 패드\n· 사용 패턴: 공정 병목 사전 감지 및 긴급 지시 배포", font=get_font(11, 'medium'), fill=(71, 85, 105))
     
-    # Q3: 현장 오퍼레이터
-    draw.rounded_rectangle([q3_x, q3_y, q3_x + qw, q3_y + qh], radius=10, fill=(236, 253, 245), outline=(16, 185, 129, 120), width=1)
-    draw.text((q3_x + 16, q3_y + 16), "현장 작업자 / 오퍼레이터 (Field Operator)", font=get_font(12.5, 'bold'), fill=(16, 185, 129))
-    draw.text((q3_x + 16, q3_y + 40), "· 데이터 조작: 1-Tap 바코드 스캔 & 터치 실적 입력\n· 디바이스: 현장 터치 패널 모니터 / 모바일", font=get_font(10.5, 'medium'), fill=(71, 85, 105))
+    # Q3: 현장 작업자
+    draw.rounded_rectangle([q3_x, q3_y, q3_x + qw, q3_y + qh], radius=12, fill=(236, 253, 245), outline=(16, 185, 129, 120), width=1)
+    draw.text((q3_x + 16, q3_y + 18), "현장 작업자 (Field Operator)", font=get_font(13.5, 'bold'), fill=(16, 185, 129))
+    draw.text((q3_x + 16, q3_y + 44), "· 데이터 조작: 1-Tap 바코드 스캔, 양품/불량 집계\n· 디바이스: 라인별 7~10인치 방진 터치 패널\n· 사용 패턴: 초·중·종물 검사 실측치 즉시 전송", font=get_font(11, 'medium'), fill=(71, 85, 105))
     
     # Q4: 품질/자재 관리자
-    draw.rounded_rectangle([q4_x, q4_y, q4_x + qw, q4_y + qh], radius=10, fill=(254, 243, 199), outline=(217, 119, 6, 120), width=1)
-    draw.text((q4_x + 16, q4_y + 16), "품질/자재 검사원 (Quality Specialist)", font=get_font(12.5, 'bold'), fill=(217, 119, 6))
-    draw.text((q4_x + 16, q4_y + 40), "· 데이터 조작: AQL 검사 기준서 & SPC 관리도 분석\n· 디바이스: 태블릿 현장 검사 + PC 리포트", font=get_font(10.5, 'medium'), fill=(71, 85, 105))
+    draw.rounded_rectangle([q4_x, q4_y, q4_x + qw, q4_y + qh], radius=12, fill=(254, 243, 199), outline=(217, 119, 6, 120), width=1)
+    draw.text((q4_x + 16, q4_y + 18), "품질/자재 관리자 (Quality Inspector)", font=get_font(13.5, 'bold'), fill=(217, 119, 6))
+    draw.text((q4_x + 16, q4_y + 44), "· 데이터 조작: SPC 관리도 통계 분석, LOT 역추적\n· 디바이스: PC 웹 브라우저 + 휴대용 바코드 단말\n· 사용 패턴: 부적합품 발생 시 즉시 라인 홀드 조치", font=get_font(11, 'medium'), fill=(71, 85, 105))
     
-    # -------------------------------------------------------------
-    # 2. TOP-RIGHT: 4 Benchmark Comparison Cards (x=980, w=840, h=300)
-    # -------------------------------------------------------------
-    bm_x = 980
-    bm_y = 220
-    bm_w = 840
-    bm_h = 300
+    # 2. Benchmark Comparison (Right: w=845)
+    r_bench_x = 100 + top_w + top_gap
+    draw.rounded_rectangle([r_bench_x, bot_sy, r_bench_x + top_w, bot_sy + bot_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+    draw_pill_badge(draw, left_x=r_bench_x + 24, cy=bot_sy + 28, text="COMPETITIVE BENCHMARK", font=get_font(10, 'bold'), theme='purple', pad_x=8, height=22)
+    draw.text((r_bench_x + 215, bot_sy + 28), "글로벌 외산 대비 독보적인 사용성 및 경량화 강점", font=get_font(14, 'bold'), fill=(15, 23, 42), anchor='lm')
     
-    draw.rounded_rectangle([bm_x, bm_y, bm_x + bm_w, bm_y + bm_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-    draw_pill_badge(draw, left_x=bm_x + 24, cy=bm_y + 24, text="BENCHMARK", font=get_font(10, 'bold'), theme='purple', pad_x=8, height=22)
-    draw.text((bm_x + 145, bm_y + 24), "국내외 주요 솔루션 대비 차별화 경쟁력 비교", font=get_font(13.5, 'bold'), fill=(15, 23, 42), anchor='lm')
+    # Table Header
+    th_y = bot_sy + 60
+    draw.rounded_rectangle([r_bench_x + 20, th_y, r_bench_x + top_w - 20, th_y + 36], radius=8, fill=(241, 245, 249))
+    draw.text((r_bench_x + 35, th_y + 18), "비교 항목", font=get_font(11.5, 'bold'), fill=(71, 85, 105), anchor='lm')
+    draw.text((r_bench_x + 250, th_y + 18), "CodeBridgeX MES", font=get_font(12, 'bold'), fill=(0, 81, 255), anchor='mm')
+    draw.text((r_bench_x + 440, th_y + 18), "외산 SAP / Siemens", font=get_font(11, 'bold'), fill=(71, 85, 105), anchor='mm')
+    draw.text((r_bench_x + 630, th_y + 18), "국내 구축형 SI", font=get_font(11, 'bold'), fill=(71, 85, 105), anchor='mm')
     
-    b_cols = [
-        ("비교 항목", ["반응형 웹 지원", "아토믹 UI 킷", "LOT 역추적 속도", "초기 도입 비용"]),
-        ("CodeBridgeX", ["데스크톱/태블릿/모바일", "150+ 표준 토큰 완비", "1초 원터치 즉시 조회", "클라우드 SaaS 월구독"]),
-        ("외산 레거시 S사", ["PC 한정 (반응형 불가)", "수십년 구형 윈도우 UI", "수분~수시간 지연", "수억원 초기 구축비"]),
-        ("국내 패키지 D사", ["모바일 웹 전용 앱 분리", "비표준 파편화 컴포넌트", "엑셀 수기 취합 연동", "서버 호스팅 라이선스"])
+    bench_rows = [
+        ("반응형 멀티 디바이스", "완벽 지원 (PC/태블릿/모바일)", "PC 온프레미스 고정", "태블릿 미지원 / 왜곡 발생"),
+        ("디자인 시스템 완성도", "아토믹 디자인 150+ 토큰", "레거시 폐쇄형 프레임워크", "통일성 없는 화면별 파편화"),
+        ("도입 및 학습 기간", "2일 이내 즉시 현장 투입", "2~3개월 고난도 전문 교육", "3주 이상 매뉴얼 숙지 필요"),
+        ("수기 취합 공수 절감", "99.9% (실시간 단일 파이프라인)", "60% (일부 수기 입력 상존)", "40% (부서별 엑셀 병행)"),
+        ("초기 도입 비용(TCO)", "합리적 SaaS 구독 체계", "수억~수십억 원대 고부담", "수천만 원대 SI 개발비")
     ]
     
-    tx_start = bm_x + 24
-    ty_start = bm_y + 60
-    col_widths = [130, 230, 210, 220]
-    
-    cur_x = tx_start
-    for ci, (col_title, items) in enumerate(b_cols):
-        cw = col_widths[ci]
-        draw.rounded_rectangle([cur_x, ty_start, cur_x + cw - 10, ty_start + 30], radius=6, fill=(239, 246, 255) if ci==1 else (241, 245, 249))
-        draw.text((cur_x + 8, ty_start + 15), col_title, font=get_font(11, 'bold'), fill=(0, 81, 255) if ci==1 else (71, 85, 105), anchor='lm')
+    r_sy = th_y + 44
+    for ri, (item_lbl, cbx_val, sap_val, si_val) in enumerate(bench_rows):
+        row_y = r_sy + ri * 72
+        draw.rounded_rectangle([r_bench_x + 20, row_y, r_bench_x + top_w - 20, row_y + 64], radius=8, fill=(248, 250, 252) if ri%2==0 else (255, 255, 255), outline=(226, 232, 240), width=1)
+        draw.text((r_bench_x + 35, row_y + 32), item_lbl, font=get_font(12, 'bold'), fill=(15, 23, 42), anchor='lm')
         
-        iy = ty_start + 38
-        for it in items:
-            draw.rounded_rectangle([cur_x, iy, cur_x + cw - 10, iy + 36], radius=4, fill=(255, 255, 255), outline=(0, 81, 255) if ci==1 else (226, 232, 240), width=1)
-            draw.text((cur_x + 8, iy + 18), it, font=get_font(10.5, 'bold' if ci==1 else 'medium'), fill=(0, 81, 255) if ci==1 else (51, 65, 85), anchor='lm')
-            iy += 42
-        cur_x += cw
+        # CodeBridgeX (Highlighted Blue)
+        draw.rounded_rectangle([r_bench_x + 145, row_y + 10, r_bench_x + 355, row_y + 54], radius=6, fill=(239, 246, 255), outline=(0, 81, 255), width=1)
+        draw.text((r_bench_x + 250, row_y + 32), cbx_val, font=get_font(11, 'bold'), fill=(0, 81, 255), anchor='mm')
         
-    # -------------------------------------------------------------
-    # 3. BOTTOM: 3 Persona Detail Cards with Behavioral Spectrum Sliders
-    # -------------------------------------------------------------
-    bot_y = 550
-    pw = 540
-    ph = 420
-    p_gap = 50
-    
-    personas_full = [
-        ("김진우 대표 (52세)", "CEO / 총괄 경영", "외출 중에도 공장 가동 상태와 긴급 납기 지연을 즉시 확인해야 합니다.", [
-            ("모바일 접속 비중", "현장 터치", "모바일 전용", 0.85, 'blue'),
-            ("데이터 집계 수준", "로우 데이터", "KPI 요약", 0.95, 'blue'),
-            ("결재/승인 빈도", "주간 집계", "실시간 승인", 0.90, 'blue')
-        ], "blue"),
-        ("박철민 부장 (45세)", "공장장 / 생산관리 총괄", "공정 간트차트 일정 조정과 설비 부하를 한눈에 통제해야 합니다.", [
-            ("디바이스 활용도", "모바일", "PC+태블릿", 0.90, 'purple'),
-            ("공정 제어 정밀도", "일별 관리", "초단위 관제", 0.85, 'purple'),
-            ("자재 결품 대응력", "사후 처리", "사전 경보", 0.95, 'purple')
-        ], "purple"),
-        ("이수현 기사 (34세)", "현장 오퍼레이터", "장갑을 낀 상태에서도 3초 내에 실적과 불량 사유를 등록해야 합니다.", [
-            ("터치 인터페이스", "키보드 입력", "큰 버튼 터치", 0.95, 'green'),
-            ("오류 입력 방지율", "일반 인풋", "바코드 스캔", 0.98, 'green'),
-            ("조도 적응도", "일반 모드", "다크 모드", 0.80, 'green')
-        ], "green")
-    ]
-    
-    for pi, (p_name, p_role, p_quote, sliders, theme) in enumerate(personas_full):
-        px = 100 + pi * (pw + p_gap)
-        draw.rounded_rectangle([px, bot_y, px + pw, bot_y + ph], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-        draw_pill_badge(draw, left_x=px + 20, cy=bot_y + 24, text=p_role, font=get_font(10, 'bold'), theme=theme, pad_x=10, height=24)
-        draw.text((px + 20, bot_y + 60), p_name, font=get_font(18, 'bold'), fill=(15, 23, 42))
-        draw.text((px + 20, bot_y + 88), f'"{p_quote}"', font=get_font(11.5, 'medium'), fill=(100, 116, 139))
-        
-        draw.line([(px + 20, bot_y + 115), (px + pw - 20, bot_y + 115)], fill=(226, 232, 240), width=1)
-        
-        # Behavioral Sliders
-        sly = bot_y + 140
-        for s_lbl, l_txt, r_txt, ratio, s_thm in sliders:
-            draw.text((px + 20, sly), s_lbl, font=get_font(11, 'bold'), fill=(15, 23, 42))
-            draw.text((px + 130, sly), l_txt, font=get_font(9.5, 'medium'), fill=(100, 116, 139))
-            draw.text((px + pw - 25, sly), r_txt, font=get_font(9.5, 'medium'), fill=(100, 116, 139), anchor='rm')
-            
-            # Slider Track
-            track_x = px + 195
-            track_w = pw - 230 - 70
-            track_y = sly + 4
-            draw.rounded_rectangle([track_x, track_y, track_x + track_w, track_y + 6], radius=3, fill=(241, 245, 249))
-            active_w = int(round(track_w * ratio))
-            active_col = (0, 81, 255) if s_thm=='blue' else ((124, 58, 237) if s_thm=='purple' else (16, 185, 129))
-            draw.rounded_rectangle([track_x, track_y, track_x + active_w, track_y + 6], radius=3, fill=active_col)
-            # Dot
-            draw.ellipse([track_x + active_w - 5, track_y - 2, track_x + active_w + 5, track_y + 8], fill=(255, 255, 255), outline=active_col, width=2)
-            sly += 80
-            
+        # Competitors
+        draw.text((r_bench_x + 440, row_y + 32), sap_val, font=get_font(10.5, 'medium'), fill=(100, 116, 139), anchor='mm')
+        draw.text((r_bench_x + 630, row_y + 32), si_val, font=get_font(10.5, 'medium'), fill=(100, 116, 139), anchor='mm')
+
     draw_slide_footer(draw, 3)
     base.save(os.path.join(OUT_DIR, 'slide_03.png'))
-    print("SAVED slide_03.png (Target Matrix, Benchmark & Sliders)")
+    print("SAVED slide_03.png (Target Users & Roles)")
 
-# ==============================================================
 # SLIDE 04: Information Architecture (Exact Centered Tree)
 def make_slide_04():
     base = Image.new('RGB', (W, H), (255, 255, 255))
@@ -640,7 +632,7 @@ def make_slide_04():
     draw_slide_header(
         draw, 
         slide_num=4, 
-        category_kr="정보 구조 설계 | 13대 비즈니스 모듈 & 멀티테넌트 아키텍처", 
+        category_kr="IA & Access Structure | 정보 구조 및 역할별 접근성 계층", 
         title_black="전사 제조 라이프사이클을 관통하는 ", 
         title_blue="체계적인 정보 계층 구조", 
         subtitle_kr="기준정보 설정부터 영업 수주, 생산 실행, 품질 보증, 출하 재고까지 유기적으로 연동된 엔터프라이즈 IA"
@@ -723,7 +715,7 @@ def make_slide_05():
     draw_slide_header(
         draw, 
         slide_num=5, 
-        category_kr="사용자 플로우 | 5단계 서비스 인터랙션 & 데이터 파이프라인", 
+        category_kr="Order-to-Ship Workflow | 5단계 엔드투엔드 제조 워크플로우", 
         title_black="판단 분기와 실시간 검증을 포함한 ", 
         title_blue="5단계 서비스 UX 플로우차트", 
         subtitle_kr="수주 접수부터 MRP 소요량 검증, 작업지시 배포, 현장 실적 수집, 출하 품질 승인까지 정밀한 판단 기호 적용"
@@ -1165,7 +1157,7 @@ def make_slide_11():
         slide_num=11, 
         category_kr="비즈니스 임팩트 | 정량적 성과 지표 & STAR 회고", 
         title_black="도입 기업의 제조 경쟁력을 획기적으로 향상시킨 ", 
-        title_blue="정량적 데이터 성과", 
+        title_blue="Project Outcome & Key Metrics", 
         subtitle_kr="데이터 수집 시간 단축, 불량률 감소, 납기 준수율 향상 등 검증된 엔터프라이즈 DX 지표와 설계 회고"
     )
     
