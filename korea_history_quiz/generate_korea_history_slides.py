@@ -1032,11 +1032,12 @@ def make_slide_04():
     
     # Level 0 Root Node: Compact, Centered, Clean Korean!
     # Width: 460px (x: 730 to 1190)
-    root_x1, root_y1, root_x2, root_y2 = 730, 226, 1190, 286
+    root_x1, root_y1, root_x2, root_y2 = 730, 226, 1190, 290
     draw.rounded_rectangle([root_x1, root_y1, root_x2, root_y2], radius=12, fill=(255, 255, 255), outline=(29, 78, 216), width=2)
-    b_root = draw_pill_badge(draw, left_x=root_x1 + 18, cy=root_y1 + 30, text="시작 화면", font=get_font(10, 'bold'), theme='blue', has_dot=True, pad_x=10, height=26)
-    draw.text((b_root[2] + 16, root_y1 + 20), "대한국사 전체 5대 핵심 메뉴 구조", font=get_font(14.5, 'bold'), fill=(15, 23, 42), anchor='lm')
-    draw.text((b_root[2] + 16, root_y1 + 41), "한 손으로 편리하게 이용하는 5대 핵심 메뉴와 기능 안내", font=get_font(10.5, 'medium'), fill=(71, 85, 105), anchor='lm')
+    root_cy = (root_y1 + root_y2) // 2
+    b_root = draw_pill_badge(draw, left_x=root_x1 + 18, cy=root_cy, text="시작 화면", font=get_font(10, 'bold'), theme='blue', has_dot=True, pad_x=10, height=26)
+    draw.text((b_root[2] + 16, root_cy - 11), "대한국사 전체 5대 핵심 메뉴 구조", font=get_font(14, 'bold'), fill=(15, 23, 42), anchor='lm')
+    draw.text((b_root[2] + 16, root_cy + 11), "한 손으로 편리하게 이용하는 5대 핵심 메뉴와 기능 안내", font=get_font(10.5, 'medium'), fill=(71, 85, 105), anchor='lm')
     
     # Connectors from Root Node to 5 Level 1 Columns
     cw = 328
