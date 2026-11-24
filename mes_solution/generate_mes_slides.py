@@ -904,57 +904,148 @@ def make_slide_06():
     draw_slide_header(
         draw, 
         slide_num=6, 
-        category_kr="와이어프레임 & 화면 설계서 | 251229 엔터프라이즈 실물 규격", 
-        title_black="태블릿 및 모바일 현장 터치에 최적화된 ", 
-        title_blue="실제 설계서 화면 와이어프레임 (다크모드 규격)", 
-        subtitle_kr="D:\\102_1.codebridgex\\MES Solution Website Structure 251229 프로젝트에서 직접 추출한 표준 화면 규격서와 현장 다크 테마 UI",
+        category_kr="와이어프레임 & 화면 설계서 | 섹션별 화면비율 & 기능 인터랙션 명세", 
+        title_black="태블릿(16:10) & 모바일(9:16) 규격 분할, ", 
+        title_blue="섹션별 실물 와이어프레임 & 핵심 인터랙션", 
+        subtitle_kr="D:\\102_1.codebridgex\\MES Solution Website Structure 251229 실물 설계서 원본 비율과 4대 영역별 기능 인터랙션 상세 명세",
         dark_mode=True
     )
     
-    wf_items = [
-        ("01. 태블릿 대시보드 규격", "wireframe_tablet_dashboard.png", "10-inch Tablet (Land) CEO 종합 관제 화면"),
-        ("02. 모바일 생산관리 규격", "wireframe_phone_production.png", "Phone 해상도 호기별 작업지시 및 라인 제어"),
-        ("03. 모바일 품질관리 규격", "wireframe_phone_quality.png", "AQL 수입/공정 검사 및 불량 판정 규격"),
-        ("04. 공정 기준정보 규격", "wireframe_phone_process.png", "표준 작업 공순, 설비 매핑 및 사이클타임")
+    # -------------------------------------------------------------
+    # 4 Columns tailored to screen aspect ratios:
+    # Col 0: Tablet Land (16:10 wide) -> wider width (w=470)
+    # Col 1: Phone Production (9:16 portrait) -> w=390
+    # Col 2: Phone Quality (9:16 portrait) -> w=390
+    # Col 3: Phone Process (9:16 portrait) -> w=390
+    # Total = 470 + 390 + 390 + 390 + 3*26 = 1640 + 78 = 1718 (fits W=1920 with margin ~100)
+    # -------------------------------------------------------------
+    wf_specs = [
+        {
+            "col_w": 470,
+            "title": "01. 태블릿 종합 대시보드",
+            "ratio_tag": "16:10 가로형 (5120x3200)",
+            "device": "10-inch 현장 관제 태블릿",
+            "fname": "wireframe_tablet_dashboard.png",
+            "desc": "경영진·공장장 실시간 OEE 및 종합 관제 뷰",
+            "interactions": [
+                ("상단 종합 KPI 위젯", "오늘의 생산량, 불량률, 재고현황, 수주현황 4대 카드를 1-Tap 클릭 시 해당 상세 모듈로 즉시 드릴다운 전환."),
+                ("월별 생산 & 부서별 실적 차트", "기간/공정 필터 셀렉트박스 변경 시 실시간 비동기 차트 리렌더링 및 이상치 툴팁 호버 인터랙션."),
+                ("긴급 작업 목록 & 알림 바", "라인별 병목 및 설비 알람 발생 시 붉은색 플래시 인디케이터 구동 및 즉시 작업지시 배포 모달 연결.")
+            ]
+        },
+        {
+            "col_w": 390,
+            "title": "02. 모바일 생산 공정관리",
+            "ratio_tag": "9:16 세로형 (2484x4416)",
+            "device": "작업자 스마트폰 / 핸드헬드",
+            "fname": "wireframe_phone_production.png",
+            "desc": "호기별 작업지시서 배포 및 생산 실적 등록",
+            "interactions": [
+                ("1-Tap 바코드 스캔 매핑", "카메라/스캐너 연동으로 투입 원자재 LOT 번호 자동 인식 및 호기별 작업지시서에 1초 매핑."),
+                ("대형 48px 터치 카운터", "방진 장갑 착용 환경을 고려한 대형 +/- 스테퍼 및 숫자 키패드로 양품/불량 수량 오입력 방지."),
+                ("긴급 라인 홀드 & 비가동 보고", "설비 고장 및 자재 부족 시 원터치 비가동 사유 선택 바텀시트 호출 및 중앙 관제실 즉각 텔레메트리 전송.")
+            ]
+        },
+        {
+            "col_w": 390,
+            "title": "03. 모바일 품질 보증/검사",
+            "ratio_tag": "9:16 세로형 (2484x4416)",
+            "device": "품질 검사관 전용 단말",
+            "fname": "wireframe_phone_quality.png",
+            "desc": "AQL 샘플링 검사 및 부적합 판정 체계",
+            "interactions": [
+                ("초·중·종물 AQL 규격 실측", "버니어 캘리퍼스 및 계측기 연동 블루투스 데이터 자동 수신으로 측정 오차 0% 달성."),
+                ("실시간 합/부 자동 판정", "측정값이 마스터 규격 상/하한선(USL/LSL)을 벗어날 경우 시각적 경고음 및 불량 등급 자동 분류."),
+                ("부적합품 CAPA 모달 구동", "불량 판정 즉시 현장 사진 촬영 첨부 및 재작업/폐기 승인 전자 결재선 자동 생성.")
+            ]
+        },
+        {
+            "col_w": 390,
+            "title": "04. 공정 기준정보(라우팅)",
+            "ratio_tag": "9:16 세로형 (2484x4416)",
+            "device": "생산기술 엔지니어 단말",
+            "fname": "wireframe_phone_process.png",
+            "desc": "표준 공순 설계 및 설비 사이클타임 매핑",
+            "interactions": [
+                ("다단계 BOM 트리 탐색", "N단 제품 구성도를 아코디언 인터랙션으로 펼쳐 하위 반제품/원자재 소요량 즉시 파악."),
+                ("드래그 앤 드롭 공순 재배치", "생산 라인 변경 시 공정 순서(Routing)를 터치 드래그로 순서 변경 및 표준공수 자동 재계산."),
+                ("설비-작업자 자격 매핑", "호기별 요구 특수 자격증 및 인증 상태를 확인하여 미인증 작업자 배정 시 차단 경고 인터랙션.")
+            ]
+        }
     ]
     
-    card_w = (W - 200 - 3 * 24) // 4
-    top_y = 220
-    card_h = 740
+    top_y = 215
+    card_h = 745
+    gap = 26
     
-    for i, (title, fname, desc) in enumerate(wf_items):
-        cx = 100 + i * (card_w + 24)
-        draw.rounded_rectangle([cx, top_y, cx + card_w, top_y + card_h], radius=14, fill=(30, 41, 59), outline=(51, 65, 85), width=1)
+    curr_x = 100
+    for idx, item in enumerate(wf_specs):
+        cw = item["col_w"]
         
-        draw_pill_badge(draw, left_x=cx + 20, cy=top_y + 36, text="251229 화면설계서", font=get_font(10, 'bold'), theme='cyan', dark_mode=True, pad_x=10, height=26)
-        draw.text((cx + 20, top_y + 76), title, font=get_font(16, 'bold'), fill=(255, 255, 255))
-        draw.text((cx + 20, top_y + 104), desc, font=get_font(11, 'medium'), fill=(148, 163, 184))
+        # Outer Glass Card
+        draw.rounded_rectangle([curr_x, top_y, curr_x + cw, top_y + card_h], radius=16, fill=(24, 34, 52), outline=(51, 65, 85), width=1)
         
-        fpath = os.path.join(MOCKUP_DIR, fname)
-        frame_y = top_y + 135
-        frame_h = card_h - 155
-        frame_w = card_w - 32
+        # Badge & Header
+        draw_pill_badge(draw, left_x=curr_x + 18, cy=top_y + 30, text=item["ratio_tag"], font=get_font(9.5, 'bold'), theme='cyan', dark_mode=True, pad_x=8, height=22)
+        draw.text((curr_x + cw - 18, top_y + 30), item["device"], font=get_font(10.5, 'medium'), fill=(148, 163, 184), anchor='rm')
         
-        # Inner dark card container
-        draw.rounded_rectangle([cx + 16, frame_y, cx + 16 + frame_w, frame_y + frame_h], radius=10, fill=(15, 23, 42), outline=(51, 65, 85), width=1)
+        draw.text((curr_x + 18, top_y + 60), item["title"], font=get_font(15, 'bold'), fill=(255, 255, 255))
+        draw.text((curr_x + 18, top_y + 84), item["desc"], font=get_font(10.5, 'medium'), fill=(148, 163, 184))
         
+        # 1. Wireframe Screen Container (Proportional Contain)
+        frame_x = curr_x + 14
+        frame_y = top_y + 108
+        frame_w = cw - 28
+        frame_h = 320  # Dedicated visual zone
+        
+        draw.rounded_rectangle([frame_x, frame_y, frame_x + frame_w, frame_y + frame_h], radius=10, fill=(11, 16, 26), outline=(40, 53, 72), width=1)
+        
+        fpath = os.path.join(MOCKUP_DIR, item["fname"])
         if os.path.exists(fpath):
             try:
                 wf_img = Image.open(fpath).convert('RGB')
                 src_w, src_h = wf_img.size
-                scale = min((frame_w - 8) / src_w, (frame_h - 8) / src_h)
+                scale = min((frame_w - 12) / src_w, (frame_h - 12) / src_h)
                 target_w = int(round(src_w * scale))
                 target_h = int(round(src_h * scale))
                 wf_resized = wf_img.resize((target_w, target_h), Image.Resampling.LANCZOS)
-                paste_x = cx + 16 + (frame_w - target_w) // 2
+                
+                paste_x = frame_x + (frame_w - target_w) // 2
                 paste_y = frame_y + (frame_h - target_h) // 2
                 base.paste(wf_resized, (paste_x, paste_y))
+                draw.rounded_rectangle([paste_x, paste_y, paste_x + target_w, paste_y + target_h], radius=4, outline=(71, 85, 105), width=1)
             except Exception as e:
-                print(f"Error loading {fname}:", e)
+                print(f"Error loading {item['fname']}:", e)
                 
+        # 2. Key Interaction Specifications Zone (Below Image)
+        inter_y = frame_y + frame_h + 14
+        draw.line([(curr_x + 16, inter_y), (curr_x + cw - 16, inter_y)], fill=(40, 53, 72), width=1)
+        
+        draw_pill_badge(draw, left_x=curr_x + 18, cy=inter_y + 18, text="FUNCTION & INTERACTION SPEC", font=get_font(9, 'bold'), theme='blue', dark_mode=True, pad_x=8, height=20)
+        
+        by = inter_y + 36
+        for f_idx, (f_name, f_desc) in enumerate(item["interactions"]):
+            # Small pill tag
+            draw.rounded_rectangle([curr_x + 16, by, curr_x + cw - 16, by + 76], radius=8, fill=(18, 25, 38), outline=(37, 49, 68), width=1)
+            
+            # Bullet Number Badge
+            draw.ellipse([curr_x + 24, by + 12, curr_x + 40, by + 28], fill=(0, 81, 255))
+            draw.text((curr_x + 32, by + 20), str(f_idx + 1), font=get_font(9, 'bold'), fill=(255, 255, 255), anchor='mm')
+            
+            draw.text((curr_x + 48, by + 20), f_name, font=get_font(11.5, 'bold'), fill=(56, 189, 248), anchor='lm')
+            
+            lines = textwrap.wrap(f_desc, width=int(cw * 0.088))
+            ly = by + 36
+            for l in lines[:2]:
+                draw.text((curr_x + 26, ly), l, font=get_font(10, 'regular'), fill=(203, 213, 225))
+                ly += 16
+            by += 84
+            
+        curr_x += cw + gap
+        
     draw_slide_footer(draw, 6, dark_mode=True)
     base.save(os.path.join(OUT_DIR, 'slide_06.png'))
-    print("SAVED slide_06.png (Dark Wireframes)")
+    print("SAVED slide_06.png (Sectioned Wireframes with Exact Ratios & Function Interactions)")
 def make_slide_07():
     base = Image.new('RGB', (W, H), (255, 255, 255))
     draw = ImageDraw.Draw(base)
