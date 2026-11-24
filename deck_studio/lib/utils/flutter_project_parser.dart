@@ -77,40 +77,33 @@ class FlutterProjectParser {
     final lowerName = fileName.toLowerCase();
     final lowerContent = content.toLowerCase();
 
-    // 1. BottomSheet detection
+    // 1. Definite Page / Screen detection (File named Screen / Page / View with Scaffold)
+    if (lowerName.contains('screen') || lowerName.contains('page') || lowerName.contains('view') || lowerName.contains('main.dart')) {
+      if (lowerContent.contains('scaffold(')) {
+        return FlutterComponentCategory.page;
+      }
+    }
+
+    // 2. BottomSheet detection (File is a dedicated BottomSheet)
     if (lowerName.contains('bottom_sheet') ||
         lowerName.contains('bottomsheet') ||
         lowerName.contains('sheet') ||
-        lowerContent.contains('showmodalbottomsheet') ||
-        lowerContent.contains('showbottomsheet') ||
-        lowerContent.contains('draggablescrollablesheet') ||
-        lowerContent.contains('bottomsheet(')) {
+        (lowerContent.contains('class') && lowerContent.contains('extends') &&
+            (lowerContent.contains('draggablescrollablesheet') || lowerContent.contains('bottomsheet(')))) {
       return FlutterComponentCategory.bottomSheet;
     }
 
-    // 2. Modal / Dialog detection
+    // 3. Modal / Dialog detection
     if (lowerName.contains('modal') ||
         lowerName.contains('dialog') ||
         lowerName.contains('popup') ||
-        lowerContent.contains('alertdialog(') ||
-        lowerContent.contains('showdialog(') ||
-        lowerContent.contains('dialog(') ||
-        lowerContent.contains('simpledialog(') ||
-        lowerContent.contains('game over modal') ||
-        lowerContent.contains('isgameover')) {
-      // If it's a full screen like game_screen.dart that contains an overlay, check name
-      if (lowerName.contains('screen') || lowerName.contains('page')) {
-        return FlutterComponentCategory.page;
-      }
+        (lowerContent.contains('class') && lowerContent.contains('extends') &&
+            (lowerContent.contains('alertdialog(') || lowerContent.contains('dialog(') || lowerContent.contains('simpledialog(')))) {
       return FlutterComponentCategory.modal;
     }
 
-    // 3. Page / Screen detection
-    if (lowerName.contains('screen') ||
-        lowerName.contains('page') ||
-        lowerName.contains('view') ||
-        lowerName.contains('main.dart') ||
-        lowerContent.contains('scaffold(')) {
+    // 4. Fallback Page detection
+    if (lowerContent.contains('scaffold(')) {
       return FlutterComponentCategory.page;
     }
 
@@ -217,6 +210,8 @@ class FlutterProjectParser {
       if (cleanScreenLower.contains('worship')) '${projectDir.path}/pixel8_worship_verify.png',
       if (cleanScreenLower.contains('prayer')) '${projectDir.path}/prayer_isolation_pixel8_FINAL.png',
       if (cleanScreenLower.contains('dialog')) '${projectDir.path}/permission_dialog.png',
+      if (cleanScreenLower.contains('home') || cleanScreenLower.contains('currency')) '${projectDir.path}/fold4_currency_check.png',
+      if (cleanScreenLower.contains('home') || cleanScreenLower.contains('currency')) '${projectDir.path}/debug_screen.png',
       '${projectDir.path}/screenshot_phone_1080x1920.png',
       '${projectDir.path}/screenshot_device.png',
     ];
