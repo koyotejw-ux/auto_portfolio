@@ -143,7 +143,7 @@ def draw_slide_header(draw, slide_idx, title, subtitle):
 
 def draw_slide_footer(draw, meta_tags=""):
     draw.line([(100, 1028), (1820, 1028)], fill=C_BORDER_LINE, width=1)
-    draw.text((100, 1042), "대한한국사 (Korea History Quiz) · Product Design & Architecture by Jaewoong Jung", font=get_font(12, 'medium'), fill=C_TEXT_MUTED)
+    draw.text((100, 1042), "대한국사 (Korea History Quiz) · Product Design & Architecture by Jaewoong Jung", font=get_font(12, 'medium'), fill=C_TEXT_MUTED)
     if meta_tags:
         w_t = draw.textlength(meta_tags, font=get_font(12, 'semibold'))
         draw.text((1820 - w_t, 1042), meta_tags, font=get_font(12, 'semibold'), fill=C_COBALT_HERO)

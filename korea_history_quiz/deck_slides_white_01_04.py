@@ -28,7 +28,7 @@ def make_slide_01():
     w_meta = draw.textlength(meta_txt, font=get_font(13.5, 'medium'))
     draw.text((1820 - w_meta, 68), meta_txt, font=get_font(13.5, 'medium'), fill=C_TEXT_BODY)
     
-    draw.text((100, 142), "KOREA HISTORY QUIZ · 대한한국사", font=get_font(14, 'bold'), fill=C_COBALT_HERO)
+    draw.text((100, 142), "KOREA HISTORY QUIZ · 대한국사", font=get_font(14, 'bold'), fill=C_COBALT_HERO)
     
     title_p1 = "방대한 5,000년 역사 흐름을 "
     title_p2 = "한 손으로 압축 정복하다"
@@ -160,7 +160,7 @@ def make_slide_02():
     strat_w = 1520
     strat_h = 400
     draw.rounded_rectangle([100, strat_y, 100 + strat_w, strat_y + strat_h], radius=20, fill=C_BG_CARD, outline=C_BORDER_LINE, width=1)
-    draw.text((130, strat_y + 26), "대한한국사 핵심 가치 제안 (CORE VALUE PROPOSITION)", font=get_font(14, 'bold'), fill=C_COBALT_HERO)
+    draw.text((130, strat_y + 26), "대한국사 핵심 가치 제안 (CORE VALUE PROPOSITION)", font=get_font(14, 'bold'), fill=C_COBALT_HERO)
     
     strat_items = [
         ("01. 마이크로 러닝 모의고사", "출퇴근/통학 10분 동안 5문항씩 가볍게 푸는 숏폼 모드와 50문항 80분 풀타임 실전 모드 듀얼 지원", "amber"),
