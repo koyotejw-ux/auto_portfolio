@@ -254,112 +254,164 @@ def make_shadow(im, radius=32, alpha=100):
     return sh.filter(ImageFilter.GaussianBlur(radius))
 
 def make_slide_01():
-    # Pristine white executive canvas matching Korea History Quiz / Behance Standard
-    base = Image.new('RGB', (W, H), (255, 255, 255))
+    # 1. Subtle Ambient Radial Glow on Pristine White Canvas (Open Design)
+    base = Image.new('RGBA', (W, H), (250, 252, 255, 255))
+    glow = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+    g_draw = ImageDraw.Draw(glow)
+    g_draw.ellipse([800, 100, 1850, 850], fill=(0, 81, 255, 18))
+    g_draw.ellipse([1050, 180, 1750, 780], fill=(6, 182, 212, 14))
+    glow = glow.filter(ImageFilter.GaussianBlur(130))
+    base = Image.alpha_composite(base, glow)
+    
     draw = ImageDraw.Draw(base)
     
-    # 1. Top Header Rule & Pills
+    # 2. Hairline Top Boundary & Metadata Pills
     draw.line([(100, 52), (1820, 52)], fill=(226, 232, 240), width=1)
-    draw_pill_badge(draw, left_x=100, cy=76, text="2026 ENTERPRISE CLOUD SAAS CASE STUDY", font=get_font(11.5, 'bold'), theme='blue', pad_x=14, height=28)
+    draw_pill_badge(draw, left_x=100, cy=76, text="2026 포트폴리오 케이스 스터디", font=get_font(11.5, 'bold'), theme='blue', has_dot=True, pad_x=12, height=28)
     
-    meta_txt = "반응형 웹 아키텍처 · 13대 비즈니스 모듈 & 59개 표준 화면 · 실시간 OEE 텔레메트리 · 1인 단독 기획·디자인 총괄"
+    meta_txt = "엔터프라이즈 UX/UI 기획 총괄 · 반응형 웹 아키텍처 · 13개 모듈 59개 화면 · Web Prototype"
     w_meta = draw.textlength(meta_txt, font=get_font(13.5, 'medium'))
-    draw.text((1820 - w_meta, 68), meta_txt, font=get_font(13.5, 'medium'), fill=(71, 85, 105))
+    draw.text((1820 - w_meta, 68), meta_txt, font=get_font(13.5, 'medium'), fill=(100, 116, 139))
     
-    # 2. Main Hero Title & Subtitle (Left)
-    draw.text((100, 138), "CODEBRIDGEX MES SOLUTION · 클라우드 제조 플랫폼", font=get_font(14, 'bold'), fill=(0, 81, 255))
+    # 3. Category & Large Title (Left Column)
+    draw.text((100, 146), "CODEBRIDGEX MES SOLUTION · 제조 실행 플랫폼", font=get_font(14, 'bold'), fill=(0, 81, 255))
     
-    title_p1 = "분절된 제조 현장 데이터를 "
-    title_p2 = "반응형 원격 관제로 통합하다"
-    w_p1 = draw.textlength(title_p1, font=get_font(50, 'black'))
-    draw.text((100, 168), title_p1, font=get_font(50, 'black'), fill=(15, 23, 42))
-    draw.text((100 + w_p1, 168), title_p2, font=get_font(50, 'black'), fill=(0, 81, 255))
+    title_p1 = "분절된 제조 현장을, "
+    title_p2 = "하나의 화면으로 지휘하다."
+    w_p1 = draw.textlength(title_p1, font=get_font(56, 'black'))
+    draw.text((100, 178), title_p1, font=get_font(56, 'black'), fill=(15, 23, 42))
+    draw.text((100 + w_p1, 178), title_p2, font=get_font(56, 'black'), fill=(0, 81, 255))
     
-    sub1 = "대화면 관제실부터 10인치 현장 터치 태블릿, 모바일 스마트폰까지 완벽하게 대응하는 반응형 웹 아키텍처와"
-    sub2 = "수주·생산 실시간 MRP 파이프라인, 스마트 간트 공정 스케줄러, 무결점 LOT 추적으로 수기 취합 공수를 99.9% 절감한 B2B SaaS"
-    draw.text((100, 248), sub1, font=get_font(14.5, 'regular'), fill=(51, 65, 85))
-    draw.text((100, 274), sub2, font=get_font(14.5, 'regular'), fill=(51, 65, 85))
+    sub1 = "관제실 대화면부터 현장 10인치 터치 태블릿, 모바일 스마트폰까지 단일 소스로 완벽하게 대응하고,"
+    sub2 = "수주·생산 MRP 파이프라인, 실시간 OEE 텔레메트리, 무결점 LOT 추적으로 수기 취합 공수를 99.9% 절감한 엔터프라이즈 SaaS"
+    draw.text((100, 260), sub1, font=get_font(16.5, 'regular'), fill=(71, 85, 105))
+    draw.text((100, 288), sub2, font=get_font(16.5, 'semibold'), fill=(30, 41, 59))
     
-    # 3. 4 Key Impact Metric Pods (card_w=195, card_h=135)
-    metrics = [
-        ("99.9%", "실적 집계 소요 시간", "24시간 수기 일지 → 1초 즉시 수집", "blue"),
-        ("13대 모듈", "전사 엔터프라이즈", "59개 이상 인터랙티브 표준 화면", "purple"),
-        ("88.5%", "설비종합효율(OEE)", "실시간 텔레메트리 병목 해소", "green"),
-        ("Multi", "데스크톱·태블릿·모바일", "100% 반응형 최적화 인터페이스", "blue")
+    # 4. OPEN STORYLINE: Key Strengths (Open layout with zero enclosing box, matching Behance standard)
+    strengths = [
+        ("01", "전사 파이프라인", "수주-생산-출하 원스톱 통합 파이프라인", "Order-to-Ship Realtime Pipeline",
+         "부서별로 파편화된 엑셀과 수기 장부를 단일 데이터 파이프라인으로 연결하여 수기 취합 공수를 99.9% 절감했습니다."),
+        ("02", "반응형 원격 관제", "현장 터치 최적화 멀티 디바이스 반응형", "Multi-Device Responsive Telemetry",
+         "데스크톱 관제실뿐 아니라 10인치 현장 태블릿(16:10)과 모바일(9:16)까지 실시간 설비 가동 상태와 병목을 즉시 관제합니다."),
+        ("03", "역할 기반 인터페이스", "경영진/작업자 역할별 고유 인터페이스", "Role-Based Ergonomic Interface",
+         "CEO/공장장 핵심 KPI 대시보드와 현장 작업자 공정 스케줄러를 분리하여 과도한 정보 장벽 없이 1초 내 직관 조작을 지원합니다."),
+        ("04", "아토믹 토큰 체계", "150개 표준 에셋 엔터프라이즈 디자인 시스템", "Atomic Design System & Multi-Tenant",
+         "Atoms부터 Templates까지 4계층 아토믹 규격과 테넌트 테마 주입 체계를 완성하여 13개 비즈니스 모듈의 일관성을 실현했습니다.")
     ]
-    card_y = 335
-    card_w = 195
-    card_h = 135
-    for idx, (m_val, m_lbl, m_desc, theme) in enumerate(metrics):
-        cx = 100 + idx * (card_w + 18)
-        draw.rounded_rectangle([cx, card_y, cx + card_w, card_y + card_h], radius=16, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
-        val_col = (0, 81, 255) if theme == 'blue' else ((124, 58, 237) if theme == 'purple' else (16, 185, 129))
-        draw.text((cx + 18, card_y + 18), m_val, font=get_num_font(30, 'black'), fill=val_col)
-        draw.text((cx + 18, card_y + 66), m_lbl, font=get_font(13, 'bold'), fill=(15, 23, 42))
-        draw.text((cx + 18, card_y + 92), m_desc, font=get_font(10.5, 'medium'), fill=(100, 116, 139))
-        
-    # 4. Project Specification & Architecture Pod (scope_w=834, scope_h=255)
-    scope_y = 495
-    scope_w = 834
-    scope_h = 255
-    draw.rounded_rectangle([100, scope_y, 100 + scope_w, scope_y + scope_h], radius=18, fill=(248, 250, 252), outline=(219, 234, 254), width=1)
-    draw.text((125, scope_y + 22), "PROJECT SPECIFICATION & ARCHITECTURE OVERVIEW", font=get_font(12, 'bold'), fill=(0, 81, 255))
     
-    spec_rows = [
-        ("담당 역할", "엔터프라이즈 UX/UI 아키텍처, 디자인 시스템 구축, 기획 총괄 (100% 1인 단독)"),
-        ("핵심 과제", "데이터 파편화 극복, 복잡한 SI 구축 장벽 제거, 현장 터치 및 모바일 접근성 극대화"),
-        ("기술 스택", "Vite + React 18, TypeScript, Tailwind CSS, Atomic Design System (150+ Tokens)"),
-        ("지원 플랫폼", '데스크톱 브라우저 (1920x1080), 10" 현장 태블릿 (1024x768), 모바일 (390x844)'),
-        ("적용 상태", "엔터프라이즈 클라우드 SaaS 프로덕션 라이브 배포 및 현장 검증 완료")
-    ]
-    for r_idx, (k, v) in enumerate(spec_rows):
-        ry = scope_y + 54 + r_idx * 35
-        draw.text((125, ry), f"• {k}", font=get_font(12, 'bold'), fill=(0, 81, 255))
-        draw.text((225, ry), f":  {v}", font=get_font(12, 'medium'), fill=(51, 65, 85))
+    max_badge_w = max(draw.textlength(tag, font=get_font(10, 'bold')) + 16 for _, tag, _, _, _ in strengths)
+    title_x = int(round(144 + max_badge_w + 24))
+    
+    k_y = 358
+    for idx, (num, tag, title_ko, sub_en, desc) in enumerate(strengths):
+        draw.rounded_rectangle([100, k_y + 2, 136, k_y + 28], radius=6, fill=(241, 245, 249), outline=(203, 213, 225), width=1)
+        draw.text((118, k_y + 15), num, font=get_font(11, 'bold'), fill=(0, 81, 255), anchor='mm')
         
-    # 5. Bottom Hashtags
-    tags = ["#스마트팩토리", "#클라우드_MES", "#반응형_웹", "#아토믹_디자인", "#OEE_텔레메트리", "#LOT_추적성"]
-    tx = 100
-    for t in tags:
-        draw_pill_badge(draw, left_x=tx, cy=785, text=t, font=get_font(11, 'bold'), theme='slate', height=28, pad_x=12)
-        tx += int(draw.textlength(t, font=get_font(11, 'bold')) + 24 + 10)
+        draw_pill_badge(draw, left_x=144, cy=k_y + 15, text=tag, font=get_font(10, 'bold'), theme='blue', has_dot=False, pad_x=8, height=22)
+        draw.text((title_x, k_y + 4), title_ko, font=get_font(15.5, 'bold'), fill=(15, 23, 42))
+        
+        w_title = draw.textlength(title_ko, font=get_font(15.5, 'bold'))
+        draw.text((title_x + w_title + 12, k_y + 6), f"·  {sub_en}", font=get_font(12, 'medium'), fill=(100, 116, 139))
+        
+        words = desc.split(' ')
+        lines = []
+        cur_l = ""
+        for w in words:
+            test = (cur_l + ' ' + w).strip()
+            if draw.textlength(test, font=get_font(12, 'regular')) <= 780:
+                cur_l = test
+            else:
+                lines.append(cur_l)
+                cur_l = w
+        if cur_l:
+            lines.append(cur_l)
+            
+        desc_y = k_y + 36
+        for l in lines[:2]:
+            draw.text((144, desc_y), l, font=get_font(12, 'regular'), fill=(71, 85, 105))
+            desc_y += 20
+            
+        if idx < 3:
+            draw.line([(100, k_y + 92), (900, k_y + 92)], fill=(226, 232, 240), width=1)
+            
+        k_y += 114
 
-    # 6. Hero Multi-Device Mockup Showcase on Right (Matching User Attached Device Trio)
+    # 5. Right Side: Multi-Device Trio Transparent Mockup Showcase (Laptop, Tablet, Mobile)
     trio_thumb = r"d:\097.flutter_project\auto_portfolio\assets\mes_hero_device_trio.png"
     if os.path.exists(trio_thumb):
         trio_img = Image.open(trio_thumb).convert('RGBA')
         
-        # Scale to hero right space (avail_w approx 850, avail_h approx 720)
-        scale = min(850 / trio_img.width, 700 / trio_img.height)
+        # Scale to hero right space (avail_w approx 920, avail_h approx 700)
+        scale = min(920 / trio_img.width, 700 / trio_img.height)
         new_w = int(round(trio_img.width * scale))
         new_h = int(round(trio_img.height * scale))
         trio_resized = trio_img.resize((new_w, new_h), Image.Resampling.LANCZOS)
         
-        pos_x = 970 + (850 - new_w) // 2
-        pos_y = 145 + (700 - new_h) // 2
+        pos_x = 940 + (920 - new_w) // 2
+        pos_y = 125 + (700 - new_h) // 2
         
-        # Soft elegant drop shadow for the 3 devices
-        sh = make_shadow(trio_resized, radius=40, alpha=85)
-        base.paste(sh, (pos_x - 32, pos_y - 20), sh)
+        # Real transparent alpha mask drop shadow for floating depth
+        mask = trio_resized.split()[3]
+        sh_img = Image.new('RGBA', (trio_resized.width + 120, trio_resized.height + 120), (0, 0, 0, 0))
+        black = Image.new('RGBA', trio_resized.size, (15, 23, 42, 75))
+        sh_img.paste(black, (60 + 12, 60 + 26), mask)
+        sh = sh_img.filter(ImageFilter.GaussianBlur(38))
+        
+        base.paste(sh, (pos_x - 60, pos_y - 60), sh)
         base.paste(trio_resized, (pos_x, pos_y), trio_resized)
-        
-    # 7. Official App / Solution Icon Floating Badge (Bottom-Right of Left Column)
+
+    # 6. Floating Official Solution Icon Badge
     icon_path = r"d:\097.flutter_project\auto_portfolio\assets\mes_solution_app_icon.png"
     if os.path.exists(icon_path):
         ic = Image.open(icon_path).convert('RGBA')
-        ic_w = 96
+        ic_w = 92
         ic_sc = ic.resize((ic_w, ic_w), Image.Resampling.LANCZOS)
-        badge_im = Image.new('RGBA', (116, 116), (0, 0, 0, 0))
+        badge_im = Image.new('RGBA', (112, 112), (0, 0, 0, 0))
         bd = ImageDraw.Draw(badge_im)
-        bd.rounded_rectangle([0, 0, 116, 116], radius=24, fill=(255, 255, 255, 250), outline=(226, 232, 240), width=2)
-        badge_im.paste(ic_sc, ((116 - ic_w)//2, (116 - ic_w)//2), ic_sc)
-        sh_b = make_shadow(badge_im, radius=20, alpha=70)
-        base.paste(sh_b, (900 - 32, 685 - 20), sh_b)
-        base.paste(badge_im, (900, 685), badge_im)
+        bd.rounded_rectangle([0, 0, 112, 112], radius=24, fill=(255, 255, 255, 250), outline=(226, 232, 240), width=2)
+        badge_im.paste(ic_sc, ((112 - ic_w)//2, (112 - ic_w)//2), ic_sc)
+        
+        # Soft shadow for floating badge
+        b_mask = badge_im.split()[3]
+        b_sh_img = Image.new('RGBA', (badge_im.width + 60, badge_im.height + 60), (0, 0, 0, 0))
+        b_black = Image.new('RGBA', badge_im.size, (15, 23, 42, 65))
+        b_sh_img.paste(b_black, (30 + 6, 30 + 12), b_mask)
+        b_sh = b_sh_img.filter(ImageFilter.GaussianBlur(18))
+        
+        badge_x = 945
+        badge_y = 665
+        base.paste(b_sh, (badge_x - 30, badge_y - 30), b_sh)
+        base.paste(badge_im, (badge_x, badge_y), badge_im)
+        
+    draw = ImageDraw.Draw(base)
     
-    draw_slide_footer(draw, 1, dark_mode=False)
-    base.save(os.path.join(OUT_DIR, 'slide_01.png'))
-    print("SAVED slide_01.png (Executive White Hero Cover Matching Behance Standard)")
+    # 7. Bottom 4-Column Specification Strip (Spanning x=100 to 1820, y=840 to 956)
+    bar_y = 840
+    bar_h = 116
+    draw.rounded_rectangle([100, bar_y, 1820, bar_y + bar_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+    
+    col_w = 1720 // 4
+    specs = [
+        ("PROJECT ROLE", "서비스 기획 100% · UI/UX 아키텍처 100%", "스마트 제조 현장 문제 정의 · IA 정보 설계 · 와이어프레임 · UI 디자인 총괄"),
+        ("PERIOD & TIMELINE", "2026.03 - 현재 (클라우드 SaaS 라이브)", "수주-생산-품질-재고 13대 모듈 실시간 연동 및 59개 인터랙티브 화면 상용 검증"),
+        ("DESIGN SYSTEM", "아토믹 토큰 아키텍처 (150+ 에셋)", "4/8pt 베이스라인 · 일렉트릭 블루(#0051FF) & 옵시디언 다크 · 다중 테넌트 테마 주입"),
+        ("DELIVERY & RELEASE", "멀티 디바이스 반응형 웹 & 라이브 프로토타입", "데스크톱 16:9 · 현장 태블릿 16:10 · 모바일 9:16 최적화 뷰포트 인터랙션 완비")
+    ]
+    
+    for i, (cat, val_bold, val_desc) in enumerate(specs):
+        cx = 100 + i * col_w
+        if i > 0:
+            draw.line([(cx, bar_y + 18), (cx, bar_y + bar_h - 18)], fill=(226, 232, 240), width=1)
+        
+        draw.text((cx + 28, bar_y + 18), cat, font=get_font(11, 'bold'), fill=(0, 81, 255))
+        draw.text((cx + 28, bar_y + 42), val_bold, font=get_font(14.5, 'bold'), fill=(15, 23, 42))
+        draw.text((cx + 28, bar_y + 70), val_desc, font=get_font(11, 'regular'), fill=(100, 116, 139))
+        
+    draw_slide_footer(draw, 1)
+    base.convert('RGB').save(os.path.join(OUT_DIR, 'slide_01.png'))
+    print("SAVED slide_01.png (Open Storyline & Transparent Device Mockup)")
+
+
 def make_slide_02():
     base = Image.new('RGB', (W, H), (248, 250, 252))
     draw = ImageDraw.Draw(base)
