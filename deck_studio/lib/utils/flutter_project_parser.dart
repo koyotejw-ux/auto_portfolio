@@ -4,7 +4,7 @@ import '../models/deck_model.dart';
 
 enum FlutterComponentCategory {
   page,        // Full Screens / Pages (Scaffold)
-  modal,       // Dialog / AlertDialog / Custom Modal
+  modal,       // Dialog / AlertDialog / Custom Modal / Overlays
   bottomSheet, // BottomSheet / ModalBottomSheet / DraggableScrollableSheet
   widget,      // Standalone UI Widget Component
 }
@@ -23,7 +23,7 @@ class ParsedFlutterScreen {
     required this.screenName,
     required this.category,
     required this.elements,
-    this.backgroundColor = const Color(0xFFFFFFFF),
+    this.backgroundColor = const Color(0xFF141414),
   });
 
   String get categoryLabel {
@@ -95,7 +95,13 @@ class FlutterProjectParser {
         lowerContent.contains('alertdialog(') ||
         lowerContent.contains('showdialog(') ||
         lowerContent.contains('dialog(') ||
-        lowerContent.contains('simpledialogn(')) {
+        lowerContent.contains('simpledialog(') ||
+        lowerContent.contains('game over modal') ||
+        lowerContent.contains('isgameover')) {
+      // If it's a full screen like game_screen.dart that contains an overlay, check name
+      if (lowerName.contains('screen') || lowerName.contains('page')) {
+        return FlutterComponentCategory.page;
+      }
       return FlutterComponentCategory.modal;
     }
 
@@ -109,6 +115,17 @@ class FlutterProjectParser {
     }
 
     return FlutterComponentCategory.widget;
+  }
+
+  /// Helper to extract Hex Color from Dart source code
+  static Color _extractColor(String code, Color defaultColor) {
+    // Matches Color(0xFF...) or const Color(0x...)
+    final match = RegExp(r'Color\s*\(\s*0x([0-9a-fA-F]{8})\s*\)').firstMatch(code);
+    if (match != null) {
+      final hex = int.tryParse(match.group(1)!, radix: 16);
+      if (hex != null) return Color(hex);
+    }
+    return defaultColor;
   }
 
   /// Parse a Flutter Dart file into visual DeckElements with two-way sync anchors
@@ -125,11 +142,36 @@ class FlutterProjectParser {
     final category = detectCategory(fileName, content);
     final elements = <DeckElement>[];
 
-    Color screenBg = const Color(0xFFFFFFFF);
-    if (content.contains('Colors.black') || content.contains('0xFF0F172A') || content.contains('0xFF1E1E1E') || content.contains('0xFF121212')) {
+    // Detect screen background or gradient colors
+    Color screenBg = const Color(0xFF0F001C);
+    if (content.contains('Colors.black') || content.contains('0xFF000000')) {
+      screenBg = const Color(0xFF000000);
+    } else if (content.contains('0xFF0D0B1C')) {
+      screenBg = const Color(0xFF0D0B1C);
+    } else if (content.contains('0xFF140826')) {
+      screenBg = const Color(0xFF140826);
+    } else if (content.contains('0xFF0F172A') || content.contains('0xFF1E1E1E') || content.contains('0xFF121212')) {
       screenBg = const Color(0xFF0F172A);
-    } else if (content.contains('Color(0xFFF8FAFC)') || content.contains('Color(0xFFF1F5F9)')) {
-      screenBg = const Color(0xFFF8FAFC);
+    } else if (content.contains('Color(0xFFF8FAFC)') || content.contains('Color(0xFFF1F5F9)') || content.contains('Colors.white')) {
+      if (!content.contains('backgroundColor: Colors.black') && !content.contains('gradient:')) {
+        screenBg = const Color(0xFFF8FAFC);
+      }
+    }
+
+    // LinearGradient detection (Retro neon / dark fantasy gradients)
+    Color? gradientStart;
+    Color? gradientEnd;
+    final gradientMatch = RegExp(r'LinearGradient\s*\([^)]*colors:\s*\[([^\]]+)\]').firstMatch(content);
+    if (gradientMatch != null) {
+      final colorEntries = RegExp(r'Color\s*\(\s*0x([0-9a-fA-F]{8})\s*\)').allMatches(gradientMatch.group(1)!).toList();
+      if (colorEntries.isNotEmpty) {
+        final startHex = int.tryParse(colorEntries.first.group(1)!, radix: 16);
+        if (startHex != null) gradientStart = Color(startHex);
+        if (colorEntries.length > 1) {
+          final endHex = int.tryParse(colorEntries.last.group(1)!, radix: 16);
+          if (endHex != null) gradientEnd = Color(endHex);
+        }
+      }
     }
 
     double frameX = 140.0;
@@ -170,16 +212,16 @@ class FlutterProjectParser {
         width: frameWidth,
         height: frameHeight,
         boxStyle: DeckBoxStyle(
-          backgroundColor: screenBg,
+          backgroundColor: gradientStart ?? screenBg,
           borderColor: category == FlutterComponentCategory.modal
-              ? const Color(0xFFA78BFA)
+              ? const Color(0xFFFF0055)
               : (category == FlutterComponentCategory.bottomSheet
                   ? const Color(0xFF38BDF8)
-                  : const Color(0xFFCBD5E1)),
+                  : const Color(0xFF00E5FF)),
           borderWidth: 2.0,
           borderRadius: category == FlutterComponentCategory.bottomSheet
               ? 32.0
-              : (category == FlutterComponentCategory.modal ? 28.0 : 44.0),
+              : (category == FlutterComponentCategory.modal ? 24.0 : 40.0),
           padding: 16.0,
           hasShadow: true,
         ),
@@ -187,6 +229,7 @@ class FlutterProjectParser {
           'isFlutterFrame': true,
           'category': category.name,
           'sourceFilePath': file.path,
+          if (gradientEnd != null) 'gradientEnd': '#${gradientEnd.value.toRadixString(16)}',
         },
         isComponent: true,
       ),
@@ -214,6 +257,7 @@ class FlutterProjectParser {
     }
 
     // Status bar for full page
+    final isDark = screenBg.computeLuminance() < 0.5;
     if (category == FlutterComponentCategory.page) {
       elements.add(
         DeckElement(
@@ -227,7 +271,7 @@ class FlutterProjectParser {
           textStyle: DeckTextStyle(
             fontSize: 12,
             fontWeight: FontWeight.bold,
-            color: screenBg == const Color(0xFF0F172A) ? Colors.white70 : const Color(0xFF0F172A),
+            color: isDark ? Colors.white70 : const Color(0xFF0F172A),
           ),
           props: {
             'title': '9:41',
@@ -238,7 +282,40 @@ class FlutterProjectParser {
       curY = frameY + 54.0;
     }
 
-    // 2. Extract AppBar if present
+    // 2. Detect Currency / Stat Chips (e.g., jumpjump currency bars)
+    final currencyChipRegex = RegExp(r"value:\s*[']([^'\n\r]+)[']");
+    final currencyMatches = currencyChipRegex.allMatches(content).toList();
+    if (currencyMatches.isNotEmpty || content.contains('_currencyChip') || content.contains('Icons.diamond_rounded')) {
+      final chip1 = currencyMatches.isNotEmpty ? currencyMatches[0].group(1)! : '0 G';
+      final chip2 = currencyMatches.length > 1 ? currencyMatches[1].group(1)! : '0 GEM';
+
+      elements.add(
+        DeckElement(
+          id: 'currency_chip_${DateTime.now().microsecondsSinceEpoch}',
+          type: ElementType.statCard,
+          name: '재화 칩 바 Currency Chip ($chip1 / $chip2)',
+          x: frameX + 20,
+          y: curY,
+          width: contentWidth,
+          height: 38,
+          boxStyle: DeckBoxStyle(
+            backgroundColor: Colors.black.withValues(alpha: 0.8),
+            borderColor: const Color(0xFFFFD700),
+            borderWidth: 1.5,
+            borderRadius: 10,
+          ),
+          props: {
+            'title': '🪙 $chip1',
+            'meta': '💎 $chip2',
+            'sourceFilePath': file.path,
+            'originalCodeText': chip1,
+          },
+        ),
+      );
+      curY += 46.0;
+    }
+
+    // 3. Extract AppBar if present
     final appBarTitleRegex = RegExp(r"AppBar\s*\([^)]*title:\s*(?:const\s*)?Text\(\s*[']([^'\n\r]+)[']");
     final appBarMatch = appBarTitleRegex.firstMatch(content);
     if (appBarMatch != null || content.contains('AppBar(')) {
@@ -255,7 +332,7 @@ class FlutterProjectParser {
           textStyle: DeckTextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: screenBg == const Color(0xFF0F172A) ? Colors.white : const Color(0xFF0F172A),
+            color: isDark ? Colors.white : const Color(0xFF0F172A),
           ),
           props: {
             'badge': 'APP BAR',
@@ -268,7 +345,77 @@ class FlutterProjectParser {
       curY += 56.0;
     }
 
-    // 3. Extract Text(...) widgets
+    // 4. Extract Titles & GoogleFonts (pressStart2p / retro styling)
+    final retroFontRegex = RegExp(r"Text\(\s*[']([^'\n\r]{2,80})['][^)]*pressStart2p", multiLine: true);
+    for (final rfm in retroFontRegex.allMatches(content)) {
+      final retroTitle = rfm.group(1)!.trim();
+      if (curY > frameY + frameHeight - 80) break;
+      if (elements.any((e) => e.props['originalCodeText'] == retroTitle)) continue;
+
+      final isActionBtn = retroTitle.contains('CONTINUE') ||
+          retroTitle.contains('LOBBY') ||
+          retroTitle.contains('RETRY') ||
+          retroTitle.contains('START') ||
+          retroTitle.contains('PLAY');
+
+      if (isActionBtn) {
+        elements.add(
+          DeckElement(
+            id: 'retro_btn_${DateTime.now().microsecondsSinceEpoch}_${elements.length}',
+            type: ElementType.shape,
+            name: '레트로 버튼: $retroTitle',
+            x: frameX + 24,
+            y: curY,
+            width: contentWidth,
+            height: 44,
+            boxStyle: DeckBoxStyle(
+              backgroundColor: retroTitle.contains('LOBBY') ? Colors.transparent : const Color(0xFFFF0055),
+              borderColor: const Color(0xFFFFEA00),
+              borderWidth: 2.0,
+              borderRadius: 10.0,
+              padding: 10.0,
+            ),
+            textStyle: DeckTextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w900,
+              color: Colors.white,
+            ),
+            props: {
+              'title': retroTitle,
+              'sourceFilePath': file.path,
+              'originalCodeText': retroTitle,
+            },
+          ),
+        );
+        curY += 50.0;
+      } else {
+        elements.add(
+          DeckElement(
+            id: 'retro_text_${DateTime.now().microsecondsSinceEpoch}_${elements.length}',
+            type: ElementType.text,
+            name: '레트로 타이틀: $retroTitle',
+            x: frameX + 24,
+            y: curY,
+            width: contentWidth,
+            height: 38,
+            textStyle: DeckTextStyle(
+              fontSize: retroTitle.length < 15 ? 18 : 12,
+              fontWeight: FontWeight.w900,
+              color: retroTitle.contains('GAME OVER') ? const Color(0xFFFF0055) : const Color(0xFFFFEA00),
+            ),
+            props: {
+              'title': retroTitle,
+              'sourceFilePath': file.path,
+              'originalCodeText': retroTitle,
+              'font': 'Retro Arcade',
+            },
+          ),
+        );
+        curY += 44.0;
+      }
+    }
+
+    // 5. Extract Text(...) widgets
     final textWidgetRegex = RegExp(r"Text\(\s*[']([^'\n\r]{2,80})[']");
     final textMatches = textWidgetRegex.allMatches(content).toList();
     final seenTexts = <String>{};
@@ -276,6 +423,8 @@ class FlutterProjectParser {
     for (final tm in textMatches) {
       final t = tm.group(1)!.trim();
       if (t.isEmpty || seenTexts.contains(t) || t == screenName) continue;
+      // Skip if already parsed as retro font
+      if (elements.any((e) => e.props['originalCodeText'] == t)) continue;
       seenTexts.add(t);
       if (seenTexts.length > 8) break;
 
@@ -292,9 +441,9 @@ class FlutterProjectParser {
           width: contentWidth,
           height: h,
           textStyle: DeckTextStyle(
-            fontSize: isLargeTitle ? 20 : 14,
+            fontSize: isLargeTitle ? 18 : 14,
             fontWeight: isLargeTitle ? FontWeight.w800 : FontWeight.w500,
-            color: screenBg == const Color(0xFF0F172A) ? Colors.white : const Color(0xFF0F172A),
+            color: isDark ? Colors.white : const Color(0xFF0F172A),
           ),
           props: {
             'title': t,
@@ -303,22 +452,24 @@ class FlutterProjectParser {
           },
         ),
       );
-      curY += h + 10.0;
-      if (curY > frameY + frameHeight - 80) break;
+      curY += h + 8.0;
+      if (curY > frameY + frameHeight - 120) break;
     }
 
-    // 4. Extract Buttons
-    final buttonRegex = RegExp(r"(ElevatedButton|OutlinedButton|TextButton|FilledButton)(?:\.icon)?\s*\([^)]*child:\s*(?:const\s*)?Text\(\s*[']([^'\n\r]+)[']");
+    // 6. Extract Retro & Standard Buttons (Elevated, Outlined, InkWell, GestureDetector)
+    final buttonRegex = RegExp(r"(ElevatedButton|OutlinedButton|TextButton|FilledButton)(?:\.icon)?\s*\([\s\S]*?child:\s*(?:Row\([\s\S]*?child(?:ren)?:\s*\[[\s\S]*?)?Text\(\s*[']([^'\n\r]+)[']");
     for (final bm in buttonRegex.allMatches(content)) {
       final btnType = bm.group(1)!;
       final btnLabel = bm.group(2)!.trim();
       if (curY > frameY + frameHeight - 80) break;
+      if (elements.any((e) => e.props['originalCodeText'] == btnLabel)) continue;
 
+      final isRetroAlert = btnLabel.contains('GAME OVER') || btnLabel.contains('CONTINUE');
       elements.add(
         DeckElement(
           id: 'btn_${DateTime.now().microsecondsSinceEpoch}_${elements.length}',
           type: ElementType.shape,
-          name: '버튼: $btnLabel ($btnType)',
+          name: '버튼 Button: $btnLabel ($btnType)',
           x: frameX + 24,
           y: curY,
           width: contentWidth,
@@ -326,15 +477,15 @@ class FlutterProjectParser {
           boxStyle: DeckBoxStyle(
             backgroundColor: btnType.contains('Outlined') || btnType.contains('Text')
                 ? Colors.transparent
-                : const Color(0xFF0052FF),
-            borderColor: const Color(0xFF0052FF),
-            borderWidth: btnType.contains('Outlined') ? 1.5 : 0,
+                : (isRetroAlert ? const Color(0xFFFF0055) : const Color(0xFF0052FF)),
+            borderColor: isRetroAlert ? const Color(0xFFFFEA00) : const Color(0xFF0052FF),
+            borderWidth: btnType.contains('Outlined') ? 1.5 : (isRetroAlert ? 2.0 : 0),
             borderRadius: 12.0,
             padding: 12.0,
           ),
           textStyle: DeckTextStyle(
             color: btnType.contains('Outlined') || btnType.contains('Text')
-                ? const Color(0xFF0052FF)
+                ? (isDark ? Colors.white : const Color(0xFF0052FF))
                 : Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: 14,
@@ -347,10 +498,46 @@ class FlutterProjectParser {
           },
         ),
       );
-      curY += 56.0;
+      curY += 54.0;
     }
 
-    // 5. Extract Icons
+    // Custom Game Container Action Button (e.g. PRESS START, SUMMON, PULL)
+    if (content.contains('PRESS START') && !elements.any((e) => e.props['originalCodeText'] == 'PRESS START')) {
+      if (curY <= frameY + frameHeight - 80) {
+        elements.add(
+          DeckElement(
+            id: 'btn_press_start_${DateTime.now().microsecondsSinceEpoch}',
+            type: ElementType.shape,
+            name: '레트로 액션 버튼: PRESS START',
+            x: frameX + 24,
+            y: curY,
+            width: contentWidth,
+            height: 54,
+            boxStyle: DeckBoxStyle(
+              backgroundColor: const Color(0xFFFF0055),
+              borderColor: const Color(0xFFFFEA00),
+              borderWidth: 2.5,
+              borderRadius: 14.0,
+              padding: 14.0,
+              hasShadow: true,
+            ),
+            textStyle: DeckTextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w900,
+              fontSize: 14,
+            ),
+            props: {
+              'title': '▶ PRESS START',
+              'sourceFilePath': file.path,
+              'originalCodeText': 'PRESS START',
+            },
+          ),
+        );
+        curY += 60.0;
+      }
+    }
+
+    // 7. Extract Icons
     final iconRegex = RegExp(r"Icon\s*\(\s*Icons\.([a-zA-Z0-9_]+)");
     for (final im in iconRegex.allMatches(content)) {
       final iconName = im.group(1)!;
@@ -365,7 +552,7 @@ class FlutterProjectParser {
           y: curY,
           width: 48,
           height: 48,
-          textStyle: DeckTextStyle(color: const Color(0xFF0052FF), fontSize: 28),
+          textStyle: DeckTextStyle(color: const Color(0xFF00E5FF), fontSize: 28),
           props: {
             'icon': iconName,
             'title': '',
@@ -378,7 +565,7 @@ class FlutterProjectParser {
       break;
     }
 
-    // 6. Source Spec Card (Figma Right-side Information Panel)
+    // 8. Source Spec Card (Figma Right-side Information Panel)
     elements.add(
       DeckElement(
         id: 'source_spec_${DateTime.now().microsecondsSinceEpoch}',
@@ -428,7 +615,9 @@ class FlutterProjectParser {
         final current = (elem.props['title'] ?? elem.props['meta'] ?? elem.name).toString().trim();
 
         if (filePath != null && original != null && original.isNotEmpty && current.isNotEmpty && original != current) {
-          fileModifications.putIfAbsent(filePath, () => {})[original] = current;
+          // Clean title if it contains leading symbols added during parse (like ▶)
+          final cleanCurrent = current.replaceFirst(RegExp(r'^[▶\s]+'), '');
+          fileModifications.putIfAbsent(filePath, () => {})[original] = cleanCurrent;
         }
       }
     }

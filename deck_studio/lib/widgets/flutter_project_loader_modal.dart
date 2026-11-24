@@ -23,6 +23,7 @@ class _FlutterProjectLoaderModalState extends State<FlutterProjectLoaderModal> {
 
   // Recent sample projects list
   final List<String> _sampleProjects = [
+    r'D:\097.flutter_project\jumpjump',
     r'D:\097.flutter_project\average_down_calculator',
     r'D:\097.flutter_project\zeropass',
     r'D:\097.flutter_project\korea_history_quiz',
