@@ -971,14 +971,15 @@ def make_slide_05():
 # ==============================================================
 # SLIDE 06: Wireframe & Screen Spec with Proportional Fit
 def make_slide_06():
-    # Sophisticated obsidian dark background matching UI showcase slides
-    base = Image.new('RGB', (W, H), (15, 23, 42))
+    # Consistent Pristine White Deck Background matching Slides 01, 02, 03, 04, 05, 07, 11
+    base = Image.new('RGB', (W, H), (248, 250, 252))
     draw = ImageDraw.Draw(base)
     
-    for gx in range(0, W, 40):
-        draw.line([(gx, 0), (gx, H)], fill=(23, 33, 56), width=1)
-    for gy in range(0, H, 40):
-        draw.line([(0, gy), (W, gy)], fill=(23, 33, 56), width=1)
+    # Soft modern structural guidelines (subtle light blueprint grid)
+    for gx in range(0, W, 48):
+        draw.line([(gx, 0), (gx, H)], fill=(241, 245, 249), width=1)
+    for gy in range(0, H, 48):
+        draw.line([(0, gy), (W, gy)], fill=(241, 245, 249), width=1)
         
     draw_slide_header(
         draw, 
@@ -987,20 +988,20 @@ def make_slide_06():
         title_black="태블릿(16:10) & 모바일(9:16) 규격 분할, ", 
         title_blue="섹션별 실물 와이어프레임 & 핵심 인터랙션", 
         subtitle_kr="D:\\102_1.codebridgex\\MES Solution Website Structure 251229 실물 설계서 원본 비율과 4대 영역별 기능 인터랙션 상세 명세",
-        dark_mode=True
+        dark_mode=False
     )
     
     # -------------------------------------------------------------
     # 4 High-Density Columns tailored to screen aspect ratios:
-    # Col 0: Tablet Land (16:10 wide) -> w=440
-    # Col 1: Phone Production -> w=400
-    # Col 2: Phone Quality -> w=400
-    # Col 3: Phone Process -> w=400
-    # Total = 440 + 3*400 + 3*26 = 1640 + 78 = 1718 (fits W=1920 with margin 101)
+    # Col 0: Tablet Land (16:10 wide) -> w=436
+    # Col 1: Phone Production -> w=405
+    # Col 2: Phone Quality -> w=405
+    # Col 3: Phone Process -> w=405
+    # Total = 436 + 3*405 + 3*24 = 436 + 1215 + 72 = 1723 (margin = 98px)
     # -------------------------------------------------------------
     wf_specs = [
         {
-            "col_w": 440,
+            "col_w": 436,
             "title": "01. 태블릿 종합 대시보드",
             "ratio_tag": "16:10 가로형 (5120x3200)",
             "device": "10-inch 현장 관제 태블릿",
@@ -1013,7 +1014,7 @@ def make_slide_06():
             ]
         },
         {
-            "col_w": 400,
+            "col_w": 405,
             "title": "02. 모바일 생산 공정관리",
             "ratio_tag": "9:16 세로형 (1242x2208)",
             "device": "작업자 스마트폰 / 핸드헬드",
@@ -1026,7 +1027,7 @@ def make_slide_06():
             ]
         },
         {
-            "col_w": 400,
+            "col_w": 405,
             "title": "03. 모바일 품질 보증/검사",
             "ratio_tag": "9:16 세로형 (1242x2208)",
             "device": "품질 검사관 전용 단말",
@@ -1039,7 +1040,7 @@ def make_slide_06():
             ]
         },
         {
-            "col_w": 400,
+            "col_w": 405,
             "title": "04. 공정 기준정보(라우팅)",
             "ratio_tag": "9:16 세로형 (2484x4416)",
             "device": "생산기술 엔지니어 단말",
@@ -1055,37 +1056,92 @@ def make_slide_06():
     
     top_y = 205
     card_h = 805
-    gap = 26
+    gap = 24
+    curr_x = 98
     
-    curr_x = 100
     for idx, item in enumerate(wf_specs):
         cw = item["col_w"]
         
-        # Outer Glass Card with clean rounded border
-        draw.rounded_rectangle([curr_x, top_y, curr_x + cw, top_y + card_h], radius=16, fill=(24, 34, 52), outline=(51, 65, 85), width=1)
+        # 1. Main Column Card (White with soft border and subtle depth)
+        draw.rounded_rectangle(
+            [curr_x, top_y, curr_x + cw, top_y + card_h], 
+            radius=16, 
+            fill=(255, 255, 255), 
+            outline=(226, 232, 240), 
+            width=1
+        )
         
-        # Badge & Header
-        draw_pill_badge(draw, left_x=curr_x + 18, cy=top_y + 26, text=item["ratio_tag"], font=get_font(9.5, 'bold'), theme='cyan', dark_mode=True, pad_x=8, height=22)
-        draw.text((curr_x + cw - 18, top_y + 26), item["device"], font=get_font(10.5, 'medium'), fill=(148, 163, 184), anchor='rm')
+        # Top Accent Highlight Stripe
+        draw.rounded_rectangle(
+            [curr_x + 16, top_y, curr_x + cw - 16, top_y + 4],
+            radius=2,
+            fill=(0, 81, 255) if idx == 0 else (59, 130, 246)
+        )
         
-        draw.text((curr_x + 18, top_y + 56), item["title"], font=get_font(15, 'bold'), fill=(255, 255, 255))
-        draw.text((curr_x + 18, top_y + 80), item["desc"], font=get_font(10.5, 'medium'), fill=(148, 163, 184))
+        # Badge & Device Header
+        draw_pill_badge(draw, left_x=curr_x + 18, cy=top_y + 26, text=item["ratio_tag"], font=get_font(9.5, 'bold'), theme='blue', dark_mode=False, pad_x=8, height=22)
+        draw.text((curr_x + cw - 18, top_y + 26), item["device"], font=get_font(10.5, 'medium'), fill=(100, 116, 139), anchor='rm')
         
-        # 1. Wireframe Screen Container (Dedicated White Backdrop with Crisp Contrast)
+        # Column Title & Subtitle
+        draw.text((curr_x + 18, top_y + 54), item["title"], font=get_font(15, 'bold'), fill=(15, 23, 42))
+        draw.text((curr_x + 18, top_y + 78), item["desc"], font=get_font(10.5, 'medium'), fill=(100, 116, 139))
+        
+        # 2. Wireframe Screen Container (Crisp White Backdrop with clean border)
         frame_x = curr_x + 14
-        frame_y = top_y + 104
+        frame_y = top_y + 102
         frame_w = cw - 28
-        frame_h = 360  # Expanded height for maximum text legibility
+        frame_h = 360  # Dedicated viewport area
         
-        # Pure White Backdrop for Crisp Blueprint Clarity
-        draw.rounded_rectangle([frame_x, frame_y, frame_x + frame_w, frame_y + frame_h], radius=10, fill=(255, 255, 255), outline=(56, 189, 248) if idx==0 else (71, 85, 105), width=1)
+        # Viewport Outer Container
+        draw.rounded_rectangle(
+            [frame_x, frame_y, frame_x + frame_w, frame_y + frame_h], 
+            radius=10, 
+            fill=(248, 250, 252), 
+            outline=(219, 234, 254) if idx == 0 else (226, 232, 240), 
+            width=1
+        )
         
+        # Load and cleanly fit wireframe image
         fpath = os.path.join(MOCKUP_DIR, item["fname"])
         if os.path.exists(fpath):
             wf_img = Image.open(fpath).convert('RGB')
+            sw, sh = wf_img.size
+            
+            # Auto-crop bottom and top empty white margins so the content is tightly focused
+            thresh = 242
+            # top
+            crop_top = 0
+            for y in range(0, sh):
+                if any(wf_img.getpixel((x, y))[0] < thresh for x in range(0, sw, 4)):
+                    crop_top = max(0, y - 8)
+                    break
+            # bottom
+            crop_bot = sh
+            for y in range(sh - 1, -1, -1):
+                if any(wf_img.getpixel((x, y))[0] < thresh for x in range(0, sw, 4)):
+                    crop_bot = min(sh, y + 14)
+                    break
+            # left
+            crop_left = 0
+            for x in range(0, sw):
+                if any(wf_img.getpixel((x, y))[0] < thresh for y in range(crop_top, crop_bot, 4)):
+                    crop_left = max(0, x - 8)
+                    break
+            # right
+            crop_right = sw
+            for x in range(sw - 1, -1, -1):
+                if any(wf_img.getpixel((x, y))[0] < thresh for y in range(crop_top, crop_bot, 4)):
+                    crop_right = min(sw, x + 8)
+                    break
+                    
+            if crop_right > crop_left and crop_bot > crop_top:
+                wf_img = wf_img.crop((crop_left, crop_top, crop_right, crop_bot))
+                
             src_w, src_h = wf_img.size
-            avail_w = frame_w - 8
-            avail_h = frame_h - 8
+            avail_w = frame_w - 12
+            avail_h = frame_h - 12
+            
+            # Scale to fit available viewport cleanly
             scale = min(avail_w / src_w, avail_h / src_h)
             target_w = int(round(src_w * scale))
             target_h = int(round(src_h * scale))
@@ -1093,39 +1149,68 @@ def make_slide_06():
             
             paste_x = frame_x + (frame_w - target_w) // 2
             paste_y = frame_y + (frame_h - target_h) // 2
+            
+            # Subtle card backdrop behind the wireframe sheet
+            draw.rounded_rectangle(
+                [paste_x - 2, paste_y - 2, paste_x + target_w + 2, paste_y + target_h + 2], 
+                radius=6, 
+                fill=(255, 255, 255), 
+                outline=(203, 213, 225), 
+                width=1
+            )
             base.paste(wf_resized, (paste_x, paste_y))
-            draw.rounded_rectangle([paste_x - 1, paste_y - 1, paste_x + target_w + 1, paste_y + target_h + 1], radius=4, outline=(226, 232, 240), width=1)
+            draw.rounded_rectangle(
+                [paste_x - 1, paste_y - 1, paste_x + target_w + 1, paste_y + target_h + 1], 
+                radius=4, 
+                outline=(226, 232, 240), 
+                width=1
+            )
                 
-        # 2. Key Interaction Specifications Zone (Below Image)
-        inter_y = frame_y + frame_h + 16
-        draw.line([(curr_x + 16, inter_y), (curr_x + cw - 16, inter_y)], fill=(40, 53, 72), width=1)
+        # 3. Key Interaction Specifications Zone (Below Image)
+        inter_y = frame_y + frame_h + 14
+        draw.line([(curr_x + 16, inter_y), (curr_x + cw - 16, inter_y)], fill=(241, 245, 249), width=1)
         
-        draw_pill_badge(draw, left_x=curr_x + 18, cy=inter_y + 18, text="FUNCTION & INTERACTION SPEC", font=get_font(9, 'bold'), theme='blue', dark_mode=True, pad_x=8, height=20)
+        draw_pill_badge(draw, left_x=curr_x + 18, cy=inter_y + 18, text="FUNCTION & INTERACTION SPEC", font=get_font(9, 'bold'), theme='blue', dark_mode=False, pad_x=8, height=20)
         
         by = inter_y + 36
         for f_idx, (f_name, f_desc) in enumerate(item["interactions"]):
-            # Small pill tag
-            draw.rounded_rectangle([curr_x + 16, by, curr_x + cw - 16, by + 82], radius=8, fill=(18, 25, 38), outline=(37, 49, 68), width=1)
+            # Small interaction spec card
+            draw.rounded_rectangle(
+                [curr_x + 16, by, curr_x + cw - 16, by + 82], 
+                radius=8, 
+                fill=(248, 250, 252), 
+                outline=(226, 232, 240), 
+                width=1
+            )
+            
+            # Left accent highlight on item card
+            draw.rounded_rectangle(
+                [curr_x + 16, by, curr_x + 19, by + 82],
+                radius=1,
+                fill=(0, 81, 255) if idx == 0 else (59, 130, 246)
+            )
             
             # Bullet Number Badge
-            draw.ellipse([curr_x + 24, by + 14, curr_x + 40, by + 30], fill=(0, 81, 255))
-            draw.text((curr_x + 32, by + 22), str(f_idx + 1), font=get_font(9.5, 'bold'), fill=(255, 255, 255), anchor='mm')
+            draw.ellipse([curr_x + 26, by + 13, curr_x + 42, by + 29], fill=(0, 81, 255))
+            draw.text((curr_x + 34, by + 21), str(f_idx + 1), font=get_font(9.5, 'bold'), fill=(255, 255, 255), anchor='mm')
             
-            draw.text((curr_x + 48, by + 22), f_name, font=get_font(12, 'bold'), fill=(56, 189, 248), anchor='lm')
+            # Function Title
+            draw.text((curr_x + 50, by + 21), f_name, font=get_font(12, 'bold'), fill=(0, 81, 255), anchor='lm')
             
+            # Function Description lines
             lines = textwrap.wrap(f_desc, width=int(cw * 0.088))
-            ly = by + 40
+            ly = by + 39
             for l in lines[:2]:
-                draw.text((curr_x + 24, ly), l, font=get_font(10.5, 'regular'), fill=(203, 213, 225))
+                draw.text((curr_x + 26, ly), l, font=get_font(10.5, 'regular'), fill=(71, 85, 105))
                 ly += 18
                 
             by += 88
             
         curr_x += cw + gap
 
-    draw_slide_footer(draw, 6, dark_mode=True)
+    draw_slide_footer(draw, 6, dark_mode=False)
     base.save(os.path.join(OUT_DIR, 'slide_06.png'))
-    print("SAVED slide_06.png (Sectioned Wireframes with Exact Ratios & Function Interactions)")
+    print("SAVED slide_06.png (Sectioned Wireframes with Exact Ratios & Function Interactions in White Theme)")
 
 
 def make_slide_07():
