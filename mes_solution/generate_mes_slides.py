@@ -453,11 +453,10 @@ def make_slide_02():
     
     for c_idx, (c_title, c_prob, c_sol) in enumerate(cards_data):
         cy = top_sy + c_idx * (top_card_h + top_gap)
-        # Light blue / gray container card
         draw.rounded_rectangle(
             [100, cy, 100 + top_card_w, cy + top_card_h],
             radius=16,
-            fill=(240, 246, 255),  # Soft blue tinted bg matching user spec
+            fill=(240, 246, 255),
             outline=(219, 234, 254),
             width=1
         )
@@ -466,11 +465,11 @@ def make_slide_02():
         draw.text((130, cy + 16), c_title, font=get_font(17, 'bold'), fill=(15, 23, 42))
         
         # Problem Line
-        draw.text((130, cy + 48), "Problem", font=get_font(13.5, 'bold'), fill=(239, 68, 68)) # Red
+        draw.text((130, cy + 48), "Problem", font=get_font(13.5, 'bold'), fill=(239, 68, 68))
         draw.text((200, cy + 48), c_prob, font=get_font(13, 'medium'), fill=(51, 65, 85))
         
         # Solution Line
-        draw.text((130, cy + 73), "Solution", font=get_font(13.5, 'bold'), fill=(0, 81, 255)) # Vibrant Blue
+        draw.text((130, cy + 73), "Solution", font=get_font(13.5, 'bold'), fill=(0, 81, 255))
         draw.text((200, cy + 73), c_sol, font=get_font(13, 'medium'), fill=(51, 65, 85))
         
     # -------------------------------------------------------------
@@ -483,61 +482,84 @@ def make_slide_02():
     
     # -------------------------------------------------------------
     # Left Bottom: Donut Chart "정보 파편화 -> 전사 데이터 통합 필요성 강조"
+    # Modern Split Layout: Donut on Left, High-Clarity Legend Pods on Right
     # -------------------------------------------------------------
     lb_x = 100
     draw.rounded_rectangle([lb_x, bot_y, lb_x + bot_w, bot_y + bot_h], radius=20, fill=(240, 246, 255), outline=(219, 234, 254), width=1)
     
     # Card Header
-    draw.text((lb_x + 35, bot_y + 30), "정보 파편화 → 전사 데이터 통합 필요성 강조", font=get_font(19, 'bold'), fill=(15, 23, 42))
+    draw.text((lb_x + 35, bot_y + 28), "정보 파편화 → 전사 데이터 통합 필요성 강조", font=get_font(18.5, 'bold'), fill=(15, 23, 42))
+    draw.text((lb_x + 35, bot_y + 56), "제조 현장 임직원 심층 설문 결과 (복수 응답 애로사항 분석)", font=get_font(11.5, 'medium'), fill=(100, 116, 139))
     
-    # Donut Chart Geometry (Center)
-    dc_x = lb_x + bot_w // 2
-    dc_y = bot_y + 195
-    outer_r = 120
-    inner_r = 50
-    
-    # Data slices:
-    # 1. 기존 시스템 UI 불만족 30% -> Teal (0, 168, 181)
-    # 2. 부서별 엑셀 관리 25% -> Blue (0, 114, 206)
-    # 3. 구축 비용 부담 20% -> Orange (217, 83, 79 or 220, 85, 0)
-    # 4. 수작업 및 유선 보고 25% -> Purple (108, 92, 231)
-    # Total = 100%
+    # Donut Geometry (Left Zone)
+    dc_x = lb_x + 190
+    dc_y = bot_y + 205
+    outer_r = 115
+    inner_r = 58
     
     slices = [
-        # (label, pct, color, text_color, start_ratio, end_ratio)
-        ("구축 비용 부담\n20%", 0.20, (217, 83, 7), (255, 255, 255)),     # Orange/Amber
-        ("수작업 및\n유선 보고\n25%", 0.25, (108, 92, 231), (255, 255, 255)),   # Purple
-        ("기존 시스템\nUI 불만족\n30%", 0.30, (0, 163, 174), (255, 255, 255)),    # Cyan / Teal
-        ("부서별 엑셀 관리\n25%", 0.25, (29, 105, 188), (255, 255, 255)),    # Slate Blue
+        ("기존 시스템 UI 불만족", 30, (0, 163, 174), "복잡한 메뉴 뎁스와 둔탁한 반응 속도"),
+        ("부서별 엑셀 관리 파편화", 25, (29, 105, 188), "데이터 불일치 및 수기 취합 오류 빈번"),
+        ("수작업 및 유선 구두 보고", 25, (108, 92, 231), "실시간 모니터링 불가 및 의사결정 지연"),
+        ("대기업형 구축 비용 부담", 20, (217, 83, 7), "수억 원대 SI 패키지 도입 한계")
     ]
     
-    # Draw Pie slices
-    curr_angle = -45  # Start from top-right so Orange is at top-right
-    for s_label, s_pct, s_col, s_tcol in slices:
-        sweep = s_pct * 360.0
+    # Draw Donut Slices
+    curr_angle = -90  # Start at top 12 o'clock
+    for s_title, s_pct, s_col, s_desc in slices:
+        sweep = (s_pct / 100.0) * 360.0
         draw.pieslice(
             [dc_x - outer_r, dc_y - outer_r, dc_x + outer_r, dc_y + outer_r],
             start=curr_angle,
             end=curr_angle + sweep,
             fill=s_col
         )
+        
+        # Center angle for donut percentage label
+        mid_angle_deg = curr_angle + sweep / 2.0
+        mid_rad = math.radians(mid_angle_deg)
+        label_r = (outer_r + inner_r) / 2.0
+        tx = dc_x + label_r * math.cos(mid_rad)
+        ty = dc_y + label_r * math.sin(mid_rad)
+        
+        # Crisp percentage text inside slice
+        draw.text((tx, ty), f"{s_pct}%", font=get_font(13.5, 'bold'), fill=(255, 255, 255), anchor='mm')
+        
         curr_angle += sweep
         
-    # Cut out inner hole for Donut
-    draw.ellipse([dc_x - inner_r, dc_y - inner_r, dc_x + inner_r, dc_y + inner_r], fill=(240, 246, 255))
+    # Cut out inner hole for Donut with clean center KPI
+    draw.ellipse([dc_x - inner_r, dc_y - inner_r, dc_x + inner_r, dc_y + inner_r], fill=(255, 255, 255), outline=(219, 234, 254), width=1)
+    draw.text((dc_x, dc_y - 12), "핵심 과제", font=get_font(10.5, 'bold'), fill=(100, 116, 139), anchor='mm')
+    draw.text((dc_x, dc_y + 10), "100%", font=get_font(16.5, 'black'), fill=(15, 23, 42), anchor='mm')
     
-    # Draw Slice Labels inside the donut bands
-    # Slice 1 (Orange, ~20%): angle center approx 0 deg
-    draw.text((dc_x + 55, dc_y - 45), "구축 비용 부담\n20%", font=get_font(10.5, 'bold'), fill=(255, 255, 255), align='center')
-    # Slice 2 (Purple, ~25%): angle center approx 80 deg
-    draw.text((dc_x + 35, dc_y + 40), "수작업 및\n유선 보고\n25%", font=get_font(10, 'bold'), fill=(255, 255, 255), align='center')
-    # Slice 3 (Teal, ~30%): angle center approx 190 deg
-    draw.text((dc_x - 90, dc_y + 35), "기존 시스템\nUI 불만족\n30%", font=get_font(10.5, 'bold'), fill=(255, 255, 255), align='center')
-    # Slice 4 (Blue, ~25%): angle center approx 280 deg
-    draw.text((dc_x - 70, dc_y - 45), "부서별 엑셀 관리\n25%", font=get_font(10.5, 'bold'), fill=(255, 255, 255), align='center')
+    # Legend Pods on the Right side of Donut (Clear alignment, no overlaps)
+    leg_x = lb_x + 350
+    leg_w = bot_w - 380
+    leg_sy = bot_y + 92
+    leg_h = 56
+    leg_gap = 12
+    
+    for l_idx, (s_title, s_pct, s_col, s_desc) in enumerate(slices):
+        ly = leg_sy + l_idx * (leg_h + leg_gap)
+        
+        # White container box with subtle border
+        draw.rounded_rectangle([leg_x, ly, leg_x + leg_w, ly + leg_h], radius=8, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+        
+        # Left color bar
+        draw.rounded_rectangle([leg_x, ly, leg_x + 5, ly + leg_h], radius=2, fill=s_col)
+        
+        # Color dot + Title
+        draw.ellipse([leg_x + 16, ly + 14, leg_x + 24, ly + 22], fill=s_col)
+        draw.text((leg_x + 32, ly + 18), s_title, font=get_font(12.5, 'bold'), fill=(15, 23, 42), anchor='lm')
+        
+        # Right percentage badge
+        draw.text((leg_x + leg_w - 16, ly + 18), f"{s_pct}%", font=get_font(14, 'bold'), fill=s_col, anchor='rm')
+        
+        # Subtitle description
+        draw.text((leg_x + 32, ly + 38), s_desc, font=get_font(10, 'regular'), fill=(100, 116, 139), anchor='lm')
 
     # Source footnote
-    draw.text((dc_x, bot_y + bot_h - 28), "(출처: 사내 임직원 조사 및 시장 동향 기반 AI 모델 추정치)", font=get_font(12, 'regular'), fill=(100, 116, 139), anchor='mm')
+    draw.text((lb_x + bot_w // 2, bot_y + bot_h - 22), "(출처: 사내 임직원 조사 및 시장 동향 기반 AI 모델 추정치)", font=get_font(11.5, 'regular'), fill=(100, 116, 139), anchor='mm')
     
     # -------------------------------------------------------------
     # Right Bottom: Horizontal Bar Chart "중소 제조사 CEO가 겪는 가장 큰 관리 애로사항은?"
@@ -546,15 +568,10 @@ def make_slide_02():
     draw.rounded_rectangle([rb_x, bot_y, rb_x + bot_w, bot_y + bot_h], radius=20, fill=(240, 246, 255), outline=(219, 234, 254), width=1)
     
     # Card Header
-    draw.text((rb_x + 35, bot_y + 30), "중소 제조사 CEO가 겪는 가장 큰 관리 애로사항은?", font=get_font(19, 'bold'), fill=(15, 23, 42))
+    draw.text((rb_x + 35, bot_y + 28), "중소 제조사 CEO가 겪는 가장 큰 관리 애로사항은?", font=get_font(18.5, 'bold'), fill=(15, 23, 42))
+    draw.text((rb_x + 35, bot_y + 56), "경영진 120개사 심층 인터뷰 정량 통계 (단위: %)", font=get_font(11.5, 'medium'), fill=(100, 116, 139))
     
     # H-Bar Data
-    # 1. 미수금/자금 흐름: 37.8
-    # 2. 실시간 생산 진척: 26.8
-    # 3. 수주/발주 현황: 12.2
-    # 4. 타 부서 데이터 취합: 12.2
-    # 5. 납기관리: 6.8
-    # 6. 개인정보변경: 4.2
     bar_items = [
         ("미수금/자금 흐름", 37.8),
         ("실시간 생산 진척", 26.8),
@@ -565,14 +582,14 @@ def make_slide_02():
     ]
     
     axis_x = rb_x + 195  # Vertical axis line x
-    bar_sy = bot_y + 85
+    bar_sy = bot_y + 92
     bar_h = 16
-    bar_gap_y = 39
+    bar_gap_y = 38
     max_pct = 40.0
     bar_max_w = 520
     
     # Axis Line
-    draw.line([axis_x, bar_sy - 10, axis_x, bar_sy + len(bar_items) * bar_gap_y - 12], fill=(148, 163, 184), width=2)
+    draw.line([axis_x, bar_sy - 8, axis_x, bar_sy + len(bar_items) * bar_gap_y - 12], fill=(148, 163, 184), width=2)
     
     for b_idx, (b_label, b_val) in enumerate(bar_items):
         by = bar_sy + b_idx * bar_gap_y
@@ -582,18 +599,18 @@ def make_slide_02():
         
         # Bar
         curr_w = int(round((b_val / max_pct) * bar_max_w))
-        # Blue gradient / pill shape
         draw.rounded_rectangle([axis_x + 2, by, axis_x + 2 + curr_w, by + bar_h], radius=bar_h // 2, fill=(43, 127, 255))
         
         # Value text (next to bar)
-        draw.text((axis_x + 2 + curr_w + 12, by + 8), f"{b_val:.1f}", font=get_num_font(14, 'medium'), fill=(30, 41, 59), anchor='lm')
+        draw.text((axis_x + 2 + curr_w + 12, by + 8), f"{b_val:.1f}%", font=get_num_font(13.5, 'bold'), fill=(30, 41, 59), anchor='lm')
         
     # Source footnote
-    draw.text((rb_x + bot_w // 2, bot_y + bot_h - 28), "(출처 : 사내 임직원 조사 및 시장 동향 기반 AI 모델 추정치)", font=get_font(12, 'regular'), fill=(100, 116, 139), anchor='mm')
+    draw.text((rb_x + bot_w // 2, bot_y + bot_h - 22), "(출처 : 사내 임직원 조사 및 시장 동향 기반 AI 모델 추정치)", font=get_font(11.5, 'regular'), fill=(100, 116, 139), anchor='mm')
     
     draw_slide_footer(draw, 2)
     base.save(os.path.join(OUT_DIR, 'slide_02.png'))
     print("SAVED slide_02.png (Research with Exact Problem/Solution & 2 High-Density Charts)")
+
 
 # ==============================================================
 # SLIDE 03: Target Users & Roles (Executive Dashboard vs Field Touch)
