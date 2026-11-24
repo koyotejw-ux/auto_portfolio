@@ -202,15 +202,30 @@ class FlutterProjectParser {
     }
 
     // 1. Frame Container (Page / Modal / BottomSheet Frame)
-    // Find matching real screenshot if exists in project (e.g. screenshot_phone_1080x1920.png)
+    // Find matching real screenshot if exists in project
     String? screenshotPath;
-    final parentDir = file.parent.parent.parent;
-    final phoneScreenshot = File('${parentDir.path}/screenshot_phone_1080x1920.png');
-    final deviceScreenshot = File('${parentDir.path}/screenshot_device.png');
-    if (phoneScreenshot.existsSync()) {
-      screenshotPath = phoneScreenshot.path;
-    } else if (deviceScreenshot.existsSync()) {
-      screenshotPath = deviceScreenshot.path;
+    final projectDir = file.parent.parent.parent;
+    final cleanScreenLower = fileName.toLowerCase().replaceAll('_screen.dart', '').replaceAll('.dart', '');
+
+    // 1. Screen-specific screenshot candidates
+    final screenSpecificCandidates = [
+      '${projectDir.path}/screenshot_mobile_$cleanScreenLower.png',
+      '${projectDir.path}/screenshot_$cleanScreenLower.png',
+      if (cleanScreenLower.contains('verse')) '${projectDir.path}/screenshot_mobile_verse.png',
+      if (cleanScreenLower.contains('verse')) '${projectDir.path}/pixel8_main_loaded.png',
+      if (cleanScreenLower.contains('settings')) '${projectDir.path}/screenshot_mobile_settings.png',
+      if (cleanScreenLower.contains('worship')) '${projectDir.path}/pixel8_worship_verify.png',
+      if (cleanScreenLower.contains('prayer')) '${projectDir.path}/prayer_isolation_pixel8_FINAL.png',
+      if (cleanScreenLower.contains('dialog')) '${projectDir.path}/permission_dialog.png',
+      '${projectDir.path}/screenshot_phone_1080x1920.png',
+      '${projectDir.path}/screenshot_device.png',
+    ];
+
+    for (final c in screenSpecificCandidates) {
+      if (File(c).existsSync()) {
+        screenshotPath = c;
+        break;
+      }
     }
 
     elements.add(

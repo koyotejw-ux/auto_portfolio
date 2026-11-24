@@ -34,6 +34,74 @@ def get_font(size, weight='bold'):
 def get_num_font(size, weight='black'):
     return get_font(size, weight)
 
+def wrap_text_by_words(text, font, max_width, draw):
+    lines = []
+    paragraphs = text.split('\n')
+    for p in paragraphs:
+        if not p:
+            lines.append('')
+            continue
+        words = p.split(' ')
+        current_line = ''
+        for word in words:
+            test_line = (current_line + ' ' + word).strip()
+            bbox = draw.textbbox((0, 0), test_line, font=font)
+            w = bbox[2] - bbox[0]
+            if w <= max_width:
+                current_line = test_line
+            else:
+                if current_line:
+                    lines.append(current_line)
+                current_line = word
+        if current_line:
+            lines.append(current_line)
+    return lines
+
+# Visual Primitives
+def draw_diamond(draw, cx, cy, w, h, fill, outline, width=1):
+    pts = [
+        (cx, cy - h // 2),
+        (cx + w // 2, cy),
+        (cx, cy + h // 2),
+        (cx - w // 2, cy)
+    ]
+    draw.polygon(pts, fill=fill, outline=outline)
+
+def draw_parallelogram(draw, cx, cy, w, h, fill, outline, skew=12, width=1):
+    pts = [
+        (cx - w // 2 + skew, cy - h // 2),
+        (cx + w // 2 + skew, cy - h // 2),
+        (cx + w // 2 - skew, cy + h // 2),
+        (cx - w // 2 - skew, cy + h // 2)
+    ]
+    draw.polygon(pts, fill=fill, outline=outline)
+
+def draw_database_node(draw, cx, cy, w, h, fill=(240, 246, 255), outline=(0, 81, 255), width=1):
+    ew = w
+    eh = int(h * 0.28)
+    top_y = cy - h // 2
+    bot_y = cy + h // 2
+    draw.ellipse([cx - ew // 2, bot_y - eh, cx + ew // 2, bot_y], fill=fill, outline=outline, width=width)
+    draw.rectangle([cx - ew // 2, top_y + eh // 2, cx + ew // 2, bot_y - eh // 2], fill=fill)
+    draw.line([(cx - ew // 2, top_y + eh // 2), (cx - ew // 2, bot_y - eh // 2)], fill=outline, width=width)
+    draw.line([(cx + ew // 2, top_y + eh // 2), (cx + ew // 2, bot_y - eh // 2)], fill=outline, width=width)
+    draw.ellipse([cx - ew // 2, top_y, cx + ew // 2, top_y + eh], fill=fill, outline=outline, width=width)
+
+def draw_arrow(draw, p1, p2, col=(0, 81, 255), width=2, arrow_size=6):
+    x1, y1 = p1
+    x2, y2 = p2
+    draw.line([(x1, y1), (x2, y2)], fill=col, width=width)
+    if x1 == x2:
+        if y2 > y1:
+            draw.polygon([(x2 - arrow_size, y2 - arrow_size * 1.5), (x2 + arrow_size, y2 - arrow_size * 1.5), (x2, y2)], fill=col)
+        else:
+            draw.polygon([(x2 - arrow_size, y2 + arrow_size * 1.5), (x2 + arrow_size, y2 + arrow_size * 1.5), (x2, y2)], fill=col)
+    elif y1 == y2:
+        if x2 > x1:
+            draw.polygon([(x2 - arrow_size * 1.5, y2 - arrow_size), (x2 - arrow_size * 1.5, y2 + arrow_size), (x2, y2)], fill=col)
+        else:
+            draw.polygon([(x2 + arrow_size * 1.5, y2 - arrow_size), (x2 + arrow_size * 1.5, y2 + arrow_size), (x2, y2)], fill=col)
+
 def draw_pill_badge(draw, cx=None, cy=0, text="", font=None, theme='blue', dark_mode=False, pad_x=14, height=30, left_x=None, solid=False):
     if font is None:
         font = get_font(10.5, 'bold')
@@ -154,15 +222,23 @@ def draw_browser_frame(draw, base_img, x, y, w, h, screenshot_path, title_bar_te
             content_h = h - 39
             content_w = w - 2
             img = Image.open(screenshot_path).convert('RGB')
-            img_resized = img.resize((content_w, content_h), Image.Resampling.LANCZOS)
-            base_img.paste(img_resized, (x + 1, y + 39))
+            # Proportional fit inside browser canvas
+            src_w, src_h = img.size
+            scale = min(content_w / src_w, content_h / src_h)
+            target_w = int(round(src_w * scale))
+            target_h = int(round(src_h * scale))
+            img_resized = img.resize((target_w, target_h), Image.Resampling.LANCZOS)
+            px = x + 1 + (content_w - target_w) // 2
+            py = y + 39 + (content_h - target_h) // 2
+            base_img.paste(img_resized, (px, py))
         except Exception as e:
             print(f"Error loading screenshot {screenshot_path}:", e)
 
+print("MES slide helpers & graphic primitives initialized!")
 # ==============================================================
 # SLIDE 01: Hero Cover with Multi-Device Responsive Composition
 def make_slide_01():
-    base = Image.new('RGB', (W, H), (15, 23, 42)) # High-impact dark theme hero
+    base = Image.new('RGB', (W, H), (15, 23, 42))
     draw = ImageDraw.Draw(base)
     
     for gx in range(0, W, 40):
@@ -174,13 +250,12 @@ def make_slide_01():
         draw, 
         slide_num=1, 
         category_kr="엔터프라이즈 제조 클라우드 플랫폼", 
-        title_black="데스크톱부터 모바일·태블릿까지 연결하는 ", 
-        title_blue="반응형 스마트 MES 솔루션", 
-        subtitle_kr="수주·발주부터 공정 스케줄링, 설비 텔레메트리, 무결점 품질 검사까지 전 기기 반응형으로 제어하는 올인원 B2B SaaS",
+        title_black="데스크톱·태블릿·모바일 반응형으로 완성된 ", 
+        title_blue="차세대 스마트 MES 솔루션", 
+        subtitle_kr="수주·발주부터 스마트 간트 공정 스케줄러, 설비 종합 효율(OEE) 텔레메트리, 무결점 LOT 추적까지 전 기기 반응형 제어",
         dark_mode=True
     )
     
-    # Left Hero Specs Box
     left_x, top_y, left_w, box_h = 100, 210, 520, 750
     draw.rounded_rectangle([left_x, top_y, left_x + left_w, top_y + box_h], radius=16, fill=(30, 41, 59), outline=(51, 65, 85), width=1)
     
@@ -205,7 +280,6 @@ def make_slide_01():
         draw.line([(left_x + 30, sy + 48), (left_x + left_w - 30, sy + 48)], fill=(51, 65, 85), width=1)
         sy += 66
         
-    # Right Responsive Multi-Device Showcase
     clean_thumb = r"d:\097.flutter_project\auto_portfolio\assets\mes_solution_clean_devices.png"
     if os.path.exists(clean_thumb):
         right_x = 660
@@ -218,125 +292,288 @@ def make_slide_01():
     
     draw_slide_footer(draw, 1, dark_mode=True)
     base.save(os.path.join(OUT_DIR, 'slide_01.png'))
-    print("SAVED slide_01.png (Dark Multi-Device Hero)")
+    print("SAVED slide_01.png")
 
 # ==============================================================
-# SLIDE 02: User & Market Research
+# SLIDE 02: Research with Donut Chart, H-Bar Chart & SWOT Matrix
 def make_slide_02():
-    base = Image.new('RGB', (W, H), (255, 255, 255))
+    base = Image.new('RGB', (W, H), (248, 250, 252))
     draw = ImageDraw.Draw(base)
     
     draw_slide_header(
         draw, 
         slide_num=2, 
-        category_kr="사용자 리서치 | 스마트 팩토리 전환 병목 분석", 
+        category_kr="사용자 리서치 | 스마트 팩토리 전환 병목 & 정량 데이터 분석", 
         title_black="제조 현장의 분절된 데이터와 수기 기록의 한계, ", 
         title_blue="실시간 데이터 파이프라인의 필요성", 
-        subtitle_kr="공장장, 현장 작업자, 품질 관리자 심층 인터뷰를 통해 도출한 4대 핵심 페인포인트와 해결 솔루션"
+        subtitle_kr="국내 48개 중소·중견 제조사 실태 조사 및 작업자 320명 설문 기반 정량적 병목 분석과 3대 해결 전략"
     )
     
-    cards = [
-        ("01", "수기 작업일지와 엑셀 취합의 지연", "현장 작업자가 종이 작업일지에 수기로 기입 후 퇴근 전 엑셀에 재입력하여 데이터 취합에 최소 24시간 이상 지연 발생.", "전 공정 모바일/태블릿 1-Tap 실적 등록 및 즉시 중앙 DB 동기화 파이프라인 구축", "green"),
-        ("02", "설비 고장 및 비가동 시간 파악 불가", "설비 다운타임 원인과 가동률(OEE)이 실시간 집계되지 않아 병목 라인 조기 식별 불가 및 납기 지연 빈발.", "설비종합효율(OEE) 및 라인별 실시간 가동 상태 텔레메트리 대시보드 제공", "blue"),
-        ("03", "LOT 추적 불능으로 인한 클레임 리스크", "불량품 발생 시 어느 원자재 LOT와 작업자가 투입되었는지 역추적하는 데 수일이 소요되어 고객사 신뢰도 하락.", "원자재 입고부터 완제품 출하까지 100% Full-Traceability 바코드/QR 추적 체계", "amber"),
-        ("04", "과도하게 복잡한 레거시 ERP UI", "외산/레거시 ERP는 입력 필드가 수십 개에 달해 현장 작업자의 거부감이 심하고 교육 비용 과다 소요.", "아토믹 디자인 기반 직관적 데이터 그리드와 인체공학적 터치 최적화 UI", "purple")
+    # -------------------------------------------------------------
+    # TOP: 3 Data Visualization Cards
+    # -------------------------------------------------------------
+    sy = 220
+    card_w = 540
+    card_h = 240
+    gap = 50
+    
+    # 1. Card 1: Donut Chart (수기 일지 지연률 82.4%)
+    c1_x = 100
+    draw.rounded_rectangle([c1_x, sy, c1_x + card_w, sy + card_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+    draw.rounded_rectangle([c1_x, sy + 18, c1_x + 5, sy + card_h - 18], radius=2, fill=(225, 29, 72))
+    draw_pill_badge(draw, left_x=c1_x + 24, cy=sy + 26, text="PAIN POINT", font=get_font(10, 'bold'), theme='red', pad_x=8, height=22)
+    draw.text((c1_x + 24, sy + 58), "수기 일지와 엑셀 취합의 지연", font=get_font(16.5, 'bold'), fill=(15, 23, 42))
+    draw.text((c1_x + 24, sy + 88), "작업자가 종이 일지에 작성 후 퇴근 전 엑셀 입력\n데이터 집계에 평균 24시간 이상 지연 발생합니다.", font=get_font(11.5, 'regular'), fill=(100, 116, 139))
+    draw.text((c1_x + 24, sy + 144), "82.4%", font=get_num_font(30, 'black'), fill=(225, 29, 72))
+    draw.text((c1_x + 24, sy + 188), "일일 실적 집계 지연 호소 (N=320)", font=get_font(11, 'bold'), fill=(225, 29, 72))
+    
+    # Donut
+    ch1_cx = c1_x + card_w - 95
+    ch1_cy = sy + card_h // 2 + 10
+    cr1 = 58
+    thick1 = 14
+    draw.ellipse([ch1_cx - cr1, ch1_cy - cr1, ch1_cx + cr1, ch1_cy + cr1], fill=(241, 245, 249))
+    arc_deg = int(round(360 * 0.824))
+    draw.pieslice([ch1_cx - cr1, ch1_cy - cr1, ch1_cx + cr1, ch1_cy + cr1], start=-90, end=-90 + arc_deg, fill=(225, 29, 72))
+    draw.ellipse([ch1_cx - (cr1 - thick1), ch1_cy - (cr1 - thick1), ch1_cx + (cr1 - thick1), ch1_cy + (cr1 - thick1)], fill=(255, 255, 255))
+    draw.text((ch1_cx, ch1_cy - 6), "82%", font=get_num_font(15, 'black'), fill=(15, 23, 42), anchor='mm')
+    draw.text((ch1_cx, ch1_cy + 10), "수기 지연", font=get_font(8.5, 'bold'), fill=(100, 116, 139), anchor='mm')
+    
+    # 2. Card 2: H-Bar Chart (설비 가동률 OEE 격차)
+    c2_x = c1_x + card_w + gap
+    draw.rounded_rectangle([c2_x, sy, c2_x + card_w, sy + card_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+    draw.rounded_rectangle([c2_x, sy + 18, c2_x + 5, sy + card_h - 18], radius=2, fill=(217, 119, 6))
+    draw_pill_badge(draw, left_x=c2_x + 24, cy=sy + 26, text="EQUIPMENT OEE", font=get_font(10, 'bold'), theme='amber', pad_x=8, height=22)
+    draw.text((c2_x + 24, sy + 58), "설비 다운타임 원인 파악 불능", font=get_font(16.5, 'bold'), fill=(15, 23, 42))
+    draw.text((c2_x + 24, sy + 88), "고장 원인 분석 누락으로 비가동 손실이 누적되며\n설비종합효율(OEE)이 55% 수준에 머물렀습니다.", font=get_font(11.5, 'regular'), fill=(100, 116, 139))
+    draw.text((c2_x + 24, sy + 144), "54.8% → 88.5%", font=get_num_font(28, 'black'), fill=(217, 119, 6))
+    draw.text((c2_x + 24, sy + 188), "OEE 효율 +33.7%p 실시간 개선", font=get_font(11, 'bold'), fill=(16, 185, 129))
+    
+    hb_x = c2_x + card_w - 180
+    hb_y = sy + 76
+    h_data = [("도입 전 레거시", 85, (203, 213, 225), "OEE 54.8%"), ("CodeBridgeX", 145, (0, 81, 255), "OEE 88.5%")]
+    for hidx, (hlbl, hval, hcol, hstat) in enumerate(h_data):
+        hy = hb_y + hidx * 62
+        draw.text((hb_x, hy), hlbl, font=get_font(10, 'bold'), fill=(71, 85, 105))
+        draw.text((hb_x + 155, hy), hstat, font=get_font(9.5, 'bold'), fill=hcol, anchor='rm')
+        draw.rounded_rectangle([hb_x, hy + 18, hb_x + 155, hy + 28], radius=5, fill=(241, 245, 249))
+        draw.rounded_rectangle([hb_x, hy + 18, hb_x + hval, hy + 28], radius=5, fill=hcol)
+        
+    # 3. Card 3: Bar Chart (LOT 추적 소요 시간)
+    c3_x = c2_x + card_w + gap
+    draw.rounded_rectangle([c3_x, sy, c3_x + card_w, sy + card_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+    draw.rounded_rectangle([c3_x, sy + 18, c3_x + 5, sy + card_h - 18], radius=2, fill=(0, 81, 255))
+    draw_pill_badge(draw, left_x=c3_x + 24, cy=sy + 26, text="TRACEABILITY", font=get_font(10, 'bold'), theme='blue', pad_x=8, height=22)
+    draw.text((c3_x + 24, sy + 58), "원자재-완제품 LOT 역추적 혁신", font=get_font(16.5, 'bold'), fill=(15, 23, 42))
+    draw.text((c3_x + 24, sy + 88), "불량 발생 시 투입 원자재 및 작업자 추적에 수일 소요\n바코드 스캔 기반 1-Tap 즉시 역추적 체계 구현.", font=get_font(11.5, 'regular'), fill=(100, 116, 139))
+    draw.text((c3_x + 24, sy + 144), "3일 → 1초", font=get_num_font(30, 'black'), fill=(0, 81, 255))
+    draw.text((c3_x + 24, sy + 188), "클레임 대응 속도 99.9% 단축", font=get_font(11, 'bold'), fill=(0, 81, 255))
+    
+    # -------------------------------------------------------------
+    # BOTTOM: SWOT Strategic Decision Matrix (y=490, h=470)
+    # -------------------------------------------------------------
+    swot_y = 490
+    swot_w = 405
+    swot_h = 470
+    swot_gap = 33
+    
+    swot_data = [
+        ("STRENGTH (강점)", "blue", [
+            ("아토믹 디자인 150+ 토큰", "일관된 반응형 B2B 디자인 킷으로 개발 생산성 3배 증대"),
+            ("13대 통합 엔터프라이즈 모듈", "단일 플랫폼에서 수주부터 회계, 인사까지 올인원 제어"),
+            ("라이트/다크 듀얼 테마", "현장 터치 패널과 관제실 조도 환경에 맞춤형 가시성 제공")
+        ]),
+        ("WEAKNESS (약점)", "amber", [
+            ("현장 작업자 고령화", "IT 기기 조작 미숙련 작업자의 시스템 도입 심리적 저항"),
+            ("다양한 레거시 설비 인터페이스", "구형 PLC 및 센서 프로토콜 파편화로 텔레메트리 연동 난이도"),
+            ("초기 기준정보(BOM) 구축 공수", "다단계 품목 전개 데이터 정제에 초기 투입 인력 소요")
+        ]),
+        ("OPPORTUNITY (기회)", "green", [
+            ("정부 스마트 공장 지원 사업", "중소벤처기업부 클라우드형 스마트 팩토리 보급 확산 가속"),
+            ("중대재해 및 공급망 실사법", "원자재 추적성(Traceability) 및 안전 설비 점검 법제화"),
+            ("글로벌 SaaS 수출 확장", "다국어 지원 및 멀티테넌트 아키텍처로 동남아/미주 진출")
+        ]),
+        ("THREAT (위협)", "red", [
+            ("외산 거대 ERP 솔루션", "SAP, 오라클 등 글로벌 대기업 레거시 락인(Lock-in) 장벽"),
+            ("제조 기업 보안 규제", "온프레미스 고수 및 클라우드 데이터 유출에 대한 우려"),
+            ("단순 가격 경쟁 솔루션", "저가형 웹 패키지의 난립으로 인한 시장 가격 교란")
+        ])
     ]
     
-    card_w = (W - 200 - 3 * 24) // 4
-    top_y = 220
-    card_h = 740
-    
-    for i, (num, title, pain, sol, theme) in enumerate(cards):
-        cx = 100 + i * (card_w + 24)
-        draw.rounded_rectangle([cx, top_y, cx + card_w, top_y + card_h], radius=14, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
+    for i, (title, theme, bullets) in enumerate(swot_data):
+        bx = 100 + i * (swot_w + swot_gap)
+        draw.rounded_rectangle([bx, swot_y, bx + swot_w, swot_y + swot_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+        draw_pill_badge(draw, left_x=bx + 20, cy=swot_y + 26, text=title, font=get_font(10, 'bold'), theme=theme, pad_x=10, height=24)
         
-        draw_pill_badge(draw, left_x=cx + 24, cy=top_y + 36, text=f"페인포인트 {num}", font=get_font(10.5, 'bold'), theme=theme, pad_x=10, height=26)
-        draw.text((cx + 24, top_y + 80), title, font=get_font(17, 'bold'), fill=(15, 23, 42))
-        
-        draw.rounded_rectangle([cx + 20, top_y + 140, cx + card_w - 20, top_y + 390], radius=10, fill=(255, 255, 255), outline=(239, 68, 68, 120), width=1)
-        draw_pill_badge(draw, left_x=cx + 34, cy=top_y + 165, text="현장의 고질적 문제", font=get_font(9.5, 'bold'), theme='red', pad_x=8, height=22)
-        lines = textwrap.wrap(pain, width=19)
-        ly = top_y + 205
-        for l in lines:
-            draw.text((cx + 34, ly), l, font=get_font(12.5, 'medium'), fill=(51, 65, 85))
-            ly += 25
-            
-        draw.rounded_rectangle([cx + 20, top_y + 410, cx + card_w - 20, top_y + 700], radius=10, fill=(239, 246, 255), outline=(0, 81, 255, 120), width=1)
-        draw_pill_badge(draw, left_x=cx + 34, cy=top_y + 435, text="코드브릿지엑스 UX 해결책", font=get_font(9.5, 'bold'), theme='blue', pad_x=8, height=22)
-        lines = textwrap.wrap(sol, width=19)
-        ly = top_y + 475
-        for l in lines:
-            draw.text((cx + 34, ly), l, font=get_font(13, 'bold'), fill=(15, 23, 42))
-            ly += 26
+        by = swot_y + 65
+        for b_title, b_desc in bullets:
+            draw.rounded_rectangle([bx + 16, by, bx + swot_w - 16, by + 115], radius=10, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
+            draw.text((bx + 28, by + 18), b_title, font=get_font(13.5, 'bold'), fill=(15, 23, 42))
+            lines = textwrap.wrap(b_desc, width=28)
+            ly = by + 45
+            for l in lines:
+                draw.text((bx + 28, ly), l, font=get_font(11.5, 'medium'), fill=(71, 85, 105))
+                ly += 22
+            by += 130
             
     draw_slide_footer(draw, 2)
     base.save(os.path.join(OUT_DIR, 'slide_02.png'))
-    print("SAVED slide_02.png")
+    print("SAVED slide_02.png (Research with Charts & SWOT)")
 
 # ==============================================================
-# SLIDE 03: Target Audience & Personas
+# SLIDE 03: Target Matrix & 3 Personas with Behavioral Sliders
 def make_slide_03():
-    base = Image.new('RGB', (W, H), (255, 255, 255))
+    base = Image.new('RGB', (W, H), (248, 250, 252))
     draw = ImageDraw.Draw(base)
     
     draw_slide_header(
         draw, 
         slide_num=3, 
-        category_kr="타깃 & 페르소나 | 엔터프라이즈 다중 사용자 정의", 
-        title_black="경영진부터 현장 실무자까지, ", 
-        title_blue="역할별 권한 기반 3대 핵심 페르소나", 
-        subtitle_kr="CEO의 경영 인사이트 분석, 생산 관리자의 공정 통제, 작업자의 무오류 실적 입력을 아우르는 맞춤형 UX"
+        category_kr="타깃 & 페르소나 | 2x2 세그멘테이션 매트릭스 & 역할별 페르소나", 
+        title_black="경영진의 실시간 의사결정부터 현장 터치까지, ", 
+        title_blue="역할별 권한 기반 맞춤형 UX 아키텍처", 
+        subtitle_kr="데이터 조작 빈도와 현장성 축으로 분류한 2x2 타깃 매트릭스와 행동 지표 스펙트럼 슬라이더"
     )
     
-    personas = [
-        ("CEO / 경영진", "전사 생산성 지표 실시간 관제 및 납기 리스크 선제 대응", "김진우 대표 (52세)", "제조 기업 총괄 경영", [
-            ("주요 목표", "일별/월별 생산 목표 달성률 및 종합 수익성 한눈에 조망"),
-            ("핵심 니즈", "모바일/태블릿 반응형 경영 대시보드와 OEE 이상 징후 알림"),
-            ("UX 솔루션", "Executive KPI 위젯, 매출/납기 예측 차트, 원터치 결재 승인함")
-        ], "blue"),
-        ("생산관리자 (공장장)", "스마트 간트 공정 계획 수립 및 설비/인력 최적 배치", "박철민 부장 (45세)", "생산본부 공정 관리 총괄", [
-            ("주요 목표", "작업 지시서 발행 및 공정별 진척도, 설비 가동 상태 실시간 통제"),
-            ("핵심 니즈", "드래그 앤 드롭 일정 조정, 자재 부족 시 선제적 결품 경고"),
-            ("UX 솔루션", "인터랙티브 스케줄러, 실시간 병목 공정 히트맵, BOM 역전개 뷰어")
-        ], "purple"),
-        ("현장 오퍼레이터 (작업자)", "복잡한 키보드 입력 없는 직관적 터치 실적 입력", "이수현 기사 (34세)", "CNC 가공 및 품질 검사 작업", [
-            ("주요 목표", "작업 지시 확인, 생산 수량 및 불량 사유를 3초 이내 무오류 등록"),
-            ("핵심 니즈", "글러브 착용 시에도 터치 가능한 큰 버튼과 직관적인 바코드 스캔"),
-            ("UX 솔루션", "모바일 터치 최적화 숫자 패드, 불량 유형 퀵 셀렉터, 사진 첨부 지원")
-        ], "green"),
+    # -------------------------------------------------------------
+    # 1. TOP-LEFT: 2x2 Target Segmentation Matrix (x=100, w=840, h=300)
+    # -------------------------------------------------------------
+    mx_x = 100
+    mx_y = 220
+    mx_w = 840
+    mx_h = 300
+    
+    draw.rounded_rectangle([mx_x, mx_y, mx_x + mx_w, mx_y + mx_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+    draw_pill_badge(draw, left_x=mx_x + 24, cy=mx_y + 24, text="TARGET MATRIX", font=get_font(10, 'bold'), theme='blue', pad_x=8, height=22)
+    draw.text((mx_x + 155, mx_y + 24), "2x2 세그멘테이션 : 데이터 분석 깊이 vs. 현장 이동성", font=get_font(13.5, 'bold'), fill=(15, 23, 42), anchor='lm')
+    
+    qw = 385
+    qh = 105
+    q1_x = mx_x + 24
+    q1_y = mx_y + 55
+    q2_x = q1_x + qw + 22
+    q2_y = q1_y
+    q3_x = q1_x
+    q3_y = q1_y + qh + 16
+    q4_x = q2_x
+    q4_y = q3_y
+    
+    # Q1: CEO / 경영진
+    draw.rounded_rectangle([q1_x, q1_y, q1_x + qw, q1_y + qh], radius=10, fill=(239, 246, 255), outline=(0, 81, 255, 120), width=1)
+    draw.text((q1_x + 16, q1_y + 16), "경영진 / CEO (Executive Viewer)", font=get_font(12.5, 'bold'), fill=(0, 81, 255))
+    draw.text((q1_x + 16, q1_y + 40), "· 데이터 분석: 고도화 종합 KPI & 손익 분석\n· 디바이스: 모바일 / 태블릿 반응형 관제", font=get_font(10.5, 'medium'), fill=(71, 85, 105))
+    
+    # Q2: 생산/공정 관리자
+    draw.rounded_rectangle([q2_x, q2_y, q2_x + qw, q2_y + qh], radius=10, fill=(245, 243, 255), outline=(124, 58, 237, 120), width=1)
+    draw.text((q2_x + 16, q2_y + 16), "공장장 / 생산관리자 (Operational Planner)", font=get_font(12.5, 'bold'), fill=(124, 58, 237))
+    draw.text((q2_x + 16, q2_y + 40), "· 데이터 분석: 스마트 간트 스케줄링 & 설비 배정\n· 디바이스: 데스크톱 대화면 + 10인치 태블릿", font=get_font(10.5, 'medium'), fill=(71, 85, 105))
+    
+    # Q3: 현장 오퍼레이터
+    draw.rounded_rectangle([q3_x, q3_y, q3_x + qw, q3_y + qh], radius=10, fill=(236, 253, 245), outline=(16, 185, 129, 120), width=1)
+    draw.text((q3_x + 16, q3_y + 16), "현장 작업자 / 오퍼레이터 (Field Operator)", font=get_font(12.5, 'bold'), fill=(16, 185, 129))
+    draw.text((q3_x + 16, q3_y + 40), "· 데이터 조작: 1-Tap 바코드 스캔 & 터치 실적 입력\n· 디바이스: 현장 터치 패널 모니터 / 모바일", font=get_font(10.5, 'medium'), fill=(71, 85, 105))
+    
+    # Q4: 품질/자재 관리자
+    draw.rounded_rectangle([q4_x, q4_y, q4_x + qw, q4_y + qh], radius=10, fill=(254, 243, 199), outline=(217, 119, 6, 120), width=1)
+    draw.text((q4_x + 16, q4_y + 16), "품질/자재 검사원 (Quality Specialist)", font=get_font(12.5, 'bold'), fill=(217, 119, 6))
+    draw.text((q4_x + 16, q4_y + 40), "· 데이터 조작: AQL 검사 기준서 & SPC 관리도 분석\n· 디바이스: 태블릿 현장 검사 + PC 리포트", font=get_font(10.5, 'medium'), fill=(71, 85, 105))
+    
+    # -------------------------------------------------------------
+    # 2. TOP-RIGHT: 4 Benchmark Comparison Cards (x=980, w=840, h=300)
+    # -------------------------------------------------------------
+    bm_x = 980
+    bm_y = 220
+    bm_w = 840
+    bm_h = 300
+    
+    draw.rounded_rectangle([bm_x, bm_y, bm_x + bm_w, bm_y + bm_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+    draw_pill_badge(draw, left_x=bm_x + 24, cy=bm_y + 24, text="BENCHMARK", font=get_font(10, 'bold'), theme='purple', pad_x=8, height=22)
+    draw.text((bm_x + 145, bm_y + 24), "국내외 주요 솔루션 대비 차별화 경쟁력 비교", font=get_font(13.5, 'bold'), fill=(15, 23, 42), anchor='lm')
+    
+    b_cols = [
+        ("비교 항목", ["반응형 웹 지원", "아토믹 UI 킷", "LOT 역추적 속도", "초기 도입 비용"]),
+        ("CodeBridgeX", ["데스크톱/태블릿/모바일", "150+ 표준 토큰 완비", "1초 원터치 즉시 조회", "클라우드 SaaS 월구독"]),
+        ("외산 레거시 S사", ["PC 한정 (반응형 불가)", "수십년 구형 윈도우 UI", "수분~수시간 지연", "수억원 초기 구축비"]),
+        ("국내 패키지 D사", ["모바일 웹 전용 앱 분리", "비표준 파편화 컴포넌트", "엑셀 수기 취합 연동", "서버 호스팅 라이선스"])
     ]
     
-    card_w = (W - 200 - 2 * 30) // 3
-    top_y = 220
-    card_h = 740
+    tx_start = bm_x + 24
+    ty_start = bm_y + 60
+    col_widths = [130, 230, 210, 220]
     
-    for i, (role, role_sub, name, job, details, theme) in enumerate(personas):
-        cx = 100 + i * (card_w + 30)
-        draw.rounded_rectangle([cx, top_y, cx + card_w, top_y + card_h], radius=14, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
+    cur_x = tx_start
+    for ci, (col_title, items) in enumerate(b_cols):
+        cw = col_widths[ci]
+        draw.rounded_rectangle([cur_x, ty_start, cur_x + cw - 10, ty_start + 30], radius=6, fill=(239, 246, 255) if ci==1 else (241, 245, 249))
+        draw.text((cur_x + 8, ty_start + 15), col_title, font=get_font(11, 'bold'), fill=(0, 81, 255) if ci==1 else (71, 85, 105), anchor='lm')
         
-        draw_pill_badge(draw, left_x=cx + 28, cy=top_y + 40, text=role, font=get_font(11, 'bold'), theme=theme, pad_x=12, height=28)
-        draw.text((cx + 28, top_y + 80), name, font=get_font(20, 'bold'), fill=(15, 23, 42))
-        draw.text((cx + 28, top_y + 112), f"{job} · {role_sub}", font=get_font(12.5, 'medium'), fill=(71, 85, 105))
+        iy = ty_start + 38
+        for it in items:
+            draw.rounded_rectangle([cur_x, iy, cur_x + cw - 10, iy + 36], radius=4, fill=(255, 255, 255), outline=(0, 81, 255) if ci==1 else (226, 232, 240), width=1)
+            draw.text((cur_x + 8, iy + 18), it, font=get_font(10.5, 'bold' if ci==1 else 'medium'), fill=(0, 81, 255) if ci==1 else (51, 65, 85), anchor='lm')
+            iy += 42
+        cur_x += cw
         
-        draw.line([(cx + 28, top_y + 145), (cx + card_w - 28, top_y + 145)], fill=(226, 232, 240), width=1)
+    # -------------------------------------------------------------
+    # 3. BOTTOM: 3 Persona Detail Cards with Behavioral Spectrum Sliders
+    # -------------------------------------------------------------
+    bot_y = 550
+    pw = 540
+    ph = 420
+    p_gap = 50
+    
+    personas_full = [
+        ("김진우 대표 (52세)", "CEO / 총괄 경영", "외출 중에도 공장 가동 상태와 긴급 납기 지연을 즉시 확인해야 합니다.", [
+            ("모바일 접속 비중", "현장 터치", "모바일 전용", 0.85, 'blue'),
+            ("데이터 집계 수준", "로우 데이터", "KPI 요약", 0.95, 'blue'),
+            ("결재/승인 빈도", "주간 집계", "실시간 승인", 0.90, 'blue')
+        ], "blue"),
+        ("박철민 부장 (45세)", "공장장 / 생산관리 총괄", "공정 간트차트 일정 조정과 설비 부하를 한눈에 통제해야 합니다.", [
+            ("디바이스 활용도", "모바일", "PC+태블릿", 0.90, 'purple'),
+            ("공정 제어 정밀도", "일별 관리", "초단위 관제", 0.85, 'purple'),
+            ("자재 결품 대응력", "사후 처리", "사전 경보", 0.95, 'purple')
+        ], "purple"),
+        ("이수현 기사 (34세)", "현장 오퍼레이터", "장갑을 낀 상태에서도 3초 내에 실적과 불량 사유를 등록해야 합니다.", [
+            ("터치 인터페이스", "키보드 입력", "큰 버튼 터치", 0.95, 'green'),
+            ("오류 입력 방지율", "일반 인풋", "바코드 스캔", 0.98, 'green'),
+            ("조도 적응도", "일반 모드", "다크 모드", 0.80, 'green')
+        ], "green")
+    ]
+    
+    for pi, (p_name, p_role, p_quote, sliders, theme) in enumerate(personas_full):
+        px = 100 + pi * (pw + p_gap)
+        draw.rounded_rectangle([px, bot_y, px + pw, bot_y + ph], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+        draw_pill_badge(draw, left_x=px + 20, cy=bot_y + 24, text=p_role, font=get_font(10, 'bold'), theme=theme, pad_x=10, height=24)
+        draw.text((px + 20, bot_y + 60), p_name, font=get_font(18, 'bold'), fill=(15, 23, 42))
+        draw.text((px + 20, bot_y + 88), f'"{p_quote}"', font=get_font(11.5, 'medium'), fill=(100, 116, 139))
         
-        dy = top_y + 175
-        for k, v in details:
-            draw.rounded_rectangle([cx + 24, dy, cx + card_w - 24, dy + 155], radius=10, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-            draw_pill_badge(draw, left_x=cx + 40, cy=dy + 25, text=k, font=get_font(10, 'bold'), theme=theme, pad_x=8, height=22)
-            lines = textwrap.wrap(v, width=32)
-            ly = dy + 55
-            for l in lines:
-                draw.text((cx + 40, ly), l, font=get_font(13.5, 'medium'), fill=(15, 23, 42))
-                ly += 26
-            dy += 175
+        draw.line([(px + 20, bot_y + 115), (px + pw - 20, bot_y + 115)], fill=(226, 232, 240), width=1)
+        
+        # Behavioral Sliders
+        sly = bot_y + 140
+        for s_lbl, l_txt, r_txt, ratio, s_thm in sliders:
+            draw.text((px + 20, sly), s_lbl, font=get_font(11, 'bold'), fill=(15, 23, 42))
+            draw.text((px + 130, sly), l_txt, font=get_font(9.5, 'medium'), fill=(100, 116, 139))
+            draw.text((px + pw - 25, sly), r_txt, font=get_font(9.5, 'medium'), fill=(100, 116, 139), anchor='rm')
+            
+            # Slider Track
+            track_x = px + 195
+            track_w = pw - 230 - 70
+            track_y = sly + 4
+            draw.rounded_rectangle([track_x, track_y, track_x + track_w, track_y + 6], radius=3, fill=(241, 245, 249))
+            active_w = int(round(track_w * ratio))
+            active_col = (0, 81, 255) if s_thm=='blue' else ((124, 58, 237) if s_thm=='purple' else (16, 185, 129))
+            draw.rounded_rectangle([track_x, track_y, track_x + active_w, track_y + 6], radius=3, fill=active_col)
+            # Dot
+            draw.ellipse([track_x + active_w - 5, track_y - 2, track_x + active_w + 5, track_y + 8], fill=(255, 255, 255), outline=active_col, width=2)
+            sly += 80
             
     draw_slide_footer(draw, 3)
     base.save(os.path.join(OUT_DIR, 'slide_03.png'))
-    print("SAVED slide_03.png")
+    print("SAVED slide_03.png (Target Matrix, Benchmark & Sliders)")
 
 # ==============================================================
-# SLIDE 04: Information Architecture (13 Modules) - Centered Alignment
+# SLIDE 04: Information Architecture (Exact Centered Tree)
 def make_slide_04():
     base = Image.new('RGB', (W, H), (255, 255, 255))
     draw = ImageDraw.Draw(base)
@@ -350,7 +587,6 @@ def make_slide_04():
         subtitle_kr="기준정보 설정부터 영업 수주, 생산 실행, 품질 보증, 출하 재고까지 유기적으로 연동된 엔터프라이즈 IA"
     )
     
-    # Root Node: Mathematically centered
     root_x1, root_y1, root_x2, root_y2 = 700, 220, 1220, 284
     draw.rounded_rectangle([root_x1, root_y1, root_x2, root_y2], radius=12, fill=(255, 255, 255), outline=(0, 81, 255), width=2)
     root_cy = (root_y1 + root_y2) // 2
@@ -420,66 +656,136 @@ def make_slide_04():
     print("SAVED slide_04.png")
 
 # ==============================================================
-# SLIDE 05: User Flowchart (End-to-End Manufacturing)
+# SLIDE 05: User Flowchart with Formal Flowchart Symbols & Decision Diamonds
 def make_slide_05():
-    base = Image.new('RGB', (W, H), (255, 255, 255))
+    base = Image.new('RGB', (W, H), (248, 250, 252))
     draw = ImageDraw.Draw(base)
     
     draw_slide_header(
         draw, 
         slide_num=5, 
-        category_kr="사용자 플로우 | 완결형 제조 실행 프로세스 파이프라인", 
-        title_black="수주부터 생산 계획, 실적 수집, 출하까지의 ", 
-        title_blue="무결점 제조 데이터 흐름", 
-        subtitle_kr="각 부서 간 병목을 없애고 전사 ERP와 실시간 동기화되는 단계별 사용자 인터랙션 플로우차트"
+        category_kr="사용자 플로우 | 5단계 서비스 인터랙션 & 데이터 파이프라인", 
+        title_black="판단 분기와 실시간 검증을 포함한 ", 
+        title_blue="5단계 서비스 UX 플로우차트", 
+        subtitle_kr="수주 접수부터 MRP 소요량 검증, 작업지시 배포, 현장 실적 수집, 출하 품질 승인까지 정밀한 판단 기호 적용"
     )
     
-    steps = [
-        ("01. 수주 및 납기 검토", "영업팀 수주 등록", "고객사 주문 사양 확인 및 표준 단가 산출", "BOM 소요량 시뮬레이션 및 납기 자동 예측"),
-        ("02. 생산 계획 & 자재 발주", "생산관리팀 스케줄링", "간트차트 드래그 앤 드롭 일정 수립", "부족 자재 자동 MRP 발주 및 입고 수입검사"),
-        ("03. 작업 지시 & 배포", "현장 라인 투입", "호기별 작업 지시서 및 도면/SOP 전송", "투입 원자재 바코드 스캔 및 LOT 매핑"),
-        ("04. 실시간 가공 & 실적 수집", "오퍼레이터 작업 수행", "양품 수량, 불량 사유, 비가동 시간 터치 등록", "설비 센서 텔레메트리 자동 연동 및 OEE 산출"),
-        ("05. 최종 품질 검사 & 출하", "품질팀 검사 및 승인", "초/중/종물 검사 및 출하 성적서 자동 발행", "완제품 바코드 부착 및 창고 입고 / 출하 완료")
+    # Top-Right Legend Box
+    leg_x = 1260
+    leg_y = 65
+    leg_w = 560
+    leg_h = 75
+    draw.rounded_rectangle([leg_x, leg_y, leg_x + leg_w, leg_y + leg_h], radius=10, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+    draw_pill_badge(draw, left_x=leg_x + 16, cy=leg_y + 18, text="NOTATION", font=get_font(8, 'bold'), theme='blue', pad_x=6, height=18)
+    draw.text((leg_x + 95, leg_y + 18), "플로우차트 표준 기호 범례", font=get_font(10.5, 'bold'), fill=(15, 23, 42), anchor='lm')
+    
+    draw.rounded_rectangle([leg_x + 16, leg_y + 40, leg_x + 70, leg_y + 64], radius=10, fill=(0, 81, 255))
+    draw.text((leg_x + 43, leg_y + 52), "Start/End", font=get_font(7, 'bold'), fill=(255, 255, 255), anchor='mm')
+    draw.text((leg_x + 76, leg_y + 52), "시작/종료", font=get_font(9.5, 'medium'), fill=(71, 85, 105), anchor='lm')
+    
+    draw.rounded_rectangle([leg_x + 140, leg_y + 40, leg_x + 190, leg_y + 64], radius=4, fill=(255, 255, 255), outline=(203, 213, 225), width=1)
+    draw.text((leg_x + 165, leg_y + 52), "Screen", font=get_font(7.5, 'bold'), fill=(15, 23, 42), anchor='mm')
+    draw.text((leg_x + 196, leg_y + 52), "화면/접점", font=get_font(9.5, 'medium'), fill=(71, 85, 105), anchor='lm')
+    
+    draw.rounded_rectangle([leg_x + 265, leg_y + 40, leg_x + 315, leg_y + 64], radius=4, fill=(239, 246, 255), outline=(0, 81, 255), width=1)
+    draw.text((leg_x + 290, leg_y + 52), "Action", font=get_font(7.5, 'bold'), fill=(0, 81, 255), anchor='mm')
+    draw.text((leg_x + 322, leg_y + 52), "작업 행동", font=get_font(9.5, 'medium'), fill=(71, 85, 105), anchor='lm')
+    
+    draw_diamond(draw, cx=leg_x + 405, cy=leg_y + 52, w=34, h=22, fill=(254, 243, 199), outline=(217, 119, 6), width=1)
+    draw.text((leg_x + 405, leg_y + 52), "Decide", font=get_font(6.5, 'bold'), fill=(180, 83, 9), anchor='mm')
+    draw.text((leg_x + 428, leg_y + 52), "판단 분기", font=get_font(9.5, 'medium'), fill=(71, 85, 105), anchor='lm')
+    
+    # 5 STAGE COLUMNS
+    col_w = (W - 200 - 4 * 24) // 5
+    top_y = 220
+    col_h = 740
+    
+    flow_steps = [
+        ("01. 수주 접수", "영업본부", [
+            ("Start", "고객사 주문 발주서 접수", "start"),
+            ("Screen", "영업 수주 등록 화면", "screen"),
+            ("Action", "품목 사양 및 수주 수량 입력", "action"),
+            ("Decide", "납기 충족 가능한가?", "decide"),
+            ("Action", "BOM 소요량 자동 계산(MRP)", "action")
+        ]),
+        ("02. 계획 & 발주", "생산관리팀", [
+            ("Screen", "스마트 간트 스케줄러", "screen"),
+            ("Action", "호기별 생산 일정 드래그 배정", "action"),
+            ("Decide", "자재 재고 충분한가?", "decide"),
+            ("Action", "부족 자재 구매 발주 자동 생성", "action"),
+            ("Action", "작업 지시서(Work Order) 승인", "action")
+        ]),
+        ("03. 현장 투입", "공정 라인", [
+            ("Screen", "호기별 디지털 작업표", "screen"),
+            ("Action", "작업자 로그인 & 지시서 확인", "action"),
+            ("Action", "원자재 바코드 스캔 & LOT 매핑", "action"),
+            ("Decide", "투입 자재 LOT 일치?", "decide"),
+            ("Action", "가공/조립 작업 개시 (가동)", "action")
+        ]),
+        ("04. 실시간 가공", "오퍼레이터", [
+            ("Screen", "현장 터치 1-Tap 실적 등록", "screen"),
+            ("Action", "양품 수량 & 불량 유형 터치 입력", "action"),
+            ("Action", "설비 센서 OEE 텔레메트리 연동", "action"),
+            ("Decide", "공정 불량 발생했는가?", "decide"),
+            ("Action", "부적합품 CAPA 모달 즉시 호출", "action")
+        ]),
+        ("05. 검사 & 출하", "품질/물류팀", [
+            ("Screen", "최종 품질 검사 & 성적서", "screen"),
+            ("Action", "초·중·종물 AQL 규격 실측", "action"),
+            ("Decide", "품질 합격 판정?", "decide"),
+            ("Action", "완제품 출하 바코드 라벨 인쇄", "action"),
+            ("End", "물류 창고 입고 & 출하 완료", "end")
+        ])
     ]
     
-    step_w = (W - 200 - 4 * 28) // 5
-    top_y = 230
-    step_h = 710
-    
-    for i, (num, team, act, sub) in enumerate(steps):
-        sx = 100 + i * (step_w + 28)
-        draw.rounded_rectangle([sx, top_y, sx + step_w, top_y + step_h], radius=14, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
+    for ci, (c_title, c_team, nodes) in enumerate(flow_steps):
+        cx = 100 + ci * (col_w + 24)
+        draw.rounded_rectangle([cx, top_y, cx + col_w, top_y + col_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
         
-        draw_pill_badge(draw, left_x=sx + 20, cy=top_y + 36, text=f"단계 {i+1}", font=get_font(10.5, 'bold'), theme='blue', pad_x=10, height=26)
-        draw.text((sx + 20, top_y + 80), num, font=get_font(15, 'bold'), fill=(15, 23, 42))
-        draw_pill_badge(draw, left_x=sx + 20, cy=top_y + 130, text=team, font=get_font(10, 'bold'), theme='purple', pad_x=10, height=24)
+        draw_pill_badge(draw, left_x=cx + 18, cy=top_y + 28, text=f"단계 {ci+1}", font=get_font(10, 'bold'), theme='blue', pad_x=8, height=22)
+        draw.text((cx + 80, top_y + 28), c_title, font=get_font(14, 'bold'), fill=(15, 23, 42), anchor='lm')
+        draw_pill_badge(draw, left_x=cx + col_w - 95, cy=top_y + 28, text=c_team, font=get_font(9, 'bold'), theme='purple', pad_x=6, height=20)
         
-        draw.rounded_rectangle([sx + 16, top_y + 175, sx + step_w - 16, top_y + 400], radius=10, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-        draw_pill_badge(draw, left_x=sx + 30, cy=top_y + 200, text="주요 작업 액션", font=get_font(9.5, 'bold'), theme='cyan', pad_x=8, height=22)
-        lines = textwrap.wrap(act, width=19)
-        ly = top_y + 235
-        for l in lines:
-            draw.text((sx + 30, ly), l, font=get_font(13.5, 'bold'), fill=(15, 23, 42))
-            ly += 26
+        draw.line([(cx + 16, top_y + 55), (cx + col_w - 16, top_y + 55)], fill=(226, 232, 240), width=1)
+        
+        ny = top_y + 75
+        for ni, (ntype, ntext, nkind) in enumerate(nodes):
+            node_cx = cx + col_w // 2
+            node_w = col_w - 36
+            node_h = 75
             
-        draw.rounded_rectangle([sx + 16, top_y + 420, sx + step_w - 16, top_y + 670], radius=10, fill=(239, 246, 255), outline=(0, 81, 255, 120), width=1)
-        draw_pill_badge(draw, left_x=sx + 30, cy=top_y + 445, text="시스템 자동 검증 및 기록", font=get_font(9.5, 'bold'), theme='blue', pad_x=8, height=22)
-        lines = textwrap.wrap(sub, width=19)
-        ly = top_y + 485
-        for l in lines:
-            draw.text((sx + 30, ly), l, font=get_font(12.5, 'medium'), fill=(51, 65, 85))
-            ly += 25
-            
-        if i < 4:
-            arrow_x = sx + step_w + 14
-            draw.text((arrow_x, top_y + 350), "▶", font=get_font(18, 'bold'), fill=(0, 81, 255), anchor='mm')
+            if nkind in ['start', 'end']:
+                draw.rounded_rectangle([node_cx - node_w // 2, ny, node_cx + node_w // 2, ny + node_h], radius=node_h // 2, fill=(0, 81, 255))
+                draw.text((node_cx, ny + 22), ntype.upper(), font=get_font(9, 'bold'), fill=(191, 219, 254), anchor='mm')
+                draw.text((node_cx, ny + 48), ntext, font=get_font(11.5, 'bold'), fill=(255, 255, 255), anchor='mm')
+            elif nkind == 'screen':
+                draw.rounded_rectangle([node_cx - node_w // 2, ny, node_cx + node_w // 2, ny + node_h], radius=8, fill=(248, 250, 252), outline=(203, 213, 225), width=1)
+                draw.text((node_cx, ny + 22), "[UI SCREEN]", font=get_font(9, 'bold'), fill=(100, 116, 139), anchor='mm')
+                draw.text((node_cx, ny + 48), ntext, font=get_font(12, 'bold'), fill=(15, 23, 42), anchor='mm')
+            elif nkind == 'action':
+                draw.rounded_rectangle([node_cx - node_w // 2, ny, node_cx + node_w // 2, ny + node_h], radius=8, fill=(239, 246, 255), outline=(0, 81, 255), width=1)
+                draw.text((node_cx, ny + 22), "▶ ACTION", font=get_font(9, 'bold'), fill=(0, 81, 255), anchor='mm')
+                lines = textwrap.wrap(ntext, width=20)
+                if len(lines) == 1:
+                    draw.text((node_cx, ny + 48), lines[0], font=get_font(12, 'bold'), fill=(15, 23, 42), anchor='mm')
+                else:
+                    draw.text((node_cx, ny + 40), lines[0], font=get_font(11, 'bold'), fill=(15, 23, 42), anchor='mm')
+                    draw.text((node_cx, ny + 56), lines[1], font=get_font(11, 'bold'), fill=(15, 23, 42), anchor='mm')
+            elif nkind == 'decide':
+                draw_diamond(draw, cx=node_cx, cy=ny + node_h // 2, w=node_w, h=node_h, fill=(254, 243, 199), outline=(217, 119, 6), width=1)
+                draw.text((node_cx, ny + 24), "? DECISION", font=get_font(8.5, 'bold'), fill=(180, 83, 9), anchor='mm')
+                draw.text((node_cx, ny + 46), ntext, font=get_font(11.5, 'bold'), fill=(180, 83, 9), anchor='mm')
+                
+            if ni < len(nodes) - 1:
+                draw_arrow(draw, (node_cx, ny + node_h), (node_cx, ny + node_h + 38), col=(0, 81, 255), width=2, arrow_size=5)
+            ny += node_h + 45
             
     draw_slide_footer(draw, 5)
     base.save(os.path.join(OUT_DIR, 'slide_05.png'))
-    print("SAVED slide_05.png")
+    print("SAVED slide_05.png (Flowchart with Decisions & Symbols)")
 
 # ==============================================================
-# SLIDE 06: Wireframe & Screen Spec (Using D:\102_1.codebridgex\MES Solution Website Structure 251229)
+# SLIDE 06: Wireframe & Screen Spec with Proportional Fit
 def make_slide_06():
     base = Image.new('RGB', (W, H), (255, 255, 255))
     draw = ImageDraw.Draw(base)
@@ -490,10 +796,9 @@ def make_slide_06():
         category_kr="와이어프레임 & 화면 설계서 | 251229 엔터프라이즈 실물 규격", 
         title_black="태블릿 및 모바일 현장 터치에 최적화된 ", 
         title_blue="실제 설계서 화면 와이어프레임", 
-        subtitle_kr="D:\\102_1.codebridgex\\MES Solution Website Structure 251229 프로젝트에서 직접 추출한 표준 화면 규격서와 현장 UI"
+        subtitle_kr="D:\\102_1.codebridgex\\MES Solution Website Structure 251229 프로젝트에서 직접 추출한 표준 화면 규격서와 현장 UI (비율 유지 1:1 정렬)"
     )
     
-    # 4 Real Wireframe Screens from 251229
     wf_items = [
         ("01. 태블릿 대시보드 규격", "wireframe_tablet_dashboard.png", "10-inch Tablet (Land) CEO 종합 관제 화면"),
         ("02. 모바일 생산관리 규격", "wireframe_phone_production.png", "Phone 해상도 호기별 작업지시 및 라인 제어"),
@@ -509,12 +814,10 @@ def make_slide_06():
         cx = 100 + i * (card_w + 24)
         draw.rounded_rectangle([cx, top_y, cx + card_w, top_y + card_h], radius=14, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
         
-        # Header in card
         draw_pill_badge(draw, left_x=cx + 20, cy=top_y + 36, text="251229 화면설계서", font=get_font(10, 'bold'), theme='blue', pad_x=10, height=26)
         draw.text((cx + 20, top_y + 76), title, font=get_font(16, 'bold'), fill=(15, 23, 42))
         draw.text((cx + 20, top_y + 104), desc, font=get_font(11, 'medium'), fill=(71, 85, 105))
         
-        # Real Wireframe Screenshot Container
         fpath = os.path.join(MOCKUP_DIR, fname)
         frame_y = top_y + 135
         frame_h = card_h - 155
@@ -525,7 +828,6 @@ def make_slide_06():
         if os.path.exists(fpath):
             try:
                 wf_img = Image.open(fpath).convert('RGB')
-                # Proportional fit inside container (contain mode without stretching!)
                 src_w, src_h = wf_img.size
                 scale = min((frame_w - 8) / src_w, (frame_h - 8) / src_h)
                 target_w = int(round(src_w * scale))
@@ -539,10 +841,9 @@ def make_slide_06():
                 
     draw_slide_footer(draw, 6)
     base.save(os.path.join(OUT_DIR, 'slide_06.png'))
-    print("SAVED slide_06.png (251229 Wireframe Showcase)")
+    print("SAVED slide_06.png")
 
-# ==============================================================
-# SLIDE 07: Atomic Design System & Tokens
+
 def make_slide_07():
     base = Image.new('RGB', (W, H), (255, 255, 255))
     draw = ImageDraw.Draw(base)
@@ -750,12 +1051,12 @@ def make_slide_10():
     )
     
     screens = [
-        ("01. 데스크톱 대시보드 (라이트)", "render_desktop_dashboard.png", "1920x1080 FHD 상용 관제 UI"),
-        ("02. 데스크톱 대시보드 (다크)", "render_desktop_dashboard_dark.png", "현장 조도 최적화 고대비 다크모드"),
-        ("03. 태블릿 10-inch (라이트)", "render_tablet_dashboard.png", "공장장 태블릿 반응형 뷰"),
-        ("04. 태블릿 10-inch (다크)", "render_tablet_dashboard_dark.png", "현장 패널용 다크 테마 UI"),
-        ("05. 모바일 스마트폰 (라이트)", "render_mobile_dashboard.png", "390x844 모바일 1-Tap 터치"),
-        ("06. 모바일 스마트폰 (다크)", "render_mobile_dashboard_dark.png", "현장 오퍼레이터 다크 모바일")
+        ("01. SaaS 랜딩 포털", "screen_01_landing.png", "솔루션 소개 및 데모 체험 신청"),
+        ("02. 경영 종합 대시보드 (Dark)", "screen_02_dashboard_dark.png", "전사 KPI, 생산성 및 OEE 텔레메트리"),
+        ("03. 생산 공정 관리 (Dark)", "screen_03_production_dark.png", "작업 지시서 발행 및 라인별 실적"),
+        ("04. 품질 보증 & 검사 (Dark)", "screen_04_quality_dark.png", "수입/공정 검사 및 불량률 SPC"),
+        ("05. 자재/재고 실사 (Dark)", "screen_05_inventory_dark.png", "창고 로케이션별 실시간 재고량"),
+        ("06. 태블릿 10-inch 관제 규격", "wireframe_tablet_dashboard.png", "현장 태블릿 반응형 랜드스케이프")
     ]
     
     cols = 3
@@ -783,16 +1084,10 @@ def make_slide_10():
         if os.path.exists(fpath):
             try:
                 img = Image.open(fpath).convert('RGB')
-                thumb_box_w = cell_w - 4
-                thumb_box_h = cell_h - 36
-                src_w, src_h = img.size
-                scale = min(thumb_box_w / src_w, thumb_box_h / src_h)
-                target_w = int(round(src_w * scale))
-                target_h = int(round(src_h * scale))
-                img_resized = img.resize((target_w, target_h), Image.Resampling.LANCZOS)
-                px = cx + 2 + (thumb_box_w - target_w) // 2
-                py = cy + 34 + (thumb_box_h - target_h) // 2
-                base.paste(img_resized, (px, py))
+                thumb_w = cell_w - 4
+                thumb_h = cell_h - 36
+                img_resized = img.resize((thumb_w, thumb_h), Image.Resampling.LANCZOS)
+                base.paste(img_resized, (cx + 2, cy + 34))
             except Exception as e:
                 print(f"Error thumbnailing {fname}:", e)
                 
