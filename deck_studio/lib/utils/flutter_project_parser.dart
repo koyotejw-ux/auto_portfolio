@@ -202,6 +202,17 @@ class FlutterProjectParser {
     }
 
     // 1. Frame Container (Page / Modal / BottomSheet Frame)
+    // Find matching real screenshot if exists in project (e.g. screenshot_phone_1080x1920.png)
+    String? screenshotPath;
+    final parentDir = file.parent.parent.parent;
+    final phoneScreenshot = File('${parentDir.path}/screenshot_phone_1080x1920.png');
+    final deviceScreenshot = File('${parentDir.path}/screenshot_device.png');
+    if (phoneScreenshot.existsSync()) {
+      screenshotPath = phoneScreenshot.path;
+    } else if (deviceScreenshot.existsSync()) {
+      screenshotPath = deviceScreenshot.path;
+    }
+
     elements.add(
       DeckElement(
         id: 'frame_${DateTime.now().microsecondsSinceEpoch}',
@@ -229,6 +240,7 @@ class FlutterProjectParser {
           'isFlutterFrame': true,
           'category': category.name,
           'sourceFilePath': file.path,
+          if (screenshotPath != null && category == FlutterComponentCategory.page) 'screenshotPath': screenshotPath,
           if (gradientEnd != null) 'gradientEnd': '#${gradientEnd.value.toRadixString(16)}',
         },
         isComponent: true,

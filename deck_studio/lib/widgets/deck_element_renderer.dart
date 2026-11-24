@@ -78,6 +78,10 @@ class DeckElementRenderer extends StatelessWidget {
         return _buildDonutChart();
       case ElementType.statCard:
         return _buildStatCard();
+      case ElementType.shape:
+        return _buildShapeElement();
+      case ElementType.image:
+        return _buildImageElement();
       default:
         return Container(
           color: Colors.grey.withOpacity(0.1),
@@ -807,17 +811,207 @@ class DeckElementRenderer extends StatelessWidget {
   }
 
   Widget _buildStatCard() {
+    final title = element.props['title'] ?? element.name;
+    final meta = element.props['meta'] ?? '';
+    final bs = element.boxStyle;
+
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.symmetric(horizontal: bs?.padding ?? 12, vertical: 6),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFFE2E8F0)),
+        color: bs?.backgroundColor ?? const Color(0xFF1E1E1E),
+        borderRadius: BorderRadius.circular(bs?.borderRadius ?? 8),
+        border: Border.all(
+          color: bs?.borderColor ?? const Color(0xFFFFD700),
+          width: bs?.borderWidth ?? 1.5,
+        ),
+        boxShadow: bs?.hasShadow == true
+            ? [
+                BoxShadow(
+                  color: (bs?.borderColor ?? Colors.black).withOpacity(0.3),
+                  blurRadius: 8,
+                ),
+              ]
+            : null,
       ),
-      child: Center(
-        child: Text(element.name),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          if (meta.isNotEmpty)
+            Text(
+              meta,
+              style: const TextStyle(
+                color: Color(0xFF00E5FF),
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+        ],
       ),
     );
   }
+
+  Widget _buildShapeElement() {
+    final bs = element.boxStyle;
+    final ts = element.textStyle;
+    final title = element.props['title'] ?? '';
+    final iconName = element.props['icon'] ?? '';
+    final isFlutterFrame = element.props['isFlutterFrame'] == true;
+    final screenshotPath = element.props['screenshotPath'] as String?;
+
+    return Container(
+      decoration: BoxDecoration(
+        color: bs?.backgroundColor ?? Colors.transparent,
+        borderRadius: BorderRadius.circular(bs?.borderRadius ?? 0),
+        border: (bs?.borderWidth ?? 0) > 0
+            ? Border.all(
+                color: bs?.borderColor ?? Colors.transparent,
+                width: bs?.borderWidth ?? 1,
+              )
+            : null,
+        boxShadow: bs?.hasShadow == true
+            ? [
+                BoxShadow(
+                  color: (bs?.borderColor ?? Colors.black).withOpacity(0.35),
+                  blurRadius: 14,
+                  offset: const Offset(0, 4),
+                ),
+              ]
+            : null,
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          // Background screenshot overlay if present
+          if (screenshotPath != null && File(screenshotPath).existsSync())
+            Positioned.fill(
+              child: Opacity(
+                opacity: 0.95,
+                child: Image.file(
+                  File(screenshotPath),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+
+          // Content layout
+          if (title.isNotEmpty || iconName.isNotEmpty)
+            Center(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (iconName.isNotEmpty) ...[
+                    Icon(
+                      _getIconData(iconName),
+                      color: ts?.color ?? Colors.white,
+                      size: ts?.fontSize != null ? ts!.fontSize * 1.3 : 20,
+                    ),
+                    if (title.isNotEmpty) const SizedBox(width: 8),
+                  ],
+                  if (title.isNotEmpty)
+                    Text(
+                      title,
+                      style: TextStyle(
+                        color: ts?.color ?? Colors.white,
+                        fontSize: ts?.fontSize ?? 14,
+                        fontWeight: ts?.fontWeight ?? FontWeight.bold,
+                      ),
+                    ),
+                ],
+              ),
+            ),
+
+          if (isFlutterFrame && (title.isEmpty && iconName.isEmpty && screenshotPath == null))
+            Positioned(
+              top: 10,
+              right: 14,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                decoration: BoxDecoration(
+                  color: (bs?.borderColor ?? const Color(0xFF0052FF)).withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Text(
+                  element.name,
+                  style: TextStyle(
+                    color: bs?.borderColor ?? Colors.white70,
+                    fontSize: 9,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildImageElement() {
+    final imagePath = element.props['imagePath'] as String?;
+    final bs = element.boxStyle;
+
+    if (imagePath != null && File(imagePath).existsSync()) {
+      return Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(bs?.borderRadius ?? 12),
+          border: (bs?.borderWidth ?? 0) > 0
+              ? Border.all(color: bs?.borderColor ?? Colors.transparent, width: bs!.borderWidth)
+              : null,
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: Image.file(
+          File(imagePath),
+          fit: BoxFit.cover,
+        ),
+      );
+    }
+
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color(0xFF23123D),
+        borderRadius: BorderRadius.circular(bs?.borderRadius ?? 12),
+      ),
+      child: const Center(
+        child: Icon(Icons.image, color: Colors.white38, size: 40),
+      ),
+    );
+  }
+
+  IconData _getIconData(String name) {
+    switch (name) {
+      case 'play_arrow':
+      case 'play_arrow_rounded':
+        return Icons.play_arrow_rounded;
+      case 'arrow_forward_ios_rounded':
+        return Icons.arrow_forward_ios_rounded;
+      case 'monetization_on':
+      case 'monetization_on_rounded':
+        return Icons.monetization_on_rounded;
+      case 'diamond_rounded':
+        return Icons.diamond_rounded;
+      case 'terrain_rounded':
+        return Icons.terrain_rounded;
+      case 'egg_rounded':
+        return Icons.egg_rounded;
+      case 'menu_book_rounded':
+        return Icons.menu_book_rounded;
+      case 'backpack_rounded':
+        return Icons.backpack_rounded;
+      case 'storefront_rounded':
+        return Icons.storefront_rounded;
+      default:
+        return Icons.widgets;
+    }
+  }
+
 }
 
