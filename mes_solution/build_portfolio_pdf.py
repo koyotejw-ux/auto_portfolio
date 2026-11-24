@@ -19,3 +19,4 @@ if images:
     print(f"Generated PDF: {pdf_path} ({len(images)} slides)")
 else:
     print("No images found to generate PDF!")
+

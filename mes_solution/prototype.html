@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CodeBridgeX MES Solution - Live Interactive Web App</title>
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+      background: #0f172a;
+      display: flex;
+      flex-direction: column;
+    }
+    /* Floating Header */
+    .proto-bar {
+      height: 52px;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      z-index: 100;
+    }
+    .proto-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .btn-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #94a3b8;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .btn-back:hover {
+      background: rgba(0, 81, 255, 0.2);
+      border-color: #0051FF;
+      color: #60a5fa;
+    }
+    .proto-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: #34d399;
+      font-size: 11.5px;
+      font-weight: 700;
+    }
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 8px #10b981;
+    }
+    .proto-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #f8fafc;
+    }
+    .proto-center {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .nav-btn {
+      padding: 6px 12px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #cbd5e1;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .nav-btn:hover, .nav-btn.active {
+      background: #0051FF;
+      border-color: #0051FF;
+      color: #ffffff;
+      box-shadow: 0 0 10px rgba(0, 81, 255, 0.5);
+    }
+    .proto-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .btn-tool {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #e2e8f0;
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .btn-tool:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+    }
+    /* Iframe Container */
+    .frame-container {
+      flex: 1;
+      width: 100%;
+      height: calc(100% - 52px);
+      position: relative;
+      background: #ffffff;
+    }
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <header class="proto-bar">
+    <div class="proto-left">
+      <a href="index.html" class="btn-back">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        <span>슬라이드 덱으로 복귀</span>
+      </a>
+      <div class="proto-badge">
+        <span class="status-dot"></span>
+        <span>실시간 라이브 데모 구동중</span>
+      </div>
+      <span class="proto-title">CodeBridgeX MES Solution (Production Web App)</span>
+    </div>
+
+    <div class="proto-center">
+      <button class="nav-btn active" onclick="loadScreen('landing')">홈 / 랜딩 포털</button>
+      <button class="nav-btn" onclick="loadScreen('dashboard')">경영 대시보드</button>
+      <button class="nav-btn" onclick="loadScreen('leads')">영업 리드 관리</button>
+      <button class="nav-btn" onclick="loadScreen('demo')">데모 체험 모드</button>
+    </div>
+
+    <div class="proto-right">
+      <a href="MES_Solution_Portfolio.pdf" download="CodeBridgeX_MES_Solution_Portfolio.pdf" class="btn-tool">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="7 10 12 15 17 10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+        <span>PDF 다운로드</span>
+      </a>
+      <button class="btn-tool" onclick="reloadFrame()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="23 4 23 10 17 10"></polyline>
+          <polyline points="1 20 1 14 7 14"></polyline>
+          <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+        </svg>
+        <span>새로고침</span>
+      </button>
+      <button class="btn-tool" onclick="toggleFullscreen()">전체화면</button>
+    </div>
+  </header>
+
+  <main class="frame-container">
+    <iframe id="appFrame" src="./app/index.html" title="CodeBridgeX MES Live Application"></iframe>
+  </main>
+
+  <script>
+    const frame = document.getElementById('appFrame');
+    const navBtns = document.querySelectorAll('.nav-btn');
+
+    function setActiveBtn(name) {
+      navBtns.forEach(btn => {
+        if (btn.textContent.includes(name)) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+    }
+
+    function loadScreen(mode) {
+      if (mode === 'landing') {
+        frame.src = './app/index.html';
+        setActiveBtn('랜딩');
+      } else if (mode === 'dashboard') {
+        frame.src = './app/index.html#dashboard';
+        setActiveBtn('대시보드');
+      } else if (mode === 'leads') {
+        frame.src = './app/index.html#leads';
+        setActiveBtn('리드');
+      } else if (mode === 'demo') {
+        frame.src = './app/index.html#demo';
+        setActiveBtn('데모');
+      }
+    }
+
+    function reloadFrame() {
+      frame.contentWindow.location.reload();
+    }
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        document.exitFullscreen().catch(() => {});
+      }
+    }
+  </script>
+</body>
+</html>
