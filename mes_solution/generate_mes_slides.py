@@ -175,7 +175,7 @@ def draw_pill_badge(draw, cx=None, cy=0, text="", font=None, theme='blue', dark_
 
 def draw_slide_header(draw, slide_num, category_kr, title_black, title_blue, subtitle_kr, right_badge=None, dark_mode=False):
     line_col = (40, 53, 72) if dark_mode else (226, 232, 240)
-    draw.line([(100, 52), (1820, 52)], fill=line_col, width=1)
+    draw.line([(100, 48), (1820, 48)], fill=line_col, width=1)
     
     badge_text = f"{slide_num:02d} {category_kr}"
     draw_pill_badge(draw, left_x=100, cy=78, text=badge_text, font=get_font(10.5, 'bold'), theme='blue', dark_mode=dark_mode, pad_x=10, height=26)
@@ -188,11 +188,11 @@ def draw_slide_header(draw, slide_num, category_kr, title_black, title_blue, sub
     w_black = draw.textlength(title_black, font=font_title)
     text_main_col = (255, 255, 255) if dark_mode else (15, 23, 42)
     text_blue_col = (56, 189, 248) if dark_mode else (0, 81, 255)
-    draw.text((100, 116), title_black, font=font_title, fill=text_main_col)
-    draw.text((100 + w_black, 116), title_blue, font=font_title, fill=text_blue_col)
+    draw.text((100, 118), title_black, font=font_title, fill=text_main_col)
+    draw.text((100 + w_black, 118), title_blue, font=font_title, fill=text_blue_col)
     
     sub_col = (148, 163, 184) if dark_mode else (71, 85, 105)
-    draw.text((100, 164), subtitle_kr, font=get_font(14.5, 'regular'), fill=sub_col)
+    draw.text((100, 166), subtitle_kr, font=get_font(14.5, 'regular'), fill=sub_col)
 
 def draw_slide_footer(draw, slide_num, total_slides=12, dark_mode=False):
     line_col = (40, 53, 72) if dark_mode else (226, 232, 240)
@@ -640,40 +640,40 @@ def make_slide_03():
     draw.rounded_rectangle([r1_x, top_sy, r1_x + top_w, top_sy + top_h], radius=16, fill=(240, 246, 255), outline=(219, 234, 254), width=1)
     
     # Avatar badge circle (Executive)
-    draw.ellipse([r1_x + 28, top_sy + 24, r1_x + 76, top_sy + 72], fill=(0, 81, 255))
-    draw.text((r1_x + 52, top_sy + 48), "CEO", font=get_font(12, 'bold'), fill=(255, 255, 255), anchor='mm')
+    draw.ellipse([r1_x + 28, top_sy + 22, r1_x + 76, top_sy + 70], fill=(0, 81, 255))
+    draw.text((r1_x + 52, top_sy + 46), "CEO", font=get_font(12, 'bold'), fill=(255, 255, 255), anchor='mm')
     
-    draw.text((r1_x + 92, top_sy + 28), "공장 총괄 책임자 / 경영진 (Executive)", font=get_font(16.5, 'bold'), fill=(15, 23, 42))
-    draw_pill_badge(draw, left_x=r1_x + 92, cy=top_sy + 60, text="실시간 손익 · 가동률 의사결정", font=get_font(10, 'bold'), theme='blue', pad_x=8, height=22)
+    draw.text((r1_x + 92, top_sy + 25), "공장 총괄 책임자 / 경영진 (Executive)", font=get_font(16.5, 'bold'), fill=(15, 23, 42))
+    draw_pill_badge(draw, left_x=r1_x + 92, cy=top_sy + 63, text="실시간 손익 · 가동률 의사결정", font=get_font(10, 'bold'), theme='blue', pad_x=8, height=22)
     
-    draw.line([(r1_x + 28, top_sy + 88), (r1_x + top_w - 28, top_sy + 88)], fill=(219, 234, 254), width=1)
-    draw.text((r1_x + 28, top_sy + 102), "주요 요구사항 및 페인포인트", font=get_font(12, 'bold'), fill=(0, 81, 255))
+    draw.line([(r1_x + 28, top_sy + 92), (r1_x + top_w - 28, top_sy + 92)], fill=(219, 234, 254), width=1)
+    draw.text((r1_x + 28, top_sy + 106), "주요 요구사항 및 페인포인트", font=get_font(12, 'bold'), fill=(0, 81, 255))
     r1_desc = (
         "· 유선 보고나 엑셀 수기 취합 없이 전 공장의 가동률(OEE) 및 납기 진척률을 1초 만에 확인\n"
         "· 미수금, 매출 실적, 수주 대비 생산 병목 현상을 멀티 디바이스(PC/태블릿)로 실시간 원격 관제\n"
         "· 불필요한 세부 입력 폼 대신 한눈에 파악 가능한 고밀도 KPI 위젯 중심의 인터페이스 선호"
     )
-    draw.text((r1_x + 28, top_sy + 128), r1_desc, font=get_font(11.5, 'regular'), fill=(51, 65, 85))
+    draw.text((r1_x + 28, top_sy + 132), r1_desc, font=get_font(11.5, 'regular'), fill=(51, 65, 85))
     
     # Role 2: 현장 오퍼레이터 / 생산 라인 작업자
     r2_x = r1_x + top_w + top_gap
     draw.rounded_rectangle([r2_x, top_sy, r2_x + top_w, top_sy + top_h], radius=16, fill=(240, 246, 255), outline=(219, 234, 254), width=1)
     
     # Avatar badge circle (Operator)
-    draw.ellipse([r2_x + 28, top_sy + 24, r2_x + 76, top_sy + 72], fill=(16, 185, 129))
-    draw.text((r2_x + 52, top_sy + 48), "OP", font=get_font(12, 'bold'), fill=(255, 255, 255), anchor='mm')
+    draw.ellipse([r2_x + 28, top_sy + 22, r2_x + 76, top_sy + 70], fill=(16, 185, 129))
+    draw.text((r2_x + 52, top_sy + 46), "OP", font=get_font(12, 'bold'), fill=(255, 255, 255), anchor='mm')
     
-    draw.text((r2_x + 92, top_sy + 28), "현장 작업자 / 생산 라인 오퍼레이터 (Field Operator)", font=get_font(16.5, 'bold'), fill=(15, 23, 42))
-    draw_pill_badge(draw, left_x=r2_x + 92, cy=top_sy + 60, text="1-Tap 간편 실적 등록 · 바코드 스캔", font=get_font(10, 'bold'), theme='green', pad_x=8, height=22)
+    draw.text((r2_x + 92, top_sy + 25), "현장 작업자 / 생산 라인 오퍼레이터 (Field Operator)", font=get_font(16.5, 'bold'), fill=(15, 23, 42))
+    draw_pill_badge(draw, left_x=r2_x + 92, cy=top_sy + 63, text="1-Tap 간편 실적 등록 · 바코드 스캔", font=get_font(10, 'bold'), theme='green', pad_x=8, height=22)
     
-    draw.line([(r2_x + 28, top_sy + 88), (r2_x + top_w - 28, top_sy + 88)], fill=(219, 234, 254), width=1)
-    draw.text((r2_x + 28, top_sy + 102), "주요 요구사항 및 페인포인트", font=get_font(12, 'bold'), fill=(16, 185, 129))
+    draw.line([(r2_x + 28, top_sy + 92), (r2_x + top_w - 28, top_sy + 92)], fill=(219, 234, 254), width=1)
+    draw.text((r2_x + 28, top_sy + 106), "주요 요구사항 및 페인포인트", font=get_font(12, 'bold'), fill=(16, 185, 129))
     r2_desc = (
         "· 방진 장갑을 착용한 터치 환경에서도 오입력 없는 48px 이상의 대형 버튼 및 숫자 키패드 지원\n"
         "· 복잡한 텍스트 입력 없이 바코드 스캐너 연동으로 투입 원자재 LOT 매핑 및 작업 개시 즉시 처리\n"
         "· 설비 비가동 및 불량 발생 시 3초 이내에 사유를 선택할 수 있는 간결한 바텀시트 모달 필요"
     )
-    draw.text((r2_x + 28, top_sy + 128), r2_desc, font=get_font(11.5, 'regular'), fill=(51, 65, 85))
+    draw.text((r2_x + 28, top_sy + 132), r2_desc, font=get_font(11.5, 'regular'), fill=(51, 65, 85))
     
     # -------------------------------------------------------------
     # BOTTOM: 2x2 Target Matrix & 4-Way Competitive Benchmark
