@@ -525,8 +525,15 @@ def make_slide_06():
         if os.path.exists(fpath):
             try:
                 wf_img = Image.open(fpath).convert('RGB')
-                wf_resized = wf_img.resize((frame_w - 4, frame_h - 4), Image.Resampling.LANCZOS)
-                base.paste(wf_resized, (cx + 18, frame_y + 2))
+                # Proportional fit inside container (contain mode without stretching!)
+                src_w, src_h = wf_img.size
+                scale = min((frame_w - 8) / src_w, (frame_h - 8) / src_h)
+                target_w = int(round(src_w * scale))
+                target_h = int(round(src_h * scale))
+                wf_resized = wf_img.resize((target_w, target_h), Image.Resampling.LANCZOS)
+                paste_x = cx + 16 + (frame_w - target_w) // 2
+                paste_y = frame_y + (frame_h - target_h) // 2
+                base.paste(wf_resized, (paste_x, paste_y))
             except Exception as e:
                 print(f"Error loading {fname}:", e)
                 
@@ -776,10 +783,16 @@ def make_slide_10():
         if os.path.exists(fpath):
             try:
                 img = Image.open(fpath).convert('RGB')
-                thumb_w = cell_w - 4
-                thumb_h = cell_h - 36
-                img_resized = img.resize((thumb_w, thumb_h), Image.Resampling.LANCZOS)
-                base.paste(img_resized, (cx + 2, cy + 34))
+                thumb_box_w = cell_w - 4
+                thumb_box_h = cell_h - 36
+                src_w, src_h = img.size
+                scale = min(thumb_box_w / src_w, thumb_box_h / src_h)
+                target_w = int(round(src_w * scale))
+                target_h = int(round(src_h * scale))
+                img_resized = img.resize((target_w, target_h), Image.Resampling.LANCZOS)
+                px = cx + 2 + (thumb_box_w - target_w) // 2
+                py = cy + 34 + (thumb_box_h - target_h) // 2
+                base.paste(img_resized, (px, py))
             except Exception as e:
                 print(f"Error thumbnailing {fname}:", e)
                 
