@@ -2025,71 +2025,224 @@ def make_slide_11():
 # ==============================================================
 # SLIDE 12: Live Prototype & Interactive Hub (Dark Mode Finale)
 def make_slide_12():
-    base = Image.new('RGB', (W, H), (15, 23, 42))
-    draw = ImageDraw.Draw(base)
+    # -------------------------------------------------------------
+    # SLIDE 12: GRAND FINALE LIVE INTERACTIVE PROTOTYPE HUB
+    # High-performance enterprise dark obsidian background with subtle grid & ambient glows
+    # -------------------------------------------------------------
+    base = Image.new('RGBA', (W, H), (15, 23, 42, 255))
     
+    # Ambient radial cyan/blue glow behind devices & master launcher
+    glow = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+    gd = ImageDraw.Draw(glow)
+    gd.ellipse([150, 150, 800, 850], fill=(0, 81, 255, 30))
+    gd.ellipse([900, 100, 1800, 950], fill=(6, 182, 212, 25))
+    glow = glow.filter(ImageFilter.GaussianBlur(110))
+    base = Image.alpha_composite(base, glow)
+    
+    draw = ImageDraw.Draw(base)
     for gx in range(0, W, 40):
-        draw.line([(gx, 0), (gx, H)], fill=(23, 33, 56), width=1)
+        draw.line([(gx, 0), (gx, H)], fill=(23, 33, 56, 180), width=1)
     for gy in range(0, H, 40):
-        draw.line([(0, gy), (W, gy)], fill=(23, 33, 56), width=1)
+        draw.line([(0, gy), (W, gy)], fill=(23, 33, 56, 180), width=1)
         
     draw_slide_header(
         draw, 
         slide_num=12, 
-        category_kr="라이브 프로토타입 | 클라우드 MES 웹 인터랙티브 허브", 
-        title_black="지금 바로 웹 브라우저에서 체험하는 ", 
-        title_blue="차세대 스마트 팩토리 MES", 
-        subtitle_kr="포트폴리오 허브 및 인터랙티브 슬라이드 뷰어, 실시간 데모 환경으로 연결되는 원클릭 게이트웨이",
+        category_kr="라이브 인터랙티브 프로토타입 | CLOUD MES WEB ENGINE", 
+        title_black="웹 브라우저에서 바로 조작하는 ", 
+        title_blue="차세대 스마트 팩토리 실시간 시뮬레이터", 
+        subtitle_kr="정적인 슬라이드를 넘어 데스크톱, 10인치 태블릿, 모바일 뷰포트에서 전사 생산·품질 파이프라인을 직접 조작해 보세요.",
         dark_mode=True
     )
     
-    lx, ly, lw, lh = 100, 220, 800, 740
-    draw.rounded_rectangle([lx, ly, lx + lw, ly + lh], radius=16, fill=(30, 41, 59), outline=(51, 65, 85), width=1)
+    # -------------------------------------------------------------
+    # LEFT COLUMN (x=100, w=680): 3D MULTI-DEVICE MOCKUP SHOWCASE + SPEC STRIP
+    # -------------------------------------------------------------
+    lx = 100
+    lw = 680
     
-    draw_pill_badge(draw, left_x=lx + 36, cy=ly + 46, text="프로덕트 런처", font=get_font(11, 'bold'), theme='cyan', dark_mode=True, pad_x=12, height=28)
-    draw.text((lx + 36, ly + 90), "CodeBridgeX Cloud MES Live Demo", font=get_font(24, 'bold'), fill=(255, 255, 255))
-    draw.text((lx + 36, ly + 130), "본 포트폴리오는 실제 배포된 엔터프라이즈 SaaS 아키텍처를 기반으로 제작되었습니다.\n아래 링크 또는 우측 QR 코드를 스캔하여 인터랙티브 뷰어를 즉시 확인하실 수 있습니다.", font=get_font(13.5, 'regular'), fill=(148, 163, 184))
+    # Render Multi-Device Trio Mockup with soft realistic shadow
+    trio_thumb = "assets/mes_hero_device_trio.png"
+    if os.path.exists(trio_thumb):
+        trio_img = Image.open(trio_thumb).convert('RGBA')
+        
+        # Scale to fit upper left zone (w=680, h=560)
+        scale = min(680 / trio_img.width, 560 / trio_img.height)
+        tw = int(round(trio_img.width * scale))
+        th = int(round(trio_img.height * scale))
+        trio_res = trio_img.resize((tw, th), Image.Resampling.LANCZOS)
+        
+        paste_x = lx + (lw - tw) // 2
+        paste_y = 230 + (560 - th) // 2
+        
+        # Ambient drop shadow
+        sh_img = Image.new('RGBA', (tw + 100, th + 100), (0, 0, 0, 0))
+        mask = trio_res.split()[3]
+        black = Image.new('RGBA', trio_res.size, (0, 0, 0, 160))
+        sh_img.paste(black, (50, 50 + 20), mask)
+        sh_filtered = sh_img.filter(ImageFilter.GaussianBlur(32))
+        base.paste(sh_filtered, (paste_x - 50, paste_y - 50), sh_filtered)
+        
+        base.paste(trio_res, (paste_x, paste_y), trio_res)
+        draw = ImageDraw.Draw(base)
+        
+    # Floating C-Symbol App Icon Badge
+    icon_path = "assets/mes_solution_app_icon.png"
+    if os.path.exists(icon_path):
+        ic = Image.open(icon_path).convert('RGBA')
+        ic_w = 68
+        ic_res = ic.resize((ic_w, ic_w), Image.Resampling.LANCZOS)
+        badge_box = Image.new('RGBA', (88, 88), (0, 0, 0, 0))
+        bd = ImageDraw.Draw(badge_box)
+        bd.rounded_rectangle([0, 0, 88, 88], radius=20, fill=(30, 41, 59, 230), outline=(56, 189, 248), width=2)
+        badge_box.paste(ic_res, (10, 10), ic_res)
+        base.paste(badge_box, (lx + 20, 245), badge_box)
+        draw = ImageDraw.Draw(base)
+        
+    # Left Bottom Spec Strip (x=100, y=825, w=680, h=185) - Dark Glass Card
+    draw.rounded_rectangle([lx, 825, lx + lw, 1010], radius=14, fill=(24, 34, 52, 240), outline=(51, 65, 85), width=1)
+    draw_pill_badge(draw, left_x=lx + 20, cy=850, text="RESPONSIVE 3-DEVICE SIMULATOR", font=get_font(9.5, 'bold'), theme='cyan', dark_mode=True, pad_x=10, height=22)
+    draw.text((lx + 285, 850), "FHD 1080p · 4:3 Tablet · 19.5:9 Mobile", font=get_font(10.5, 'medium'), fill=(148, 163, 184), anchor='lm')
     
-    features = [
-        ("반응형 슬라이드 뷰어 (Fit-Screen)", "데스크톱 및 모바일 화면비에 맞춰 12장 슬라이드가 100% 자동 스케일링되는 웹 전용 뷰어"),
-        ("단축키 & 제스처 내비게이션", "키보드 좌우 방향키 및 모바일 스와이프 터치로 페이지를 매끄럽게 탐색하는 인체공학적 UX"),
-        ("고해상도 PDF 다운로드", "오프라인 발표 및 인쇄용 1920×1080 FHD 벡터급 슬라이드 PDF 번들 즉시 다운로드 제공"),
-        ("마스터 포트폴리오 허브 연동", "스마트 물타기 계산기, 대한국사, 체크앤페이와 함께 중앙 허브에 정식 등록된 엔터프라이즈 솔루션")
+    spec_bullets = [
+        ("단일 소스 3단 멀티 폼팩터", "데스크톱 대형 관제판부터 현장 10인치 태블릿, 모바일 뷰포트까지 100% 최적화"),
+        ("13개 표준 비즈니스 모듈", "수주/출고, 간트차트 생산스케줄러, 3단계 품질 게이트, 바코드 LOT 추적 즉시 실행"),
+        ("엔터프라이즈 프라이빗 보안", "데이터 외부 유출 없는 로컬 세션 스토리지 기반 안전한 실시간 가상 데모 지원")
+    ]
+    by = 882
+    for b_title, b_desc in spec_bullets:
+        draw.text((lx + 20, by), f"• {b_title} :", font=get_font(11, 'bold'), fill=(56, 189, 248))
+        draw.text((lx + 185, by), b_desc, font=get_font(10.5, 'regular'), fill=(203, 213, 225))
+        by += 26
+
+    # -------------------------------------------------------------
+    # RIGHT COLUMN (x=810, w=1010): MASTER LAUNCHER + 4 FLOW STEPS + LIVE QR CARD
+    # -------------------------------------------------------------
+    rx = 810
+    rw = 1010
+    proto_entry_url = "https://koyotejw-ux.github.io/auto_portfolio/mes_solution/index.html"
+    
+    # 1. PRIMARY HERO: MASTER LAUNCHER (y=210 to 326, h=116)
+    # Vibrant Cyan/Blue Gradient Card
+    my = 210
+    mh = 116
+    
+    m_glow = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+    mgd = ImageDraw.Draw(m_glow)
+    mgd.rounded_rectangle([rx - 6, my - 2, rx + rw + 6, my + mh + 8], radius=24, fill=(0, 81, 255, 90))
+    m_glow = m_glow.filter(ImageFilter.GaussianBlur(24))
+    base = Image.alpha_composite(base, m_glow)
+    
+    # Linear Gradient (Cyan #0284C7 to Electric Blue #0051FF)
+    import numpy as np
+    t = np.linspace(0, 1, rw, endpoint=True, dtype=np.float32)
+    r_arr = (2 * (1 - t) + 0 * t).astype(np.uint8)
+    g_arr = (132 * (1 - t) + 81 * t).astype(np.uint8)
+    b_arr = (199 * (1 - t) + 255 * t).astype(np.uint8)
+    grad_arr = np.zeros((mh, rw, 4), dtype=np.uint8)
+    grad_arr[:, :, 0] = r_arr
+    grad_arr[:, :, 1] = g_arr
+    grad_arr[:, :, 2] = b_arr
+    grad_arr[:, :, 3] = 255
+    grad_box = Image.fromarray(grad_arr, 'RGBA')
+    
+    grad_mask = Image.new('L', (rw, mh), 0)
+    gmd = ImageDraw.Draw(grad_mask)
+    gmd.rounded_rectangle([0, 0, rw - 1, mh - 1], radius=16, fill=255)
+    base.paste(grad_box, (rx, my), grad_mask)
+    draw = ImageDraw.Draw(base)
+    
+    # Launcher Content
+    badge_w = 145
+    draw.rounded_rectangle([rx + 24, my + 14, rx + 24 + badge_w, my + 36], radius=11, fill=(15, 23, 42, 210), outline=(255, 255, 255, 180), width=1)
+    draw.text((rx + 24 + badge_w // 2, my + 25), "MASTER LAUNCHER", font=get_font(9.5, 'bold'), fill=(56, 189, 248), anchor='mm')
+    
+    draw.text((rx + 24, my + 60), "웹 브라우저에서 MES 전체 솔루션 인터랙티브 실행하기 ↗", font=get_font(18, 'bold'), fill=(255, 255, 255), anchor='lm')
+    draw.text((rx + 24, my + 90), "실시간 텔레메트리 대시보드, 간트 공정 제어, 모바일 바코드 LOT 추적을 즉시 체험하세요.", font=get_font(12, 'medium'), fill=(224, 242, 254), anchor='lm')
+    
+    # Action Button
+    btn_w = 210
+    btn_h = 48
+    btn_rx = rx + rw - btn_w - 24
+    btn_ry = my + (mh - btn_h) // 2
+    draw.rounded_rectangle([btn_rx, btn_ry, btn_rx + btn_w, btn_ry + btn_h], radius=24, fill=(15, 23, 42), outline=(255, 255, 255, 120), width=1)
+    draw.text((btn_rx + btn_w // 2, btn_ry + btn_h // 2), "RUN PROTOTYPE ↗", font=get_font(13.5, 'bold'), fill=(56, 189, 248), anchor='mm')
+    
+    # 2. 4 INTERACTIVE STEP CARDS (y=340 to 700, h=78, sgap=12)
+    step_y_start = 340
+    step_card_h = 78
+    sgap = 12
+    
+    step_items = [
+        ("01. 경영 종합 대시보드 & OEE 관제", "전사 매출·수주 실시간 텔레메트리 관제 및 호기별 가동률(OEE) 위젯 커스텀 조작", "blue"),
+        ("02. 스마트 생산 공정 스케줄러 (Gantt)", "드래그 앤 드롭 작업지시 배정, 공정 간 병목 감지 및 실시간 완료 실적 피드백", "cyan"),
+        ("03. 3단계 품질 게이트 & 실시간 SPC 관리도", "수입·공정·출하 검사 성적서 등록 및 이상 징후 발생 시 1초 내 즉시 라인 비상 정지", "purple"),
+        ("04. 자재/재고 실사 & 1-Tap 바코드 LOT 추적", "창고 로케이션 맵 조회, 선입선출 자재 불출 검증 및 원자재 투입 이력 원클릭 역추적", "green")
     ]
     
-    fy = ly + 210
-    for title, desc in features:
-        draw.rounded_rectangle([lx + 30, fy, lx + lw - 30, fy + 105], radius=10, fill=(15, 23, 42), outline=(51, 65, 85), width=1)
-        draw.text((lx + 46, fy + 20), title, font=get_font(14, 'bold'), fill=(56, 189, 248))
-        draw.text((lx + 46, fy + 48), desc, font=get_font(11.5, 'medium'), fill=(203, 213, 225))
-        fy += 120
+    for idx, (s_title, s_desc, s_theme) in enumerate(step_items):
+        sy = step_y_start + idx * (step_card_h + sgap)
+        draw.rounded_rectangle([rx, sy, rx + rw, sy + step_card_h], radius=12, fill=(24, 34, 52), outline=(51, 65, 85), width=1)
         
-    rx = 940
-    rw = W - rx - 100
-    draw.rounded_rectangle([rx, ly, rx + rw, ly + lh], radius=16, fill=(30, 41, 59), outline=(51, 65, 85), width=1)
+        draw_pill_badge(draw, left_x=rx + 20, cy=sy + 24, text=f"STEP {idx+1:02d}", font=get_font(9, 'bold'), theme=s_theme, dark_mode=True, pad_x=8, height=20, solid=True)
+        draw.text((rx + 98, sy + 24), s_title, font=get_font(13.5, 'bold'), fill=(255, 255, 255), anchor='lm')
+        draw.text((rx + 20, sy + 54), s_desc, font=get_font(11, 'regular'), fill=(148, 163, 184))
+        
+        # Ghost Link Button
+        g_w = 110
+        g_h = 32
+        g_x = rx + rw - g_w - 20
+        g_y = sy + (step_card_h - g_h) // 2
+        draw.rounded_rectangle([g_x, g_y, g_x + g_w, g_y + g_h], radius=6, fill=(15, 23, 42), outline=(56, 189, 248), width=1)
+        draw.text((g_x + g_w // 2, g_y + g_h // 2), "체험하기 ↗", font=get_font(11, 'bold'), fill=(56, 189, 248), anchor='mm')
+        
+    # 3. QR CODE & GITHUB LIVE REPOSITORY CARD (y=705 to 1010, h=305)
+    qr_card_y = 705
+    qr_card_h = 305
+    draw.rounded_rectangle([rx, qr_card_y, rx + rw, qr_card_y + qr_card_h], radius=16, fill=(24, 34, 52), outline=(51, 65, 85), width=1)
     
-    draw_pill_badge(draw, left_x=rx + 36, cy=ly + 46, text="스마트 모바일 접속 QR", font=get_font(11, 'bold'), theme='blue', dark_mode=True, pad_x=12, height=28)
-    draw.text((rx + 36, ly + 90), "스캔하여 포트폴리오 열람", font=get_font(22, 'bold'), fill=(255, 255, 255))
+    # Real crisp QR code
+    try:
+        qr = qrcode.QRCode(version=1, box_size=6, border=2)
+        qr.add_data(proto_entry_url)
+        qr.make(fit=True)
+        qr_img = qr.make_image(fill_color="#0F172A", back_color="#FFFFFF").convert('RGBA')
+        qr_size = 190
+        qr_res = qr_img.resize((qr_size, qr_size), Image.Resampling.LANCZOS)
+        
+        qr_px = rx + 30
+        qr_py = qr_card_y + (qr_card_h - qr_size) // 2
+        
+        # Crisp Pure White Card Container with Cyan Outline
+        draw.rounded_rectangle([qr_px - 10, qr_py - 10, qr_px + qr_size + 10, qr_py + qr_size + 10], radius=14, fill=(255, 255, 255), outline=(56, 189, 248), width=2)
+        base.paste(qr_res, (qr_px, qr_py), qr_res)
+        draw = ImageDraw.Draw(base)
+    except Exception as e:
+        print("QR Error:", e)
+        qr_px = rx + 30
+        qr_size = 190
+        
+    # Content beside QR Code
+    info_x = qr_px + qr_size + 35
     
-    qr_url = "https://koyotejw-ux.github.io/auto_portfolio/mes_solution/index.html"
-    qr = qrcode.QRCode(box_size=8, border=2)
-    qr.add_data(qr_url)
-    qr.make(fit=True)
-    qr_img = qr.make_image(fill_color="black", back_color="white").convert('RGB')
-    qr_size = 260
-    qr_resized = qr_img.resize((qr_size, qr_size), Image.Resampling.LANCZOS)
+    draw_pill_badge(draw, left_x=info_x, cy=qr_card_y + 36, text="MOBILE INSTANT SCAN & LIVE DEPLOY", font=get_font(9.5, 'bold'), theme='cyan', dark_mode=True, has_dot=True, pad_x=10, height=22)
+    draw.text((info_x, qr_card_y + 70), "스마트폰 카메라로 QR 코드를 스캔하세요", font=get_font(18, 'bold'), fill=(255, 255, 255))
+    draw.text((info_x, qr_card_y + 98), "별도의 앱 설치 없이 모바일/태블릿 브라우저에서 60fps 인터랙티브 프로토타입이 즉시 구동됩니다.", font=get_font(11.5, 'medium'), fill=(148, 163, 184))
     
-    draw.rounded_rectangle([rx + (rw - qr_size - 24) // 2, ly + 150, rx + (rw + qr_size + 24) // 2, ly + 150 + qr_size + 24], radius=12, fill=(255, 255, 255))
-    base.paste(qr_resized, (rx + (rw - qr_size) // 2, ly + 162))
+    # URL Box
+    url_box_y = qr_card_y + 130
+    draw.rounded_rectangle([info_x, url_box_y, rx + rw - 30, url_box_y + 50], radius=8, fill=(15, 23, 42), outline=(51, 65, 85), width=1)
+    draw.text((info_x + 16, url_box_y + 16), "🌐 Live URL :", font=get_font(10.5, 'bold'), fill=(56, 189, 248))
+    draw.text((info_x + 105, url_box_y + 16), proto_entry_url, font=get_font(11, 'bold'), fill=(52, 211, 153))
     
-    draw.text((rx + rw // 2, ly + 460), "스마트폰 카메라로 스캔 시 즉시 실행됩니다.", font=get_font(12.5, 'medium'), fill=(148, 163, 184), anchor='mm')
-    draw.text((rx + rw // 2, ly + 490), qr_url, font=get_font(11.5, 'bold'), fill=(56, 189, 248), anchor='mm')
-    
-    draw_pill_badge(draw, cx=rx + rw // 2, cy=ly + 560, text="GitHub Pages 프로덕션 배포 완료", font=get_font(11, 'bold'), theme='green', dark_mode=True, pad_x=16, height=32)
+    # Deploy Badges & Verification Row
+    b_row_y = url_box_y + 68
+    draw.text((info_x, b_row_y), "✓ GitHub Pages 프로덕션 무중단 배포 완료  ·  WCAG 2.1 AAA 고대비 접근성  ·  반응형 100% 검증", font=get_font(11, 'bold'), fill=(52, 211, 153))
     
     draw_slide_footer(draw, 12, dark_mode=True)
     base.save(os.path.join(OUT_DIR, 'slide_12.png'))
-    print("SAVED slide_12.png")
+    print("SAVED slide_12.png (High-Performance Live Interactive Prototype Hub)")
+
 
 if __name__ == '__main__':
     print("Generating enhanced CodeBridgeX MES Solution Behance slides...")
