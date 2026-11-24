@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>코드브릿지엑스 (CodeBridgeX MES Solution) - Behance Enterprise Case Study & UX/UI Architecture</title>
+  <title>CodeBridgeX MES Solution - Behance Enterprise Case Study & UX/UI Architecture</title>
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-  <link rel="stylesheet" href="style.css?v=20261124_mes_v1">
+  <link rel="stylesheet" href="style.css?v=20261124_mes_perfect_v2">
   <style>
     :root {
       --accent-primary: #0051FF;
@@ -48,224 +48,232 @@
       color: #FFFFFF;
       background: linear-gradient(135deg, #0051FF 0%, #2563EB 100%);
       border: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 2px 8px rgba(0, 81, 255, 0.4);
-      text-decoration: none;
+      box-shadow: 0 4px 14px rgba(0, 81, 255, 0.35);
       cursor: pointer;
-      transition: all 0.2s ease;
+      text-decoration: none;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .btn-live-proto:hover {
-      background: linear-gradient(135deg, #2563EB 0%, #3B82F6 100%);
-      box-shadow: 0 4px 14px rgba(0, 81, 255, 0.6);
       transform: translateY(-1px);
-      color: #FFFFFF;
+      box-shadow: 0 6px 20px rgba(0, 81, 255, 0.5);
+      filter: brightness(1.1);
     }
+    .slide12-click-overlay {
+      transition: background 0.2s ease, outline 0.2s ease;
+    }
+    .slide12-click-overlay:hover {
+      background: rgba(0, 81, 255, 0.12);
+      outline: 2px solid #38BDF8;
+    }
+
   </style>
 </head>
-<body class="deck-body" data-fit-mode="contain">
+<body>
 
-  <!-- TOP BAR -->
-  <header class="top-nav-bar" id="topNavBar">
+  <!-- Floating Navigation & Master Control Dock (Bottom Fixed) -->
+  <aside class="global-control-bar" aria-label="Deck Controls">
     <div class="dock-left">
-      <a href="../index.html" class="btn-dock-hub" title="마스터 포트폴리오 허브로 이동">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M19 12H5M12 19l-7-7 7-7"/>
-        </svg>
-        <span>마스터 허브</span>
+      <a href="../index.html" class="btn-dock-hub" title="메인 포트폴리오 허브로 이동" aria-label="메인 허브로 이동">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        <span>허브</span>
       </a>
-
-      <div class="divider-v"></div>
-
-      <div class="project-identity">
-        <span class="project-chip">B2B SaaS</span>
-        <span class="project-code">MES-SAAS-251030</span>
-        <h1 class="project-title">CodeBridgeX MES Solution</h1>
-      </div>
-
-      <div class="live-status-pill" title="프로덕션 빌드 & 12개 슬라이드 완비">
+      <span class="live-status-pill">
         <span class="status-dot"></span>
-        <span class="status-text">12-Slide Deck Ready</span>
-      </div>
+        Enterprise Cloud SaaS Production
+      </span>
+      <span class="deck-title">CodeBridgeX MES Solution · Behance Case Study</span>
     </div>
 
     <div class="dock-center">
-      <div class="stepper-cluster">
-        <button class="btn-step" id="btnPrev" title="이전 슬라이드 (◀ / A)">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="15 18 9 12 15 6"></polyline>
-          </svg>
-        </button>
-
-        <div class="page-readout" id="pageReadout">
-          <span class="num current" id="numCurrent">01</span>
-          <span class="slash">/</span>
-          <span class="num total" id="numTotal">12</span>
-        </div>
-
-        <button class="btn-step" id="btnNext" title="다음 슬라이드 (▶ / D)">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="9 18 15 12 9 6"></polyline>
-          </svg>
-        </button>
-      </div>
-
-      <div class="slide-title-chip" id="slideTitleChip">
-        01 엔터프라이즈 제조 클라우드 플랫폼
-      </div>
+      <button class="nav-arrow-btn" id="btn-prev" title="이전 슬라이드 (← 키)" aria-label="Previous Slide">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <span class="slide-counter" id="slide-counter">SLIDE <strong id="curr-num">01</strong> / 12</span>
+      <button class="nav-arrow-btn" id="btn-next" title="다음 슬라이드 (→ 키 / Space)" aria-label="Next Slide">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
     </div>
 
     <div class="dock-right">
-      <a href="prototype.html" class="btn-live-proto" title="라이브 웹 프로토타입 직접 체험">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-          <polygon points="5 3 19 12 5 21 5 3"></polygon>
-        </svg>
-        <span>라이브 프로토타입</span>
+      <a href="prototype.html" target="_blank" rel="noopener noreferrer" class="btn-live-proto" id="btn-goto-proto" title="인터랙티브 플러터 모바일 프로토타입 열기">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        <span>프로토타입 실행</span>
       </a>
-
-      <a href="MES_Solution_Portfolio.pdf" download="CodeBridgeX_MES_Solution_Portfolio.pdf" class="btn-action-tool btn-print" title="고해상도 12개 슬라이드 PDF 다운로드">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-          <polyline points="7 10 12 15 17 10"></polyline>
-          <line x1="12" y1="15" x2="12" y2="3"></line>
-        </svg>
-        <span>PDF 다운로드</span>
-      </a>
-
-      <button class="btn-action-tool" id="btnFitToggle" title="화면 맞춤 방식 전환 (Fit Contain / Width)">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
-        </svg>
-        <span id="fitLabel">화면맞춤</span>
-      </button>
-
-      <button class="btn-action-tool" id="btnFullscreen" title="전체화면 전환 (F)">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="15 3 21 3 21 9"></polyline>
-          <polyline points="9 21 3 21 3 15"></polyline>
-          <line x1="21" y1="3" x2="14" y2="10"></line>
-          <line x1="3" y1="21" x2="10" y2="14"></line>
+      <button class="btn-icon" id="btn-fitscreen" title="화면 높이 맞춤 토글 (W)" aria-label="Toggle Fit Window">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+          <line x1="8" y1="21" x2="16" y2="21"/>
+          <line x1="12" y1="17" x2="12" y2="21"/>
         </svg>
       </button>
+      <button class="btn-icon" id="btn-fullscreen" title="전체화면 (F)" aria-label="Toggle Fullscreen">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+      </button>
+      <a href="MES_Solution_Portfolio.pdf" download="MES_Solution_Portfolio.pdf" target="_blank" class="btn-print" style="text-decoration: none;" title="12슬라이드 1920x1080 고해상도 포트폴리오 PDF 다운로드">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+        </svg>
+        포트폴리오 PDF 다운로드
+      </a>
     </div>
-  </header>
+  </aside>
 
-  <!-- STAGE VIEWPORT -->
-  <main class="deck-viewport" id="deckViewport">
-    <div class="deck-canvas-wrapper" id="deckWrapper">
-      <div class="deck-slide active" data-slide="1" data-title="01 엔터프라이즈 제조 클라우드 플랫폼">
-        <img src="behance_slides/slide_01.png" alt="01 엔터프라이즈 제조 클라우드 플랫폼" loading="eager">
-      </div>
-      <div class="deck-slide" data-slide="2" data-title="02 사용자 리서치 | 스마트 팩토리 전환 병목 분석">
-        <img src="behance_slides/slide_02.png" alt="02 사용자 리서치" loading="lazy">
-      </div>
-      <div class="deck-slide" data-slide="3" data-title="03 타깃 & 페르소나 | 엔터프라이즈 다중 사용자 정의">
-        <img src="behance_slides/slide_03.png" alt="03 타깃 & 페르소나" loading="lazy">
-      </div>
-      <div class="deck-slide" data-slide="4" data-title="04 정보 구조 설계 | 13대 비즈니스 모듈 & 멀티테넌트 아키텍처">
-        <img src="behance_slides/slide_04.png" alt="04 정보 구조 설계" loading="lazy">
-      </div>
-      <div class="deck-slide" data-slide="5" data-title="05 사용자 플로우 | 완결형 제조 실행 프로세스 파이프라인">
-        <img src="behance_slides/slide_05.png" alt="05 사용자 플로우" loading="lazy">
-      </div>
-      <div class="deck-slide" data-slide="6" data-title="06 와이어프레임 | 반응형 3단 그리드 & 인체공학적 조작성">
-        <img src="behance_slides/slide_06.png" alt="06 와이어프레임" loading="lazy">
-      </div>
-      <div class="deck-slide" data-slide="7" data-title="07 디자인 시스템 | 아토믹 디자인 토큰 & 재사용 컴포넌트">
-        <img src="behance_slides/slide_07.png" alt="07 디자인 시스템" loading="lazy">
-      </div>
-      <div class="deck-slide" data-slide="8" data-title="08 핵심 기능 | 실시간 생산 스케줄링 & 스마트 작업 지시">
-        <img src="behance_slides/slide_08.png" alt="08 핵심 기능: 생산 스케줄링" loading="lazy">
-      </div>
-      <div class="deck-slide" data-slide="9" data-title="09 핵심 기능 | 풀 트레이서빌리티 LOT 추적 & 무결점 품질 보증">
-        <img src="behance_slides/slide_09.png" alt="09 핵심 기능: 품질 & LOT 추적" loading="lazy">
-      </div>
-      <div class="deck-slide" data-slide="10" data-title="10 프로덕션 화면 | 6대 핵심 상용 웹 대시보드 쇼케이스">
-        <img src="behance_slides/slide_10.png" alt="10 프로덕션 화면 쇼케이스" loading="lazy">
-      </div>
-      <div class="deck-slide" data-slide="11" data-title="11 비즈니스 임팩트 | 정량적 성과 지표 & STAR 회고">
-        <img src="behance_slides/slide_11.png" alt="11 비즈니스 임팩트 & STAR 회고" loading="lazy">
-      </div>
-      <div class="deck-slide" data-slide="12" data-title="12 라이브 프로토타입 | 클라우드 MES 웹 인터랙티브 허브">
-        <img src="behance_slides/slide_12.png" alt="12 라이브 프로토타입" loading="lazy">
-      </div>
-    </div>
+  <!-- Right Slide Dot Navigation Rail -->
+  <nav class="slide-nav-rail" id="nav-rail" aria-label="Slide Jump Dots"></nav>
+
+  <!-- Keyboard Hint Floating Toast -->
+  <div class="key-hint-pill" id="key-hint">
+    <span>키보드 방향키 <kbd>←</kbd> <kbd>→</kbd> 슬라이드 이동 · <kbd>W</kbd> 화면 맞춤 · <kbd>F</kbd> 전체화면</span>
+  </div>
+
+  <!-- Main Slide Deck Viewport -->
+  <main class="deck-viewport" id="deck-viewport">
+    <section class="behance-slide-container" id="slide-1" data-title="01. 헤로 커버">
+      <img class="behance-slide-img" src="behance_slides/slide_01.png?v=20261124_mes_perfect_v2" alt="Slide 01: Hero Cover" loading="eager" />
+    </section>
+
+    <section class="behance-slide-container" id="slide-2" data-title="02. 시장 분석 & 문제 정의">
+      <img class="behance-slide-img" src="behance_slides/slide_02.png?v=20261124_mes_perfect_v2" alt="Slide 02: Market & Problem Study" loading="lazy" />
+    </section>
+
+    <section class="behance-slide-container" id="slide-3" data-title="03. 타깃 & 페르소나">
+      <img class="behance-slide-img" src="behance_slides/slide_03.png?v=20261124_mes_perfect_v2" alt="Slide 03: Target Persona Matrix" loading="lazy" />
+    </section>
+
+    <section class="behance-slide-container" id="slide-4" data-title="04. 정보 구조 (IA)">
+      <img class="behance-slide-img" src="behance_slides/slide_04.png?v=20261124_mes_perfect_v2" alt="Slide 04: Information Architecture" loading="lazy" />
+    </section>
+
+    <section class="behance-slide-container" id="slide-5" data-title="05. 사용자 플로우">
+      <img class="behance-slide-img" src="behance_slides/slide_05.png?v=20261124_mes_perfect_v2" alt="Slide 05: User Flow & Experience Logic" loading="lazy" />
+    </section>
+
+    <section class="behance-slide-container" id="slide-6" data-title="06. 와이어프레임 & 인체공학">
+      <img class="behance-slide-img" src="behance_slides/slide_06.png?v=20261124_mes_perfect_v2" alt="Slide 06: Core Screen 01 Home Dashboard" loading="lazy" />
+    </section>
+
+    <section class="behance-slide-container" id="slide-7" data-title="07. 디자인 시스템">
+      <img class="behance-slide-img" src="behance_slides/slide_07.png?v=20261124_mes_perfect_v2" alt="Slide 07: Core Screen 02 Exam Center" loading="lazy" />
+    </section>
+
+    <section class="behance-slide-container" id="slide-8" data-title="08. 80분 시험센터 & 타이머">
+      <img class="behance-slide-img" src="behance_slides/slide_08.png?v=20261124_mes_perfect_v2" alt="Slide 08: Core Screen 03 Quiz Commentary" loading="lazy" />
+    </section>
+
+    <section class="behance-slide-container" id="slide-9" data-title="09. Core 04 Study">
+      <img class="behance-slide-img" src="behance_slides/slide_09.png?v=20261124_mes_perfect_v2" alt="Slide 09: Core Screen 04 Study Hall" loading="lazy" />
+    </section>
+
+    <section class="behance-slide-container" id="slide-10" data-title="10. 6대 프로덕션 화면">
+      <img class="behance-slide-img" src="behance_slides/slide_10.png?v=20261124_mes_perfect_v2" alt="Slide 10: Core Screen 05 Incorrect Note Vault" loading="lazy" />
+    </section>
+
+    <section class="behance-slide-container" id="slide-11" data-title="11. 비즈니스 임팩트 & 회고">
+      <img class="behance-slide-img" src="behance_slides/slide_11.png?v=20261124_mes_perfect_v2" alt="Slide 11: Visual Identity & Design System" loading="lazy" />
+    </section>
+
+    <!-- Slide 12: Live Interactive Prototype Finale (Unified Obsidian Dark Hub) -->
+    <section class="behance-slide-container" id="slide-12" data-title="12. 라이브 프로토타입 허브" style="position: relative; overflow: hidden; background-color: #0b0f17;">
+      <img class="behance-slide-img" src="behance_slides/slide_12.png" alt="Slide 12: Live Interactive Prototype Hub" loading="lazy" style="display: block; width: 100%; height: auto;">
+      
+      <!-- Interactive Click Overlays (Mapped 1:1 to 1920x1080 Design Coordinates) -->
+      <a href="prototype.html" target="_blank" rel="noopener noreferrer" class="slide12-click-overlay" style="position: absolute; left: 41.67%; top: 21.67%; width: 53.13%; height: 10.56%; border-radius: 16px;" title="🚀 모바일 목업 디바이스에서 전체 플로우 직접 실행하기 ↗"></a>
+      <a href="prototype.html?flow=home" target="_blank" rel="noopener noreferrer" class="slide12-click-overlay" style="position: absolute; left: 41.67%; top: 33.15%; width: 53.13%; height: 6.85%; border-radius: 12px;" title="STEP 01. 종합 학습 대시보드 새 창 실행 ↗"></a>
+      <a href="prototype.html?flow=study" target="_blank" rel="noopener noreferrer" class="slide12-click-overlay" style="position: absolute; left: 41.67%; top: 40.74%; width: 53.13%; height: 6.85%; border-radius: 12px;" title="STEP 02. 시대별 사료 학습관 새 창 실행 ↗"></a>
+      <a href="prototype.html?flow=exam" target="_blank" rel="noopener noreferrer" class="slide12-click-overlay" style="position: absolute; left: 41.67%; top: 48.33%; width: 53.13%; height: 6.85%; border-radius: 12px;" title="STEP 03. 한능검 50제 실전 기출 센터 새 창 실행 ↗"></a>
+      <a href="prototype.html?flow=notes" target="_blank" rel="noopener noreferrer" class="slide12-click-overlay" style="position: absolute; left: 41.67%; top: 55.93%; width: 53.13%; height: 6.85%; border-radius: 12px;" title="STEP 04. 스마트 오답 볼트 새 창 실행 ↗"></a>
+      <a href="prototype.html" target="_blank" rel="noopener noreferrer" class="slide12-click-overlay" style="position: absolute; left: 41.67%; top: 66.30%; width: 53.13%; height: 23.52%; border-radius: 14px;" title="📱 모바일 QR 코드 스캔 및 프로토타입 직접 실행 ↗"></a>
+      <a href="prototype.html" target="_blank" rel="noopener noreferrer" class="slide12-click-overlay" style="position: absolute; left: 5.21%; top: 21.67%; width: 34.38%; height: 69.07%; border-radius: 36px;" title="📱 모바일 스마트폰 뷰포트 시뮬레이터 직접 조작하기 ↗"></a>
+    </section>
   </main>
 
-  <!-- BOTTOM FLOATING NAV RAIL -->
-  <nav class="slide-nav-rail" id="navRail" aria-label="Slide thumbnail pagination">
-    <div class="rail-container" id="railContainer"></div>
-  </nav>
-
   <script>
-    (function () {
-      const TOTAL_PAGES = 12;
-      let currentIndex = 1;
-      let fitMode = 'contain';
+    document.addEventListener('DOMContentLoaded', () => {
+      const slides = Array.from(document.querySelectorAll('.behance-slide-container'));
+      const currNumEl = document.getElementById('curr-num');
+      const btnPrev = document.getElementById('btn-prev');
+      const btnNext = document.getElementById('btn-next');
+      const navRail = document.getElementById('nav-rail');
+      const btnFit = document.getElementById('btn-fitscreen');
+      const btnFull = document.getElementById('btn-fullscreen');
 
-      const deckWrapper = document.getElementById('deckWrapper');
-      const slides = Array.from(document.querySelectorAll('.deck-slide'));
-      const numCurrent = document.getElementById('numCurrent');
-      const slideTitleChip = document.getElementById('slideTitleChip');
-      const railContainer = document.getElementById('railContainer');
-      const btnPrev = document.getElementById('btnPrev');
-      const btnNext = document.getElementById('btnNext');
-      const btnFitToggle = document.getElementById('btnFitToggle');
-      const fitLabel = document.getElementById('fitLabel');
-      const btnFullscreen = document.getElementById('btnFullscreen');
+      let currentIdx = 0;
+      let isFitHeight = false;
 
-      for (let i = 1; i <= TOTAL_PAGES; i++) {
+      // 1. Build Navigation Rail Dots
+      slides.forEach((slide, idx) => {
         const dot = document.createElement('button');
-        dot.className = 'nav-dot' + (i === 1 ? ' active' : '');
-        dot.setAttribute('data-target', i);
-        dot.setAttribute('aria-label', `슬라이드 ${i}`);
-        dot.innerHTML = `<span class="dot-num">${String(i).padStart(2, '0')}</span>`;
-        dot.addEventListener('click', () => goToSlide(i));
-        railContainer.appendChild(dot);
+        dot.className = 'nav-dot' + (idx === 0 ? ' active' : '');
+        dot.title = slide.getAttribute('data-title') || `Slide ${idx + 1}`;
+        dot.setAttribute('aria-label', dot.title);
+        dot.addEventListener('click', () => {
+          scrollToSlide(idx);
+        });
+        navRail.appendChild(dot);
+      });
+
+      const dots = Array.from(navRail.querySelectorAll('.nav-dot'));
+
+      // 2. Scroll and Active State Observation
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const idx = parseInt(entry.target.getAttribute('id').replace('slide-', ''), 10) - 1;
+            if (idx >= 0 && idx < slides.length) {
+              currentIdx = idx;
+              updateActiveUI(currentIdx);
+            }
+          }
+        });
+      }, {
+        root: null,
+        threshold: 0.5
+      });
+
+      slides.forEach(s => observer.observe(s));
+
+      function updateActiveUI(idx) {
+        currNumEl.textContent = String(idx + 1).padStart(2, '0');
+        dots.forEach((d, i) => {
+          d.classList.toggle('active', i === idx);
+        });
       }
-      const dots = Array.from(railContainer.querySelectorAll('.nav-dot'));
 
-      function goToSlide(target) {
-        if (target < 1) target = 1;
-        if (target > TOTAL_PAGES) target = TOTAL_PAGES;
-        if (target === currentIndex) return;
-
-        slides[currentIndex - 1].classList.remove('active');
-        dots[currentIndex - 1].classList.remove('active');
-
-        currentIndex = target;
-
-        const activeSlide = slides[currentIndex - 1];
-        activeSlide.classList.add('active');
-        dots[currentIndex - 1].classList.add('active');
-
-        numCurrent.textContent = String(currentIndex).padStart(2, '0');
-        const title = activeSlide.getAttribute('data-title') || `Slide ${currentIndex}`;
-        slideTitleChip.textContent = title;
-
-        btnPrev.disabled = (currentIndex === 1);
-        btnNext.disabled = (currentIndex === TOTAL_PAGES);
+      function scrollToSlide(idx) {
+        if (idx < 0 || idx >= slides.length) return;
+        slides[idx].scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
 
-      btnPrev.addEventListener('click', () => goToSlide(currentIndex - 1));
-      btnNext.addEventListener('click', () => goToSlide(currentIndex + 1));
+      btnPrev.addEventListener('click', () => {
+        if (currentIdx > 0) scrollToSlide(currentIdx - 1);
+      });
 
+      btnNext.addEventListener('click', () => {
+        if (currentIdx < slides.length - 1) scrollToSlide(currentIdx + 1);
+      });
+
+      // Keyboard Shortcuts
       window.addEventListener('keydown', (e) => {
-        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-        if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ' || e.key === 'd' || e.key === 'D') {
+        if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ') {
           e.preventDefault();
-          goToSlide(currentIndex + 1);
-        } else if (e.key === 'ArrowLeft' || e.key === 'PageUp' || e.key === 'a' || e.key === 'A') {
+          if (currentIdx < slides.length - 1) scrollToSlide(currentIdx + 1);
+        } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
           e.preventDefault();
-          goToSlide(currentIndex - 1);
-        } else if (e.key === 'Home') {
-          e.preventDefault();
-          goToSlide(1);
-        } else if (e.key === 'End') {
-          e.preventDefault();
-          goToSlide(TOTAL_PAGES);
+          if (currentIdx > 0) scrollToSlide(currentIdx - 1);
+        } else if (e.key === 'w' || e.key === 'W') {
+          toggleFitWindow();
         } else if (e.key === 'f' || e.key === 'F') {
           toggleFullscreen();
         }
       });
+
+      function toggleFitWindow() {
+        isFitHeight = !isFitHeight;
+        document.body.classList.toggle('fit-window-mode', isFitHeight);
+        btnFit.classList.toggle('active', isFitHeight);
+        scrollToSlide(currentIdx);
+      }
+      btnFit.addEventListener('click', toggleFitWindow);
 
       function toggleFullscreen() {
         if (!document.fullscreenElement) {
@@ -274,42 +282,8 @@
           document.exitFullscreen().catch(() => {});
         }
       }
-      btnFullscreen.addEventListener('click', toggleFullscreen);
-
-      function updateScale() {
-        const vp = document.getElementById('deckViewport');
-        const vw = vp.clientWidth;
-        const vh = vp.clientHeight;
-        const natW = 1920;
-        const natH = 1080;
-
-        if (fitMode === 'contain') {
-          const scale = Math.min(vw / natW, vh / natH);
-          deckWrapper.style.transform = `scale(${scale})`;
-        } else {
-          const scale = vw / natW;
-          deckWrapper.style.transform = `scale(${scale})`;
-        }
-      }
-      window.addEventListener('resize', updateScale);
-      updateScale();
-
-      btnFitToggle.addEventListener('click', () => {
-        if (fitMode === 'contain') {
-          fitMode = 'width';
-          fitLabel.textContent = '너비맞춤';
-          document.body.setAttribute('data-fit-mode', 'width');
-        } else {
-          fitMode = 'contain';
-          fitLabel.textContent = '화면맞춤';
-          document.body.setAttribute('data-fit-mode', 'contain');
-        }
-        updateScale();
-      });
-
-      btnPrev.disabled = true;
-    })();
+      btnFull.addEventListener('click', toggleFullscreen);
+    });
   </script>
 </body>
 </html>
-

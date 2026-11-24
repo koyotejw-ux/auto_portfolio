@@ -743,12 +743,12 @@ def make_slide_10():
     )
     
     screens = [
-        ("01. SaaS 랜딩 포털", "screen_01_landing.png", "솔루션 소개 및 데모 체험 신청"),
-        ("02. 경영 종합 대시보드 (Dark)", "screen_02_dashboard_dark.png", "전사 KPI, 생산성 및 OEE 텔레메트리"),
-        ("03. 생산 공정 관리 (Dark)", "screen_03_production_dark.png", "작업 지시서 발행 및 라인별 실적"),
-        ("04. 품질 보증 & 검사 (Dark)", "screen_04_quality_dark.png", "수입/공정 검사 및 불량률 SPC"),
-        ("05. 자재/재고 실사 (Dark)", "screen_05_inventory_dark.png", "창고 로케이션별 실시간 재고량"),
-        ("06. 태블릿 10-inch 관제 규격", "wireframe_tablet_dashboard.png", "현장 태블릿 반응형 랜드스케이프")
+        ("01. 데스크톱 대시보드 (라이트)", "render_desktop_dashboard.png", "1920x1080 FHD 상용 관제 UI"),
+        ("02. 데스크톱 대시보드 (다크)", "render_desktop_dashboard_dark.png", "현장 조도 최적화 고대비 다크모드"),
+        ("03. 태블릿 10-inch (라이트)", "render_tablet_dashboard.png", "공장장 태블릿 반응형 뷰"),
+        ("04. 태블릿 10-inch (다크)", "render_tablet_dashboard_dark.png", "현장 패널용 다크 테마 UI"),
+        ("05. 모바일 스마트폰 (라이트)", "render_mobile_dashboard.png", "390x844 모바일 1-Tap 터치"),
+        ("06. 모바일 스마트폰 (다크)", "render_mobile_dashboard_dark.png", "현장 오퍼레이터 다크 모바일")
     ]
     
     cols = 3
