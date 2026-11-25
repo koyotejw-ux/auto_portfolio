@@ -337,20 +337,20 @@ def make_slide_01():
         k_y += 114
 
     # 5. Right Side: Multi-Device Trio Transparent Mockup Showcase (Laptop, Tablet, Mobile)
-    # Scaled up and grounded harmoniously towards the bottom specification strip
+    # Scaled up by 10% upwards while keeping the bottom baseline perfectly anchored to paragraph 04
     trio_thumb = r"d:\097.flutter_project\auto_portfolio\assets\mes_hero_device_trio.png"
     if os.path.exists(trio_thumb):
         trio_img = Image.open(trio_thumb).convert('RGBA')
         
-        # Expanded heroic dimensions (avail_w: 960px, avail_h: 700px)
-        scale = min(960 / trio_img.width, 700 / trio_img.height)
+        # 10% enlarged heroic dimensions (w=1056px, h=703px)
+        scale = 1056 / float(trio_img.width)
         new_w = int(round(trio_img.width * scale))
         new_h = int(round(trio_img.height * scale))
         trio_resized = trio_img.resize((new_w, new_h), Image.Resampling.LANCZOS)
         
-        # Perfectly right-aligned to slide margin (1820px) and bottom aligned exactly with paragraph 04 baseline
+        # Right aligned to margin (1820px) and bottom baseline anchored to paragraph 04 (y=748)
         pos_x = 1820 - new_w
-        pos_y = 256  # Aligns physical laptop/tablet chassis base directly with the '150개 표준...' paragraph baseline (y=750)
+        pos_y = 207  # Bottom edge of laptop chassis sits exactly at paragraph 04 baseline (y=748) while expanding 10% upwards
         
         # Real transparent alpha mask drop shadow for floating depth
         mask = trio_resized.split()[3]
