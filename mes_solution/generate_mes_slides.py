@@ -2233,19 +2233,6 @@ def make_slide_12():
         base.paste(dual_res, (paste_x, paste_y), dual_res)
         draw = ImageDraw.Draw(base)
         
-    # Floating SAM Brand App Icon Badge (Subtly anchored above devices)
-    icon_path = "assets/mes_solution_app_icon.png"
-    if os.path.exists(icon_path):
-        ic = Image.open(icon_path).convert('RGBA')
-        ic_w = 64
-        ic_res = ic.resize((ic_w, ic_w), Image.Resampling.LANCZOS)
-        badge_box = Image.new('RGBA', (82, 82), (0, 0, 0, 0))
-        bd = ImageDraw.Draw(badge_box)
-        bd.rounded_rectangle([0, 0, 82, 82], radius=18, fill=(15, 23, 42, 230), outline=(56, 189, 248), width=2)
-        badge_box.paste(ic_res, (9, 9), ic_res)
-        base.paste(badge_box, (lx + 8, 218), badge_box)
-        draw = ImageDraw.Draw(base)
-        
     # Left Bottom Spec Strip (x=100, y=825, w=680, h=185) - Dark Glass Card (Clean design, NO bullet dots in badge)
     draw.rounded_rectangle([lx, 825, lx + lw, 1010], radius=14, fill=(24, 34, 52, 240), outline=(51, 65, 85), width=1)
     draw_pill_badge(draw, left_x=lx + 20, cy=850, text="RESPONSIVE DUAL SIMULATOR", font=get_font(9.5, 'bold'), theme='cyan', dark_mode=True, has_dot=False, pad_x=10, height=22)
