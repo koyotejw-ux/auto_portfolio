@@ -2202,63 +2202,64 @@ def make_slide_12():
     )
     
     # -------------------------------------------------------------
-    # LEFT COLUMN (x=100, w=680): 3D MULTI-DEVICE MOCKUP SHOWCASE + SPEC STRIP
+    # LEFT COLUMN (x=100, w=680): HERO DUAL DEVICE (TABLET + MOBILE) MOCKUP + SPEC STRIP
+    # Focused, high-presence mockup filling the space with zero wasted empty area
     # -------------------------------------------------------------
     lx = 100
     lw = 680
     
-    # Render Multi-Device Trio Mockup with soft realistic shadow
-    trio_thumb = "assets/mes_hero_device_trio.png"
-    if os.path.exists(trio_thumb):
-        trio_img = Image.open(trio_thumb).convert('RGBA')
+    # 1. Dedicated Dual Device (Tablet 4:3 + Mobile 19.5:9) High-Density Hero Mockup
+    dual_thumb = "assets/mes_hero_device_dual.png"
+    if os.path.exists(dual_thumb):
+        dual_img = Image.open(dual_thumb).convert('RGBA')
         
-        # Scale to fit upper left zone (w=680, h=560)
-        scale = min(680 / trio_img.width, 560 / trio_img.height)
-        tw = int(round(trio_img.width * scale))
-        th = int(round(trio_img.height * scale))
-        trio_res = trio_img.resize((tw, th), Image.Resampling.LANCZOS)
+        # Area: w=680, available height y=210 to 815 (h=605)
+        scale = min(680 / dual_img.width, 600 / dual_img.height)
+        dw = int(round(dual_img.width * scale))
+        dh = int(round(dual_img.height * scale))
+        dual_res = dual_img.resize((dw, dh), Image.Resampling.LANCZOS)
         
-        paste_x = lx + (lw - tw) // 2
-        paste_y = 230 + (560 - th) // 2
+        paste_x = lx + (lw - dw) // 2
+        paste_y = 210 + (600 - dh) // 2
         
-        # Ambient drop shadow
-        sh_img = Image.new('RGBA', (tw + 100, th + 100), (0, 0, 0, 0))
-        mask = trio_res.split()[3]
-        black = Image.new('RGBA', trio_res.size, (0, 0, 0, 160))
-        sh_img.paste(black, (50, 50 + 20), mask)
-        sh_filtered = sh_img.filter(ImageFilter.GaussianBlur(32))
+        # Ambient realistic deep drop shadow
+        sh_img = Image.new('RGBA', (dw + 100, dh + 100), (0, 0, 0, 0))
+        mask = dual_res.split()[3]
+        black = Image.new('RGBA', dual_res.size, (0, 0, 0, 190))
+        sh_img.paste(black, (50, 50 + 24), mask)
+        sh_filtered = sh_img.filter(ImageFilter.GaussianBlur(36))
         base.paste(sh_filtered, (paste_x - 50, paste_y - 50), sh_filtered)
         
-        base.paste(trio_res, (paste_x, paste_y), trio_res)
+        base.paste(dual_res, (paste_x, paste_y), dual_res)
         draw = ImageDraw.Draw(base)
         
-    # Floating C-Symbol App Icon Badge
+    # Floating SAM Brand App Icon Badge (Subtly anchored above devices)
     icon_path = "assets/mes_solution_app_icon.png"
     if os.path.exists(icon_path):
         ic = Image.open(icon_path).convert('RGBA')
-        ic_w = 68
+        ic_w = 64
         ic_res = ic.resize((ic_w, ic_w), Image.Resampling.LANCZOS)
-        badge_box = Image.new('RGBA', (88, 88), (0, 0, 0, 0))
+        badge_box = Image.new('RGBA', (82, 82), (0, 0, 0, 0))
         bd = ImageDraw.Draw(badge_box)
-        bd.rounded_rectangle([0, 0, 88, 88], radius=20, fill=(30, 41, 59, 230), outline=(56, 189, 248), width=2)
-        badge_box.paste(ic_res, (10, 10), ic_res)
-        base.paste(badge_box, (lx + 20, 245), badge_box)
+        bd.rounded_rectangle([0, 0, 82, 82], radius=18, fill=(15, 23, 42, 230), outline=(56, 189, 248), width=2)
+        badge_box.paste(ic_res, (9, 9), ic_res)
+        base.paste(badge_box, (lx + 8, 218), badge_box)
         draw = ImageDraw.Draw(base)
         
-    # Left Bottom Spec Strip (x=100, y=825, w=680, h=185) - Dark Glass Card
+    # Left Bottom Spec Strip (x=100, y=825, w=680, h=185) - Dark Glass Card (Clean design, NO bullet dots in badge)
     draw.rounded_rectangle([lx, 825, lx + lw, 1010], radius=14, fill=(24, 34, 52, 240), outline=(51, 65, 85), width=1)
-    draw_pill_badge(draw, left_x=lx + 20, cy=850, text="RESPONSIVE 3-DEVICE SIMULATOR", font=get_font(9.5, 'bold'), theme='cyan', dark_mode=True, pad_x=10, height=22)
-    draw.text((lx + 285, 850), "FHD 1080p · 4:3 Tablet · 19.5:9 Mobile", font=get_font(10.5, 'medium'), fill=(148, 163, 184), anchor='lm')
+    draw_pill_badge(draw, left_x=lx + 20, cy=850, text="RESPONSIVE DUAL SIMULATOR", font=get_font(9.5, 'bold'), theme='cyan', dark_mode=True, has_dot=False, pad_x=10, height=22)
+    draw.text((lx + 270, 850), "10\" Tablet 4:3  ·  Handheld Mobile 19.5:9", font=get_font(10.5, 'medium'), fill=(148, 163, 184), anchor='lm')
     
     spec_bullets = [
-        ("단일 소스 3단 멀티 폼팩터", "데스크톱 대형 관제판부터 현장 10인치 태블릿, 모바일 뷰포트까지 100% 최적화"),
+        ("현장 최적화 듀얼 폼팩터", "공장 라인 10인치 태블릿 마운트부터 이동형 모바일 뷰포트까지 100% 최적화"),
         ("13개 표준 비즈니스 모듈", "수주/출고, 간트차트 생산스케줄러, 3단계 품질 게이트, 바코드 LOT 추적 즉시 실행"),
         ("엔터프라이즈 프라이빗 보안", "데이터 외부 유출 없는 로컬 세션 스토리지 기반 안전한 실시간 가상 데모 지원")
     ]
     by = 882
     for b_title, b_desc in spec_bullets:
-        draw.text((lx + 20, by), f"• {b_title} :", font=get_font(11, 'bold'), fill=(56, 189, 248))
-        draw.text((lx + 185, by), b_desc, font=get_font(10.5, 'regular'), fill=(203, 213, 225))
+        draw.text((lx + 20, by), f"{b_title} :", font=get_font(11, 'bold'), fill=(56, 189, 248))
+        draw.text((lx + 175, by), b_desc, font=get_font(10.5, 'regular'), fill=(203, 213, 225))
         by += 26
 
     # -------------------------------------------------------------
@@ -2371,7 +2372,7 @@ def make_slide_12():
     # Content beside QR Code
     info_x = qr_px + qr_size + 35
     
-    draw_pill_badge(draw, left_x=info_x, cy=qr_card_y + 36, text="MOBILE INSTANT SCAN & LIVE DEPLOY", font=get_font(9.5, 'bold'), theme='cyan', dark_mode=True, has_dot=True, pad_x=10, height=22)
+    draw_pill_badge(draw, left_x=info_x, cy=qr_card_y + 36, text="MOBILE INSTANT SCAN & LIVE DEPLOY", font=get_font(9.5, 'bold'), theme='cyan', dark_mode=True, has_dot=False, pad_x=10, height=22)
     draw.text((info_x, qr_card_y + 70), "스마트폰 카메라로 QR 코드를 스캔하세요", font=get_font(18, 'bold'), fill=(255, 255, 255))
     draw.text((info_x, qr_card_y + 98), "별도의 앱 설치 없이 모바일/태블릿 브라우저에서 60fps 인터랙티브 프로토타입이 즉시 구동됩니다.", font=get_font(11.5, 'medium'), fill=(148, 163, 184))
     
