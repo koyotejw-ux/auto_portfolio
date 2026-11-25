@@ -998,12 +998,6 @@ def make_slide_06():
     base = Image.new('RGB', (W, H), (248, 250, 252))
     draw = ImageDraw.Draw(base)
     
-    # Soft modern structural guidelines (subtle light blueprint grid)
-    for gx in range(0, W, 48):
-        draw.line([(gx, 0), (gx, H)], fill=(241, 245, 249), width=1)
-    for gy in range(0, H, 48):
-        draw.line([(0, gy), (W, gy)], fill=(241, 245, 249), width=1)
-        
     draw_slide_header(
         draw, 
         slide_num=6, 
@@ -1016,15 +1010,11 @@ def make_slide_06():
     
     # -------------------------------------------------------------
     # 4 High-Density Columns tailored to screen aspect ratios:
-    # Col 0: Tablet Land (16:10 wide) -> w=436
-    # Col 1: Phone Production -> w=405
-    # Col 2: Phone Quality -> w=405
-    # Col 3: Phone Process -> w=405
-    # Total = 436 + 3*405 + 3*24 = 1723 (margin = 98px)
+    # All 4 columns equalized in alignment & structural balance
     # -------------------------------------------------------------
     wf_specs = [
         {
-            "col_w": 436,
+            "col_w": 418,
             "title": "01. 태블릿 종합 대시보드",
             "ratio_tag": "16:10 가로형 (5120x3200)",
             "device": "10-inch 현장 관제 태블릿",
@@ -1037,7 +1027,7 @@ def make_slide_06():
             ]
         },
         {
-            "col_w": 405,
+            "col_w": 418,
             "title": "02. 모바일 생산 공정관리",
             "ratio_tag": "9:16 세로형 (1242x2208)",
             "device": "작업자 스마트폰 / 핸드헬드",
@@ -1050,7 +1040,7 @@ def make_slide_06():
             ]
         },
         {
-            "col_w": 405,
+            "col_w": 418,
             "title": "03. 모바일 품질 보증/검사",
             "ratio_tag": "9:16 세로형 (1242x2208)",
             "device": "품질 검사관 전용 단말",
@@ -1063,7 +1053,7 @@ def make_slide_06():
             ]
         },
         {
-            "col_w": 405,
+            "col_w": 418,
             "title": "04. 공정 기준정보(라우팅)",
             "ratio_tag": "9:16 세로형 (2484x4416)",
             "device": "생산기술 엔지니어 단말",
@@ -1079,26 +1069,25 @@ def make_slide_06():
     
     top_y = 205
     card_h = 810
-    gap = 24
-    curr_x = 98
+    gap = 20
+    curr_x = (W - (4 * 418 + 3 * gap)) // 2  # Perfectly centered on canvas: (1920 - 1732) // 2 = 94
+    
+    # Unified Wireframe Box Heights across all 4 columns for perfect alignment
+    fixed_frame_h = 320
+    inter_y = top_y + 102 + fixed_frame_h + 16  # Unified y=643 for all FUNCTION & INTERACTION SPEC headers
+    single_card_h = 88
+    card_gap = 10
     
     for idx, item in enumerate(wf_specs):
         cw = item["col_w"]
         
-        # 1. Main Column Card (White with soft border and subtle depth)
+        # 1. Main Column Card (Clean White Surface, NO top accent stripe, NO left/right vertical bar)
         draw.rounded_rectangle(
             [curr_x, top_y, curr_x + cw, top_y + card_h], 
             radius=16, 
             fill=(255, 255, 255), 
             outline=(226, 232, 240), 
             width=1
-        )
-        
-        # Top Accent Highlight Stripe
-        draw.rounded_rectangle(
-            [curr_x + 16, top_y, curr_x + cw - 16, top_y + 4],
-            radius=2,
-            fill=(0, 81, 255) if idx == 0 else (59, 130, 246)
         )
         
         # Badge & Device Header
@@ -1109,10 +1098,19 @@ def make_slide_06():
         draw.text((curr_x + 18, top_y + 54), item["title"], font=get_font(15, 'bold'), fill=(15, 23, 42))
         draw.text((curr_x + 18, top_y + 78), item["desc"], font=get_font(10.5, 'medium'), fill=(100, 116, 139))
         
-        # 2. Wireframe Screen Container (Tight Adaptive Fit: ZERO dead space)
+        # 2. Wireframe Screen Container (Unified fixed height for perfectly aligned bottom specs)
         frame_x = curr_x + 14
         frame_y = top_y + 102
         frame_w = cw - 28
+        frame_h = fixed_frame_h
+        
+        draw.rounded_rectangle(
+            [frame_x, frame_y, frame_x + frame_w, frame_y + frame_h], 
+            radius=10, 
+            fill=(248, 250, 252), 
+            outline=(226, 232, 240), 
+            width=1
+        )
         
         fpath = os.path.join(MOCKUP_DIR, item["fname"])
         if os.path.exists(fpath):
@@ -1146,52 +1144,35 @@ def make_slide_06():
                 wf_img = wf_img.crop((crop_left, crop_top, crop_right, crop_bot))
                 
             src_w, src_h = wf_img.size
-            target_w = frame_w - 6  # 3px inner padding on left & right
-            scale = target_w / float(src_w)
-            target_h = int(round(src_h * scale))
-            frame_h = target_h + 6  # Tightly wraps image with 3px padding on all sides
+            avail_w = frame_w - 12
+            avail_h = frame_h - 12
             
-            # Viewport Outer Container wrapping image tightly with crisp high-contrast border
-            draw.rounded_rectangle(
-                [frame_x, frame_y, frame_x + frame_w, frame_y + frame_h], 
-                radius=10, 
-                fill=(248, 250, 252), 
-                outline=(0, 81, 255) if idx == 0 else (203, 213, 225), 
-                width=1
-            )
+            # Fit inside frame preserving aspect ratio
+            scale = min(avail_w / float(src_w), avail_h / float(src_h))
+            target_w = int(round(src_w * scale))
+            target_h = int(round(src_h * scale))
             
             wf_resized = wf_img.resize((target_w, target_h), Image.Resampling.LANCZOS)
-            paste_x = frame_x + 3
-            paste_y = frame_y + 3
+            paste_x = frame_x + (frame_w - target_w) // 2
+            paste_y = frame_y + (frame_h - target_h) // 2
             base.paste(wf_resized, (paste_x, paste_y))
             
-            # Subtle crisp inner edge line
+            # Subtle crisp border around wireframe
             draw.rounded_rectangle(
                 [paste_x - 1, paste_y - 1, paste_x + target_w + 1, paste_y + target_h + 1], 
                 radius=4, 
                 outline=(226, 232, 240), 
                 width=1
             )
-        else:
-            frame_h = 240
-            draw.rounded_rectangle([frame_x, frame_y, frame_x + frame_w, frame_y + frame_h], radius=10, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
                 
-        # 3. Key Interaction Specifications Zone (Dynamically balanced below image)
-        inter_y = frame_y + frame_h + 14
+        # 3. Key Interaction Specifications Zone (Horizontally aligned across all columns)
         draw.line([(curr_x + 16, inter_y), (curr_x + cw - 16, inter_y)], fill=(241, 245, 249), width=1)
         
         draw_pill_badge(draw, left_x=curr_x + 18, cy=inter_y + 18, text="FUNCTION & INTERACTION SPEC", font=get_font(9, 'bold'), theme='blue', dark_mode=False, pad_x=8, height=20)
         
-        # Calculate available height for interaction cards
-        avail_spec_h = (top_y + card_h - 18) - (inter_y + 36)
-        num_cards = len(item["interactions"])
-        card_gap = 12
-        single_card_h = (avail_spec_h - (num_cards - 1) * card_gap) // num_cards
-        single_card_h = max(82, min(single_card_h, 115))  # Clamp to visually comfortable range
-        
         by = inter_y + 36
         for f_idx, (f_name, f_desc) in enumerate(item["interactions"]):
-            # Small interaction spec card
+            # Small interaction spec card (Clean white, NO left accent vertical stripe)
             draw.rounded_rectangle(
                 [curr_x + 16, by, curr_x + cw - 16, by + single_card_h], 
                 radius=8, 
@@ -1200,27 +1181,19 @@ def make_slide_06():
                 width=1
             )
             
-            # Left accent highlight on item card
-            draw.rounded_rectangle(
-                [curr_x + 16, by, curr_x + 19, by + single_card_h],
-                radius=1,
-                fill=(0, 81, 255) if idx == 0 else (59, 130, 246)
-            )
-            
             # Bullet Number Badge
             badge_cy = by + 20
-            draw.ellipse([curr_x + 26, badge_cy - 8, curr_x + 42, badge_cy + 8], fill=(0, 81, 255))
-            draw.text((curr_x + 34, badge_cy), str(f_idx + 1), font=get_font(9.5, 'bold'), fill=(255, 255, 255), anchor='mm')
+            draw.ellipse([curr_x + 28, badge_cy - 8, curr_x + 44, badge_cy + 8], fill=(0, 81, 255))
+            draw.text((curr_x + 36, badge_cy), str(f_idx + 1), font=get_font(9.5, 'bold'), fill=(255, 255, 255), anchor='mm')
             
             # Function Title
-            draw.text((curr_x + 50, badge_cy), f_name, font=get_font(12, 'bold'), fill=(0, 81, 255), anchor='lm')
+            draw.text((curr_x + 52, badge_cy), f_name, font=get_font(12, 'bold'), fill=(0, 81, 255), anchor='lm')
             
             # Function Description lines
-            lines = textwrap.wrap(f_desc, width=int(cw * 0.086))
-            ly = by + 39
-            max_lines = 3 if single_card_h >= 100 else 2
-            for l in lines[:max_lines]:
-                draw.text((curr_x + 26, ly), l, font=get_font(10.5, 'regular'), fill=(71, 85, 105))
+            lines = textwrap.wrap(f_desc, width=int(cw * 0.088))
+            ly = by + 38
+            for l in lines[:2]:
+                draw.text((curr_x + 28, ly), l, font=get_font(10.5, 'regular'), fill=(71, 85, 105))
                 ly += 18
                 
             by += single_card_h + card_gap
