@@ -438,18 +438,19 @@ class _InspectorPanelState extends State<InspectorPanel> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFF8FAFC),
+                    color: const Color(0xFF262626),
                     borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: const Color(0xFFE2E8F0)),
+                    border: Border.all(color: const Color(0xFF383838)),
                   ),
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
+                      dropdownColor: const Color(0xFF262626),
                       value: _commonIcons.any((i) => i['val'] == elem.iconName) ? elem.iconName : '',
                       isExpanded: true,
-                      style: const TextStyle(fontSize: 12, color: Color(0xFF0F172A), fontWeight: FontWeight.bold),
+                      style: const TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.bold),
                       items: _commonIcons.map((i) => DropdownMenuItem<String>(
                         value: i['val'] as String,
-                        child: Text(i['name'] as String),
+                        child: Text(i['name'] as String, style: const TextStyle(color: Colors.white)),
                       )).toList(),
                       onChanged: (val) {
                         if (val != null) {
@@ -471,16 +472,17 @@ class _InspectorPanelState extends State<InspectorPanel> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFF8FAFC),
+                    color: const Color(0xFF262626),
                     borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: const Color(0xFFE2E8F0)),
+                    border: Border.all(color: const Color(0xFF383838)),
                   ),
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
+                      dropdownColor: const Color(0xFF262626),
                       value: _fontFamilies.contains(ts.fontFamily) ? ts.fontFamily : 'Pretendard',
                       isExpanded: true,
-                      style: const TextStyle(fontSize: 12, color: Color(0xFF0F172A), fontWeight: FontWeight.bold),
-                      items: _fontFamilies.map((f) => DropdownMenuItem(value: f, child: Text(f))).toList(),
+                      style: const TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.bold),
+                      items: _fontFamilies.map((f) => DropdownMenuItem(value: f, child: Text(f, style: const TextStyle(color: Colors.white)))).toList(),
                       onChanged: (val) {
                         if (val != null) {
                           setState(() => ts.fontFamily = val);
@@ -508,22 +510,23 @@ class _InspectorPanelState extends State<InspectorPanel> {
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             decoration: BoxDecoration(
-                              color: const Color(0xFFF8FAFC),
+                              color: const Color(0xFF262626),
                               borderRadius: BorderRadius.circular(8),
-                              border: Border.all(color: const Color(0xFFE2E8F0)),
+                              border: Border.all(color: const Color(0xFF383838)),
                             ),
                             child: DropdownButtonHideUnderline(
                               child: DropdownButton<FontWeight>(
+                                dropdownColor: const Color(0xFF262626),
                                 value: ts.fontWeight,
                                 isExpanded: true,
-                                style: const TextStyle(fontSize: 12, color: Color(0xFF0F172A), fontWeight: FontWeight.bold),
+                                style: const TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.bold),
                                 items: const [
-                                  DropdownMenuItem(value: FontWeight.w300, child: Text('Light (300)')),
-                                  DropdownMenuItem(value: FontWeight.w400, child: Text('Regular (400)')),
-                                  DropdownMenuItem(value: FontWeight.w500, child: Text('Medium (500)')),
-                                  DropdownMenuItem(value: FontWeight.w600, child: Text('SemiBold (600)')),
-                                  DropdownMenuItem(value: FontWeight.w700, child: Text('Bold (700)')),
-                                  DropdownMenuItem(value: FontWeight.w900, child: Text('Black (900)')),
+                                  DropdownMenuItem(value: FontWeight.w300, child: Text('Light (300)', style: TextStyle(color: Colors.white))),
+                                  DropdownMenuItem(value: FontWeight.w400, child: Text('Regular (400)', style: TextStyle(color: Colors.white))),
+                                  DropdownMenuItem(value: FontWeight.w500, child: Text('Medium (500)', style: TextStyle(color: Colors.white))),
+                                  DropdownMenuItem(value: FontWeight.w600, child: Text('SemiBold (600)', style: TextStyle(color: Colors.white))),
+                                  DropdownMenuItem(value: FontWeight.w700, child: Text('Bold (700)', style: TextStyle(color: Colors.white))),
+                                  DropdownMenuItem(value: FontWeight.w900, child: Text('Black (900)', style: TextStyle(color: Colors.white))),
                                 ],
                                 onChanged: (val) {
                                   if (val != null) {
@@ -579,9 +582,9 @@ class _InspectorPanelState extends State<InspectorPanel> {
                               height: 38,
                               padding: const EdgeInsets.symmetric(horizontal: 10),
                               decoration: BoxDecoration(
-                                color: const Color(0xFFF8FAFC),
+                                color: const Color(0xFF262626),
                                 borderRadius: BorderRadius.circular(8),
-                                border: Border.all(color: const Color(0xFFE2E8F0)),
+                                border: Border.all(color: const Color(0xFF383838)),
                               ),
                               child: Row(
                                 children: [
@@ -591,14 +594,14 @@ class _InspectorPanelState extends State<InspectorPanel> {
                                     decoration: BoxDecoration(
                                       color: ts.color,
                                       shape: BoxShape.circle,
-                                      border: Border.all(color: Colors.black26),
+                                      border: Border.all(color: Colors.white24),
                                     ),
                                   ),
                                   const SizedBox(width: 8),
                                   Text(
                                     '#${(ts.color.r * 255).toInt().toRadixString(16).padLeft(2, '0')}${(ts.color.g * 255).toInt().toRadixString(16).padLeft(2, '0')}${(ts.color.b * 255).toInt().toRadixString(16).padLeft(2, '0')}'
                                         .toUpperCase(),
-                                    style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+                                    style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white70),
                                   ),
                                 ],
                               ),
@@ -630,9 +633,9 @@ class _InspectorPanelState extends State<InspectorPanel> {
                               height: 38,
                               padding: const EdgeInsets.symmetric(horizontal: 8),
                               decoration: BoxDecoration(
-                                color: const Color(0xFFF8FAFC),
+                                color: const Color(0xFF262626),
                                 borderRadius: BorderRadius.circular(8),
-                                border: Border.all(color: const Color(0xFFE2E8F0)),
+                                border: Border.all(color: const Color(0xFF383838)),
                               ),
                               child: Row(
                                 children: [
@@ -642,14 +645,14 @@ class _InspectorPanelState extends State<InspectorPanel> {
                                     decoration: BoxDecoration(
                                       color: bs.backgroundColor,
                                       shape: BoxShape.circle,
-                                      border: Border.all(color: Colors.black26),
+                                      border: Border.all(color: Colors.white24),
                                     ),
                                   ),
                                   const SizedBox(width: 6),
                                   Text(
                                     '#${(bs.backgroundColor.r * 255).toInt().toRadixString(16).padLeft(2, '0')}${(bs.backgroundColor.g * 255).toInt().toRadixString(16).padLeft(2, '0')}${(bs.backgroundColor.b * 255).toInt().toRadixString(16).padLeft(2, '0')}'
                                         .toUpperCase(),
-                                    style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+                                    style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white70),
                                   ),
                                 ],
                               ),
@@ -673,9 +676,9 @@ class _InspectorPanelState extends State<InspectorPanel> {
                               height: 38,
                               padding: const EdgeInsets.symmetric(horizontal: 8),
                               decoration: BoxDecoration(
-                                color: const Color(0xFFF8FAFC),
+                                color: const Color(0xFF262626),
                                 borderRadius: BorderRadius.circular(8),
-                                border: Border.all(color: const Color(0xFFE2E8F0)),
+                                border: Border.all(color: const Color(0xFF383838)),
                               ),
                               child: Row(
                                 children: [
@@ -788,7 +791,7 @@ class _InspectorPanelState extends State<InspectorPanel> {
                           child: Container(
                             padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1.5),
                             decoration: BoxDecoration(
-                              color: elem.isAutoSpacing ? const Color(0xFF0052FF) : const Color(0xFFE2E8F0),
+                              color: elem.isAutoSpacing ? const Color(0xFF0052FF) : const Color(0xFF383838),
                               borderRadius: BorderRadius.circular(4),
                             ),
                             child: Text(
@@ -796,7 +799,7 @@ class _InspectorPanelState extends State<InspectorPanel> {
                               style: TextStyle(
                                 fontSize: 9.5,
                                 fontWeight: FontWeight.bold,
-                                color: elem.isAutoSpacing ? Colors.white : const Color(0xFF64748B),
+                                color: elem.isAutoSpacing ? Colors.white : const Color(0xFFA3A3A3),
                               ),
                             ),
                           ),
@@ -806,10 +809,10 @@ class _InspectorPanelState extends State<InspectorPanel> {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                       decoration: BoxDecoration(
-                        color: elem.isAutoSpacing ? const Color(0xFFEFF6FF) : const Color(0xFFF8FAFC),
+                        color: elem.isAutoSpacing ? const Color(0xFF1E3A8A) : const Color(0xFF262626),
                         borderRadius: BorderRadius.circular(8),
                         border: Border.all(
-                          color: elem.isAutoSpacing ? const Color(0xFF0052FF) : const Color(0xFFE2E8F0),
+                          color: elem.isAutoSpacing ? const Color(0xFF0052FF) : const Color(0xFF383838),
                         ),
                       ),
                       child: elem.isAutoSpacing
@@ -882,22 +885,22 @@ class _InspectorPanelState extends State<InspectorPanel> {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 8),
           decoration: BoxDecoration(
-            color: isSelected ? const Color(0xFFEFF6FF) : const Color(0xFFF8FAFC),
+            color: isSelected ? const Color(0xFF1E3A8A) : const Color(0xFF262626),
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
-              color: isSelected ? const Color(0xFF0052FF) : const Color(0xFFE2E8F0),
+              color: isSelected ? const Color(0xFF0052FF) : const Color(0xFF383838),
               width: isSelected ? 1.5 : 1,
             ),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(icon, size: 14, color: isSelected ? const Color(0xFF0052FF) : const Color(0xFF64748B)),
+              Icon(icon, size: 14, color: isSelected ? Colors.white : const Color(0xFFA3A3A3)),
               const SizedBox(height: 3),
               Text(
                 label,
                 style: TextStyle(
-                  color: isSelected ? const Color(0xFF0052FF) : const Color(0xFF64748B),
+                  color: isSelected ? Colors.white : const Color(0xFFA3A3A3),
                   fontSize: 10.5,
                   fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                 ),
@@ -924,27 +927,25 @@ class _InspectorPanelState extends State<InspectorPanel> {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 8),
           decoration: BoxDecoration(
-            color: isSelected ? const Color(0xFFEFF6FF) : const Color(0xFFF8FAFC),
+            color: isSelected ? const Color(0xFF1E3A8A) : const Color(0xFF262626),
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
-              color: isSelected ? const Color(0xFF0052FF) : const Color(0xFFE2E8F0),
+              color: isSelected ? const Color(0xFF0052FF) : const Color(0xFF383838),
               width: isSelected ? 1.5 : 1,
             ),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(icon, size: 14, color: isSelected ? const Color(0xFF0052FF) : const Color(0xFF64748B)),
+              Icon(icon, size: 14, color: isSelected ? Colors.white : const Color(0xFFA3A3A3)),
               const SizedBox(height: 3),
               Text(
                 label,
                 style: TextStyle(
-                  color: isSelected ? const Color(0xFF0052FF) : const Color(0xFF64748B),
-                  fontSize: 9.5,
+                  color: isSelected ? Colors.white : const Color(0xFFA3A3A3),
+                  fontSize: 10.5,
                   fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                 ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
               ),
             ],
           ),
@@ -965,22 +966,22 @@ class _InspectorPanelState extends State<InspectorPanel> {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 8),
           decoration: BoxDecoration(
-            color: isSelected ? const Color(0xFFEFF6FF) : const Color(0xFFF8FAFC),
+            color: isSelected ? const Color(0xFF1E3A8A) : const Color(0xFF262626),
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
-              color: isSelected ? const Color(0xFF0052FF) : const Color(0xFFE2E8F0),
+              color: isSelected ? const Color(0xFF0052FF) : const Color(0xFF383838),
               width: isSelected ? 1.5 : 1,
             ),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(icon, size: 14, color: isSelected ? const Color(0xFF0052FF) : const Color(0xFF64748B)),
+              Icon(icon, size: 14, color: isSelected ? Colors.white : const Color(0xFFA3A3A3)),
               const SizedBox(width: 4),
               Text(
                 label,
                 style: TextStyle(
-                  color: isSelected ? const Color(0xFF0052FF) : const Color(0xFF64748B),
+                  color: isSelected ? Colors.white : const Color(0xFFA3A3A3),
                   fontSize: 11,
                   fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                 ),
@@ -1004,23 +1005,23 @@ class _InspectorPanelState extends State<InspectorPanel> {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 8),
           decoration: BoxDecoration(
-            color: isSelected ? const Color(0xFFEFF6FF) : const Color(0xFFF8FAFC),
+            color: isSelected ? const Color(0xFF1E3A8A) : const Color(0xFF262626),
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
-              color: isSelected ? const Color(0xFF0052FF) : const Color(0xFFE2E8F0),
+              color: isSelected ? const Color(0xFF0052FF) : const Color(0xFF383838),
               width: isSelected ? 1.5 : 1,
             ),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(icon, size: 14, color: isSelected ? const Color(0xFF0052FF) : const Color(0xFF64748B)),
+              Icon(icon, size: 14, color: isSelected ? Colors.white : const Color(0xFFA3A3A3)),
               const SizedBox(width: 4),
               Text(
                 label,
                 style: TextStyle(
-                  color: isSelected ? const Color(0xFF0052FF) : const Color(0xFF64748B),
-                  fontSize: 10,
+                  color: isSelected ? Colors.white : const Color(0xFFA3A3A3),
+                  fontSize: 11,
                   fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                 ),
               ),
@@ -1195,25 +1196,25 @@ class _InspectorPanelState extends State<InspectorPanel> {
             children: [
               Text(
                 key,
-                style: const TextStyle(color: Color(0xFF334155), fontSize: 11, fontWeight: FontWeight.w600),
+                style: const TextStyle(color: Color(0xFFD4D4D4), fontSize: 11, fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 6),
               TextFormField(
                 key: ValueKey('${elem.id}_$key'),
                 initialValue: value,
                 maxLines: value.contains('\n') || value.length > 30 ? 3 : 1,
-                style: const TextStyle(fontSize: 12),
+                style: const TextStyle(fontSize: 12, color: Colors.white),
                 decoration: InputDecoration(
                   isDense: true,
                   filled: true,
-                  fillColor: const Color(0xFFF8FAFC),
+                  fillColor: const Color(0xFF262626),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: const BorderSide(color: Color(0xFFE2E8F0)),
+                    borderSide: const BorderSide(color: Color(0xFF383838)),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: const BorderSide(color: Color(0xFFE2E8F0)),
+                    borderSide: const BorderSide(color: Color(0xFF383838)),
                   ),
                 ),
                 onChanged: (text) {
@@ -1230,7 +1231,7 @@ class _InspectorPanelState extends State<InspectorPanel> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(key, style: const TextStyle(color: Color(0xFF334155), fontSize: 12)),
+              Text(key, style: const TextStyle(color: Color(0xFFD4D4D4), fontSize: 12)),
               Switch(
                 value: value,
                 activeThumbColor: const Color(0xFF0052FF),
@@ -1254,7 +1255,7 @@ class _InspectorPanelState extends State<InspectorPanel> {
                 children: [
                   Text(
                     '$key (${value.length}개 항목)',
-                    style: const TextStyle(color: Color(0xFF0052FF), fontSize: 11, fontWeight: FontWeight.bold),
+                    style: const TextStyle(color: Color(0xFF38BDF8), fontSize: 11, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
@@ -1268,9 +1269,9 @@ class _InspectorPanelState extends State<InspectorPanel> {
                     margin: const EdgeInsets.only(bottom: 8),
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFF8FAFC),
+                      color: const Color(0xFF262626),
                       borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: const Color(0xFFE2E8F0)),
+                      border: Border.all(color: const Color(0xFF383838)),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1284,20 +1285,20 @@ class _InspectorPanelState extends State<InspectorPanel> {
                                   width: 50,
                                   child: Text(
                                     fEntry.key,
-                                    style: const TextStyle(fontSize: 10, color: Color(0xFF64748B), fontWeight: FontWeight.bold),
+                                    style: const TextStyle(fontSize: 10, color: Color(0xFFA3A3A3), fontWeight: FontWeight.bold),
                                   ),
                                 ),
                                 Expanded(
                                   child: TextFormField(
                                     key: ValueKey('${elem.id}_${key}_${idx}_${fEntry.key}'),
                                     initialValue: fEntry.value as String,
-                                    style: const TextStyle(fontSize: 11),
+                                    style: const TextStyle(fontSize: 11, color: Colors.white),
                                     decoration: InputDecoration(
                                       isDense: true,
                                       contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-                                      fillColor: Colors.white,
+                                      fillColor: const Color(0xFF1E1E1E),
                                       filled: true,
-                                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(4), borderSide: const BorderSide(color: Color(0xFFE2E8F0))),
+                                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(4), borderSide: const BorderSide(color: Color(0xFF383838))),
                                     ),
                                     onChanged: (newText) {
                                       mapItem[fEntry.key] = newText;

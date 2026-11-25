@@ -15,6 +15,7 @@ enum ElementType {
   personaMatrix,
   kpiStrip,
   shape,
+  image,
   group, // Figma Group / AutoLayout Frame
   vectorIcon, // Google Material Guide 24dp Vector Icon Component
 }

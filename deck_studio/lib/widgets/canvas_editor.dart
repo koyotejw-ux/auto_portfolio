@@ -862,16 +862,22 @@ class _CanvasEditorState extends State<CanvasEditor> {
   }
 
   IconData _resolveIconData(String val) {
-    switch (val) {
+    final lower = val.toLowerCase();
+    switch (lower) {
       case 'check_circle':
+      case 'check_circle_outline':
+      case 'check':
         return Icons.check_circle_outline;
       case 'fact_check':
         return Icons.fact_check_outlined;
       case 'phone_android':
+      case 'phone':
         return Icons.phone_android;
       case 'tablet_mac':
+      case 'tablet':
         return Icons.tablet_mac;
       case 'receipt_long':
+      case 'receipt':
         return Icons.receipt_long;
       case 'history_edu':
         return Icons.history_edu;
@@ -882,15 +888,51 @@ class _CanvasEditorState extends State<CanvasEditor> {
       case 'verified':
         return Icons.verified;
       case 'bookmark':
+      case 'bookmark_outline':
         return Icons.bookmark_outline;
       case 'star':
-        return Icons.star_outline;
+      case 'star_outline':
+      case 'star_rounded':
+        return Icons.star_rounded;
       case 'favorite':
-        return Icons.favorite_border;
+      case 'favorite_border':
+      case 'favorite_rounded':
+      case 'heart':
+        return Icons.favorite_rounded;
       case 'tune':
+      case 'settings':
         return Icons.tune;
+      case 'play_arrow':
+      case 'play_arrow_rounded':
+        return Icons.play_arrow_rounded;
+      case 'arrow_forward_ios':
+      case 'arrow_forward_ios_rounded':
+      case 'chevron_right':
+      case 'chevron_right_rounded':
+        return Icons.arrow_forward_ios_rounded;
+      case 'refresh':
+      case 'sync':
+        return Icons.refresh_rounded;
+      case 'search':
+        return Icons.search_rounded;
+      case 'close':
+      case 'cancel':
+        return Icons.close_rounded;
+      case 'add':
+      case 'add_circle':
+      case 'add_circle_outline_rounded':
+        return Icons.add_circle_outline_rounded;
+      case 'monetization_on':
+      case 'monetization_on_rounded':
+        return Icons.monetization_on_rounded;
+      case 'diamond':
+      case 'diamond_rounded':
+        return Icons.diamond_rounded;
+      case 'terrain':
+      case 'terrain_rounded':
+        return Icons.terrain_rounded;
       default:
-        return Icons.category_outlined;
+        return Icons.interests_rounded;
     }
   }
 

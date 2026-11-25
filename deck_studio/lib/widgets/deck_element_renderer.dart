@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import '../models/deck_model.dart';
 
@@ -82,6 +83,8 @@ class DeckElementRenderer extends StatelessWidget {
         return _buildShapeElement();
       case ElementType.image:
         return _buildImageElement();
+      case ElementType.vectorIcon:
+        return _buildVectorIconElement();
       default:
         return Container(
           color: Colors.grey.withOpacity(0.1),
@@ -986,32 +989,153 @@ class DeckElementRenderer extends StatelessWidget {
     );
   }
 
+  Widget _buildVectorIconElement() {
+    final rawStrokes = element.props['iconStrokes'] as List? ?? [];
+    final strokeColor = Color(element.props['strokeColor'] as int? ?? 0xFF0052FF);
+    final strokeWidth = (element.props['strokeWidth'] as num?)?.toDouble() ?? 2.0;
+    final isFilled = element.props['isFilled'] == true;
+    final fillColor = Color(element.props['fillColor'] as int? ?? 0x00000000);
+
+    return Container(
+      width: element.width,
+      height: element.height,
+      decoration: element.boxStyle != null &&
+              (element.boxStyle!.backgroundColor != Colors.transparent || element.boxStyle!.borderWidth > 0)
+          ? BoxDecoration(
+              color: element.boxStyle!.backgroundColor,
+              borderRadius: BorderRadius.circular(element.boxStyle!.borderRadius),
+              border: element.boxStyle!.borderWidth > 0
+                  ? Border.all(color: element.boxStyle!.borderColor, width: element.boxStyle!.borderWidth)
+                  : null,
+            )
+          : null,
+      child: CustomPaint(
+        size: Size(element.width, element.height),
+        painter: _DeckVectorIconPainter(
+          rawStrokes: rawStrokes,
+          strokeColor: strokeColor,
+          strokeWidth: strokeWidth,
+          isFilled: isFilled,
+          fillColor: fillColor,
+        ),
+      ),
+    );
+  }
+
   IconData _getIconData(String name) {
-    switch (name) {
+    final lower = name.toLowerCase();
+    switch (lower) {
       case 'play_arrow':
       case 'play_arrow_rounded':
         return Icons.play_arrow_rounded;
+      case 'arrow_forward_ios':
       case 'arrow_forward_ios_rounded':
+      case 'chevron_right':
+      case 'chevron_right_rounded':
         return Icons.arrow_forward_ios_rounded;
+      case 'arrow_back':
+      case 'arrow_back_ios':
+      case 'arrow_back_ios_new':
+        return Icons.arrow_back_ios_new_rounded;
       case 'monetization_on':
       case 'monetization_on_rounded':
+      case 'attach_money':
         return Icons.monetization_on_rounded;
+      case 'diamond':
       case 'diamond_rounded':
         return Icons.diamond_rounded;
+      case 'terrain':
       case 'terrain_rounded':
         return Icons.terrain_rounded;
+      case 'egg':
       case 'egg_rounded':
         return Icons.egg_rounded;
+      case 'menu_book':
       case 'menu_book_rounded':
         return Icons.menu_book_rounded;
+      case 'backpack':
       case 'backpack_rounded':
         return Icons.backpack_rounded;
+      case 'storefront':
       case 'storefront_rounded':
         return Icons.storefront_rounded;
+      case 'star':
+      case 'star_rounded':
+        return Icons.star_rounded;
+      case 'favorite':
+      case 'favorite_rounded':
+      case 'heart':
+        return Icons.favorite_rounded;
+      case 'check':
+      case 'check_circle':
+      case 'check_circle_outline':
+        return Icons.check_circle_outline;
+      case 'refresh':
+      case 'sync':
+        return Icons.refresh_rounded;
+      case 'search':
+        return Icons.search_rounded;
+      case 'close':
+      case 'cancel':
+        return Icons.close_rounded;
+      case 'add':
+      case 'add_circle':
+      case 'add_circle_outline_rounded':
+        return Icons.add_circle_outline_rounded;
+      case 'settings':
+      case 'tune':
+        return Icons.tune_rounded;
+      case 'phone':
+      case 'phone_android':
+        return Icons.phone_android;
+      case 'tablet':
+      case 'tablet_mac':
+        return Icons.tablet_mac;
       default:
-        return Icons.widgets;
+        return Icons.interests_rounded;
+    }
+  }
+}
+
+class _DeckVectorIconPainter extends CustomPainter {
+  final List rawStrokes;
+  final Color strokeColor;
+  final double strokeWidth;
+  final bool isFilled;
+  final Color fillColor;
+
+  _DeckVectorIconPainter({
+    required this.rawStrokes,
+    required this.strokeColor,
+    required this.strokeWidth,
+    required this.isFilled,
+    required this.fillColor,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final scale = size.width / 24.0;
+    final vectorPaint = Paint()
+      ..color = strokeColor
+      ..strokeWidth = strokeWidth * (scale / 16.0).clamp(1.0, 8.0)
+      ..strokeCap = StrokeCap.round
+      ..strokeJoin = StrokeJoin.round
+      ..style = isFilled ? PaintingStyle.fill : PaintingStyle.stroke;
+
+    for (final stroke in rawStrokes) {
+      if (stroke is! List || stroke.isEmpty) continue;
+      final path = Path();
+      final first = stroke.first as Map;
+      path.moveTo((first['x'] as num).toDouble() * scale, (first['y'] as num).toDouble() * scale);
+      for (int i = 1; i < stroke.length; i++) {
+        final pt = stroke[i] as Map;
+        path.lineTo((pt['x'] as num).toDouble() * scale, (pt['y'] as num).toDouble() * scale);
+      }
+      canvas.drawPath(path, vectorPaint);
     }
   }
 
+  @override
+  bool shouldRepaint(covariant _DeckVectorIconPainter old) => true;
 }
 

@@ -71,29 +71,39 @@ class _IconDrawingModalState extends State<IconDrawingModal> {
             );
           }
         }
-      } else if (elem.props.containsKey('icon') || elem.iconName.isNotEmpty) {
-        // Fallback for named icons: pre-load a preset
-        final iconVal = (elem.props['icon'] ?? elem.iconName).toString();
-        if (iconVal.contains('check')) {
-          _loadPreset('check');
-        } else if (iconVal.contains('bookmark')) {
-          _loadPreset('bookmark');
-        } else if (iconVal.contains('phone') || iconVal.contains('tablet')) {
-          _strokes.add([
-            VectorPathPoint(x: 7.0, y: 2.0, isMoveTo: true),
-            VectorPathPoint(x: 17.0, y: 2.0),
-            VectorPathPoint(x: 17.0, y: 22.0),
-            VectorPathPoint(x: 7.0, y: 22.0),
-            VectorPathPoint(x: 7.0, y: 2.0),
-          ]);
-          _strokes.add([
-            VectorPathPoint(x: 11.0, y: 19.0, isMoveTo: true),
-            VectorPathPoint(x: 13.0, y: 19.0),
-          ]);
-        } else {
-          _loadPreset('check');
-        }
+      } else {
+        // Automatically load matching Material Icon vector shape from icon name or props
+        final iconVal = (elem.props['originalIconName'] ?? elem.props['icon'] ?? elem.iconName ?? elem.name).toString().toLowerCase();
+        _loadPresetForName(iconVal);
       }
+    }
+  }
+
+  void _loadPresetForName(String name) {
+    if (name.contains('check') || name.contains('verified')) {
+      _loadPreset('check');
+    } else if (name.contains('star')) {
+      _loadPreset('star');
+    } else if (name.contains('heart') || name.contains('favorite')) {
+      _loadPreset('heart');
+    } else if (name.contains('phone') || name.contains('mobile') || name.contains('android')) {
+      _loadPreset('phone');
+    } else if (name.contains('tablet') || name.contains('kiosk')) {
+      _loadPreset('tablet');
+    } else if (name.contains('arrow') || name.contains('forward') || name.contains('play') || name.contains('next')) {
+      _loadPreset('arrow_forward');
+    } else if (name.contains('add') || name.contains('plus') || name.contains('create')) {
+      _loadPreset('plus');
+    } else if (name.contains('bookmark')) {
+      _loadPreset('bookmark');
+    } else if (name.contains('receipt') || name.contains('bill') || name.contains('calc') || name.contains('money')) {
+      _loadPreset('receipt');
+    } else if (name.contains('search')) {
+      _loadPreset('search');
+    } else if (name.contains('close') || name.contains('cancel') || name.contains('delete')) {
+      _loadPreset('close');
+    } else {
+      _loadPreset('category');
     }
   }
 
@@ -174,6 +184,34 @@ class _IconDrawingModalState extends State<IconDrawingModal> {
           VectorPathPoint(x: 20.0, y: 6.5),
         ]);
         _iconName = 'ic_check_24dp';
+      } else if (type == 'star') {
+        _strokes.add([
+          VectorPathPoint(x: 12.0, y: 2.5, isMoveTo: true),
+          VectorPathPoint(x: 15.0, y: 8.5),
+          VectorPathPoint(x: 21.5, y: 9.5),
+          VectorPathPoint(x: 16.5, y: 14.0),
+          VectorPathPoint(x: 18.0, y: 20.5),
+          VectorPathPoint(x: 12.0, y: 17.5),
+          VectorPathPoint(x: 6.0, y: 20.5),
+          VectorPathPoint(x: 7.5, y: 14.0),
+          VectorPathPoint(x: 2.5, y: 9.5),
+          VectorPathPoint(x: 9.0, y: 8.5),
+          VectorPathPoint(x: 12.0, y: 2.5),
+        ]);
+        _iconName = 'ic_star_24dp';
+      } else if (type == 'heart') {
+        _strokes.add([
+          VectorPathPoint(x: 12.0, y: 20.5, isMoveTo: true),
+          VectorPathPoint(x: 4.5, y: 13.0),
+          VectorPathPoint(x: 4.5, y: 7.5),
+          VectorPathPoint(x: 8.5, y: 4.0),
+          VectorPathPoint(x: 12.0, y: 7.0),
+          VectorPathPoint(x: 15.5, y: 4.0),
+          VectorPathPoint(x: 19.5, y: 7.5),
+          VectorPathPoint(x: 19.5, y: 13.0),
+          VectorPathPoint(x: 12.0, y: 20.5),
+        ]);
+        _iconName = 'ic_favorite_24dp';
       } else if (type == 'bookmark') {
         _strokes.add([
           VectorPathPoint(x: 5.0, y: 3.0, isMoveTo: true),
@@ -186,25 +224,130 @@ class _IconDrawingModalState extends State<IconDrawingModal> {
         _iconName = 'ic_bookmark_24dp';
       } else if (type == 'arrow_forward') {
         _strokes.add([
-          VectorPathPoint(x: 5.0, y: 12.0, isMoveTo: true),
-          VectorPathPoint(x: 19.0, y: 12.0),
+          VectorPathPoint(x: 4.0, y: 12.0, isMoveTo: true),
+          VectorPathPoint(x: 20.0, y: 12.0),
         ]);
         _strokes.add([
-          VectorPathPoint(x: 12.0, y: 5.0, isMoveTo: true),
-          VectorPathPoint(x: 19.0, y: 12.0),
-          VectorPathPoint(x: 12.0, y: 19.0),
+          VectorPathPoint(x: 13.0, y: 5.0, isMoveTo: true),
+          VectorPathPoint(x: 20.0, y: 12.0),
+          VectorPathPoint(x: 13.0, y: 19.0),
         ]);
         _iconName = 'ic_arrow_forward_24dp';
       } else if (type == 'plus') {
         _strokes.add([
-          VectorPathPoint(x: 12.0, y: 5.0, isMoveTo: true),
-          VectorPathPoint(x: 12.0, y: 19.0),
+          VectorPathPoint(x: 12.0, y: 4.0, isMoveTo: true),
+          VectorPathPoint(x: 12.0, y: 20.0),
         ]);
         _strokes.add([
-          VectorPathPoint(x: 5.0, y: 12.0, isMoveTo: true),
-          VectorPathPoint(x: 19.0, y: 12.0),
+          VectorPathPoint(x: 4.0, y: 12.0, isMoveTo: true),
+          VectorPathPoint(x: 20.0, y: 12.0),
         ]);
         _iconName = 'ic_add_24dp';
+      } else if (type == 'phone') {
+        _strokes.add([
+          VectorPathPoint(x: 6.5, y: 2.0, isMoveTo: true),
+          VectorPathPoint(x: 17.5, y: 2.0),
+          VectorPathPoint(x: 17.5, y: 22.0),
+          VectorPathPoint(x: 6.5, y: 22.0),
+          VectorPathPoint(x: 6.5, y: 2.0),
+        ]);
+        _strokes.add([
+          VectorPathPoint(x: 11.0, y: 19.0, isMoveTo: true),
+          VectorPathPoint(x: 13.0, y: 19.0),
+        ]);
+        _iconName = 'ic_phone_24dp';
+      } else if (type == 'tablet') {
+        _strokes.add([
+          VectorPathPoint(x: 3.0, y: 4.0, isMoveTo: true),
+          VectorPathPoint(x: 21.0, y: 4.0),
+          VectorPathPoint(x: 21.0, y: 20.0),
+          VectorPathPoint(x: 3.0, y: 20.0),
+          VectorPathPoint(x: 3.0, y: 4.0),
+        ]);
+        _strokes.add([
+          VectorPathPoint(x: 11.0, y: 17.5, isMoveTo: true),
+          VectorPathPoint(x: 13.0, y: 17.5),
+        ]);
+        _iconName = 'ic_tablet_24dp';
+      } else if (type == 'receipt') {
+        _strokes.add([
+          VectorPathPoint(x: 5.0, y: 2.0, isMoveTo: true),
+          VectorPathPoint(x: 19.0, y: 2.0),
+          VectorPathPoint(x: 19.0, y: 22.0),
+          VectorPathPoint(x: 16.0, y: 20.5),
+          VectorPathPoint(x: 13.0, y: 22.0),
+          VectorPathPoint(x: 10.0, y: 20.5),
+          VectorPathPoint(x: 7.0, y: 22.0),
+          VectorPathPoint(x: 5.0, y: 20.5),
+          VectorPathPoint(x: 5.0, y: 2.0),
+        ]);
+        _strokes.add([
+          VectorPathPoint(x: 8.0, y: 7.0, isMoveTo: true),
+          VectorPathPoint(x: 16.0, y: 7.0),
+        ]);
+        _strokes.add([
+          VectorPathPoint(x: 8.0, y: 11.0, isMoveTo: true),
+          VectorPathPoint(x: 16.0, y: 11.0),
+        ]);
+        _iconName = 'ic_receipt_24dp';
+      } else if (type == 'search') {
+        _strokes.add([
+          VectorPathPoint(x: 10.5, y: 4.0, isMoveTo: true),
+          VectorPathPoint(x: 15.0, y: 5.5),
+          VectorPathPoint(x: 17.0, y: 10.0),
+          VectorPathPoint(x: 15.5, y: 14.5),
+          VectorPathPoint(x: 11.0, y: 16.5),
+          VectorPathPoint(x: 6.5, y: 15.0),
+          VectorPathPoint(x: 4.5, y: 10.5),
+          VectorPathPoint(x: 6.0, y: 6.0),
+          VectorPathPoint(x: 10.5, y: 4.0),
+        ]);
+        _strokes.add([
+          VectorPathPoint(x: 15.0, y: 15.0, isMoveTo: true),
+          VectorPathPoint(x: 21.0, y: 21.0),
+        ]);
+        _iconName = 'ic_search_24dp';
+      } else if (type == 'close') {
+        _strokes.add([
+          VectorPathPoint(x: 5.0, y: 5.0, isMoveTo: true),
+          VectorPathPoint(x: 19.0, y: 19.0),
+        ]);
+        _strokes.add([
+          VectorPathPoint(x: 19.0, y: 5.0, isMoveTo: true),
+          VectorPathPoint(x: 5.0, y: 19.0),
+        ]);
+        _iconName = 'ic_close_24dp';
+      } else {
+        // Category / Grid Icon
+        _strokes.add([
+          VectorPathPoint(x: 3.0, y: 3.0, isMoveTo: true),
+          VectorPathPoint(x: 10.0, y: 3.0),
+          VectorPathPoint(x: 10.0, y: 10.0),
+          VectorPathPoint(x: 3.0, y: 10.0),
+          VectorPathPoint(x: 3.0, y: 3.0),
+        ]);
+        _strokes.add([
+          VectorPathPoint(x: 14.0, y: 3.0, isMoveTo: true),
+          VectorPathPoint(x: 21.0, y: 3.0),
+          VectorPathPoint(x: 21.0, y: 10.0),
+          VectorPathPoint(x: 14.0, y: 10.0),
+          VectorPathPoint(x: 14.0, y: 3.0),
+        ]);
+        _strokes.add([
+          VectorPathPoint(x: 3.0, y: 14.0, isMoveTo: true),
+          VectorPathPoint(x: 10.0, y: 14.0),
+          VectorPathPoint(x: 10.0, y: 21.0),
+          VectorPathPoint(x: 3.0, y: 21.0),
+          VectorPathPoint(x: 3.0, y: 14.0),
+        ]);
+        _strokes.add([
+          VectorPathPoint(x: 14.0, y: 14.0, isMoveTo: true),
+          VectorPathPoint(x: 21.0, y: 14.0),
+          VectorPathPoint(x: 21.0, y: 21.0),
+          VectorPathPoint(x: 14.0, y: 21.0),
+          VectorPathPoint(x: 14.0, y: 14.0),
+        ]);
+        _iconName = 'ic_category_24dp';
       }
     });
   }
@@ -435,24 +578,64 @@ class _IconDrawingModalState extends State<IconDrawingModal> {
                           runSpacing: 6,
                           children: [
                             ActionChip(
-                              label: const Text('Check', style: TextStyle(fontSize: 11)),
+                              label: const Text('Check', style: TextStyle(fontSize: 11, color: Colors.white)),
                               backgroundColor: const Color(0xFF2C2C2C),
                               onPressed: () => _loadPreset('check'),
                             ),
                             ActionChip(
-                              label: const Text('Bookmark', style: TextStyle(fontSize: 11)),
+                              label: const Text('Star', style: TextStyle(fontSize: 11, color: Colors.white)),
+                              backgroundColor: const Color(0xFF2C2C2C),
+                              onPressed: () => _loadPreset('star'),
+                            ),
+                            ActionChip(
+                              label: const Text('Heart', style: TextStyle(fontSize: 11, color: Colors.white)),
+                              backgroundColor: const Color(0xFF2C2C2C),
+                              onPressed: () => _loadPreset('heart'),
+                            ),
+                            ActionChip(
+                              label: const Text('Bookmark', style: TextStyle(fontSize: 11, color: Colors.white)),
                               backgroundColor: const Color(0xFF2C2C2C),
                               onPressed: () => _loadPreset('bookmark'),
                             ),
                             ActionChip(
-                              label: const Text('Arrow Forward', style: TextStyle(fontSize: 11)),
+                              label: const Text('Arrow Forward', style: TextStyle(fontSize: 11, color: Colors.white)),
                               backgroundColor: const Color(0xFF2C2C2C),
                               onPressed: () => _loadPreset('arrow_forward'),
                             ),
                             ActionChip(
-                              label: const Text('Plus Add', style: TextStyle(fontSize: 11)),
+                              label: const Text('Plus Add', style: TextStyle(fontSize: 11, color: Colors.white)),
                               backgroundColor: const Color(0xFF2C2C2C),
                               onPressed: () => _loadPreset('plus'),
+                            ),
+                            ActionChip(
+                              label: const Text('Phone', style: TextStyle(fontSize: 11, color: Colors.white)),
+                              backgroundColor: const Color(0xFF2C2C2C),
+                              onPressed: () => _loadPreset('phone'),
+                            ),
+                            ActionChip(
+                              label: const Text('Tablet', style: TextStyle(fontSize: 11, color: Colors.white)),
+                              backgroundColor: const Color(0xFF2C2C2C),
+                              onPressed: () => _loadPreset('tablet'),
+                            ),
+                            ActionChip(
+                              label: const Text('Receipt', style: TextStyle(fontSize: 11, color: Colors.white)),
+                              backgroundColor: const Color(0xFF2C2C2C),
+                              onPressed: () => _loadPreset('receipt'),
+                            ),
+                            ActionChip(
+                              label: const Text('Search', style: TextStyle(fontSize: 11, color: Colors.white)),
+                              backgroundColor: const Color(0xFF2C2C2C),
+                              onPressed: () => _loadPreset('search'),
+                            ),
+                            ActionChip(
+                              label: const Text('Close', style: TextStyle(fontSize: 11, color: Colors.white)),
+                              backgroundColor: const Color(0xFF2C2C2C),
+                              onPressed: () => _loadPreset('close'),
+                            ),
+                            ActionChip(
+                              label: const Text('Grid Category', style: TextStyle(fontSize: 11, color: Colors.white)),
+                              backgroundColor: const Color(0xFF2C2C2C),
+                              onPressed: () => _loadPreset('category'),
                             ),
                           ],
                         ),
