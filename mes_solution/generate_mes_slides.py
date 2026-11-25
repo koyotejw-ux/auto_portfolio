@@ -446,7 +446,7 @@ def make_slide_02():
     for c_idx, (c_num, c_title, c_prob, c_sol, c_metric, c_accent, c_sol_col) in enumerate(cards_data):
         cy = top_sy + c_idx * (top_card_h + top_gap)
         
-        # Main Card White Surface with soft shadow/border
+        # Main Card White Surface with soft shadow/border (No left accent bar)
         draw.rounded_rectangle(
             [100, cy, 100 + top_card_w, cy + top_card_h],
             radius=14,
@@ -454,39 +454,33 @@ def make_slide_02():
             outline=(226, 232, 240),
             width=1
         )
-        # Left Accent Stripe
-        draw.rounded_rectangle(
-            [100, cy, 105, cy + top_card_h],
-            radius=2,
-            fill=c_accent
-        )
         
         # Number badge pill
-        draw.rounded_rectangle([122, cy + 14, 154, cy + 34], radius=6, fill=(241, 245, 249))
-        draw.text((138, cy + 24), c_num, font=get_num_font(12, 'bold'), fill=(71, 85, 105), anchor='mm')
+        draw.rounded_rectangle([126, cy + 14, 158, cy + 34], radius=6, fill=(241, 245, 249))
+        draw.text((142, cy + 24), c_num, font=get_num_font(12, 'bold'), fill=(71, 85, 105), anchor='mm')
         
         # Title
-        draw.text((164, cy + 24), c_title, font=get_font(16.5, 'bold'), fill=(15, 23, 42), anchor='lm')
+        draw.text((168, cy + 24), c_title, font=get_font(16.5, 'bold'), fill=(15, 23, 42), anchor='lm')
         
         # Right Impact Metric Pill
         metric_w = 210
         metric_h = 26
         metric_rx = 100 + top_card_w - 20 - metric_w
         draw.rounded_rectangle([metric_rx, cy + 12, metric_rx + metric_w, cy + 12 + metric_h], radius=13, fill=(254, 242, 242), outline=(254, 202, 202), width=1)
-        draw.ellipse([metric_rx + 10, cy + 21, metric_rx + 16, cy + 27], fill=c_accent)
+        draw.ellipse([metric_rx + 10, cy + 21, metric_rx + 16, cy + 27], fill=(239, 68, 68))
         draw.text((metric_rx + 24, cy + 24), f"손실: {c_metric}", font=get_font(11.5, 'bold'), fill=(185, 28, 28), anchor='lm')
         
         # Problem Row
         # Problem Tag
-        draw.rounded_rectangle([122, cy + 47, 186, cy + 69], radius=5, fill=(254, 242, 242))
-        draw.text((154, cy + 58), "Problem", font=get_num_font(11.5, 'bold'), fill=(220, 38, 38), anchor='mm')
-        draw.text((196, cy + 58), c_prob, font=get_font(12.5, 'regular'), fill=(51, 65, 85), anchor='lm')
+        draw.rounded_rectangle([126, cy + 47, 190, cy + 69], radius=5, fill=(254, 242, 242))
+        draw.text((158, cy + 58), "Problem", font=get_num_font(11.5, 'bold'), fill=(220, 38, 38), anchor='mm')
+        draw.text((200, cy + 58), c_prob, font=get_font(12.5, 'regular'), fill=(51, 65, 85), anchor='lm')
         
         # Solution Row
         # Solution Tag
-        draw.rounded_rectangle([122, cy + 76, 186, cy + 98], radius=5, fill=(239, 246, 255))
-        draw.text((154, cy + 87), "Solution", font=get_num_font(11.5, 'bold'), fill=(29, 78, 216), anchor='mm')
-        draw.text((196, cy + 87), c_sol, font=get_font(12.5, 'medium'), fill=(15, 23, 42), anchor='lm')
+        draw.rounded_rectangle([126, cy + 76, 190, cy + 98], radius=5, fill=(239, 246, 255))
+        draw.text((158, cy + 87), "Solution", font=get_num_font(11.5, 'bold'), fill=(29, 78, 216), anchor='mm')
+        draw.text((200, cy + 87), c_sol, font=get_font(12.5, 'medium'), fill=(15, 23, 42), anchor='lm')
         
     # -------------------------------------------------------------
     # BOTTOM: 2 High-Density Analytical Cards (y=584, h=388)
@@ -560,21 +554,18 @@ def make_slide_02():
     for l_idx, (s_title, s_pct, s_col, s_desc) in enumerate(slices):
         ly = leg_sy + l_idx * (leg_h + leg_gap)
         
-        # Container box
+        # Container box (Clean white card, no left vertical bar)
         draw.rounded_rectangle([leg_x, ly, leg_x + leg_w, ly + leg_h], radius=8, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
         
-        # Left color bar
-        draw.rounded_rectangle([leg_x, ly, leg_x + 5, ly + leg_h], radius=2, fill=s_col)
-        
         # Color dot + Title
-        draw.ellipse([leg_x + 16, ly + 14, leg_x + 24, ly + 22], fill=s_col)
-        draw.text((leg_x + 32, ly + 18), s_title, font=get_font(12.5, 'bold'), fill=(15, 23, 42), anchor='lm')
+        draw.ellipse([leg_x + 18, ly + 14, leg_x + 26, ly + 22], fill=s_col)
+        draw.text((leg_x + 34, ly + 18), s_title, font=get_font(12.5, 'bold'), fill=(15, 23, 42), anchor='lm')
         
         # Right percentage badge
-        draw.text((leg_x + leg_w - 16, ly + 18), f"{s_pct}%", font=get_num_font(13.5, 'bold'), fill=s_col, anchor='rm')
+        draw.text((leg_x + leg_w - 18, ly + 18), f"{s_pct}%", font=get_num_font(13.5, 'bold'), fill=s_col, anchor='rm')
         
         # Subtitle description
-        draw.text((leg_x + 32, ly + 38), s_desc, font=get_font(10.5, 'regular'), fill=(100, 116, 139), anchor='lm')
+        draw.text((leg_x + 34, ly + 38), s_desc, font=get_font(10.5, 'regular'), fill=(100, 116, 139), anchor='lm')
 
     # Bottom Key Insight Banner inside Left Card
     insight_y = bot_y + bot_h - 40
