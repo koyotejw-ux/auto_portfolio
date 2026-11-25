@@ -337,7 +337,7 @@ def make_slide_01():
         k_y += 114
 
     # 5. Right Side: Multi-Device Trio Transparent Mockup Showcase (Laptop, Tablet, Mobile)
-    # Scaled up for impactful hero presentation, with app icon badge removed per user request
+    # Scaled up and grounded harmoniously towards the bottom specification strip
     trio_thumb = r"d:\097.flutter_project\auto_portfolio\assets\mes_hero_device_trio.png"
     if os.path.exists(trio_thumb):
         trio_img = Image.open(trio_thumb).convert('RGBA')
@@ -348,9 +348,9 @@ def make_slide_01():
         new_h = int(round(trio_img.height * scale))
         trio_resized = trio_img.resize((new_w, new_h), Image.Resampling.LANCZOS)
         
-        # Perfectly right-aligned to slide margin (1820px) and vertically balanced
+        # Positioned closer to the bottom specification bar (bar_y = 840) for a well-anchored, balanced composition
         pos_x = 1820 - new_w
-        pos_y = 125 + (700 - new_h) // 2
+        pos_y = 828 - new_h  # Anchors bottom edge at y=828 (12px breathing room above bar_y=840)
         
         # Real transparent alpha mask drop shadow for floating depth
         mask = trio_resized.split()[3]
