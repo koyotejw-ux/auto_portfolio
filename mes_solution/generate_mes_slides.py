@@ -462,13 +462,12 @@ def make_slide_02():
         # Title
         draw.text((168, cy + 24), c_title, font=get_font(16.5, 'bold'), fill=(15, 23, 42), anchor='lm')
         
-        # Right Impact Metric Pill
-        metric_w = 210
+        # Right Impact Metric Pill (Clean text pill, no leading bullet dot)
+        metric_w = 190
         metric_h = 26
         metric_rx = 100 + top_card_w - 20 - metric_w
         draw.rounded_rectangle([metric_rx, cy + 12, metric_rx + metric_w, cy + 12 + metric_h], radius=13, fill=(254, 242, 242), outline=(254, 202, 202), width=1)
-        draw.ellipse([metric_rx + 10, cy + 21, metric_rx + 16, cy + 27], fill=(239, 68, 68))
-        draw.text((metric_rx + 24, cy + 24), f"손실: {c_metric}", font=get_font(11.5, 'bold'), fill=(185, 28, 28), anchor='lm')
+        draw.text((metric_rx + metric_w // 2, cy + 24), f"손실: {c_metric}", font=get_font(11.5, 'bold'), fill=(185, 28, 28), anchor='mm')
         
         # Problem Row
         # Problem Tag
@@ -570,8 +569,8 @@ def make_slide_02():
     # Bottom Key Insight Banner inside Left Card
     insight_y = bot_y + bot_h - 40
     draw.rounded_rectangle([lb_x + 24, insight_y, lb_x + bot_w - 24, insight_y + 28], radius=6, fill=(241, 245, 249))
-    draw.text((lb_x + 36, insight_y + 14), "💡 Key Insight", font=get_num_font(10.5, 'bold'), fill=(2, 132, 199), anchor='lm')
-    draw.text((lb_x + 130, insight_y + 14), "기존 시스템 불만 1순위는 '느린 UI 및 수기 병행'으로 실시간 경량 반응형 시스템 전환 필수", font=get_font(10.5, 'regular'), fill=(51, 65, 85), anchor='lm')
+    draw.text((lb_x + 36, insight_y + 14), "Key Insight", font=get_num_font(11, 'bold'), fill=(2, 132, 199), anchor='lm')
+    draw.text((lb_x + 120, insight_y + 14), "기존 시스템 불만 1순위는 '느린 UI 및 수기 병행'으로 실시간 경량 반응형 시스템 전환 필수", font=get_font(10.5, 'regular'), fill=(51, 65, 85), anchor='lm')
     
     # -------------------------------------------------------------
     # Right Bottom: Horizontal Bar Chart "중소 제조사 CEO가 겪는 가장 큰 관리 애로사항은?"
@@ -628,8 +627,8 @@ def make_slide_02():
     # Bottom Quote Pill inside Right Card
     quote_y = bot_y + bot_h - 40
     draw.rounded_rectangle([rb_x + 24, quote_y, rb_x + bot_w - 24, quote_y + 28], radius=6, fill=(248, 250, 252))
-    draw.text((rb_x + 36, quote_y + 14), "💬 CEO 인터뷰", font=get_font(10.5, 'bold'), fill=(217, 119, 6), anchor='lm')
-    draw.text((rb_x + 130, quote_y + 14), '"퇴근 후에도 공장 가동률과 미수금 현황을 모바일로 한눈에 보는 것이 최대 소원"', font=get_font(10.5, 'regular'), fill=(51, 65, 85), anchor='lm')
+    draw.text((rb_x + 36, quote_y + 14), "CEO 인터뷰", font=get_font(11, 'bold'), fill=(217, 119, 6), anchor='lm')
+    draw.text((rb_x + 120, quote_y + 14), '"퇴근 후에도 공장 가동률과 미수금 현황을 모바일로 한눈에 보는 것이 최대 소원"', font=get_font(10.5, 'regular'), fill=(51, 65, 85), anchor='lm')
     
     draw_slide_footer(draw, 2)
     base.save(os.path.join(OUT_DIR, 'slide_02.png'))
