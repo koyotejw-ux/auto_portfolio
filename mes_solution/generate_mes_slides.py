@@ -997,7 +997,7 @@ def make_slide_06():
     # Col 1: Phone Production -> w=405
     # Col 2: Phone Quality -> w=405
     # Col 3: Phone Process -> w=405
-    # Total = 436 + 3*405 + 3*24 = 436 + 1215 + 72 = 1723 (margin = 98px)
+    # Total = 436 + 3*405 + 3*24 = 1723 (margin = 98px)
     # -------------------------------------------------------------
     wf_specs = [
         {
@@ -1055,7 +1055,7 @@ def make_slide_06():
     ]
     
     top_y = 205
-    card_h = 805
+    card_h = 810
     gap = 24
     curr_x = 98
     
@@ -1086,48 +1086,33 @@ def make_slide_06():
         draw.text((curr_x + 18, top_y + 54), item["title"], font=get_font(15, 'bold'), fill=(15, 23, 42))
         draw.text((curr_x + 18, top_y + 78), item["desc"], font=get_font(10.5, 'medium'), fill=(100, 116, 139))
         
-        # 2. Wireframe Screen Container (Crisp White Backdrop with clean border)
+        # 2. Wireframe Screen Container (Tight Adaptive Fit: ZERO dead space)
         frame_x = curr_x + 14
         frame_y = top_y + 102
         frame_w = cw - 28
-        frame_h = 360  # Dedicated viewport area
         
-        # Viewport Outer Container
-        draw.rounded_rectangle(
-            [frame_x, frame_y, frame_x + frame_w, frame_y + frame_h], 
-            radius=10, 
-            fill=(248, 250, 252), 
-            outline=(219, 234, 254) if idx == 0 else (226, 232, 240), 
-            width=1
-        )
-        
-        # Load and cleanly fit wireframe image
         fpath = os.path.join(MOCKUP_DIR, item["fname"])
         if os.path.exists(fpath):
             wf_img = Image.open(fpath).convert('RGB')
             sw, sh = wf_img.size
             
-            # Auto-crop bottom and top empty white margins so the content is tightly focused
+            # Precise edge crop to eliminate outer empty whitespace bands
             thresh = 242
-            # top
             crop_top = 0
             for y in range(0, sh):
                 if any(wf_img.getpixel((x, y))[0] < thresh for x in range(0, sw, 4)):
                     crop_top = max(0, y - 8)
                     break
-            # bottom
             crop_bot = sh
             for y in range(sh - 1, -1, -1):
                 if any(wf_img.getpixel((x, y))[0] < thresh for x in range(0, sw, 4)):
                     crop_bot = min(sh, y + 14)
                     break
-            # left
             crop_left = 0
             for x in range(0, sw):
                 if any(wf_img.getpixel((x, y))[0] < thresh for y in range(crop_top, crop_bot, 4)):
                     crop_left = max(0, x - 8)
                     break
-            # right
             crop_right = sw
             for x in range(sw - 1, -1, -1):
                 if any(wf_img.getpixel((x, y))[0] < thresh for y in range(crop_top, crop_bot, 4)):
@@ -1138,45 +1123,54 @@ def make_slide_06():
                 wf_img = wf_img.crop((crop_left, crop_top, crop_right, crop_bot))
                 
             src_w, src_h = wf_img.size
-            avail_w = frame_w - 12
-            avail_h = frame_h - 12
-            
-            # Scale to fit available viewport cleanly
-            scale = min(avail_w / src_w, avail_h / src_h)
-            target_w = int(round(src_w * scale))
+            target_w = frame_w - 6  # 3px inner padding on left & right
+            scale = target_w / float(src_w)
             target_h = int(round(src_h * scale))
-            wf_resized = wf_img.resize((target_w, target_h), Image.Resampling.LANCZOS)
+            frame_h = target_h + 6  # Tightly wraps image with 3px padding on all sides
             
-            paste_x = frame_x + (frame_w - target_w) // 2
-            paste_y = frame_y + (frame_h - target_h) // 2
-            
-            # Subtle card backdrop behind the wireframe sheet
+            # Viewport Outer Container wrapping image tightly with crisp high-contrast border
             draw.rounded_rectangle(
-                [paste_x - 2, paste_y - 2, paste_x + target_w + 2, paste_y + target_h + 2], 
-                radius=6, 
-                fill=(255, 255, 255), 
-                outline=(203, 213, 225), 
+                [frame_x, frame_y, frame_x + frame_w, frame_y + frame_h], 
+                radius=10, 
+                fill=(248, 250, 252), 
+                outline=(0, 81, 255) if idx == 0 else (203, 213, 225), 
                 width=1
             )
+            
+            wf_resized = wf_img.resize((target_w, target_h), Image.Resampling.LANCZOS)
+            paste_x = frame_x + 3
+            paste_y = frame_y + 3
             base.paste(wf_resized, (paste_x, paste_y))
+            
+            # Subtle crisp inner edge line
             draw.rounded_rectangle(
                 [paste_x - 1, paste_y - 1, paste_x + target_w + 1, paste_y + target_h + 1], 
                 radius=4, 
                 outline=(226, 232, 240), 
                 width=1
             )
+        else:
+            frame_h = 240
+            draw.rounded_rectangle([frame_x, frame_y, frame_x + frame_w, frame_y + frame_h], radius=10, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
                 
-        # 3. Key Interaction Specifications Zone (Below Image)
+        # 3. Key Interaction Specifications Zone (Dynamically balanced below image)
         inter_y = frame_y + frame_h + 14
         draw.line([(curr_x + 16, inter_y), (curr_x + cw - 16, inter_y)], fill=(241, 245, 249), width=1)
         
         draw_pill_badge(draw, left_x=curr_x + 18, cy=inter_y + 18, text="FUNCTION & INTERACTION SPEC", font=get_font(9, 'bold'), theme='blue', dark_mode=False, pad_x=8, height=20)
         
+        # Calculate available height for interaction cards
+        avail_spec_h = (top_y + card_h - 18) - (inter_y + 36)
+        num_cards = len(item["interactions"])
+        card_gap = 12
+        single_card_h = (avail_spec_h - (num_cards - 1) * card_gap) // num_cards
+        single_card_h = max(82, min(single_card_h, 115))  # Clamp to visually comfortable range
+        
         by = inter_y + 36
         for f_idx, (f_name, f_desc) in enumerate(item["interactions"]):
             # Small interaction spec card
             draw.rounded_rectangle(
-                [curr_x + 16, by, curr_x + cw - 16, by + 82], 
+                [curr_x + 16, by, curr_x + cw - 16, by + single_card_h], 
                 radius=8, 
                 fill=(248, 250, 252), 
                 outline=(226, 232, 240), 
@@ -1185,32 +1179,34 @@ def make_slide_06():
             
             # Left accent highlight on item card
             draw.rounded_rectangle(
-                [curr_x + 16, by, curr_x + 19, by + 82],
+                [curr_x + 16, by, curr_x + 19, by + single_card_h],
                 radius=1,
                 fill=(0, 81, 255) if idx == 0 else (59, 130, 246)
             )
             
             # Bullet Number Badge
-            draw.ellipse([curr_x + 26, by + 13, curr_x + 42, by + 29], fill=(0, 81, 255))
-            draw.text((curr_x + 34, by + 21), str(f_idx + 1), font=get_font(9.5, 'bold'), fill=(255, 255, 255), anchor='mm')
+            badge_cy = by + 20
+            draw.ellipse([curr_x + 26, badge_cy - 8, curr_x + 42, badge_cy + 8], fill=(0, 81, 255))
+            draw.text((curr_x + 34, badge_cy), str(f_idx + 1), font=get_font(9.5, 'bold'), fill=(255, 255, 255), anchor='mm')
             
             # Function Title
-            draw.text((curr_x + 50, by + 21), f_name, font=get_font(12, 'bold'), fill=(0, 81, 255), anchor='lm')
+            draw.text((curr_x + 50, badge_cy), f_name, font=get_font(12, 'bold'), fill=(0, 81, 255), anchor='lm')
             
             # Function Description lines
-            lines = textwrap.wrap(f_desc, width=int(cw * 0.088))
+            lines = textwrap.wrap(f_desc, width=int(cw * 0.086))
             ly = by + 39
-            for l in lines[:2]:
+            max_lines = 3 if single_card_h >= 100 else 2
+            for l in lines[:max_lines]:
                 draw.text((curr_x + 26, ly), l, font=get_font(10.5, 'regular'), fill=(71, 85, 105))
                 ly += 18
                 
-            by += 88
+            by += single_card_h + card_gap
             
         curr_x += cw + gap
 
     draw_slide_footer(draw, 6, dark_mode=False)
     base.save(os.path.join(OUT_DIR, 'slide_06.png'))
-    print("SAVED slide_06.png (Sectioned Wireframes with Exact Ratios & Function Interactions in White Theme)")
+    print("SAVED slide_06.png (Sectioned Wireframes with Exact Ratios & Tight Viewport Fit)")
 
 
 def make_slide_07():
