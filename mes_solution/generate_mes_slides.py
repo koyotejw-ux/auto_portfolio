@@ -318,7 +318,7 @@ def make_slide_01():
         cur_l = ""
         for w in words:
             test = (cur_l + ' ' + w).strip()
-            if draw.textlength(test, font=get_font(12, 'regular')) <= 780:
+            if draw.textlength(test, font=get_font(12, 'regular')) <= 730:
                 cur_l = test
             else:
                 lines.append(cur_l)
@@ -332,22 +332,24 @@ def make_slide_01():
             desc_y += 20
             
         if idx < 3:
-            draw.line([(100, k_y + 92), (900, k_y + 92)], fill=(226, 232, 240), width=1)
+            draw.line([(100, k_y + 92), (860, k_y + 92)], fill=(226, 232, 240), width=1)
             
         k_y += 114
 
     # 5. Right Side: Multi-Device Trio Transparent Mockup Showcase (Laptop, Tablet, Mobile)
+    # Scaled up for impactful hero presentation, with app icon badge removed per user request
     trio_thumb = r"d:\097.flutter_project\auto_portfolio\assets\mes_hero_device_trio.png"
     if os.path.exists(trio_thumb):
         trio_img = Image.open(trio_thumb).convert('RGBA')
         
-        # Scale to hero right space (avail_w approx 920, avail_h approx 700)
-        scale = min(920 / trio_img.width, 700 / trio_img.height)
+        # Expanded heroic dimensions (avail_w: 960px, avail_h: 700px)
+        scale = min(960 / trio_img.width, 700 / trio_img.height)
         new_w = int(round(trio_img.width * scale))
         new_h = int(round(trio_img.height * scale))
         trio_resized = trio_img.resize((new_w, new_h), Image.Resampling.LANCZOS)
         
-        pos_x = 940 + (920 - new_w) // 2
+        # Perfectly right-aligned to slide margin (1820px) and vertically balanced
+        pos_x = 1820 - new_w
         pos_y = 125 + (700 - new_h) // 2
         
         # Real transparent alpha mask drop shadow for floating depth
@@ -360,29 +362,6 @@ def make_slide_01():
         base.paste(sh, (pos_x - 60, pos_y - 60), sh)
         base.paste(trio_resized, (pos_x, pos_y), trio_resized)
 
-    # 6. Floating Official Solution Icon Badge
-    icon_path = r"d:\097.flutter_project\auto_portfolio\assets\mes_solution_app_icon.png"
-    if os.path.exists(icon_path):
-        ic = Image.open(icon_path).convert('RGBA')
-        ic_w = 92
-        ic_sc = ic.resize((ic_w, ic_w), Image.Resampling.LANCZOS)
-        badge_im = Image.new('RGBA', (112, 112), (0, 0, 0, 0))
-        bd = ImageDraw.Draw(badge_im)
-        bd.rounded_rectangle([0, 0, 112, 112], radius=24, fill=(255, 255, 255, 250), outline=(226, 232, 240), width=2)
-        badge_im.paste(ic_sc, ((112 - ic_w)//2, (112 - ic_w)//2), ic_sc)
-        
-        # Soft shadow for floating badge
-        b_mask = badge_im.split()[3]
-        b_sh_img = Image.new('RGBA', (badge_im.width + 60, badge_im.height + 60), (0, 0, 0, 0))
-        b_black = Image.new('RGBA', badge_im.size, (15, 23, 42, 65))
-        b_sh_img.paste(b_black, (30 + 6, 30 + 12), b_mask)
-        b_sh = b_sh_img.filter(ImageFilter.GaussianBlur(18))
-        
-        badge_x = 945
-        badge_y = 665
-        base.paste(b_sh, (badge_x - 30, badge_y - 30), b_sh)
-        base.paste(badge_im, (badge_x, badge_y), badge_im)
-        
     draw = ImageDraw.Draw(base)
     
     # 7. Bottom 4-Column Specification Strip (Spanning x=100 to 1820, y=840 to 956)
