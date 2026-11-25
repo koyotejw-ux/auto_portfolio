@@ -197,7 +197,16 @@ class FlutterProjectParser {
     // 1. Frame Container (Page / Modal / BottomSheet Frame)
     // Find matching real screenshot if exists in project
     String? screenshotPath;
-    final projectDir = file.parent.parent.parent;
+    Directory dirCursor = file.parent;
+    Directory projectDir = file.parent;
+    for (int depth = 0; depth < 6; depth++) {
+      if (File('${dirCursor.path}/pubspec.yaml').existsSync()) {
+        projectDir = dirCursor;
+        break;
+      }
+      if (dirCursor.parent.path == dirCursor.path) break;
+      dirCursor = dirCursor.parent;
+    }
     final cleanScreenLower = fileName.toLowerCase().replaceAll('_screen.dart', '').replaceAll('.dart', '');
 
     // 1. Screen-specific screenshot candidates

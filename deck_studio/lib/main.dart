@@ -1692,59 +1692,135 @@ class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
 
   Widget _buildFigmaPageDropdownBar() {
     return Container(
-      height: 36,
-      padding: const EdgeInsets.symmetric(horizontal: 10),
       decoration: const BoxDecoration(
         color: Color(0xFF1E1E1E),
         border: Border(bottom: BorderSide(color: Color(0xFF2C2C2C))),
       ),
-      child: Row(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(Icons.description_outlined, color: Color(0xFF38BDF8), size: 13),
-          const SizedBox(width: 6),
-          Expanded(
-            child: DropdownButtonHideUnderline(
-              child: DropdownButton<int>(
-                value: _activeSlideIndex,
-                isExpanded: true,
-                dropdownColor: const Color(0xFF262626),
-                style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.bold),
-                icon: const Icon(Icons.arrow_drop_down, color: Color(0xFFA3A3A3), size: 16),
-                items: _project.slides.asMap().entries.map((entry) {
-                  final idx = entry.key;
-                  final slide = entry.value;
-                  return DropdownMenuItem<int>(
-                    value: idx,
-                    child: Text(
-                      'Page ${idx + 1}: ${slide.title}',
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontSize: 11,
-                        color: idx == _activeSlideIndex ? const Color(0xFF38BDF8) : Colors.white,
-                        fontWeight: idx == _activeSlideIndex ? FontWeight.bold : FontWeight.normal,
-                      ),
+          // 1. Collapsible Pages Header: [▾] Pages (Count)   [+]
+          InkWell(
+            onTap: () => setState(() => _isPagesExpanded = !_isPagesExpanded),
+            child: Container(
+              height: 36,
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Row(
+                children: [
+                  Icon(
+                    _isPagesExpanded ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_right,
+                    size: 16,
+                    color: const Color(0xFFA3A3A3),
+                  ),
+                  const SizedBox(width: 4),
+                  const Text(
+                    'Pages',
+                    style: TextStyle(color: Colors.white, fontSize: 11.5, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(width: 6),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF2C2C2C),
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                  );
-                }).toList(),
-                onChanged: (newIdx) {
-                  if (newIdx != null) {
-                    setState(() {
-                      _activeSlideIndex = newIdx;
-                      _selectedElement = null;
-                    });
-                  }
-                },
+                    child: Text(
+                      '${_project.slides.length}',
+                      style: const TextStyle(color: Color(0xFFA3A3A3), fontSize: 10, fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                  const Spacer(),
+                  IconButton(
+                    icon: const Icon(Icons.add, size: 15, color: Color(0xFF38BDF8)),
+                    onPressed: _addNewSlide,
+                    tooltip: '새 페이지 추가',
+                    visualDensity: VisualDensity.compact,
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(minWidth: 20, minHeight: 20),
+                  ),
+                ],
               ),
             ),
           ),
-          IconButton(
-            icon: const Icon(Icons.add, size: 15, color: Color(0xFF38BDF8)),
-            onPressed: _addNewSlide,
-            tooltip: '새 페이지 추가',
-            visualDensity: VisualDensity.compact,
-            padding: EdgeInsets.zero,
-            constraints: const BoxConstraints(minWidth: 20, minHeight: 20),
-          ),
+
+          // 2. Collapsible Figma Pages Tree List
+          if (_isPagesExpanded)
+            Container(
+              constraints: const BoxConstraints(maxHeight: 220),
+              decoration: const BoxDecoration(
+                border: Border(top: BorderSide(color: Color(0xFF262626))),
+              ),
+              child: ListView.builder(
+                shrinkWrap: true,
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                itemCount: _project.slides.length,
+                itemBuilder: (context, index) {
+                  final slide = _project.slides[index];
+                  final isActive = index == _activeSlideIndex;
+
+                  return Container(
+                    margin: const EdgeInsets.only(bottom: 2),
+                    decoration: BoxDecoration(
+                      color: isActive ? const Color(0xFF2C2C2C) : Colors.transparent,
+                      borderRadius: BorderRadius.circular(4),
+                      border: Border.all(
+                        color: isActive ? const Color(0xFF0052FF) : Colors.transparent,
+                        width: 1,
+                      ),
+                    ),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(4),
+                        onTap: () {
+                          setState(() {
+                            _activeSlideIndex = index;
+                            _selectedElement = null;
+                            _selectedElementIds.clear();
+                          });
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.description_outlined,
+                                size: 13,
+                                color: isActive ? const Color(0xFF38BDF8) : const Color(0xFF737373),
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  slide.title,
+                                  style: TextStyle(
+                                    color: isActive ? Colors.white : const Color(0xFFA3A3A3),
+                                    fontSize: 11,
+                                    fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+                                decoration: BoxDecoration(
+                                  color: Colors.black26,
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                                child: Text(
+                                  '${slide.elements.length}',
+                                  style: const TextStyle(color: Color(0xFF64748B), fontSize: 9.5),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
         ],
       ),
     );
