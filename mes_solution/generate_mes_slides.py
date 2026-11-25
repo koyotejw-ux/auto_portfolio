@@ -405,82 +405,121 @@ def make_slide_02():
     )
     
     # -------------------------------------------------------------
-    # TOP: 3 Problem -> Solution Strategic Cards (y=200, h=105 each, gap=15)
+    # TOP: 3 Problem -> Solution Strategic Cards (y=202, h=108 each, gap=14)
+    # Modern card with accent line, impact metric tag, and structured badges
     # -------------------------------------------------------------
     cards_data = [
         (
-            "01. 분절된 데이터 파편화 → 전사 데이터 일원화 파이프라인",
-            "수주, 생산, 재고, 회계 데이터가 부서별 엑셀과 수기 전산으로 파편화되어 데이터 누락 및 정산 오류 빈번",
-            "생산(MES) 실적과 자금(ERP) 데이터가 실시간 연동되는 단일 대시보드 구축으로 수기 취합 공수 제거"
+            "01",
+            "분절된 데이터 파편화 → 전사 데이터 일원화 파이프라인",
+            "수주, 생산, 재고, 회계 데이터가 부서별 엑셀과 수기 전산으로 파편화되어 데이터 누락 및 결산 오차 발생",
+            "생산(MES) 실적과 자금(ERP) 데이터가 실시간 연동되는 단일 파이프라인 구축으로 수기 취합 공수 99.9% 절감",
+            "월 160시간 수기 공수 낭비",
+            (239, 68, 68),  # Rose
+            (0, 81, 255)    # Brand Blue
         ),
         (
-            "02. 현장 의존적 유선 보고 → 멀티 디바이스 실시간 원격 관제",
-            "공장 현장 상황을 파악하기 위해 직접 방문하거나 담당자의 유선 보고에 의존하여 경영진의 즉각적인 의사결정 지연",
-            "PC 브라우저뿐만 아니라 태블릿·모바일에 최적화된 반응형 실시간 관제 UI를 제공하여 이동 중에도 병목 현상 즉시 파악 지원"
+            "02",
+            "현장 의존적 유선 보고 → 멀티 디바이스 실시간 원격 관제",
+            "공장 라인 이상 및 설비 비가동 시 현장 직접 방문이나 유선 구두 보고에 의존하여 경영진의 긴급 의사결정 지연",
+            "PC 브라우저·10인치 태블릿·모바일에 최적화된 반응형 텔레메트리 관제로 원격지에서도 병목 현상 즉시 파악",
+            "라인 정지 인지 45분 지연",
+            (245, 158, 11), # Amber
+            (14, 165, 233)  # Sky Blue
         ),
         (
-            "03. 복잡한 구축형 UI 장벽 → 역할(Role) 기반의 경량화 인터페이스",
-            "기존 대기업형 SI 솔루션은 높은 초기 비용과 실무자에게 불필요한 과도한 기능 노출로 사용성 저하",
-            "생산직, 품질검사관, 경영진 등 직무별 필수 기능만 드래그 앤 드롭으로 배치할 수 있는 '메뉴 커스텀' 및 직관적인 디자인 시스템 적용"
+            "03",
+            "복잡한 대기업형 SI 장벽 → 역할(Role) 기반 경량화 인터페이스",
+            "기존 고가 구축형 시스템은 복잡한 메뉴 뎁스와 불필요한 과도한 기능 노출로 현장 작업자 진입 장벽 형성",
+            "경영진, 공정관리자, 작업자 등 직무별 필수 위젯만 배치하는 1-Tap 터치 중심 경량화 UX 및 모듈형 시스템 적용",
+            "초기 구축비 3.8억원 부담",
+            (139, 92, 246), # Purple
+            (16, 185, 129)  # Emerald
         )
     ]
     
-    top_sy = 205
+    top_sy = 202
     top_card_w = 1720
-    top_card_h = 105
-    top_gap = 16
+    top_card_h = 110
+    top_gap = 14
     
-    for c_idx, (c_title, c_prob, c_sol) in enumerate(cards_data):
+    for c_idx, (c_num, c_title, c_prob, c_sol, c_metric, c_accent, c_sol_col) in enumerate(cards_data):
         cy = top_sy + c_idx * (top_card_h + top_gap)
+        
+        # Main Card White Surface with soft shadow/border
         draw.rounded_rectangle(
             [100, cy, 100 + top_card_w, cy + top_card_h],
-            radius=16,
-            fill=(240, 246, 255),
-            outline=(219, 234, 254),
+            radius=14,
+            fill=(255, 255, 255),
+            outline=(226, 232, 240),
             width=1
         )
+        # Left Accent Stripe
+        draw.rounded_rectangle(
+            [100, cy, 105, cy + top_card_h],
+            radius=2,
+            fill=c_accent
+        )
         
-        # Title (Bold 18px black)
-        draw.text((130, cy + 16), c_title, font=get_font(17, 'bold'), fill=(15, 23, 42))
+        # Number badge pill
+        draw.rounded_rectangle([122, cy + 14, 154, cy + 34], radius=6, fill=(241, 245, 249))
+        draw.text((138, cy + 24), c_num, font=get_num_font(12, 'bold'), fill=(71, 85, 105), anchor='mm')
         
-        # Problem Line
-        draw.text((130, cy + 48), "Problem", font=get_font(13.5, 'bold'), fill=(239, 68, 68))
-        draw.text((200, cy + 48), c_prob, font=get_font(13, 'medium'), fill=(51, 65, 85))
+        # Title
+        draw.text((164, cy + 24), c_title, font=get_font(16.5, 'bold'), fill=(15, 23, 42), anchor='lm')
         
-        # Solution Line
-        draw.text((130, cy + 73), "Solution", font=get_font(13.5, 'bold'), fill=(0, 81, 255))
-        draw.text((200, cy + 73), c_sol, font=get_font(13, 'medium'), fill=(51, 65, 85))
+        # Right Impact Metric Pill
+        metric_w = 210
+        metric_h = 26
+        metric_rx = 100 + top_card_w - 20 - metric_w
+        draw.rounded_rectangle([metric_rx, cy + 12, metric_rx + metric_w, cy + 12 + metric_h], radius=13, fill=(254, 242, 242), outline=(254, 202, 202), width=1)
+        draw.ellipse([metric_rx + 10, cy + 21, metric_rx + 16, cy + 27], fill=c_accent)
+        draw.text((metric_rx + 24, cy + 24), f"손실: {c_metric}", font=get_font(11.5, 'bold'), fill=(185, 28, 28), anchor='lm')
+        
+        # Problem Row
+        # Problem Tag
+        draw.rounded_rectangle([122, cy + 47, 186, cy + 69], radius=5, fill=(254, 242, 242))
+        draw.text((154, cy + 58), "Problem", font=get_num_font(11.5, 'bold'), fill=(220, 38, 38), anchor='mm')
+        draw.text((196, cy + 58), c_prob, font=get_font(12.5, 'regular'), fill=(51, 65, 85), anchor='lm')
+        
+        # Solution Row
+        # Solution Tag
+        draw.rounded_rectangle([122, cy + 76, 186, cy + 98], radius=5, fill=(239, 246, 255))
+        draw.text((154, cy + 87), "Solution", font=get_num_font(11.5, 'bold'), fill=(29, 78, 216), anchor='mm')
+        draw.text((196, cy + 87), c_sol, font=get_font(12.5, 'medium'), fill=(15, 23, 42), anchor='lm')
         
     # -------------------------------------------------------------
-    # BOTTOM: 2 Authentic Survey & Data Analysis Cards (y=580, h=390)
+    # BOTTOM: 2 High-Density Analytical Cards (y=584, h=388)
     # -------------------------------------------------------------
-    bot_y = 580
+    bot_y = 584
     bot_w = 845
-    bot_h = 390
+    bot_h = 388
     bot_gap = 30
     
     # -------------------------------------------------------------
-    # Left Bottom: Donut Chart "정보 파편화 -> 전사 데이터 통합 필요성 강조"
+    # Left Bottom: Donut Chart "정보 파편화 및 현장 병목 구조 분석"
     # Modern Split Layout: Donut on Left, High-Clarity Legend Pods on Right
     # -------------------------------------------------------------
     lb_x = 100
-    draw.rounded_rectangle([lb_x, bot_y, lb_x + bot_w, bot_y + bot_h], radius=20, fill=(240, 246, 255), outline=(219, 234, 254), width=1)
+    draw.rounded_rectangle([lb_x, bot_y, lb_x + bot_w, bot_y + bot_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
     
-    # Card Header
-    draw.text((lb_x + 35, bot_y + 28), "정보 파편화 → 전사 데이터 통합 필요성 강조", font=get_font(18.5, 'bold'), fill=(15, 23, 42))
-    draw.text((lb_x + 35, bot_y + 56), "제조 현장 임직원 심층 설문 결과 (복수 응답 애로사항 분석)", font=get_font(11.5, 'medium'), fill=(100, 116, 139))
+    # Card Header with pill tag
+    draw.rounded_rectangle([lb_x + 30, bot_y + 24, lb_x + 130, bot_y + 44], radius=6, fill=(239, 246, 255))
+    draw.text((lb_x + 80, bot_y + 34), "정성/정량 분석", font=get_font(11, 'bold'), fill=(29, 78, 216), anchor='mm')
+    draw.text((lb_x + 140, bot_y + 34), "정보 파편화 및 현장 병목 구조 분석", font=get_font(17.5, 'bold'), fill=(15, 23, 42), anchor='lm')
+    draw.text((lb_x + 32, bot_y + 58), "제조 현장 임직원 심층 설문 150명 결과 (복수 응답 애로사항 분석)", font=get_font(11.5, 'regular'), fill=(100, 116, 139))
     
     # Donut Geometry (Left Zone)
-    dc_x = lb_x + 190
-    dc_y = bot_y + 205
-    outer_r = 115
-    inner_r = 58
+    dc_x = lb_x + 175
+    dc_y = bot_y + 195
+    outer_r = 105
+    inner_r = 54
     
     slices = [
-        ("기존 시스템 UI 불만족", 30, (0, 163, 174), "복잡한 메뉴 뎁스와 둔탁한 반응 속도"),
-        ("부서별 엑셀 관리 파편화", 25, (29, 105, 188), "데이터 불일치 및 수기 취합 오류 빈번"),
-        ("수작업 및 유선 구두 보고", 25, (108, 92, 231), "실시간 모니터링 불가 및 의사결정 지연"),
-        ("대기업형 구축 비용 부담", 20, (217, 83, 7), "수억 원대 SI 패키지 도입 한계")
+        ("기존 시스템 UI 불만족", 30, (14, 165, 233), "복잡한 메뉴 뎁스와 느린 터치 반응 속도"),
+        ("부서별 엑셀 관리 파편화", 25, (0, 81, 255), "데이터 불일치 및 수기 취합 오류 빈번"),
+        ("수작업 및 유선 구두 보고", 25, (99, 102, 241), "실시간 모니터링 불가 및 의사결정 지연"),
+        ("대기업형 구축 비용 부담", 20, (245, 158, 11), "수억원대 SI 패키지 도입 예산 장벽")
     ]
     
     # Draw Donut Slices
@@ -502,27 +541,27 @@ def make_slide_02():
         ty = dc_y + label_r * math.sin(mid_rad)
         
         # Crisp percentage text inside slice
-        draw.text((tx, ty), f"{s_pct}%", font=get_font(13.5, 'bold'), fill=(255, 255, 255), anchor='mm')
+        draw.text((tx, ty), f"{s_pct}%", font=get_num_font(13, 'bold'), fill=(255, 255, 255), anchor='mm')
         
         curr_angle += sweep
         
     # Cut out inner hole for Donut with clean center KPI
-    draw.ellipse([dc_x - inner_r, dc_y - inner_r, dc_x + inner_r, dc_y + inner_r], fill=(255, 255, 255), outline=(219, 234, 254), width=1)
-    draw.text((dc_x, dc_y - 12), "핵심 과제", font=get_font(10.5, 'bold'), fill=(100, 116, 139), anchor='mm')
-    draw.text((dc_x, dc_y + 10), "100%", font=get_font(16.5, 'black'), fill=(15, 23, 42), anchor='mm')
+    draw.ellipse([dc_x - inner_r, dc_y - inner_r, dc_x + inner_r, dc_y + inner_r], fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+    draw.text((dc_x, dc_y - 10), "개선 시급도", font=get_font(10.5, 'bold'), fill=(100, 116, 139), anchor='mm')
+    draw.text((dc_x, dc_y + 11), "100%", font=get_num_font(16.5, 'bold'), fill=(15, 23, 42), anchor='mm')
     
     # Legend Pods on the Right side of Donut (Clear alignment, no overlaps)
-    leg_x = lb_x + 350
-    leg_w = bot_w - 380
-    leg_sy = bot_y + 92
+    leg_x = lb_x + 325
+    leg_w = bot_w - 355
+    leg_sy = bot_y + 88
     leg_h = 56
-    leg_gap = 12
+    leg_gap = 10
     
     for l_idx, (s_title, s_pct, s_col, s_desc) in enumerate(slices):
         ly = leg_sy + l_idx * (leg_h + leg_gap)
         
-        # White container box with subtle border
-        draw.rounded_rectangle([leg_x, ly, leg_x + leg_w, ly + leg_h], radius=8, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+        # Container box
+        draw.rounded_rectangle([leg_x, ly, leg_x + leg_w, ly + leg_h], radius=8, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
         
         # Left color bar
         draw.rounded_rectangle([leg_x, ly, leg_x + 5, ly + leg_h], radius=2, fill=s_col)
@@ -532,59 +571,74 @@ def make_slide_02():
         draw.text((leg_x + 32, ly + 18), s_title, font=get_font(12.5, 'bold'), fill=(15, 23, 42), anchor='lm')
         
         # Right percentage badge
-        draw.text((leg_x + leg_w - 16, ly + 18), f"{s_pct}%", font=get_font(14, 'bold'), fill=s_col, anchor='rm')
+        draw.text((leg_x + leg_w - 16, ly + 18), f"{s_pct}%", font=get_num_font(13.5, 'bold'), fill=s_col, anchor='rm')
         
         # Subtitle description
-        draw.text((leg_x + 32, ly + 38), s_desc, font=get_font(10, 'regular'), fill=(100, 116, 139), anchor='lm')
+        draw.text((leg_x + 32, ly + 38), s_desc, font=get_font(10.5, 'regular'), fill=(100, 116, 139), anchor='lm')
 
-    # Source footnote
-    draw.text((lb_x + bot_w // 2, bot_y + bot_h - 22), "(출처: 사내 임직원 조사 및 시장 동향 기반 AI 모델 추정치)", font=get_font(11.5, 'regular'), fill=(100, 116, 139), anchor='mm')
+    # Bottom Key Insight Banner inside Left Card
+    insight_y = bot_y + bot_h - 40
+    draw.rounded_rectangle([lb_x + 24, insight_y, lb_x + bot_w - 24, insight_y + 28], radius=6, fill=(241, 245, 249))
+    draw.text((lb_x + 36, insight_y + 14), "💡 Key Insight", font=get_num_font(10.5, 'bold'), fill=(2, 132, 199), anchor='lm')
+    draw.text((lb_x + 130, insight_y + 14), "기존 시스템 불만 1순위는 '느린 UI 및 수기 병행'으로 실시간 경량 반응형 시스템 전환 필수", font=get_font(10.5, 'regular'), fill=(51, 65, 85), anchor='lm')
     
     # -------------------------------------------------------------
     # Right Bottom: Horizontal Bar Chart "중소 제조사 CEO가 겪는 가장 큰 관리 애로사항은?"
     # -------------------------------------------------------------
     rb_x = lb_x + bot_w + bot_gap
-    draw.rounded_rectangle([rb_x, bot_y, rb_x + bot_w, bot_y + bot_h], radius=20, fill=(240, 246, 255), outline=(219, 234, 254), width=1)
+    draw.rounded_rectangle([rb_x, bot_y, rb_x + bot_w, bot_y + bot_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
     
-    # Card Header
-    draw.text((rb_x + 35, bot_y + 28), "중소 제조사 CEO가 겪는 가장 큰 관리 애로사항은?", font=get_font(18.5, 'bold'), fill=(15, 23, 42))
-    draw.text((rb_x + 35, bot_y + 56), "경영진 120개사 심층 인터뷰 정량 통계 (단위: %)", font=get_font(11.5, 'medium'), fill=(100, 116, 139))
+    # Card Header with pill tag
+    draw.rounded_rectangle([rb_x + 30, bot_y + 24, rb_x + 115, bot_y + 44], radius=6, fill=(254, 243, 199))
+    draw.text((rb_x + 72, bot_y + 34), "경영진 서베이", font=get_font(11, 'bold'), fill=(180, 83, 9), anchor='mm')
+    draw.text((rb_x + 125, bot_y + 34), "중소 제조사 CEO가 겪는 가장 큰 관리 애로사항은?", font=get_font(17.5, 'bold'), fill=(15, 23, 42), anchor='lm')
+    draw.text((rb_x + 32, bot_y + 58), "경영진 120개사 심층 인터뷰 정량 통계 (단위: %, 복수응답)", font=get_font(11.5, 'regular'), fill=(100, 116, 139))
     
     # H-Bar Data
     bar_items = [
-        ("미수금/자금 흐름", 37.8),
-        ("실시간 생산 진척", 26.8),
-        ("수주/발주 현황", 12.2),
-        ("타 부서 데이터 취합", 12.2),
-        ("납기관리", 6.8),
-        ("개인정보변경", 4.2)
+        ("01", "미수금/자금 흐름 파악 불가", 37.8, (0, 81, 255)),
+        ("02", "실시간 생산 진척 모니터링", 26.8, (14, 165, 233)),
+        ("03", "수주/발주 현황 실시간 동기화", 12.2, (59, 130, 246)),
+        ("04", "타 부서 간 데이터 취합 지연", 12.2, (99, 102, 241)),
+        ("05", "납기 관리 및 지연 공정 예측", 6.8, (148, 163, 184)),
+        ("06", "작업자 근태 및 기준정보 관리", 4.2, (203, 213, 225))
     ]
     
-    axis_x = rb_x + 195  # Vertical axis line x
-    bar_sy = bot_y + 92
+    axis_x = rb_x + 230  # Vertical axis line x
+    bar_sy = bot_y + 90
     bar_h = 16
     bar_gap_y = 38
     max_pct = 40.0
-    bar_max_w = 520
+    bar_max_w = 480
     
     # Axis Line
-    draw.line([axis_x, bar_sy - 8, axis_x, bar_sy + len(bar_items) * bar_gap_y - 12], fill=(148, 163, 184), width=2)
+    draw.line([axis_x, bar_sy - 6, axis_x, bar_sy + len(bar_items) * bar_gap_y - 12], fill=(203, 213, 225), width=2)
     
-    for b_idx, (b_label, b_val) in enumerate(bar_items):
+    for b_idx, (b_rank, b_label, b_val, b_col) in enumerate(bar_items):
         by = bar_sy + b_idx * bar_gap_y
         
-        # Label (Right-aligned to axis)
-        draw.text((axis_x - 14, by + 8), b_label, font=get_font(12.5, 'medium'), fill=(30, 41, 59), anchor='rm')
+        # Rank badge
+        draw.rounded_rectangle([rb_x + 24, by - 1, rb_x + 48, by + bar_h + 1], radius=4, fill=(241, 245, 249))
+        draw.text((rb_x + 36, by + 8), b_rank, font=get_num_font(11, 'bold'), fill=(71, 85, 105), anchor='mm')
         
-        # Bar
+        # Label (Right-aligned to axis)
+        draw.text((axis_x - 14, by + 8), b_label, font=get_font(12, 'medium'), fill=(30, 41, 59), anchor='rm')
+        
+        # Track background
+        draw.rounded_rectangle([axis_x + 4, by, axis_x + 4 + bar_max_w, by + bar_h], radius=bar_h // 2, fill=(241, 245, 249))
+        
+        # Bar Fill
         curr_w = int(round((b_val / max_pct) * bar_max_w))
-        draw.rounded_rectangle([axis_x + 2, by, axis_x + 2 + curr_w, by + bar_h], radius=bar_h // 2, fill=(43, 127, 255))
+        draw.rounded_rectangle([axis_x + 4, by, axis_x + 4 + curr_w, by + bar_h], radius=bar_h // 2, fill=b_col)
         
         # Value text (next to bar)
-        draw.text((axis_x + 2 + curr_w + 12, by + 8), f"{b_val:.1f}%", font=get_num_font(13.5, 'bold'), fill=(30, 41, 59), anchor='lm')
+        draw.text((axis_x + 4 + curr_w + 10, by + 8), f"{b_val:.1f}%", font=get_num_font(12.5, 'bold'), fill=(15, 23, 42), anchor='lm')
         
-    # Source footnote
-    draw.text((rb_x + bot_w // 2, bot_y + bot_h - 22), "(출처 : 사내 임직원 조사 및 시장 동향 기반 AI 모델 추정치)", font=get_font(11.5, 'regular'), fill=(100, 116, 139), anchor='mm')
+    # Bottom Quote Pill inside Right Card
+    quote_y = bot_y + bot_h - 40
+    draw.rounded_rectangle([rb_x + 24, quote_y, rb_x + bot_w - 24, quote_y + 28], radius=6, fill=(248, 250, 252))
+    draw.text((rb_x + 36, quote_y + 14), "💬 CEO 인터뷰", font=get_font(10.5, 'bold'), fill=(217, 119, 6), anchor='lm')
+    draw.text((rb_x + 130, quote_y + 14), '"퇴근 후에도 공장 가동률과 미수금 현황을 모바일로 한눈에 보는 것이 최대 소원"', font=get_font(10.5, 'regular'), fill=(51, 65, 85), anchor='lm')
     
     draw_slide_footer(draw, 2)
     base.save(os.path.join(OUT_DIR, 'slide_02.png'))
