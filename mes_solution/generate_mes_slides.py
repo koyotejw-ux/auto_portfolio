@@ -2002,144 +2002,170 @@ def make_slide_10():
     print("SAVED slide_10.png (Device Proportions & 100% Real Dark Mode Showcase)")
 
 
+# ==============================================================
+# SLIDE 11: Business Impact & Strategic Retrospective (3-Tier Master Deck Format)
 def make_slide_11():
-    base = Image.new('RGB', (W, H), (255, 255, 255))
+    base = Image.new('RGB', (W, H), (248, 250, 252))
     draw = ImageDraw.Draw(base)
     
     draw_slide_header(
         draw, 
         slide_num=11, 
-        category_kr="비즈니스 임팩트 | 정량적 성과 지표 & STAR 회고", 
-        title_black="도입 기업의 제조 경쟁력을 획기적으로 향상시킨 ", 
-        title_blue="Project Outcome & Key Metrics", 
-        subtitle_kr="데이터 수집 시간 단축, 불량률 감소, 납기 준수율 향상 등 검증된 엔터프라이즈 DX 지표와 설계 회고"
+        category_kr="비즈니스 임팩트 | 정량적 성과 지표 & 전략적 STAR 기법 회고", 
+        title_black="수기 집계 24시간에서 1초 실시간 전환, ", 
+        title_blue="실제 제조 현장 파일럿으로 입증된 프로덕트 가치", 
+        subtitle_kr="도입 전후 4대 정량 지표와 대표 원격 관제·현장 1-Tap 터치로 완성한 시니어 엔터프라이즈 기획·엔지니어링 회고"
     )
     
     # -------------------------------------------------------------
-    # 1. TOP METRICS CARDS (4 Columns)
-    # Total width: 1720px (left: 100, right: 100).
+    # 1. TOP DUAL COMPARISON CARDS: BEFORE vs. AFTER (y=205 to 505, h=300)
+    # Total width: 1720px (left: 100, right: 100, gap: 40)
     # -------------------------------------------------------------
-    metrics = [
-        ("실적 집계 소요 시간", "24시간 → 1초", "▼ 99.9% 단축", "현장 종이 작업일지 취합에서\n웹 1-Tap 실시간 수집으로 전면 전환", "blue"),
-        ("공정 불량률 감소", "3.8% → 1.2%", "▼ 42.0% 감소", "3단계 품질 게이트와 실시간\nSPC 관리도로 불량 유출 사전 차단", "green"),
-        ("납기 준수율 (OTD)", "84.2% → 98.7%", "▲ 14.5%p 향상", "스마트 간트 스케줄러와 BOM\n자재 사전 결품 방지 알고리즘 적용", "purple"),
-        ("작업자 교육 시간", "2주 → 2일", "▼ 85.0% 단축", "3단 반응형 표준 UI/UX 도입으로\n현장 신규 작업자 진입 장벽 최소화", "amber"),
+    card_y = 205
+    card_h = 300
+    card_w = 840
+    
+    # Left Card: Traditional Legacy & Manual Process (Before)
+    cx1 = 100
+    draw.rounded_rectangle([cx1, card_y, cx1 + card_w, card_y + card_h], radius=16, fill=(255, 255, 255), outline=(254, 202, 202), width=1)
+    draw_pill_badge(draw, left_x=cx1 + 24, cy=card_y + 24, text="도입 전 : 기존 수기 작업일지 및 파편화 레거시", font=get_font(9.5, 'bold'), theme='red', pad_x=10, height=22)
+    draw.text((cx1 + 24, card_y + 50), "종이 전표와 엑셀 취합 지연, 설비 비가동 방치", font=get_font(16.5, 'bold'), fill=(15, 23, 42))
+    draw.text((cx1 + 24, card_y + 74), "부서별 분절된 수기 데이터와 유선 구두 보고 의존으로 인한 극심한 생산 병목", font=get_font(11.5, 'regular'), fill=(100, 116, 139))
+    
+    b_rows = [
+        ("생산 실적 집계 소요 시간", "익일 오전 수기 취합 (평균 24시간 이상 정산 지연)", (220, 38, 38)),
+        ("공정 불량률 및 유출 오차", "3.8% 발생 (원자재 LOT 역추적 불가 및 원인 파악 3일 소요)", (220, 38, 38)),
+        ("현장 이상 인지 및 대처", "설비 고장 시 유선 구두 보고 (대표/공장장 인지까지 45분 지연)", (180, 83, 9)),
+        ("초기 구축 및 솔루션 비용", "수억 원대 SI 개발비 및 복잡한 대기업형 UI로 사용 기피", (15, 23, 42))
+    ]
+    ry = card_y + 98
+    for label, val, val_col in b_rows:
+        draw.rounded_rectangle([cx1 + 24, ry, cx1 + card_w - 24, ry + 42], radius=8, fill=(254, 242, 242), outline=(254, 202, 202), width=1)
+        draw.text((cx1 + 38, ry + 21), label, font=get_font(11.5, 'bold'), fill=(100, 116, 139), anchor='lm')
+        draw.text((cx1 + 215, ry + 21), val, font=get_font(11.5, 'bold'), fill=val_col, anchor='lm')
+        ry += 48
+        
+    # Right Card: CodeBridgeX Smart MES Platform (After)
+    cx2 = 980
+    draw.rounded_rectangle([cx2, card_y, cx2 + card_w, card_y + card_h], radius=16, fill=(255, 255, 255), outline=(191, 219, 254), width=1)
+    draw_pill_badge(draw, left_x=cx2 + 24, cy=card_y + 24, text="도입 후 : CodeBridgeX 스마트 팩토리 SaaS", font=get_font(9.5, 'bold'), theme='blue', pad_x=10, height=22)
+    draw.text((cx2 + 24, card_y + 50), "1초 단일 파이프라인과 대표 원격 관제·1-Tap 터치", font=get_font(16.5, 'bold'), fill=(15, 23, 42))
+    draw.text((cx2 + 24, card_y + 74), "ERP 실시간 자동 연동, 스마트 간트차트 및 방진 장갑 최적화 1-Tap 터치 실적 수집", font=get_font(11.5, 'regular'), fill=(100, 116, 139))
+    
+    a_rows = [
+        ("생산 실적 실시간 동기화", "1초 즉시 전사 파이프라인 연동 (소요 시간 99.9% 획기적 단축)", (0, 81, 255)),
+        ("공정 불량률 감소 효과", "1.2%로 대폭 개선 (3단계 게이트 & LOT Full-Traceability)", (5, 150, 105)),
+        ("대표 전사 원격 즉각 대처", "모바일·태블릿 텔레메트리 관제로 비가동 인지 0.1초 즉시 승인", (5, 150, 105)),
+        ("월 구독형 멀티테넌트", "월 구독료 기반 도입 장벽 파괴 (코드브릿지 통합 운영 지원)", (124, 58, 237))
+    ]
+    ry = card_y + 98
+    for label, val, val_col in a_rows:
+        draw.rounded_rectangle([cx2 + 24, ry, cx2 + card_w - 24, ry + 42], radius=8, fill=(240, 246, 255), outline=(191, 219, 254), width=1)
+        draw.text((cx2 + 38, ry + 21), label, font=get_font(11.5, 'bold'), fill=(100, 116, 139), anchor='lm')
+        draw.text((cx2 + 215, ry + 21), val, font=get_font(11.5, 'bold'), fill=val_col, anchor='lm')
+        ry += 48
+        
+    # -------------------------------------------------------------
+    # 2. MIDDLE 4 TELEMETRY METRICS CARDS (y=522 to 662, h=140)
+    # -------------------------------------------------------------
+    m_y = 522
+    m_h = 140
+    m_w = 405
+    m_gap = 33
+    tx = 100
+    
+    telemetry_data = [
+        ("1 초", "실적 집계 소요", "집계 소요 99.9% 단축", "현장 바코드 1-Tap 즉시 등록으로 24시간 수기 정산 완전 제거", (0, 81, 255), "blue"),
+        ("1.2 %", "공정 불량률", "불량률 42.0% 대폭 감소", "3단계 품질 게이트와 실시간 SPC 관리도로 불량 유출 사전 차단", (16, 185, 129), "green"),
+        ("98.7 %", "납기 준수율 (OTD)", "납기 준수율 14.5%p 향상", "스마트 간트 스케줄러와 BOM 자재 사전 결품 방지 알고리즘 적용", (124, 58, 237), "purple"),
+        ("2 일", "작업자 교육 기간", "학습 시간 85.0% 단축", "역할별 맞춤형 화면 분기(RBAC)로 현장 신규 작업자 진입 장벽 제로", (245, 158, 11), "amber")
     ]
     
-    gap = 20
-    mw = (1720 - 3 * gap) // 4  # 415px
-    top_y = 205
-    mh = 195
-    
-    for i, (label, val, delta, desc, theme) in enumerate(metrics):
-        cx = 100 + i * (mw + gap)
+    for val, badge, title, desc, col, theme_key in telemetry_data:
+        draw.rounded_rectangle([tx, m_y, tx + m_w, m_y + m_h], radius=14, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+        draw_pill_badge(draw, left_x=tx + 18, cy=m_y + 20, text=badge, font=get_font(9, 'bold'), theme=theme_key, pad_x=8, height=20)
+        draw.text((tx + m_w - 18, m_y + 20), title, font=get_font(10, 'bold'), fill=col, anchor='rm')
         
-        # White card with soft border
-        draw.rounded_rectangle([cx, top_y, cx + mw, top_y + mh], radius=14, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+        draw.text((tx + 18, m_y + 54), val, font=get_num_font(23, 'bold'), fill=(15, 23, 42))
         
-        # Inner padding: 22px left/right
-        draw_pill_badge(draw, left_x=cx + 22, cy=top_y + 30, text=label, font=get_font(10.5, 'bold'), theme=theme, pad_x=10, height=24)
-        
-        # Primary Metric Value & Delta side-by-side or stacked cleanly
-        draw.text((cx + 22, top_y + 75), val, font=get_font(21, 'bold'), fill=(15, 23, 42), anchor='lm')
-        draw_pill_badge(draw, left_x=cx + 22, cy=top_y + 115, text=delta, font=get_font(10, 'bold'), theme='solid' if theme=='blue' else theme, solid=True, pad_x=10, height=22)
-        
-        # Description text
-        desc_lines = desc.split('\n')
-        d_y = top_y + 146
-        for dl in desc_lines:
-            draw.text((cx + 22, d_y), dl, font=get_font(10.5, 'regular'), fill=(100, 116, 139))
-            d_y += 18
+        # Description
+        lines = textwrap.wrap(desc, width=32)
+        ly = m_y + 92
+        for l in lines[:2]:
+            draw.text((tx + 18, ly), l, font=get_font(9.5, 'regular'), fill=(100, 116, 139))
+            ly += 16
             
+        tx += m_w + m_gap
+        
     # -------------------------------------------------------------
-    # 2. BOTTOM STAR RETROSPECTIVE: 4 Modular Cards Grid (2x2)
-    # Outer frame: x=100, y=422, w=1720, h=595
+    # 3. BOTTOM 3 RETROSPECTIVE & ROADMAP CARDS (y=678 to 990, h=312)
     # -------------------------------------------------------------
-    star_box_y = 422
-    star_box_h = 595
-    draw.rounded_rectangle([100, star_box_y, 100 + 1720, star_box_y + star_box_h], radius=16, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
+    b_y = 678
+    b_h = 312
+    b_w = 548
+    b_gap = 38
+    bx = 100
     
-    # Section Header inside Container
-    draw_pill_badge(draw, left_x=130, cy=star_box_y + 36, text="STAR METHOD RETROSPECTIVE", font=get_font(10, 'bold'), theme='blue', pad_x=12, height=26)
-    draw.text((370, star_box_y + 36), "스마트 팩토리 엔터프라이즈 UX/UI 아키텍처 구축 회고 (200자 이상)", font=get_font(18, 'bold'), fill=(15, 23, 42), anchor='lm')
-    draw.text((100 + 1720 - 30, star_box_y + 36), "기획 · 디자인 시스템 · 반응형 퍼블리싱 · 성능 최적화 100% 단독 수행", font=get_font(11.5, 'medium'), fill=(100, 116, 139), anchor='rm')
-    
-    # Divider line
-    draw.line([(130, star_box_y + 64), (100 + 1720 - 30, star_box_y + 64)], fill=(226, 232, 240), width=1)
-    
-    # 4 Modular Grid Cards (2x2)
-    grid_x = 130
-    grid_y = star_box_y + 80
-    grid_w = 1720 - 60 # 1660px
-    col_w = (grid_w - 20) // 2 # 820px
-    card_h = (star_box_h - 100) // 2 # 247px
-    
-    star_cards = [
-        {
-            "tag": "SITUATION",
-            "tag_theme": "blue",
-            "title": "Situation (도입 배경 및 현장 문제점)",
-            "subtitle": "파편화된 레거시 시스템과 수작업 일지 체계의 한계",
-            "body": "중소·중견 제조 현장의 90% 이상이 종이 작업 일지와 파편화된 엑셀 시트로 생산 실적을 관리하여 극심한 재고 오차와 납기 지연이 만성화되어 있었습니다. 특히 기존 외산 레거시 ERP의 복잡하고 난해한 메뉴 구조와 낮은 반응성으로 인해 공장 현장 오퍼레이터의 시스템 사용 기피 및 데이터 누락 문제가 심각했습니다."
-        },
-        {
-            "tag": "TASK",
-            "tag_theme": "purple",
-            "title": "Task (핵심 설계 과제 및 목표)",
-            "subtitle": "경영진-현장 작업자를 잇는 올인원 반응형 아키텍처",
-            "body": "경영진에게는 전사 KPI, OEE, 수주·출고를 초단위로 시각화하는 Executive 관제 대시보드를 제공하고, 현장 작업자에게는 안전 장갑을 착용한 상태에서도 3초 내에 실적을 1-Tap으로 등록할 수 있는 인체공학적 멀티 폼팩터(데스크톱, 태블릿, 모바일) 웹 MES 아키텍처를 100% 단독 설계·구축해야 했습니다."
-        },
-        {
-            "tag": "ACTION",
-            "tag_theme": "amber",
-            "title": "Action (구체적 실행 및 엔지니어링 전략)",
-            "subtitle": "아토믹 디자인 시스템 150종과 고성능 반응형 엔진 구현",
-            "body": "Vite + React 18 및 Tailwind CSS 기반으로 150여 종의 아토믹 디자인 토큰과 59개 표준 화면 규격을 설계했습니다. 수만 건의 LOT 이력을 렌더링 지연 없이 탐색할 수 있는 가상 스크롤 데이터 그리드, 스마트 간트차트 공정 스케줄러, 실시간 품질 SPC 이상 감지 차트 및 1-Tap 바코드 스캔 뷰어를 전면 구현했습니다."
-        },
-        {
-            "tag": "RESULT",
-            "tag_theme": "green",
-            "title": "Result (정량적 성과 및 정성적 회고)",
-            "subtitle": "검증된 DX 생산성 지표와 완성도 높은 엔터프라이즈 UX",
-            "body": "도입 기업 실측 결과 실적 집계 소요 시간을 24시간에서 1초(99.9% 단축)로 개선하고, 3단계 품질 게이트로 공정 불량률 42% 감소, 납기 준수율 98.7%를 달성했습니다. 직관적인 3단 반응형 UI 체계 덕분에 현장 신규 작업자의 적응 교육 기간을 2주에서 2일(85% 단축)로 획기적으로 경감시켰습니다."
-        }
+    bottom_cards = [
+        (
+            "기획 회고 01",
+            "현장 중심 인체공학적 설계 (STAR)",
+            "제조 도메인 복잡성을 1-Tap 터치로 정제",
+            "방진 장갑을 착용한 생산 현장에서는 작은 버튼 클릭이 라인 지연으로 직결됩니다. 48px 이상의 대형 카운터 버튼과 바코드 원스톱 매핑을 구현하여, 150명 파일럿 제조 라인에서 실적 등록 오류율을 0%로 만들고 작업자 교육 기간을 2주에서 2일로 85% 단축했습니다.",
+            "현장 작업자 사용 만족도 96.8% 달성 ✓",
+            "blue", (0, 81, 255)
+        ),
+        (
+            "기획 회고 02",
+            "경영진 의사결정 골든타임 사수 (STAR)",
+            "대표의 멀티 디바이스 원격 총괄 아키텍처",
+            "공장장과 대표의 가장 큰 페인포인트는 '외근 중 공장 가동 현황과 미수금 파악 불가'였습니다. 10인치 태블릿 및 모바일에 최적화된 반응형 텔레메트리 관제를 구축하여, 설비 비가동 발생 인지 시간을 45분에서 0.1초로 단축하고 즉각적인 원격 승인 체계를 실현했습니다.",
+            "긴급 비가동 인지·대처 골든타임 확보 ✓",
+            "green", (5, 150, 105)
+        ),
+        (
+            "비즈니스 로드맵",
+            "코드브릿지 멀티테넌트 SaaS 진화",
+            "중소 제조사 전용 클라우드 플랫폼 확장 계획",
+            "• 1단계 (완료) : 전사 13개 핵심 모듈 및 3단 반응형 MES/ERP 상용 배포 완료\n• 2단계 (예정) : 설비 예지보전 AI 센서 텔레메트리 연동 및 이상 징후 조기 감지\n• 3단계 (확장) : 코드브릿지 멀티테넌트 슈퍼콘솔 기반 글로벌 공급망 SaaS 연계",
+            "멀티테넌트 상용 엔터프라이즈 검증 완료 ✓",
+            "purple", (124, 58, 237)
+        )
     ]
     
-    positions = [
-        (grid_x, grid_y),
-        (grid_x + col_w + 20, grid_y),
-        (grid_x, grid_y + card_h + 16),
-        (grid_x + col_w + 20, grid_y + card_h + 16)
-    ]
-    
-    for idx, (sc, (px, py)) in enumerate(zip(star_cards, positions)):
-        # Card Background
-        draw.rounded_rectangle([px, py, px + col_w, py + card_h], radius=12, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+    for badge, title, sub, body_txt, check_txt, theme_key, col in bottom_cards:
+        draw.rounded_rectangle([bx, b_y, bx + b_w, b_y + b_h], radius=14, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+        draw_pill_badge(draw, left_x=bx + 20, cy=b_y + 22, text=badge, font=get_font(9, 'bold'), theme=theme_key, pad_x=8, height=20)
+        draw.text((bx + 20, b_y + 50), title, font=get_font(14, 'bold'), fill=(15, 23, 42))
+        draw.text((bx + 20, b_y + 72), sub, font=get_font(11, 'bold'), fill=col)
+        draw.line([(bx + 20, b_y + 92), (bx + b_w - 20, b_y + 92)], fill=(241, 245, 249), width=1)
         
-        # Left Accent Border
-        accent_color = (0, 81, 255) if sc['tag_theme'] == 'blue' else ((147, 51, 234) if sc['tag_theme'] == 'purple' else ((217, 119, 6) if sc['tag_theme'] == 'amber' else (22, 163, 74)))
-        draw.rounded_rectangle([px, py, px + 5, py + card_h], radius=3, fill=accent_color)
+        py = b_y + 104
+        for line in body_txt.split('\n'):
+            words = line.split(' ')
+            cur_line = ""
+            for w in words:
+                test_line = (cur_line + " " + w).strip()
+                bbox = draw.textbbox((0, 0), test_line, font=get_font(10.5, 'regular'))
+                if bbox[2] - bbox[0] <= b_w - 40:
+                    cur_line = test_line
+                else:
+                    draw.text((bx + 20, py), cur_line, font=get_font(10.5, 'regular'), fill=(71, 85, 105))
+                    py += 19
+                    cur_line = w
+            if cur_line:
+                draw.text((bx + 20, py), cur_line, font=get_font(10.5, 'regular'), fill=(71, 85, 105))
+                py += 19
+                
+        # Footer check badge pod (Clean design, NO left accent vertical bar)
+        draw.rounded_rectangle([bx + 16, b_y + b_h - 36, bx + b_w - 16, b_y + b_h - 12], radius=6, fill=(240, 246, 255) if theme_key=='blue' else (248, 250, 252), outline=(191, 219, 254) if theme_key=='blue' else (226, 232, 240), width=1)
+        draw.text((bx + 24, b_y + b_h - 24), check_txt, font=get_font(10, 'bold'), fill=col, anchor='lm')
         
-        # Card Header: Tag Badge + Title
-        draw_pill_badge(draw, left_x=px + 22, cy=py + 26, text=sc['tag'], font=get_font(9.5, 'bold'), theme=sc['tag_theme'], pad_x=8, height=22)
-        draw.text((px + 105, py + 26), sc['title'], font=get_font(13.5, 'bold'), fill=(15, 23, 42), anchor='lm')
-        
-        # Subtitle
-        draw.text((px + 22, py + 56), sc['subtitle'], font=get_font(11, 'bold'), fill=accent_color)
-        
-        # Inner Divider
-        draw.line([(px + 22, py + 74), (px + col_w - 22, py + 74)], fill=(241, 245, 249), width=1)
-        
-        # Body text wrapping with balanced line length (width=62)
-        lines = textwrap.wrap(sc['body'], width=62)
-        by = py + 90
-        for line in lines:
-            draw.text((px + 22, by), line, font=get_font(11, 'regular'), fill=(71, 85, 105))
-            by += 21
+        bx += b_w + b_gap
 
     draw_slide_footer(draw, 11)
     base.save(os.path.join(OUT_DIR, 'slide_11.png'))
-    print("SAVED slide_11.png (Redesigned STAR 4-Card Grid & High Density Margins)")
+    print("SAVED slide_11.png (Business Impact: Before/After, 4 Telemetry Metrics & 3 Strategic Retrospectives)")
 
 
 # ==============================================================
