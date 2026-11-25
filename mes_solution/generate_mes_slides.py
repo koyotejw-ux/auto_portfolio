@@ -348,9 +348,9 @@ def make_slide_01():
         new_h = int(round(trio_img.height * scale))
         trio_resized = trio_img.resize((new_w, new_h), Image.Resampling.LANCZOS)
         
-        # Positioned closer to the bottom specification bar (bar_y = 840) for a well-anchored, balanced composition
+        # Perfectly right-aligned to slide margin (1820px) and bottom aligned exactly with paragraph 04 baseline
         pos_x = 1820 - new_w
-        pos_y = 828 - new_h  # Anchors bottom edge at y=828 (12px breathing room above bar_y=840)
+        pos_y = 256  # Aligns physical laptop/tablet chassis base directly with the '150개 표준...' paragraph baseline (y=750)
         
         # Real transparent alpha mask drop shadow for floating depth
         mask = trio_resized.split()[3]
