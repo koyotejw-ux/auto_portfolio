@@ -1695,25 +1695,25 @@ def make_slide_08():
     draw_slide_header(
         draw, 
         slide_num=8, 
-        category_kr="핵심 기능 | 실시간 생산 스케줄링 & 스마트 작업 지시", 
-        title_black="지연 없는 라인 가동을 실현하는 ", 
-        title_blue="인텔리전트 공정 스케줄러", 
-        subtitle_kr="수주 납기와 설비 부하를 고려한 간트차트 드래그 앤 드롭 일정 조정 및 호기별 작업지시 자동 배포 (현장 다크모드 적용)",
+        category_kr="핵심 기능 | 역할별(RBAC) 맞춤 화면 & 실시간 스마트 공정 스케줄러", 
+        title_black="대표의 인사·재무·공정 전사 관제부터 현장 배포까지, ", 
+        title_blue="권한 기반 동적 UI & 인텔리전트 스케줄러", 
+        subtitle_kr="접속 권한별 메뉴 자동 필터링(RBAC)과 수주 납기·설비 부하 기반 간트차트 실시간 호기별 배포 (현장 다크모드 적용)",
         dark_mode=True
     )
     
     lx, ly, lw, lh = 100, 220, 520, 740
     draw.rounded_rectangle([lx, ly, lx + lw, ly + lh], radius=14, fill=(30, 41, 59), outline=(51, 65, 85), width=1)
     
-    draw_pill_badge(draw, left_x=lx + 30, cy=ly + 40, text="공정 관리 핵심 혁신", font=get_font(10.5, 'bold'), theme='cyan', dark_mode=True, pad_x=12, height=28)
-    draw.text((lx + 30, ly + 80), "작업 지시 & 실시간 추적", font=get_font(20, 'bold'), fill=(255, 255, 255))
-    draw.text((lx + 30, ly + 115), "기존 엑셀 기반 배포 대비 지시서 생성 시간을 85% 단축하고,\n현장 호기별 진행 상태를 1초 단위로 실시간 관제합니다.", font=get_font(12.5, 'medium'), fill=(148, 163, 184))
+    draw_pill_badge(draw, left_x=lx + 30, cy=ly + 40, text="RBAC & 공정 혁신", font=get_font(10.5, 'bold'), theme='cyan', dark_mode=True, pad_x=12, height=28)
+    draw.text((lx + 30, ly + 80), "직무별 맞춤 뷰 & 작업 지시", font=get_font(20, 'bold'), fill=(255, 255, 255))
+    draw.text((lx + 30, ly + 115), "대표는 전사 인사/손익/공정을 한눈에 총괄 관제하고,\n각 현장 담당자에게는 권한에 최적화된 업무 화면만 제공합니다.", font=get_font(12.5, 'medium'), fill=(148, 163, 184))
     
     feats = [
-        ("스마트 간트차트 일정 조정", "라인별 가동 현황과 잔여 케파를 시각화하여 드래그 앤 드롭으로 작업 순서 즉시 재배치."),
-        ("자재 부족 사전 알림 (MRP)", "작업 지시 발행 전 필요한 원자재의 재고 유무를 검증하여 결품으로 인한 라인 정지 예방."),
-        ("모바일/태블릿 디지털 작업표", "현장 모니터에 도면과 표준작업서(SOP)를 고화질로 스트리밍하여 페이퍼리스 공장 구현."),
-        ("바코드 기반 1-Tap 실적 보고", "작업 완료 시 바코드 스캔 한 번으로 양품/불량 수량 및 소요 시간이 중앙 DB에 즉시 전송.")
+        ("권한별(RBAC) 동적 사이드바", "대표 로그인 시 13개 전 모듈 활성화, 현장 작업자는 불필요한 메뉴를 차단하고 실적/비가동 화면만 자동 공급."),
+        ("스마트 간트차트 일정 조정", "라인별 가동 현황과 잔여 케파를 시각화하여 마우스 드래그 앤 드롭으로 작업 순서 즉시 재배치."),
+        ("자재 부족 사전 알림 (MRP)", "작업 지시 발행 전 필요한 원자재의 재고 유무를 검증하여 결품으로 인한 라인 정지 사전 예방."),
+        ("멀티 디바이스 원격 즉각 대처", "대표는 출장/퇴근 중에도 모바일·태블릿으로 긴급 비가동 및 결재 요청을 실시간 확인하고 원클릭 승인.")
     ]
     
     fy = ly + 180
@@ -1737,7 +1737,7 @@ def make_slide_08():
     
     draw_slide_footer(draw, 8, dark_mode=True)
     base.save(os.path.join(OUT_DIR, 'slide_08.png'))
-    print("SAVED slide_08.png (Dark Production Mode)")
+    print("SAVED slide_08.png (Dark Production Mode with RBAC Focus)")
 
 # ==============================================================
 # SLIDE 09: Core Feature: Full Traceability & Quality (Dark UI Mode)
@@ -1923,9 +1923,9 @@ def make_slide_10():
     draw.line([(tab_x + 16, callout_y), (tab_x + tab_w - 16, callout_y)], fill=(40, 53, 72), width=1)
     
     tab_specs = [
-        ("방진 터치 조작 최적화 (Gloves Touch)", "산업용 정전식 터치 패널에 맞춰 48dp+ 버튼 및 두꺼운 장갑 착용 중 오작동 방지 터치 타깃 제공"),
-        ("가로 4:3 광시야각 대시보드 (Adaptive UI)", "사이드 네비게이션 드로어 자동 축소 및 4:3 디스플레이 비율 맞춤형 가상 스크롤 데이터 그리드"),
-        ("현장 조도 대응 고대비 다크 테마 (OLED 99%)", "어두운 조도의 생산 현장에서 눈부심을 차단하며 시각 피로도 70% 경감 및 단말기 전력 소모 절감")
+        ("대표 전사 원격 관제 (Executive Telemetry)", "외근/퇴근 중에도 공장 라인 OEE, 당일 출하, 미수금 현황을 4:3 최적화 대시보드로 실시간 확인 및 즉각 대처"),
+        ("역할 기반 인터페이스 축소 (Role Adaptive)", "태블릿 접속 시 사이드 네비게이션이 아이콘 모드로 자동 접히며, 현장 필수 위젯 중심으로 터치 영역 극대화"),
+        ("현장 조도 대응 고대비 다크 테마 (OLED 99%)", "어두운 조도의 생산 현장에서 눈부심을 차단하며 시각 피로도 70% 경감 및 산업용 단말 배터리 소모 절감")
     ]
     
     pod_y = callout_y + 14
