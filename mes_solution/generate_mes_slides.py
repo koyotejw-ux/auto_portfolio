@@ -1481,7 +1481,7 @@ def make_slide_07():
     # -------------------------------------------------------------
     draw.rounded_rectangle([colA_x, r2_y, colA_x + colA_w, r2_y + r2_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
     b4_box = draw_pill_badge(draw, left_x=colA_x + 28, cy=r2_y + 32, text="FOUNDATION 04", font=get_font(9.5, 'bold'), theme='blue', has_dot=False, pad_x=8, height=22)
-    draw.text((b4_box[2] + 14, r2_y + 32), "파운데이션 토큰 아키텍처 & Tailwind/Pretendard (src/design-system/tokens.ts)", font=get_font(13.5, 'bold'), fill=(15, 23, 42), anchor='lm')
+    draw.text((b4_box[2] + 14, r2_y + 32), "파운데이션 토큰 아키텍처 & Pretendard 타이포그래피 (src/design-system/tokens.ts)", font=get_font(13.5, 'bold'), fill=(15, 23, 42), anchor='lm')
     draw.line([(colA_x + 28, r2_y + 54), (colA_x + colA_w - 28, r2_y + 54)], fill=(241, 245, 249), width=1)
     
     col_w_inner = (colA_w - 56 - 20) // 2  # 382px
@@ -1489,27 +1489,27 @@ def make_slide_07():
     # Left Half: Hero Color Swatch (Real primary #3B82F6)
     hb_y = r2_y + 64
     draw.rounded_rectangle([colA_x + 28, hb_y, colA_x + 28 + col_w_inner, hb_y + 58], radius=10, fill=(59, 130, 246))
-    draw.text((colA_x + 42, hb_y + 12), "PRIMARY BRAND BLUE (tokens.colors.primary.500)", font=get_font(11.5, 'bold'), fill=(255, 255, 255))
-    draw.text((colA_x + 42, hb_y + 28), "Main Primary: #3B82F6  ·  Hover/Dark: #2563EB / #1D4ED8", font=get_num_font(9, 'medium'), fill=(219, 234, 254))
-    draw.text((colA_x + 42, hb_y + 42), "실제 웹 앱 globals.css & Tailwind 테마 전역에 적용된 브랜드 블루", font=get_font(8, 'regular'), fill=(239, 246, 255))
-    draw_pill_badge(draw, cx=colA_x + 28 + col_w_inner - 48, cy=hb_y + 29, text="8.4:1 AAA", font=get_font(8.5, 'bold'), theme='green', has_dot=False, pad_x=7, height=20)
+    draw.text((colA_x + 40, hb_y + 11), "PRIMARY BRAND BLUE", font=get_font(12, 'bold'), fill=(255, 255, 255))
+    draw.text((colA_x + 40, hb_y + 27), "Primary: #3B82F6  ·  Hover: #2563EB", font=get_num_font(8.8, 'medium'), fill=(219, 234, 254))
+    draw.text((colA_x + 40, hb_y + 42), "실제 웹 앱 globals.css & Tailwind 테마 메인 컬러", font=get_font(8, 'regular'), fill=(239, 246, 255))
+    draw_pill_badge(draw, left_x=colA_x + 28 + col_w_inner - 82, cy=hb_y + 22, text="8.4:1 AAA", font=get_font(8.5, 'bold'), theme='green', has_dot=False, pad_x=6, height=20)
     
     # 5 Semantic Swatches from tokens.ts
     sub_swatches = [
-        ("Success", "#10B981", (16, 185, 129), "설비 가동·승인"),
-        ("Warning", "#F59E0B", (245, 158, 11), "대기·안전재고"),
-        ("Error", "#EF4444", (239, 68, 68), "비상정지·불량"),
-        ("Info/MPO", "#0EA5E9", (14, 165, 233), "공정정보·알림"),
-        ("Dark Gray", "#0F172A", (15, 23, 42), "다크모드 900"),
+        ("Success", "#10B981", (16, 185, 129), "가동·승인"),
+        ("Warning", "#F59E0B", (245, 158, 11), "대기·주의"),
+        ("Error", "#EF4444", (239, 68, 68), "정지·불량"),
+        ("Info/MPO", "#0EA5E9", (14, 165, 233), "공정정보"),
+        ("Dark Gray", "#0F172A", (15, 23, 42), "다크모드"),
     ]
-    sw_w = (col_w_inner - 32) // 5
+    sw_w = (col_w_inner - 24) // 5  # 71px
     sw_y = hb_y + 66
     for i, (s_name, s_hex, s_col, s_usage) in enumerate(sub_swatches):
-        sx = colA_x + 28 + i * (sw_w + 8)
+        sx = colA_x + 28 + i * (sw_w + 6)
         draw.rounded_rectangle([sx, sw_y, sx + sw_w, sw_y + 58], radius=7, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
         draw.rounded_rectangle([sx + 5, sw_y + 5, sx + sw_w - 5, sw_y + 20], radius=3, fill=s_col)
-        draw.text((sx + 5, sw_y + 24), s_name, font=get_font(7.5, 'bold'), fill=(15, 23, 42))
-        draw.text((sx + 5, sw_y + 35), s_hex, font=get_num_font(7.2, 'bold'), fill=(71, 85, 105))
+        draw.text((sx + 5, sw_y + 24), s_name, font=get_font(7.2, 'bold'), fill=(15, 23, 42))
+        draw.text((sx + 5, sw_y + 35), s_hex, font=get_num_font(7.0, 'bold'), fill=(71, 85, 105))
         draw.text((sx + 5, sw_y + 46), s_usage, font=get_font(6.8, 'medium'), fill=(100, 116, 139))
         
     # Brand Gradients & Chart Palette
@@ -1521,9 +1521,9 @@ def make_slide_07():
         ("Chart 3 (Warning)", (245, 158, 11), (217, 119, 6)),
         ("Chart 4 (Danger)", (239, 68, 68), (220, 38, 38)),
     ]
-    gr_w = (col_w_inner - 24) // 4
+    gr_w = (col_w_inner - 18) // 4
     for idx, (g_name, g_c1, g_c2) in enumerate(gradients_data):
-        gx = colA_x + 28 + idx * (gr_w + 8)
+        gx = colA_x + 28 + idx * (gr_w + 6)
         for step in range(gr_w):
             ratio = step / max(1, gr_w - 1)
             rc = int(g_c1[0] + (g_c2[0] - g_c1[0]) * ratio)
@@ -1531,19 +1531,19 @@ def make_slide_07():
             bc = int(g_c1[2] + (g_c2[2] - g_c1[2]) * ratio)
             draw.line([(gx + step, gr_y + 14), (gx + step, gr_y + 30)], fill=(rc, gc, bc))
         draw.rounded_rectangle([gx, gr_y + 14, gx + gr_w, gr_y + 30], radius=4, outline=(203, 213, 225), width=1)
-        draw.text((gx + gr_w//2, gr_y + 36), g_name, font=get_font(7, 'bold'), fill=(71, 85, 105), anchor='mm')
+        draw.text((gx + gr_w//2, gr_y + 37), g_name, font=get_font(7, 'bold'), fill=(71, 85, 105), anchor='mm')
         
     # Elevation & Shadow Tokens from tokens.ts
-    el_y = gr_y + 48
-    draw.text((colA_x + 28, el_y), "섀도우 토큰 아키텍처 (tokens.shadows):", font=get_font(9, 'bold'), fill=(71, 85, 105))
+    el_y = gr_y + 50
+    draw.text((colA_x + 28, el_y), "그림자 섀도우 토큰 아키텍처 (tokens.shadows):", font=get_font(9, 'bold'), fill=(71, 85, 105))
     elevations = [
-        ("Shadow Sm", "0 1px 2px rgba(0,0,0,0.05)", "헤더·인풋·테이블 헤더"),
-        ("Shadow Base", "0 1px 3px rgba(0,0,0,0.10)", "대시보드 위젯·메트릭 카드"),
-        ("Shadow Lg", "0 10px 15px rgba(0,0,0,0.1)", "작업지시 모달·드로어 팝업"),
+        ("Shadow Sm", "0 1px 2px", "헤더·인풋 바운드"),
+        ("Shadow Base", "0 1px 3px", "위젯·대시보드 카드"),
+        ("Shadow Lg", "0 10px 15px", "작업지시 모달·팝업"),
     ]
-    el_w = (col_w_inner - 16) // 3
+    el_w = (col_w_inner - 14) // 3
     for idx, (el_title, el_spec, el_use) in enumerate(elevations):
-        ex = colA_x + 28 + idx * (el_w + 8)
+        ex = colA_x + 28 + idx * (el_w + 7)
         ey = el_y + 14
         draw.rounded_rectangle([ex, ey, ex + el_w, ey + 42], radius=6, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
         draw.text((ex + 8, ey + 6), el_title, font=get_font(7.5, 'bold'), fill=(37, 99, 235))
@@ -1565,27 +1565,27 @@ def make_slide_07():
     for i, (t_role, t_weight, t_sample, is_mono) in enumerate(t_rows):
         ry = ty_start + i * 25
         draw.rounded_rectangle([ty_x, ry, ty_x + ty_w, ry + 21], radius=5, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
-        draw.text((ty_x + 8, ry + 4), t_role, font=get_font(8.5, 'bold'), fill=(37, 99, 235))
-        draw.text((ty_x + 85, ry + 4), t_weight, font=get_font(8, 'medium'), fill=(100, 116, 139))
-        draw.text((ty_x + 148, ry + 4), t_sample, font=get_font(8, 'bold' if is_mono else 'regular'), fill=(15, 23, 42))
+        draw.text((ty_x + 8, ry + 4), t_role, font=get_font(8.2, 'bold'), fill=(37, 99, 235))
+        draw.text((ty_x + 85, ry + 4), t_weight, font=get_font(7.8, 'medium'), fill=(100, 116, 139))
+        draw.text((ty_x + 148, ry + 4), t_sample, font=get_font(8.0, 'bold' if is_mono else 'regular'), fill=(15, 23, 42))
         
     # Radius & Spacing Tokens from tokens.ts
     sp_box_y = ty_start + len(t_rows) * 25 + 6
     sp_box_h = (r2_y + r2_h - 26) - sp_box_y
     draw.rounded_rectangle([ty_x, sp_box_y, ty_x + ty_w, sp_box_y + sp_box_h], radius=10, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
-    draw.text((ty_x + 14, sp_box_y + 10), "시스템 코너 라운딩 & 4/8pt 스페이싱 토큰 (tokens.borderRadius)", font=get_font(9, 'bold'), fill=(15, 23, 42))
+    draw.text((ty_x + 14, sp_box_y + 10), "시스템 코너 라운딩 규격 (tokens.borderRadius)", font=get_font(9, 'bold'), fill=(15, 23, 42))
     
     rad_tokens = [
-        ("sm: 4px (0.25rem)", "배지 태그, 툴팁, 소형 인풋 체크박스"),
-        ("base: 8px (0.5rem)", "버튼(Button), 검색창(Input), 테이블 셀"),
-        ("lg: 12px (0.75rem)", "카드(Card), 위젯 컨테이너, 다이얼로그 패널"),
-        ("xl: 16px (1.0rem)", "모달 팝업, 드로어, 3D 뷰포트 시뮬레이터"),
+        ("sm (4px)", "배지 태그, 툴팁, 소형 인풋 체크박스"),
+        ("base (8px)", "버튼(Button), 검색창(Input), 테이블 셀"),
+        ("lg (12px)", "카드(Card), 위젯 컨테이너, 다이얼로그 패널"),
+        ("xl (16px)", "모달 팝업, 드로어, 3D 뷰포트 시뮬레이터"),
     ]
     for idx, (rt_name, rt_desc) in enumerate(rad_tokens):
         r_row_y = sp_box_y + 32 + idx * 26
-        draw.rounded_rectangle([ty_x + 14, r_row_y, ty_x + 115, r_row_y + 20], radius=4, fill=(255, 255, 255), outline=(203, 213, 225), width=1)
-        draw.text((ty_x + 64, r_row_y + 10), rt_name, font=get_font(7.5, 'bold'), fill=(37, 99, 235), anchor='mm')
-        draw.text((ty_x + 125, r_row_y + 4), f"{rt_desc}", font=get_font(7.5, 'regular'), fill=(71, 85, 105))
+        draw.rounded_rectangle([ty_x + 14, r_row_y, ty_x + 95, r_row_y + 20], radius=4, fill=(255, 255, 255), outline=(203, 213, 225), width=1)
+        draw.text((ty_x + 54, r_row_y + 10), rt_name, font=get_font(7.5, 'bold'), fill=(37, 99, 235), anchor='mm')
+        draw.text((ty_x + 105, r_row_y + 4), f"{rt_desc}", font=get_font(7.5, 'regular'), fill=(71, 85, 105))
         
     draw.text((colA_x + 28, r2_y + r2_h - 17), "WCAG 2.1 AAA 8.4:1 고대비율 준수 · React/Tailwind/tokens.ts 디자인 토큰 100% 일치", font=get_font(8.5, 'medium'), fill=(100, 116, 139))
     
