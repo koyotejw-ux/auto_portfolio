@@ -48,14 +48,28 @@ class DeckStudioHomeScreen extends StatefulWidget {
   const DeckStudioHomeScreen({super.key});
 
   @override
-  State<DeckStudioHomeScreen> createState() => _DeckStudioHomeScreenState();
+  State<DeckStudioHomeScreen> createState() => DeckStudioHomeScreenState();
 }
 
-class _DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
+class DeckStudioHomeScreenState extends State<DeckStudioHomeScreen> {
   late PortfolioProject _project;
   int _activeSlideIndex = 0;
   DeckElement? _selectedElement;
   Set<String> _selectedElementIds = {};
+
+  DeckElement? get selectedElement => _selectedElement;
+  PortfolioProject get project => _project;
+  int get activeSlideIndex => _activeSlideIndex;
+
+  void loadProjectDirectly(PortfolioProject newProject) {
+    _recordUndoState();
+    setState(() {
+      _project = newProject;
+      _activeSlideIndex = 0;
+      _selectedElement = null;
+      _selectedElementIds.clear();
+    });
+  }
 
   // Figma Toolbar Mode & Undo/Redo Stacks
   FigmaToolMode _currentToolMode = FigmaToolMode.select;
