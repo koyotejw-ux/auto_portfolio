@@ -636,7 +636,7 @@ def make_slide_02():
 
 
 # ==============================================================
-# SLIDE 03: Target Users & Roles (Executive Dashboard vs Field Touch)
+# SLIDE 03: Target Users & Roles (Role-Based Access Control & Multi-Tenant SaaS)
 def make_slide_03():
     base = Image.new('RGB', (W, H), (248, 250, 252))
     draw = ImageDraw.Draw(base)
@@ -644,141 +644,179 @@ def make_slide_03():
     draw_slide_header(
         draw, 
         slide_num=3, 
-        category_kr="Target Users & Roles | 사용자 역할별 맞춤형 접근성 및 페르소나 아키텍처", 
-        title_black="경영진의 실시간 의사결정부터 현장 터치까지, ", 
-        title_blue="Target Users & Roles 기반 맞춤형 인터페이스", 
-        subtitle_kr="경영진 및 현장 작업자의 직무 특성을 반영한 2대 핵심 사용자 프로필과 2x2 세그멘테이션 매트릭스"
+        category_kr="Target Users & Roles | 직무 권한별(RBAC) 동적 인터페이스 & 멀티테넌트 SaaS 아키텍처", 
+        title_black="대표의 전사 관제부터 현장 전용 뷰까지, ", 
+        title_blue="접속 권한에 따라 동적으로 최적화되는 역할 기반 인터페이스", 
+        subtitle_kr="로그인 권한별 메뉴·콘텐츠 자동 분기(RBAC)와 코드브릿지의 고객사 통합 관리 멀티테넌트 SaaS 비즈니스 모델"
     )
     
     # -------------------------------------------------------------
-    # TOP: 2 Authentic User Role Cards (Matching Behance Deck Spec)
+    # TOP ZONE: 3 Key Persona & RBAC Dynamic Screen Spec (y=202, h=250)
+    # 3 distinct roles: CEO (전사/인사/공정 총괄) / Field Manager (공정/품질) / Line Worker (현장 실적)
     # -------------------------------------------------------------
-    top_sy = 205
-    top_w = 845
-    top_h = 240
-    top_gap = 30
+    col_w = (W - 200 - 2 * 24) // 3  # 554px
+    top_sy = 202
+    top_h = 248
     
-    # Role 1: 공장 총괄 책임자 / 경영진
-    r1_x = 100
-    draw.rounded_rectangle([r1_x, top_sy, r1_x + top_w, top_sy + top_h], radius=16, fill=(240, 246, 255), outline=(219, 234, 254), width=1)
-    
-    # Avatar badge circle (Executive)
-    draw.ellipse([r1_x + 28, top_sy + 22, r1_x + 76, top_sy + 70], fill=(0, 81, 255))
-    draw.text((r1_x + 52, top_sy + 46), "CEO", font=get_font(12, 'bold'), fill=(255, 255, 255), anchor='mm')
-    
-    draw.text((r1_x + 92, top_sy + 25), "공장 총괄 책임자 / 경영진 (Executive)", font=get_font(16.5, 'bold'), fill=(15, 23, 42))
-    draw_pill_badge(draw, left_x=r1_x + 92, cy=top_sy + 63, text="실시간 손익 · 가동률 의사결정", font=get_font(10, 'bold'), theme='blue', pad_x=8, height=22)
-    
-    draw.line([(r1_x + 28, top_sy + 92), (r1_x + top_w - 28, top_sy + 92)], fill=(219, 234, 254), width=1)
-    draw.text((r1_x + 28, top_sy + 106), "주요 요구사항 및 페인포인트", font=get_font(12, 'bold'), fill=(0, 81, 255))
-    r1_desc = (
-        "· 유선 보고나 엑셀 수기 취합 없이 전 공장의 가동률(OEE) 및 납기 진척률을 1초 만에 확인\n"
-        "· 미수금, 매출 실적, 수주 대비 생산 병목 현상을 멀티 디바이스(PC/태블릿)로 실시간 원격 관제\n"
-        "· 불필요한 세부 입력 폼 대신 한눈에 파악 가능한 고밀도 KPI 위젯 중심의 인터페이스 선호"
-    )
-    draw.text((r1_x + 28, top_sy + 132), r1_desc, font=get_font(11.5, 'regular'), fill=(51, 65, 85))
-    
-    # Role 2: 현장 오퍼레이터 / 생산 라인 작업자
-    r2_x = r1_x + top_w + top_gap
-    draw.rounded_rectangle([r2_x, top_sy, r2_x + top_w, top_sy + top_h], radius=16, fill=(240, 246, 255), outline=(219, 234, 254), width=1)
-    
-    # Avatar badge circle (Operator)
-    draw.ellipse([r2_x + 28, top_sy + 22, r2_x + 76, top_sy + 70], fill=(16, 185, 129))
-    draw.text((r2_x + 52, top_sy + 46), "OP", font=get_font(12, 'bold'), fill=(255, 255, 255), anchor='mm')
-    
-    draw.text((r2_x + 92, top_sy + 25), "현장 작업자 / 생산 라인 오퍼레이터 (Field Operator)", font=get_font(16.5, 'bold'), fill=(15, 23, 42))
-    draw_pill_badge(draw, left_x=r2_x + 92, cy=top_sy + 63, text="1-Tap 간편 실적 등록 · 바코드 스캔", font=get_font(10, 'bold'), theme='green', pad_x=8, height=22)
-    
-    draw.line([(r2_x + 28, top_sy + 92), (r2_x + top_w - 28, top_sy + 92)], fill=(219, 234, 254), width=1)
-    draw.text((r2_x + 28, top_sy + 106), "주요 요구사항 및 페인포인트", font=get_font(12, 'bold'), fill=(16, 185, 129))
-    r2_desc = (
-        "· 방진 장갑을 착용한 터치 환경에서도 오입력 없는 48px 이상의 대형 버튼 및 숫자 키패드 지원\n"
-        "· 복잡한 텍스트 입력 없이 바코드 스캐너 연동으로 투입 원자재 LOT 매핑 및 작업 개시 즉시 처리\n"
-        "· 설비 비가동 및 불량 발생 시 3초 이내에 사유를 선택할 수 있는 간결한 바텀시트 모달 필요"
-    )
-    draw.text((r2_x + 28, top_sy + 132), r2_desc, font=get_font(11.5, 'regular'), fill=(51, 65, 85))
-    
-    # -------------------------------------------------------------
-    # BOTTOM: 2x2 Target Matrix & 4-Way Competitive Benchmark
-    # -------------------------------------------------------------
-    bot_sy = 475
-    bot_h = 495
-    
-    # 1. 2x2 Matrix (Left: w=845)
-    draw.rounded_rectangle([100, bot_sy, 100 + top_w, bot_sy + bot_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-    draw_pill_badge(draw, left_x=124, cy=bot_sy + 28, text="TARGET MATRIX", font=get_font(10, 'bold'), theme='blue', pad_x=8, height=22)
-    draw.text((250, bot_sy + 28), "데이터 조작 깊이 vs. 현장 이동성 세그멘테이션", font=get_font(14, 'bold'), fill=(15, 23, 42), anchor='lm')
-    
-    qw = 385
-    qh = 195
-    q1_x = 124
-    q1_y = bot_sy + 60
-    q2_x = q1_x + qw + 20
-    q2_y = q1_y
-    q3_x = q1_x
-    q3_y = q1_y + qh + 16
-    q4_x = q2_x
-    q4_y = q3_y
-    
-    # Q1: CEO / 경영진
-    draw.rounded_rectangle([q1_x, q1_y, q1_x + qw, q1_y + qh], radius=12, fill=(239, 246, 255), outline=(0, 81, 255, 120), width=1)
-    draw.text((q1_x + 16, q1_y + 18), "경영진 / CEO (Executive)", font=get_font(13.5, 'bold'), fill=(0, 81, 255))
-    draw.text((q1_x + 16, q1_y + 44), "· 데이터 분석: 종합 KPI, 손익, OEE, 납기준수율\n· 디바이스: 모바일 / 태블릿 반응형 뷰포트\n· 사용 패턴: 이동 중 실시간 알림 수신 및 즉시 승인", font=get_font(11, 'medium'), fill=(71, 85, 105))
-    
-    # Q2: 생산/공정 관리자
-    draw.rounded_rectangle([q2_x, q2_y, q2_x + qw, q2_y + qh], radius=12, fill=(245, 243, 255), outline=(124, 58, 237, 120), width=1)
-    draw.text((q2_x + 16, q2_y + 18), "공장장 / 생산관리자 (Operational Planner)", font=get_font(13.5, 'bold'), fill=(124, 58, 237))
-    draw.text((q2_x + 16, q2_y + 44), "· 데이터 조작: 스마트 간트 스케줄링, 호기별 배정\n· 디바이스: 데스크톱 대화면 + 현장 점검용 패드\n· 사용 패턴: 공정 병목 사전 감지 및 긴급 지시 배포", font=get_font(11, 'medium'), fill=(71, 85, 105))
-    
-    # Q3: 현장 작업자
-    draw.rounded_rectangle([q3_x, q3_y, q3_x + qw, q3_y + qh], radius=12, fill=(236, 253, 245), outline=(16, 185, 129, 120), width=1)
-    draw.text((q3_x + 16, q3_y + 18), "현장 작업자 (Field Operator)", font=get_font(13.5, 'bold'), fill=(16, 185, 129))
-    draw.text((q3_x + 16, q3_y + 44), "· 데이터 조작: 1-Tap 바코드 스캔, 양품/불량 집계\n· 디바이스: 라인별 7~10인치 방진 터치 패널\n· 사용 패턴: 초·중·종물 검사 실측치 즉시 전송", font=get_font(11, 'medium'), fill=(71, 85, 105))
-    
-    # Q4: 품질/자재 관리자
-    draw.rounded_rectangle([q4_x, q4_y, q4_x + qw, q4_y + qh], radius=12, fill=(254, 243, 199), outline=(217, 119, 6, 120), width=1)
-    draw.text((q4_x + 16, q4_y + 18), "품질/자재 관리자 (Quality Inspector)", font=get_font(13.5, 'bold'), fill=(217, 119, 6))
-    draw.text((q4_x + 16, q4_y + 44), "· 데이터 조작: SPC 관리도 통계 분석, LOT 역추적\n· 디바이스: PC 웹 브라우저 + 휴대용 바코드 단말\n· 사용 패턴: 부적합품 발생 시 즉시 라인 홀드 조치", font=get_font(11, 'medium'), fill=(71, 85, 105))
-    
-    # 2. Benchmark Comparison (Right: w=845)
-    r_bench_x = 100 + top_w + top_gap
-    draw.rounded_rectangle([r_bench_x, bot_sy, r_bench_x + top_w, bot_sy + bot_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-    draw_pill_badge(draw, left_x=r_bench_x + 24, cy=bot_sy + 28, text="COMPETITIVE BENCHMARK", font=get_font(10, 'bold'), theme='purple', pad_x=8, height=22)
-    draw.text((r_bench_x + 215, bot_sy + 28), "글로벌 외산 대비 독보적인 사용성 및 경량화 강점", font=get_font(14, 'bold'), fill=(15, 23, 42), anchor='lm')
-    
-    # Table Header
-    th_y = bot_sy + 60
-    draw.rounded_rectangle([r_bench_x + 20, th_y, r_bench_x + top_w - 20, th_y + 36], radius=8, fill=(241, 245, 249))
-    draw.text((r_bench_x + 35, th_y + 18), "비교 항목", font=get_font(11.5, 'bold'), fill=(71, 85, 105), anchor='lm')
-    draw.text((r_bench_x + 250, th_y + 18), "CodeBridgeX MES", font=get_font(12, 'bold'), fill=(0, 81, 255), anchor='mm')
-    draw.text((r_bench_x + 440, th_y + 18), "외산 SAP / Siemens", font=get_font(11, 'bold'), fill=(71, 85, 105), anchor='mm')
-    draw.text((r_bench_x + 630, th_y + 18), "국내 구축형 SI", font=get_font(11, 'bold'), fill=(71, 85, 105), anchor='mm')
-    
-    bench_rows = [
-        ("반응형 멀티 디바이스", "완벽 지원 (PC/태블릿/모바일)", "PC 온프레미스 고정", "태블릿 미지원 / 왜곡 발생"),
-        ("디자인 시스템 완성도", "아토믹 디자인 150+ 토큰", "레거시 폐쇄형 프레임워크", "통일성 없는 화면별 파편화"),
-        ("도입 및 학습 기간", "2일 이내 즉시 현장 투입", "2~3개월 고난도 전문 교육", "3주 이상 매뉴얼 숙지 필요"),
-        ("수기 취합 공수 절감", "99.9% (실시간 단일 파이프라인)", "60% (일부 수기 입력 상존)", "40% (부서별 엑셀 병행)"),
-        ("초기 도입 비용(TCO)", "합리적 SaaS 구독 체계", "수억~수십억 원대 고부담", "수천만 원대 SI 개발비")
+    roles_data = [
+        (
+            "CEO / 경영진 (Executive)",
+            "전사 총괄 권한 · 멀티 디바이스 원격 관제",
+            (0, 81, 255),
+            (239, 246, 255),
+            [
+                ("노출 메뉴", "전체 13개 모듈 (대시보드, 인사관리, 손익, 수주, 생산, 품질, 시스템 설정)"),
+                ("핵심 뷰", "실시간 OEE 텔레메트리, 미수금·매출 지표, 당일 출하 달성률, 전사 병목 관제"),
+                ("디바이스", "데스크톱 웹 와이드(16:9) + 외근/퇴근 중 10인치 태블릿 & 모바일 100% 대응"),
+                ("비즈 가치", "현장 방문이나 유선 구두 보고 없이 '손안에서 전 공장 및 인사 리스크 1초 즉각 대처'")
+            ]
+        ),
+        (
+            "공장장 / 생산·품질 관리자 (Manager)",
+            "중간 관리자 권한 · 스마트 공정 스케줄러 & CAPA",
+            (124, 58, 237),
+            (245, 243, 255),
+            [
+                ("노출 메뉴", "생산계획(간트), 작업지시, 자재 수급, SPC 품질 통계, 부적합 CAPA"),
+                ("핵심 뷰", "호기별 가동 상태, 긴급 결품 알람, 라우팅 공순 드래그 재배치, 검사 합격률"),
+                ("디바이스", "관제실 데스크톱 듀얼 모니터 + 현장 패트롤용 10인치 방진 태블릿"),
+                ("비즈 가치", "불필요한 회계/경영 데이터 차단, 생산 병목 조기 차단 및 긴급 지시 1초 배포")
+            ]
+        ),
+        (
+            "현장 작업자 / 오퍼레이터 (Operator)",
+            "현장 전용 단순화 권한 · 1-Tap 터치 실적 등록",
+            (16, 185, 129),
+            (236, 253, 245),
+            [
+                ("노출 메뉴", "단 2개 메뉴만 직관 노출 (호기별 실적 등록, 설비 비가동 신고)"),
+                ("핵심 뷰", "원자재 LOT 바코드 스캔 매핑, 48px 대형 수량 카운터, 비가동 3초 바텀시트"),
+                ("디바이스", "라인별 7~10인치 고정형 방진 터치 키오스크 & 모바일 핸드헬드 PDA"),
+                ("비즈 가치", "방진 장갑 착용 중 오입력 원천 방지, 텍스트 입력 없는 1-Tap 터치로 학습 비용 제로")
+            ]
+        )
     ]
     
-    r_sy = th_y + 44
-    for ri, (item_lbl, cbx_val, sap_val, si_val) in enumerate(bench_rows):
-        row_y = r_sy + ri * 72
-        draw.rounded_rectangle([r_bench_x + 20, row_y, r_bench_x + top_w - 20, row_y + 64], radius=8, fill=(248, 250, 252) if ri%2==0 else (255, 255, 255), outline=(226, 232, 240), width=1)
-        draw.text((r_bench_x + 35, row_y + 32), item_lbl, font=get_font(12, 'bold'), fill=(15, 23, 42), anchor='lm')
+    for r_idx, (r_name, r_badge, r_col, r_bg, r_specs) in enumerate(roles_data):
+        rx = 100 + r_idx * (col_w + 24)
+        draw.rounded_rectangle([rx, top_sy, rx + col_w, top_sy + top_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
         
-        # CodeBridgeX (Highlighted Blue)
-        draw.rounded_rectangle([r_bench_x + 145, row_y + 10, r_bench_x + 355, row_y + 54], radius=6, fill=(239, 246, 255), outline=(0, 81, 255), width=1)
-        draw.text((r_bench_x + 250, row_y + 32), cbx_val, font=get_font(11, 'bold'), fill=(0, 81, 255), anchor='mm')
+        # Header Badge & Name
+        draw.rounded_rectangle([rx + 18, top_sy + 16, rx + 18 + 58, top_sy + 40], radius=6, fill=r_bg)
+        r_code = "ROLE 01" if r_idx == 0 else "ROLE 02" if r_idx == 1 else "ROLE 03"
+        draw.text((rx + 47, top_sy + 28), r_code, font=get_num_font(10.5, 'bold'), fill=r_col, anchor='mm')
         
-        # Competitors
-        draw.text((r_bench_x + 440, row_y + 32), sap_val, font=get_font(10.5, 'medium'), fill=(100, 116, 139), anchor='mm')
-        draw.text((r_bench_x + 630, row_y + 32), si_val, font=get_font(10.5, 'medium'), fill=(100, 116, 139), anchor='mm')
+        draw.text((rx + 86, top_sy + 28), r_name, font=get_font(14.5, 'bold'), fill=(15, 23, 42), anchor='lm')
+        draw.text((rx + 18, top_sy + 54), r_badge, font=get_font(11, 'medium'), fill=r_col)
+        
+        draw.line([(rx + 18, top_sy + 74), (rx + col_w - 18, top_sy + 74)], fill=(241, 245, 249), width=1)
+        
+        # Spec rows
+        spec_y = top_sy + 86
+        for s_lbl, s_val in r_specs:
+            # Spec pill badge
+            draw.rounded_rectangle([rx + 18, spec_y, rx + 80, spec_y + 22], radius=4, fill=(241, 245, 249))
+            draw.text((rx + 49, spec_y + 11), s_lbl, font=get_font(10, 'bold'), fill=(71, 85, 105), anchor='mm')
+            
+            lines = textwrap.wrap(s_val, width=38)
+            draw.text((rx + 90, spec_y + 11), lines[0], font=get_font(11, 'regular'), fill=(51, 65, 85), anchor='lm')
+            if len(lines) > 1:
+                draw.text((rx + 90, spec_y + 27), lines[1], font=get_font(10.5, 'regular'), fill=(100, 116, 139), anchor='lm')
+                spec_y += 36
+            else:
+                spec_y += 32
+                
+    # -------------------------------------------------------------
+    # BOTTOM ZONE: 2 Strategic Architecture Cards (y=472, h=496)
+    # Left: RBAC Dynamic Menu & Screen Dispatch Engine (w=845)
+    # Right: CodeBridgeX Multi-Tenant SaaS Business Model (w=845)
+    # -------------------------------------------------------------
+    bot_sy = 472
+    bot_w = 845
+    bot_h = 496
+    bot_gap = 30
+    
+    # 1. Left Card: RBAC Engine Architecture
+    lb_x = 100
+    draw.rounded_rectangle([lb_x, bot_sy, lb_x + bot_w, bot_sy + bot_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+    draw_pill_badge(draw, left_x=lb_x + 24, cy=bot_sy + 26, text="DYNAMIC RBAC ENGINE", font=get_font(9.5, 'bold'), theme='blue', pad_x=8, height=22)
+    draw.text((lb_x + 195, bot_sy + 26), "역할 및 권한별 동적 메뉴·화면 라우팅 아키텍처", font=get_font(16.5, 'bold'), fill=(15, 23, 42), anchor='lm')
+    draw.text((lb_x + 24, bot_sy + 52), "접속 계정의 보안 등급(Role Token)에 따라 불필요한 기능 장벽을 제거하고 맞춤형 업무 화면 자동 공급", font=get_font(11, 'medium'), fill=(100, 116, 139))
+    
+    # 3 Flow Blocks for RBAC Process
+    rbac_blocks = [
+        ("01. 단일 인증 & 권한 인가", "User Authentication", "사용자 계정/단말기 고유 ID 인증 시 JWT 토큰 내 역할(CEO, Manager, Worker, Admin) 식별"),
+        ("02. 동적 사이드바 메뉴 렌더링", "Dynamic Menu Dispatch", "권한 수준에 맞지 않는 메뉴는 DOM 자체에서 원천 비노출, 작업자는 1~2개 필수 메뉴만 경량 노출"),
+        ("03. 화면 위젯 & 필드 레벨 통제", "Widget-Level RBAC", "CEO는 원가/마진율/인사지표 열람 가능, 현장 작업자는 민감 회계정보 차단 및 실적 입력 필드만 활성화")
+    ]
+    
+    r_by = bot_sy + 82
+    for b_idx, (b_title, b_sub, b_desc) in enumerate(rbac_blocks):
+        draw.rounded_rectangle([lb_x + 24, r_by, lb_x + bot_w - 24, r_by + 68], radius=10, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
+        
+        # Number Pill
+        draw.rounded_rectangle([lb_x + 40, r_by + 16, lb_x + 72, r_by + 38], radius=6, fill=(239, 246, 255))
+        draw.text((lb_x + 56, r_by + 27), f"0{b_idx+1}", font=get_num_font(11, 'bold'), fill=(0, 81, 255), anchor='mm')
+        
+        draw.text((lb_x + 84, r_by + 27), b_title, font=get_font(13.5, 'bold'), fill=(15, 23, 42), anchor='lm')
+        draw.text((lb_x + 84, r_by + 49), b_desc, font=get_font(11, 'regular'), fill=(71, 85, 105), anchor='lm')
+        
+        r_by += 80
+        
+    # Bottom Benefit Matrix Pods
+    draw.line([(lb_x + 24, r_by + 4), (lb_x + bot_w - 24, r_by + 4)], fill=(241, 245, 249), width=1)
+    draw.text((lb_x + 24, r_by + 24), "권한 통제 도입 전 vs. 도입 후 운영 성과 비교", font=get_font(12.5, 'bold'), fill=(15, 23, 42))
+    
+    draw.rounded_rectangle([lb_x + 24, r_by + 42, lb_x + bot_w // 2 - 10, r_by + 104], radius=8, fill=(254, 242, 242), outline=(254, 202, 202), width=1)
+    draw.text((lb_x + 36, r_by + 58), "AS-IS (기존 구축형/일반 MES)", font=get_font(11, 'bold'), fill=(185, 28, 28))
+    draw.text((lb_x + 36, r_by + 80), "· 모든 직원에게 50개 메뉴 전체 노출로 메뉴 탐색에 5분 소모\n· 작업자의 회계/단가 화면 접근으로 보안 유출 리스크 상존", font=get_font(10.5, 'regular'), fill=(127, 29, 29))
+    
+    draw.rounded_rectangle([lb_x + bot_w // 2 + 10, r_by + 42, lb_x + bot_w - 24, r_by + 104], radius=8, fill=(236, 253, 245), outline=(167, 243, 208), width=1)
+    draw.text((lb_x + bot_w // 2 + 22, r_by + 58), "TO-BE (CodeBridgeX RBAC 자동 분기)", font=get_font(11, 'bold'), fill=(4, 120, 87))
+    draw.text((lb_x + bot_w // 2 + 22, r_by + 80), "· 역할별 직무 맞춤 뷰 즉시 로딩으로 업무 진입 시간 99% 단축\n· 대표의 민감 인사/재무 데이터 완벽 보호 및 책임 추적성 확립", font=get_font(10.5, 'regular'), fill=(6, 95, 70))
+    
+    # 2. Right Card: CodeBridgeX Multi-Tenant SaaS Business Model
+    rb_x = lb_x + bot_w + bot_gap
+    draw.rounded_rectangle([rb_x, bot_sy, rb_x + bot_w, bot_sy + bot_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+    draw_pill_badge(draw, left_x=rb_x + 24, cy=bot_sy + 26, text="SAAS BUSINESS MODEL", font=get_font(9.5, 'bold'), theme='purple', pad_x=8, height=22)
+    draw.text((rb_x + 205, bot_sy + 26), "코드브릿지 멀티테넌트 SaaS 중앙 관제 비즈니스 구조", font=get_font(16.5, 'bold'), fill=(15, 23, 42), anchor='lm')
+    draw.text((rb_x + 24, bot_sy + 52), "단일 클라우드 엔진 위에서 수백 개 고객사를 테넌트(Tenant)별로 격리 관리하는 구독형 B2B 비즈니스", font=get_font(11, 'medium'), fill=(100, 116, 139))
+    
+    saas_pillars = [
+        ("CodeBridgeX 본사 슈퍼 관리자 (Master Console)", "전체 가입 고객사(테넌트) 실시간 헬스체크, 사용량 과금 및 라이선스 배포, 신규 제조 도메인 위젯 OTA 자동 업데이트"),
+        ("고객사 테넌트 완전 격리 (Multi-Tenant Isolation)", "A사(자동차 부품), B사(정밀 금형), C사(전자 조립)의 데이터베이스 및 파일 저장소를 완벽히 분리하여 데이터 기밀 보장"),
+        ("구독형 가격 모델 & 무중단 지속 확장 (SaaS Scale)", "수억 원대 SI 개발 비용 대신 월 구독 기반으로 도입 장벽을 파괴하고, 코드브릿지가 서버·보안·기능 개선을 전담 운영")
+    ]
+    
+    s_by = bot_sy + 82
+    for s_idx, (s_title, s_desc) in enumerate(saas_pillars):
+        draw.rounded_rectangle([rb_x + 24, s_by, rb_x + bot_w - 24, s_by + 68], radius=10, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
+        
+        # Badge
+        draw.rounded_rectangle([rb_x + 40, s_by + 16, rb_x + 72, s_by + 38], radius=6, fill=(245, 243, 255))
+        draw.text((rb_x + 56, s_by + 27), f"0{s_idx+1}", font=get_num_font(11, 'bold'), fill=(124, 58, 237), anchor='mm')
+        
+        draw.text((rb_x + 84, s_by + 27), s_title, font=get_font(13.5, 'bold'), fill=(15, 23, 42), anchor='lm')
+        draw.text((rb_x + 84, s_by + 49), s_desc, font=get_font(11, 'regular'), fill=(71, 85, 105), anchor='lm')
+        
+        s_by += 80
+        
+    # SaaS 3-Tier Synergy Architecture Pod
+    draw.line([(rb_x + 24, s_by + 4), (rb_x + bot_w - 24, s_by + 4)], fill=(241, 245, 249), width=1)
+    draw.text((rb_x + 24, s_by + 24), "코드브릿지 ↔ 제조 고객사 상생 생태계 구조", font=get_font(12.5, 'bold'), fill=(15, 23, 42))
+    
+    box_w = (bot_w - 48 - 16) // 2
+    draw.rounded_rectangle([rb_x + 24, s_by + 42, rb_x + 24 + box_w, s_by + 104], radius=8, fill=(239, 246, 255), outline=(191, 219, 254), width=1)
+    draw.text((rb_x + 36, s_by + 58), "코드브릿지 (플랫폼 운영사)", font=get_font(11.5, 'bold'), fill=(0, 81, 255))
+    draw.text((rb_x + 36, s_by + 80), "· 테넌트 생성, 라이선스 관리, 인프라 보안 패치\n· 전 고객사 데이터 분석 기반 제조 AI 벤치마크 제공", font=get_font(10.5, 'regular'), fill=(30, 58, 138))
+    
+    draw.rounded_rectangle([rb_x + 24 + box_w + 16, s_by + 42, rb_x + bot_w - 24, s_by + 104], radius=8, fill=(245, 243, 255), outline=(221, 214, 254), width=1)
+    draw.text((rb_x + 24 + box_w + 28, s_by + 58), "제조 고객사 (구독 파트너)", font=get_font(11.5, 'bold'), fill=(124, 58, 237))
+    draw.text((rb_x + 24 + box_w + 28, s_by + 80), "· 대표는 언제 어디서나 전사 인사/공정 실시간 의사결정\n· 각 담당자는 권한에 맞춘 전용 화면에서 최고 효율 달성", font=get_font(10.5, 'regular'), fill=(76, 29, 149))
 
     draw_slide_footer(draw, 3)
     base.save(os.path.join(OUT_DIR, 'slide_03.png'))
-    print("SAVED slide_03.png (Target Users & Roles)")
+    print("SAVED slide_03.png (Target Users & Roles - RBAC & SaaS Business Model)")
 
 # SLIDE 04: Information Architecture (Exact Centered Tree)
 def make_slide_04():
@@ -788,18 +826,18 @@ def make_slide_04():
     draw_slide_header(
         draw, 
         slide_num=4, 
-        category_kr="IA & Access Structure | 정보 구조 및 역할별 접근성 계층", 
+        category_kr="IA & Access Structure | 정보 구조 및 역할별(RBAC) 접근성 계층", 
         title_black="전사 제조 라이프사이클을 관통하는 ", 
-        title_blue="체계적인 정보 계층 구조", 
-        subtitle_kr="기준정보 설정부터 영업 수주, 생산 실행, 품질 보증, 출하 재고까지 유기적으로 연동된 엔터프라이즈 IA"
+        title_blue="체계적인 정보 계층 및 권한별 메뉴 아키텍처", 
+        subtitle_kr="접속 권한(CEO/관리자/작업자)에 따른 동적 메뉴 분기 및 기준정보부터 생산·품질·출하까지 연동된 멀티테넌트 SaaS IA"
     )
     
-    root_x1, root_y1, root_x2, root_y2 = 700, 220, 1220, 284
+    root_x1, root_y1, root_x2, root_y2 = 640, 220, 1280, 284
     draw.rounded_rectangle([root_x1, root_y1, root_x2, root_y2], radius=12, fill=(255, 255, 255), outline=(0, 81, 255), width=2)
     root_cy = (root_y1 + root_y2) // 2
-    b_root = draw_pill_badge(draw, left_x=root_x1 + 18, cy=root_cy, text="통합 플랫폼", font=get_font(10, 'bold'), theme='blue', pad_x=10, height=26)
-    draw.text((b_root[2] + 16, root_cy - 11), "CodeBridgeX Cloud MES & ERP 아키텍처", font=get_font(14, 'bold'), fill=(15, 23, 42), anchor='lm')
-    draw.text((b_root[2] + 16, root_cy + 11), "멀티테넌트 SaaS 기반 13개 핵심 비즈니스 도메인 및 59개 표준 화면", font=get_font(10.5, 'medium'), fill=(71, 85, 105), anchor='lm')
+    b_root = draw_pill_badge(draw, left_x=root_x1 + 18, cy=root_cy, text="멀티테넌트 SaaS", font=get_font(10, 'bold'), theme='blue', pad_x=10, height=26)
+    draw.text((b_root[2] + 16, root_cy - 11), "CodeBridgeX Cloud MES & ERP 권한 연동 아키텍처", font=get_font(14, 'bold'), fill=(15, 23, 42), anchor='lm')
+    draw.text((b_root[2] + 16, root_cy + 11), "코드브릿지 고객사 통합 관리 테넌트 엔진 및 3대 직무별 RBAC 자동 메뉴 분기", font=get_font(10.5, 'medium'), fill=(71, 85, 105), anchor='lm')
     
     cols_data = [
         ("01. 기준정보 관리", "Master Data", "품목 마스터, 다단계 BOM 등록, 공정 라우팅, 거래처 및 작업자 규격 관리", [
