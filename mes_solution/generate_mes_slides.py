@@ -1275,7 +1275,7 @@ def make_slide_07():
     # CARD 01 (Upper Left): MES CORE DESIGN PHILOSOPHY (UX & GUI)
     # -------------------------------------------------------------
     draw.rounded_rectangle([col1_x, r1_y, col1_x + col1_w, r1_y + r1_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-    b1_box = draw_pill_badge(draw, left_x=col1_x + 24, cy=r1_y + 30, text="FOUNDATION 01", font=get_font(9.5, 'bold'), theme='amber', has_dot=True, pad_x=8, height=22)
+    b1_box = draw_pill_badge(draw, left_x=col1_x + 24, cy=r1_y + 30, text="FOUNDATION 01", font=get_font(9.5, 'bold'), theme='amber', has_dot=False, pad_x=8, height=22)
     draw.text((b1_box[2] + 14, r1_y + 30), "MES 제조 실행 핵심 디자인 철학 (UX & GUI)", font=get_font(13.0, 'bold'), fill=(15, 23, 42), anchor='lm')
     draw.line([(col1_x + 24, r1_y + 52), (col1_x + col1_w - 24, r1_y + 52)], fill=(241, 245, 249), width=1)
     
@@ -1283,20 +1283,19 @@ def make_slide_07():
         ("01. Zero-Latency Ergonomics (무지연 현장 인체공학)", 
          "스마트 팩토리 방진 장갑 및 모바일·태블릿 조작에 맞춘 최소 48dp 터치 타깃",
          "현장 고조도 및 야간 교대근무 환경에 대응하는 WCAG AAA 12.8:1 고대비 테마", 
-         (0, 81, 255)),
+         (59, 130, 246)),
         ("02. Visual Role Hierarchy (역할별 시각적 우선순위)", 
          "CEO/공장장 핵심 KPI와 현장 오퍼레이터 공정 지시 화면의 정보 밀도 듀얼 최적화",
          "설비 가동(초록)·대기(주황)·비가동(빨강) 8종 시맨틱 뱃지 및 스쿼클 컬러 코딩", 
-         (217, 119, 6)),
+         (245, 158, 11)),
         ("03. Multi-Tenant Modularity (확장형 멀티테넌트)", 
          "고객사별 브랜드 로고, 컬러 팔레트, 커스텀 테넌트 테마 실시간 동적 주입",
          "13개 제조 업무 모듈 간 일관된 8pt 그리드 및 인터랙션 토큰 100% 바인딩", 
-         (122, 34, 255))
+         (139, 92, 246))
     ]
     py_start = r1_y + 64
     for p_title, ux_text, gui_text, p_accent in principles:
         draw.rounded_rectangle([col1_x + 24, py_start, col1_x + col1_w - 24, py_start + 70], radius=10, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
-        draw.rounded_rectangle([col1_x + 24, py_start + 6, col1_x + 28, py_start + 64], radius=2, fill=p_accent)
         draw.text((col1_x + 36, py_start + 13), p_title, font=get_font(10.2, 'bold'), fill=p_accent)
         
         # UX Concept Row
@@ -1308,14 +1307,14 @@ def make_slide_07():
         draw.text((col1_x + 88, py_start + 49), gui_text, font=get_font(8.2, 'regular'), fill=(71, 85, 105))
         py_start += 78
         
-    draw.rounded_rectangle([col1_x + 24, r1_y + r1_h - 38, col1_x + col1_w - 24, r1_y + r1_h - 14], radius=6, fill=(240, 246, 255), outline=(191, 219, 254), width=1)
-    draw.text((col1_x + col1_w // 2, r1_y + r1_h - 26), "Core Principles: Zero-Latency Ergonomics · Visual Hierarchy · Multi-Tenant Modularity", font=get_font(8.8, 'bold'), fill=(0, 81, 255), anchor='mm')
+    draw.rounded_rectangle([col1_x + 24, r1_y + r1_h - 38, col1_x + col1_w - 24, r1_y + r1_h - 14], radius=6, fill=(239, 246, 255), outline=(191, 219, 254), width=1)
+    draw.text((col1_x + col1_w // 2, r1_y + r1_h - 26), "Core Principles: Zero-Latency Ergonomics · Visual Hierarchy · Multi-Tenant Modularity", font=get_font(8.8, 'bold'), fill=(37, 99, 235), anchor='mm')
     
     # -------------------------------------------------------------
     # CARD 02 (Upper Center): APP ICON GEOMETRIC DRAFTING GRID & SPEC (SAM S Symbol)
     # -------------------------------------------------------------
     draw.rounded_rectangle([col2_x, r1_y, col2_x + col2_w, r1_y + r1_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-    b2_box = draw_pill_badge(draw, left_x=col2_x + 24, cy=r1_y + 30, text="FOUNDATION 02", font=get_font(9.5, 'bold'), theme='blue', has_dot=True, pad_x=8, height=22)
+    b2_box = draw_pill_badge(draw, left_x=col2_x + 24, cy=r1_y + 30, text="FOUNDATION 02", font=get_font(9.5, 'bold'), theme='blue', has_dot=False, pad_x=8, height=22)
     draw.text((b2_box[2] + 14, r1_y + 30), "솔루션 S 심벌마크 기하학 와이어프레임 & 조형 규격", font=get_font(13.5, 'bold'), fill=(15, 23, 42), anchor='lm')
     draw.line([(col2_x + 24, r1_y + 52), (col2_x + col2_w - 24, r1_y + 52)], fill=(241, 245, 249), width=1)
     
@@ -1386,7 +1385,7 @@ def make_slide_07():
         except Exception as e:
             print("Icon paste error:", e)
             
-    draw.text((cx, ic_box_y + ic_box_size + 13), "Golden Ratio Squircle Grid (1024×1024)", font=get_font(8.5, 'bold'), fill=(0, 81, 255), anchor='mm')
+    draw.text((cx, ic_box_y + ic_box_size + 13), "Golden Ratio Squircle Grid (1024×1024)", font=get_font(8.5, 'bold'), fill=(37, 99, 235), anchor='mm')
     draw.text((cx, ic_box_y + ic_box_size + 27), "Inner Ø288 · Mid Ø408 · Outer Ø680 · R22.5%", font=get_font(7.5, 'medium'), fill=(100, 116, 139), anchor='mm')
     
     m_x = ic_box_x + ic_box_size + 16
@@ -1397,13 +1396,13 @@ def make_slide_07():
         ("02. Dynamic Squircle Curvature (R22.5%)", 
          "모바일·태블릿 및 웹 데스크톱 런처에 일치하는 연속 곡률",
          "스쿼클 마스킹을 적용하여 디바이스별 선명도와 가독성 극대화"),
-        ("03. 일렉트릭 블루 & 인더스트리얼 네이비", 
-         "정밀함과 신뢰를 상징하는 시그니처 블루(#0051FF)와",
-         "고대비 딥 네이비(#0F172A)의 조화로 0.1초 내 솔루션 식별력 완성")
+        ("03. 코어 블루 & 인더스트리얼 슬레이트", 
+         "정밀함과 신뢰를 상징하는 프라이머리 블루(#3B82F6 / #2563EB)와",
+         "고대비 다크 서피스(#0F172A)의 조화로 0.1초 내 솔루션 식별력 완성")
     ]
     sy = r1_y + 64
     for title, l1, l2 in specs:
-        draw.text((m_x, sy), title, font=get_font(10, 'bold'), fill=(0, 81, 255) if "01" in title else (15, 23, 42))
+        draw.text((m_x, sy), title, font=get_font(10, 'bold'), fill=(37, 99, 235) if "01" in title else (15, 23, 42))
         draw.text((m_x, sy + 18), l1, font=get_font(8.5, 'regular'), fill=(71, 85, 105))
         draw.text((m_x, sy + 32), l2, font=get_font(8.5, 'regular'), fill=(71, 85, 105))
         sy += 54
@@ -1412,32 +1411,33 @@ def make_slide_07():
     draw.text((col2_x + col2_w // 2, r1_y + r1_h - 26), "Golden Ratio Keyline Drafting Grid & Continuous Squircle Specification", font=get_font(8.8, 'bold'), fill=(71, 85, 105), anchor='mm')
     
     # -------------------------------------------------------------
-    # CARD 03 (Upper Right): 24dp ICONOGRAPHY SYSTEM (FLUTTER MATERIAL)
+    # CARD 03 (Upper Right): 24dp ICONOGRAPHY SYSTEM (LUCIDE REACT 1:1)
     # -------------------------------------------------------------
     draw.rounded_rectangle([col3_x, r1_y, col3_x + col3_w, r1_y + r1_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-    b3_box = draw_pill_badge(draw, left_x=col3_x + 24, cy=r1_y + 30, text="FOUNDATION 03", font=get_font(9.5, 'bold'), theme='cyan', has_dot=True, pad_x=8, height=22)
-    draw.text((b3_box[2] + 14, r1_y + 30), "실제 앱 탑재 13개 모듈 & 시스템 24dp 아이코노그라피", font=get_font(13.5, 'bold'), fill=(15, 23, 42), anchor='lm')
+    b3_box = draw_pill_badge(draw, left_x=col3_x + 24, cy=r1_y + 30, text="FOUNDATION 03", font=get_font(9.5, 'bold'), theme='cyan', has_dot=False, pad_x=8, height=22)
+    draw.text((b3_box[2] + 14, r1_y + 30), "실제 웹 앱 탑재 13개 모듈 & Lucide React 24dp 아이코노그라피", font=get_font(13.5, 'bold'), fill=(15, 23, 42), anchor='lm')
     draw.line([(col3_x + 24, r1_y + 52), (col3_x + col3_w - 24, r1_y + 52)], fill=(241, 245, 249), width=1)
     
-    draw.text((col3_x + 24, r1_y + 64), "Grid 24×24dp  ·  Optical Center  ·  Production Flutter Icons.*_rounded 토큰 1:1 바인딩", font=get_font(9, 'bold'), fill=(0, 81, 255))
+    draw.text((col3_x + 24, r1_y + 64), "Grid 24×24dp  ·  Stroke 2.0px  ·  Production lucide-react ^0.487.0 실기기 1:1 연동", font=get_font(9, 'bold'), fill=(37, 99, 235))
     
     icons_data = [
-        ("경영종합대시보드", "Icons.dashboard", 0xe871),
-        ("생산 공정 관리", "Icons.precision_mfg", 0xf0094),
-        ("품질 보증·SPC", "Icons.rule_rounded", 0xf012d),
-        ("실시간 재고·BOM", "Icons.inventory_2", 0xf0001),
-        ("IoT 설비 모니터링", "Icons.sensors", 0xe51f),
-        ("기준정보 마스터", "Icons.table_chart", 0xe265),
-        ("권한·보안 정책", "Icons.security", 0xe32a),
-        ("시스템 설정 관리", "Icons.tune", 0xe429),
+        ("경영종합대시보드", "LayoutDashboard", "layout-dashboard.png", "src/pages/Dashboard.tsx"),
+        ("생산 공정 관리", "Factory", "factory.png", "src/pages/production/"),
+        ("품질 보증·SPC", "ClipboardCheck", "clipboard-check.png", "src/pages/quality/"),
+        ("실시간 재고·BOM", "Package", "package.png", "src/pages/inventory/"),
+        ("영업·수주 분석", "TrendingUp", "trending-up.png", "src/pages/sales/"),
+        ("권한·보안 정책", "Shield", "shield.png", "src/pages/system/role"),
+        ("시스템 환경 설정", "Settings", "settings.png", "src/pages/system/admin"),
+        ("작업자·인사 관리", "Users", "users.png", "src/pages/hr/worker"),
     ]
     
     ic_start_y = r1_y + 86
     ic_w = (col3_w - 48 - 30) // 4
     ic_h = 96
-    mat_font_icon = get_material_icon_font(23)
     
-    for idx, (iname, itoken, icp) in enumerate(icons_data):
+    lucide_dir = r"d:\097.flutter_project\auto_portfolio\assets\lucide_icons"
+    
+    for idx, (iname, ic_comp, ic_file, ic_src) in enumerate(icons_data):
         row = idx // 4
         col = idx % 4
         ix = col3_x + 24 + col * (ic_w + 10)
@@ -1447,15 +1447,22 @@ def make_slide_07():
         
         icx = ix + ic_w // 2
         icy = iy + 26
-        draw.rounded_rectangle([icx - 17, icy - 17, icx + 17, icy + 17], radius=8, fill=(240, 246, 255), outline=(191, 219, 254), width=1)
-        draw.text((icx, icy), chr(icp), font=mat_font_icon, fill=(0, 81, 255), anchor='mm')
+        draw.rounded_rectangle([icx - 17, icy - 17, icx + 17, icy + 17], radius=8, fill=(239, 246, 255), outline=(191, 219, 254), width=1)
         
+        # Paste real Lucide PNG icon
+        ic_path = os.path.join(lucide_dir, ic_file)
+        if os.path.exists(ic_path):
+            l_img = Image.open(ic_path).convert('RGBA')
+            l_resized = l_img.resize((22, 22), Image.Resampling.LANCZOS)
+            base.paste(l_resized, (icx - 11, icy - 11), l_resized)
+            draw = ImageDraw.Draw(base)
+            
         draw.text((icx, iy + 53), iname, font=get_font(9.5, 'bold'), fill=(15, 23, 42), anchor='mm')
-        draw.text((icx, iy + 68), itoken, font=get_font(7.5, 'bold'), fill=(0, 81, 255), anchor='mm')
-        draw.text((icx, iy + 82), f"{hex(icp)} · 24dp", font=get_font(7.5, 'regular'), fill=(100, 116, 139), anchor='mm')
+        draw.text((icx, iy + 68), ic_comp, font=get_font(8.0, 'bold'), fill=(37, 99, 235), anchor='mm')
+        draw.text((icx, iy + 82), "lucide-react · 24dp", font=get_font(7.5, 'regular'), fill=(100, 116, 139), anchor='mm')
         
-    draw.rounded_rectangle([col3_x + 24, r1_y + r1_h - 38, col3_x + col3_w - 24, r1_y + r1_h - 14], radius=6, fill=(240, 246, 255), outline=(191, 219, 254), width=1)
-    draw.text((col3_x + col3_w // 2, r1_y + r1_h - 26), "Flutter 런타임 MaterialIcons-Regular.otf 실기기 렌더링 및 코드 토큰 100% 동기화", font=get_font(9.5, 'medium'), fill=(0, 81, 255), anchor='mm')
+    draw.rounded_rectangle([col3_x + 24, r1_y + r1_h - 38, col3_x + col3_w - 24, r1_y + r1_h - 14], radius=6, fill=(239, 246, 255), outline=(191, 219, 254), width=1)
+    draw.text((col3_x + col3_w // 2, r1_y + r1_h - 26), "React 18 / Lucide-React v0.487.0 프로덕션 SVG 컴포넌트 100% 실기기 바인딩", font=get_font(9.5, 'medium'), fill=(37, 99, 235), anchor='mm')
     
     # -------------------------------------------------------------
     # LOWER ROW (y=574 to 950, h=376): 2 WIDE COLUMNS
@@ -1470,30 +1477,30 @@ def make_slide_07():
     colB_w = 860
     
     # -------------------------------------------------------------
-    # CARD 04 (Lower Left): FOUNDATION DESIGN TOKENS (COLOR, TYPE, RADIUS, ELEVATION)
+    # CARD 04 (Lower Left): FOUNDATION DESIGN TOKENS (tokens.ts 100% Match)
     # -------------------------------------------------------------
     draw.rounded_rectangle([colA_x, r2_y, colA_x + colA_w, r2_y + r2_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-    b4_box = draw_pill_badge(draw, left_x=colA_x + 28, cy=r2_y + 32, text="FOUNDATION 04", font=get_font(9.5, 'bold'), theme='blue', has_dot=True, pad_x=8, height=22)
-    draw.text((b4_box[2] + 14, r2_y + 32), "파운데이션 토큰 아키텍처 & Pretendard 타이포그래피", font=get_font(14, 'bold'), fill=(15, 23, 42), anchor='lm')
+    b4_box = draw_pill_badge(draw, left_x=colA_x + 28, cy=r2_y + 32, text="FOUNDATION 04", font=get_font(9.5, 'bold'), theme='blue', has_dot=False, pad_x=8, height=22)
+    draw.text((b4_box[2] + 14, r2_y + 32), "파운데이션 토큰 아키텍처 & Tailwind/Pretendard (src/design-system/tokens.ts)", font=get_font(13.5, 'bold'), fill=(15, 23, 42), anchor='lm')
     draw.line([(colA_x + 28, r2_y + 54), (colA_x + colA_w - 28, r2_y + 54)], fill=(241, 245, 249), width=1)
     
     col_w_inner = (colA_w - 56 - 20) // 2  # 382px
     
-    # Left Half: Hero Color Swatch
+    # Left Half: Hero Color Swatch (Real primary #3B82F6)
     hb_y = r2_y + 64
-    draw.rounded_rectangle([colA_x + 28, hb_y, colA_x + 28 + col_w_inner, hb_y + 58], radius=10, fill=(0, 81, 255))
-    draw.text((colA_x + 42, hb_y + 12), "PRIMARY ELECTRIC BLUE", font=get_font(12, 'bold'), fill=(255, 255, 255))
-    draw.text((colA_x + 42, hb_y + 28), "Color / Brand / Primary  ·  #0051FF", font=get_num_font(9, 'medium'), fill=(191, 219, 254))
-    draw.text((colA_x + 42, hb_y + 42), "제조 공정의 정밀함과 실시간 제어를 상징하는 코어 블루", font=get_font(8, 'regular'), fill=(224, 242, 254))
+    draw.rounded_rectangle([colA_x + 28, hb_y, colA_x + 28 + col_w_inner, hb_y + 58], radius=10, fill=(59, 130, 246))
+    draw.text((colA_x + 42, hb_y + 12), "PRIMARY BRAND BLUE (tokens.colors.primary.500)", font=get_font(11.5, 'bold'), fill=(255, 255, 255))
+    draw.text((colA_x + 42, hb_y + 28), "Main Primary: #3B82F6  ·  Hover/Dark: #2563EB / #1D4ED8", font=get_num_font(9, 'medium'), fill=(219, 234, 254))
+    draw.text((colA_x + 42, hb_y + 42), "실제 웹 앱 globals.css & Tailwind 테마 전역에 적용된 브랜드 블루", font=get_font(8, 'regular'), fill=(239, 246, 255))
     draw_pill_badge(draw, cx=colA_x + 28 + col_w_inner - 48, cy=hb_y + 29, text="8.4:1 AAA", font=get_font(8.5, 'bold'), theme='green', has_dot=False, pad_x=7, height=20)
     
-    # 5 Semantic Swatches
+    # 5 Semantic Swatches from tokens.ts
     sub_swatches = [
-        ("Secondary", "#3B82F6", (59, 130, 246), "보조 액션"),
-        ("Operation", "#10B981", (16, 185, 129), "설비 정상 가동"),
-        ("Standby", "#F59E0B", (245, 158, 11), "공정 대기·주의"),
-        ("Alarm Stop", "#EF4444", (239, 68, 68), "비상 정지·불량"),
-        ("Obsidian", "#0F172A", (15, 23, 42), "다크모드 서피스"),
+        ("Success", "#10B981", (16, 185, 129), "설비 가동·승인"),
+        ("Warning", "#F59E0B", (245, 158, 11), "대기·안전재고"),
+        ("Error", "#EF4444", (239, 68, 68), "비상정지·불량"),
+        ("Info/MPO", "#0EA5E9", (14, 165, 233), "공정정보·알림"),
+        ("Dark Gray", "#0F172A", (15, 23, 42), "다크모드 900"),
     ]
     sw_w = (col_w_inner - 32) // 5
     sw_y = hb_y + 66
@@ -1505,14 +1512,14 @@ def make_slide_07():
         draw.text((sx + 5, sw_y + 35), s_hex, font=get_num_font(7.2, 'bold'), fill=(71, 85, 105))
         draw.text((sx + 5, sw_y + 46), s_usage, font=get_font(6.8, 'medium'), fill=(100, 116, 139))
         
-    # Brand Gradients
+    # Brand Gradients & Chart Palette
     gr_y = sw_y + 68
-    draw.text((colA_x + 28, gr_y), "시그니처 테넌트 그라디언트 (Brand Gradients):", font=get_font(9, 'bold'), fill=(71, 85, 105))
+    draw.text((colA_x + 28, gr_y), "시맨틱 차트 팔레트 (Recharts / globals.css):", font=get_font(9, 'bold'), fill=(71, 85, 105))
     gradients_data = [
-        ("Primary Ocean", (0, 81, 255), (0, 210, 255)),
-        ("Obsidian Surface", (15, 23, 42), (30, 41, 59)),
-        ("SPC Control Band", (16, 185, 129), (5, 150, 105)),
-        ("Warning Flush", (245, 158, 11), (239, 68, 68)),
+        ("Chart 1 (Blue)", (59, 130, 246), (37, 99, 235)),
+        ("Chart 2 (Success)", (16, 185, 129), (5, 150, 105)),
+        ("Chart 3 (Warning)", (245, 158, 11), (217, 119, 6)),
+        ("Chart 4 (Danger)", (239, 68, 68), (220, 38, 38)),
     ]
     gr_w = (col_w_inner - 24) // 4
     for idx, (g_name, g_c1, g_c2) in enumerate(gradients_data):
@@ -1526,87 +1533,86 @@ def make_slide_07():
         draw.rounded_rectangle([gx, gr_y + 14, gx + gr_w, gr_y + 30], radius=4, outline=(203, 213, 225), width=1)
         draw.text((gx + gr_w//2, gr_y + 36), g_name, font=get_font(7, 'bold'), fill=(71, 85, 105), anchor='mm')
         
-    # Elevation Tokens Block
+    # Elevation & Shadow Tokens from tokens.ts
     el_y = gr_y + 48
-    draw.text((colA_x + 28, el_y), "엘레베이션 & 뎁스 토큰 (Elevation Hierarchy):", font=get_font(9, 'bold'), fill=(71, 85, 105))
+    draw.text((colA_x + 28, el_y), "섀도우 토큰 아키텍처 (tokens.shadows):", font=get_font(9, 'bold'), fill=(71, 85, 105))
     elevations = [
-        ("Elevation 1 (2dp)", "Y:2 Blur:4", "테이블·카드 서피스"),
-        ("Elevation 2 (8dp)", "Y:8 Blur:16", "드롭다운·필터 팝오버"),
-        ("Elevation 3 (16dp)", "Y:16 Blur:24", "작업지시 모달·드로어"),
+        ("Shadow Sm", "0 1px 2px rgba(0,0,0,0.05)", "헤더·인풋·테이블 헤더"),
+        ("Shadow Base", "0 1px 3px rgba(0,0,0,0.10)", "대시보드 위젯·메트릭 카드"),
+        ("Shadow Lg", "0 10px 15px rgba(0,0,0,0.1)", "작업지시 모달·드로어 팝업"),
     ]
     el_w = (col_w_inner - 16) // 3
     for idx, (el_title, el_spec, el_use) in enumerate(elevations):
         ex = colA_x + 28 + idx * (el_w + 8)
         ey = el_y + 14
         draw.rounded_rectangle([ex, ey, ex + el_w, ey + 42], radius=6, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
-        draw.text((ex + 8, ey + 6), el_title, font=get_font(7.5, 'bold'), fill=(0, 81, 255))
-        draw.text((ex + 8, ey + 18), el_spec, font=get_num_font(7.2, 'medium'), fill=(100, 116, 139))
+        draw.text((ex + 8, ey + 6), el_title, font=get_font(7.5, 'bold'), fill=(37, 99, 235))
+        draw.text((ex + 8, ey + 18), el_spec, font=get_num_font(7.0, 'medium'), fill=(100, 116, 139))
         draw.text((ex + 8, ey + 29), el_use, font=get_font(7, 'regular'), fill=(71, 85, 105))
         
-    # Right Half: Typography & Radius Matrix
+    # Right Half: Typography & Radius Matrix from tokens.ts
     ty_x = colA_x + 28 + col_w_inner + 20
     ty_w = col_w_inner
     
     t_rows = [
-        ("Display 28", "Bold", "OEE 88.5% (가동률 정상)", True),
-        ("Headline 20", "Bold", "실시간 설비 모니터링 현황", False),
-        ("Title 16", "SemiBold", "작업 지시서 #WO-202611-042", False),
-        ("Body 14", "Regular", "라인 #3 사출 공정 수량 1,200EA", False),
-        ("Caption 11", "Medium", "OPC-UA 실시간 연동 (지연 0.04s)", False),
+        ("2xl (24px)", "Bold (700)", "당일 출하 45,800,000원", True),
+        ("xl (20px)", "Bold (700)", "대표이사 실시간 통합 관제", False),
+        ("base (16px)", "Medium (500)", "작업 지시서 #WO-202611-042", False),
+        ("sm (14px)", "Normal (400)", "라인 #3 사출 공정 수량 1,200EA", False),
+        ("xs (12px)", "Medium (500)", "OPC-UA 실시간 연동 (0.04s)", False),
     ]
     ty_start = r2_y + 64
     for i, (t_role, t_weight, t_sample, is_mono) in enumerate(t_rows):
         ry = ty_start + i * 25
         draw.rounded_rectangle([ty_x, ry, ty_x + ty_w, ry + 21], radius=5, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
-        draw.text((ty_x + 8, ry + 4), t_role, font=get_font(8.5, 'bold'), fill=(0, 81, 255))
+        draw.text((ty_x + 8, ry + 4), t_role, font=get_font(8.5, 'bold'), fill=(37, 99, 235))
         draw.text((ty_x + 85, ry + 4), t_weight, font=get_font(8, 'medium'), fill=(100, 116, 139))
-        draw.text((ty_x + 138, ry + 4), t_sample, font=get_font(8, 'bold' if is_mono else 'regular'), fill=(15, 23, 42))
+        draw.text((ty_x + 148, ry + 4), t_sample, font=get_font(8, 'bold' if is_mono else 'regular'), fill=(15, 23, 42))
         
-    # Radius & Spacing Tokens
+    # Radius & Spacing Tokens from tokens.ts
     sp_box_y = ty_start + len(t_rows) * 25 + 6
     sp_box_h = (r2_y + r2_h - 26) - sp_box_y
     draw.rounded_rectangle([ty_x, sp_box_y, ty_x + ty_w, sp_box_y + sp_box_h], radius=10, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
-    draw.text((ty_x + 14, sp_box_y + 10), "시스템 코너 라운딩 & 8pt 그리드 스페이싱 토큰", font=get_font(9, 'bold'), fill=(15, 23, 42))
+    draw.text((ty_x + 14, sp_box_y + 10), "시스템 코너 라운딩 & 4/8pt 스페이싱 토큰 (tokens.borderRadius)", font=get_font(9, 'bold'), fill=(15, 23, 42))
     
     rad_tokens = [
-        ("Radius 4 (Sm)", "인풋 필드 · 뱃지 태그"),
-        ("Radius 8 (Md)", "버튼 · 데이터 셀렉트"),
-        ("Radius 12 (Lg)", "모듈 카드 · 패널 박스"),
-        ("Radius 16 (Xl)", "컨테이너 · 모달 팝업"),
+        ("sm: 4px (0.25rem)", "배지 태그, 툴팁, 소형 인풋 체크박스"),
+        ("base: 8px (0.5rem)", "버튼(Button), 검색창(Input), 테이블 셀"),
+        ("lg: 12px (0.75rem)", "카드(Card), 위젯 컨테이너, 다이얼로그 패널"),
+        ("xl: 16px (1.0rem)", "모달 팝업, 드로어, 3D 뷰포트 시뮬레이터"),
     ]
     for idx, (rt_name, rt_desc) in enumerate(rad_tokens):
         r_row_y = sp_box_y + 32 + idx * 26
-        draw.rounded_rectangle([ty_x + 14, r_row_y, ty_x + 100, r_row_y + 20], radius=4, fill=(255, 255, 255), outline=(203, 213, 225), width=1)
-        draw.text((ty_x + 57, r_row_y + 10), rt_name, font=get_font(7.5, 'bold'), fill=(0, 81, 255), anchor='mm')
-        draw.text((ty_x + 110, r_row_y + 4), f"• {rt_desc}", font=get_font(7.5, 'regular'), fill=(71, 85, 105))
+        draw.rounded_rectangle([ty_x + 14, r_row_y, ty_x + 115, r_row_y + 20], radius=4, fill=(255, 255, 255), outline=(203, 213, 225), width=1)
+        draw.text((ty_x + 64, r_row_y + 10), rt_name, font=get_font(7.5, 'bold'), fill=(37, 99, 235), anchor='mm')
+        draw.text((ty_x + 125, r_row_y + 4), f"{rt_desc}", font=get_font(7.5, 'regular'), fill=(71, 85, 105))
         
-    draw.text((colA_x + 28, r2_y + r2_h - 17), "• WCAG 2.1 AAA 8.4:1 고대비율 준수 · CSS/Flutter 디자인 토큰 100% 동기화", font=get_font(8.5, 'medium'), fill=(100, 116, 139))
+    draw.text((colA_x + 28, r2_y + r2_h - 17), "WCAG 2.1 AAA 8.4:1 고대비율 준수 · React/Tailwind/tokens.ts 디자인 토큰 100% 일치", font=get_font(8.5, 'medium'), fill=(100, 116, 139))
     
     # -------------------------------------------------------------
-    # CARD 05 (Lower Right): ATOMIC UI COMPONENT KIT
+    # CARD 05 (Lower Right): ATOMIC UI COMPONENT KIT (Real React Components)
     # -------------------------------------------------------------
     draw.rounded_rectangle([colB_x, r2_y, colB_x + colB_w, r2_y + r2_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
-    b5_box = draw_pill_badge(draw, left_x=colB_x + 28, cy=r2_y + 32, text="FOUNDATION 05", font=get_font(9.5, 'bold'), theme='blue', has_dot=True, pad_x=8, height=22)
-    draw.text((b5_box[2] + 14, r2_y + 32), "프로덕션 아토믹 UI 컴포넌트 킷 (150+ 에셋)", font=get_font(14, 'bold'), fill=(15, 23, 42), anchor='lm')
+    b5_box = draw_pill_badge(draw, left_x=colB_x + 28, cy=r2_y + 32, text="FOUNDATION 05", font=get_font(9.5, 'bold'), theme='blue', has_dot=False, pad_x=8, height=22)
+    draw.text((b5_box[2] + 14, r2_y + 32), "프로덕션 아토믹 UI 컴포넌트 킷 (src/components/ui/ & widgets/)", font=get_font(13.5, 'bold'), fill=(15, 23, 42), anchor='lm')
     draw.line([(colB_x + 28, r2_y + 54), (colB_x + colB_w - 28, r2_y + 54)], fill=(241, 245, 249), width=1)
     
     k1_y = r2_y + 68
     k1_w = (colB_w - 56 - 20) // 2
     
-    # Pod 1: Form Input with Icon & Validation
+    # Pod 1: Form Input with Icon & Validation (input.tsx)
     draw.rounded_rectangle([colB_x + 28, k1_y, colB_x + 28 + k1_w, k1_y + 80], radius=10, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
-    draw.text((colB_x + 40, k1_y + 10), "작업 지시 바코드 / 품목 검색 인풋 (Input.tsx)", font=get_font(9.5, 'bold'), fill=(0, 81, 255))
+    draw.text((colB_x + 40, k1_y + 10), "작업 지시 바코드 / 품목 검색 인풋 (Input.tsx)", font=get_font(9.5, 'bold'), fill=(37, 99, 235))
     draw.text((colB_x + 40, k1_y + 30), "LOT-2026-X889", font=get_num_font(14, 'bold'), fill=(15, 23, 42))
     draw_pill_badge(draw, cx=colB_x + 28 + k1_w - 45, cy=k1_y + 26, text="BARCODE", font=get_font(8.5, 'bold'), theme='cyan', pad_x=6, height=18)
     
     draw.rounded_rectangle([colB_x + 40, k1_y + 50, colB_x + 28 + k1_w - 12, k1_y + 72], radius=5, fill=(236, 253, 245), outline=(167, 243, 208), width=1)
-    draw.text((colB_x + 58, k1_y + 61), chr(0xe86c), font=get_material_icon_font(14), fill=(16, 185, 129), anchor='mm')
-    draw.text((colB_x + 28 + k1_w // 2, k1_y + 61), "BOM 구조 일치 · 표준 자재 출고 승인", font=get_font(9, 'bold'), fill=(5, 150, 105), anchor='mm')
+    draw.text((colB_x + 28 + k1_w // 2, k1_y + 61), "✓ BOM 구조 일치 · 표준 자재 출고 승인", font=get_font(9, 'bold'), fill=(5, 150, 105), anchor='mm')
     
-    # Pod 2: KPI Live Metric Pod
+    # Pod 2: KPI Live Metric Pod (DailySummaryWidget / MetricCard)
     k2_x = colB_x + 28 + k1_w + 20
     draw.rounded_rectangle([k2_x, k1_y, k2_x + k1_w, k1_y + 80], radius=10, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
-    draw.text((k2_x + 14, k1_y + 10), "실시간 생산 OEE 종합 효율 (MetricCard.tsx)", font=get_font(9.5, 'bold'), fill=(0, 81, 255))
+    draw.text((k2_x + 14, k1_y + 10), "실시간 생산 OEE 종합 효율 (DailySummaryWidget.tsx)", font=get_font(9.5, 'bold'), fill=(37, 99, 235))
     draw.text((k2_x + 14, k1_y + 32), "94.8% (목표 92%)", font=get_font(13.5, 'bold'), fill=(15, 23, 42))
     draw.text((k2_x + 14, k1_y + 54), "시간가동률 98.2% · 양품률 99.4%", font=get_font(9, 'bold'), fill=(16, 185, 129))
     
@@ -1617,64 +1623,58 @@ def make_slide_07():
     
     # Preset Chips Row
     ch_y = k1_y + 92
-    draw.text((colB_x + 28, ch_y + 6), "원클릭 공정 전환 프리셋 칩:", font=get_font(10, 'bold'), fill=(100, 116, 139))
+    draw.text((colB_x + 28, ch_y + 6), "공정 상태 필터 탭 (tabs.tsx / toggle-group.tsx):", font=get_font(10, 'bold'), fill=(100, 116, 139))
     presets = [
-        ("SMT 실장", (0, 81, 255), (239, 246, 255)),
-        ("조립 #1", (0, 81, 255), (239, 246, 255)),
+        ("SMT 실장", (37, 99, 235), (239, 246, 255)),
+        ("조립 #1", (37, 99, 235), (239, 246, 255)),
         ("검사 대기", (180, 83, 9), (254, 243, 199)),
         ("설비 점검", (220, 38, 38), (254, 242, 242)),
         ("출하 검사", (5, 150, 105), (236, 253, 245)),
         ("ERP 연동", (109, 40, 217), (245, 243, 255)),
-        ("일괄 승인", (0, 81, 255), (239, 246, 255)),
+        ("일괄 승인", (37, 99, 235), (239, 246, 255)),
     ]
-    cur_ch_x = colB_x + 195
+    cur_ch_x = colB_x + 270
     for p_txt, p_col, p_bg in presets:
-        draw.rounded_rectangle([cur_ch_x, ch_y, cur_ch_x + 82, ch_y + 26], radius=13, fill=p_bg, outline=p_col, width=1)
-        draw.text((cur_ch_x + 41, ch_y + 13), p_txt, font=get_font(9.5, 'bold'), fill=p_col, anchor='mm')
-        cur_ch_x += 89
+        draw.rounded_rectangle([cur_ch_x, ch_y, cur_ch_x + 76, ch_y + 26], radius=13, fill=p_bg, outline=p_col, width=1)
+        draw.text((cur_ch_x + 38, ch_y + 13), p_txt, font=get_font(9.5, 'bold'), fill=p_col, anchor='mm')
+        cur_ch_x += 83
         
-    # CTAs Button Row
+    # CTAs Button Row (button.tsx Variants: default, outline, secondary, destructive)
     cta_y = ch_y + 38
-    mat_font_cta = get_material_icon_font(15)
     
-    # 1. Primary Solid Button
-    draw.rounded_rectangle([colB_x + 28, cta_y, colB_x + 230, cta_y + 40], radius=10, fill=(0, 81, 255))
-    draw.text((colB_x + 50, cta_y + 20), chr(0xe037), font=mat_font_cta, fill=(255, 255, 255), anchor='mm')
-    draw.text((colB_x + 138, cta_y + 20), "공정 시작 (Primary)", font=get_font(11, 'bold'), fill=(255, 255, 255), anchor='mm')
+    # 1. Primary Default Button (button.tsx variant: "default")
+    draw.rounded_rectangle([colB_x + 28, cta_y, colB_x + 230, cta_y + 40], radius=8, fill=(59, 130, 246))
+    draw.text((colB_x + 129, cta_y + 20), "공정 시작 (Button default)", font=get_font(11, 'bold'), fill=(255, 255, 255), anchor='mm')
     
-    # 2. Secondary Outline Button
-    draw.rounded_rectangle([colB_x + 242, cta_y, colB_x + 432, cta_y + 40], radius=10, fill=(240, 246, 255), outline=(0, 81, 255), width=1)
-    draw.text((colB_x + 264, cta_y + 20), chr(0xe5d5), font=mat_font_cta, fill=(0, 81, 255), anchor='mm')
-    draw.text((colB_x + 347, cta_y + 20), "일정 재조정 (Outline)", font=get_font(11, 'bold'), fill=(0, 81, 255), anchor='mm')
+    # 2. Outline Button (button.tsx variant: "outline")
+    draw.rounded_rectangle([colB_x + 242, cta_y, colB_x + 432, cta_y + 40], radius=8, fill=(255, 255, 255), outline=(59, 130, 246), width=1)
+    draw.text((colB_x + 337, cta_y + 20), "일정 재조정 (Button outline)", font=get_font(11, 'bold'), fill=(59, 130, 246), anchor='mm')
     
-    # 3. Ghost / Action Button
-    draw.rounded_rectangle([colB_x + 444, cta_y, colB_x + 614, cta_y + 40], radius=10, fill=(248, 250, 252), outline=(203, 213, 225), width=1)
-    draw.text((colB_x + 466, cta_y + 20), chr(0xf090), font=mat_font_cta, fill=(51, 65, 85), anchor='mm')
-    draw.text((colB_x + 538, cta_y + 20), "엑셀 내보내기", font=get_font(10.5, 'bold'), fill=(51, 65, 85), anchor='mm')
+    # 3. Secondary Button (button.tsx variant: "secondary")
+    draw.rounded_rectangle([colB_x + 444, cta_y, colB_x + 614, cta_y + 40], radius=8, fill=(241, 245, 249), outline=(203, 213, 225), width=1)
+    draw.text((colB_x + 529, cta_y + 20), "엑셀 내보내기 (secondary)", font=get_font(10.5, 'bold'), fill=(30, 41, 59), anchor='mm')
     
-    # 4. Danger Stop Button
-    draw.rounded_rectangle([colB_x + 626, cta_y, colB_x + colB_w - 28, cta_y + 40], radius=10, fill=(254, 242, 242), outline=(254, 202, 202), width=1)
-    draw.text((colB_x + 648, cta_y + 20), chr(0xe047), font=mat_font_cta, fill=(220, 38, 38), anchor='mm')
-    draw.text((colB_x + 664 + (colB_w - 28 - 664)//2, cta_y + 12), "비상 정지 (Danger)", font=get_font(8.5, 'bold'), fill=(185, 28, 28), anchor='mm')
-    draw.text((colB_x + 664 + (colB_w - 28 - 664)//2, cta_y + 26), "라인 즉시 셧다운 승인", font=get_font(8.5, 'bold'), fill=(220, 38, 38), anchor='mm')
+    # 4. Destructive Stop Button (button.tsx variant: "destructive")
+    draw.rounded_rectangle([colB_x + 626, cta_y, colB_x + colB_w - 28, cta_y + 40], radius=8, fill=(239, 68, 68))
+    draw.text((colB_x + 626 + (colB_w - 28 - 626)//2, cta_y + 20), "비상 정지 (destructive)", font=get_font(10.5, 'bold'), fill=(255, 255, 255), anchor='mm')
     
-    # Status Badges Row
+    # Status Badges Row (badge.tsx Variants: default, secondary, destructive, outline)
     bdg_y = cta_y + 50
-    draw.text((colB_x + 28, bdg_y + 6), "상태 뱃지 시스템:", font=get_font(10, 'bold'), fill=(100, 116, 139))
+    draw.text((colB_x + 28, bdg_y + 6), "상태 뱃지 시스템 (badge.tsx):", font=get_font(10, 'bold'), fill=(100, 116, 139))
     badges = [
-        ("설비 정상 가동", "green", True),
-        ("공정 대기중", "amber", True),
-        ("비상 알람 정지", "red", True),
-        ("품질 검사 진행", "blue", True),
-        ("ERP 실시간 연동", "slate", True),
+        ("설비 정상 가동", "green", False),
+        ("공정 대기중", "amber", False),
+        ("비상 알람 정지", "red", False),
+        ("품질 검사 진행", "blue", False),
+        ("ERP 실시간 연동", "slate", False),
         ("Multi-Tenant Ready", "purple", False),
     ]
-    cur_bx = colB_x + 145
+    cur_bx = colB_x + 200
     for b_txt, b_thm, b_dt in badges:
         _, _, b_end, _ = draw_pill_badge(draw, left_x=cur_bx, cy=bdg_y + 14, text=b_txt, font=get_font(9.5, 'bold'), theme=b_thm, has_dot=b_dt, dark_mode=False, pad_x=8, height=24)
         cur_bx = b_end + 8
         
-    draw.text((colB_x + 28, r2_y + r2_h - 18), "• 파운데이션 토큰 100% 바인딩: R4/R8/R12/R16 라운딩, 4/8pt 스페이싱, 시맨틱 컬러가 React & Flutter 트리에 실시간 동기화", font=get_font(9, 'regular'), fill=(100, 116, 139))
+    draw.text((colB_x + 28, r2_y + r2_h - 18), "파운데이션 토큰 100% 바인딩: tokens.ts 라운딩(sm/base/lg/xl), Lucide 아이콘, shadcn/ui 컴포넌트 킷 실기기 동기화", font=get_font(9, 'regular'), fill=(100, 116, 139))
     
     draw_slide_footer(draw, 7)
     base.save(f'{OUT_DIR}/slide_07.png')
