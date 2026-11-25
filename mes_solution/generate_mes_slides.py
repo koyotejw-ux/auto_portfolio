@@ -761,19 +761,28 @@ def make_slide_03():
         draw.text((lb_x + 84, r_by + 27), b_title, font=get_font(13.5, 'bold'), fill=(15, 23, 42), anchor='lm')
         draw.text((lb_x + 84, r_by + 49), b_desc, font=get_font(11, 'regular'), fill=(71, 85, 105), anchor='lm')
         
-        r_by += 80
+        r_by += 78
         
-    # Bottom Benefit Matrix Pods
-    draw.line([(lb_x + 24, r_by + 4), (lb_x + bot_w - 24, r_by + 4)], fill=(241, 245, 249), width=1)
-    draw.text((lb_x + 24, r_by + 24), "권한 통제 도입 전 vs. 도입 후 운영 성과 비교", font=get_font(12.5, 'bold'), fill=(15, 23, 42))
+    # Bottom Benefit Matrix Pods (Balanced vertical margin & comfortable padding)
+    div_y = r_by + 8
+    draw.line([(lb_x + 24, div_y), (lb_x + bot_w - 24, div_y)], fill=(241, 245, 249), width=1)
+    draw.text((lb_x + 24, div_y + 18), "권한 통제 도입 전 vs. 도입 후 운영 성과 비교", font=get_font(13, 'bold'), fill=(15, 23, 42))
     
-    draw.rounded_rectangle([lb_x + 24, r_by + 42, lb_x + bot_w // 2 - 10, r_by + 104], radius=8, fill=(254, 242, 242), outline=(254, 202, 202), width=1)
-    draw.text((lb_x + 36, r_by + 58), "AS-IS (기존 구축형/일반 MES)", font=get_font(11, 'bold'), fill=(185, 28, 28))
-    draw.text((lb_x + 36, r_by + 80), "· 모든 직원에게 50개 메뉴 전체 노출로 메뉴 탐색에 5분 소모\n· 작업자의 회계/단가 화면 접근으로 보안 유출 리스크 상존", font=get_font(10.5, 'regular'), fill=(127, 29, 29))
+    pod_y = div_y + 40
+    pod_h = 98
+    pod_w = (bot_w - 48 - 18) // 2
     
-    draw.rounded_rectangle([lb_x + bot_w // 2 + 10, r_by + 42, lb_x + bot_w - 24, r_by + 104], radius=8, fill=(236, 253, 245), outline=(167, 243, 208), width=1)
-    draw.text((lb_x + bot_w // 2 + 22, r_by + 58), "TO-BE (CodeBridgeX RBAC 자동 분기)", font=get_font(11, 'bold'), fill=(4, 120, 87))
-    draw.text((lb_x + bot_w // 2 + 22, r_by + 80), "· 역할별 직무 맞춤 뷰 즉시 로딩으로 업무 진입 시간 99% 단축\n· 대표의 민감 인사/재무 데이터 완벽 보호 및 책임 추적성 확립", font=get_font(10.5, 'regular'), fill=(6, 95, 70))
+    # Left: AS-IS Pod
+    draw.rounded_rectangle([lb_x + 24, pod_y, lb_x + 24 + pod_w, pod_y + pod_h], radius=10, fill=(254, 242, 242), outline=(254, 202, 202), width=1)
+    draw.text((lb_x + 40, pod_y + 16), "AS-IS (기존 구축형/일반 MES)", font=get_font(11.5, 'bold'), fill=(185, 28, 28))
+    draw.text((lb_x + 40, pod_y + 42), "· 모든 직원에게 50개 메뉴 전체 노출로 탐색 지연", font=get_font(11, 'regular'), fill=(127, 29, 29))
+    draw.text((lb_x + 40, pod_y + 64), "· 작업자의 회계/단가 화면 접근으로 보안 유출 리스크 상존", font=get_font(11, 'regular'), fill=(127, 29, 29))
+    
+    # Right: TO-BE Pod
+    draw.rounded_rectangle([lb_x + 24 + pod_w + 18, pod_y, lb_x + bot_w - 24, pod_y + pod_h], radius=10, fill=(236, 253, 245), outline=(167, 243, 208), width=1)
+    draw.text((lb_x + 24 + pod_w + 34, pod_y + 16), "TO-BE (CodeBridgeX RBAC 자동 분기)", font=get_font(11.5, 'bold'), fill=(4, 120, 87))
+    draw.text((lb_x + 24 + pod_w + 34, pod_y + 42), "· 역할별 직무 맞춤 뷰 즉시 로딩으로 업무 진입 99% 단축", font=get_font(11, 'regular'), fill=(6, 95, 70))
+    draw.text((lb_x + 24 + pod_w + 34, pod_y + 64), "· 대표의 민감 인사/재무 데이터 완벽 보호 및 책임 추적성 확립", font=get_font(11, 'regular'), fill=(6, 95, 70))
     
     # 2. Right Card: CodeBridgeX Multi-Tenant SaaS Business Model
     rb_x = lb_x + bot_w + bot_gap
@@ -799,20 +808,24 @@ def make_slide_03():
         draw.text((rb_x + 84, s_by + 27), s_title, font=get_font(13.5, 'bold'), fill=(15, 23, 42), anchor='lm')
         draw.text((rb_x + 84, s_by + 49), s_desc, font=get_font(11, 'regular'), fill=(71, 85, 105), anchor='lm')
         
-        s_by += 80
+        s_by += 78
         
     # SaaS 3-Tier Synergy Architecture Pod
-    draw.line([(rb_x + 24, s_by + 4), (rb_x + bot_w - 24, s_by + 4)], fill=(241, 245, 249), width=1)
-    draw.text((rb_x + 24, s_by + 24), "코드브릿지 ↔ 제조 고객사 상생 생태계 구조", font=get_font(12.5, 'bold'), fill=(15, 23, 42))
+    s_div_y = s_by + 8
+    draw.line([(rb_x + 24, s_div_y), (rb_x + bot_w - 24, s_div_y)], fill=(241, 245, 249), width=1)
+    draw.text((rb_x + 24, s_div_y + 18), "코드브릿지 ↔ 제조 고객사 상생 생태계 구조", font=get_font(13, 'bold'), fill=(15, 23, 42))
     
-    box_w = (bot_w - 48 - 16) // 2
-    draw.rounded_rectangle([rb_x + 24, s_by + 42, rb_x + 24 + box_w, s_by + 104], radius=8, fill=(239, 246, 255), outline=(191, 219, 254), width=1)
-    draw.text((rb_x + 36, s_by + 58), "코드브릿지 (플랫폼 운영사)", font=get_font(11.5, 'bold'), fill=(0, 81, 255))
-    draw.text((rb_x + 36, s_by + 80), "· 테넌트 생성, 라이선스 관리, 인프라 보안 패치\n· 전 고객사 데이터 분석 기반 제조 AI 벤치마크 제공", font=get_font(10.5, 'regular'), fill=(30, 58, 138))
+    # Left: Platform Operator Pod
+    draw.rounded_rectangle([rb_x + 24, pod_y, rb_x + 24 + pod_w, pod_y + pod_h], radius=10, fill=(239, 246, 255), outline=(191, 219, 254), width=1)
+    draw.text((rb_x + 40, pod_y + 16), "코드브릿지 (플랫폼 운영사)", font=get_font(11.5, 'bold'), fill=(0, 81, 255))
+    draw.text((rb_x + 40, pod_y + 42), "· 테넌트 생성, 라이선스 관리, 인프라 보안 패치", font=get_font(11, 'regular'), fill=(30, 58, 138))
+    draw.text((rb_x + 40, pod_y + 64), "· 전 고객사 데이터 분석 기반 제조 AI 벤치마크 제공", font=get_font(11, 'regular'), fill=(30, 58, 138))
     
-    draw.rounded_rectangle([rb_x + 24 + box_w + 16, s_by + 42, rb_x + bot_w - 24, s_by + 104], radius=8, fill=(245, 243, 255), outline=(221, 214, 254), width=1)
-    draw.text((rb_x + 24 + box_w + 28, s_by + 58), "제조 고객사 (구독 파트너)", font=get_font(11.5, 'bold'), fill=(124, 58, 237))
-    draw.text((rb_x + 24 + box_w + 28, s_by + 80), "· 대표는 언제 어디서나 전사 인사/공정 실시간 의사결정\n· 각 담당자는 권한에 맞춘 전용 화면에서 최고 효율 달성", font=get_font(10.5, 'regular'), fill=(76, 29, 149))
+    # Right: Customer Partner Pod
+    draw.rounded_rectangle([rb_x + 24 + pod_w + 18, pod_y, rb_x + bot_w - 24, pod_y + pod_h], radius=10, fill=(245, 243, 255), outline=(221, 214, 254), width=1)
+    draw.text((rb_x + 24 + pod_w + 34, pod_y + 16), "제조 고객사 (구독 파트너)", font=get_font(11.5, 'bold'), fill=(124, 58, 237))
+    draw.text((rb_x + 24 + pod_w + 34, pod_y + 42), "· 대표는 언제 어디서나 전사 인사/공정 실시간 의사결정", font=get_font(11, 'regular'), fill=(76, 29, 149))
+    draw.text((rb_x + 24 + pod_w + 34, pod_y + 64), "· 각 담당자는 권한에 맞춘 전용 화면에서 최고 효율 달성", font=get_font(11, 'regular'), fill=(76, 29, 149))
 
     draw_slide_footer(draw, 3)
     base.save(os.path.join(OUT_DIR, 'slide_03.png'))
