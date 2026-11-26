@@ -16,10 +16,16 @@ from deck_common import (
 def make_slide_09():
     img = Image.new('RGB', (W, H), BG_LIGHT)
     draw = ImageDraw.Draw(img)
-    draw_slide_header(draw, 9, "CORE JOURNEY 02 · LOAN & AUTOMATION", "보험계약대출 & 자동이체 관리", " 비대면 원스톱 솔루션", "해약환급금 범위 내 즉시 대출 신청, 원리금 상환 및 자동송금 등록 통합 프로세스", right_badge=("SELF-SERVICE BANKING", "blue"))
+    draw_slide_header(
+        draw, 9, 
+        "CORE JOURNEY 02 · LOAN & AUTOMATION", 
+        "보험계약대출 & 자동이체 관리 ", 
+        "비대면 원스톱 솔루션 & 인증 키패드", 
+        "해약환급금 범위 내 즉시 대출 신청, 원리금 상환 및 자동송금 등록 통합 프로세스", 
+        right_badge=("SELF-SERVICE BANKING", "blue")
+    )
     
-    # 2 Feature Columns: Left = Screen Showcase, Right = Architecture & Security Logic
-    # Left Mockup Box (W=800)
+    # Left Mockup Box (W=820)
     lx = 100
     ly = 220
     lw = 820
@@ -28,14 +34,14 @@ def make_slide_09():
     draw_pill_badge(draw, left_x=lx + 25, cy=ly + 35, text="LOAN & TRANSFER INTERFACES", font=get_font(11, 'bold'), theme='blue', pad_x=12, height=24)
     draw.text((lx + 25, ly + 65), "간편 비밀번호 인증 기반 대출 및 계좌 변경", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
     
-    # 2 Phones side by side
-    draw_phone_mockup(img, os.path.join(CORE_DIR, "screen_login_pin.png"), cx=lx + 210, cy=ly + 410, phone_w=250, phone_h=510, bezel=8, radius=30)
-    draw_phone_mockup(img, os.path.join(CORE_DIR, "screen_sign_select.png"), cx=lx + 600, cy=ly + 410, phone_w=250, phone_h=510, bezel=8, radius=30)
+    # 2 Phones side by side with increased height so all keypad / CTA is fully visible
+    draw_phone_mockup(img, os.path.join(CORE_DIR, "screen_login_pin.png"), cx=lx + 210, cy=ly + 395, phone_w=250, phone_h=535, bezel=8, radius=30)
+    draw_phone_mockup(img, os.path.join(CORE_DIR, "screen_sign_select.png"), cx=lx + 600, cy=ly + 395, phone_w=250, phone_h=535, bezel=8, radius=30)
     
-    draw.text((lx + 210, ly + 685), "48px 대형 PIN 키패드", font=get_font(12.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mt')
-    draw.text((lx + 600, ly + 685), "복합 전자서명 수단 선택", font=get_font(12.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mt')
+    draw.text((lx + 210, ly + 685), "48px 대형 PIN 키패드 (오터치 0건)", font=get_font(12.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mt')
+    draw.text((lx + 600, ly + 685), "복합 전자서명 수단 선택 & 하단 확인 CTA", font=get_font(12.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mt')
     
-    # Right Architecture Box (W=800)
+    # Right Architecture Box (W=880)
     rx = 940
     rw = 880
     draw.rounded_rectangle([rx, ly, rx + rw, ly + lh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
@@ -88,9 +94,15 @@ def make_slide_09():
 def make_slide_10():
     img = Image.new('RGB', (W, H), BG_LIGHT)
     draw = ImageDraw.Draw(img)
-    draw_slide_header(draw, 10, "CORE JOURNEY 03 · CLAIMS & REVIVAL", "스마트 영수증 OCR 보험금 청구", " & 실효계약 즉시 부활", "사진 한 장으로 서류 접수 완료 및 실효된 보험을 간편하게 살리는 케어 프로세스", right_badge=("OCR AUTO-RECOGNITION", "green"))
+    draw_slide_header(
+        draw, 10, 
+        "CORE JOURNEY 03 · CLAIMS & REVIVAL", 
+        "스마트 영수증 OCR 보험금 청구 ", 
+        "& 실효계약 즉시 부활 프로세스", 
+        "사진 한 장으로 서류 접수 완료 및 하단 56dp 풀와이드 청구 접수 CTA 완벽 배치", 
+        right_badge=("OCR AUTO-RECOGNITION", "green")
+    )
     
-    # 2 Feature Columns: Left = Screen Showcase, Right = Process Steps
     # Left Mockup Box (W=820)
     lx = 100
     ly = 220
@@ -100,12 +112,12 @@ def make_slide_10():
     draw_pill_badge(draw, left_x=lx + 25, cy=ly + 35, text="SMART OCR CLAIMS & FORM INTERFACES", font=get_font(11, 'bold'), theme='green', pad_x=12, height=24)
     draw.text((lx + 25, ly + 65), "영수증 자동 스캔 & 청구 사유 간편 입력", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
     
-    # 2 Phones side by side
-    draw_phone_mockup(img, os.path.join(CORE_DIR, "screen_claim_receipt.png"), cx=lx + 210, cy=ly + 410, phone_w=250, phone_h=510, bezel=8, radius=30)
-    draw_phone_mockup(img, os.path.join(CORE_DIR, "screen_claim_form.png"), cx=lx + 600, cy=ly + 410, phone_w=250, phone_h=510, bezel=8, radius=30)
+    # 2 Phones side by side with full CTA preservation
+    draw_phone_mockup(img, os.path.join(CORE_DIR, "screen_claim_receipt.png"), cx=lx + 210, cy=ly + 395, phone_w=250, phone_h=535, bezel=8, radius=30)
+    draw_phone_mockup(img, os.path.join(CORE_DIR, "screen_claim_form.png"), cx=lx + 600, cy=ly + 395, phone_w=250, phone_h=535, bezel=8, radius=30)
     
-    draw.text((lx + 210, ly + 685), "AI 영수증 자동 스캔 & 보정", font=get_font(12.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mt')
-    draw.text((lx + 600, ly + 685), "수령 계좌 & 청구 사유 원터치", font=get_font(12.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mt')
+    draw.text((lx + 210, ly + 685), "AI 영수증 자동 스캔 & 촬영 CTA", font=get_font(12.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mt')
+    draw.text((lx + 600, ly + 685), "수령 계좌 선택 & 하단 청구 신청 CTA", font=get_font(12.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mt')
     
     # Right Box: OCR Process & Revival Care (W=880)
     rx = 940
@@ -160,7 +172,14 @@ def make_slide_10():
 def make_slide_11():
     img = Image.new('RGB', (W, H), BG_LIGHT)
     draw = ImageDraw.Draw(img)
-    draw_slide_header(draw, 11, "BUSINESS IMPACT & STAR RETROSPECTIVE", "검증된 DX 성과 지표와", " 시니어 프로덕트 디자인 회고", "데이터 수집 시간 단축, 과업 완수율 향상 등 정량적 성과와 문제 해결 중심 STAR 회고", right_badge=("QUALITATIVE & QUANTITATIVE", "red"))
+    draw_slide_header(
+        draw, 11, 
+        "BUSINESS IMPACT & STAR RETROSPECTIVE", 
+        "검증된 DX 성과 지표와 ", 
+        "시니어 프로덕트 디자인 회고", 
+        "데이터 수집 시간 단축, 과업 완수율 향상 등 정량적 성과와 문제 해결 중심 STAR 회고", 
+        right_badge=("QUALITATIVE & QUANTITATIVE", "red")
+    )
     
     # Top: 4 Metric Cards
     metrics = [
@@ -238,7 +257,6 @@ def make_slide_11():
         }
     ]
     
-    # 2x2 Grid inside STAR Box
     bw = 820
     bh = 220
     for idx, b in enumerate(star_boxes):
@@ -327,7 +345,6 @@ def make_slide_12():
         draw.text((cx + 60, sy), label, font=get_font(12.5, 'bold'), fill=(255, 90, 130))
         draw.text((cx + 180, sy), val, font=get_font(12.5, 'regular'), fill=(226, 232, 240))
         
-    # Interactive Hub Action Bar inside slide
     draw.rounded_rectangle([cx + 60, credit_y + 245, cx + cw - 60, credit_y + 285], radius=10, fill=(70, 15, 30), outline=(211, 17, 69), width=1)
     draw.text((960, credit_y + 265), "🔗 하단 도크의 [허브] 버튼을 누르면 전체 포트폴리오 컬렉션으로 즉시 이동합니다.", font=get_font(12, 'bold'), fill=(255, 180, 200), anchor='mm')
     

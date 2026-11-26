@@ -110,6 +110,10 @@ def draw_pill_badge(draw, cx=None, cy=0, text="", font=None, theme='red', dark_m
             bg_col = (16, 185, 129, 255)
             border_col = (16, 185, 129, 255)
             text_col = (255, 255, 255, 255)
+        elif theme == 'blue':
+            bg_col = (0, 81, 255, 255)
+            border_col = (0, 81, 255, 255)
+            text_col = (255, 255, 255, 255)
             
     bbox = draw.textbbox((0, 0), text, font=font)
     t_w = bbox[2] - bbox[0]
@@ -166,7 +170,10 @@ def draw_slide_footer(draw, slide_num, total_slides=12, dark_mode=False):
     draw.text((1820, 1018), page_str, font=get_num_font(11.5, 'black'), fill=page_col, anchor='rt')
 
 def draw_phone_mockup(base_img, screen_path, cx, cy, phone_w=280, phone_h=580, bezel=10, radius=38, dark_body=True):
-    """Draws an ultra-clean, realistic smartphone frame with a real screen capture."""
+    """
+    Draws an ultra-clean, realistic smartphone frame.
+    Ensures that CTA buttons and bottom navigation are completely preserved and never cropped!
+    """
     body_col = (20, 24, 33) if dark_body else (240, 243, 248)
     rim_col = (60, 70, 85) if dark_body else (203, 213, 225)
     inner_bezel_col = (10, 12, 16)
@@ -179,7 +186,7 @@ def draw_phone_mockup(base_img, screen_path, cx, cy, phone_w=280, phone_h=580, b
     # Shadow layer
     shadow = Image.new('RGBA', (phone_w + 60, phone_h + 60), (0, 0, 0, 0))
     sdraw = ImageDraw.Draw(shadow)
-    sdraw.rounded_rectangle([25, 25, phone_w + 35, phone_h + 35], radius=radius + 4, fill=(0, 0, 0, 90))
+    sdraw.rounded_rectangle([25, 25, phone_w + 35, phone_h + 35], radius=radius + 4, fill=(0, 0, 0, 95))
     shadow = shadow.filter(ImageFilter.GaussianBlur(16))
     base_img.paste(shadow, (x1 - 30, y1 - 20), shadow)
     
@@ -195,37 +202,53 @@ def draw_phone_mockup(base_img, screen_path, cx, cy, phone_w=280, phone_h=580, b
     sh = sy2 - sy1
     draw.rounded_rectangle([sx1, sy1, sx2, sy2], radius=radius - bezel // 2, fill=inner_bezel_col)
     
-    # Load and fit screen
+    # Load and fit screen - CTA BUTTON PRESERVATION LOGIC
     if screen_path and os.path.exists(screen_path):
         screen = Image.open(screen_path).convert('RGBA')
-        # Scale & crop to fit sw x sh
-        scale = max(sw / screen.width, sh / screen.height)
-        new_w = int(screen.width * scale)
-        new_h = int(screen.height * scale)
+        
+        # Scale to match screen width exactly (sw)
+        scale = sw / screen.width
+        new_w = sw
+        new_h = int(round(screen.height * scale))
         screen_scaled = screen.resize((new_w, new_h), Image.Resampling.LANCZOS)
-        # Center crop
-        crop_x = (new_w - sw) // 2
-        crop_y = (new_h - sh) // 2
-        screen_cropped = screen_scaled.crop((crop_x, crop_y, crop_x + sw, crop_y + sh))
+        
+        # Determine background fill if letterboxing or alignment is needed
+        sample_y = min(screen_scaled.height - 10, screen_scaled.height - 1)
+        bg_sample = screen_scaled.getpixel((new_w // 2, sample_y))
+        bg_color = (bg_sample[0], bg_sample[1], bg_sample[2], 255) if len(bg_sample) >= 3 else (255, 255, 255, 255)
+        
+        screen_fitted = Image.new('RGBA', (sw, sh), bg_color)
+        
+        if new_h <= sh:
+            # Entire screen fits vertically without cropping! Position at top
+            screen_fitted.paste(screen_scaled, (0, 0))
+        else:
+            # Scale to fit height so bottom CTA button is 100% visible
+            scale_fit = sh / screen.height
+            fit_w = int(round(screen.width * scale_fit))
+            fit_h = sh
+            screen_fit_all = screen.resize((fit_w, fit_h), Image.Resampling.LANCZOS)
+            paste_x = (sw - fit_w) // 2
+            screen_fitted.paste(screen_fit_all, (paste_x, 0))
         
         # Mask with rounded corners
         mask = Image.new('L', (sw, sh), 0)
         mdraw = ImageDraw.Draw(mask)
         mdraw.rounded_rectangle([0, 0, sw, sh], radius=radius - bezel // 2 - 2, fill=255)
         
-        base_img.paste(screen_cropped, (sx1, sy1), mask)
+        base_img.paste(screen_fitted, (sx1, sy1), mask)
         
     # Dynamic Island / Speaker Pill
-    pill_w = int(sw * 0.32)
-    pill_h = 14
+    pill_w = int(sw * 0.30)
+    pill_h = 13
     pill_x1 = cx - pill_w // 2
-    pill_y1 = sy1 + 8
-    draw.rounded_rectangle([pill_x1, pill_y1, pill_x1 + pill_w, pill_y1 + pill_h], radius=7, fill=(0, 0, 0, 240))
+    pill_y1 = sy1 + 7
+    draw.rounded_rectangle([pill_x1, pill_y1, pill_x1 + pill_w, pill_y1 + pill_h], radius=6, fill=(0, 0, 0, 240))
     # Camera dot
-    draw.ellipse([cx + pill_w // 4 - 3, pill_y1 + 4, cx + pill_w // 4 + 3, pill_y1 + 10], fill=(18, 30, 48))
+    draw.ellipse([cx + pill_w // 4 - 3, pill_y1 + 3, cx + pill_w // 4 + 3, pill_y1 + 9], fill=(18, 30, 48))
     
-    # Home Indicator Bar
-    bar_w = int(sw * 0.38)
+    # Home Indicator Bar (Semi-transparent overlay at bottom)
+    bar_w = int(sw * 0.36)
     bar_h = 4
-    bar_y = sy2 - 8
-    draw.rounded_rectangle([cx - bar_w // 2, bar_y, cx + bar_w // 2, bar_y + bar_h], radius=2, fill=(200, 200, 200, 180))
+    bar_y = sy2 - 7
+    draw.rounded_rectangle([cx - bar_w // 2, bar_y, cx + bar_w // 2, bar_y + bar_h], radius=2, fill=(255, 255, 255, 160))

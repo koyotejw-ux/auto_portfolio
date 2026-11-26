@@ -16,7 +16,14 @@ from deck_common import (
 def make_slide_05():
     img = Image.new('RGB', (W, H), BG_LIGHT)
     draw = ImageDraw.Draw(img)
-    draw_slide_header(draw, 5, "CORE USER FLOW & JOURNEY", "복잡한 8단계를 3단계로 단축한", " 초간편 보험료 납입 여정", "인증 장벽 제거 및 1-Tap 가상계좌 발급으로 완료율을 극대화한 비대면 플로우", right_badge=("3-STEP ZERO FRICTION", "green"))
+    draw_slide_header(
+        draw, 5, 
+        "CORE USER FLOW & JOURNEY", 
+        "복잡한 8단계를 3단계로 단축한 ", 
+        "초간편 보험료 납입 여정 & 하단 CTA", 
+        "인증 장벽 제거 및 1-Tap 가상계좌 발급으로 완료율을 극대화한 비대면 플로우", 
+        right_badge=("3-STEP ZERO FRICTION", "green")
+    )
     
     # 3 Big Step Cards
     steps = [
@@ -29,7 +36,7 @@ def make_slide_05():
             "features": [
                 "당월 납입 보험료 18pt 굵은 글씨 강조",
                 "복잡한 약관 번호 대신 친숙한 상품명 표시",
-                "선택 해제/다건 동시 납부 체크박스 지원"
+                "하단 [다음] 56dp 풀와이드 CTA 즉시 배치"
             ]
         },
         {
@@ -41,7 +48,7 @@ def make_slide_05():
             "features": [
                 "기등록 은행 계좌 번호 마스킹 안전 노출",
                 "가상계좌 즉시 발급 및 카카오톡/문자 전송",
-                "오입금 방지 실시간 예금주명 일치 검증"
+                "하단 [출금 동의 및 결제] 붉은색 액션 버튼"
             ]
         },
         {
@@ -53,7 +60,7 @@ def make_slide_05():
             "features": [
                 "48px 대형 숫자 키패드로 오터치 제로화",
                 "납부 결과 즉시 조회 및 영수증 저장",
-                "매월 5일 자동이체 간편 등록 팝업 케어"
+                "하단 [확인 (홈으로)] 원클릭 완료 CTA"
             ]
         }
     ]
@@ -72,23 +79,23 @@ def make_slide_05():
         draw.text((cx + 105, start_y + 25), s["sub"], font=get_font(11, 'medium'), fill=TEXT_LIGHT_SUB)
         draw.text((cx + 25, start_y + 65), s["title"], font=get_font(19, 'bold'), fill=TEXT_LIGHT_MAIN)
         
-        # Phone Screen Mockup inside card
+        # Phone Screen Mockup inside card (phone_w=240, phone_h=460)
         screen_file = os.path.join(CORE_DIR, s["screen"])
-        draw_phone_mockup(img, screen_file, cx=cx + cw // 2, cy=start_y + 320, phone_w=220, phone_h=440, bezel=8, radius=28)
+        draw_phone_mockup(img, screen_file, cx=cx + cw // 2, cy=start_y + 310, phone_w=235, phone_h=450, bezel=8, radius=28)
         
         # Description
-        py = start_y + 560
+        py = start_y + 555
         lines = wrap_text(s["desc"], get_font(12, 'regular'), cw - 50, draw)
         for line in lines:
             draw.text((cx + 25, py), line, font=get_font(12, 'regular'), fill=TEXT_LIGHT_MAIN)
-            py += 18
+            py += 17
             
         # Feature bullets
-        py += 10
+        py += 8
         for feat in s["features"]:
             draw.text((cx + 25, py), "•", font=get_font(12, 'bold'), fill=AIA_RED)
             draw.text((cx + 40, py), feat, font=get_font(11.5, 'medium'), fill=TEXT_LIGHT_SUB)
-            py += 22
+            py += 21
             
     draw_slide_footer(draw, 5, 12, dark_mode=False)
     out_path = os.path.join(OUT_DIR, "slide_05.png")
@@ -101,7 +108,14 @@ def make_slide_05():
 def make_slide_06():
     img = Image.new('RGB', (W, H), BG_LIGHT)
     draw = ImageDraw.Draw(img)
-    draw_slide_header(draw, 6, "SENIOR ACCESSIBILITY & UI SYSTEM", "고령자 친화 배리어프리 가이드라인", " 4대 핵심 설계 원칙", "WCAG 2.1 AAA 고대비율과 인체공학 터치 타겟을 적용한 시니어 전용 인터페이스", right_badge=("ACCESSIBILITY AAA 8.4:1", "red"))
+    draw_slide_header(
+        draw, 6, 
+        "SENIOR ACCESSIBILITY & UI SYSTEM", 
+        "고령자 친화 배리어프리 가이드라인 ", 
+        "4대 핵심 설계 원칙 & 인체공학 UI", 
+        "WCAG 2.1 AAA 고대비율과 엄지손가락 터치 구역(Thumb Zone)을 고려한 하단 고정 CTA 표준", 
+        right_badge=("ACCESSIBILITY AAA 8.4:1", "red")
+    )
     
     pillars = [
         {
@@ -128,12 +142,12 @@ def make_slide_06():
         },
         {
             "tag": "PRINCIPLE 03",
-            "title": "인체공학 터치 & 오조작 방지",
+            "title": "인체공학 터치 & 하단 CTA 고정",
             "metric": "48 x 48 dp",
             "metric_desc": "최소 인터랙션 터치 타겟 규격",
             "details": [
+                ("하단 플로팅 1-Action 풀와이드 버튼", "한 손 파지 시 엄지손가락이 가장 편안하게 닿는 하단 56dp 고정"),
                 ("손떨림 보정 마진 16dp 확보", "인접 버튼 간 충분한 간격을 두어 의도치 않은 오터치 원천 차단"),
-                ("하단 플로팅 1-Action 풀와이드 버튼", "엄지손가락 이동 동선을 고려한 높이 56dp 풀너비 고정 버튼"),
                 ("터치 즉각 햅틱 진동 피드백", "버튼 클릭 시 물리적 진동 반응으로 작업 수행 완료 여부 즉각 체감")
             ]
         },
@@ -192,7 +206,7 @@ def make_slide_06():
 def make_slide_07():
     img = Image.new('RGB', (W, H), BG_LIGHT)
     draw = ImageDraw.Draw(img)
-    draw_slide_header(draw, 7, "GLOBAL DESIGN SYSTEM & TOKENS", "AIA 글로벌 표준 디자인 시스템", " Qi Design System v3.3", "디자인 토큰, 아이코노그래피, 폼 필드 컴포넌트의 단일 소스 아키텍처", right_badge=("QI TOKENS V3.3", "red"))
+    draw_slide_header(draw, 7, "GLOBAL DESIGN SYSTEM & TOKENS", "AIA 글로벌 표준 디자인 시스템 ", "Qi Design System v3.3", "디자인 토큰, 아이코노그래피, 폼 필드 컴포넌트의 단일 소스 아키텍처", right_badge=("QI TOKENS V3.3", "red"))
     
     # 3 Section Cards
     # Left: Tokens & Color System (W=520)
@@ -204,7 +218,6 @@ def make_slide_07():
     draw_pill_badge(draw, left_x=lx + 25, cy=ly + 35, text="QI COLOR & TYPOGRAPHY TOKENS", font=get_font(11, 'bold'), theme='red', pad_x=12, height=24)
     draw.text((lx + 25, ly + 65), "AIA 브랜드 시그니처 & 타이포 규격", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
     
-    # Color chips
     colors = [
         ("AIA Red (Primary)", "#D31145", AIA_RED, "브랜드 메인 액션 및 강조"),
         ("AIA Deep Red", "#9E002B", AIA_RED_DARK, "다크 테마 헤더 및 그라디언트"),
@@ -220,7 +233,6 @@ def make_slide_07():
         draw.text((lx + 90, cy + 28), f"{c_hex}  ·  {c_sub}", font=get_font(11.5, 'medium'), fill=TEXT_LIGHT_SUB)
         cy += 64
         
-    # Typography Scale
     draw.text((lx + 25, cy + 10), "시스템 타이포그래피 스케일", font=get_font(14, 'bold'), fill=TEXT_LIGHT_MAIN)
     typo_scales = [
         ("Hero Display", "32px / Bold", "메인 환영 메시지 및 총 자산"),
@@ -242,15 +254,12 @@ def make_slide_07():
     draw_pill_badge(draw, left_x=mx + 25, cy=ly + 35, text="QI ICONOGRAPHY SYSTEM", font=get_font(11, 'bold'), theme='blue', pad_x=12, height=24)
     draw.text((mx + 25, ly + 65), "24dp 픽셀 퍼펙트 벡터 아이콘 세트", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
     
-    # Embed real extracted Qi Icon Matrix image
     qi_icon_path = os.path.join(QI_DIR, "qi_icon_matrix.png")
     if os.path.exists(qi_icon_path):
         qicon = Image.open(qi_icon_path).convert('RGBA')
-        # Scale to fit ~500w x 360h
         qicon = qicon.resize((490, 360), Image.Resampling.LANCZOS)
         img.paste(qicon, (mx + 25, ly + 115), qicon)
         
-    # Icon System Rules
     iry = ly + 500
     draw.text((mx + 25, iry), "Qi 아이콘 시스템 설계 원칙", font=get_font(14, 'bold'), fill=(29, 78, 216))
     irules = [
@@ -265,21 +274,19 @@ def make_slide_07():
         draw.text((mx + 42, iry), r, font=get_font(12, 'regular'), fill=TEXT_LIGHT_MAIN)
         iry += 28
         
-    # Right: Real Qi Input Component Specs (W=500)
+    # Right: Real Qi Input Component Specs (W=600)
     rx = 1220
     rw = 600
     draw.rounded_rectangle([rx, ly, rx + rw, ly + lh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
     draw_pill_badge(draw, left_x=rx + 25, cy=ly + 35, text="QI INPUT & FORM COMPONENTS", font=get_font(11, 'bold'), theme='green', pad_x=12, height=24)
     draw.text((rx + 25, ly + 65), "입력 컴포넌트 & 인터랙션 상태 머신", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
     
-    # Embed real extracted Qi Input Component image
     qi_input_path = os.path.join(QI_DIR, "qi_input_component.png")
     if os.path.exists(qi_input_path):
         qinput = Image.open(qi_input_path).convert('RGBA')
         qinput = qinput.resize((550, 420), Image.Resampling.LANCZOS)
         img.paste(qinput, (rx + 25, ly + 115), qinput)
         
-    # Input System Rules
     c_desc_y = ly + 560
     draw.text((rx + 25, c_desc_y), "컴포넌트 접근성 표준화 지침", font=get_font(14, 'bold'), fill=(5, 150, 105))
     c_rules = [
@@ -304,14 +311,21 @@ def make_slide_07():
 def make_slide_08():
     img = Image.new('RGB', (W, H), BG_LIGHT)
     draw = ImageDraw.Draw(img)
-    draw_slide_header(draw, 8, "CORE JOURNEY 01 · PREMIUM PAYMENT", "보험료 간편 납부 & 실시간 가상계좌", " 엔드투엔드 여정", "당월/미납 보험료 조회부터 주거래 계좌 출금 및 가상계좌 즉시 입금 완료까지", right_badge=("CONVERSION 89.4%", "red"))
+    draw_slide_header(
+        draw, 8, 
+        "CORE JOURNEY 01 · PREMIUM PAYMENT", 
+        "보험료 간편 납부 & 실시간 가상계좌 ", 
+        "엔드투엔드 여정 & 하단 액션 버튼", 
+        "당월/미납 보험료 조회부터 주거래 계좌 출금 및 가상계좌 즉시 입금 완료까지 하단 CTA 완벽 노출", 
+        right_badge=("CONVERSION 89.4%", "red")
+    )
     
     # 4 Sequential Screen Mockups
     screens = [
-        ("STEP 01", "계약 및 납부액 조회", "screen_pay_list_senior.png", "보유 계약 중 납입 대상 자동 집계 및 굵은 글씨 안내"),
-        ("STEP 02", "납부 계좌 1-Tap 선택", "screen_pay_input_account.png", "기등록 주거래 계좌 즉시 선택 또는 계좌 변경"),
-        ("STEP 03", "가상계좌 즉시 발급", "screen_pay_virtual.png", "입금 전용 가상계좌 발급 및 문자/카카오톡 전송"),
-        ("STEP 04", "납부 완료 & 케어 안내", "screen_pay_done.png", "영수증 즉시 발급 및 매월 5일 자동이체 등록 유도")
+        ("STEP 01", "계약 및 납부액 조회", "screen_pay_list_senior.png", "보유 계약 중 납입 대상 자동 집계 및 하단 [다음] 버튼 즉시 배치"),
+        ("STEP 02", "납부 계좌 1-Tap 선택", "screen_pay_input_account.png", "기등록 주거래 계좌 선택 및 하단 [출금 동의 및 결제] CTA"),
+        ("STEP 03", "가상계좌 즉시 발급", "screen_pay_virtual.png", "입금 전용 가상계좌 발급 및 하단 [계좌번호 복사하기] 액션"),
+        ("STEP 04", "납부 완료 & 케어 안내", "screen_pay_done.png", "영수증 즉시 발급 및 하단 [확인 (홈으로)] 원클릭 완료")
     ]
     
     sw = 395
@@ -327,16 +341,16 @@ def make_slide_08():
         draw_pill_badge(draw, left_x=sx + 20, cy=start_y + 35, text=step_tag, font=get_font(10.5, 'bold'), theme='red' if i==3 else 'blue', pad_x=12, height=24)
         draw.text((sx + 20, start_y + 65), step_title, font=get_font(16.5, 'bold'), fill=TEXT_LIGHT_MAIN)
         
-        # Device Mockup
+        # Device Mockup (phone_w=240, phone_h=510 ensures full CTA visibility!)
         screen_path = os.path.join(CORE_DIR, s_file)
-        draw_phone_mockup(img, screen_path, cx=sx + sw // 2, cy=start_y + 370, phone_w=240, phone_h=480, bezel=8, radius=30)
+        draw_phone_mockup(img, screen_path, cx=sx + sw // 2, cy=start_y + 360, phone_w=240, phone_h=510, bezel=8, radius=30)
         
-        # Desc Box
-        draw.rounded_rectangle([sx + 20, start_y + sh - 95, sx + sw - 20, start_y + sh - 25], radius=10, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-        lines = wrap_text(s_desc, get_font(12, 'regular'), sw - 60, draw)
-        dy = start_y + sh - 82
+        # Desc Box at bottom
+        draw.rounded_rectangle([sx + 20, start_y + sh - 85, sx + sw - 20, start_y + sh - 20], radius=10, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+        lines = wrap_text(s_desc, get_font(11.5, 'regular'), sw - 56, draw)
+        dy = start_y + sh - 74
         for line in lines:
-            draw.text((sx + 30, dy), line, font=get_font(12, 'medium'), fill=TEXT_LIGHT_MAIN)
+            draw.text((sx + 28, dy), line, font=get_font(11.5, 'medium'), fill=TEXT_LIGHT_MAIN)
             dy += 18
             
     draw_slide_footer(draw, 8, 12, dark_mode=False)

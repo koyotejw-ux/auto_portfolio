@@ -84,16 +84,16 @@ def make_slide_01():
         
     # 3. Right Column: Device Trio Mockup (AIA+ Actual App Screens)
     # Screen 1: General Main (Left angled/backdrop)
-    draw_phone_mockup(img, os.path.join(CORE_DIR, "screen_general_main.png"), cx=880, cy=580, phone_w=280, phone_h=580)
+    draw_phone_mockup(img, os.path.join(CORE_DIR, "screen_general_main.png"), cx=880, cy=580, phone_w=280, phone_h=600)
     # Screen 2: Senior Home Hero (Center, larger & front)
-    draw_phone_mockup(img, os.path.join(CORE_DIR, "screen_senior_main_home.png"), cx=1190, cy=540, phone_w=320, phone_h=660)
+    draw_phone_mockup(img, os.path.join(CORE_DIR, "screen_senior_main_home.png"), cx=1190, cy=540, phone_w=320, phone_h=680)
     # Screen 3: Premium Payment (Right, front)
-    draw_phone_mockup(img, os.path.join(CORE_DIR, "screen_pay_list_senior.png"), cx=1500, cy=580, phone_w=280, phone_h=580)
+    draw_phone_mockup(img, os.path.join(CORE_DIR, "screen_pay_list_senior.png"), cx=1500, cy=580, phone_w=280, phone_h=600)
     
     # 4. Floating Feature Badges on right side
     badges = [
-        (1050, 230, "고령자 전용 원터치 대시보드", 'green'),
-        (1360, 200, "18pt+ 대형 활자 & 고대비 8.4:1", 'red'),
+        (1050, 220, "고령자 전용 원터치 대시보드", 'green'),
+        (1370, 190, "18pt+ 대형 활자 & 고대비 8.4:1", 'red'),
         (1650, 750, "3-Step 초간편 보험료 납부", 'blue')
     ]
     for bx, by, btext, btheme in badges:
@@ -112,7 +112,6 @@ def make_slide_02():
     draw = ImageDraw.Draw(img)
     draw_slide_header(draw, 2, "MARKET BACKGROUND & PROBLEM", "초고령 사회 진입과 금융 디지털 격차,", " 비대면 금융의 치명적 한계", "디지털 소외 계층의 급증과 금융위원회 가이드라인 준수를 위한 전략적 리뉴얼 배경", right_badge=("REGULATION COMPLIANCE", "red"))
     
-    # 3 Column Comparison Layout
     cols = [
         {
             "tag": "MARKET SHIFT",
@@ -282,67 +281,120 @@ def make_slide_03():
     print(f"Generated: {out_path}")
 
 # -------------------------------------------------------------
-# SLIDE 04: DUAL-MODE INFORMATION ARCHITECTURE (IA)
+# SLIDE 04: DUAL-MODE INFORMATION ARCHITECTURE (Visual Flowchart)
 # -------------------------------------------------------------
 def make_slide_04():
     img = Image.new('RGB', (W, H), BG_LIGHT)
     draw = ImageDraw.Draw(img)
-    draw_slide_header(draw, 4, "INFORMATION ARCHITECTURE", "고령자 간편 모드와 일반 모드의", " 듀얼 IA 구조 설계", "금융위 가이드라인에 따른 원터치 모드 전환 및 제로-뎁스(Zero-Depth) 탐색 트리", right_badge=("DUAL IA MATRIX", "purple"))
+    draw_slide_header(
+        draw, 4, 
+        "INFORMATION ARCHITECTURE & FLOWCHART", 
+        "고령자 간편 모드와 일반 모드의 ", 
+        "듀얼 IA 트리 및 내비게이션 아키텍처", 
+        "금융위 가이드라인에 따른 원터치 모드 전환 및 제로-뎁스(Zero-Depth) 직관 탐색 트리 구조", 
+        right_badge=("DUAL IA FLOWCHART", "purple")
+    )
     
-    # 2 Big Cards: Left = Senior Mode (Zero-Depth), Right = General Mode (10 Domains)
-    # Left Box
-    lw = 780
-    lh = 730
+    # 1. Root Gateway Node (Top Center)
+    root_x1, root_y1, root_x2, root_y2 = 640, 215, 1280, 275
+    draw.rounded_rectangle([root_x1, root_y1, root_x2, root_y2], radius=14, fill=(255, 255, 255), outline=AIA_RED, width=2)
+    root_cy = (root_y1 + root_y2) // 2
+    draw_pill_badge(draw, left_x=root_x1 + 18, cy=root_cy, text="AIA+ APP ENTRY", font=get_font(11, 'bold'), theme='red', pad_x=12, height=28)
+    draw.text((root_x1 + 165, root_cy - 12), "AIA생명 모바일 플랫폼 통합 게이트웨이", font=get_font(15, 'bold'), fill=TEXT_LIGHT_MAIN)
+    draw.text((root_x1 + 165, root_cy + 10), "로그인 세션 기반 고령자/일반 모드 자동 감지 & 상단 원터치 스위칭 지원", font=get_font(11, 'medium'), fill=TEXT_LIGHT_SUB)
+    
+    # Branching Lines from Root to 2 Main Modes
+    branch_y = 310
+    draw.line([(960, root_y2), (960, branch_y)], fill=(148, 163, 184), width=2)
+    draw.line([(480, branch_y), (1440, branch_y)], fill=(148, 163, 184), width=2)
+    draw.line([(480, branch_y), (480, 345)], fill=AIA_RED, width=2)
+    draw.line([(1440, branch_y), (1440, 345)], fill=(0, 81, 255), width=2)
+    
+    # 2. Left Branch Header: Senior Simple Mode (W=780)
     lx = 100
-    ly = 220
-    draw.rounded_rectangle([lx, ly, lx + lw, ly + lh], radius=16, fill=CARD_LIGHT, outline=(254, 205, 217), width=2)
-    draw_pill_badge(draw, left_x=lx + 25, cy=ly + 35, text="고령자 친화 간편 모드 (SENIOR SIMPLE MODE)", font=get_font(11, 'bold'), theme='red', pad_x=14, height=26)
-    draw.text((lx + 25, ly + 68), "단일 뎁스 기반 직관적 카드 4대 핵심 과업 집중형 IA", font=get_font(17, 'bold'), fill=TEXT_LIGHT_MAIN)
+    lw = 820
+    draw.rounded_rectangle([lx, 345, lx + lw, 415], radius=12, fill=(255, 241, 244), outline=(254, 205, 217), width=2)
+    draw_pill_badge(draw, left_x=lx + 20, cy=380, text="고령자 친화 간편 모드 (SENIOR SIMPLE MODE)", font=get_font(11, 'bold'), theme='red', pad_x=14, height=28)
+    draw.text((lx + 380, 380), "제로-뎁스(Zero-Depth) 4대 핵심 과업 집중형 IA", font=get_font(14, 'bold'), fill=AIA_RED, anchor='lm')
     
-    senior_modules = [
-        ("01. 내 보험 한눈에 보기", "보유 계약 건수 및 이번 달 내야 할 보험료 즉시 확인 (조회)", ["계약 상태 표시", "당월 납입액", "미납 안내 알림"]),
-        ("02. 보험료 바로 내기", "복잡한 단계 없는 3-Step 즉시 납부 (주거래 계좌 or 가상계좌)", ["기등록 계좌 1-Tap", "가상계좌 문자발송", "자동이체 계좌 등록"]),
-        ("03. 병원비 보험금 청구", "영수증 사진 촬영 즉시 청구 접수 (카메라 OCR 연동)", ["영수증 즉시 촬영", "수령 계좌 확인", "진행 현황 문자 알림"]),
-        ("04. 큰글씨 고객센터 연결", "ARS 복잡한 버튼 없이 전문 상담원 1:1 즉시 연결", ["전담 시니어 상담원", "원격 화면 지원", "가장 가까운 고객센터"])
+    # 3. Right Branch Header: General Enterprise Mode (W=820)
+    rx = 1000
+    rw = 820
+    draw.rounded_rectangle([rx, 345, rx + rw, 415], radius=12, fill=(239, 246, 255), outline=(191, 219, 254), width=2)
+    draw_pill_badge(draw, left_x=rx + 20, cy=380, text="일반 모드 통합 IA (GENERAL ENTERPRISE MODE)", font=get_font(11, 'bold'), theme='blue', pad_x=14, height=28)
+    draw.text((rx + 380, 380), "10대 비대면 금융 도메인 & 자산 관리 IA", font=get_font(14, 'bold'), fill=(29, 78, 216), anchor='lm')
+    
+    # Tree Trunk Lines down
+    draw.line([(lx + lw // 2, 415), (lx + lw // 2, 445)], fill=AIA_RED, width=2)
+    draw.line([(rx + rw // 2, 415), (rx + rw // 2, 445)], fill=(0, 81, 255), width=2)
+    
+    # 4. Left 4 Senior Core Cards (Horizontal Flow Cards in 2x2 Grid)
+    senior_nodes = [
+        ("01. 내 보험 한눈에 보기", "보유 계약 건수 및 이번 달 내야 할 보험료 즉시 확인", ["계약 상태 표시", "당월 납입액 안내", "미납 알림 뱃지"]),
+        ("02. 보험료 바로 내기", "복잡한 단계 없는 3-Step 즉시 납부 (주거래/가상계좌)", ["기등록 계좌 1-Tap", "가상계좌 문자발송", "자동이체 계좌 등록"]),
+        ("03. 병원비 보험금 청구", "영수증 사진 촬영 즉시 청구 접수 (스마트 OCR 연동)", ["영수증 즉시 촬영", "수령 계좌 자동세팅", "진행 현황 문자 알림"]),
+        ("04. 큰글씨 고객센터 연결", "ARS 복잡한 번호 누름 없이 전담 상담원 1:1 즉시 연결", ["시니어 전담 상담", "원격 화면 케어", "방문 고객센터 찾기"])
     ]
     
-    sy = ly + 115
-    for title, desc, tags in senior_modules:
-        draw.rounded_rectangle([lx + 25, sy, lx + lw - 25, sy + 130], radius=12, fill=(255, 248, 250), outline=(254, 226, 232), width=1)
-        draw.text((lx + 45, sy + 18), title, font=get_font(15, 'bold'), fill=AIA_RED)
-        draw.text((lx + 45, sy + 44), desc, font=get_font(12.5, 'regular'), fill=TEXT_LIGHT_SUB)
-        # tags
-        tx = lx + 45
-        for tag in tags:
-            tw = draw_pill_badge(draw, left_x=tx, cy=sy + 92, text=tag, font=get_font(10.5, 'medium'), theme='gray', pad_x=10, height=22)
-            tx += tw + 10
-        sy += 145
+    card_w = (lw - 25) // 2
+    card_h = 230
+    base_sy = 455
+    
+    for idx, (title, desc, pills) in enumerate(senior_nodes):
+        cx = lx + (idx % 2) * (card_w + 25)
+        cy = base_sy + (idx // 2) * (card_h + 20)
+        draw.rounded_rectangle([cx, cy, cx + card_w, cy + card_h], radius=14, fill=CARD_LIGHT, outline=(254, 226, 232), width=1)
         
-    # Right Box
-    rx = 920
-    draw.rounded_rectangle([rx, ly, rx + lw, ly + lh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, left_x=rx + 25, cy=ly + 35, text="일반 모드 통합 IA (GENERAL ENTERPRISE MODE)", font=get_font(11, 'bold'), theme='blue', pad_x=14, height=26)
-    draw.text((rx + 25, ly + 68), "10대 비대면 금융 도메인 및 개인화 자산 포트폴리오", font=get_font(17, 'bold'), fill=TEXT_LIGHT_MAIN)
+        # Header strip
+        draw.rounded_rectangle([cx, cy, cx + card_w, cy + 44], radius=14, fill=(255, 248, 250))
+        draw.rectangle([cx, cy + 24, cx + card_w, cy + 44], fill=(255, 248, 250))
+        draw.text((cx + 18, cy + 22), title, font=get_font(14, 'bold'), fill=AIA_RED, anchor='lm')
+        
+        # Desc
+        lines = wrap_text(desc, get_font(12, 'regular'), card_w - 36, draw)
+        dy = cy + 60
+        for l in lines:
+            draw.text((cx + 18, dy), l, font=get_font(12, 'regular'), fill=TEXT_LIGHT_MAIN)
+            dy += 18
+            
+        # Sub Pills
+        py = cy + 125
+        for p in pills:
+            draw.text((cx + 18, py), "•", font=get_font(12, 'bold'), fill=AIA_RED)
+            draw.text((cx + 32, py), p, font=get_font(11.5, 'medium'), fill=TEXT_LIGHT_SUB)
+            py += 24
+            
+    # Connecting Flow Arrow for Senior Mode
+    draw.rounded_rectangle([lx, base_sy + card_h * 2 + 50, lx + lw, base_sy + card_h * 2 + 88], radius=10, fill=(255, 245, 247), outline=(254, 205, 217), width=1)
+    draw.text((lx + lw // 2, base_sy + card_h * 2 + 69), "⚡ 시니어 제로-마찰 원칙: 어떤 메뉴를 선택하든 2클릭 이내에 과업 완료 화면에 도달합니다.", font=get_font(11.5, 'bold'), fill=AIA_RED, anchor='mm')
     
-    general_domains = [
-        ("계약 관리 도메인", ["보유계약 상세조회", "해약환급금 모의계산", "보장내역 분석", "증권 및 증명서 발급"]),
-        ("보험료 납입 도메인", ["실시간 보험료 납부", "자동이체 계좌 변경", "납입 일자 변경", "실효계약 부활신청"]),
-        ("대출 및 금융 도메인", ["보험계약대출 신청", "대출 원리금 상환", "대출 한도 조회", "자동송금 서비스"]),
-        ("보상 및 청구 도메인", ["사고보험금 청구", "청구 진행상태 조회", "추가서류 제출", "청구 이력 조회"]),
-        ("헬스케어 & AIA 바이탈리티", ["걸음수 리워드 연동", "건강검진 데이터 연동", "통합 웰니스 미션", "멤버십 혜택 관리"])
+    # 5. Right General Enterprise Domains (5 Categorized Nodes)
+    general_nodes = [
+        ("01. 계약 관리 도메인", ["보유계약 상세조회", "해약환급금 모의계산", "보장내역 종합분석", "증권 및 증명서 발급"]),
+        ("02. 보험료 납입 도메인", ["실시간 보험료 납부", "자동이체 계좌 변경", "납입 일자/주기 변경", "실효계약 즉시 부활"]),
+        ("03. 대출 & 금융 서비스", ["보험계약대출 신청", "대출 원리금 상환", "대출 가능 한도 조회", "정기 자동송금 등록"]),
+        ("04. 사고 보상 & 청구", ["사고보험금 청구", "청구 진행상태 조회", "추가 진료서류 제출", "지급 내역 이력 조회"]),
+        ("05. 웰니스 & AIA 바이탈리티", ["걸음수 리워드 연동", "건강검진 데이터 분석", "통합 웰니스 미션", "멤버십 혜택 관리"])
     ]
     
-    gy = ly + 115
-    for d_title, d_items in general_domains:
-        draw.rounded_rectangle([rx + 25, gy, rx + lw - 25, gy + 105], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-        draw.text((rx + 45, gy + 16), d_title, font=get_font(14.5, 'bold'), fill=(29, 78, 216))
-        # items in 2x2 grid
+    gy = base_sy
+    for d_title, d_items in general_nodes:
+        draw.rounded_rectangle([rx, gy, rx + rw, gy + 90], radius=12, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
+        draw.rounded_rectangle([rx, gy, rx + 220, gy + 90], radius=12, fill=(248, 250, 252))
+        draw.rectangle([rx + 200, gy, rx + 220, gy + 90], fill=(248, 250, 252))
+        draw.text((rx + 20, gy + 45), d_title, font=get_font(13.5, 'bold'), fill=(29, 78, 216), anchor='lm')
+        
+        # 4 items grid in right area
         for i_idx, item in enumerate(d_items):
-            ix = rx + 45 + (i_idx % 2) * 340
-            iy = gy + 45 + (i_idx // 2) * 26
+            ix = rx + 245 + (i_idx % 2) * 280
+            iy = gy + 26 + (i_idx // 2) * 28
             draw.text((ix, iy), f"•  {item}", font=get_font(12, 'regular'), fill=TEXT_LIGHT_MAIN)
-        gy += 120
+        gy += 100
         
+    # Bottom Note for General Mode
+    draw.rounded_rectangle([rx, base_sy + card_h * 2 + 50, rx + rw, base_sy + card_h * 2 + 88], radius=10, fill=(240, 246, 255), outline=(191, 219, 254), width=1)
+    draw.text((rx + rw // 2, base_sy + card_h * 2 + 69), "🔗 일반 모드 아키텍처: 10대 도메인 풀-스택 서비스와 AIA 바이탈리티 헬스케어 생태계를 통합 제공합니다.", font=get_font(11.5, 'bold'), fill=(29, 78, 216), anchor='mm')
+    
     draw_slide_footer(draw, 4, 12, dark_mode=False)
     out_path = os.path.join(OUT_DIR, "slide_04.png")
     img.save(out_path, quality=95)
