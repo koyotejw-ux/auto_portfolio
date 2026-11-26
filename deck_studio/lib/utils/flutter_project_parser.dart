@@ -51,7 +51,7 @@ class ParsedFlutterScreen {
 }
 
 class FlutterProjectParser {
-  /// Scan all Dart files in the Flutter project directory
+  /// Scan all Dart files in the Flutter project directory, filtering out non-UI logic
   static Future<List<File>> findScreenFiles(String projectRoot) async {
     final dir = Directory(projectRoot);
     if (!await dir.exists()) return [];
@@ -62,10 +62,50 @@ class FlutterProjectParser {
     final files = <File>[];
     await for (final entity in targetDir.list(recursive: true, followLinks: false)) {
       if (entity is File && entity.path.endsWith('.dart')) {
-        final p = entity.path.replaceAll(r'\', '/');
-        if (p.contains('.g.dart') || p.contains('.freezed.dart') || p.contains('/test/')) {
+        final p = entity.path.replaceAll(r'\', '/').toLowerCase();
+        
+        // Exclude generated code and tests
+        if (p.contains('.g.dart') || p.contains('.freezed.dart') || p.contains('/test/') || p.contains('_test.dart')) {
           continue;
         }
+
+        // Exclude pure non-UI backend/logic directories
+        if (p.contains('/services/') ||
+            p.contains('/service/') ||
+            p.contains('/repositories/') ||
+            p.contains('/repository/') ||
+            p.contains('/models/') ||
+            p.contains('/model/') ||
+            p.contains('/entities/') ||
+            p.contains('/entity/') ||
+            p.contains('/providers/') ||
+            p.contains('/provider/') ||
+            p.contains('/controllers/') ||
+            p.contains('/controller/') ||
+            p.contains('/database/') ||
+            p.contains('/db/') ||
+            p.contains('/network/') ||
+            p.contains('/api/') ||
+            p.contains('/utils/') ||
+            p.contains('/util/') ||
+            p.contains('/helpers/') ||
+            p.contains('/helper/')) {
+          continue;
+        }
+
+        // Exclude pure non-UI file names
+        final fileName = entity.uri.pathSegments.last.toLowerCase();
+        if (fileName.contains('_service.dart') ||
+            fileName.contains('_repository.dart') ||
+            fileName.contains('_provider.dart') ||
+            fileName.contains('_controller.dart') ||
+            fileName.contains('_model.dart') ||
+            fileName.contains('_state.dart') ||
+            fileName.contains('enums.dart') ||
+            fileName.contains('constants.dart')) {
+          continue;
+        }
+
         files.add(entity);
       }
     }
@@ -122,12 +162,17 @@ class FlutterProjectParser {
   }
 
   /// Parse a Flutter Dart file into visual DeckElements with two-way sync anchors
-  static ParsedFlutterScreen parseDartFile(File file) {
+  /// Returns null if the file does not contain any Widget class
+  static ParsedFlutterScreen? parseDartFile(File file) {
     final content = file.readAsStringSync();
     final fileName = file.uri.pathSegments.last;
     String screenName = fileName.replaceAll('.dart', '');
 
-    final classMatch = RegExp(r'class\s+([A-Za-z0-9_]+)\s+extends\s+(StatefulWidget|StatelessWidget|ConsumerWidget|ConsumerStatefulWidget)').firstMatch(content);
+    final classMatch = RegExp(r'class\s+([A-Za-z0-9_]+)\s+extends\s+(StatefulWidget|StatelessWidget|ConsumerWidget|ConsumerStatefulWidget|HookWidget)').firstMatch(content);
+    if (classMatch == null && !content.contains('Widget build(BuildContext') && !content.contains('runApp(')) {
+      // Not a UI component
+      return null;
+    }
     if (classMatch != null) {
       screenName = classMatch.group(1)!;
     }

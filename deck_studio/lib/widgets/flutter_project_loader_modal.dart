@@ -56,14 +56,25 @@ class _FlutterProjectLoaderModalState extends State<FlutterProjectLoaderModal> {
       for (final f in files) {
         try {
           final parsed = FlutterProjectParser.parseDartFile(f);
-          parsedList.add(parsed);
+          if (parsed != null) {
+            parsedList.add(parsed);
+          }
         } catch (_) {}
       }
 
       setState(() {
         _isLoading = false;
         _parsedScreens = parsedList;
-        _selectedFiles = parsedList.map((s) => s.filePath).toSet();
+        // Default-select Pages and Modals only (filter out raw standalone widgets by default to prevent visual clutter)
+        _selectedFiles = parsedList
+            .where((s) => s.category == FlutterComponentCategory.page || s.category == FlutterComponentCategory.modal || s.category == FlutterComponentCategory.bottomSheet)
+            .map((s) => s.filePath)
+            .toSet();
+
+        // If no pages were found, fallback to selecting all
+        if (_selectedFiles.isEmpty) {
+          _selectedFiles = parsedList.map((s) => s.filePath).toSet();
+        }
 
         final pageCount = parsedList.where((s) => s.category == FlutterComponentCategory.page).length;
         final modalCount = parsedList.where((s) => s.category == FlutterComponentCategory.modal).length;

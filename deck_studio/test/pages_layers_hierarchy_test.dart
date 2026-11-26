@@ -25,7 +25,9 @@ void main() {
       for (final f in files) {
         try {
           final parsed = FlutterProjectParser.parseDartFile(f);
-          parsedScreens.add(parsed);
+          if (parsed != null) {
+            parsedScreens.add(parsed);
+          }
         } catch (_) {}
       }
 

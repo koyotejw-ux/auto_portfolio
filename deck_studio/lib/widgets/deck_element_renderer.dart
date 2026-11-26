@@ -631,22 +631,127 @@ class DeckElementRenderer extends StatelessWidget {
   }
 
   Widget _buildDesignTokens() {
+    // 1. If this is a Flutter Source Spec card, render a Figma Dark Code Inspector
+    final codePreview = element.props['codePreview'] as String?;
+    final sourceFile = element.props['sourceFile'] as String?;
+    final title = element.props['title'] as String? ?? 'Flutter Source Inspector';
+    final lineCount = element.props['lineCount'] as String? ?? '';
+
+    if (codePreview != null || sourceFile != null) {
+      return Container(
+        decoration: BoxDecoration(
+          color: const Color(0xFF1E1E1E),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: const Color(0xFF2C2C2C), width: 1.5),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.35),
+              blurRadius: 16,
+              offset: const Offset(0, 6),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // Code Inspector Header Bar
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              decoration: const BoxDecoration(
+                color: Color(0xFF141414),
+                borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
+                border: Border(bottom: BorderSide(color: Color(0xFF2C2C2C))),
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    width: 10,
+                    height: 10,
+                    decoration: const BoxDecoration(shape: BoxShape.circle, color: Color(0xFFFF5F56)),
+                  ),
+                  const SizedBox(width: 6),
+                  Container(
+                    width: 10,
+                    height: 10,
+                    decoration: const BoxDecoration(shape: BoxShape.circle, color: Color(0xFFFFBD2E)),
+                  ),
+                  const SizedBox(width: 6),
+                  Container(
+                    width: 10,
+                    height: 10,
+                    decoration: const BoxDecoration(shape: BoxShape.circle, color: Color(0xFF27C93F)),
+                  ),
+                  const SizedBox(width: 14),
+                  const Icon(Icons.code, color: Color(0xFF00E5FF), size: 16),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      title,
+                      style: const TextStyle(
+                        color: Color(0xFFE2E8F0),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        fontFamily: 'monospace',
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  if (lineCount.isNotEmpty)
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF252525),
+                        borderRadius: BorderRadius.circular(6),
+                        border: Border.all(color: const Color(0xFF383838)),
+                      ),
+                      child: Text(
+                        '$lineCount lines',
+                        style: const TextStyle(color: Color(0xFF94A3B8), fontSize: 10, fontFamily: 'monospace'),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+            // Code Preview Body
+            Expanded(
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                color: const Color(0xFF1E1E1E),
+                child: SingleChildScrollView(
+                  child: SelectableText(
+                    codePreview ?? '// 소스 코드를 불러올 수 없습니다.',
+                    style: const TextStyle(
+                      fontFamily: 'monospace',
+                      fontSize: 12,
+                      color: Color(0xFFCBD5E1),
+                      height: 1.5,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    // 2. Fallback to Dark Design Tokens
     final colors = (element.props['colors'] as List? ?? []);
     final typog = (element.props['typography'] as List? ?? []);
 
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: const Color(0xFF1E1E1E),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFE2E8F0)),
+        border: Border.all(color: const Color(0xFF2C2C2C)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
             'Color Palette Tokens',
-            style: TextStyle(color: Color(0xFF0F172A), fontSize: 13, fontWeight: FontWeight.bold),
+            style: TextStyle(color: Color(0xFFE2E8F0), fontSize: 13, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
           Row(
@@ -661,7 +766,7 @@ class DeckElementRenderer extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: color,
                     borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: Colors.black12),
+                    border: Border.all(color: Colors.white24),
                   ),
                   child: Column(
                     children: [
@@ -690,7 +795,7 @@ class DeckElementRenderer extends StatelessWidget {
           const SizedBox(height: 16),
           const Text(
             'Typography Scale Tokens',
-            style: TextStyle(color: Color(0xFF0F172A), fontSize: 13, fontWeight: FontWeight.bold),
+            style: TextStyle(color: Color(0xFFE2E8F0), fontSize: 13, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
           Expanded(
@@ -705,20 +810,20 @@ class DeckElementRenderer extends StatelessWidget {
                         width: 90,
                         child: Text(
                           tMap['level'] ?? '',
-                          style: const TextStyle(color: Color(0xFF64748B), fontSize: 10),
+                          style: const TextStyle(color: Color(0xFF94A3B8), fontSize: 10),
                         ),
                       ),
                       SizedBox(
                         width: 90,
                         child: Text(
                           tMap['size'] ?? '',
-                          style: const TextStyle(color: Color(0xFF0052FF), fontSize: 10, fontWeight: FontWeight.bold),
+                          style: const TextStyle(color: Color(0xFF00E5FF), fontSize: 10, fontWeight: FontWeight.bold),
                         ),
                       ),
                       Expanded(
                         child: Text(
                           tMap['sample'] ?? '',
-                          style: const TextStyle(color: Color(0xFF0F172A), fontSize: 11, fontWeight: FontWeight.w600),
+                          style: const TextStyle(color: Color(0xFFE2E8F0), fontSize: 11, fontWeight: FontWeight.w600),
                         ),
                       ),
                     ],
