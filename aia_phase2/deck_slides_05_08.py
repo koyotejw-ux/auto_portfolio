@@ -12,194 +12,224 @@ from deck_common import (
 )
 
 # -------------------------------------------------------------
-# SLIDE 05: CORE USER FLOW & INTERACTION LOGIC
+# SLIDE 05: FLOW CHART (Service Decision Logic & Journey)
 # -------------------------------------------------------------
 def make_slide_05():
     img = Image.new('RGB', (W, H), BG_LIGHT)
     draw = ImageDraw.Draw(img)
     draw_slide_header(
         draw, 5, 
-        "CORE USER FLOW & JOURNEY", 
-        "복잡한 8단계를 3단계로 단축한 ", 
-        "초간편 보험료 납입 여정 & 하단 CTA", 
-        "인증 장벽 제거 및 1-Tap 가상계좌 발급으로 완료율을 극대화한 비대면 플로우", 
-        right_badge=("3-STEP ZERO FRICTION", "green")
+        "FLOW CHART & DECISION LOGIC", 
+        "Flow Chart | ", 
+        "고령자 모드 서비스 흐름도 및 분기 로직", 
+        "로그인 감지부터 납부 수단(계좌/가상계좌) 선택 및 실시간 피드백까지의 엔드투엔드 의사결정 트리", 
+        right_badge=("SERVICE LOGIC", "green")
     )
     
-    # 3 Big Step Cards
-    steps = [
-        {
-            "num": "STEP 01",
-            "title": "계약 선택 & 납부금 확인",
-            "sub": "원터치 계약 요약 카드",
-            "screen": "screen_pay_list_senior.png",
-            "desc": "홈 화면에서 '보험료 바로 내기' 터치 즉시 진입. 보유 계약 중 당월 미납된 계약이 자동 선택되어 단 1초 만에 납부 금액 확인.",
-            "features": [
-                "당월 납입 보험료 18pt 굵은 글씨 강조",
-                "복잡한 약관 번호 대신 친숙한 상품명 표시",
-                "하단 [다음] 56dp 풀와이드 CTA 즉시 배치"
-            ]
-        },
-        {
-            "num": "STEP 02",
-            "title": "납부 수단 1-Tap 선택",
-            "sub": "주거래 계좌 or 가상계좌",
-            "screen": "screen_pay_input_account.png",
-            "desc": "기존에 등록된 주거래 은행 계좌가 즉시 로딩되어 비밀번호 입력 없이 출금 동의. 계좌 변경 또는 가상계좌 입금도 즉시 탭 가능.",
-            "features": [
-                "기등록 은행 계좌 번호 마스킹 안전 노출",
-                "가상계좌 즉시 발급 및 카카오톡/문자 전송",
-                "하단 [출금 동의 및 결제] 붉은색 액션 버튼"
-            ]
-        },
-        {
-            "num": "STEP 03",
-            "title": "간편 전자서명 & 완료",
-            "sub": "원터치 인증 & 안심 알림",
-            "screen": "screen_pay_done.png",
-            "desc": "공인인증서 폐지 후 도입된 6자리 PIN 또는 간편 서명으로 즉시 승인 완료. 카카오 알림톡으로 입금 확인증 즉시 발송.",
-            "features": [
-                "48px 대형 숫자 키패드로 오터치 제로화",
-                "납부 결과 즉시 조회 및 영수증 저장",
-                "하단 [확인 (홈으로)] 원클릭 완료 CTA"
-            ]
-        }
+    # Large Canvas for Visual Flow Chart
+    card_x, card_y, card_w, card_h = 100, 220, 1720, 730
+    draw.rounded_rectangle([card_x, card_y, card_x + card_w, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
+    
+    # Step 1: User Entry Node
+    n1_x, n1_y, n1_w, n1_h = 160, 320, 220, 90
+    draw.rounded_rectangle([n1_x, n1_y, n1_x + n1_w, n1_y + n1_h], radius=12, fill=(241, 245, 249), outline=BORDER_LIGHT, width=1)
+    draw_pill_badge(draw, cx=n1_x + n1_w//2, cy=n1_y + 24, text="START", font=get_font(10, 'bold'), theme='gray', pad_x=10, height=20)
+    draw.text((n1_x + n1_w//2, n1_y + 58), "AIA+ 앱 실행", font=get_font(15, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mm')
+    
+    # Arrow to Mode Check
+    draw_arrow(draw, (n1_x + n1_w, n1_y + n1_h//2), (n1_x + n1_w + 50, n1_y + n1_h//2), col=(100, 116, 139), width=2)
+    
+    # Step 2: Decision Node (연령 및 설정 확인)
+    d1_x, d1_y, d1_w, d1_h = 430, 305, 260, 120
+    # Diamond shape or highlighted decision box
+    draw.rounded_rectangle([d1_x, d1_y, d1_x + d1_w, d1_y + d1_h], radius=16, fill=(255, 241, 244), outline=AIA_RED, width=2)
+    draw_pill_badge(draw, cx=d1_x + d1_w//2, cy=d1_y + 25, text="MODE CHECK", font=get_font(10, 'bold'), theme='red', pad_x=10, height=22)
+    draw.text((d1_x + d1_w//2, d1_y + 60), "65세 이상 or 간편모드 설정?", font=get_font(13.5, 'bold'), fill=AIA_RED, anchor='mm')
+    draw.text((d1_x + d1_w//2, d1_y + 88), "회원 DB 연령 및 세션 분석", font=get_font(11, 'medium'), fill=TEXT_LIGHT_SUB, anchor='mm')
+    
+    # Branches from Decision Node:
+    # 1. NO -> General Mode (Upwards)
+    draw_arrow(draw, (d1_x + d1_w//2, d1_y), (d1_x + d1_w//2, d1_y - 45), col=(100, 116, 139), width=2)
+    draw.text((d1_x + d1_w//2 + 15, d1_y - 25), "NO", font=get_font(11, 'bold'), fill=(100, 116, 139))
+    draw.rounded_rectangle([d1_x - 20, d1_y - 75, d1_x + d1_w + 20, d1_y - 45], radius=8, fill=(239, 246, 255), outline=(191, 219, 254), width=1)
+    draw.text((d1_x + d1_w//2, d1_y - 60), "일반 통합 모드 메인 화면 이동", font=get_font(12, 'bold'), fill=(29, 78, 216), anchor='mm')
+    
+    # 2. YES -> Senior Home (Right)
+    draw_arrow(draw, (d1_x + d1_w, d1_y + d1_h//2), (d1_x + d1_w + 60, d1_y + d1_h//2), col=AIA_RED, width=2)
+    draw.text((d1_x + d1_w + 20, d1_y + d1_h//2 - 14), "YES", font=get_font(11, 'bold'), fill=AIA_RED)
+    
+    # Step 3: Senior Mode Home Dashboard
+    n2_x, n2_y, n2_w, n2_h = 750, 310, 260, 110
+    draw.rounded_rectangle([n2_x, n2_y, n2_x + n2_w, n2_y + n2_h], radius=14, fill=CARD_LIGHT, outline=AIA_RED, width=2)
+    draw_pill_badge(draw, cx=n2_x + n2_w//2, cy=n2_y + 24, text="SENIOR DASHBOARD", font=get_font(10.5, 'bold'), theme='red', pad_x=12, height=22)
+    draw.text((n2_x + n2_w//2, n2_y + 60), "고령자 전용 원터치 홈", font=get_font(16, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mm')
+    draw.text((n2_x + n2_w//2, n2_y + 86), "당월 미납금 및 4대 과업 즉시 노출", font=get_font(11.5, 'medium'), fill=TEXT_LIGHT_SUB, anchor='mm')
+    
+    # Arrow to Action Selection
+    draw_arrow(draw, (n2_x + n2_w, n2_y + n2_h//2), (n2_x + n2_w + 60, n2_y + n2_h//2), col=AIA_RED, width=2)
+    
+    # Step 4: Core Payment Action Node
+    n3_x, n3_y, n3_w, n3_h = 1070, 310, 260, 110
+    draw.rounded_rectangle([n3_x, n3_y, n3_x + n3_w, n3_y + n3_h], radius=14, fill=(255, 241, 244), outline=BORDER_LIGHT, width=1)
+    draw_pill_badge(draw, cx=n3_x + n3_w//2, cy=n3_y + 24, text="ACTION: 납입", font=get_font(10.5, 'bold'), theme='red', pad_x=12, height=22)
+    draw.text((n3_x + n3_w//2, n3_y + 60), "보험료 바로 내기 탭", font=get_font(16, 'bold'), fill=AIA_RED, anchor='mm')
+    draw.text((n3_x + n3_w//2, n3_y + 86), "하단 56dp 풀와이드 [다음] CTA", font=get_font(11.5, 'medium'), fill=TEXT_LIGHT_SUB, anchor='mm')
+    
+    # Decision Node 2: Payment Method (계좌이체 vs 가상계좌)
+    draw_arrow(draw, (n3_x + n3_w, n3_y + n3_h//2), (n3_x + n3_w + 50, n3_y + n3_h//2), col=AIA_RED, width=2)
+    
+    d2_x, d2_y, d2_w, d2_h = 1380, 305, 260, 120
+    draw.rounded_rectangle([d2_x, d2_y, d2_x + d2_w, d2_y + d2_h], radius=16, fill=(240, 246, 255), outline=(59, 130, 246), width=2)
+    draw_pill_badge(draw, cx=d2_x + d2_w//2, cy=d2_y + 25, text="PAYMENT METHOD", font=get_font(10, 'bold'), theme='blue', pad_x=10, height=22)
+    draw.text((d2_x + d2_w//2, d2_y + 60), "납부 수단 1-Tap 선택", font=get_font(14, 'bold'), fill=(29, 78, 216), anchor='mm')
+    draw.text((d2_x + d2_w//2, d2_y + 88), "기등록 계좌 vs 가상계좌 발급", font=get_font(11, 'medium'), fill=TEXT_LIGHT_SUB, anchor='mm')
+    
+    # Bottom Branches from Payment Method to Completion:
+    # Path A: Registered Bank Account (Down-Left)
+    draw.line([(d2_x + 70, d2_y + d2_h), (d2_x + 70, 520)], fill=(59, 130, 246), width=2)
+    draw_arrow(draw, (d2_x + 70, 520), (1200, 520), col=(59, 130, 246), width=2)
+    
+    p1_x, p1_y, p1_w, p1_h = 920, 480, 260, 80
+    draw.rounded_rectangle([p1_x, p1_y, p1_x + p1_w, p1_y + p1_h], radius=12, fill=(239, 246, 255), outline=BORDER_LIGHT, width=1)
+    draw.text((p1_x + p1_w//2, p1_y + 28), "A. 주거래 계좌 즉시 출금", font=get_font(13.5, 'bold'), fill=(29, 78, 216), anchor='mm')
+    draw.text((p1_x + p1_w//2, p1_y + 54), "48px 대형 간편 PIN 비밀번호 인증", font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB, anchor='mm')
+    
+    # Path B: Virtual Account (Down-Right)
+    draw.line([(d2_x + 190, d2_y + d2_h), (d2_x + 190, 520)], fill=AIA_RED, width=2)
+    draw_arrow(draw, (d2_x + 190, 520), (1400, 520), col=AIA_RED, width=2)
+    
+    p2_x, p2_y, p2_w, p2_h = 1400, 480, 260, 80
+    draw.rounded_rectangle([p2_x, p2_y, p2_x + p2_w, p2_y + p2_h], radius=12, fill=(255, 241, 244), outline=BORDER_LIGHT, width=1)
+    draw.text((p2_x + p2_w//2, p2_y + 28), "B. 입금 전용 가상계좌 발급", font=get_font(13.5, 'bold'), fill=AIA_RED, anchor='mm')
+    draw.text((p2_x + p2_w//2, p2_y + 54), "계좌번호 카카오톡/문자 즉시 전송", font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB, anchor='mm')
+    
+    # Merge both paths down to Final Completion
+    draw.line([(p1_x + p1_w//2, p1_y + p1_h), (p1_x + p1_w//2, 640)], fill=(16, 185, 129), width=2)
+    draw.line([(p2_x + p2_w//2, p2_y + p2_h), (p2_x + p2_w//2, 640)], fill=(16, 185, 129), width=2)
+    draw.line([(p1_x + p1_w//2, 640), (p2_x + p2_w//2, 640)], fill=(16, 185, 129), width=2)
+    draw_arrow(draw, ((p1_x + p1_w//2 + p2_x + p2_w//2)//2, 640), ((p1_x + p1_w//2 + p2_x + p2_w//2)//2, 680), col=(16, 185, 129), width=2)
+    
+    # Final Completion Node
+    fin_x, fin_y, fin_w, fin_h = 1050, 680, 480, 110
+    draw.rounded_rectangle([fin_x, fin_y, fin_x + fin_w, fin_y + fin_h], radius=16, fill=(236, 253, 245), outline=(16, 185, 129), width=2)
+    draw_pill_badge(draw, cx=fin_x + fin_w//2, cy=fin_y + 25, text="COMPLETE & REASSURANCE", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=22)
+    draw.text((fin_x + fin_w//2, fin_y + 60), "납부 완료 안내 & 안심 알림톡 발송", font=get_font(16, 'bold'), fill=(5, 150, 105), anchor='mm')
+    draw.text((fin_x + fin_w//2, fin_y + 88), "영수증 즉시 저장 + 매월 5일 자동이체 간편 신청 팝업 케어", font=get_font(11.5, 'medium'), fill=TEXT_LIGHT_MAIN, anchor='mm')
+    
+    # Left Callout Box: 3-Step Zero Friction UX Principles
+    draw.rounded_rectangle([160, 480, 780, 790], radius=16, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+    draw_pill_badge(draw, left_x=185, cy=510, text="ZERO-FRICTION PRINCIPLES", font=get_font(10.5, 'bold'), theme='red', pad_x=12, height=24)
+    draw.text((185, 545), "고령자 배리어프리 플로우차트 설계 원칙", font=get_font(16, 'bold'), fill=TEXT_LIGHT_MAIN)
+    flow_rules = [
+        ("단일 화면 1개 과업 (Single Task)", "화면 전환 시마다 오직 1개의 핵심 질문과 액션만 제시하여 인지 과부하 방지"),
+        ("불필요한 입력 요소 제거", "기등록 계좌를 자동 불러오고 계좌번호 마스킹으로 보안과 편의성 동시 충족"),
+        ("가상계좌 대체 경로 보장", "계좌 이체 비밀번호를 잊어버린 고령자를 위해 문자 입금 가상계좌 1-Tap 발급"),
+        ("시각/촉각 완료 피드백", "성공 완료 시 굵은 녹색 체크마크, 햅틱 진동, 즉시 알림톡 전송으로 안심 보장")
     ]
-    
-    cw = 520
-    ch = 730
-    start_x = 100
-    start_y = 220
-    
-    for i, s in enumerate(steps):
-        cx = start_x + i * (cw + 30)
-        draw.rounded_rectangle([cx, start_y, cx + cw, start_y + ch], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-        
-        # Step Badge & Header
-        draw_pill_badge(draw, left_x=cx + 25, cy=start_y + 35, text=s["num"], font=get_font(11, 'bold'), theme='red' if i==1 else 'blue', pad_x=12, height=24)
-        draw.text((cx + 105, start_y + 25), s["sub"], font=get_font(11, 'medium'), fill=TEXT_LIGHT_SUB)
-        draw.text((cx + 25, start_y + 65), s["title"], font=get_font(19, 'bold'), fill=TEXT_LIGHT_MAIN)
-        
-        # Phone Screen Mockup inside card (phone_w=235, phone_h=450 with 100% full screen & CTA)
-        screen_file = os.path.join(CORE_DIR, s["screen"])
-        draw_phone_mockup(img, screen_file, cx=cx + cw // 2, cy=start_y + 310, phone_w=235, phone_h=450, bezel=8, radius=28)
-        
-        # Connecting Arrow to next step
-        if i < 2:
-            arrow_x = cx + cw + 8
-            draw_arrow(draw, (arrow_x, start_y + 310), (arrow_x + 14, start_y + 310), col=AIA_RED, width=2, arrow_size=6)
-        
-        # Description
-        py = start_y + 555
-        lines = wrap_text(s["desc"], get_font(12, 'regular'), cw - 50, draw)
+    fry = 585
+    for rtitle, rdesc in flow_rules:
+        draw.text((185, fry), "•", font=get_font(12, 'bold'), fill=AIA_RED)
+        draw.text((205, fry), rtitle, font=get_font(12.5, 'bold'), fill=TEXT_LIGHT_MAIN)
+        lines = wrap_text(rdesc, get_font(11.5, 'regular'), 550, draw)
+        l_ry = fry + 20
         for line in lines:
-            draw.text((cx + 25, py), line, font=get_font(12, 'regular'), fill=TEXT_LIGHT_MAIN)
-            py += 17
-            
-        # Feature bullets
-        py += 8
-        for feat in s["features"]:
-            draw.text((cx + 25, py), "•", font=get_font(12, 'bold'), fill=AIA_RED)
-            draw.text((cx + 40, py), feat, font=get_font(11.5, 'medium'), fill=TEXT_LIGHT_SUB)
-            py += 21
-            
+            draw.text((205, l_ry), line, font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
+            l_ry += 16
+        fry = l_ry + 14
+        
     draw_slide_footer(draw, 5, 12, dark_mode=False)
     out_path = os.path.join(OUT_DIR, "slide_05.png")
     img.save(out_path, quality=95)
     print(f"Generated: {out_path}")
 
 # -------------------------------------------------------------
-# SLIDE 06: SENIOR BARRIER-FREE SYSTEM & DESIGN ETHICS
+# SLIDE 06: WIREFRAMES (Low-Fi Architecture & UX Annotations)
 # -------------------------------------------------------------
 def make_slide_06():
     img = Image.new('RGB', (W, H), BG_LIGHT)
     draw = ImageDraw.Draw(img)
     draw_slide_header(
         draw, 6, 
-        "SENIOR ACCESSIBILITY & UI SYSTEM", 
-        "고령자 친화 배리어프리 가이드라인 ", 
-        "4대 핵심 설계 원칙 & 인체공학 UI", 
-        "WCAG 2.1 AAA 고대비율과 엄지손가락 터치 구역(Thumb Zone)을 고려한 하단 고정 CTA 표준", 
-        right_badge=("ACCESSIBILITY AAA 8.4:1", "red")
+        "WIREFRAMES & ANNOTATIONS", 
+        "Wireframes | ", 
+        "고령자 배리어프리 화면설계서 & 상세 명세", 
+        "18pt 대형 활자 규격, 48dp 터치 영역, 56dp 하단 고정 CTA 버튼의 와이어프레임 구조 분석", 
+        right_badge=("DETAILED SPECIFICATION", "red")
     )
     
-    pillars = [
+    # 4 Sequential Wireframes with UX Callout Lines matching Behance
+    wireframes = [
         {
-            "tag": "PRINCIPLE 01",
-            "title": "대형 활자 & 시인성 극대화",
-            "metric": "18pt ~ 28pt",
-            "metric_desc": "기본 본문 및 핵심 금액 최소 활자 크기",
-            "details": [
-                ("본문 18pt 이상 기본 적용", "일반 앱 대비 150% 확대된 본문 폰트 크기로 돋보기 없이 즉시 인지"),
-                ("단일 위계 굵기(Bold) 구분", "라이트/씬 폰트 배제, SemiBold/Bold 중심의 명확한 자획 구현"),
-                ("자간 및 행간 160% 확대", "글자 뭉침 현상을 방지하는 와이드 레터스페이싱 및 넉넉한 줄간격")
+            "tag": "WF 01",
+            "title": "원터치 홈 대시보드",
+            "screen": "screen_senior_main_home.png",
+            "annotations": [
+                "① 상단 일반모드 전환 토글 (28dp)",
+                "② 보유 계약 건수 24pt 대형 표시",
+                "③ 당월 미납 보험료 Red 강조 박스",
+                "④ 하단 [보험료 바로 내기] 56dp CTA"
             ]
         },
         {
-            "tag": "PRINCIPLE 02",
-            "title": "고대비 컬러 & 안구 피로 저감",
-            "metric": "8.4 : 1",
-            "metric_desc": "WCAG AAA 기준(7:1)을 상회하는 명도 대비",
-            "details": [
-                ("순백색 배경 대비 다크 그레이 텍스트", "#0F172A 컬러로 순수 블랙의 번짐을 줄이고 선명도 극대화"),
-                ("AIA Red 시그니처 엑센트", "주요 액션 버튼과 상태 뱃지에 강력한 브랜드 레드(#D31145) 적용"),
-                ("미세 연회색 테두리 배제", "카드 컨테이너의 외곽선을 2px 솔리드 라인으로 뚜렷하게 분리")
+            "tag": "WF 02",
+            "title": "계약 및 납부액 확인",
+            "screen": "screen_pay_list_senior.png",
+            "annotations": [
+                "① 복잡한 증권번호 배제, 한글 상품명",
+                "② 납입 대상 계약 체크박스 (32dp)",
+                "③ 총 결제 예정 금액 28pt Bold",
+                "④ 하단 [다음 (계좌선택)] 고정 버튼"
             ]
         },
         {
-            "tag": "PRINCIPLE 03",
-            "title": "인체공학 터치 & 하단 CTA 고정",
-            "metric": "48 x 48 dp",
-            "metric_desc": "최소 인터랙션 터치 타겟 규격",
-            "details": [
-                ("하단 플로팅 1-Action 풀와이드 버튼", "한 손 파지 시 엄지손가락이 가장 편안하게 닿는 하단 56dp 고정"),
-                ("손떨림 보정 마진 16dp 확보", "인접 버튼 간 충분한 간격을 두어 의도치 않은 오터치 원천 차단"),
-                ("터치 즉각 햅틱 진동 피드백", "버튼 클릭 시 물리적 진동 반응으로 작업 수행 완료 여부 즉각 체감")
+            "tag": "WF 03",
+            "title": "납부 수단 선택",
+            "screen": "screen_pay_input_account.png",
+            "annotations": [
+                "① 기등록 주거래 은행 계좌 자동 노출",
+                "② 가상계좌 신청 탭 분기 옵션",
+                "③ 보안 키패드 연동 안내문구",
+                "④ 하단 [출금 동의 및 결제] 풀와이드"
             ]
         },
         {
-            "tag": "PRINCIPLE 04",
-            "title": "쉬운 금융 언어 & 인지 부하 제로",
-            "metric": "Zero-Jargon",
-            "metric_desc": "금융 전문 용어 100% 일상어 순화",
-            "details": [
-                ("난해한 보험 한자어 퇴출", "'부활신청' ➔ '효력 회복하기', '해약환급금' ➔ '해약 시 돌려받는 돈'"),
-                ("단일 화면 1개 과업 원칙", "한 화면에 하나의 질문만 던져 고령층의 정보 과부하 및 혼란 방지"),
-                ("진행 단계 명확한 넘버링", "'1단계: 계좌확인 ➔ 2단계: 서명'으로 잔여 여정을 항상 인지")
+            "tag": "WF 04",
+            "title": "납부 완료 & 케어 안내",
+            "screen": "screen_pay_done.png",
+            "annotations": [
+                "① 완료 체크 아이콘 & 안심 메시지",
+                "② 결제 일시 및 승인번호 영수증",
+                "③ 카카오 알림톡 발송 완료 뱃지",
+                "④ 하단 [확인 (홈으로)] 원클릭 완료"
             ]
         }
     ]
     
-    pw = 395
-    ph = 730
+    sw = 395
+    sh = 730
     start_x = 100
     start_y = 220
     
-    for i, p in enumerate(pillars):
-        px = start_x + i * (pw + 23)
-        draw.rounded_rectangle([px, start_y, px + pw, start_y + ph], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
+    for i, wf in enumerate(wireframes):
+        sx = start_x + i * (sw + 23)
+        draw.rounded_rectangle([sx, start_y, sx + sw, start_y + sh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
         
-        # Tag
-        draw_pill_badge(draw, left_x=px + 20, cy=start_y + 35, text=p["tag"], font=get_font(10.5, 'bold'), theme='red' if i in [0, 1] else 'blue', pad_x=12, height=24)
-        draw.text((px + 20, start_y + 65), p["title"], font=get_font(17, 'bold'), fill=TEXT_LIGHT_MAIN)
+        # Tag & Title
+        draw_pill_badge(draw, left_x=sx + 20, cy=start_y + 35, text=wf["tag"], font=get_font(10.5, 'bold'), theme='red' if i in [0, 3] else 'blue', pad_x=12, height=24)
+        draw.text((sx + 20, start_y + 65), wf["title"], font=get_font(16.5, 'bold'), fill=TEXT_LIGHT_MAIN)
         
-        # Metric Box
-        draw.rounded_rectangle([px + 20, start_y + 105, px + pw - 20, start_y + 195], radius=12, fill=(255, 241, 244) if i in [0, 1] else (239, 246, 255))
-        m_col = AIA_RED if i in [0, 1] else (0, 81, 255)
-        draw.text((px + 35, start_y + 120), p["metric"], font=get_num_font(30, 'black'), fill=m_col)
-        draw.text((px + 35, start_y + 165), p["metric_desc"], font=get_font(11.5, 'medium'), fill=TEXT_LIGHT_SUB)
+        # Device Mockup (phone_w=230, phone_h=460)
+        screen_path = os.path.join(CORE_DIR, wf["screen"])
+        draw_phone_mockup(img, screen_path, cx=sx + sw // 2, cy=start_y + 315, phone_w=230, phone_h=460, bezel=8, radius=28)
         
-        # Details
-        dy = start_y + 225
-        for h_text, b_text in p["details"]:
-            draw.text((px + 22, dy), "✔", font=get_font(12, 'bold'), fill=m_col)
-            draw.text((px + 40, dy), h_text, font=get_font(13.5, 'bold'), fill=TEXT_LIGHT_MAIN)
-            lines = wrap_text(b_text, get_font(12, 'regular'), pw - 60, draw)
-            ly = dy + 22
-            for line in lines:
-                draw.text((px + 40, ly), line, font=get_font(12, 'regular'), fill=TEXT_LIGHT_SUB)
-                ly += 18
-            dy = ly + 20
+        # Wireframe Annotation Callout Box at bottom
+        draw.rounded_rectangle([sx + 15, start_y + sh - 155, sx + sw - 15, start_y + sh - 15], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+        draw.text((sx + 25, start_y + sh - 140), "📐 화면 설계 상세 명세 (Specs)", font=get_font(11.5, 'bold'), fill=AIA_RED)
+        
+        ay = start_y + sh - 116
+        for annot in wf["annotations"]:
+            draw.text((sx + 25, ay), annot, font=get_font(11, 'medium'), fill=TEXT_LIGHT_MAIN)
+            ay += 23
             
     draw_slide_footer(draw, 6, 12, dark_mode=False)
     out_path = os.path.join(OUT_DIR, "slide_06.png")
@@ -207,92 +237,105 @@ def make_slide_06():
     print(f"Generated: {out_path}")
 
 # -------------------------------------------------------------
-# SLIDE 07: GLOBAL DESIGN SYSTEM (Qi DS v3.3)
+# SLIDE 07: DESIGN SYSTEM (Tokens Table, Swatches & Components)
 # -------------------------------------------------------------
 def make_slide_07():
     img = Image.new('RGB', (W, H), BG_LIGHT)
     draw = ImageDraw.Draw(img)
     draw_slide_header(
         draw, 7, 
-        "GLOBAL DESIGN SYSTEM & TOKENS", 
-        "AIA 글로벌 표준 디자인 시스템 ", 
-        "Qi Design System v3.3", 
-        "디자인 토큰, 아이코노그래피, 폼 필드 컴포넌트의 단일 소스 아키텍처", 
-        right_badge=("QI TOKENS V3.3", "red")
+        "DESIGN SYSTEM & TOKENS", 
+        "Design System | ", 
+        "AIA 글로벌 표준 Qi 디자인 시스템 v3.3", 
+        "디자인 토큰 규격 테이블, 브랜드 컬러 팔레트, 56dp 고령자 입력 컴포넌트 표준", 
+        right_badge=("QI DESIGN TOKENS", "red")
     )
     
-    # 3 Section Cards
-    # Left: Tokens & Color System (W=520)
+    # 3 Section Grid matching Behance Design System section
+    # Left: Design Tokens Specification Table (W=540)
     lx = 100
     ly = 220
-    lw = 520
+    lw = 540
     lh = 730
     draw.rounded_rectangle([lx, ly, lx + lw, ly + lh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, left_x=lx + 25, cy=ly + 35, text="QI COLOR & TYPOGRAPHY TOKENS", font=get_font(11, 'bold'), theme='red', pad_x=12, height=24)
-    draw.text((lx + 25, ly + 65), "AIA 브랜드 시그니처 & 타이포 규격", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
+    draw_pill_badge(draw, left_x=lx + 25, cy=ly + 35, text="QI TOKEN SPECIFICATION TABLE", font=get_font(11, 'bold'), theme='red', pad_x=12, height=24)
+    draw.text((lx + 25, ly + 65), "디자인 토큰 분류 & 플랫폼 표준", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
     
-    colors = [
-        ("AIA Red (Primary)", "#D31145", AIA_RED, "브랜드 메인 액션 및 강조"),
-        ("AIA Deep Red", "#9E002B", AIA_RED_DARK, "다크 테마 헤더 및 그라디언트"),
-        ("Slate Black (Text)", "#0F172A", (15, 23, 42), "본문 고대비 시인성 텍스트"),
-        ("Card Border", "#E2E8F0", (226, 232, 240), "명확한 경계선 및 컨테이너"),
-        ("Success Green", "#10B981", (16, 185, 129), "정상 납부 및 승인 완료"),
-        ("Alert Amber", "#F59E0B", (245, 158, 11), "미납 알림 및 주의 사항")
+    # Tokens Mini Table
+    th_y = ly + 110
+    draw.rounded_rectangle([lx + 20, th_y, lx + lw - 20, th_y + 36], radius=6, fill=(241, 245, 249))
+    draw.text((lx + 35, th_y + 18), "토큰 분류", font=get_font(11.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
+    draw.text((lx + 155, th_y + 18), "고령자 규격", font=get_font(11.5, 'bold'), fill=AIA_RED, anchor='lm')
+    draw.text((lx + 285, th_y + 18), "일반 규격", font=get_font(11.5, 'bold'), fill=TEXT_LIGHT_SUB, anchor='lm')
+    draw.text((lx + 405, th_y + 18), "WCAG 준수", font=get_font(11.5, 'bold'), fill=(16, 185, 129), anchor='lm')
+    
+    token_rows = [
+        ("Display 폰트", "28pt Bold", "24pt Bold", "AAA (9.2:1)"),
+        ("본문 Title", "20pt Bold", "16pt SemiBold", "AAA (8.6:1)"),
+        ("기본 본문 Body", "18pt SemiBold", "14pt Regular", "AAA (8.4:1)"),
+        ("보조 캡션", "15pt Medium", "12pt Regular", "AA (6.8:1)"),
+        ("최소 터치 영역", "48 x 48 dp", "36 x 36 dp", "규제 100%"),
+        ("하단 고정 CTA", "56dp 풀와이드", "48dp 기본", "Thumb Zone"),
+        ("버튼 코너 라운딩", "Radius 8dp", "Radius 6dp", "인체공학"),
+        ("컨테이너 보더", "2px 솔리드 라인", "1px 라인", "선명 분리")
     ]
-    cy = ly + 115
-    for c_name, c_hex, c_rgb, c_sub in colors:
-        draw.rounded_rectangle([lx + 25, cy, lx + 75, cy + 50], radius=8, fill=c_rgb)
-        draw.text((lx + 90, cy + 6), c_name, font=get_font(13.5, 'bold'), fill=TEXT_LIGHT_MAIN)
-        draw.text((lx + 90, cy + 28), f"{c_hex}  ·  {c_sub}", font=get_font(11.5, 'medium'), fill=TEXT_LIGHT_SUB)
-        cy += 64
+    
+    try_pos = th_y + 44
+    for t_cat, t_sen, t_gen, t_wcag in token_rows:
+        draw.rectangle([lx + 20, try_pos, lx + lw - 20, try_pos + 42], fill=(255, 248, 250) if "Body" in t_cat or "CTA" in t_cat else (255, 255, 255))
+        draw.line([(lx + 20, try_pos + 42), (lx + lw - 20, try_pos + 42)], fill=BORDER_LIGHT, width=1)
+        draw.text((lx + 35, try_pos + 21), t_cat, font=get_font(12, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
+        draw.text((lx + 155, try_pos + 21), t_sen, font=get_font(12, 'bold'), fill=AIA_RED, anchor='lm')
+        draw.text((lx + 285, try_pos + 21), t_gen, font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB, anchor='lm')
+        draw.text((lx + 405, try_pos + 21), t_wcag, font=get_font(11.5, 'bold'), fill=(5, 150, 105), anchor='lm')
+        try_pos += 44
         
-    draw.text((lx + 25, cy + 10), "시스템 타이포그래피 스케일", font=get_font(14, 'bold'), fill=TEXT_LIGHT_MAIN)
-    typo_scales = [
-        ("Hero Display", "32px / Bold", "메인 환영 메시지 및 총 자산"),
-        ("Title Large", "24px / Bold", "각 서비스 헤더 및 핵심 금액"),
-        ("Senior Body", "18px / SemiBold", "고령자 모드 기본 본문 텍스트"),
-        ("General Body", "14px / Regular", "일반 모드 리스트 및 부가 안내")
-    ]
-    ty = cy + 40
-    for t_name, t_size, t_desc in typo_scales:
-        draw.text((lx + 25, ty), t_name, font=get_font(12, 'bold'), fill=AIA_RED)
-        draw.text((lx + 130, ty), t_size, font=get_font(12, 'medium'), fill=TEXT_LIGHT_MAIN)
-        draw.text((lx + 250, ty), t_desc, font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
-        ty += 32
-        
-    # Middle: Real Qi Icon Matrix (W=540)
-    mx = 650
-    mw = 540
+    # Bottom guideline note
+    draw.rounded_rectangle([lx + 20, ly + lh - 110, lx + lw - 20, ly + lh - 25], radius=10, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+    draw.text((lx + 35, ly + lh - 95), "💡 디자인 토큰 개발 연동 표준", font=get_font(12, 'bold'), fill=AIA_RED)
+    draw.text((lx + 35, ly + lh - 70), "Figma Tokens -> JSON Schema -> Flutter AppTheme 자동 동기화", font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_MAIN)
+    draw.text((lx + 35, ly + lh - 48), "단일 소스 기반으로 다크/라이트 테마 및 시니어 스케일 100% 매핑", font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB)
+    
+    # Middle: Real Qi Color Palette Swatches (W=520)
+    mx = 670
+    mw = 520
     draw.rounded_rectangle([mx, ly, mx + mw, ly + lh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, left_x=mx + 25, cy=ly + 35, text="QI ICONOGRAPHY SYSTEM", font=get_font(11, 'bold'), theme='blue', pad_x=12, height=24)
-    draw.text((mx + 25, ly + 65), "24dp 픽셀 퍼펙트 벡터 아이콘 세트", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
+    draw_pill_badge(draw, left_x=mx + 25, cy=ly + 35, text="BRAND COLOR PALETTE SWATCHES", font=get_font(11, 'bold'), theme='blue', pad_x=12, height=24)
+    draw.text((mx + 25, ly + 65), "AIA 브랜드 시그니처 컬러 시스템", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
     
+    # Swatch Grid matching Behance (Rows of color boxes)
+    swatches = [
+        ("AIA Red (Primary)", "#D31145", AIA_RED),
+        ("AIA Deep Red", "#9E002B", AIA_RED_DARK),
+        ("Slate Black (Text)", "#0F172A", (15, 23, 42)),
+        ("Container Slate", "#F8FAFC", (248, 250, 252)),
+        ("Card Border", "#E2E8F0", (226, 232, 240)),
+        ("Success Green", "#10B981", (16, 185, 129)),
+        ("Alert Amber", "#F59E0B", (245, 158, 11)),
+        ("Info Cerulean", "#0284C7", (2, 132, 199))
+    ]
+    
+    sw_y = ly + 115
+    for c_title, c_hex, c_rgb in swatches:
+        draw.rounded_rectangle([mx + 25, sw_y, mx + 85, sw_y + 45], radius=8, fill=c_rgb, outline=BORDER_LIGHT, width=1)
+        draw.text((mx + 105, sw_y + 8), c_title, font=get_font(13.5, 'bold'), fill=TEXT_LIGHT_MAIN)
+        draw.text((mx + 105, sw_y + 28), c_hex, font=get_num_font(12, 'bold'), fill=TEXT_LIGHT_SUB)
+        sw_y += 58
+        
+    # Vector Icon Matrix Integration
+    draw.text((mx + 25, sw_y + 15), "Qi 24dp/32dp 벡터 아이콘 시스템", font=get_font(14, 'bold'), fill=(29, 78, 216))
     qi_icon_path = os.path.join(QI_DIR, "qi_icon_matrix.png")
     if os.path.exists(qi_icon_path):
         qicon = Image.open(qi_icon_path).convert('RGBA')
-        qicon = qicon.resize((490, 360), Image.Resampling.LANCZOS)
-        img.paste(qicon, (mx + 25, ly + 115), qicon)
+        qicon = qicon.resize((470, 120), Image.Resampling.LANCZOS)
+        img.paste(qicon, (mx + 25, sw_y + 45), qicon)
         
-    iry = ly + 500
-    draw.text((mx + 25, iry), "Qi 아이콘 시스템 설계 원칙", font=get_font(14, 'bold'), fill=(29, 78, 216))
-    irules = [
-        "24x24dp 바운딩 박스 & 2dp 스트로크 두께 통일",
-        "광학적 중심(Optical Center) 보정으로 시각적 균형 유지",
-        "고령자 모드 전용 32dp 라지 아이콘 매핑 테이블 구축",
-        "SVG 벡터 기반 Flutter / React 다형성 지원"
-    ]
-    iry += 30
-    for r in irules:
-        draw.text((mx + 25, iry), "•", font=get_font(12, 'bold'), fill=(29, 78, 216))
-        draw.text((mx + 42, iry), r, font=get_font(12, 'regular'), fill=TEXT_LIGHT_MAIN)
-        iry += 28
-        
-    # Right: Real Qi Input Component Specs (W=600)
+    # Right: Components & Form Fields (W=570)
     rx = 1220
     rw = 600
     draw.rounded_rectangle([rx, ly, rx + rw, ly + lh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, left_x=rx + 25, cy=ly + 35, text="QI INPUT & FORM COMPONENTS", font=get_font(11, 'bold'), theme='green', pad_x=12, height=24)
-    draw.text((rx + 25, ly + 65), "입력 컴포넌트 & 인터랙션 상태 머신", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
+    draw_pill_badge(draw, left_x=rx + 25, cy=ly + 35, text="INPUT & BUTTON COMPONENTS", font=get_font(11, 'bold'), theme='green', pad_x=12, height=24)
+    draw.text((rx + 25, ly + 65), "고령자 인체공학 56dp 폼 컴포넌트", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
     
     qi_input_path = os.path.join(QI_DIR, "qi_input_component.png")
     if os.path.exists(qi_input_path):
@@ -319,25 +362,25 @@ def make_slide_07():
     print(f"Generated: {out_path}")
 
 # -------------------------------------------------------------
-# SLIDE 08: CORE JOURNEY 01 - PREMIUM PAYMENT
+# SLIDE 08: UI SCREENS PART 1 (4 Core Journey Screens)
 # -------------------------------------------------------------
 def make_slide_08():
     img = Image.new('RGB', (W, H), BG_LIGHT)
     draw = ImageDraw.Draw(img)
     draw_slide_header(
         draw, 8, 
-        "CORE JOURNEY 01 · PREMIUM PAYMENT", 
-        "보험료 간편 납부 & 실시간 가상계좌 ", 
-        "엔드투엔드 여정 & 하단 액션 버튼", 
-        "당월/미납 보험료 조회부터 주거래 계좌 출금 및 가상계좌 즉시 입금 완료까지 하단 CTA 완벽 노출", 
-        right_badge=("CONVERSION 89.4%", "red")
+        "UI SCREENS · CORE JOURNEY", 
+        "UI Screens | ", 
+        "고령자 모드 핵심 여정 4개 화면 (Row 1)", 
+        "홈 대시보드, 계약 조회, 계좌 선택, 납부 완료 등 비대면 코어 서비스 화면 설계", 
+        right_badge=("PRODUCTION UI", "red")
     )
     
     screens = [
-        ("STEP 01", "계약 및 납부액 조회", "screen_pay_list_senior.png", "보유 계약 중 납입 대상 자동 집계 및 하단 [다음] 버튼 즉시 배치"),
-        ("STEP 02", "납부 계좌 1-Tap 선택", "screen_pay_input_account.png", "기등록 주거래 계좌 선택 및 하단 [출금 동의 및 결제] CTA"),
-        ("STEP 03", "가상계좌 즉시 발급", "screen_pay_virtual.png", "입금 전용 가상계좌 발급 및 하단 [계좌번호 복사하기] 액션"),
-        ("STEP 04", "납부 완료 & 케어 안내", "screen_pay_done.png", "영수증 즉시 발급 및 하단 [확인 (홈으로)] 원클릭 완료")
+        ("01. 원터치 홈", "screen_senior_main_home.png", "보유 계약 건수 및 당월 미납 보험료 한눈에 확인"),
+        ("02. 계약 조회", "screen_pay_list_senior.png", "납입 대상 계약 선택 및 18pt 굵은 글씨 납부액 확인"),
+        ("03. 계좌 선택", "screen_pay_input_account.png", "기등록 주거래 계좌 1-Tap 또는 가상계좌 선택"),
+        ("04. 납부 완료", "screen_pay_done.png", "영수증 즉시 발급 및 카카오 알림톡 전송 완료")
     ]
     
     sw = 395
@@ -345,24 +388,20 @@ def make_slide_08():
     start_x = 100
     start_y = 220
     
-    for i, (step_tag, step_title, s_file, s_desc) in enumerate(screens):
+    for i, (stitle, s_file, s_desc) in enumerate(screens):
         sx = start_x + i * (sw + 23)
         draw.rounded_rectangle([sx, start_y, sx + sw, start_y + sh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
         
-        # Tag & Title
-        draw_pill_badge(draw, left_x=sx + 20, cy=start_y + 35, text=step_tag, font=get_font(10.5, 'bold'), theme='red' if i==3 else 'blue', pad_x=12, height=24)
-        draw.text((sx + 20, start_y + 65), step_title, font=get_font(16.5, 'bold'), fill=TEXT_LIGHT_MAIN)
+        draw_pill_badge(draw, left_x=sx + 20, cy=start_y + 35, text=f"SCREEN 0{i+1}", font=get_font(10.5, 'bold'), theme='red' if i==3 else 'blue', pad_x=12, height=24)
+        draw.text((sx + 20, start_y + 65), stitle, font=get_font(17, 'bold'), fill=TEXT_LIGHT_MAIN)
         
-        # Device Mockup (phone_w=240, phone_h=510 with 100% full screen & CTA)
         screen_path = os.path.join(CORE_DIR, s_file)
         draw_phone_mockup(img, screen_path, cx=sx + sw // 2, cy=start_y + 360, phone_w=240, phone_h=510, bezel=8, radius=30)
         
-        # Connecting arrow between cards
         if i < 3:
             arrow_x = sx + sw + 4
             draw_arrow(draw, (arrow_x, start_y + 360), (arrow_x + 15, start_y + 360), col=AIA_RED, width=2, arrow_size=6)
         
-        # Desc Box at bottom
         draw.rounded_rectangle([sx + 20, start_y + sh - 85, sx + sw - 20, start_y + sh - 20], radius=10, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
         lines = wrap_text(s_desc, get_font(11.5, 'regular'), sw - 56, draw)
         dy = start_y + sh - 74
