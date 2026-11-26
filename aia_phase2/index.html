@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AIA생명 AIA+ Phase 2 - 고령자 친화 배리어프리 금융 UX & Qi 디자인 시스템 v3.3</title>
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="stylesheet" href="style.css?v=20261126_aia_v1">
+  <style>
+    :root {
+      --accent-primary: #D31145;
+      --accent-glow: rgba(211, 17, 69, 0.35);
+      --border-accent: rgba(211, 17, 69, 0.45);
+    }
+    .dock-left .btn-dock-hub {
+      border-color: rgba(211, 17, 69, 0.4);
+    }
+    .dock-left .btn-dock-hub:hover {
+      background: rgba(211, 17, 69, 0.15);
+      border-color: #D31145;
+      color: #FF80A0;
+    }
+    .dock-left .live-status-pill .status-dot {
+      background: #D31145;
+      box-shadow: 0 0 10px #D31145;
+    }
+    .slide-nav-rail .nav-dot.active {
+      background: #D31145;
+      box-shadow: 0 0 12px #D31145;
+    }
+    .btn-print {
+      border-color: rgba(211, 17, 69, 0.4);
+      color: #FFB3C6;
+    }
+    .btn-print:hover {
+      background: rgba(211, 17, 69, 0.15);
+      border-color: #D31145;
+      color: #FFFFFF;
+    }
+    .dock-aia-brand-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 12px 5px 8px;
+      border-radius: 9999px;
+      background: linear-gradient(135deg, rgba(211, 17, 69, 0.2) 0%, rgba(158, 0, 43, 0.3) 100%);
+      border: 1px solid rgba(211, 17, 69, 0.5);
+      box-shadow: 0 0 12px rgba(211, 17, 69, 0.25);
+    }
+    .dock-aia-brand-chip img {
+      width: 18px;
+      height: 18px;
+      object-fit: contain;
+      border-radius: 4px;
+    }
+    .dock-aia-brand-chip span {
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: #FF80A0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Navigation & Master Control Dock (Bottom Fixed) -->
+  <aside class="global-control-bar" aria-label="Deck Controls">
+    <div class="dock-left">
+      <a href="../index.html" class="btn-dock-hub" title="메인 포트폴리오 허브로 이동" aria-label="메인 허브로 이동">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        <span>허브</span>
+      </a>
+      <span class="live-status-pill">
+        <span class="status-dot"></span>
+        고령자 친화 배리어프리 모바일 금융 UX
+      </span>
+      <span class="deck-title">AIA생명 AIA+ Phase 2 · Behance Case Study</span>
+    </div>
+
+    <div class="dock-center">
+      <button class="nav-arrow-btn" id="btn-prev" title="이전 슬라이드 (← 키)" aria-label="Previous Slide">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <span class="slide-counter" id="slide-counter">SLIDE <strong id="curr-num">01</strong> / 12</span>
+      <button class="nav-arrow-btn" id="btn-next" title="다음 슬라이드 (→ 키 / Space)" aria-label="Next Slide">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+    </div>
+
+    <div class="dock-right">
+      <button class="btn-icon" id="btn-fitscreen" title="화면 높이 맞춤 토글 (W)" aria-label="Toggle Fit Window">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+          <line x1="8" y1="21" x2="16" y2="21"/>
+          <line x1="12" y1="17" x2="12" y2="21"/>
+        </svg>
+      </button>
+      <button class="btn-icon" id="btn-fullscreen" title="전체화면 (F)" aria-label="Toggle Fullscreen">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+      </button>
+      <a href="AIA_Plus_Phase2_Portfolio.pdf" download="AIA_Plus_Phase2_Portfolio.pdf" target="_blank" class="btn-print" style="text-decoration: none;" title="12슬라이드 1920x1080 고해상도 포트폴리오 PDF 다운로드">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+        </svg>
+        포트폴리오 PDF 다운로드
+      </a>
+      <div class="dock-aia-brand-chip" title="AIA Life Official Brand">
+        <img src="../assets/aia_plus_app_icon.png" alt="AIA+">
+        <span>AIA+</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Right Slide Dot Navigation Rail -->
+  <nav class="slide-nav-rail" id="nav-rail" aria-label="Slide Jump Dots"></nav>
+
+  <!-- Keyboard Hint Floating Toast -->
+  <div class="key-hint-pill" id="key-hint">
+    <span>키보드 방향키 <kbd>←</kbd> <kbd>→</kbd> 슬라이드 이동 · <kbd>W</kbd> 화면 맞춤 · <kbd>F</kbd> 전체화면</span>
+  </div>
+
+  <!-- Main Slide Deck Viewport -->
+  <main class="deck-viewport" id="deck-viewport">
+    <section class="behance-slide-container" id="slide-1" data-title="01. 헤로 커버">
+      <img class="behance-slide-img" src="behance_slides/slide_01.png?v=20261126" alt="Slide 01: Hero Cover" loading="eager" />
+    </section>
+
+    <section class="behance-slide-container" id="slide-2" data-title="02. 시장 배경 & 문제 정의">
+      <img class="behance-slide-img" src="behance_slides/slide_02.png?v=20261126" alt="Slide 02: Market Background & Problem" loading="lazy" />
+    </section>
+
+    <section class="behance-slide-container" id="slide-3" data-title="03. 타깃 & 듀얼 페르소나">
+      <img class="behance-slide-img" src="behance_slides/slide_03.png?v=20261126" alt="Slide 03: Persona & User Research" loading="lazy" />
+    </section>
+
+    <section class="behance-slide-container" id="slide-4" data-title="04. 듀얼 모드 정보 구조 (IA)">
+      <img class="behance-slide-img" src="behance_slides/slide_04.png?v=20261126" alt="Slide 04: Information Architecture" loading="lazy" />
+    </section>
+
+    <section class="behance-slide-container" id="slide-5" data-title="05. 3-Step 초간편 사용자 여정">
+      <img class="behance-slide-img" src="behance_slides/slide_05.png?v=20261126" alt="Slide 05: Core User Flow & Journey" loading="lazy" />
+    </section>
+
+    <section class="behance-slide-container" id="slide-6" data-title="06. 배리어프리 UI 시스템">
+      <img class="behance-slide-img" src="behance_slides/slide_06.png?v=20261126" alt="Slide 06: Senior Accessibility & UI System" loading="lazy" />
+    </section>
+
+    <section class="behance-slide-container" id="slide-7" data-title="07. Qi 글로벌 디자인 시스템">
+      <img class="behance-slide-img" src="behance_slides/slide_07.png?v=20261126" alt="Slide 07: Global Design System & Tokens" loading="lazy" />
+    </section>
+
+    <section class="behance-slide-container" id="slide-8" data-title="08. 여정 01 · 보험료 간편 납부">
+      <img class="behance-slide-img" src="behance_slides/slide_08.png?v=20261126" alt="Slide 08: Premium Payment Journey" loading="lazy" />
+    </section>
+
+    <section class="behance-slide-container" id="slide-9" data-title="09. 여정 02 · 대출 및 자동이체">
+      <img class="behance-slide-img" src="behance_slides/slide_09.png?v=20261126" alt="Slide 09: Loan & Automation Journey" loading="lazy" />
+    </section>
+
+    <section class="behance-slide-container" id="slide-10" data-title="10. 여정 03 · OCR 청구 & 실효부활">
+      <img class="behance-slide-img" src="behance_slides/slide_10.png?v=20261126" alt="Slide 10: Claims & Revival Journey" loading="lazy" />
+    </section>
+
+    <section class="behance-slide-container" id="slide-11" data-title="11. 비즈니스 성과 & STAR 회고">
+      <img class="behance-slide-img" src="behance_slides/slide_11.png?v=20261126" alt="Slide 11: Business Impact & STAR Retrospective" loading="lazy" />
+    </section>
+
+    <section class="behance-slide-container" id="slide-12" data-title="12. 에필로그 & 총괄 크레딧">
+      <img class="behance-slide-img" src="behance_slides/slide_12.png?v=20261126" alt="Slide 12: Epilogue & Credits" loading="lazy" />
+    </section>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const slides = Array.from(document.querySelectorAll('.behance-slide-container'));
+      const currNumEl = document.getElementById('curr-num');
+      const btnPrev = document.getElementById('btn-prev');
+      const btnNext = document.getElementById('btn-next');
+      const navRail = document.getElementById('nav-rail');
+      const btnFit = document.getElementById('btn-fitscreen');
+      const btnFull = document.getElementById('btn-fullscreen');
+
+      let currentIdx = 0;
+      let isFitHeight = false;
+
+      // 1. Build Navigation Rail Dots
+      slides.forEach((slide, idx) => {
+        const dot = document.createElement('button');
+        dot.className = 'nav-dot' + (idx === 0 ? ' active' : '');
+        dot.title = slide.getAttribute('data-title') || `Slide ${idx + 1}`;
+        dot.setAttribute('aria-label', dot.title);
+        dot.addEventListener('click', () => {
+          scrollToSlide(idx);
+        });
+        navRail.appendChild(dot);
+      });
+
+      const dots = Array.from(navRail.querySelectorAll('.nav-dot'));
+
+      // 2. Scroll and Active State Observation
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const idx = parseInt(entry.target.getAttribute('id').replace('slide-', ''), 10) - 1;
+            if (idx >= 0 && idx < slides.length) {
+              currentIdx = idx;
+              updateActiveUI(currentIdx);
+            }
+          }
+        });
+      }, {
+        root: null,
+        threshold: 0.5
+      });
+
+      slides.forEach(s => observer.observe(s));
+
+      function updateActiveUI(idx) {
+        currNumEl.textContent = String(idx + 1).padStart(2, '0');
+        dots.forEach((d, i) => {
+          d.classList.toggle('active', i === idx);
+        });
+      }
+
+      function scrollToSlide(idx) {
+        if (idx < 0 || idx >= slides.length) return;
+        slides[idx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+
+      btnPrev.addEventListener('click', () => {
+        if (currentIdx > 0) scrollToSlide(currentIdx - 1);
+      });
+
+      btnNext.addEventListener('click', () => {
+        if (currentIdx < slides.length - 1) scrollToSlide(currentIdx + 1);
+      });
+
+      // Keyboard Shortcuts
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ') {
+          e.preventDefault();
+          if (currentIdx < slides.length - 1) scrollToSlide(currentIdx + 1);
+        } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+          e.preventDefault();
+          if (currentIdx > 0) scrollToSlide(currentIdx - 1);
+        } else if (e.key === 'w' || e.key === 'W') {
+          toggleFitWindow();
+        } else if (e.key === 'f' || e.key === 'F') {
+          toggleFullscreen();
+        }
+      });
+
+      function toggleFitWindow() {
+        isFitHeight = !isFitHeight;
+        document.body.classList.toggle('fit-window-mode', isFitHeight);
+        btnFit.classList.toggle('active', isFitHeight);
+        scrollToSlide(currentIdx);
+      }
+      btnFit.addEventListener('click', toggleFitWindow);
+
+      function toggleFullscreen() {
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen().catch(() => {});
+        } else {
+          document.exitFullscreen().catch(() => {});
+        }
+      }
+      btnFull.addEventListener('click', toggleFullscreen);
+    });
+  </script>
+</body>
+</html>

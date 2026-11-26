@@ -65,3 +65,4 @@ with sync_playwright() as p:
     browser.close()
 
 print(f"Successfully generated {len(svg_items)} real Lucide icon PNGs in {out_dir}!")
+
