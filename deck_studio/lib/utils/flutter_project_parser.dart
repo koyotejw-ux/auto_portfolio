@@ -512,8 +512,8 @@ class FlutterProjectParser {
       if (t.isEmpty || seenTexts.contains(t) || t == screenName) continue;
       // Skip if already parsed as retro font
       if (elements.any((e) => e.props['originalCodeText'] == t)) continue;
-      // Filter out raw template variables
-      if (t.startsWith(r'${') && t.endsWith('}') && !t.contains(' ')) continue;
+      // Filter out raw template variables or index formulas like GUIDE 0${index + 1}
+      if (t.contains(r'${') || t.contains(r'$index') || (t.startsWith(r'$') && !t.contains(' '))) continue;
       seenTexts.add(t);
       if (seenTexts.length > 8) break;
 
