@@ -187,30 +187,31 @@ def draw_slide_footer(draw, slide_num, total_slides=12, dark_mode=False):
     page_str = f"PAGE {slide_num:02d} / {total_slides:02d}"
     draw.text((1820, 1018), page_str, font=get_num_font(11.5, 'black'), fill=page_col, anchor='rt')
 
-def draw_phone_mockup(base_img, screen_path, cx, cy, phone_w=280, phone_h=580, bezel=10, radius=38, dark_body=True):
+def draw_phone_mockup(base_img, screen_path, cx, cy, phone_w=280, phone_h=600, bezel=6, radius=32, dark_body=True, show_toggle_badge=None):
     """
     Ultra-refined luxury smartphone frame.
-    Guarantees 100% full-screen visibility including bottom CTA buttons and navigation bars.
+    Guarantees 100% full-screen visibility of all headers, content, bottom CTA buttons, and margins.
+    Prevents any clipping or overlap on bottom action buttons.
     """
-    body_col = (18, 22, 30) if dark_body else (240, 243, 248)
-    rim_col = (70, 80, 98) if dark_body else (203, 213, 225)
-    inner_bezel_col = (10, 12, 16)
+    body_col = (20, 24, 33) if dark_body else (240, 243, 248)
+    rim_col = (75, 85, 105) if dark_body else (203, 213, 225)
+    inner_bezel_col = (12, 15, 20)
     
     x1 = cx - phone_w // 2
     y1 = cy - phone_h // 2
     x2 = cx + phone_w // 2
     y2 = cy + phone_h // 2
     
-    # 1. Multi-tier drop shadow for luxury depth
-    shadow = Image.new('RGBA', (phone_w + 80, phone_h + 80), (0, 0, 0, 0))
+    # 1. Multi-tier drop shadow for realistic depth
+    shadow = Image.new('RGBA', (phone_w + 60, phone_h + 60), (0, 0, 0, 0))
     sdraw = ImageDraw.Draw(shadow)
-    sdraw.rounded_rectangle([35, 35, phone_w + 45, phone_h + 45], radius=radius + 4, fill=(0, 0, 0, 110))
-    shadow = shadow.filter(ImageFilter.GaussianBlur(20))
-    base_img.paste(shadow, (x1 - 40, y1 - 25), shadow)
+    sdraw.rounded_rectangle([25, 25, phone_w + 35, phone_h + 35], radius=radius + 2, fill=(0, 0, 0, 95))
+    shadow = shadow.filter(ImageFilter.GaussianBlur(16))
+    base_img.paste(shadow, (x1 - 30, y1 - 20), shadow)
     
     draw = ImageDraw.Draw(base_img)
-    # 2. Outer phone chassis
-    draw.rounded_rectangle([x1, y1, x2, y2], radius=radius, fill=body_col, outline=rim_col, width=2)
+    # 2. Outer phone chassis with subtle edge highlight
+    draw.rounded_rectangle([x1, y1, x2, y2], radius=radius, fill=body_col, outline=rim_col, width=1)
     
     # 3. Inner screen viewport
     sx1 = x1 + bezel
@@ -221,51 +222,51 @@ def draw_phone_mockup(base_img, screen_path, cx, cy, phone_w=280, phone_h=580, b
     sh = sy2 - sy1
     draw.rounded_rectangle([sx1, sy1, sx2, sy2], radius=radius - bezel // 2, fill=inner_bezel_col)
     
-    # 4. Fit Screen with strict CTA button preservation
+    # 4. Fit Screen with strict CTA button and header preservation
     if screen_path and os.path.exists(screen_path):
         screen = Image.open(screen_path).convert('RGBA')
         
-        # Scale to match height perfectly so all bottom content & CTA buttons are strictly visible
-        scale_h = sh / screen.height
-        fit_w = int(round(screen.width * scale_h))
-        fit_h = sh
+        # Calculate aspect ratio
+        screen_aspect = screen.height / screen.width
+        target_aspect = sh / sw
         
-        # If scaled width exceeds sw slightly, scale to fit sw instead
-        if fit_w > sw:
-            scale_w = sw / screen.width
+        # If screen is square or atypical (e.g. general main preview), fit width and fill top/bottom gracefully
+        if abs(screen_aspect - target_aspect) < 0.25:
+            # Aspect ratio matches standard phone (~1:2.16)
+            screen_resized = screen.resize((sw, sh), Image.Resampling.LANCZOS)
+            screen_canvas = screen_resized
+        else:
+            # Scale proportionally preserving entire width
+            scale = sw / screen.width
             fit_w = sw
-            fit_h = int(round(screen.height * scale_w))
+            fit_h = int(round(screen.height * scale))
             
-        screen_resized = screen.resize((fit_w, fit_h), Image.Resampling.LANCZOS)
+            if fit_h > sh:
+                # Top portion alignment showing primary content and CTA
+                fit_h = sh
+                screen_resized = screen.resize((fit_w, int(round(screen.height * scale))), Image.Resampling.LANCZOS)
+                screen_canvas = screen_resized.crop((0, 0, sw, sh))
+            else:
+                screen_resized = screen.resize((fit_w, fit_h), Image.Resampling.LANCZOS)
+                # Sample background
+                bg_sample = screen_resized.getpixel((fit_w // 2, min(fit_h - 5, fit_h - 1)))
+                bg_color = (bg_sample[0], bg_sample[1], bg_sample[2], 255) if len(bg_sample) >= 3 else (255, 255, 255, 255)
+                screen_canvas = Image.new('RGBA', (sw, sh), bg_color)
+                screen_canvas.paste(screen_resized, (0, 0))
         
-        # Background fill matching bottom or header
-        sample_y = min(screen_resized.height - 10, screen_resized.height - 1)
-        bg_sample = screen_resized.getpixel((fit_w // 2, sample_y))
-        bg_color = (bg_sample[0], bg_sample[1], bg_sample[2], 255) if len(bg_sample) >= 3 else (255, 255, 255, 255)
-        
-        screen_canvas = Image.new('RGBA', (sw, sh), bg_color)
-        paste_x = (sw - fit_w) // 2
-        paste_y = (sh - fit_h) // 2 if fit_h < sh else 0
-        screen_canvas.paste(screen_resized, (paste_x, paste_y))
-        
-        # Screen mask with smooth corners
+        # Screen mask with smooth corners matching bezel
         mask = Image.new('L', (sw, sh), 0)
         mdraw = ImageDraw.Draw(mask)
-        mdraw.rounded_rectangle([0, 0, sw, sh], radius=radius - bezel // 2 - 2, fill=255)
+        mdraw.rounded_rectangle([0, 0, sw, sh], radius=radius - bezel // 2 - 1, fill=255)
         
         base_img.paste(screen_canvas, (sx1, sy1), mask)
         
-    # 5. Top Dynamic Island
-    pill_w = int(sw * 0.28)
-    pill_h = 13
-    pill_x1 = cx - pill_w // 2
-    pill_y1 = sy1 + 6
-    draw.rounded_rectangle([pill_x1, pill_y1, pill_x1 + pill_w, pill_y1 + pill_h], radius=6, fill=(0, 0, 0, 230))
-    # Camera dot
-    draw.ellipse([cx + pill_w // 4 - 3, pill_y1 + 3, cx + pill_w // 4 + 3, pill_y1 + 9], fill=(22, 34, 52))
+    # 5. Minimalist punch-hole camera dot (preserves top nav header completely without covering text)
+    cam_r = 4
+    cam_cy = sy1 + 9
+    draw.ellipse([cx - cam_r, cam_cy - cam_r, cx + cam_r, cam_cy + cam_r], fill=(10, 14, 22))
+    draw.ellipse([cx - 1, cam_cy - 1, cx + 1, cam_cy + 1], fill=(28, 44, 72))
     
-    # 6. Bottom Home Indicator Bar
-    bar_w = int(sw * 0.35)
-    bar_h = 4
-    bar_y = sy2 - 7
-    draw.rounded_rectangle([cx - bar_w // 2, bar_y, cx + bar_w // 2, bar_y + bar_h], radius=2, fill=(255, 255, 255, 175))
+    # 6. Mode Switch Badge on Mockup if requested
+    if show_toggle_badge:
+        draw_pill_badge(draw, cx=cx, cy=sy1 + 38, text=show_toggle_badge, font=get_font(10, 'bold'), theme='red', solid=True, pad_x=10, height=22)

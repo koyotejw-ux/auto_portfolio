@@ -220,7 +220,7 @@ def make_slide_06():
         
         # Device Mockup (phone_w=230, phone_h=460)
         screen_path = os.path.join(CORE_DIR, wf["screen"])
-        draw_phone_mockup(img, screen_path, cx=sx + sw // 2, cy=start_y + 315, phone_w=230, phone_h=460, bezel=8, radius=28)
+        draw_phone_mockup(img, screen_path, cx=sx + sw // 2, cy=start_y + 315, phone_w=235, phone_h=475, bezel=6, radius=26)
         
         # Wireframe Annotation Callout Box at bottom
         draw.rounded_rectangle([sx + 15, start_y + sh - 155, sx + sw - 15, start_y + sh - 15], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
@@ -396,7 +396,7 @@ def make_slide_08():
         draw.text((sx + 20, start_y + 65), stitle, font=get_font(17, 'bold'), fill=TEXT_LIGHT_MAIN)
         
         screen_path = os.path.join(CORE_DIR, s_file)
-        draw_phone_mockup(img, screen_path, cx=sx + sw // 2, cy=start_y + 360, phone_w=240, phone_h=510, bezel=8, radius=30)
+        draw_phone_mockup(img, screen_path, cx=sx + sw // 2, cy=start_y + 355, phone_w=242, phone_h=520, bezel=6, radius=28)
         
         if i < 3:
             arrow_x = sx + sw + 4

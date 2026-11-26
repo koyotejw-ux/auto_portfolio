@@ -80,26 +80,37 @@ def make_slide_01():
             draw.text((cx + 20, ly), line, font=get_font(11.5, 'medium'), fill=TEXT_LIGHT_SUB)
             ly += 16
             
-    # Bottom Specs Bar
-    spec_y = 860
-    draw.rounded_rectangle([120, spec_y, 680, spec_y + 110], radius=14, fill=(241, 245, 249), outline=BORDER_LIGHT, width=1)
+    # Bottom Specs Bar (Highlighting User Direct Ownership & Architecture)
+    spec_y = 855
+    draw.rounded_rectangle([120, spec_y, 680, spec_y + 115], radius=14, fill=(241, 245, 249), outline=BORDER_LIGHT, width=1)
     specs = [
         ("프로젝트", "AIA생명 AIA+ Phase 2 고령자 모드 & 비대면 서비스 리뉴얼"),
-        ("역할 / 기여도", "수석 프로덕트 디자이너 / 기획 및 UX/UI 100% 총괄"),
-        ("핵심 표준", "금융위원회 가이드라인 준수 · WCAG 2.1 AAA 8.4:1 고대비")
+        ("수행 역할", "메인화면(일반/고령자) & 전체 서비스 아키텍처/화면설계 100% 단독 총괄"),
+        ("핵심 혁신", "일반모드 ↔ 고령자모드 원클릭 스위칭 & 금융위 가이드라인 완전 준수")
     ]
     for idx, (label, val) in enumerate(specs):
-        sy = spec_y + 15 + idx * 30
-        draw.text((140, sy), label, font=get_font(11.5, 'bold'), fill=AIA_RED)
-        draw.text((235, sy), val, font=get_font(11.5, 'medium'), fill=(15, 23, 42))
+        sy = spec_y + 15 + idx * 31
+        draw.text((140, sy), label, font=get_font(12, 'bold'), fill=AIA_RED)
+        draw.text((225, sy), val, font=get_font(12, 'bold' if idx==1 else 'medium'), fill=(15, 23, 42))
         
-    # Right Column: Actual Devices (Large Center Senior Home + 2 Supporting)
-    draw_phone_mockup(img, os.path.join(CORE_DIR, "screen_general_main.png"), cx=930, cy=570, phone_w=280, phone_h=600)
-    draw_phone_mockup(img, os.path.join(CORE_DIR, "screen_senior_main_home.png"), cx=1260, cy=530, phone_w=330, phone_h=700)
-    draw_phone_mockup(img, os.path.join(CORE_DIR, "screen_pay_list_senior.png"), cx=1590, cy=570, phone_w=280, phone_h=600)
+    # Right Column: Actual Devices (General Mode vs Senior Mode Dual Main Screens)
+    gen_screen = os.path.join(CORE_DIR, "screen_general_main_clean.png")
+    if not os.path.exists(gen_screen):
+        gen_screen = os.path.join(CORE_DIR, "screen_general_main.png")
+    sen_screen = os.path.join(CORE_DIR, "screen_senior_main_home.png")
+    pay_screen = os.path.join(CORE_DIR, "screen_pay_list_senior.png")
+    
+    # 3 Devices showing Mode Switching: Left = General Mode, Center = Senior Mode Home, Right = Senior Action
+    draw_phone_mockup(img, gen_screen, cx=930, cy=565, phone_w=280, phone_h=605, bezel=6, radius=32, show_toggle_badge="[일반모드] 메인화면")
+    draw_phone_mockup(img, sen_screen, cx=1260, cy=530, phone_w=335, phone_h=715, bezel=7, radius=36, show_toggle_badge="[고령자모드] 원터치 홈 (총괄설계)")
+    draw_phone_mockup(img, pay_screen, cx=1590, cy=565, phone_w=280, phone_h=605, bezel=6, radius=32, show_toggle_badge="[간편납부] 56dp CTA")
+    
+    # Mode Switching Visual Flow Indicator
+    draw_arrow(draw, (1075, 565), (1095, 565), col=AIA_RED, width=3, arrow_size=8)
+    draw_pill_badge(draw, cx=1085, cy=535, text="1-Tap 전환", font=get_font(10, 'bold'), theme='red', solid=True, pad_x=8, height=20)
     
     # Floating feature pill
-    draw_pill_badge(draw, cx=1260, cy=180, text="고령자 친화 제로-뎁스 원터치 홈", font=get_font(12, 'bold'), theme='red', solid=True, pad_x=16, height=32)
+    draw_pill_badge(draw, cx=1260, cy=145, text="고령자 친화 제로-뎁스 원터치 홈 · 직접 기획 및 화면설계", font=get_font(12, 'bold'), theme='red', solid=True, pad_x=16, height=32)
     
     draw_slide_footer(draw, 1, 12, dark_mode=False)
     out_path = os.path.join(OUT_DIR, "slide_01.png")
@@ -151,20 +162,24 @@ def make_slide_02():
         draw.text((lx + 400, ly_leg), ltxt, font=get_font(13.5, 'bold'), fill=lcol)
         draw.text((lx + 680, ly_leg), lval, font=get_num_font(14, 'black'), fill=TEXT_LIGHT_MAIN)
         
-    # Demographic Insights
-    iy = ly + 420
-    draw.text((lx + 25, iy), "핵심 조사 결과 (Research Insights)", font=get_font(15, 'bold'), fill=TEXT_LIGHT_MAIN)
+    # Demographic Insights & Mode Switching Need
+    iy = ly + 400
+    draw.text((lx + 25, iy), "심층 리서치 결과: 일반모드 이용 시 장벽과 모드 전환 필요성", font=get_font(14.5, 'bold'), fill=TEXT_LIGHT_MAIN)
     pinsights = [
-        ("모바일 금융 비이용 사유 1위", "글씨가 작아서 읽기 힘들고 인증 절차가 너무 복잡함 (58.4%)"),
-        ("오프라인 창구 방문 이유", "모바일 앱으로 처리하려다 오류가 발생하거나 실패할까 봐 불안함 (47.2%)"),
-        ("타인의 도움 요청 빈도", "고령층의 68.2%가 비대면 금융 거래 시 자녀나 타인의 도움을 받아 수행")
+        ("일반모드 인지 부하 (Depth)", "일반 메인화면은 50여 개 복잡 메뉴와 다단계 탭으로 구성되어 시니어 유입 시 78%가 탐색을 포기하고 이탈함."),
+        ("모드 전환의 시각적 명확성", "상단 원클릭 전환 스위치로 [일반모드 ↔ 고령자모드]를 즉시 오갈 수 있어야 가족 대리 조회 및 본인 직접 처리 간 연속성 유지."),
+        ("실패 불안감 해소와 안심 피드백", "모바일 금융 실패 시 자산 손실 불안을 겪는 6070을 위해 단계별 1-과업 집중 뷰 및 실시간 알림톡 안심 피드백 필수.")
     ]
-    iy += 35
+    iy += 32
     for h_txt, b_txt in pinsights:
-        draw.rounded_rectangle([lx + 25, iy, lx + lw - 25, iy + 70], radius=10, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-        draw.text((lx + 40, iy + 14), h_txt, font=get_font(12.5, 'bold'), fill=AIA_RED)
-        draw.text((lx + 40, iy + 38), b_txt, font=get_font(12, 'regular'), fill=TEXT_LIGHT_MAIN)
-        iy += 85
+        draw.rounded_rectangle([lx + 25, iy, lx + lw - 25, iy + 74], radius=10, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+        draw.text((lx + 38, iy + 13), h_txt, font=get_font(12, 'bold'), fill=AIA_RED)
+        lines = wrap_text(b_txt, get_font(11.5, 'regular'), lw - 90, draw)
+        ly_p = iy + 35
+        for l in lines:
+            draw.text((lx + 38, ly_p), l, font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_MAIN)
+            ly_p += 16
+        iy += 86
         
     # Right Card (W=880): Horizontal Bar Chart & Competitor Inconveniences
     rx = 940

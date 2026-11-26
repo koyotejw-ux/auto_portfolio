@@ -30,7 +30,7 @@ def make_slide_09():
         ("05. 가상계좌 신청", "screen_pay_virtual.png", "입금 전용 가상계좌 발급 및 문자/카톡 전송"),
         ("06. 대형 PIN 키패드", "screen_login_pin.png", "48px 대형 숫자 키패드로 오터치 원천 차단"),
         ("07. 전자서명 선택", "screen_sign_select.png", "카카오/토스/PASS 등 4대 간편인증 완비"),
-        ("08. 일반모드 대시보드", "screen_general_main.png", "모드 스위칭 연동 10대 도메인 통합 자산관리")
+        ("08. 일반모드 대시보드", "screen_general_main_clean.png", "일반 ↔ 고령자모드 원클릭 스위칭 연동 대시보드")
     ]
     
     sw = 395
@@ -46,7 +46,9 @@ def make_slide_09():
         draw.text((sx + 20, start_y + 65), stitle, font=get_font(17, 'bold'), fill=TEXT_LIGHT_MAIN)
         
         screen_path = os.path.join(CORE_DIR, s_file)
-        draw_phone_mockup(img, screen_path, cx=sx + sw // 2, cy=start_y + 360, phone_w=240, phone_h=510, bezel=8, radius=30)
+        if not os.path.exists(screen_path) and s_file == "screen_general_main_clean.png":
+            screen_path = os.path.join(CORE_DIR, "screen_general_main.png")
+        draw_phone_mockup(img, screen_path, cx=sx + sw // 2, cy=start_y + 355, phone_w=242, phone_h=520, bezel=6, radius=28)
         
         if i < 3:
             arrow_x = sx + sw + 4
@@ -88,12 +90,12 @@ def make_slide_10():
     draw_pill_badge(draw, left_x=lx + 25, cy=ly + 35, text="SMART OCR CLAIMS & FORM INTERFACES", font=get_font(11, 'bold'), theme='green', pad_x=12, height=24)
     draw.text((lx + 25, ly + 65), "영수증 자동 스캔 & 청구 사유 간편 입력", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
     
-    draw_phone_mockup(img, os.path.join(CORE_DIR, "screen_claim_receipt.png"), cx=lx + 210, cy=ly + 395, phone_w=250, phone_h=535, bezel=8, radius=30)
-    draw_phone_mockup(img, os.path.join(CORE_DIR, "screen_claim_form.png"), cx=lx + 600, cy=ly + 395, phone_w=250, phone_h=535, bezel=8, radius=30)
-    draw_arrow(draw, (lx + 345, ly + 395), (lx + 465, ly + 395), col=(16, 185, 129), width=2, arrow_size=6)
+    draw_phone_mockup(img, os.path.join(CORE_DIR, "screen_claim_receipt.png"), cx=lx + 210, cy=ly + 390, phone_w=252, phone_h=545, bezel=6, radius=28)
+    draw_phone_mockup(img, os.path.join(CORE_DIR, "screen_claim_form.png"), cx=lx + 600, cy=ly + 390, phone_w=252, phone_h=545, bezel=6, radius=28)
+    draw_arrow(draw, (lx + 345, ly + 390), (lx + 465, ly + 390), col=(16, 185, 129), width=2, arrow_size=6)
     
-    draw.text((lx + 210, ly + 685), "AI 영수증 자동 스캔 & 촬영 CTA", font=get_font(12.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mt')
-    draw.text((lx + 600, ly + 685), "수령 계좌 선택 & 하단 청구 신청 CTA", font=get_font(12.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mt')
+    draw.text((lx + 210, ly + 685), "AI 영수증 자동 스캔 & 하단 촬영 CTA", font=get_font(12.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mt')
+    draw.text((lx + 600, ly + 685), "수령 계좌 선택 & 하단 56dp 접수 CTA", font=get_font(12.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mt')
     
     # Right Box: OCR Process & Revival Care (W=880)
     rx = 940
@@ -183,7 +185,7 @@ def make_slide_11():
     # Header
     draw_pill_badge(draw, left_x=125, cy=star_y + 35, text="STAR METHOD RETROSPECTIVE", font=get_font(11, 'bold'), theme='blue', pad_x=12, height=24)
     draw.text((360, star_y + 25), "AIA생명 AIA+ Phase 2 배리어프리 금융 UX 아키텍처 구축 회고 (200자 이상)", font=get_font(17, 'bold'), fill=TEXT_LIGHT_MAIN)
-    draw.text((1560, star_y + 25), "기획 · 디자인 시스템 · 프로토타이핑 100% 단독 수행", font=get_font(11.5, 'medium'), fill=TEXT_LIGHT_SUB)
+    draw.text((1500, star_y + 25), "메인화면(일반/고령자) & 화면설계서 100% 단독 총괄", font=get_font(11.5, 'bold'), fill=AIA_RED)
     
     star_boxes = [
         {
