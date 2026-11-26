@@ -84,6 +84,10 @@ class FlutterProjectParser {
             p.contains('/controller/') ||
             p.contains('/database/') ||
             p.contains('/db/') ||
+            p.contains('/audio/') ||
+            p.contains('/systems/') ||
+            p.contains('/engine/') ||
+            p.contains('/components/') ||
             p.contains('/network/') ||
             p.contains('/api/') ||
             p.contains('/utils/') ||
@@ -101,6 +105,8 @@ class FlutterProjectParser {
             fileName.contains('_controller.dart') ||
             fileName.contains('_model.dart') ||
             fileName.contains('_state.dart') ||
+            fileName.contains('_component.dart') ||
+            fileName.contains('_engine.dart') ||
             fileName.contains('enums.dart') ||
             fileName.contains('constants.dart')) {
           continue;
@@ -428,6 +434,11 @@ class FlutterProjectParser {
       if (curY > frameY + frameHeight - 80) break;
       if (elements.any((e) => e.props['originalCodeText'] == retroTitle)) continue;
 
+      // Filter out raw interpolation strings like ${state.score} or raw formulas
+      if (retroTitle.startsWith(r'${') && retroTitle.endsWith('}') && !retroTitle.contains(' ')) {
+        continue;
+      }
+
       final isActionBtn = retroTitle.contains('CONTINUE') ||
           retroTitle.contains('LOBBY') ||
           retroTitle.contains('RETRY') ||
@@ -501,6 +512,8 @@ class FlutterProjectParser {
       if (t.isEmpty || seenTexts.contains(t) || t == screenName) continue;
       // Skip if already parsed as retro font
       if (elements.any((e) => e.props['originalCodeText'] == t)) continue;
+      // Filter out raw template variables
+      if (t.startsWith(r'${') && t.endsWith('}') && !t.contains(' ')) continue;
       seenTexts.add(t);
       if (seenTexts.length > 8) break;
 
