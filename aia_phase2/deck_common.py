@@ -9,19 +9,24 @@ QI_DIR = os.path.join(BASE_DIR, "qi_assets")
 OUT_DIR = os.path.join(BASE_DIR, "behance_slides")
 os.makedirs(OUT_DIR, exist_ok=True)
 
-# Color System
-AIA_RED = (211, 17, 69)          # #D31145 Primary AIA Red
-AIA_RED_DARK = (158, 0, 43)      # #9E002B Deep Red
-AIA_RED_LIGHT = (255, 238, 242)  # #FFE7ED Tint
-BG_DARK = (15, 18, 26)           # Obsidian Dark
-CARD_DARK = (24, 30, 42)
+# -------------------------------------------------------------
+# Color Architecture (AIA Signature Red + Obsidian Navy System)
+# -------------------------------------------------------------
+AIA_RED = (211, 17, 69)            # #D31145 Primary AIA Red
+AIA_RED_DARK = (158, 0, 43)        # #9E002B Deep Red
+AIA_RED_LIGHT = (255, 238, 242)    # #FFE7ED Tint
+AIA_RED_BORDER = (254, 205, 217)
+
+BG_DARK = (15, 18, 26)             # #0F121A Obsidian Black/Navy
+CARD_DARK = (24, 30, 42)           # Container Dark
 BORDER_DARK = (51, 65, 85)
 TEXT_DARK_MAIN = (255, 255, 255)
 TEXT_DARK_SUB = (148, 163, 184)
 
-BG_LIGHT = (248, 250, 252)       # Light Slate
+BG_LIGHT = (248, 250, 252)         # #F8FAFC Ultra-Clean Slate
 CARD_LIGHT = (255, 255, 255)
 BORDER_LIGHT = (226, 232, 240)
+BORDER_LIGHT_ACCENT = (203, 213, 225)
 TEXT_LIGHT_MAIN = (15, 23, 42)
 TEXT_LIGHT_SUB = (71, 85, 105)
 
@@ -35,8 +40,6 @@ WEIGHT_MAP = {
     'regular': 'Pretendard-Regular.ttf',
     'light': 'Pretendard-Light.ttf',
 }
-
-FLUTTER_MATERIAL_FONT = r"C:\flutter\bin\cache\artifacts\material_fonts\MaterialIcons-Regular.otf"
 
 def get_font(size, weight='bold'):
     w_name = 'bold' if isinstance(weight, bool) and weight else ('regular' if isinstance(weight, bool) else str(weight).lower())
@@ -134,6 +137,21 @@ def draw_pill_badge(draw, cx=None, cy=0, text="", font=None, theme='red', dark_m
     draw.text((x1 + pad_x, cy), text, font=font, fill=text_col, anchor='lm')
     return total_w
 
+def draw_arrow(draw, p1, p2, col=AIA_RED, width=2, arrow_size=6):
+    x1, y1 = p1
+    x2, y2 = p2
+    draw.line([(x1, y1), (x2, y2)], fill=col, width=width)
+    if x1 == x2:
+        if y2 > y1:
+            draw.polygon([(x2 - arrow_size, y2 - arrow_size * 1.5), (x2 + arrow_size, y2 - arrow_size * 1.5), (x2, y2)], fill=col)
+        else:
+            draw.polygon([(x2 - arrow_size, y2 + arrow_size * 1.5), (x2 + arrow_size, y2 + arrow_size * 1.5), (x2, y2)], fill=col)
+    elif y1 == y2:
+        if x2 > x1:
+            draw.polygon([(x2 - arrow_size * 1.5, y2 - arrow_size), (x2 - arrow_size * 1.5, y2 + arrow_size), (x2, y2)], fill=col)
+        else:
+            draw.polygon([(x2 + arrow_size * 1.5, y2 - arrow_size), (x2 + arrow_size * 1.5, y2 + arrow_size), (x2, y2)], fill=col)
+
 def draw_slide_header(draw, slide_num, category_kr, title_bold, title_accent, subtitle_kr, right_badge=None, dark_mode=False):
     line_col = (40, 50, 68) if dark_mode else (226, 232, 240)
     draw.line([(100, 48), (1820, 48)], fill=line_col, width=1)
@@ -171,11 +189,11 @@ def draw_slide_footer(draw, slide_num, total_slides=12, dark_mode=False):
 
 def draw_phone_mockup(base_img, screen_path, cx, cy, phone_w=280, phone_h=580, bezel=10, radius=38, dark_body=True):
     """
-    Draws an ultra-clean, realistic smartphone frame.
-    Ensures that CTA buttons and bottom navigation are completely preserved and never cropped!
+    Ultra-refined luxury smartphone frame.
+    Guarantees 100% full-screen visibility including bottom CTA buttons and navigation bars.
     """
-    body_col = (20, 24, 33) if dark_body else (240, 243, 248)
-    rim_col = (60, 70, 85) if dark_body else (203, 213, 225)
+    body_col = (18, 22, 30) if dark_body else (240, 243, 248)
+    rim_col = (70, 80, 98) if dark_body else (203, 213, 225)
     inner_bezel_col = (10, 12, 16)
     
     x1 = cx - phone_w // 2
@@ -183,17 +201,18 @@ def draw_phone_mockup(base_img, screen_path, cx, cy, phone_w=280, phone_h=580, b
     x2 = cx + phone_w // 2
     y2 = cy + phone_h // 2
     
-    # Shadow layer
-    shadow = Image.new('RGBA', (phone_w + 60, phone_h + 60), (0, 0, 0, 0))
+    # 1. Multi-tier drop shadow for luxury depth
+    shadow = Image.new('RGBA', (phone_w + 80, phone_h + 80), (0, 0, 0, 0))
     sdraw = ImageDraw.Draw(shadow)
-    sdraw.rounded_rectangle([25, 25, phone_w + 35, phone_h + 35], radius=radius + 4, fill=(0, 0, 0, 95))
-    shadow = shadow.filter(ImageFilter.GaussianBlur(16))
-    base_img.paste(shadow, (x1 - 30, y1 - 20), shadow)
+    sdraw.rounded_rectangle([35, 35, phone_w + 45, phone_h + 45], radius=radius + 4, fill=(0, 0, 0, 110))
+    shadow = shadow.filter(ImageFilter.GaussianBlur(20))
+    base_img.paste(shadow, (x1 - 40, y1 - 25), shadow)
     
     draw = ImageDraw.Draw(base_img)
-    # Outer body
+    # 2. Outer phone chassis
     draw.rounded_rectangle([x1, y1, x2, y2], radius=radius, fill=body_col, outline=rim_col, width=2)
-    # Inner black screen border
+    
+    # 3. Inner screen viewport
     sx1 = x1 + bezel
     sy1 = y1 + bezel
     sx2 = x2 - bezel
@@ -202,53 +221,51 @@ def draw_phone_mockup(base_img, screen_path, cx, cy, phone_w=280, phone_h=580, b
     sh = sy2 - sy1
     draw.rounded_rectangle([sx1, sy1, sx2, sy2], radius=radius - bezel // 2, fill=inner_bezel_col)
     
-    # Load and fit screen - CTA BUTTON PRESERVATION LOGIC
+    # 4. Fit Screen with strict CTA button preservation
     if screen_path and os.path.exists(screen_path):
         screen = Image.open(screen_path).convert('RGBA')
         
-        # Scale to match screen width exactly (sw)
-        scale = sw / screen.width
-        new_w = sw
-        new_h = int(round(screen.height * scale))
-        screen_scaled = screen.resize((new_w, new_h), Image.Resampling.LANCZOS)
+        # Scale to match height perfectly so all bottom content & CTA buttons are strictly visible
+        scale_h = sh / screen.height
+        fit_w = int(round(screen.width * scale_h))
+        fit_h = sh
         
-        # Determine background fill if letterboxing or alignment is needed
-        sample_y = min(screen_scaled.height - 10, screen_scaled.height - 1)
-        bg_sample = screen_scaled.getpixel((new_w // 2, sample_y))
+        # If scaled width exceeds sw slightly, scale to fit sw instead
+        if fit_w > sw:
+            scale_w = sw / screen.width
+            fit_w = sw
+            fit_h = int(round(screen.height * scale_w))
+            
+        screen_resized = screen.resize((fit_w, fit_h), Image.Resampling.LANCZOS)
+        
+        # Background fill matching bottom or header
+        sample_y = min(screen_resized.height - 10, screen_resized.height - 1)
+        bg_sample = screen_resized.getpixel((fit_w // 2, sample_y))
         bg_color = (bg_sample[0], bg_sample[1], bg_sample[2], 255) if len(bg_sample) >= 3 else (255, 255, 255, 255)
         
-        screen_fitted = Image.new('RGBA', (sw, sh), bg_color)
+        screen_canvas = Image.new('RGBA', (sw, sh), bg_color)
+        paste_x = (sw - fit_w) // 2
+        paste_y = (sh - fit_h) // 2 if fit_h < sh else 0
+        screen_canvas.paste(screen_resized, (paste_x, paste_y))
         
-        if new_h <= sh:
-            # Entire screen fits vertically without cropping! Position at top
-            screen_fitted.paste(screen_scaled, (0, 0))
-        else:
-            # Scale to fit height so bottom CTA button is 100% visible
-            scale_fit = sh / screen.height
-            fit_w = int(round(screen.width * scale_fit))
-            fit_h = sh
-            screen_fit_all = screen.resize((fit_w, fit_h), Image.Resampling.LANCZOS)
-            paste_x = (sw - fit_w) // 2
-            screen_fitted.paste(screen_fit_all, (paste_x, 0))
-        
-        # Mask with rounded corners
+        # Screen mask with smooth corners
         mask = Image.new('L', (sw, sh), 0)
         mdraw = ImageDraw.Draw(mask)
         mdraw.rounded_rectangle([0, 0, sw, sh], radius=radius - bezel // 2 - 2, fill=255)
         
-        base_img.paste(screen_fitted, (sx1, sy1), mask)
+        base_img.paste(screen_canvas, (sx1, sy1), mask)
         
-    # Dynamic Island / Speaker Pill
-    pill_w = int(sw * 0.30)
+    # 5. Top Dynamic Island
+    pill_w = int(sw * 0.28)
     pill_h = 13
     pill_x1 = cx - pill_w // 2
-    pill_y1 = sy1 + 7
-    draw.rounded_rectangle([pill_x1, pill_y1, pill_x1 + pill_w, pill_y1 + pill_h], radius=6, fill=(0, 0, 0, 240))
+    pill_y1 = sy1 + 6
+    draw.rounded_rectangle([pill_x1, pill_y1, pill_x1 + pill_w, pill_y1 + pill_h], radius=6, fill=(0, 0, 0, 230))
     # Camera dot
-    draw.ellipse([cx + pill_w // 4 - 3, pill_y1 + 3, cx + pill_w // 4 + 3, pill_y1 + 9], fill=(18, 30, 48))
+    draw.ellipse([cx + pill_w // 4 - 3, pill_y1 + 3, cx + pill_w // 4 + 3, pill_y1 + 9], fill=(22, 34, 52))
     
-    # Home Indicator Bar (Semi-transparent overlay at bottom)
-    bar_w = int(sw * 0.36)
+    # 6. Bottom Home Indicator Bar
+    bar_w = int(sw * 0.35)
     bar_h = 4
     bar_y = sy2 - 7
-    draw.rounded_rectangle([cx - bar_w // 2, bar_y, cx + bar_w // 2, bar_y + bar_h], radius=2, fill=(255, 255, 255, 160))
+    draw.rounded_rectangle([cx - bar_w // 2, bar_y, cx + bar_w // 2, bar_y + bar_h], radius=2, fill=(255, 255, 255, 175))

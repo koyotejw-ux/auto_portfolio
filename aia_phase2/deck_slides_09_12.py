@@ -3,10 +3,11 @@ import math
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 from deck_common import (
     W, H, BASE_DIR, CORE_DIR, QI_DIR, OUT_DIR,
-    AIA_RED, AIA_RED_DARK, AIA_RED_LIGHT, BG_DARK, CARD_DARK, BORDER_DARK,
-    TEXT_DARK_MAIN, TEXT_DARK_SUB, BG_LIGHT, CARD_LIGHT, BORDER_LIGHT,
+    AIA_RED, AIA_RED_DARK, AIA_RED_LIGHT, AIA_RED_BORDER,
+    BG_DARK, CARD_DARK, BORDER_DARK, TEXT_DARK_MAIN, TEXT_DARK_SUB,
+    BG_LIGHT, CARD_LIGHT, BORDER_LIGHT, BORDER_LIGHT_ACCENT,
     TEXT_LIGHT_MAIN, TEXT_LIGHT_SUB,
-    get_font, get_num_font, wrap_text, draw_pill_badge,
+    get_font, get_num_font, wrap_text, draw_pill_badge, draw_arrow,
     draw_slide_header, draw_slide_footer, draw_phone_mockup
 )
 
@@ -37,6 +38,9 @@ def make_slide_09():
     # 2 Phones side by side with increased height so all keypad / CTA is fully visible
     draw_phone_mockup(img, os.path.join(CORE_DIR, "screen_login_pin.png"), cx=lx + 210, cy=ly + 395, phone_w=250, phone_h=535, bezel=8, radius=30)
     draw_phone_mockup(img, os.path.join(CORE_DIR, "screen_sign_select.png"), cx=lx + 600, cy=ly + 395, phone_w=250, phone_h=535, bezel=8, radius=30)
+    
+    # Arrow between 2 phones
+    draw_arrow(draw, (lx + 345, ly + 395), (lx + 465, ly + 395), col=AIA_RED, width=2, arrow_size=6)
     
     draw.text((lx + 210, ly + 685), "48px 대형 PIN 키패드 (오터치 0건)", font=get_font(12.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mt')
     draw.text((lx + 600, ly + 685), "복합 전자서명 수단 선택 & 하단 확인 CTA", font=get_font(12.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mt')
@@ -116,6 +120,9 @@ def make_slide_10():
     draw_phone_mockup(img, os.path.join(CORE_DIR, "screen_claim_receipt.png"), cx=lx + 210, cy=ly + 395, phone_w=250, phone_h=535, bezel=8, radius=30)
     draw_phone_mockup(img, os.path.join(CORE_DIR, "screen_claim_form.png"), cx=lx + 600, cy=ly + 395, phone_w=250, phone_h=535, bezel=8, radius=30)
     
+    # Arrow between 2 phones
+    draw_arrow(draw, (lx + 345, ly + 395), (lx + 465, ly + 395), col=(16, 185, 129), width=2, arrow_size=6)
+    
     draw.text((lx + 210, ly + 685), "AI 영수증 자동 스캔 & 촬영 CTA", font=get_font(12.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mt')
     draw.text((lx + 600, ly + 685), "수령 계좌 선택 & 하단 청구 신청 CTA", font=get_font(12.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mt')
     
@@ -177,7 +184,7 @@ def make_slide_11():
         "BUSINESS IMPACT & STAR RETROSPECTIVE", 
         "검증된 DX 성과 지표와 ", 
         "시니어 프로덕트 디자인 회고", 
-        "데이터 수집 시간 단축, 과업 완수율 향상 등 정량적 성과와 문제 해결 중심 STAR 회고", 
+        "데이터 수집 시간 단축, 과업 완수율 향상 등 정량적 성과와 문제 해결 중심 STAR 회고 (200자 이상 서술)", 
         right_badge=("QUALITATIVE & QUANTITATIVE", "red")
     )
     
@@ -291,18 +298,18 @@ def make_slide_12():
     # 1. Glow Background
     glow = Image.new('RGBA', (W, H), (0, 0, 0, 0))
     gdraw = ImageDraw.Draw(glow)
-    gdraw.ellipse([500, 200, 1420, 900], fill=(211, 17, 69, 32))
+    gdraw.ellipse([450, 180, 1470, 920], fill=(211, 17, 69, 36))
     glow = glow.filter(ImageFilter.GaussianBlur(120))
     img.paste(glow, (0, 0), glow)
     
     draw = ImageDraw.Draw(img)
     
     # Top Tag
-    draw_pill_badge(draw, cx=960, cy=140, text="AIA LIFE · HEALTHIER, LONGER, BETTER LIVES", font=get_font(11.5, 'bold'), theme='red', dark_mode=True, pad_x=16, height=30)
+    draw_pill_badge(draw, cx=960, cy=135, text="AIA LIFE · HEALTHIER, LONGER, BETTER LIVES", font=get_font(11.5, 'bold'), theme='red', dark_mode=True, pad_x=16, height=30)
     
     # Main Vision Title
-    draw.text((960, 210), "모든 세대를 포용하는 지속 가능한 디지털 금융 UX", font=get_font(38, 'black'), fill=(255, 255, 255), anchor='mt')
-    draw.text((960, 275), "AIA+ Phase 2 는 배리어프리 가이드라인을 넘어, 금융의 존엄성을 설계했습니다.", font=get_font(18, 'medium'), fill=(255, 128, 160), anchor='mt')
+    draw.text((960, 205), "모든 세대를 포용하는 지속 가능한 디지털 금융 UX", font=get_font(38, 'black'), fill=(255, 255, 255), anchor='mt')
+    draw.text((960, 270), "AIA+ Phase 2 는 배리어프리 가이드라인을 넘어, 금융의 존엄성을 설계했습니다.", font=get_font(18, 'medium'), fill=(255, 128, 160), anchor='mt')
     
     # Center 3 Pillars of Impact
     pillars = [
@@ -315,7 +322,7 @@ def make_slide_12():
     start_x = 180
     for i, (p_tag, p_title, p_desc) in enumerate(pillars):
         cx = start_x + i * (card_w + 50)
-        cy = 360
+        cy = 350
         draw.rounded_rectangle([cx, cy, cx + card_w, cy + card_h], radius=16, fill=CARD_DARK, outline=BORDER_DARK, width=1)
         draw_pill_badge(draw, left_x=cx + 25, cy=cy + 35, text=p_tag, font=get_font(10.5, 'bold'), theme='red' if i==0 else ('blue' if i==1 else 'green'), dark_mode=True, pad_x=12, height=24)
         draw.text((cx + 25, cy + 68), p_title, font=get_font(20, 'bold'), fill=(255, 255, 255))
@@ -326,13 +333,13 @@ def make_slide_12():
             ly += 20
             
     # Bottom Center: Designer Credit & Interactive Prototype Hub Link Box
-    credit_y = 620
-    cw = 1060
+    credit_y = 600
+    cw = 1100
     cx = (W - cw) // 2
-    draw.rounded_rectangle([cx, credit_y, cx + cw, credit_y + 300], radius=20, fill=(20, 26, 38), outline=BORDER_DARK, width=1)
+    draw.rounded_rectangle([cx, credit_y, cx + cw, credit_y + 320], radius=20, fill=(20, 26, 38), outline=BORDER_DARK, width=1)
     
-    draw_pill_badge(draw, cx=960, cy=credit_y + 40, text="LEAD PRODUCT DESIGNER & UX ARCHITECT", font=get_font(11, 'bold'), theme='gray', dark_mode=True, pad_x=14, height=26)
-    draw.text((960, credit_y + 80), "기획 · 디자인 시스템 · 프로토타이핑 100% 총괄 수행", font=get_font(22, 'bold'), fill=(255, 255, 255), anchor='mt')
+    draw_pill_badge(draw, cx=960, cy=credit_y + 38, text="LEAD PRODUCT DESIGNER & UX ARCHITECT", font=get_font(11, 'bold'), theme='gray', dark_mode=True, pad_x=14, height=26)
+    draw.text((960, credit_y + 76), "기획 · 디자인 시스템 · 프로토타이핑 100% 총괄 수행", font=get_font(22, 'bold'), fill=(255, 255, 255), anchor='mt')
     
     spec_rows = [
         ("프로젝트명", "AIA생명 AIA+ Phase 2 고령자 친화 배리어프리 금융 UX 및 10대 비대면 서비스 리뉴얼"),
@@ -341,12 +348,12 @@ def make_slide_12():
         ("적용 표준", "금융위원회 고령자 친화적 모바일 금융앱 가이드라인 100% 준수 · WCAG 2.1 AAA 고대비")
     ]
     for idx, (label, val) in enumerate(spec_rows):
-        sy = credit_y + 125 + idx * 30
+        sy = credit_y + 120 + idx * 30
         draw.text((cx + 60, sy), label, font=get_font(12.5, 'bold'), fill=(255, 90, 130))
         draw.text((cx + 180, sy), val, font=get_font(12.5, 'regular'), fill=(226, 232, 240))
         
-    draw.rounded_rectangle([cx + 60, credit_y + 245, cx + cw - 60, credit_y + 285], radius=10, fill=(70, 15, 30), outline=(211, 17, 69), width=1)
-    draw.text((960, credit_y + 265), "🔗 하단 도크의 [허브] 버튼을 누르면 전체 포트폴리오 컬렉션으로 즉시 이동합니다.", font=get_font(12, 'bold'), fill=(255, 180, 200), anchor='mm')
+    draw.rounded_rectangle([cx + 60, credit_y + 255, cx + cw - 60, credit_y + 298], radius=10, fill=(70, 15, 30), outline=(211, 17, 69), width=1)
+    draw.text((960, credit_y + 276), "🔗 하단 도크의 [허브] 버튼을 누르면 전체 포트폴리오 컬렉션으로 즉시 이동합니다.", font=get_font(12, 'bold'), fill=(255, 180, 200), anchor='mm')
     
     draw_slide_footer(draw, 12, 12, dark_mode=True)
     out_path = os.path.join(OUT_DIR, "slide_12.png")

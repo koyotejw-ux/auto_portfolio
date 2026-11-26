@@ -3,10 +3,11 @@ import math
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 from deck_common import (
     W, H, BASE_DIR, CORE_DIR, QI_DIR, OUT_DIR,
-    AIA_RED, AIA_RED_DARK, AIA_RED_LIGHT, BG_DARK, CARD_DARK, BORDER_DARK,
-    TEXT_DARK_MAIN, TEXT_DARK_SUB, BG_LIGHT, CARD_LIGHT, BORDER_LIGHT,
+    AIA_RED, AIA_RED_DARK, AIA_RED_LIGHT, AIA_RED_BORDER,
+    BG_DARK, CARD_DARK, BORDER_DARK, TEXT_DARK_MAIN, TEXT_DARK_SUB,
+    BG_LIGHT, CARD_LIGHT, BORDER_LIGHT, BORDER_LIGHT_ACCENT,
     TEXT_LIGHT_MAIN, TEXT_LIGHT_SUB,
-    get_font, get_num_font, wrap_text, draw_pill_badge,
+    get_font, get_num_font, wrap_text, draw_pill_badge, draw_arrow,
     draw_slide_header, draw_slide_footer, draw_phone_mockup
 )
 
@@ -74,14 +75,19 @@ def make_slide_05():
         cx = start_x + i * (cw + 30)
         draw.rounded_rectangle([cx, start_y, cx + cw, start_y + ch], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
         
-        # Step Badge
+        # Step Badge & Header
         draw_pill_badge(draw, left_x=cx + 25, cy=start_y + 35, text=s["num"], font=get_font(11, 'bold'), theme='red' if i==1 else 'blue', pad_x=12, height=24)
         draw.text((cx + 105, start_y + 25), s["sub"], font=get_font(11, 'medium'), fill=TEXT_LIGHT_SUB)
         draw.text((cx + 25, start_y + 65), s["title"], font=get_font(19, 'bold'), fill=TEXT_LIGHT_MAIN)
         
-        # Phone Screen Mockup inside card (phone_w=240, phone_h=460)
+        # Phone Screen Mockup inside card (phone_w=235, phone_h=450 with 100% full screen & CTA)
         screen_file = os.path.join(CORE_DIR, s["screen"])
         draw_phone_mockup(img, screen_file, cx=cx + cw // 2, cy=start_y + 310, phone_w=235, phone_h=450, bezel=8, radius=28)
+        
+        # Connecting Arrow to next step
+        if i < 2:
+            arrow_x = cx + cw + 8
+            draw_arrow(draw, (arrow_x, start_y + 310), (arrow_x + 14, start_y + 310), col=AIA_RED, width=2, arrow_size=6)
         
         # Description
         py = start_y + 555
@@ -206,7 +212,14 @@ def make_slide_06():
 def make_slide_07():
     img = Image.new('RGB', (W, H), BG_LIGHT)
     draw = ImageDraw.Draw(img)
-    draw_slide_header(draw, 7, "GLOBAL DESIGN SYSTEM & TOKENS", "AIA 글로벌 표준 디자인 시스템 ", "Qi Design System v3.3", "디자인 토큰, 아이코노그래피, 폼 필드 컴포넌트의 단일 소스 아키텍처", right_badge=("QI TOKENS V3.3", "red"))
+    draw_slide_header(
+        draw, 7, 
+        "GLOBAL DESIGN SYSTEM & TOKENS", 
+        "AIA 글로벌 표준 디자인 시스템 ", 
+        "Qi Design System v3.3", 
+        "디자인 토큰, 아이코노그래피, 폼 필드 컴포넌트의 단일 소스 아키텍처", 
+        right_badge=("QI TOKENS V3.3", "red")
+    )
     
     # 3 Section Cards
     # Left: Tokens & Color System (W=520)
@@ -320,7 +333,6 @@ def make_slide_08():
         right_badge=("CONVERSION 89.4%", "red")
     )
     
-    # 4 Sequential Screen Mockups
     screens = [
         ("STEP 01", "계약 및 납부액 조회", "screen_pay_list_senior.png", "보유 계약 중 납입 대상 자동 집계 및 하단 [다음] 버튼 즉시 배치"),
         ("STEP 02", "납부 계좌 1-Tap 선택", "screen_pay_input_account.png", "기등록 주거래 계좌 선택 및 하단 [출금 동의 및 결제] CTA"),
@@ -341,9 +353,14 @@ def make_slide_08():
         draw_pill_badge(draw, left_x=sx + 20, cy=start_y + 35, text=step_tag, font=get_font(10.5, 'bold'), theme='red' if i==3 else 'blue', pad_x=12, height=24)
         draw.text((sx + 20, start_y + 65), step_title, font=get_font(16.5, 'bold'), fill=TEXT_LIGHT_MAIN)
         
-        # Device Mockup (phone_w=240, phone_h=510 ensures full CTA visibility!)
+        # Device Mockup (phone_w=240, phone_h=510 with 100% full screen & CTA)
         screen_path = os.path.join(CORE_DIR, s_file)
         draw_phone_mockup(img, screen_path, cx=sx + sw // 2, cy=start_y + 360, phone_w=240, phone_h=510, bezel=8, radius=30)
+        
+        # Connecting arrow between cards
+        if i < 3:
+            arrow_x = sx + sw + 4
+            draw_arrow(draw, (arrow_x, start_y + 360), (arrow_x + 15, start_y + 360), col=AIA_RED, width=2, arrow_size=6)
         
         # Desc Box at bottom
         draw.rounded_rectangle([sx + 20, start_y + sh - 85, sx + sw - 20, start_y + sh - 20], radius=10, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
