@@ -214,19 +214,19 @@ def make_slide_06():
         sx = start_x + i * (sw + 23)
         draw.rounded_rectangle([sx, start_y, sx + sw, start_y + sh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
         
-        # Tag & Title
-        draw_pill_badge(draw, left_x=sx + 20, cy=start_y + 35, text=wf["tag"], font=get_font(10.5, 'bold'), theme='red' if i in [0, 3] else 'blue', pad_x=12, height=24)
-        draw.text((sx + 20, start_y + 65), wf["title"], font=get_font(16.5, 'bold'), fill=TEXT_LIGHT_MAIN)
+        # Tag & Title (Clean top positioning with generous 25px breathing margin)
+        draw_pill_badge(draw, left_x=sx + 20, cy=start_y + 32, text=wf["tag"], font=get_font(10.5, 'bold'), theme='red' if i in [0, 3] else 'blue', pad_x=12, height=22)
+        draw.text((sx + 20, start_y + 58), wf["title"], font=get_font(16.5, 'bold'), fill=TEXT_LIGHT_MAIN)
         
-        # Device Mockup (phone_w=230, phone_h=460)
+        # Device Mockup (phone_w=208, phone_h=440, cy=start_y + 325 => top=105, strictly below title at y=58..80)
         screen_path = os.path.join(CORE_DIR, wf["screen"])
-        draw_phone_mockup(img, screen_path, cx=sx + sw // 2, cy=start_y + 315, phone_w=235, phone_h=475, bezel=6, radius=26)
+        draw_phone_mockup(img, screen_path, cx=sx + sw // 2, cy=start_y + 330, phone_w=212, phone_h=445, bezel=6, radius=24)
         
         # Wireframe Annotation Callout Box at bottom
-        draw.rounded_rectangle([sx + 15, start_y + sh - 155, sx + sw - 15, start_y + sh - 15], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-        draw.text((sx + 25, start_y + sh - 140), "📐 화면 설계 상세 명세 (Specs)", font=get_font(11.5, 'bold'), fill=AIA_RED)
+        draw.rounded_rectangle([sx + 15, start_y + sh - 150, sx + sw - 15, start_y + sh - 15], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+        draw.text((sx + 25, start_y + sh - 136), "📐 화면 설계 상세 명세 (Specs)", font=get_font(11.5, 'bold'), fill=AIA_RED)
         
-        ay = start_y + sh - 116
+        ay = start_y + sh - 112
         for annot in wf["annotations"]:
             draw.text((sx + 25, ay), annot, font=get_font(11, 'medium'), fill=TEXT_LIGHT_MAIN)
             ay += 23
@@ -392,15 +392,16 @@ def make_slide_08():
         sx = start_x + i * (sw + 23)
         draw.rounded_rectangle([sx, start_y, sx + sw, start_y + sh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
         
-        draw_pill_badge(draw, left_x=sx + 20, cy=start_y + 35, text=f"SCREEN 0{i+1}", font=get_font(10.5, 'bold'), theme='red' if i==3 else 'blue', pad_x=12, height=24)
-        draw.text((sx + 20, start_y + 65), stitle, font=get_font(17, 'bold'), fill=TEXT_LIGHT_MAIN)
+        # Tag & Title (Clean top positioning with generous 25px breathing margin)
+        draw_pill_badge(draw, left_x=sx + 20, cy=start_y + 32, text=f"SCREEN 0{i+1}", font=get_font(10.5, 'bold'), theme='red' if i==3 else 'blue', pad_x=12, height=22)
+        draw.text((sx + 20, start_y + 58), stitle, font=get_font(16.5, 'bold'), fill=TEXT_LIGHT_MAIN)
         
         screen_path = os.path.join(CORE_DIR, s_file)
-        draw_phone_mockup(img, screen_path, cx=sx + sw // 2, cy=start_y + 355, phone_w=242, phone_h=520, bezel=6, radius=28)
+        draw_phone_mockup(img, screen_path, cx=sx + sw // 2, cy=start_y + 348, phone_w=225, phone_h=485, bezel=6, radius=26)
         
         if i < 3:
             arrow_x = sx + sw + 4
-            draw_arrow(draw, (arrow_x, start_y + 360), (arrow_x + 15, start_y + 360), col=AIA_RED, width=2, arrow_size=6)
+            draw_arrow(draw, (arrow_x, start_y + 348), (arrow_x + 15, start_y + 348), col=AIA_RED, width=2, arrow_size=6)
         
         draw.rounded_rectangle([sx + 20, start_y + sh - 85, sx + sw - 20, start_y + sh - 20], radius=10, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
         lines = wrap_text(s_desc, get_font(11.5, 'regular'), sw - 56, draw)

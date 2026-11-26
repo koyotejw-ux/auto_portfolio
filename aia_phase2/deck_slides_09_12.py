@@ -42,17 +42,18 @@ def make_slide_09():
         sx = start_x + i * (sw + 23)
         draw.rounded_rectangle([sx, start_y, sx + sw, start_y + sh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
         
-        draw_pill_badge(draw, left_x=sx + 20, cy=start_y + 35, text=f"SCREEN 0{i+5}", font=get_font(10.5, 'bold'), theme='blue' if i<3 else 'purple', pad_x=12, height=24)
-        draw.text((sx + 20, start_y + 65), stitle, font=get_font(17, 'bold'), fill=TEXT_LIGHT_MAIN)
+        # Tag & Title (Clean top positioning with generous 25px breathing margin)
+        draw_pill_badge(draw, left_x=sx + 20, cy=start_y + 32, text=f"SCREEN 0{i+5}", font=get_font(10.5, 'bold'), theme='blue' if i<3 else 'purple', pad_x=12, height=22)
+        draw.text((sx + 20, start_y + 58), stitle, font=get_font(16.5, 'bold'), fill=TEXT_LIGHT_MAIN)
         
         screen_path = os.path.join(CORE_DIR, s_file)
         if not os.path.exists(screen_path) and s_file == "screen_general_main_clean.png":
             screen_path = os.path.join(CORE_DIR, "screen_general_main.png")
-        draw_phone_mockup(img, screen_path, cx=sx + sw // 2, cy=start_y + 355, phone_w=242, phone_h=520, bezel=6, radius=28)
+        draw_phone_mockup(img, screen_path, cx=sx + sw // 2, cy=start_y + 348, phone_w=225, phone_h=485, bezel=6, radius=26)
         
         if i < 3:
             arrow_x = sx + sw + 4
-            draw_arrow(draw, (arrow_x, start_y + 360), (arrow_x + 15, start_y + 360), col=(59, 130, 246), width=2, arrow_size=6)
+            draw_arrow(draw, (arrow_x, start_y + 348), (arrow_x + 15, start_y + 348), col=(59, 130, 246), width=2, arrow_size=6)
         
         draw.rounded_rectangle([sx + 20, start_y + sh - 85, sx + sw - 20, start_y + sh - 20], radius=10, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
         lines = wrap_text(s_desc, get_font(11.5, 'regular'), sw - 56, draw)
