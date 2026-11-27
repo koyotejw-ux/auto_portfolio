@@ -17,7 +17,6 @@ def make_slide_05():
         right_badge=("PLATFORM IA TREE", "green")
     )
     
-    # Left: Structural Analysis Card (5-Domain Principles)
     lw = 480
     lh = 740
     ly = 220
@@ -43,7 +42,6 @@ def make_slide_05():
             dy += 18
         py += 120
 
-    # Right: Native Vector Drawn IA Tree (AIA+ Style Hierarchy)
     rx = 605
     rw = 1215
     draw.rounded_rectangle([rx, ly, rx + rw, ly + lh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
@@ -55,7 +53,6 @@ def make_slide_05():
     draw.rounded_rectangle([root_x, root_y, root_x + root_w, root_y + root_h], radius=26, fill=BRAND_GREEN)
     draw.text((root_x + root_w//2, root_y + root_h//2), "Home (홈 메인)", font=get_font(16, 'bold'), fill=(255, 255, 255), anchor='mm')
     
-    # Level 1 Nodes: 4 Categories
     categories = [
         ("01. 회원가입/로그인", ["로그인", "회원가입", "비밀번호 찾기", "서비스 이용약관"]),
         ("02. 시뮬레이터 (Core)", ["시뮬레이션 시작", "시뮬레이션 통계", "진행 이력 관리", "보고서 뷰어"]),
@@ -68,26 +65,20 @@ def make_slide_05():
     cat_start_x = rx + (rw - (4 * cat_w + 3 * cat_gap)) // 2
     cat_y = ly + 200
     
-    # Draw branches from Root to Categories
     stem_y = ly + 160
     draw.line([(root_x + root_w//2, root_y + root_h), (root_x + root_w//2, stem_y)], fill=(148, 163, 184), width=2)
     draw.line([(cat_start_x + cat_w//2, stem_y), (cat_start_x + 3 * (cat_w + cat_gap) + cat_w//2, stem_y)], fill=(148, 163, 184), width=2)
     
     for idx, (cat_name, sub_items) in enumerate(categories):
         cx = cat_start_x + idx * (cat_w + cat_gap)
-        
-        # Connect stem to Cat node
         draw.line([(cx + cat_w//2, stem_y), (cx + cat_w//2, cat_y)], fill=(148, 163, 184), width=2)
         
-        # Cat Node (Level 1)
         cat_col = BRAND_DARK if idx==1 else (BRAND_TEAL if idx==2 else (51, 65, 85))
         draw.rounded_rectangle([cx, cat_y, cx + cat_w, cat_y + 48], radius=10, fill=cat_col)
         draw.text((cx + cat_w//2, cat_y + 24), cat_name, font=get_font(13.5, 'bold'), fill=(255, 255, 255), anchor='mm')
         
-        # Level 2 Sub-items
         sub_stem_x = cx + cat_w//2
         sub_y_start = cat_y + 48
-        
         draw.line([(sub_stem_x, sub_y_start), (sub_stem_x, sub_y_start + 420)], fill=(203, 213, 225), width=2)
         
         for s_idx, s_text in enumerate(sub_items):
@@ -96,19 +87,16 @@ def make_slide_05():
             s_box_h = 68
             s_box_x = cx + 10
             
-            # Branch horizontal line
             draw.line([(sub_stem_x, s_box_y + s_box_h//2), (s_box_x, s_box_y + s_box_h//2)], fill=(148, 163, 184), width=2)
             
             box_fill = (236, 253, 245) if idx==1 else (248, 250, 252)
             box_border = BRAND_GREEN if idx==1 else BORDER_LIGHT
             draw.rounded_rectangle([s_box_x, s_box_y, s_box_x + s_box_w, s_box_y + s_box_h], radius=8, fill=box_fill, outline=box_border, width=2 if idx==1 else 1)
             
-            # Badge & Title
             draw.rounded_rectangle([s_box_x + 12, s_box_y + 12, s_box_x + 36, s_box_y + 32], radius=4, fill=BRAND_GREEN if idx==1 else (100, 116, 139))
             draw.text((s_box_x + 24, s_box_y + 22), f"{s_idx+1}", font=get_font(10, 'bold'), fill=(255, 255, 255), anchor='mm')
             draw.text((s_box_x + 44, s_box_y + 22), s_text, font=get_font(12.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
             
-            # Sub descriptor
             sub_descs = {
                 "로그인": "소셜/이메일 간편인증",
                 "회원가입": "토지주/전문사 유형선택",
@@ -155,9 +143,6 @@ def make_slide_06():
     draw_pill_badge(draw, left_x=card_x + 30, cy=card_y + 32, text="END-TO-END DECISION TREE & FLOW CHART", font=get_font(11, 'bold'), theme='green', pad_x=12, height=24)
     draw.text((card_x + 30, card_y + 60), "토지개발 플랫폼 핵심 사용자 흐름 및 시스템 조건 분기 로직 (완전판)", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
     
-    # -------------------------------------------------------------
-    # FLOW NODES (Native Vector Construction)
-    # -------------------------------------------------------------
     # Node 1: Start [메인(홈)]
     n1_x, n1_y, n1_w, n1_h = card_x + 30, card_y + 110, 140, 60
     draw.rounded_rectangle([n1_x, n1_y, n1_x + n1_w, n1_y + n1_h], radius=30, fill=(241, 245, 249), outline=BORDER_LIGHT, width=1)
@@ -249,9 +234,7 @@ def make_slide_06():
     draw.text((goal_x + goal_w//2, goal_y + 44), "종합 타당성 리포트 발급", font=get_font(14, 'bold'), fill=BRAND_DARK, anchor='mm')
     draw.text((goal_x + goal_w//2, goal_y + 64), "20p PDF 및 금융기관 제출용", font=get_font(11.5, 'medium'), fill=BRAND_GREEN, anchor='mm')
 
-    # -------------------------------------------------------------
-    # BOTTOM SECTION: 4 Core Decision Nodes Detail Cards (AIA+ Style)
-    # -------------------------------------------------------------
+    # BOTTOM SECTION: 4 Core Decision Nodes Detail Cards
     bot_y = card_y + 360
     draw.line([(card_x + 30, bot_y - 20), (card_x + card_w - 30, bot_y - 20)], fill=BORDER_LIGHT, width=1)
     
@@ -312,7 +295,7 @@ def make_slide_06():
     print(f"Generated: {out_path}")
 
 # -------------------------------------------------------------
-# SLIDE 07: WIREFRAME & GIS INTERACTION (AIA+ Style Dual-Split)
+# SLIDE 07: WIREFRAME & GIS INTERACTION (Polished Browser Mockup + Spec Grid)
 # -------------------------------------------------------------
 def make_slide_07():
     img = Image.new('RGB', (W, H), BG_LIGHT)
@@ -326,7 +309,6 @@ def make_slide_07():
         right_badge=("GIS WIREFRAME SPECS", "green")
     )
     
-    # Left: Architecture Specs
     lw = 540
     lh = 740
     ly = 220
@@ -350,21 +332,14 @@ def make_slide_07():
             dy += 22
         sy += 195
 
-    # Right: Wireframe & Screen Shot
+    # Right: High-Res Real Desktop Browser Mockup
     rx = 665
     rw = 1155
-    draw.rounded_rectangle([rx, ly, rx + rw, ly + lh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, left_x=rx + 30, cy=ly + 35, text="INTERACTIVE GIS WIREFRAME", font=get_font(10.5, 'bold'), theme='blue', pad_x=12, height=24)
-    draw.text((rx + 265, ly + 35), "공간 분석 화면 와이어프레임 실물 (UI/UX 듀얼 그리드 시스템)", font=get_font(13.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
-
-    wf_path = os.path.join(ASSETS_DIR, "screen_02_map_analysis.png")
-    if os.path.exists(wf_path):
-        wf_img = Image.open(wf_path).convert('RGBA')
-        scale = min((rw - 60) / wf_img.width, (lh - 90) / wf_img.height)
-        ww = int(wf_img.width * scale)
-        wh = int(wf_img.height * scale)
-        w_res = wf_img.resize((ww, wh), Image.Resampling.LANCZOS)
-        img.paste(w_res, (rx + (rw - ww) // 2, ly + 70 + (lh - 90 - wh) // 2), w_res)
+    wf_screen = os.path.join(ASSETS_DIR, "screen_gis_3d_satellite.png")
+    if not os.path.exists(wf_screen):
+        wf_screen = os.path.join(ASSETS_DIR, "screen_02_map_analysis.png")
+        
+    draw_browser_mockup(img, wf_screen, x=rx, y=ly, w=rw, h=lh, title="FARMINGSYS ENTERPRISE · DUAL-SPLIT GIS WIREFRAME", url="https://farmingsys.io/workspace/step-01-gis")
 
     draw_slide_footer(draw, 7, 12, dark_mode=False)
     out_path = os.path.join(OUT_DIR, "slide_07.png")
@@ -386,7 +361,6 @@ def make_slide_08():
         right_badge=("DESIGN SYSTEM STANDARDS", "green")
     )
     
-    # Left: Typography & Contrast Rules
     lw = 540
     lh = 740
     ly = 220
@@ -410,7 +384,7 @@ def make_slide_08():
             ldy += 22
         dy += 195
 
-    # Right: Authentic Design Tokens Graphic (part_design_tokens.png)
+    # Right: Authentic Design Tokens Graphic
     rx = 665
     rw = 1155
     draw.rounded_rectangle([rx, ly, rx + rw, ly + lh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)

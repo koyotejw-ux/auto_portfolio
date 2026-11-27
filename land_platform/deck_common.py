@@ -163,20 +163,41 @@ def draw_slide_footer(draw, slide_num, total_slides=12, dark_mode=False):
     page_str = f"PAGE {slide_num:02d} / {total_slides:02d}"
     draw.text((1820, 1018), page_str, font=get_num_font(11.5, 'black'), fill=page_col, anchor='rt')
 
-def draw_device_mockup(base_img, screen_path, cx, cy, box_w=640, box_h=400, radius=12, is_tablet=False):
-    if not os.path.exists(screen_path):
-        return
-    s_img = Image.open(screen_path).convert('RGBA')
-    scale = min((box_w - 20) / s_img.width, (box_h - 20) / s_img.height)
-    nw = int(s_img.width * scale)
-    nh = int(s_img.height * scale)
-    s_res = s_img.resize((nw, nh), Image.Resampling.LANCZOS)
-    
-    # Outer device bezel
-    x1 = cx - nw // 2 - 8
-    y1 = cy - nh // 2 - 8
-    x2 = cx + nw // 2 + 8
-    y2 = cy + nh // 2 + 8
+def draw_browser_mockup(base_img, screen_path, x, y, w, h, title="FARMINGSYS ENTERPRISE · GIS CLOUD", url="https://farmingsys.io/workspace/land-analysis"):
     draw = ImageDraw.Draw(base_img)
-    draw.rounded_rectangle([x1, y1, x2, y2], radius=radius, fill=(15, 23, 42), outline=BORDER_DARK, width=2)
-    base_img.paste(s_res, (cx - nw // 2, cy - nh // 2), s_res)
+    # Browser window container shadow/outline
+    header_h = 36
+    draw.rounded_rectangle([x, y, x + w, y + h], radius=12, fill=(15, 23, 42), outline=(51, 65, 85), width=1)
+    
+    # Window traffic light buttons
+    btn_y = y + header_h // 2
+    draw.ellipse([x + 16, btn_y - 5, x + 26, btn_y + 5], fill=(239, 68, 68))
+    draw.ellipse([x + 32, btn_y - 5, x + 42, btn_y + 5], fill=(245, 158, 11))
+    draw.ellipse([x + 48, btn_y - 5, x + 58, btn_y + 5], fill=(16, 185, 129))
+    
+    # URL address bar
+    url_box_w = min(420, w - 240)
+    url_x = x + 75
+    draw.rounded_rectangle([url_x, y + 7, url_x + url_box_w, y + header_h - 7], radius=6, fill=(30, 41, 59), outline=(51, 65, 85), width=1)
+    draw.text((url_x + 10, btn_y), "🔒 " + url, font=get_font(10, 'medium'), fill=(148, 163, 184), anchor='lm')
+    
+    # Title in center
+    draw.text((x + w - 20, btn_y), title, font=get_font(10.5, 'bold'), fill=(100, 116, 139), anchor='rm')
+    
+    # Inner viewport screen
+    if os.path.exists(screen_path):
+        s_img = Image.open(screen_path).convert('RGBA')
+        vp_w = w - 4
+        vp_h = h - header_h - 2
+        scale = min(vp_w / s_img.width, vp_h / s_img.height)
+        nw = int(s_img.width * scale)
+        nh = int(s_img.height * scale)
+        s_res = s_img.resize((nw, nh), Image.Resampling.LANCZOS)
+        
+        # Center in viewport
+        px = x + 2 + (vp_w - nw) // 2
+        py = y + header_h + (vp_h - nh) // 2
+        base_img.paste(s_res, (px, py), s_res)
+    else:
+        draw.text((x + w//2, y + h//2), "Mockup Screen Asset", font=get_font(14, 'bold'), fill=(148, 163, 184), anchor='mm')
+

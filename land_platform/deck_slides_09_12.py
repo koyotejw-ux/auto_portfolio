@@ -3,7 +3,7 @@ from PIL import Image, ImageDraw
 from deck_common import *
 
 # -------------------------------------------------------------
-# SLIDE 09: CORE STEP 1 · GIS LAND REGULATION ANALYSIS (High-Res Cadastral Screen)
+# SLIDE 09: CORE STEP 1 · GIS LAND REGULATION ANALYSIS (Browser Mockup + 3 Specs)
 # -------------------------------------------------------------
 def make_slide_09():
     img = Image.new('RGB', (W, H), BG_LIGHT)
@@ -40,23 +40,14 @@ def make_slide_09():
             dy += 22
         cy += 195
 
-    # Right: Authentic High Resolution Cadastral Screen View
+    # Right: Authentic High Resolution Browser Mockup
     rx = 665
     rw = 1155
-    draw.rounded_rectangle([rx, ly, rx + rw, ly + lh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    
-    # Priority screen from user's extracted Figma
     s_p = os.path.join(ASSETS_DIR, "screen_02_cadastral_map.png")
     if not os.path.exists(s_p):
         s_p = os.path.join(ASSETS_DIR, "screen_02_map_analysis.png")
         
-    if os.path.exists(s_p):
-        s_img = Image.open(s_p).convert('RGBA')
-        scale = min((rw - 60) / s_img.width, (lh - 60) / s_img.height)
-        sw = int(s_img.width * scale)
-        sh = int(s_img.height * scale)
-        s_res = s_img.resize((sw, sh), Image.Resampling.LANCZOS)
-        img.paste(s_res, (rx + (rw - sw) // 2, ly + (lh - sh) // 2), s_res)
+    draw_browser_mockup(img, s_p, x=rx, y=ly, w=rw, h=lh, title="FARMINGSYS ENTERPRISE · STEP 1 CADASTRAL & REGULATION ENGINE", url="https://farmingsys.io/workspace/step-01-cadastral")
 
     draw_slide_footer(draw, 9, 12, dark_mode=False)
     out_path = os.path.join(OUT_DIR, "slide_09.png")
@@ -64,7 +55,7 @@ def make_slide_09():
     print(f"Generated: {out_path}")
 
 # -------------------------------------------------------------
-# SLIDE 10: CORE STEP 2 · FACILITY LAYOUT & CROP SIMULATION (High-Res Facility Screen)
+# SLIDE 10: CORE STEP 2 · FACILITY LAYOUT & CROP SIMULATION (Browser Mockup + 3 Specs)
 # -------------------------------------------------------------
 def make_slide_10():
     img = Image.new('RGB', (W, H), BG_LIGHT)
@@ -101,23 +92,14 @@ def make_slide_10():
             dy += 22
         cy += 195
 
-    # Right: Authentic High Resolution Facility Screen View
+    # Right: Authentic High Resolution Browser Mockup
     rx = 665
     rw = 1155
-    draw.rounded_rectangle([rx, ly, rx + rw, ly + lh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    
-    # Priority screen from user's extracted Figma
     s_p = os.path.join(ASSETS_DIR, "screen_03_facility_simulation.png")
     if not os.path.exists(s_p):
         s_p = os.path.join(ASSETS_DIR, "screen_03_facility_layout.png")
         
-    if os.path.exists(s_p):
-        s_img = Image.open(s_p).convert('RGBA')
-        scale = min((rw - 60) / s_img.width, (lh - 60) / s_img.height)
-        sw = int(s_img.width * scale)
-        sh = int(s_img.height * scale)
-        s_res = s_img.resize((sw, sh), Image.Resampling.LANCZOS)
-        img.paste(s_res, (rx + (rw - sw) // 2, ly + (lh - sh) // 2), s_res)
+    draw_browser_mockup(img, s_p, x=rx, y=ly, w=rw, h=lh, title="FARMINGSYS ENTERPRISE · STEP 2 FACILITY LAYOUT SIMULATOR", url="https://farmingsys.io/workspace/step-02-facility")
 
     draw_slide_footer(draw, 10, 12, dark_mode=False)
     out_path = os.path.join(OUT_DIR, "slide_10.png")
@@ -125,7 +107,7 @@ def make_slide_10():
     print(f"Generated: {out_path}")
 
 # -------------------------------------------------------------
-# SLIDE 11: CORE STEP 3 · FINANCIAL VALUATION & REPORT (High-Res Economic/Report Screen)
+# SLIDE 11: CORE STEP 3 · FINANCIAL VALUATION & REPORT (Browser Mockup + 3 Specs)
 # -------------------------------------------------------------
 def make_slide_11():
     img = Image.new('RGB', (W, H), BG_LIGHT)
@@ -162,23 +144,14 @@ def make_slide_11():
             dy += 22
         cy += 195
 
-    # Right: Authentic High Resolution Economic/Report Screen View
+    # Right: Authentic High Resolution Browser Mockup
     rx = 665
     rw = 1155
-    draw.rounded_rectangle([rx, ly, rx + rw, ly + lh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    
-    # Priority screen from user's extracted Figma (screen_04_economic_modeling.png or screen_05_valuation_report.png)
     s_p = os.path.join(ASSETS_DIR, "screen_04_economic_modeling.png")
     if not os.path.exists(s_p):
         s_p = os.path.join(ASSETS_DIR, "screen_06_economic_analysis.png")
         
-    if os.path.exists(s_p):
-        s_img = Image.open(s_p).convert('RGBA')
-        scale = min((rw - 60) / s_img.width, (lh - 60) / s_img.height)
-        sw = int(s_img.width * scale)
-        sh = int(s_img.height * scale)
-        s_res = s_img.resize((sw, sh), Image.Resampling.LANCZOS)
-        img.paste(s_res, (rx + (rw - sw) // 2, ly + (lh - sh) // 2), s_res)
+    draw_browser_mockup(img, s_p, x=rx, y=ly, w=rw, h=lh, title="FARMINGSYS ENTERPRISE · STEP 3 FINANCIAL VALUATION & REPORT", url="https://farmingsys.io/workspace/step-03-valuation")
 
     draw_slide_footer(draw, 11, 12, dark_mode=False)
     out_path = os.path.join(OUT_DIR, "slide_11.png")
@@ -200,7 +173,6 @@ def make_slide_12():
         right_badge=("PROJECT OUTCOMES", "green")
     )
     
-    # 4 Quantitative Impact Cards (Row 1 - from User Figma)
     metrics = [
         {
             "val": "100+",
@@ -238,7 +210,7 @@ def make_slide_12():
             draw.text((mx + 25, ly), l, font=get_font(12, 'regular'), fill=TEXT_LIGHT_SUB)
             ly += 20
 
-    # STAR Retrospective Full Card (Row 2 - 200자 이상 시니어 UX 전략 회고)
+    # STAR Retrospective Full Card
     r_y = 440
     r_w = 1720
     r_h = 520

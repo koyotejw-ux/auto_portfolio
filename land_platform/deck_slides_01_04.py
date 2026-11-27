@@ -3,89 +3,82 @@ from PIL import Image, ImageDraw
 from deck_common import *
 
 # -------------------------------------------------------------
-# SLIDE 01: HERO COVER (AIA+ Style Layout)
+# SLIDE 01: HERO COVER (Executive Web SaaS Mockup & Specs)
 # -------------------------------------------------------------
 def make_slide_01():
     img = Image.new('RGB', (W, H), BG_LIGHT)
     draw = ImageDraw.Draw(img)
     
     # Header tag
-    draw_pill_badge(draw, left_x=120, cy=105, text="B2B PROPTECH & GIS CLOUD", font=get_font(11, 'bold'), theme='green', pad_x=12, height=26)
-    draw.text((310, 105), "FARMINGSYS ENTERPRISE PLATFORM", font=get_font(12, 'bold'), fill=BRAND_GREEN, anchor='lm')
+    draw_pill_badge(draw, left_x=100, cy=85, text="B2B PROPTECH & SPATIAL GIS CLOUD SAAS", font=get_font(11, 'bold'), theme='green', pad_x=12, height=26)
+    draw.text((430, 85), "FARMINGSYS ENTERPRISE PLATFORM", font=get_font(12, 'bold'), fill=BRAND_GREEN, anchor='lm')
     
-    # Title
-    draw.text((120, 155), "FARMINGSYS", font=get_font(58, 'black'), fill=(15, 23, 42))
-    draw.text((495, 155), "LAND PLATFORM", font=get_font(58, 'black'), fill=BRAND_GREEN)
-    draw.text((120, 235), "공간 GIS 빅데이터 & 토지개발 사업 타당성 분석 플랫폼", font=get_font(26, 'bold'), fill=(51, 65, 85))
+    # Left Hero Text Content (w=700)
+    lx = 100
+    draw.text((lx, 130), "FARMINGSYS", font=get_font(52, 'black'), fill=(15, 23, 42))
+    draw.text((lx + 340, 130), "LAND PLATFORM", font=get_font(52, 'black'), fill=BRAND_GREEN)
+    draw.text((lx, 205), "공간 GIS 빅데이터 & 토지개발 사업 타당성 분석 플랫폼", font=get_font(23, 'bold'), fill=(51, 65, 85))
     
     desc_kr = (
         "복잡한 공적 규제와 인허가, 토지이용계획 공간 데이터를 3초 내 자동 진단하고\n"
         "비전문가 토지 소유주부터 전문 개발사, 금융 투자자까지 원스톱으로 연결하는\n"
         "국내 유일의 엔터프라이즈급 토지개발 사업 타당성 및 경제성 자동 시뮬레이션 SaaS"
     )
-    draw.text((120, 295), desc_kr, font=get_font(15.5, 'regular'), fill=(100, 116, 139), spacing=8)
+    draw.text((lx, 260), desc_kr, font=get_font(14, 'regular'), fill=(100, 116, 139), spacing=7)
     
-    # 5 Spheres (from user's Figma Overview bubble network)
-    draw.text((120, 400), "토지개발 플랫폼 5대 핵심 도메인 (Overview)", font=get_font(16, 'bold'), fill=(15, 23, 42))
+    # 4 Quantitative Impact Cards (Clean Modern Grid)
+    stats = [
+        ("100+", "분석 가능 토지 규제 조건", "국토계획법, 산지관리법 등 공적 규제 3초 자동 판정"),
+        ("90%", "분석 소요 시간 단축", "기존 14일 수작업 조사를 원터치 실시간 진단으로 단축"),
+        ("3~5s", "원터치 시뮬레이션 도출", "지번 입력 즉시 최적 단지 구획 및 시설 조성비 산출"),
+        ("40%", "의사결정 정확도 향상", "공공 지적도 및 경제성 모델링 기반 사전 리스크 차단")
+    ]
+    card_y = 365
+    for idx, (val, label, sub) in enumerate(stats):
+        cx = lx + (idx % 2) * 350
+        cy = card_y + (idx // 2) * 115
+        cw, ch = 330, 100
+        draw.rounded_rectangle([cx, cy, cx + cw, cy + ch], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+        draw.text((cx + 18, cy + 18), val, font=get_num_font(28, 'black'), fill=BRAND_GREEN if idx==0 else (15, 23, 42))
+        draw.text((cx + 18, cy + 56), label, font=get_font(12, 'bold'), fill=TEXT_LIGHT_MAIN)
+        draw.text((cx + 18, cy + 76), sub, font=get_font(10.5, 'regular'), fill=TEXT_LIGHT_SUB)
+
+    # 5 Spheres Domain Badges (Overview Flow)
+    draw.text((lx, 620), "토지개발 플랫폼 5대 핵심 도메인 (Overview)", font=get_font(15, 'bold'), fill=(15, 23, 42))
     spheres = [
-        ("토지탐색", "지번/지적도 조회", BRAND_GREEN),
-        ("인허가", "3초 규제 판별", BRAND_DARK),
-        ("시설배치", "스마트팜 단지설계", BRAND_TEAL),
-        ("경제성", "투자비용/IRR 산출", (99, 102, 241)),
-        ("보고서", "표준 리포트/매칭", (71, 85, 105))
+        ("01. 토지탐색", "지번/지적도 조회", BRAND_GREEN),
+        ("02. 인허가", "3초 규제 판별", BRAND_DARK),
+        ("03. 시설배치", "스마트팜 단지설계", BRAND_TEAL),
+        ("04. 경제성", "투자비용/IRR 산출", (99, 102, 241)),
+        ("05. 보고서", "표준 리포트/매칭", (71, 85, 105))
     ]
     for idx, (s_name, s_sub, s_col) in enumerate(spheres):
-        sx = 120 + idx * 125
-        sy = 450
-        draw.ellipse([sx, sy, sx + 95, sy + 95], fill=s_col)
-        draw.text((sx + 47, sy + 38), s_name, font=get_font(17, 'bold'), fill=(255, 255, 255), anchor='mm')
-        draw.text((sx + 47, sy + 62), s_sub, font=get_font(9.5, 'medium'), fill=(255, 255, 255), anchor='mm')
-        
-    # 4 Quantitative Impact Cards (Exact from User Figma)
-    stats = [
-        ("100+", "분석 가능 토지 규제 조건"),
-        ("90%", "분석 소요 시간 단축"),
-        ("3~5s", "원터치 시뮬레이션 도출"),
-        ("40%", "의사결정 정확도 향상")
-    ]
-    card_y = 610
-    for idx, (val, label) in enumerate(stats):
-        cx = 120 + (idx % 2) * 280
-        cy = card_y + (idx // 2) * 110
-        cw, ch = 265, 95
-        draw.rounded_rectangle([cx, cy, cx + cw, cy + ch], radius=14, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-        draw.text((cx + 20, cy + 20), val, font=get_num_font(32, 'black'), fill=BRAND_GREEN if idx==0 else (15, 23, 42))
-        lines = wrap_text(label, get_font(11.5, 'medium'), cw - 40, draw)
-        ly = cy + 56
-        for line in lines:
-            draw.text((cx + 20, ly), line, font=get_font(11.5, 'medium'), fill=TEXT_LIGHT_SUB)
-            ly += 16
+        sx = lx + idx * 140
+        sy = 655
+        draw.rounded_rectangle([sx, sy, sx + 130, sy + 62], radius=10, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+        draw.rounded_rectangle([sx + 10, sy + 10, sx + 22, sy + 22], radius=3, fill=s_col)
+        draw.text((sx + 30, sy + 16), s_name, font=get_font(11.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
+        draw.text((sx + 10, sy + 42), s_sub, font=get_font(10.5, 'regular'), fill=TEXT_LIGHT_SUB)
 
-    # Project Meta Info
-    draw.rounded_rectangle([120, 850, 680, 950], radius=12, fill=(241, 245, 249), outline=BORDER_LIGHT, width=1)
+    # Project Meta Info Box
+    draw.rounded_rectangle([lx, 745, lx + 700, 945], radius=12, fill=(241, 245, 249), outline=BORDER_LIGHT, width=1)
     metas = [
         ("프로젝트", "토지개발사업 분석 플랫폼 B2B 클라우드 SaaS"),
-        ("수행 역할", "B2B UX/UI 아키텍처 및 디자인 시스템 총괄 (100% 단독)"),
+        ("수행 역할", "B2B UX/UI 아키텍처 및 디자인 시스템 총괄 (100% 기여)"),
+        ("기술 환경", "Flutter Web / Mobile 대응, GIS 오픈 레이어, 공공 REST API"),
         ("핵심 혁신", "12대 공공 데이터 실시간 파싱 & 3단계 시뮬레이션 자동화")
     ]
-    my = 862
+    my = 765
     for k, v in metas:
-        draw.text((140, my), k, font=get_font(11.5, 'bold'), fill=BRAND_GREEN)
-        draw.text((210, my), v, font=get_font(11.5, 'medium'), fill=TEXT_LIGHT_MAIN)
-        my += 28
+        draw.text((lx + 20, my), k, font=get_font(12, 'bold'), fill=BRAND_GREEN)
+        draw.text((lx + 110, my), v, font=get_font(12, 'medium'), fill=TEXT_LIGHT_MAIN)
+        my += 40
 
-    # Right Hero Mockup Frame
-    mock_p = os.path.join(ASSETS_DIR, "screen_01_landing.png")
-    if os.path.exists(mock_p):
-        m_img = Image.open(mock_p).convert('RGBA')
-        mw = 1000
-        mh = int(m_img.height * (mw / m_img.width))
-        m_res = m_img.resize((mw, mh), Image.Resampling.LANCZOS)
-        fx = 760
-        fy = 140
-        draw.rounded_rectangle([fx - 10, fy - 10, fx + mw + 10, fy + 800], radius=16, fill=(15, 23, 42), outline=BORDER_DARK, width=2)
-        crop_view = m_res.crop((0, 0, mw, min(780, mh)))
-        img.paste(crop_view, (fx, fy), crop_view)
+    # Right: High-Res Real Desktop Browser Mockup (x=830, y=120, w=990, h=825)
+    hero_screen = os.path.join(ASSETS_DIR, "screen_hero_dashboard_3128.png")
+    if not os.path.exists(hero_screen):
+        hero_screen = os.path.join(ASSETS_DIR, "screen_01_landing.png")
+    draw_browser_mockup(img, hero_screen, x=830, y=120, w=990, h=825, title="FARMINGSYS ENTERPRISE · CORE WORKSPACE", url="https://farmingsys.io/app/dashboard")
 
     draw_slide_footer(draw, 1, 12, dark_mode=False)
     out_path = os.path.join(OUT_DIR, "slide_01.png")
@@ -148,7 +141,7 @@ def make_slide_02():
             draw.text((px + 20, ly), line, font=get_font(12, 'regular'), fill=TEXT_LIGHT_SUB)
             ly += 20
             
-    # Row 2 (Tier 2): Directly Rendered Vector Charts (AIA+ Style)
+    # Row 2: Direct Vector Charts
     t2_y = 455
     t2_w = 848
     t2_h = 495
@@ -167,37 +160,30 @@ def make_slide_02():
         ("단계 간 흐름 이해 (UX)", 4.0, (71, 85, 105))
     ]
     
-    # 4 Vertical Bars
     bar_base_y = t2_y + 400
     bar_max_h = 240
     bw = 120
     for idx, (b_label, b_val, b_col) in enumerate(bar_items):
         bx = lx + 80 + idx * 180
         bh = int(bar_max_h * (b_val / 5.0))
-        # Background track
         draw.rounded_rectangle([bx, bar_base_y - bar_max_h, bx + bw, bar_base_y], radius=8, fill=(241, 245, 249))
-        # Value fill
         draw.rounded_rectangle([bx, bar_base_y - bh, bx + bw, bar_base_y], radius=8, fill=b_col)
-        # Value text on top
         draw.text((bx + bw//2, bar_base_y - bh - 16), f"{b_val}", font=get_num_font(16, 'bold'), fill=b_col, anchor='mm')
-        # Label below
         draw.text((bx + bw//2, bar_base_y + 24), b_label, font=get_font(12, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mm')
         draw.text((bx + bw//2, bar_base_y + 45), f"5점 만점 중 {b_val}점", font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB, anchor='mm')
 
-    # Chart 2: Donut Chart (정보 파편화 -> 통합 필요성)
+    # Chart 2: Donut Chart
     rx = 972
     draw.rounded_rectangle([rx, t2_y, rx + t2_w, t2_y + t2_h], radius=14, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
     draw_pill_badge(draw, left_x=rx + 25, cy=t2_y + 25, text="MARKET SURVEY", font=get_font(10.5, 'bold'), theme='blue', pad_x=10, height=22)
     draw.text((rx + 25, t2_y + 55), "정보 파편화 원인 및 통합 필요성 비중", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
     draw.text((rx + t2_w - 25, t2_y + 58), "(출처: 공공데이터포털, 토지이음, CAD 포럼)", font=get_font(11, 'medium'), fill=TEXT_LIGHT_SUB, anchor='ra')
     
-    # Donut drawing
     pie_cx, pie_cy, pie_r = rx + 190, t2_y + 245, 120
     draw.pieslice([pie_cx - pie_r, pie_cy - pie_r, pie_cx + pie_r, pie_cy + pie_r], start=0, end=108, fill=BRAND_GREEN)
     draw.pieslice([pie_cx - pie_r, pie_cy - pie_r, pie_cx + pie_r, pie_cy + pie_r], start=108, end=198, fill=(99, 102, 241))
     draw.pieslice([pie_cx - pie_r, pie_cy - pie_r, pie_cx + pie_r, pie_cy + pie_r], start=198, end=270, fill=(51, 65, 85))
     draw.pieslice([pie_cx - pie_r, pie_cy - pie_r, pie_cx + pie_r, pie_cy + pie_r], start=270, end=360, fill=BRAND_TEAL)
-    # Inner hole
     draw.ellipse([pie_cx - 55, pie_cy - 55, pie_cx + 55, pie_cy + 55], fill=CARD_LIGHT)
     draw.text((pie_cx, pie_cy - 10), "통합 수요", font=get_font(12, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mm')
     draw.text((pie_cx, pie_cy + 12), "100%", font=get_num_font(15, 'bold'), fill=BRAND_GREEN, anchor='mm')
@@ -217,7 +203,6 @@ def make_slide_02():
         draw.text((rx + 410, leg_y + 48), l_sub, font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB, anchor='lm')
         leg_y += 82
 
-    # Bottom Callout Insight
     draw.rounded_rectangle([rx + 25, t2_y + 440, rx + t2_w - 25, t2_y + 485], radius=8, fill=(236, 253, 245), outline=(167, 243, 208), width=1)
     draw.text((rx + 40, t2_y + 462), "💡 리서치 결론: 4개 영역이 분절되어 있어, 단일 SaaS 플랫폼으로의 통합 요구가 100%에 달함", font=get_font(12, 'bold'), fill=BRAND_DARK, anchor='lm')
 
@@ -255,7 +240,6 @@ def make_slide_03():
     
     draw.line([(c1_x + 30, cy + 165), (c1_x + card_w - 30, cy + 165)], fill=BORDER_LIGHT, width=1)
     
-    # Pain Points
     draw.text((c1_x + 30, cy + 195), "⚠️ 핵심 불편 사항 (Pain Points)", font=get_font(16, 'bold'), fill=(225, 29, 72))
     pains_1 = [
         "개발 가능한 토지인지 확인하기 위해 전문가 컨설팅을 의뢰했으나 비용이 비싸고 답변이 매우 느림",
@@ -268,7 +252,6 @@ def make_slide_03():
         draw.text((c1_x + 45, py + 28), "• " + p, font=get_font(12.5, 'regular'), fill=(159, 18, 57), anchor='lm')
         py += 65
         
-    # Needs
     draw.text((c1_x + 30, cy + 450), "💡 핵심 요구 가치 (User Needs)", font=get_font(16, 'bold'), fill=BRAND_GREEN)
     needs_1 = [
         "지번 검색 한 번으로 복잡한 공적 규제 정보를 지도 위에 한눈에 시각화하여 확인",
@@ -291,7 +274,6 @@ def make_slide_03():
     
     draw.line([(c2_x + 30, cy + 165), (c2_x + card_w - 30, cy + 165)], fill=BORDER_LIGHT, width=1)
     
-    # Pain Points
     draw.text((c2_x + 30, cy + 195), "⚠️ 핵심 불편 사항 (Pain Points)", font=get_font(16, 'bold'), fill=(225, 29, 72))
     pains_2 = [
         "경사도, 진입로 너비, 용도지역 등 땅을 고르는 기초 단계부터 고려할 변수가 너무 많아 막막함",
@@ -304,7 +286,6 @@ def make_slide_03():
         draw.text((c2_x + 45, py + 28), "• " + p, font=get_font(12.5, 'regular'), fill=(159, 18, 57), anchor='lm')
         py += 65
         
-    # Needs
     draw.text((c2_x + 30, cy + 450), "💡 핵심 요구 가치 (User Needs)", font=get_font(16, 'bold'), fill=BRAND_GREEN)
     needs_2 = [
         "지도 상에서 스마트팜 규격 모듈을 드래그 앤 드롭으로 직접 배치할 수 있는 인터랙티브 도구",
@@ -337,7 +318,6 @@ def make_slide_04():
         right_badge=("USER JOURNEY & INSIGHTS", "green")
     )
     
-    # Left: Native Vector 6-Step Journey Map Table
     lw = 1060
     lh = 740
     ly = 220
@@ -346,14 +326,12 @@ def make_slide_04():
     draw_pill_badge(draw, left_x=130, cy=ly + 32, text="6-STEP END-TO-END JOURNEY MAP", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=24)
     draw.text((365, ly + 32), "사용자 관점의 단계별 행동, Pain Point 및 전환 기회(Opportunity)", font=get_font(13.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
     
-    # Grid Header Dimensions
     cols = ["구분", "01. 인식", "02. 정보 탐색", "03. 토지 선택", "04. 규제 확인", "05. 설계 시도", "06. 타당성 평가"]
     col_widths = [100, 155, 155, 155, 155, 155, 155]
     
     gx = 125
     gy = ly + 65
     
-    # Table Header Row
     cur_x = gx
     for idx, (c_name, c_w) in enumerate(zip(cols, col_widths)):
         fill_col = BRAND_GREEN if idx > 0 else (241, 245, 249)
@@ -424,7 +402,7 @@ def make_slide_04():
             cur_x += c_w + 5
         r_y += r_h + 6
 
-    # Right: 4 Key Strategic Insights (AIA+ Format)
+    # Right: 4 Key Strategic Insights
     rx = 1185
     rw = 635
     draw.rounded_rectangle([rx, ly, rx + rw, ly + lh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
