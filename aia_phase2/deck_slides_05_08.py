@@ -397,57 +397,57 @@ def make_slide_07():
         cp_y += 24
     draw.text((c2_x + 35, cp_y + 8), "※ 색상만으로 정보를 구별하지 않고 텍스트 레이블 병행 표기 원칙", font=get_font(11, 'bold'), fill=AIA_RED)
     
-    # Col 3: Real UI Components & Forms (Clean Pure-White Figma Authentic Components)
+    # Col 3: Real UI Components & Forms (Clean Pure-White Figma Authentic Components - 100% Unclipped)
     c3_x = 1180
     c3_w = 640
     draw.rounded_rectangle([c3_x, bot_y, c3_x + c3_w, bot_y + bot_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, left_x=c3_x + 20, cy=bot_y + 30, text="FIGMA UI COMPONENTS", font=get_font(10.5, 'bold'), theme='green', pad_x=10, height=22)
-    draw.text((c3_x + 20, bot_y + 55), "공식 UI 컴포넌트 & 48px 터치 폼", font=get_font(16, 'bold'), fill=TEXT_LIGHT_MAIN)
-    draw.text((c3_x + 20, bot_y + 78), "피그마 원본 추출: 납부 카드, 출금 계좌 선택, 48px 일자 칩셋", font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB)
+    draw_pill_badge(draw, left_x=c3_x + 20, cy=bot_y + 26, text="FIGMA UI COMPONENTS", font=get_font(10.5, 'bold'), theme='green', pad_x=10, height=22)
+    draw.text((c3_x + 20, bot_y + 50), "공식 UI 컴포넌트 & 48px 터치 폼", font=get_font(16, 'bold'), fill=TEXT_LIGHT_MAIN)
+    draw.text((c3_x + 20, bot_y + 73), "피그마 원본 추출: 납부 카드, 출금 계좌 선택, 48px 일자 칩셋", font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB)
     
     # -------------------------------------------------------------------------
-    # ROW 1 (y = bot_y + 105, H = 180): Notice/Pay Card & 9 Circular Icons
+    # ROW 1 (y = bot_y + 96, H = 186): Notice/Pay Card & 9 Circular Icons
     # -------------------------------------------------------------------------
-    r1_y = bot_y + 105
-    r1_h = 180
+    r1_y = bot_y + 96
+    r1_h = 186
     
     # Card 1 (Top-Left): Notice / Payment Card
-    c1_bx = c3_x + 20
-    c1_bw = 380
+    c1_bx = c3_x + 18
+    c1_bw = 405
     draw.rounded_rectangle([c1_bx, r1_y, c1_bx + c1_bw, r1_y + r1_h], radius=10, fill=(255, 255, 255), outline=BORDER_LIGHT, width=1)
-    notice_p = os.path.join(CORE_DIR, "comp_notice_clean.png")
+    notice_p = os.path.join(CORE_DIR, "ds_comp_notice_full.png")
     if os.path.exists(notice_p):
         n_img = Image.open(notice_p).convert('RGBA')
-        scale = min((c1_bw - 20) / n_img.width, (r1_h - 16) / n_img.height)
+        scale = min((c1_bw - 16) / n_img.width, (r1_h - 16) / n_img.height)
         nw = int(n_img.width * scale)
         nh = int(n_img.height * scale)
         n_res = n_img.resize((nw, nh), Image.Resampling.LANCZOS)
         img.paste(n_res, (c1_bx + (c1_bw - nw) // 2, r1_y + (r1_h - nh) // 2), n_res)
         
     # Card 2 (Top-Right): 9 Circular Action Icons
-    c2_bx = c3_x + 415
-    c2_bw = 205
+    c2_bx = c3_x + 433
+    c2_bw = 189
     draw.rounded_rectangle([c2_bx, r1_y, c2_bx + c2_bw, r1_y + r1_h], radius=10, fill=(255, 255, 255), outline=BORDER_LIGHT, width=1)
-    icons_p = os.path.join(CORE_DIR, "comp_icons_clean.png")
+    icons_p = os.path.join(CORE_DIR, "ds_comp_icons_full.png")
     if os.path.exists(icons_p):
         ic_img = Image.open(icons_p).convert('RGBA')
-        scale = min((c2_bw - 20) / ic_img.width, (r1_h - 16) / ic_img.height)
+        scale = min((c2_bw - 16) / ic_img.width, (r1_h - 16) / ic_img.height)
         iw = int(ic_img.width * scale)
         ih = int(ic_img.height * scale)
         ic_res = ic_img.resize((iw, ih), Image.Resampling.LANCZOS)
         img.paste(ic_res, (c2_bx + (c2_bw - iw) // 2, r1_y + (r1_h - ih) // 2), ic_res)
         
     # -------------------------------------------------------------------------
-    # ROW 2 (y = bot_y + 300, H = 245): Contract Card, Bank Select, 48px Chips
+    # ROW 2 (y = bot_y + 292, H = 255): Contract Card, Bank Select, 48px Chips
     # -------------------------------------------------------------------------
-    r2_y = bot_y + 300
-    r2_h = 245
+    r2_y = bot_y + 292
+    r2_h = 255
     
     # Card 3 (Bottom-Left): Contract Information Card
-    c3_bx = c3_x + 20
-    c3_bw = 185
+    c3_bx = c3_x + 18
+    c3_bw = 192
     draw.rounded_rectangle([c3_bx, r2_y, c3_bx + c3_bw, r2_y + r2_h], radius=10, fill=(255, 255, 255), outline=BORDER_LIGHT, width=1)
-    contract_p = os.path.join(CORE_DIR, "comp_contract_clean.png")
+    contract_p = os.path.join(CORE_DIR, "ds_comp_contract_full.png")
     if os.path.exists(contract_p):
         ct_img = Image.open(contract_p).convert('RGBA')
         scale = min((c3_bw - 16) / ct_img.width, (r2_h - 16) / ct_img.height)
@@ -458,9 +458,9 @@ def make_slide_07():
         
     # Card 4 (Bottom-Middle): Bank Account Select Form
     c4_bx = c3_x + 220
-    c4_bw = 190
+    c4_bw = 196
     draw.rounded_rectangle([c4_bx, r2_y, c4_bx + c4_bw, r2_y + r2_h], radius=10, fill=(255, 255, 255), outline=BORDER_LIGHT, width=1)
-    bank_p = os.path.join(CORE_DIR, "comp_bank_clean.png")
+    bank_p = os.path.join(CORE_DIR, "ds_comp_bank_full.png")
     if os.path.exists(bank_p):
         b_img = Image.open(bank_p).convert('RGBA')
         scale = min((c4_bw - 16) / b_img.width, (r2_h - 16) / b_img.height)
@@ -470,10 +470,10 @@ def make_slide_07():
         img.paste(b_res, (c4_bx + (c4_bw - bw) // 2, r2_y + (r2_h - bh) // 2), b_res)
         
     # Card 5 (Bottom-Right): 48px Automatic Transfer Date Chips Form
-    c5_bx = c3_x + 425
-    c5_bw = 195
+    c5_bx = c3_x + 426
+    c5_bw = 196
     draw.rounded_rectangle([c5_bx, r2_y, c5_bx + c5_bw, r2_y + r2_h], radius=10, fill=(255, 255, 255), outline=BORDER_LIGHT, width=1)
-    chips_p = os.path.join(CORE_DIR, "comp_chips_clean.png")
+    chips_p = os.path.join(CORE_DIR, "ds_comp_chips_full.png")
     if os.path.exists(chips_p):
         ch_img = Image.open(chips_p).convert('RGBA')
         scale = min((c5_bw - 16) / ch_img.width, (r2_h - 16) / ch_img.height)
