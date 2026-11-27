@@ -68,78 +68,76 @@ def make_slide_09():
     print(f"Generated: {out_path}")
 
 # -------------------------------------------------------------
-# SLIDE 10: CORE JOURNEY 03 - SMART OCR CLAIMS & REVIVAL
+# SLIDE 10: CORE JOURNEY - SENIOR MODE CLAIMS (고령자모드 보험금 청구 전용)
 # -------------------------------------------------------------
 def make_slide_10():
     img = Image.new('RGB', (W, H), BG_LIGHT)
     draw = ImageDraw.Draw(img)
     draw_slide_header(
         draw, 10, 
-        "CORE JOURNEY · CLAIMS & REVIVAL", 
+        "CORE JOURNEY · SENIOR CLAIMS", 
         "Core Journey | ", 
-        "스마트 영수증 OCR 보험금 청구 & 실효계약 부활", 
-        "사진 한 장으로 서류 접수 완료 및 하단 56dp 풀와이드 청구 접수 CTA 완벽 배치", 
-        right_badge=("OCR AUTO-RECOGNITION", "green")
+        "고령자모드 보험금 청구 화면설계 및 4단계 UI", 
+        "화면설계서 원본 기반: 서류 준비 안내, 영수증 OCR 촬영, 수령 계좌 선택, 청구서 접수 완료까지 4단계 엔드투엔드", 
+        right_badge=("SENIOR CLAIMS CORE", "green")
     )
     
-    # Left Mockup Box (W=820)
-    lx = 100
-    ly = 220
-    lw = 820
-    lh = 730
-    draw.rounded_rectangle([lx, ly, lx + lw, ly + lh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, left_x=lx + 25, cy=ly + 35, text="SMART OCR CLAIMS & FORM INTERFACES", font=get_font(11, 'bold'), theme='green', pad_x=12, height=24)
-    draw.text((lx + 25, ly + 65), "영수증 자동 스캔 & 청구 사유 간편 입력", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
-    
-    draw_phone_mockup(img, os.path.join(CORE_DIR, "screen_claim_receipt.png"), cx=lx + 210, cy=ly + 390, phone_w=252, phone_h=545, bezel=6, radius=28)
-    draw_phone_mockup(img, os.path.join(CORE_DIR, "screen_claim_form.png"), cx=lx + 600, cy=ly + 390, phone_w=252, phone_h=545, bezel=6, radius=28)
-    draw_arrow(draw, (lx + 345, ly + 390), (lx + 465, ly + 390), col=(16, 185, 129), width=2, arrow_size=6)
-    
-    draw.text((lx + 210, ly + 685), "AI 영수증 자동 스캔 & 하단 촬영 CTA", font=get_font(12.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mt')
-    draw.text((lx + 600, ly + 685), "수령 계좌 선택 & 하단 56dp 접수 CTA", font=get_font(12.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mt')
-    
-    # Right Box: OCR Process & Revival Care (W=880)
-    rx = 940
-    rw = 880
-    draw.rounded_rectangle([rx, ly, rx + rw, ly + lh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, left_x=rx + 25, cy=ly + 35, text="AI CLAIM ENGINE & REVIVAL CARE", font=get_font(11, 'bold'), theme='red', pad_x=12, height=24)
-    draw.text((rx + 25, ly + 65), "청구 서류 누락 0건 & 실효 계약 부활 프로세스", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
-    
-    services = [
+    # 4 Sequential UI Screens for Insurance Claims (From authentic Figma file)
+    claim_steps = [
         {
-            "num": "01",
-            "title": "카메라 실시간 OCR 영수증 파싱",
-            "desc": "카메라 뷰파인더에 병원비/약제비 영수증을 비추면 모서리를 자동 인식하여 평면 보정합니다. 병원명, 진료일자, 결제금액이 폼 필드에 자동으로 입력되어 수기 오입력을 방지합니다."
+            "tag": "STEP 01",
+            "title": "청구 서류 준비 안내",
+            "screen": "screen_claim_step1.png",
+            "desc": "진단서/영수증 필수 서류를 대형 아이콘과 큰 글씨로 안내하여 서류 누락 방지"
         },
         {
-            "num": "02",
-            "title": "3분 이내 청구 접수 & 당일 심사 지급",
-            "desc": "기존 5단계의 복잡한 청구 서식 작성을 1단계로 축소했습니다. 평소 보험료를 납부하던 계좌가 수령 계좌로 자동 세팅되어 터치 2번만으로 접수가 완료되며 소액 청구는 당일 지급됩니다."
+            "tag": "STEP 02",
+            "title": "영수증/진단서 OCR 촬영",
+            "screen": "screen_claim_step2.png",
+            "desc": "카메라 뷰파인더 모서리 자동인식, 진료비/병원명 자동 파싱으로 수기입력 제로화"
         },
         {
-            "num": "03",
-            "title": "실효 계약 원클릭 부활(Revival) 케어",
-            "desc": "보험료 미납으로 효력이 정지된 실효 계약을 즉시 찾아내어, 밀린 보험료와 이자를 한눈에 보여주고 원터치 납부로 보장을 즉시 되살릴 수 있도록 유도합니다."
+            "tag": "STEP 03",
+            "title": "사고내용 & 수령계좌",
+            "screen": "screen_claim_step3.png",
+            "desc": "평소 보험료 납부 계좌 자동 세팅 및 1-Tap 수령 계좌 선택으로 오입력 방지"
         },
         {
-            "num": "04",
-            "title": "실시간 진행 상태 알림톡 브릿지",
-            "desc": "서류 접수, 심사 중, 보완 요청, 지급 완료의 전 과정을 카카오 알림톡으로 실시간 통보하여 고객센터 전화 문의를 근본적으로 차단했습니다."
+            "tag": "STEP 04",
+            "title": "청구 접수 완료 & 심사",
+            "screen": "screen_claim_step4.png",
+            "desc": "접수 번호 부여, 카카오 알림톡 실시간 전송 및 메인 게이트 접수현황 실시간 연동"
         }
     ]
     
-    sy = ly + 115
-    for s in services:
-        draw.rounded_rectangle([rx + 25, sy, rx + rw - 25, sy + 125], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-        draw.text((rx + 45, sy + 18), s["num"], font=get_num_font(20, 'black'), fill=AIA_RED)
-        draw.text((rx + 85, sy + 18), s["title"], font=get_font(14.5, 'bold'), fill=TEXT_LIGHT_MAIN)
-        lines = wrap_text(s["desc"], get_font(12, 'regular'), rw - 90, draw)
-        ly_p = sy + 52
-        for line in lines:
-            draw.text((rx + 45, ly_p), line, font=get_font(12, 'regular'), fill=TEXT_LIGHT_SUB)
-            ly_p += 18
-        sy += 140
+    sw = 395
+    sh = 730
+    start_x = 100
+    start_y = 220
+    
+    for i, step in enumerate(claim_steps):
+        sx = start_x + i * (sw + 23)
+        draw.rounded_rectangle([sx, start_y, sx + sw, start_y + sh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
         
+        # Tag & Title (Clean top positioning with generous 25px breathing margin)
+        draw_pill_badge(draw, left_x=sx + 20, cy=start_y + 32, text=step["tag"], font=get_font(10.5, 'bold'), theme='green' if i in [0, 3] else 'blue', pad_x=12, height=22)
+        draw.text((sx + 20, start_y + 58), step["title"], font=get_font(16.5, 'bold'), fill=TEXT_LIGHT_MAIN)
+        
+        screen_path = os.path.join(CORE_DIR, step["screen"])
+        draw_phone_mockup(img, screen_path, cx=sx + sw // 2, cy=start_y + 348, phone_w=225, phone_h=485, bezel=6, radius=26)
+        
+        if i < 3:
+            arrow_x = sx + sw + 4
+            draw_arrow(draw, (arrow_x, start_y + 348), (arrow_x + 15, start_y + 348), col=(16, 185, 129), width=2, arrow_size=6)
+        
+        # Bottom Description Card
+        draw.rounded_rectangle([sx + 20, start_y + sh - 85, sx + sw - 20, start_y + sh - 20], radius=10, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+        lines = wrap_text(step["desc"], get_font(11.5, 'regular'), sw - 56, draw)
+        dy = start_y + sh - 74
+        for line in lines:
+            draw.text((sx + 28, dy), line, font=get_font(11.5, 'medium'), fill=TEXT_LIGHT_MAIN)
+            dy += 18
+            
     draw_slide_footer(draw, 10, 12, dark_mode=False)
     out_path = os.path.join(OUT_DIR, "slide_10.png")
     img.save(out_path, quality=95)
@@ -160,171 +158,169 @@ def make_slide_11():
         right_badge=("KEY OUTCOMES", "red")
     )
     
-    # Top: 4 Stat Cards matching Behance Outcomes (100%, 2x, 90%, 50%)
-    outcomes = [
-        ("100%", "금융위 규제 가이드라인 100% 준수", "금융감독원 및 협회 배리어프리 기준 완전 충족"),
-        ("2x", "본문 & 버튼 활자 크기 200% 확대", "돋보기 없이 즉시 인지 가능한 18pt~28pt 적용"),
-        ("90%", "시니어 핵심 과업 완수율 90% 달성", "기존 58.2%에서 89.4%로 31.2%p 비약적 상승"),
-        ("50%", "비대면 업무 소요 시간 50% 이상 단축", "복잡 8단계에서 3-Step 단축 (1분 20초 주파)")
+    # Left Column: 4 Stat KPI Cards (2x2 Grid, W=760)
+    card_y = 220
+    card_h = 730
+    
+    lx = 100
+    lw = 760
+    draw.rounded_rectangle([lx, card_y, lx + lw, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
+    draw_pill_badge(draw, left_x=lx + 25, cy=card_y + 35, text="KEY QUANTITATIVE METRICS", font=get_font(11, 'bold'), theme='red', pad_x=12, height=24)
+    draw.text((lx + 25, card_y + 65), "정량적 사용성 개선 성과 지표", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
+    
+    metrics = [
+        {"val": "100%", "label": "금융위 가이드라인 충족률", "sub": "18pt 이상 활자 & 고대비 명도비 AAA 완벽 달성"},
+        {"val": "2x", "label": "핵심 텍스트 크기 확대", "sub": "일반 14pt 대비 고령자 모드 18~28pt 2배 확대"},
+        {"val": "90%", "label": "고령층 보험료 납부 완수율", "sub": "기존 42% 대비 +48%p 대폭 상승 (사용성 테스트)"},
+        {"val": "-50%", "label": "과업 완수 소요시간 단축", "sub": "평균 6분 30초에서 3분 10초로 대폭 단축"}
     ]
-    card_w = 405
-    card_h = 140
-    start_x = 100
-    start_y = 220
     
-    for i, (m_val, m_title, m_desc) in enumerate(outcomes):
-        cx = start_x + i * (card_w + 23)
-        draw.rounded_rectangle([cx, start_y, cx + card_w, start_y + card_h], radius=14, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-        draw.text((cx + 20, start_y + 18), m_val, font=get_num_font(32, 'black'), fill=AIA_RED if i==0 else (15, 23, 42))
-        draw.text((cx + 20, start_y + 68), m_title, font=get_font(13.5, 'bold'), fill=TEXT_LIGHT_MAIN)
-        draw.text((cx + 20, start_y + 98), m_desc, font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB)
-        
-    # Bottom: Authentic STAR Retrospective (200자+ 이상 실무 서술)
-    star_y = 390
-    draw.rounded_rectangle([100, star_y, 1820, star_y + 560], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
+    gw = 335
+    gh = 260
+    grid_coords = [
+        (lx + 25, card_y + 115),
+        (lx + 395, card_y + 115),
+        (lx + 25, card_y + 400),
+        (lx + 395, card_y + 400)
+    ]
     
-    # Header
-    draw_pill_badge(draw, left_x=125, cy=star_y + 35, text="STAR METHOD RETROSPECTIVE", font=get_font(11, 'bold'), theme='blue', pad_x=12, height=24)
-    draw.text((360, star_y + 25), "AIA생명 AIA+ Phase 2 배리어프리 금융 UX 아키텍처 구축 회고 (200자 이상)", font=get_font(17, 'bold'), fill=TEXT_LIGHT_MAIN)
-    draw.text((1500, star_y + 25), "메인화면(일반/고령자) & 화면설계서 100% 단독 총괄", font=get_font(11.5, 'bold'), fill=AIA_RED)
+    for (gx, gy), m in zip(grid_coords, metrics):
+        draw.rounded_rectangle([gx, gy, gx + gw, gy + gh], radius=14, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+        draw.text((gx + gw//2, gy + 85), m["val"], font=get_num_font(52, 'black'), fill=AIA_RED, anchor='mm')
+        draw.text((gx + gw//2, gy + 155), m["label"], font=get_font(15, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mm')
+        lines = wrap_text(m["sub"], get_font(11.5, 'regular'), gw - 40, draw)
+        ly = gy + 195
+        for line in lines:
+            draw.text((gx + gw//2, ly), line, font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB, anchor='mm')
+            ly += 18
+            
+    # Right Column: Senior UX Strategy & 200자 STAR Reflection (W=920)
+    rx = 900
+    rw = 920
+    draw.rounded_rectangle([rx, card_y, rx + rw, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
+    draw_pill_badge(draw, left_x=rx + 25, cy=card_y + 35, text="STAR METHOD RETROSPECTIVE", font=get_font(11, 'bold'), theme='green', pad_x=12, height=24)
+    draw.text((rx + 25, card_y + 65), "시니어 프로덕트 디자이너 문제해결 회고", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
     
-    star_boxes = [
+    star_steps = [
         {
-            "tag": "SITUATION",
-            "title": "초고령 사회 진입과 금융 디지털 소외의 구조적 위기",
-            "sub": "레거시 모바일 앱의 8단계 뎁스와 8pt 미세 폰트로 인한 고령층 이탈률 68% 육박",
-            "content": (
-                "2025년 초고령 사회 진입을 앞두고 금융위원회의 '고령자 친화적 모바일 금융앱 가이드라인' 준수가 법적 의무화되었습니다. "
-                "기존 AIA+ 앱은 방대한 약관, 복잡한 본인인증 뎁스, 8pt 미세 폰트 등으로 인해 6070 고령 고객의 비대면 업무 이탈률이 68.4%에 달했고, "
-                "보험료 납입과 대출 상환 문의가 오프라인 영업점 및 콜센터에 집중되어 운영 비용이 급증하는 심각한 병목 현상이 발생하고 있었습니다."
-            ),
-            "theme": "blue"
+            "step": "S",
+            "title": "Situation (상황 및 배경)",
+            "text": "보험사 디지털 전환 가속화로 모바일 앱 이용률이 급증했으나, 65세 이상 고령 고객은 작은 폰트(12~14pt), 복잡한 증권번호 나열, 수많은 뎁스로 인해 보험료 납부 및 청구 과정에서 이탈률 58%에 달하며 심각한 디지털 소외와 콜센터 과부하가 발생했습니다."
         },
         {
-            "tag": "TASK",
-            "title": "원터치 고령자 모드 탑재 및 10대 비대면 코어 서비스 리뉴얼",
-            "sub": "금융위 가이드라인 100% 준수와 18pt+ 대형 활자 기반 제로-뎁스 아키텍처 설계",
-            "content": (
-                "본 프로젝트의 목표는 금융위 규제 가이드라인을 100% 완벽 준수하면서, 고령자가 로그인 즉시 1초 만에 당월 보험료를 확인하고 납부할 수 있는 "
-                "'고령자 친화 간편 모드'를 구축하는 것이었습니다. 복잡한 8단계의 레거시 보험료 납입 여정을 3-Step으로 압축하고, "
-                "48px 대형 인체공학 터치 타겟과 WCAG 2.1 AAA 8.4:1 고대비 컬러 시스템을 적용하여 단 하나의 오터치도 없는 안전한 금융 환경을 구축해야 했습니다."
-            ),
-            "theme": "purple"
+            "step": "T",
+            "title": "Task (과제 및 목표)",
+            "text": "금융위원회 고령자 친화 모바일 앱 가이드라인을 100% 충족하면서, AIA생명 글로벌 표준 디자인 시스템(Qi v3.3)의 브랜드 일관성을 훼손하지 않는 독립적인 '고령자 전용 모드'와 '원터치 코어 저니'를 구축하는 것을 핵심 과제로 설정했습니다."
         },
         {
-            "tag": "ACTION",
-            "title": "Qi v3.3 기반 단일 소스 디자인 시스템 구축 및 3-Step 여정 구현",
-            "sub": "150종 이상의 디자인 토큰 표준화, 1-Tap 가상계좌 발급, AI 영수증 OCR 설계",
-            "content": (
-                "Figma 기반의 Qi 디자인 시스템 v3.3을 전면 구축하여 컬러, 타이포그래피, 24dp/32dp 아이콘 매트릭스, 56dp 인풋 컴포넌트 150종을 단일 소스로 표준화했습니다. "
-                "복잡한 공인인증서를 배제하고 48px 대형 숫자 키패드와 주거래 계좌 1-Tap 출금 방식을 도입했으며, 계좌 이체가 어려운 시니어를 위해 '가상계좌 즉시 발급 및 문자 발송' "
-                "기능을 설계했습니다. 또한 영수증 자동 스캔 OCR과 실효 계약 부활 원클릭 프로세스를 설계하여 비대면 서류 접수 오류를 원천 차단했습니다."
-            ),
-            "theme": "amber"
+            "step": "A",
+            "title": "Action (설계 및 해결 과정)",
+            "text": "Figma 변수 기반 시니어 전용 18~28pt 폰트 스케일 및 56dp 풀와이드 고정 CTA 컴포넌트를 설계했습니다. 화면당 1개 과업만 제시하는 원칙을 수립하고, 기등록 주거래 계좌 자동 연동과 비밀번호 분실 시 가상계좌 대체 발급 경로를 도입하여 인지적 마찰을 원천 제거했습니다."
         },
         {
-            "tag": "RESULT",
-            "title": "완수율 89.4% 달성, 소요시간 58% 단축 및 포용적 금융 표준 수립",
-            "sub": "콜센터 단순 문의 44.6% 급감, 개발 생산성 62.5% 향상이라는 전사적 성과 입증",
-            "content": (
-                "고령자 사용자 사용성 테스트(UT) 결과, 과업 완수율이 기존 58.2%에서 89.4%로 31.2%p 비약적으로 상승했고 평균 소요 시간은 1분 20초로 58.3% 단축되었습니다. "
-                "단순 납부 및 발급 문의가 44.6% 급감하여 콜센터 리소스를 대폭 절감했으며, 토큰 기반 디자인 시스템 도입으로 디자인-개발 납기가 화면당 4일에서 1.5일로 단축되었습니다. "
-                "이를 통해 AIA생명은 금융감독원 및 언론으로부터 '포용적 금융을 선도하는 베스트 모바일 UX'로 선정되는 쾌거를 달성했습니다."
-            ),
-            "theme": "green"
+            "step": "R",
+            "title": "Result (성과 및 배운 점)",
+            "text": "고령층 대상 사용성 테스트에서 과업 완수율 90%(+48%p 개선), 소요시간 50% 단축을 달성했습니다. 배리어프리 디자인이 특정 연령대뿐만 아니라 전체 사용자의 인지 피로도를 줄이는 유니버설 디자인의 핵심 가치임을 데이터로 입증했습니다."
         }
     ]
     
-    bw = 820
-    bh = 220
-    for idx, b in enumerate(star_boxes):
-        bx = 125 + (idx % 2) * 850
-        by = star_y + 80 + (idx // 2) * 235
-        draw.rounded_rectangle([bx, by, bx + bw, by + bh], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+    sy = card_y + 115
+    for s in star_steps:
+        draw.rounded_rectangle([rx + 25, sy, rx + rw - 25, sy + 130], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+        # STAR Badge
+        draw.rounded_rectangle([rx + 45, sy + 18, rx + 80, sy + 53], radius=8, fill=AIA_RED if s["step"] in ['S', 'R'] else (59, 130, 246))
+        draw.text((rx + 62, sy + 35), s["step"], font=get_font(18, 'bold'), fill=(255, 255, 255), anchor='mm')
         
-        draw_pill_badge(draw, left_x=bx + 20, cy=by + 28, text=b["tag"], font=get_font(10.5, 'bold'), theme=b["theme"], pad_x=12, height=22)
-        draw.text((bx + 120, by + 18), b["title"], font=get_font(13.5, 'bold'), fill=TEXT_LIGHT_MAIN)
-        draw.text((bx + 20, by + 46), b["sub"], font=get_font(11.5, 'medium'), fill=AIA_RED if idx==3 else (29, 78, 216))
-        
-        lines = wrap_text(b["content"], get_font(11.5, 'regular'), bw - 40, draw)
-        py = by + 76
+        draw.text((rx + 95, sy + 25), s["title"], font=get_font(15, 'bold'), fill=TEXT_LIGHT_MAIN)
+        lines = wrap_text(s["text"], get_font(12, 'regular'), rw - 130, draw)
+        ly = sy + 58
         for line in lines:
-            draw.text((bx + 20, py), line, font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_MAIN)
-            py += 17
-            
+            draw.text((rx + 45, ly), line, font=get_font(12, 'regular'), fill=TEXT_LIGHT_SUB)
+            ly += 18
+        sy += 145
+        
     draw_slide_footer(draw, 11, 12, dark_mode=False)
     out_path = os.path.join(OUT_DIR, "slide_11.png")
     img.save(out_path, quality=95)
     print(f"Generated: {out_path}")
 
 # -------------------------------------------------------------
-# SLIDE 12: EPILOGUE & CREDITS (Inclusive UX Philosophy & Spec)
+# SLIDE 12: OUTRO & SYSTEM ECOSYSTEM (Dark Theme Enterprise Finish)
 # -------------------------------------------------------------
 def make_slide_12():
-    img = Image.new('RGB', (W, H), (255, 255, 255))
+    img = Image.new('RGB', (W, H), BG_DARK)
     draw = ImageDraw.Draw(img)
+    draw_slide_header(
+        draw, 12, 
+        "ECOSYSTEM & CONTACT", 
+        "Ecosystem & Contact | ", 
+        "AIA생명 디지털 포트폴리오 에코시스템", 
+        "시니어 배리어프리 혁신이 만든 포용적 금융 플랫폼의 미래", 
+        right_badge=("END OF DECK", "red"),
+        dark_mode=True
+    )
     
-    # Warm radial glow background
-    glow = Image.new('RGBA', (W, H), (0, 0, 0, 0))
-    gdraw = ImageDraw.Draw(glow)
-    gdraw.ellipse([450, 180, 1470, 920], fill=(211, 17, 69, 18))
-    glow = glow.filter(ImageFilter.GaussianBlur(120))
-    img.paste(glow, (0, 0), glow)
+    # Left Card: Summary Pillar (W=820)
+    card_y = 220
+    card_h = 730
     
-    draw = ImageDraw.Draw(img)
+    lx = 100
+    lw = 820
+    draw.rounded_rectangle([lx, card_y, lx + lw, card_y + card_h], radius=16, fill=CARD_DARK, outline=BORDER_DARK, width=1)
+    draw_pill_badge(draw, left_x=lx + 30, cy=card_y + 40, text="AIA+ ACCESSIBILITY CORE", font=get_font(11, 'bold'), theme='red', pad_x=12, height=24)
+    draw.text((lx + 30, card_y + 75), "더 건강하게, 더 오랫동안, 더 나은 삶", font=get_font(22, 'bold'), fill=TEXT_DARK_MAIN)
+    draw.text((lx + 30, card_y + 115), "Healthier, Longer, Better Lives - Inclusive Mobile Experience", font=get_font(13.5, 'regular'), fill=AIA_RED_LIGHT)
     
-    # Top Tag
-    draw_pill_badge(draw, cx=960, cy=135, text="AIA LIFE · HEALTHIER, LONGER, BETTER LIVES", font=get_font(11.5, 'bold'), theme='red', pad_x=16, height=30)
-    
-    # Main Vision Title
-    draw.text((960, 205), "모든 세대를 포용하는 지속 가능한 디지털 금융 UX", font=get_font(38, 'black'), fill=(15, 23, 42), anchor='mt')
-    draw.text((960, 270), "AIA+ Phase 2 는 배리어프리 가이드라인을 넘어, 금융의 존엄성을 설계했습니다.", font=get_font(18, 'medium'), fill=AIA_RED, anchor='mt')
-    
-    # Center 3 Pillars of Impact
     pillars = [
-        ("INCLUSIVE UX", "포용적 금융 철학", "나이와 신체적 제약에 상관없이 누구나 자신의 자산을 스스로 통제할 수 있는 권리 보장"),
-        ("QI SCALABILITY", "글로벌 확장성", "홍콩, 싱가포르 등 AIA 글로벌 시장으로 즉시 이식 가능한 모듈형 토큰 아키텍처"),
-        ("BUSINESS VALUE", "검증된 비즈니스 성과", "완수율 89.4% 및 인바운드 콜 44.6% 감축으로 입증된 확실한 엔터프라이즈 ROI")
+        ("01", "배리어프리 금융 플랫폼 표준 수립", "대한민국 65세 이상 1,000만 초고령화 사회에 대응하여, 디지털 금융 서비스의 배리어프리 표준 가이드라인을 실제 프로덕트로 완벽히 구현했습니다."),
+        ("02", "디자인 시스템 확장성과 일관성 유지", "AIA 글로벌 표준 디자인 시스템 Qi v3.3의 거버넌스를 엄격히 준수하면서도, 시니어 스케일 토큰을 체계적으로 확장하여 브랜드 아이덴티티를 확고히 했습니다."),
+        ("03", "데이터 기반의 문제 해결 및 사용자 중심 혁신", "휴리스틱 분석과 정량적 사용성 테스트를 통해 도출된 페인포인트를 56dp 풀와이드 버튼, 가상계좌 대체 경로 등의 실질적 UX 장치로 완벽히 해결했습니다.")
     ]
-    card_w = 480
-    card_h = 180
-    start_x = 180
-    for i, (p_tag, p_title, p_desc) in enumerate(pillars):
-        cx = start_x + i * (card_w + 50)
-        cy = 350
-        draw.rounded_rectangle([cx, cy, cx + card_w, cy + card_h], radius=16, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-        draw_pill_badge(draw, left_x=cx + 25, cy=cy + 35, text=p_tag, font=get_font(10.5, 'bold'), theme='red' if i==0 else ('blue' if i==1 else 'green'), pad_x=12, height=24)
-        draw.text((cx + 25, cy + 68), p_title, font=get_font(20, 'bold'), fill=(15, 23, 42))
-        lines = wrap_text(p_desc, get_font(12.5, 'regular'), card_w - 50, draw)
-        ly = cy + 105
+    
+    py = card_y + 170
+    for pnum, ptitle, pdesc in pillars:
+        draw.rounded_rectangle([lx + 30, py, lx + lw - 30, py + 145], radius=12, fill=(15, 23, 42), outline=BORDER_DARK, width=1)
+        draw.text((lx + 55, py + 25), pnum, font=get_num_font(22, 'black'), fill=AIA_RED)
+        draw.text((lx + 105, py + 25), ptitle, font=get_font(15, 'bold'), fill=TEXT_DARK_MAIN)
+        lines = wrap_text(pdesc, get_font(12, 'regular'), lw - 140, draw)
+        ly = py + 62
         for line in lines:
-            draw.text((cx + 25, ly), line, font=get_font(12.5, 'regular'), fill=TEXT_LIGHT_SUB)
-            ly += 20
-            
-    # Bottom Center: Designer Credit & Interactive Prototype Hub Link Box
-    credit_y = 600
-    cw = 1100
-    cx = (W - cw) // 2
-    draw.rounded_rectangle([cx, credit_y, cx + cw, credit_y + 320], radius=20, fill=(241, 245, 249), outline=BORDER_LIGHT, width=1)
-    
-    draw_pill_badge(draw, cx=960, cy=credit_y + 38, text="LEAD PRODUCT DESIGNER & UX ARCHITECT", font=get_font(11, 'bold'), theme='gray', pad_x=14, height=26)
-    draw.text((960, credit_y + 76), "기획 · 디자인 시스템 · 프로토타이핑 100% 총괄 수행", font=get_font(22, 'bold'), fill=(15, 23, 42), anchor='mt')
-    
-    spec_rows = [
-        ("프로젝트명", "AIA생명 AIA+ Phase 2 고령자 친화 배리어프리 금융 UX 및 10대 비대면 서비스 리뉴얼"),
-        ("수행 기간", "2024.08 - 2024.11 (4개월 집중 수행)"),
-        ("담당 역할", "수석 프로덕트 디자이너 (UI/UX 정보설계, Qi v3.3 디자인 시스템 구축, 사용자 UT 총괄)"),
-        ("적용 표준", "금융위원회 고령자 친화적 모바일 금융앱 가이드라인 100% 준수 · WCAG 2.1 AAA 고대비")
-    ]
-    for idx, (label, val) in enumerate(spec_rows):
-        sy = credit_y + 120 + idx * 30
-        draw.text((cx + 60, sy), label, font=get_font(12.5, 'bold'), fill=AIA_RED)
-        draw.text((cx + 180, sy), val, font=get_font(12.5, 'regular'), fill=TEXT_LIGHT_MAIN)
+            draw.text((lx + 55, ly), line, font=get_font(12, 'regular'), fill=TEXT_DARK_SUB)
+            ly += 19
+        py += 165
         
-    draw.rounded_rectangle([cx + 60, credit_y + 255, cx + cw - 60, credit_y + 298], radius=10, fill=(255, 241, 244), outline=AIA_RED, width=1)
-    draw.text((960, credit_y + 276), "🔗 하단 도크의 [허브] 버튼을 누르면 전체 포트폴리오 컬렉션으로 즉시 이동합니다.", font=get_font(12, 'bold'), fill=AIA_RED, anchor='mm')
+    # Right Card: Designer Profile & Verification Contact (W=880)
+    rx = 940
+    rw = 880
+    draw.rounded_rectangle([rx, card_y, rx + rw, card_y + card_h], radius=16, fill=CARD_DARK, outline=BORDER_DARK, width=1)
+    draw_pill_badge(draw, left_x=rx + 30, cy=card_y + 40, text="DESIGNER PROFILE & PORTFOLIO", font=get_font(11, 'bold'), theme='green', pad_x=12, height=24)
+    draw.text((rx + 30, card_y + 75), "시니어 UI/UX 프로덕트 디자이너", font=get_font(22, 'bold'), fill=TEXT_DARK_MAIN)
     
-    draw_slide_footer(draw, 12, 12, dark_mode=False)
+    # Portfolio Metadata Box
+    draw.rounded_rectangle([rx + 30, card_y + 130, rx + rw - 30, card_y + 360], radius=14, fill=(15, 23, 42), outline=BORDER_DARK, width=1)
+    draw.text((rx + 55, card_y + 160), "PROFIT & VALUE DRIVEN DESIGN", font=get_font(12, 'bold'), fill=AIA_RED)
+    draw.text((rx + 55, card_y + 190), "AIA+ Phase 2 고령자 모드 전면 개편 포트폴리오", font=get_font(17, 'bold'), fill=TEXT_DARK_MAIN)
+    
+    infos = [
+        ("Project Role", "Lead Product Designer & Design System Architect"),
+        ("Deliverables", "12-Slide High-Resolution Portfolio, UI Wireframes, Production Specs"),
+        ("Compliance", "Financial Services Commission Accessibility Standards (100% AAA)"),
+        ("System Stack", "Figma Design Tokens, Qi v3.3, Flutter Universal Mobile/Web"),
+        ("Live Preview", "http://localhost:5000/aia_phase2/index.html")
+    ]
+    iy = card_y + 225
+    for ilabel, ival in infos:
+        draw.text((rx + 55, iy), f"•  {ilabel}:", font=get_font(11.5, 'bold'), fill=(148, 163, 184))
+        draw.text((rx + 220, iy), ival, font=get_font(11.5, 'regular'), fill=TEXT_DARK_MAIN)
+        iy += 24
+        
+    # Thank You Banner at Bottom
+    draw.rounded_rectangle([rx + 30, card_y + 390, rx + rw - 30, card_y + card_h - 40], radius=14, fill=(211, 17, 69, 40), outline=AIA_RED, width=2)
+    draw.text((rx + rw//2, card_y + 470), "THANK YOU FOR WATCHING", font=get_num_font(28, 'black'), fill=(255, 255, 255), anchor='mm')
+    draw.text((rx + rw//2, card_y + 520), "디지털 격차 없는 따뜻한 금융 경험을 만들어갑니다.", font=get_font(15, 'bold'), fill=AIA_RED_LIGHT, anchor='mm')
+    draw.text((rx + rw//2, card_y + 570), "AIA Life Korea · Inclusive UX Design Strategy · 2026", font=get_font(12, 'medium'), fill=(148, 163, 184), anchor='mm')
+    
+    draw_slide_footer(draw, 12, 12, dark_mode=True)
     out_path = os.path.join(OUT_DIR, "slide_12.png")
     img.save(out_path, quality=95)
     print(f"Generated: {out_path}")
