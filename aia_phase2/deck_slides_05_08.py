@@ -167,79 +167,102 @@ def make_slide_06():
         draw, 6, 
         "WIREFRAMES & DETAILED SPECS", 
         "Wireframes | ", 
-        "고령자모드 메인 화면설계서 (PLSCMV002 Gate)", 
-        "화면설계서 원본 기반: 일반/간편 모드 토글, 개인화 알림(최대3건), 계약 스와이프, 청구/대출 5대 핵심 명세", 
+        "화면설계서_고령자모드_메인 (PLSCMV002 Gate)", 
+        "Figma 공식 화면설계서 원본 기반: 간편홈 모드 전환, 개인화 알림(최대3건), 계약 스와이프, 청구/대출 5대 영역 Description", 
         right_badge=("OFFICIAL FIGMA SPEC", "red")
     )
     
-    card_y = 220
-    card_h = 730
+    card_y = 210
+    card_h = 750
     
+    # Left Card: Wireframe Artboard (Official Figma Screen)
     lx = 100
-    lw = 760
+    lw = 680
     draw.rounded_rectangle([lx, card_y, lx + lw, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, left_x=lx + 25, cy=card_y + 35, text="PLSCMV002 · LOGIN GATE WIREFRAME", font=get_font(11, 'bold'), theme='red', pad_x=12, height=24)
-    draw.text((lx + 25, card_y + 65), "간편홈 메인 게이트 와이어프레임 구조", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
+    draw_pill_badge(draw, left_x=lx + 25, cy=card_y + 35, text="PLSCMV002 · FIGMA WIREFRAME ARTBOARD", font=get_font(11, 'bold'), theme='red', pad_x=12, height=24)
+    draw.text((lx + 25, card_y + 65), "간편홈 메인 화면설계서 원본 구조", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
+    draw.text((lx + 25, card_y + 92), "AIA+_Phase 2_화면설계서_고령자모드_메인.fig 공식 산출물", font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
     
-    wf_gate_path = os.path.join(CORE_DIR, "wf_senior_main_gate.png")
-    wf_scroll_path = os.path.join(CORE_DIR, "wf_senior_main_scroll.png")
+    # Place Official Figma Artboard Image
+    wf_artboard_path = os.path.join(CORE_DIR, "wf_senior_main_official_artboard.png")
+    if os.path.exists(wf_artboard_path):
+        wf_art_img = Image.open(wf_artboard_path)
+        # Calculate fit within width ~620, height ~580
+        target_w = 400
+        aspect = wf_art_img.height / wf_art_img.width
+        target_h = int(target_w * aspect)
+        if target_h > 580:
+            target_h = 580
+            target_w = int(target_h / aspect)
+        wf_art_resized = wf_art_img.resize((target_w, target_h), Image.Resampling.LANCZOS)
+        
+        # Draw frame around it
+        cx = lx + lw // 2
+        cy = card_y + 120 + (card_h - 140) // 2
+        top_left_x = cx - target_w // 2
+        top_left_y = cy - target_h // 2
+        
+        draw.rounded_rectangle([top_left_x - 6, top_left_y - 6, top_left_x + target_w + 6, top_left_y + target_h + 6], radius=12, fill=(245, 247, 250), outline=BORDER_LIGHT, width=1)
+        img.paste(wf_art_resized, (top_left_x, top_left_y))
     
-    draw_phone_mockup(img, wf_gate_path, cx=lx + 195, cy=card_y + 355, phone_w=240, phone_h=510, bezel=6, radius=24)
-    draw_phone_mockup(img, wf_scroll_path, cx=lx + 545, cy=card_y + 355, phone_w=240, phone_h=510, bezel=6, radius=24)
-    
-    draw.text((lx + 195, card_y + 645), "① 메인 상단 게이트 (Gate)", font=get_font(13.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mt')
-    draw.text((lx + 195, card_y + 670), "토글, 알림(3건), 계약(스와이프), 퀵메뉴", font=get_font(11, 'medium'), fill=TEXT_LIGHT_SUB, anchor='mt')
-    
-    draw.text((lx + 545, card_y + 645), "② 메인 하단 스크롤 (Scroll)", font=get_font(13.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mt')
-    draw.text((lx + 545, card_y + 670), "보험금 청구 접수현황, 보험 대출, 고객지원", font=get_font(11, 'medium'), fill=TEXT_LIGHT_SUB, anchor='mt')
-    
-    rx = 900
-    rw = 920
+    # Right Card: Description Specs Table
+    rx = 810
+    rw = 1010
     draw.rounded_rectangle([rx, card_y, rx + rw, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
     draw_pill_badge(draw, left_x=rx + 25, cy=card_y + 35, text="OFFICIAL UI SPECIFICATION TABLE", font=get_font(11, 'bold'), theme='blue', pad_x=12, height=24)
     draw.text((rx + 25, card_y + 65), "화면설계서 공식 상세 명세 (Description)", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
+    draw.text((rx + 25, card_y + 92), "개발/QA 검증을 위한 5대 UI 컴포넌트 정책 및 인터랙션 정의", font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
     
     specs = [
         {
             "num": "1",
             "name": "[헤더 영역] 일반모드 ↔ 간편모드 스위칭",
-            "desc": "일반홈 노출 (텍스트로 표시). 헤더에 있는 [일반홈/간편홈] 토글을 통해 상호 모드 전환 가능. 기본 간편홈 모드는 일반 대비 기본 +4pt 크기 확대 적용. 미확인 알림 메시지 건수 뱃지(최대 99개) 노출."
+            "tag": "헤더 토글",
+            "desc": "헤더 상단에 [일반홈 / 간편홈] 원터치 토글을 배치하여 모드 상호 전환 제공. 고령자모드는 텍스트 크기 기본 +4pt 이상 확대. 미확인 개인화 알림 건수 뱃지(최대 99건) 동적 표시."
         },
         {
             "num": "2",
-            "name": "[개인화 알림] 최대 3건 롤링 & 더보기",
-            "desc": "알림 1건씩 최대 3건까지 하단 콘텐츠를 밀며 리스트 표시. 4건 이상인 경우 [n건 더보기] 버튼 노출되며, 터치 시 레이어 팝업으로 전체 알림 리스트를 확인 가능."
+            "name": "[개인화 알림] 최대 3건 순차 노출 & 더보기",
+            "tag": "알림 리스트",
+            "desc": "사용자별 주요 알림(미납 보험료, 만기 등)을 1건씩 최대 3건까지 하단 콘텐츠를 밀며 리스트 표시. 4건 이상 발생 시 [n건 더보기] 버튼 노출 및 터치 시 레이어 팝업으로 전체 리스트 제공."
         },
         {
             "num": "3",
             "name": "[내보험(계약) 영역] 좌우 스와이프 다건 조회",
-            "desc": "내 보험 카드 표시 (복수 계약 시 변액보험 우선 노출, 수익률 강조). 1개일 때는 일반 카드와 동일한 너비로 고정 표시, 2개 이상일 경우 좌우 스와이프 기능 제공 (수에 제한 없음). 카드 탭 시 계약 상세 화면 이동."
+            "tag": "카드 스와이프",
+            "desc": "복수 계약 시 변액보험 우선 노출(수익률 강조). 보유 계약 1건 시 일반 카드 너비 고정, 2건 이상 시 좌우 스와이프 인터랙션 제공. 카드 탭 시 해당 계약 상세 화면으로 다이렉트 이동."
         },
         {
             "num": "4",
             "name": "[보험금 청구 영역] 실시간 청구 상태 노출",
-            "desc": "타이틀: '보험금 청구 총 n건'. 청구 건이 있을 시 [청구일 / 접수/심사상태 / 피보험자] 노출. 2개 이상 좌우 스와이프 지원. 청구 건이 없을 시 신규 청구 유도 카드로 자동 전환."
+            "tag": "상태 트래킹",
+            "desc": "타이틀: '보험금 청구 총 n건'. 진행 중인 청구 건이 있을 시 [청구일자 / 접수·심사 상태 뱃지 / 피보험자] 카드 표시. 청구 건 부재 시 '간편 청구 신청' 유도 카드로 자동 전환."
         },
         {
             "num": "5",
             "name": "[대출 내역 영역] 대출 현황 및 한도 조회",
-            "desc": "5-1: 대출 건이 있을 시 통합 대출 현황 카드 표시 (총 대출 금액 / 추가 대출 가능 금액 / 기준일). 5-2: 대출 건이 없을 시 대출 신청 유도 카드 노출 및 1-Tap 신청 버튼 연동."
+            "tag": "대출 한도",
+            "desc": "5-1(대출 보유 시): 총 대출금액 / 추가 대출 가능금액 / 기준일 표시. 5-2(대출 미보유 시): 내 보험 대출 신청 카드 표시. 탭 시 대출 가능 금액 및 금리 간편 조회 화면으로 이동."
         }
     ]
     
-    sy = card_y + 110
+    sy = card_y + 120
+    box_h = 110
+    gap = 14
     for s in specs:
-        draw.rounded_rectangle([rx + 25, sy, rx + rw - 25, sy + 110], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-        draw.rounded_rectangle([rx + 40, sy + 16, rx + 68, sy + 44], radius=6, fill=AIA_RED)
-        draw.text((rx + 54, sy + 30), s["num"], font=get_font(13, 'bold'), fill=(255, 255, 255), anchor='mm')
+        draw.rounded_rectangle([rx + 25, sy, rx + rw - 25, sy + box_h], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+        draw.rounded_rectangle([rx + 40, sy + 14, rx + 68, sy + 42], radius=6, fill=AIA_RED)
+        draw.text((rx + 54, sy + 28), s["num"], font=get_font(13, 'bold'), fill=(255, 255, 255), anchor='mm')
         
         draw.text((rx + 80, sy + 28), s["name"], font=get_font(14, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
-        lines = wrap_text(s["desc"], get_font(11.5, 'regular'), rw - 120, draw)
+        draw_pill_badge(draw, left_x=rx + rw - 130, cy=sy + 28, text=s["tag"], font=get_font(10.5, 'bold'), theme='gray', pad_x=8, height=20)
+        
+        lines = wrap_text(s["desc"], get_font(11.5, 'regular'), rw - 110, draw)
         ly_p = sy + 52
         for line in lines:
             draw.text((rx + 40, ly_p), line, font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
-            ly_p += 17
-        sy += 118
+            ly_p += 18
+        sy += box_h + gap
         
     draw_slide_footer(draw, 6, 12, dark_mode=False)
     out_path = os.path.join(OUT_DIR, "slide_06.png")
