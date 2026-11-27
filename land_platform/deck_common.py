@@ -99,3 +99,4 @@ def draw_slide_footer(draw, cur_page, total_pages=12, dark_mode=False):
     draw.text((80, H - 42), "FARMINGSYS · 토지개발사업 분석 플랫폼 B2B 클라우드 SaaS", font=get_font(11, 'bold'), fill=BRAND_LIGHT if dark_mode else BRAND_GREEN, anchor='lm')
     draw.text((W // 2, H - 42), "GIS 기반 공간 빅데이터 및 인허가·타당성 자동 분석 엔진", font=get_font(11, 'regular'), fill=txt_sub, anchor='mm')
     draw.text((W - 80, H - 42), f"{cur_page:02d} / {total_pages:02d}", font=get_font(12, 'bold'), fill=txt_sub, anchor='rm')
+

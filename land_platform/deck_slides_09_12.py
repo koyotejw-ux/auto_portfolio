@@ -5,39 +5,22 @@ from deck_common import *
 def make_slide_09():
     img = Image.new('RGB', (W, H), BG_LIGHT)
     draw = ImageDraw.Draw(img)
-    draw_slide_header(draw, 9, "CORE FEATURE 03", "Crop & Production Simulation", "STEP 3. 재배 작물 DB 매칭 및 생산성 시뮬레이션", "딸기, 토마토, 파프리카 등 고부가가치 작물별 생육 환경, 단가, 연간 예상 수확량 자동 계산")
+    draw_slide_header(draw, 9, "DESIGN SYSTEM & TOKENS", "Color, Typography & Components", "토지개발 플랫폼 디자인 시스템 & 아토믹 토큰", "Primary-500(#00C65F), Spacing(4~40px), Corner Radius(4~999px), Stroke 시스템 명세")
 
-    # Left: Feature Details
-    lx = 80
-    lw = 600
-    draw.rounded_rectangle([lx, 260, lx + lw, 950], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, lx + 25, 295, "CROP PRODUCTIVITY ENGINE", get_font(10.5, 'bold'), theme='green')
-    draw.text((lx + 25, 335), "데이터 기반 수확량 및 매출 예측", font=get_font(22, 'bold'), fill=TEXT_LIGHT_MAIN)
-
-    crop_cards = [
-        ("농촌진흥청 공공 DB 기반 작물 사전", "작물별 적정 온도, 습도, 일조량, 배지 종류 및 계절별 수확 주기 알고리즘 탑재"),
-        ("지역별 도매시장 실시간 경락가 연동", "가락시장 등 주요 공영도매시장의 3개년 평균 거래 단가를 매칭하여 신뢰할 수 있는 예상 매출액 산출"),
-        ("작물별 맞춤 설비 옵션 자동 제안", "양액기, 환경제어기(복합환경), 온수보일러, LED 보광등 등 필수 설비 자동 리스트업 및 견적 산출")
-    ]
-    fy = 400
-    for title, desc in crop_cards:
-        draw.rounded_rectangle([lx + 20, fy, lx + lw - 20, fy + 150], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-        draw.text((lx + 40, fy + 35), title, font=get_font(17, 'bold'), fill=BRAND_GREEN)
-        draw.text((lx + 40, fy + 75), desc, font=get_font(13.5, 'regular'), fill=TEXT_LIGHT_SUB)
-        fy += 175
-
-    # Right: High Resolution Screen View
-    rx = 710
-    rw = W - 80 - rx
-    draw.rounded_rectangle([rx, 260, rx + rw, 950], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    s_p = os.path.join(ASSETS_DIR, "screen_04_crop_selection.png")
-    if os.path.exists(s_p):
-        s_img = Image.open(s_p).convert('RGBA')
-        scale = min((rw - 30) / s_img.width, (950 - 260 - 30) / s_img.height)
-        sw = int(s_img.width * scale)
-        sh = int(s_img.height * scale)
-        s_res = s_img.resize((sw, sh), Image.Resampling.LANCZOS)
-        img.paste(s_res, (rx + (rw - sw) // 2, 260 + (950 - 260 - sh) // 2), s_res)
+    rx = 80
+    rw = W - 160
+    ry = 260
+    rh = 690
+    draw.rounded_rectangle([rx, ry, rx + rw, ry + rh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
+    
+    ds_path = os.path.join(ASSETS_DIR, "part_design_tokens.png")
+    if os.path.exists(ds_path):
+        ds_img = Image.open(ds_path).convert('RGBA')
+        scale = min((rw - 60) / ds_img.width, (rh - 60) / ds_img.height)
+        nw = int(ds_img.width * scale)
+        nh = int(ds_img.height * scale)
+        d_res = ds_img.resize((nw, nh), Image.Resampling.LANCZOS)
+        img.paste(d_res, (rx + (rw - nw) // 2, ry + (rh - nh) // 2), d_res)
 
     draw_slide_footer(draw, 9, 12, dark_mode=False)
     img.save(os.path.join(OUT_DIR, "slide_09.png"), quality=95)
@@ -46,39 +29,41 @@ def make_slide_09():
 def make_slide_10():
     img = Image.new('RGB', (W, H), BG_LIGHT)
     draw = ImageDraw.Draw(img)
-    draw_slide_header(draw, 10, "CORE FEATURE 04", "Economic Feasibility & ROI", "STEP 4. 경제성 타당성 분석 및 금융 심사 모델", "총사업비, 시설조성비, 설계감리비, 운영비(OPEX) 대비 회수기간 및 IRR을 도출하는 금융 모델링")
+    draw_slide_header(draw, 10, "CORE UI & RESPONSIVE PROTOTYPE", "Responsive Multi-Device Views", "반응형 멀티 디바이스 프로토타입 (Desktop & Mobile)", "데스크톱 듀얼 스플릿 대화면과 모바일 현장 터치 최적화 뷰포트 설계")
 
-    # Left: Feature Details
+    # Left: Mobile Map & Analysis View
     lx = 80
-    lw = 600
+    lw = 540
     draw.rounded_rectangle([lx, 260, lx + lw, 950], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, lx + 25, 295, "FINANCIAL VALUATION MODEL", get_font(10.5, 'bold'), theme='green')
-    draw.text((lx + 25, 335), "엔터프라이즈급 정량 경제성 분석", font=get_font(22, 'bold'), fill=TEXT_LIGHT_MAIN)
+    draw_pill_badge(draw, lx + 25, 295, "MOBILE ONSITE VIEW", get_font(10.5, 'bold'), theme='green')
+    draw.text((lx + 25, 335), "현장 실사 모바일 최적화", font=get_font(20, 'bold'), fill=TEXT_LIGHT_MAIN)
 
-    fin_cards = [
-        ("세부 CAPEX / OPEX 산출 명세", "토지 매입비, 토목/건축공사비, ICT 스마트팜 장비비, 연간 인건비 및 난방비 정밀 분해"),
-        ("10개년 현금흐름(Cash Flow) 시뮬레이션", "감가상각, 법인세, 금융 이자율을 반영한 연차별 순수익 추정과 손익분기점(BEP) 제시"),
-        ("투자 유치용 IRR / NPV 정량 지표", "투자 기관 및 정책자금 심사에 즉각 제출 가능한 내부수익률(IRR)과 순현재가치(NPV) 자동 계산")
-    ]
-    fy = 400
-    for title, desc in fin_cards:
-        draw.rounded_rectangle([lx + 20, fy, lx + lw - 20, fy + 150], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-        draw.text((lx + 40, fy + 35), title, font=get_font(17, 'bold'), fill=BRAND_GREEN)
-        draw.text((lx + 40, fy + 75), desc, font=get_font(13.5, 'regular'), fill=TEXT_LIGHT_SUB)
-        fy += 175
+    m_p = os.path.join(FIG_DIR, "18e703c31b8c3ee8a45a40b94efab8fd98786b70.png")
+    if not os.path.exists(m_p):
+        m_p = os.path.join(ASSETS_DIR, "screen_02_map_analysis.png")
+    if os.path.exists(m_p):
+        m_img = Image.open(m_p).convert('RGBA')
+        scale = min((lw - 60) / m_img.width, (950 - 380 - 40) / m_img.height)
+        mw = int(m_img.width * scale)
+        mh = int(m_img.height * scale)
+        m_res = m_img.resize((mw, mh), Image.Resampling.LANCZOS)
+        img.paste(m_res, (lx + (lw - mw) // 2, 380 + (950 - 380 - mh) // 2), m_res)
 
-    # Right: High Resolution Screen View
-    rx = 710
+    # Right: Desktop Web GIS View
+    rx = 650
     rw = W - 80 - rx
     draw.rounded_rectangle([rx, 260, rx + rw, 950], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    s_p = os.path.join(ASSETS_DIR, "screen_06_economic_analysis.png")
-    if os.path.exists(s_p):
-        s_img = Image.open(s_p).convert('RGBA')
-        scale = min((rw - 30) / s_img.width, (950 - 260 - 30) / s_img.height)
-        sw = int(s_img.width * scale)
-        sh = int(s_img.height * scale)
-        s_res = s_img.resize((sw, sh), Image.Resampling.LANCZOS)
-        img.paste(s_res, (rx + (rw - sw) // 2, 260 + (950 - 260 - sh) // 2), s_res)
+    draw_pill_badge(draw, rx + 25, 295, "DESKTOP GIS CONSOLE", get_font(10.5, 'bold'), theme='green')
+    draw.text((rx + 25, 335), "대화면 공간 GIS 분석 콘솔", font=get_font(20, 'bold'), fill=TEXT_LIGHT_MAIN)
+
+    d_p = os.path.join(ASSETS_DIR, "screen_03_facility_layout.png")
+    if os.path.exists(d_p):
+        d_img = Image.open(d_p).convert('RGBA')
+        scale = min((rw - 60) / d_img.width, (950 - 380 - 40) / d_img.height)
+        dw = int(d_img.width * scale)
+        dh = int(d_img.height * scale)
+        d_res = d_img.resize((dw, dh), Image.Resampling.LANCZOS)
+        img.paste(d_res, (rx + (rw - dw) // 2, 380 + (950 - 380 - dh) // 2), d_res)
 
     draw_slide_footer(draw, 10, 12, dark_mode=False)
     img.save(os.path.join(OUT_DIR, "slide_10.png"), quality=95)
@@ -87,39 +72,25 @@ def make_slide_10():
 def make_slide_11():
     img = Image.new('RGB', (W, H), BG_LIGHT)
     draw = ImageDraw.Draw(img)
-    draw_slide_header(draw, 11, "REPORT & EXPERT MATCHING", "Valuation Report & Ecosystem", "토지개발 타당성 종합 보고서 및 컨설팅 매칭", "토지주와 투자사, 시공사를 원스톱으로 연결하는 표준 리포트 생성 및 B2B 생태계 허브")
+    draw_slide_header(draw, 11, "UI SCREENS SHOWCASE", "Isometric 3D Screen Showcase", "전체 UI 화면 설계 및 파노라마 쇼케이스", "토지 탐색, 시설 배치, 작물 선택, 상세 설계, 종합 타당성 분석 보고서 엔드투엔드 화면 구성")
 
-    # Left: Feature Details
-    lx = 80
-    lw = 600
-    draw.rounded_rectangle([lx, 260, lx + lw, 950], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, lx + 25, 295, "COMPREHENSIVE VALUATION REPORT", get_font(10.5, 'bold'), theme='green')
-    draw.text((lx + 25, 335), "표준 타당성 보고서 & 컨설팅", font=get_font(22, 'bold'), fill=TEXT_LIGHT_MAIN)
+    # High-impact Isometric Showcase Frame
+    rx = 80
+    rw = W - 160
+    ry = 260
+    rh = 690
+    draw.rounded_rectangle([rx, ry, rx + rw, ry + rh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
 
-    rep_cards = [
-        ("원클릭 고해상도 PDF 보고서 출력", "토지 개요, 지적도, 시설 배치도, 10개년 재무 예측표를 집약한 20페이지 분량의 심사 보고서 자동 인쇄"),
-        ("검증된 시공사 및 스마트팜 파트너 연계", "국내 50여 개 우수 시공사 풀을 기반으로 분석 결과에 따른 최적 견적 비교 입찰 시스템 지원"),
-        ("금융 기관 및 정책 자금 컨설팅 연결", "농림축산식품부 스마트팜 종합자금 등 연계 가능한 저리 정책금융 가이드 및 전문 컨설팅 상담 신청")
-    ]
-    fy = 400
-    for title, desc in rep_cards:
-        draw.rounded_rectangle([lx + 20, fy, lx + lw - 20, fy + 150], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-        draw.text((lx + 40, fy + 35), title, font=get_font(17, 'bold'), fill=BRAND_GREEN)
-        draw.text((lx + 40, fy + 75), desc, font=get_font(13.5, 'regular'), fill=TEXT_LIGHT_SUB)
-        fy += 175
-
-    # Right: High Resolution Screen View
-    rx = 710
-    rw = W - 80 - rx
-    draw.rounded_rectangle([rx, 260, rx + rw, 950], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    s_p = os.path.join(ASSETS_DIR, "screen_07_report_summary.png")
-    if os.path.exists(s_p):
-        s_img = Image.open(s_p).convert('RGBA')
-        scale = min((rw - 30) / s_img.width, (950 - 260 - 30) / s_img.height)
-        sw = int(s_img.width * scale)
-        sh = int(s_img.height * scale)
-        s_res = s_img.resize((sw, sh), Image.Resampling.LANCZOS)
-        img.paste(s_res, (rx + (rw - sw) // 2, 260 + (950 - 260 - sh) // 2), s_res)
+    iso_p = os.path.join(FIG_DIR, "718485fcee490c2d75e225ff483c610efb054a00.png")
+    if not os.path.exists(iso_p):
+        iso_p = os.path.join(ASSETS_DIR, "screen_07_report_summary.png")
+    if os.path.exists(iso_p):
+        iso_img = Image.open(iso_p).convert('RGBA')
+        scale = min((rw - 40) / iso_img.width, (rh - 40) / iso_img.height)
+        iw = int(iso_img.width * scale)
+        ih = int(iso_img.height * scale)
+        i_res = iso_img.resize((iw, ih), Image.Resampling.LANCZOS)
+        img.paste(i_res, (rx + (rw - iw) // 2, ry + (rh - ih) // 2), i_res)
 
     draw_slide_footer(draw, 11, 12, dark_mode=False)
     img.save(os.path.join(OUT_DIR, "slide_11.png"), quality=95)
@@ -128,14 +99,14 @@ def make_slide_11():
 def make_slide_12():
     img = Image.new('RGB', (W, H), BG_DARK)
     draw = ImageDraw.Draw(img)
-    draw_slide_header(draw, 12, "OUTCOMES & RETROSPECTIVE", "STAR Retrospective & Business Impact", "비즈니스 성과 지표 및 STAR 기법 회고", "토지개발 인허가 분석 기간 90% 단축과 데이터 기반 의사결정 체계 확립", dark_mode=True)
+    draw_slide_header(draw, 12, "PROJECT RETROSPECTIVE & OUTCOMES", "Business Outcomes & STAR Retrospective", "프로젝트 성과 지표 및 STAR 기법 회고", "인허가 분석 시간 90% 단축과 토지주-개발사-투자사 간 신뢰 기반 협업 체계 확립", dark_mode=True)
 
-    # 4 Quantitative Impact Cards
+    # 4 Quantitative Impact Cards (Exact from User Figma)
     metrics = [
-        ("90% 단축", "인허가 분석 소요 시간", "기존 2주(14일) 소요되던 규제 검토 및 현장 조사를 3초 자동 분석으로 획기적 단축"),
-        ("100% 신뢰", "공공 데이터 정합성", "토지이용계획원, 지적도, 생태자연도 등 12대 공공 API 실시간 검증을 통한 무결점 달성"),
-        ("350% 증가", "사업 타당성 검토 건수", "전문 지식이 없는 토지 소유주도 직관적으로 접근하여 월평균 시뮬레이션 의뢰 급증"),
-        ("8주 완수", "기획/설계/디자인 완료", "B2B UX/UI 아키텍처 및 60여 개 핵심 컴포넌트 라이브러리를 단독으로 설계 완수")
+        ("100+", "분석 가능 토지 규제", "국토계획법, 산지관리법, 농지법 등 100여 개 공공 인허가 조건 자동 매칭"),
+        ("90%", "분석 소요 시간 단축", "기존 2주 이상 걸리던 전문가 현장/서류 검토를 3~5초 내 실시간 진단"),
+        ("3~5s", "원터치 시뮬레이션", "지번 입력 즉시 최적 단지 구획 및 시설 조성비 산출 자동화"),
+        ("40%", "의사결정 정확도 향상", "데이터 기반의 정량적 타당성 검토를 통해 사업 리스크 사전 방지")
     ]
     mx = 80
     for num, title, desc in metrics:
@@ -154,7 +125,7 @@ def make_slide_12():
         ("Situation (상황 및 배경)", "토지개발은 공간 지적도, 수많은 건축 조례, 복잡한 인허가 법률, 거액의 자금 조달이 얽혀 있어 정보 비대칭이 극심하고, 비전문가인 토지 소유주가 사업성을 검토하기에는 진입 장벽이 매우 높은 시장이었습니다."),
         ("Task (해결 과제 및 목표)", "복잡한 법률·규제 데이터를 사용자가 학습하지 않고도 직관적으로 이해할 수 있는 단일 인터랙션 플로우를 구축하고, 대상지 선택부터 시설 배치, 수확량 예측, 경제성 타당성 보고서 출력까지 원스톱으로 지원하는 B2B 플랫폼 아키텍처를 완성해야 했습니다."),
         ("Action (실행 전략 및 디자인 결정)", "좌측 420px 워크플로우 패널과 우측 인터랙티브 GIS 캔버스의 듀얼 스플릿 뷰를 설계하여 조작 편의성을 극대화했습니다. 12대 공공 데이터를 3단계 계층 구조로 정제하고, 개발 불가 구역을 붉은색 히트맵으로 시각화하여 리스크 인지율을 100% 확보했습니다. 또한 고대비 에머랄드 그린 디자인 시스템을 구축하여 복잡한 재무 지표를 한눈에 파악하도록 최적화했습니다."),
-        ("Result & Learning (성과 및 회고)", "기존 2주 이상 소요되던 토지 타당성 분석 기간을 3초로 90% 이상 단축했으며, 토지주-개발사-투자사 간 신뢰 기반의 협업 허브를 구축했습니다. 방대한 전문 도메인 지식을 프로덕트 디자이너의 직관적 UX 아키텍처로 체계화함으로써 비즈니스 가치를 극대화한 프로젝트였습니다.")
+        ("Result & Learning (성과 및 회고)", "기존 2주 이상 소요되던 토지 타당성 분석 기간을 3~5초로 90% 이상 단축했으며, 토지주-개발사-투자사 간 신뢰 기반의 협업 허브를 구축했습니다. 방대한 전문 도메인 지식을 프로덕트 디자이너의 직관적 UX 아키텍처로 체계화함으로써 비즈니스 가치를 극대화한 프로젝트였습니다.")
     ]
     sy = 605
     for tag, text in star_items:
