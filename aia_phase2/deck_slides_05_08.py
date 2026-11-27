@@ -12,7 +12,7 @@ from deck_common import (
 )
 
 # -------------------------------------------------------------
-# SLIDE 05: FLOW CHART (Service Decision Logic & Journey)
+# SLIDE 05: FLOW CHART (Official Mode Switch Decision Tree)
 # -------------------------------------------------------------
 def make_slide_05():
     img = Image.new('RGB', (W, H), BG_LIGHT)
@@ -21,117 +21,79 @@ def make_slide_05():
         draw, 5, 
         "FLOW CHART & DECISION LOGIC", 
         "Flow Chart | ", 
-        "고령자 모드 서비스 흐름도 및 분기 로직", 
-        "로그인 감지부터 납부 수단(계좌/가상계좌) 선택 및 실시간 피드백까지의 엔드투엔드 의사결정 트리", 
-        right_badge=("SERVICE LOGIC", "green")
+        "일반모드 ↔ 고령자모드 전환 의사결정 플로우차트", 
+        "화면설계서 원본 로직: 로그인 여부, 기 활성 여부, 최초 진입 여부, 65세 이상 연령 판별 및 전환 동의 5대 분기 트리", 
+        right_badge=("OFFICIAL FIGMA FLOW", "red")
     )
     
-    # Large Canvas for Visual Flow Chart
-    card_x, card_y, card_w, card_h = 100, 220, 1720, 730
-    draw.rounded_rectangle([card_x, card_y, card_x + card_w, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
+    card_y = 220
+    card_h = 730
     
-    # Step 1: User Entry Node
-    n1_x, n1_y, n1_w, n1_h = 160, 320, 220, 90
-    draw.rounded_rectangle([n1_x, n1_y, n1_x + n1_w, n1_y + n1_h], radius=12, fill=(241, 245, 249), outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, cx=n1_x + n1_w//2, cy=n1_y + 24, text="START", font=get_font(10, 'bold'), theme='gray', pad_x=10, height=20)
-    draw.text((n1_x + n1_w//2, n1_y + 58), "AIA+ 앱 실행", font=get_font(15, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mm')
+    # Left Column: High-Res Official Flow Chart Render (W=1100)
+    lx = 100
+    lw = 1100
+    draw.rounded_rectangle([lx, card_y, lx + lw, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
+    draw_pill_badge(draw, left_x=lx + 25, cy=card_y + 35, text="MODE SWITCHING FLOW CHART", font=get_font(11, 'bold'), theme='red', pad_x=12, height=24)
+    draw.text((lx + 25, card_y + 65), "모드 전환 실행 및 세션 분기 시스템 로직", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
     
-    # Arrow to Mode Check
-    draw_arrow(draw, (n1_x + n1_w, n1_y + n1_h//2), (n1_x + n1_w + 50, n1_y + n1_h//2), col=(100, 116, 139), width=2)
+    chart_path = os.path.join(CORE_DIR, "official_flow_chart_cropped.png")
+    if os.path.exists(chart_path):
+        fc_img = Image.open(chart_path).convert('RGB')
+        # Target area: width 1050, height 580
+        # Preserve aspect ratio
+        target_w = 1050
+        target_h = int(fc_img.height * (target_w / fc_img.width))
+        if target_h > 590:
+            target_h = 590
+            target_w = int(fc_img.width * (target_h / fc_img.height))
+        fc_img = fc_img.resize((target_w, target_h), Image.Resampling.LANCZOS)
+        # paste centered in the card
+        paste_x = lx + (lw - target_w) // 2
+        paste_y = card_y + 105 + (590 - target_h) // 2
+        img.paste(fc_img, (paste_x, paste_y))
+        draw.rounded_rectangle([paste_x, paste_y, paste_x + target_w, paste_y + target_h], radius=10, outline=BORDER_LIGHT, width=1)
+        
+    # Right Column: Decision Branch Specs & Heuristic Principles (W=580)
+    rx = 1240
+    rw = 580
+    draw.rounded_rectangle([rx, card_y, rx + rw, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
+    draw_pill_badge(draw, left_x=rx + 25, cy=card_y + 35, text="BRANCH LOGIC SPECIFICATIONS", font=get_font(11, 'bold'), theme='blue', pad_x=12, height=24)
+    draw.text((rx + 25, card_y + 65), "플로우차트 4대 핵심 분기 조건", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
     
-    # Step 2: Decision Node (연령 및 설정 확인)
-    d1_x, d1_y, d1_w, d1_h = 430, 305, 260, 120
-    draw.rounded_rectangle([d1_x, d1_y, d1_x + d1_w, d1_y + d1_h], radius=16, fill=(255, 241, 244), outline=AIA_RED, width=2)
-    draw_pill_badge(draw, cx=d1_x + d1_w//2, cy=d1_y + 25, text="MODE CHECK", font=get_font(10, 'bold'), theme='red', pad_x=10, height=22)
-    draw.text((d1_x + d1_w//2, d1_y + 60), "65세 이상 or 간편모드 설정?", font=get_font(13.5, 'bold'), fill=AIA_RED, anchor='mm')
-    draw.text((d1_x + d1_w//2, d1_y + 88), "회원 DB 연령 및 세션 분석", font=get_font(11, 'medium'), fill=TEXT_LIGHT_SUB, anchor='mm')
-    
-    # Branches from Decision Node:
-    # 1. NO -> General Mode (Upwards)
-    draw_arrow(draw, (d1_x + d1_w//2, d1_y), (d1_x + d1_w//2, d1_y - 45), col=(100, 116, 139), width=2)
-    draw.text((d1_x + d1_w//2 + 15, d1_y - 25), "NO", font=get_font(11, 'bold'), fill=(100, 116, 139))
-    draw.rounded_rectangle([d1_x - 20, d1_y - 75, d1_x + d1_w + 20, d1_y - 45], radius=8, fill=(239, 246, 255), outline=(191, 219, 254), width=1)
-    draw.text((d1_x + d1_w//2, d1_y - 60), "일반 통합 모드 메인 화면 이동", font=get_font(12, 'bold'), fill=(29, 78, 216), anchor='mm')
-    
-    # 2. YES -> Senior Home (Right)
-    draw_arrow(draw, (d1_x + d1_w, d1_y + d1_h//2), (d1_x + d1_w + 60, d1_y + d1_h//2), col=AIA_RED, width=2)
-    draw.text((d1_x + d1_w + 20, d1_y + d1_h//2 - 14), "YES", font=get_font(11, 'bold'), fill=AIA_RED)
-    
-    # Step 3: Senior Mode Home Dashboard
-    n2_x, n2_y, n2_w, n2_h = 750, 310, 260, 110
-    draw.rounded_rectangle([n2_x, n2_y, n2_x + n2_w, n2_y + n2_h], radius=14, fill=CARD_LIGHT, outline=AIA_RED, width=2)
-    draw_pill_badge(draw, cx=n2_x + n2_w//2, cy=n2_y + 24, text="SENIOR DASHBOARD", font=get_font(10.5, 'bold'), theme='red', pad_x=12, height=22)
-    draw.text((n2_x + n2_w//2, n2_y + 60), "고령자 전용 원터치 홈", font=get_font(16, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mm')
-    draw.text((n2_x + n2_w//2, n2_y + 86), "당월 미납금 및 4대 과업 즉시 노출", font=get_font(11.5, 'medium'), fill=TEXT_LIGHT_SUB, anchor='mm')
-    
-    # Arrow to Action Selection
-    draw_arrow(draw, (n2_x + n2_w, n2_y + n2_h//2), (n2_x + n2_w + 60, n2_y + n2_h//2), col=AIA_RED, width=2)
-    
-    # Step 4: Core Payment Action Node
-    n3_x, n3_y, n3_w, n3_h = 1070, 310, 260, 110
-    draw.rounded_rectangle([n3_x, n3_y, n3_x + n3_w, n3_y + n3_h], radius=14, fill=(255, 241, 244), outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, cx=n3_x + n3_w//2, cy=n3_y + 24, text="ACTION: 납입", font=get_font(10.5, 'bold'), theme='red', pad_x=12, height=22)
-    draw.text((n3_x + n3_w//2, n3_y + 60), "보험료 바로 내기 탭", font=get_font(16, 'bold'), fill=AIA_RED, anchor='mm')
-    draw.text((n3_x + n3_w//2, n3_y + 86), "하단 56dp 풀와이드 [다음] CTA", font=get_font(11.5, 'medium'), fill=TEXT_LIGHT_SUB, anchor='mm')
-    
-    # Decision Node 2: Payment Method
-    draw_arrow(draw, (n3_x + n3_w, n3_y + n3_h//2), (n3_x + n3_w + 50, n3_y + n3_h//2), col=AIA_RED, width=2)
-    
-    d2_x, d2_y, d2_w, d2_h = 1380, 305, 260, 120
-    draw.rounded_rectangle([d2_x, d2_y, d2_x + d2_w, d2_y + d2_h], radius=16, fill=(240, 246, 255), outline=(59, 130, 246), width=2)
-    draw_pill_badge(draw, cx=d2_x + d2_w//2, cy=d2_y + 25, text="PAYMENT METHOD", font=get_font(10, 'bold'), theme='blue', pad_x=10, height=22)
-    draw.text((d2_x + d2_w//2, d2_y + 60), "납부 수단 1-Tap 선택", font=get_font(14, 'bold'), fill=(29, 78, 216), anchor='mm')
-    draw.text((d2_x + d2_w//2, d2_y + 88), "기등록 계좌 vs 가상계좌 발급", font=get_font(11, 'medium'), fill=TEXT_LIGHT_SUB, anchor='mm')
-    
-    # Bottom Branches from Payment Method to Completion:
-    draw.line([(d2_x + 70, d2_y + d2_h), (d2_x + 70, 520)], fill=(59, 130, 246), width=2)
-    draw_arrow(draw, (d2_x + 70, 520), (1200, 520), col=(59, 130, 246), width=2)
-    
-    p1_x, p1_y, p1_w, p1_h = 920, 480, 260, 80
-    draw.rounded_rectangle([p1_x, p1_y, p1_x + p1_w, p1_y + p1_h], radius=12, fill=(239, 246, 255), outline=BORDER_LIGHT, width=1)
-    draw.text((p1_x + p1_w//2, p1_y + 28), "A. 주거래 계좌 즉시 출금", font=get_font(13.5, 'bold'), fill=(29, 78, 216), anchor='mm')
-    draw.text((p1_x + p1_w//2, p1_y + 54), "48px 대형 간편 PIN 비밀번호 인증", font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB, anchor='mm')
-    
-    draw.line([(d2_x + 190, d2_y + d2_h), (d2_x + 190, 520)], fill=AIA_RED, width=2)
-    draw_arrow(draw, (d2_x + 190, 520), (1400, 520), col=AIA_RED, width=2)
-    
-    p2_x, p2_y, p2_w, p2_h = 1400, 480, 260, 80
-    draw.rounded_rectangle([p2_x, p2_y, p2_x + p2_w, p2_y + p2_h], radius=12, fill=(255, 241, 244), outline=BORDER_LIGHT, width=1)
-    draw.text((p2_x + p2_w//2, p2_y + 28), "B. 입금 전용 가상계좌 발급", font=get_font(13.5, 'bold'), fill=AIA_RED, anchor='mm')
-    draw.text((p2_x + p2_w//2, p2_y + 54), "계좌번호 카카오톡/문자 즉시 전송", font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB, anchor='mm')
-    
-    # Merge both paths down to Final Completion
-    draw.line([(p1_x + p1_w//2, p1_y + p1_h), (p1_x + p1_w//2, 640)], fill=(16, 185, 129), width=2)
-    draw.line([(p2_x + p2_w//2, p2_y + p2_h), (p2_x + p2_w//2, 640)], fill=(16, 185, 129), width=2)
-    draw.line([(p1_x + p1_w//2, 640), (p2_x + p2_w//2, 640)], fill=(16, 185, 129), width=2)
-    draw_arrow(draw, ((p1_x + p1_w//2 + p2_x + p2_w//2)//2, 640), ((p1_x + p1_w//2 + p2_x + p2_w//2)//2, 680), col=(16, 185, 129), width=2)
-    
-    fin_x, fin_y, fin_w, fin_h = 1050, 680, 480, 110
-    draw.rounded_rectangle([fin_x, fin_y, fin_x + fin_w, fin_y + fin_h], radius=16, fill=(236, 253, 245), outline=(16, 185, 129), width=2)
-    draw_pill_badge(draw, cx=fin_x + fin_w//2, cy=fin_y + 25, text="COMPLETE & REASSURANCE", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=22)
-    draw.text((fin_x + fin_w//2, fin_y + 60), "납부 완료 안내 & 안심 알림톡 발송", font=get_font(16, 'bold'), fill=(5, 150, 105), anchor='mm')
-    draw.text((fin_x + fin_w//2, fin_y + 88), "영수증 즉시 저장 + 매월 5일 자동이체 간편 신청 팝업 케어", font=get_font(11.5, 'medium'), fill=TEXT_LIGHT_MAIN, anchor='mm')
-    
-    # Left Callout Box: 3-Step Zero Friction UX Principles
-    draw.rounded_rectangle([160, 480, 780, 790], radius=16, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, left_x=185, cy=510, text="ZERO-FRICTION PRINCIPLES", font=get_font(10.5, 'bold'), theme='red', pad_x=12, height=24)
-    draw.text((185, 545), "고령자 배리어프리 플로우차트 설계 원칙", font=get_font(16, 'bold'), fill=TEXT_LIGHT_MAIN)
-    flow_rules = [
-        ("단일 화면 1개 과업 (Single Task)", "화면 전환 시마다 오직 1개의 핵심 질문과 액션만 제시하여 인지 과부하 방지"),
-        ("불필요한 입력 요소 제거", "기등록 계좌를 자동 불러오고 계좌번호 마스킹으로 보안과 편의성 동시 충족"),
-        ("가상계좌 대체 경로 보장", "계좌 이체 비밀번호를 잊어버린 고령자를 위해 문자 입금 가상계좌 1-Tap 발급"),
-        ("시각/촉각 완료 피드백", "성공 완료 시 굵은 녹색 체크마크, 햅틱 진동, 즉시 알림톡 전송으로 안심 보장")
+    logic_branches = [
+        {
+            "tag": "CASE 01",
+            "title": "비로그인 상태의 모드 전환",
+            "desc": "메인(홈)에서 전환 실행 시 로그인 여부를 체크(N). 기 고령자모드 활성 여부에 따라 '일반모드 로그인 전 메인' 또는 '고령자모드 로그인 전 메인'으로 즉시 분기합니다."
+        },
+        {
+            "tag": "CASE 02",
+            "title": "로그인 + 고령자모드 기 활성 (Y)",
+            "desc": "이미 고령자모드가 활성화된 회원은 추가 확인 없이 '일반모드 로그인 후 메인(홈)'으로 토글 전환됩니다."
+        },
+        {
+            "tag": "CASE 03",
+            "title": "최초 진입 & 65세 이상 감지",
+            "desc": "최초 진입(N)이거나 미활성 시, 회원 DB의 나이가 65세 이상인 경우 '고령자 모드 전환 동의?' 팝업을 호출하여 동의 시 즉시 고령자모드로 전환합니다."
+        },
+        {
+            "tag": "CASE 04",
+            "title": "전환 미동의 및 일반모드 유지",
+            "desc": "최초 진입이 아니거나 65세 미만, 또는 전환 동의 팝업에서 거절 시 '일반 모드 로그인 후 메인(홈)' 상태를 그대로 유지합니다."
+        }
     ]
-    fry = 585
-    for rtitle, rdesc in flow_rules:
-        draw.text((185, fry), "•", font=get_font(12, 'bold'), fill=AIA_RED)
-        draw.text((205, fry), rtitle, font=get_font(12.5, 'bold'), fill=TEXT_LIGHT_MAIN)
-        lines = wrap_text(rdesc, get_font(11.5, 'regular'), 550, draw)
-        l_ry = fry + 20
+    
+    by = card_y + 115
+    for b in logic_branches:
+        draw.rounded_rectangle([rx + 25, by, rx + rw - 25, by + 130], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+        draw_pill_badge(draw, left_x=rx + 40, cy=by + 24, text=b["tag"], font=get_font(10, 'bold'), theme='red' if b["tag"] in ['CASE 01', 'CASE 03'] else 'blue', pad_x=10, height=20)
+        draw.text((rx + 110, by + 24), b["title"], font=get_font(13.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
+        lines = wrap_text(b["desc"], get_font(11.5, 'regular'), rw - 90, draw)
+        ly = by + 50
         for line in lines:
-            draw.text((205, l_ry), line, font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
-            l_ry += 16
-        fry = l_ry + 14
+            draw.text((rx + 40, ly), line, font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
+            ly += 17
+        by += 144
         
     draw_slide_footer(draw, 5, 12, dark_mode=False)
     out_path = os.path.join(OUT_DIR, "slide_05.png")
@@ -153,9 +115,6 @@ def make_slide_06():
         right_badge=("OFFICIAL FIGMA SPEC", "red")
     )
     
-    # 2 Big Columns:
-    # Left Column (W=760): Authentic Screen Architecture & Wireframe Mockups
-    # Right Column (W=920): Full Official Description Table (1~5 Specs)
     card_y = 220
     card_h = 730
     
@@ -165,7 +124,6 @@ def make_slide_06():
     draw_pill_badge(draw, left_x=lx + 25, cy=card_y + 35, text="PLSCMV002 · LOGIN GATE WIREFRAME", font=get_font(11, 'bold'), theme='red', pad_x=12, height=24)
     draw.text((lx + 25, card_y + 65), "간편홈 메인 게이트 와이어프레임 구조", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
     
-    # Let's place 2 wireframe phones (Gate Main & Scroll/Loan)
     wf_gate_path = os.path.join(CORE_DIR, "wf_senior_main_gate.png")
     wf_scroll_path = os.path.join(CORE_DIR, "wf_senior_main_scroll.png")
     
@@ -178,7 +136,6 @@ def make_slide_06():
     draw.text((lx + 545, card_y + 645), "② 메인 하단 스크롤 (Scroll)", font=get_font(13.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mt')
     draw.text((lx + 545, card_y + 670), "보험금 청구 접수현황, 보험 대출, 고객지원", font=get_font(11, 'medium'), fill=TEXT_LIGHT_SUB, anchor='mt')
     
-    # Right Column: Official Description Specification
     rx = 900
     rw = 920
     draw.rounded_rectangle([rx, card_y, rx + rw, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
@@ -216,7 +173,6 @@ def make_slide_06():
     sy = card_y + 110
     for s in specs:
         draw.rounded_rectangle([rx + 25, sy, rx + rw - 25, sy + 110], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-        # Number badge
         draw.rounded_rectangle([rx + 40, sy + 16, rx + 68, sy + 44], radius=6, fill=AIA_RED)
         draw.text((rx + 54, sy + 30), s["num"], font=get_font(13, 'bold'), fill=(255, 255, 255), anchor='mm')
         
@@ -256,7 +212,6 @@ def make_slide_07():
     draw_pill_badge(draw, left_x=lx + 25, cy=ly + 35, text="QI TOKEN SPECIFICATION TABLE", font=get_font(11, 'bold'), theme='red', pad_x=12, height=24)
     draw.text((lx + 25, ly + 65), "디자인 토큰 분류 & 플랫폼 표준", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
     
-    # Tokens Mini Table
     th_y = ly + 110
     draw.rounded_rectangle([lx + 20, th_y, lx + lw - 20, th_y + 36], radius=6, fill=(241, 245, 249))
     draw.text((lx + 35, th_y + 18), "토큰 분류", font=get_font(11.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
@@ -290,7 +245,6 @@ def make_slide_07():
     draw.text((lx + 35, ly + lh - 70), "Figma Tokens -> JSON Schema -> Flutter AppTheme 자동 동기화", font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_MAIN)
     draw.text((lx + 35, ly + lh - 48), "단일 소스 기반으로 다크/라이트 테마 및 시니어 스케일 100% 매핑", font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB)
     
-    # Middle: Real Qi Color Palette Swatches (W=520)
     mx = 670
     mw = 520
     draw.rounded_rectangle([mx, ly, mx + mw, ly + lh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
@@ -322,7 +276,6 @@ def make_slide_07():
     draw.text((mx + 40, ly + lh - 94), "• #10B981 vs #FFFFFF : 4.6:1 (식별성 충족)", font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_MAIN)
     draw.text((mx + 40, ly + lh - 72), "• 배경색과 본문 간 최소 7:1 이상의 고대비 엄격 준수", font=get_font(11.5, 'bold'), fill=(16, 185, 129))
     
-    # Right: High-Res Real Qi Component Asset (W=660)
     rx = 1220
     rw = 600
     draw.rounded_rectangle([rx, ly, rx + rw, ly + lh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
