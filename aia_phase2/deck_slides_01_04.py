@@ -18,7 +18,7 @@ def make_slide_01():
     img = Image.new('RGB', (W, H), (255, 255, 255))
     draw = ImageDraw.Draw(img)
     
-    # 1. Subtle warm background gradient/glow
+    # Subtle warm background gradient/glow
     glow = Image.new('RGBA', (W, H), (0, 0, 0, 0))
     gdraw = ImageDraw.Draw(glow)
     gdraw.ellipse([800, 100, 1800, 1000], fill=(211, 17, 69, 14))
@@ -36,7 +36,6 @@ def make_slide_01():
     draw.text((275, 155), "SENIOR MODE", font=get_font(60, 'black'), fill=AIA_RED)
     draw.text((120, 235), "고령자 친화 배리어프리 금융 UX & 10대 비대면 서비스 리뉴얼", font=get_font(26, 'bold'), fill=(51, 65, 85))
     
-    # Subtitle Description
     desc_kr = (
         "금융위원회 '고령자 친화적 모바일 금융앱 가이드라인' 100% 완벽 준수\n"
         "6070 액티브 시니어를 위한 제로-뎁스(Zero-Depth) 직관 탐색 아키텍처와\n"
@@ -98,23 +97,19 @@ def make_slide_01():
     if not os.path.exists(gen_screen):
         gen_screen = os.path.join(CORE_DIR, "screen_general_main.png")
     
-    # Use authentic high-res senior main hero screen
     sen_screen = os.path.join(CORE_DIR, "screen_senior_main_hero.png")
     if not os.path.exists(sen_screen):
         sen_screen = os.path.join(CORE_DIR, "screen_senior_main_home.png")
         
     pay_screen = os.path.join(CORE_DIR, "screen_pay_list_senior.png")
     
-    # 3 Devices showing Mode Switching: Left = General Mode, Center = Senior Mode Hero Home, Right = Senior Action
     draw_phone_mockup(img, gen_screen, cx=930, cy=565, phone_w=280, phone_h=605, bezel=6, radius=32, show_toggle_badge="[일반모드] 메인화면")
     draw_phone_mockup(img, sen_screen, cx=1260, cy=530, phone_w=335, phone_h=715, bezel=7, radius=36, show_toggle_badge="[고령자모드] 원터치 홈 (총괄설계)")
     draw_phone_mockup(img, pay_screen, cx=1590, cy=565, phone_w=280, phone_h=605, bezel=6, radius=32, show_toggle_badge="[간편납부] 56dp CTA")
     
-    # Mode Switching Visual Flow Indicator
     draw_arrow(draw, (1075, 565), (1095, 565), col=AIA_RED, width=3, arrow_size=8)
     draw_pill_badge(draw, cx=1085, cy=535, text="1-Tap 전환", font=get_font(10, 'bold'), theme='red', solid=True, pad_x=8, height=20)
     
-    # Floating feature pill
     draw_pill_badge(draw, cx=1260, cy=145, text="고령자 친화 제로-뎁스 원터치 홈 · 직접 기획 및 화면설계", font=get_font(12, 'bold'), theme='red', solid=True, pad_x=16, height=32)
     
     draw_slide_footer(draw, 1, 12, dark_mode=False)
@@ -123,103 +118,87 @@ def make_slide_01():
     print(f"Generated: {out_path}")
 
 # -------------------------------------------------------------
-# SLIDE 02: EXECUTIVE SUMMARY (Project Charter & Core Values)
+# SLIDE 02: PROBLEMS & RESEARCH (4 Core Industry Problems & Solution)
 # -------------------------------------------------------------
 def make_slide_02():
     img = Image.new('RGB', (W, H), BG_LIGHT)
     draw = ImageDraw.Draw(img)
     draw_slide_header(
         draw, 2, 
-        "EXECUTIVE SUMMARY", 
-        "Executive Summary | ", 
-        "AIA+ Phase 2 프로젝트 개요 및 배경", 
-        "초고령사회 진입에 따른 금융 소외 해소 및 비대면 서비스 고도화 추진 전략", 
-        right_badge=("KEY MILESTONE", "red")
+        "PROBLEMS & RESEARCH", 
+        "Problems & Research | ", 
+        "금융사 고령자 모드 실태 조사 및 4대 핵심 문제점", 
+        "보험사/금융사의 형식적 모드 도입 한계와 AIA+ Phase 2의 배리어프리 해결 방향성", 
+        right_badge=("KEY RESEARCH", "red")
     )
     
-    # 3 Strategic Summary Columns (W=540 each, spacing=30)
-    cards = [
+    # 4 Core Problems Grid matching User's Exact Deliverable (2 Columns x 2 Rows)
+    card_y = 220
+    card_h = 730
+    
+    problems = [
         {
-            "tag": "BACKGROUND",
-            "title": "초고령사회 진입과 금융 소외",
-            "subtitle": "2025년 65세 이상 인구 20% 돌파",
-            "body": "디지털 금융의 급격한 전환 속에서 작은 폰트(12~14pt), 복잡한 메뉴 뎁스, 보안 인증 장벽으로 인해 고령 고객의 모바일 앱 이탈률이 58%에 달했습니다. 이에 금융위원회는 '고령자 친화적 모바일 금융앱 가이드라인'을 발표하며 배리어프리 개편을 강력히 권고했습니다."
+            "num": "1",
+            "title": "고령자 배려 부족",
+            "as_is": "각 보험사 및 금융사들이 '고령자 모드' 또는 '간편 모드'를 도입했지만, 글씨 크기와 화면 배치 차이가 미미하고 모드 전환 기능도 찾기 어려워 형식적 대응에 그침.",
+            "to_be": "AIA+ 솔루션: 18pt 이상 대형 활자 규격화, 폰트 2배 확대 및 상단 1-Tap 토글 스위치 전면 배치로 직관적 모드 전환 보장."
         },
         {
-            "tag": "OPPORTUNITY",
-            "title": "AIA+ Phase 2 전략적 과제",
-            "subtitle": "배리어프리 전용 모드 신설",
-            "body": "기존 앱의 복잡성을 완전히 덜어낸 '고령자 전용 원터치 모드'를 신설하고, 보유계약 조회, 보험료 납입, 보험금 청구, 대출신청, 고객센터 연결 등 10대 핵심 비대면 과업을 단일 화면(Zero-Depth)에서 해결할 수 있는 직관적 정보 구조(IA)를 구축했습니다."
+            "num": "2",
+            "title": "명칭과 UI 차이로 혼란 초래",
+            "as_is": "각 금융사마다 서로 다른 명칭(예: KB국민·하나은행 '간편홈', 신한·우리은행 '쉬운홈')을 사용해 소비자가 쉽게 인식하지 못함. 통일성 확보 필요.",
+            "to_be": "AIA+ 솔루션: '간편홈(고령자모드)' 표준 명칭 정립 및 인지적 혼란을 없앤 일관된 직관적 심볼과 명확한 텍스트 병기."
         },
         {
-            "tag": "IMPACT",
-            "title": "디지털 포용과 비즈니스 성과",
-            "subtitle": "과업 완수율 90% 달성 및 시간 50% 단축",
-            "body": "Figma 변수 기반 시니어 전용 18~28pt 폰트 스케일과 56dp 풀와이드 터치 컴포넌트를 설계하여 오터치를 원천 차단했습니다. 사용성 테스트 결과 고령층 보험료 납부 완수율 90%(+48%p 상승), 소요시간 50% 단축의 정량적 혁신을 달성했습니다."
+            "num": "3",
+            "title": "접근성 낮은 UI 설계",
+            "as_is": "모드 전환 버튼이 앱 하단에 위치하거나 글씨가 작아 고령층이 사용하기 어려움. 가독성과 접근성 개선 절실.",
+            "to_be": "AIA+ 솔루션: 엄지손가락 인체공학적 터치 영역(Thumb Zone)을 고려한 56dp 풀와이드 버튼 및 헤더 최상단 원터치 스위치 설계."
+        },
+        {
+            "num": "4",
+            "title": "보험업권 모바일 금융앱 간편모드 지침 및 AIA 휴리스틱 고려",
+            "as_is": "금융감독원/금융위원회에서 권장하는 고령자 친화 간편모드 지침(글자크기, 명도대비, 대체수단) 미준수 사례 다수.",
+            "to_be": "AIA+ 솔루션: 금융당국 가이드라인 100% 충족 + AIA 글로벌 Qi 디자인 시스템 v3.3 휴리스틱 검증 체계 완벽 결합."
         }
     ]
     
-    cw = 540
-    ch = 730
-    start_x = 100
-    start_y = 220
+    gw = 840
+    gh = 330
+    coords = [
+        (100, card_y),
+        (980, card_y),
+        (100, card_y + 360),
+        (980, card_y + 360)
+    ]
     
-    for i, c in enumerate(cards):
-        cx = start_x + i * (cw + 30)
-        draw.rounded_rectangle([cx, start_y, cx + cw, start_y + ch], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-        draw_pill_badge(draw, left_x=cx + 30, cy=start_y + 38, text=c["tag"], font=get_font(11, 'bold'), theme='red' if i==1 else 'gray', pad_x=12, height=24)
-        draw.text((cx + 30, start_y + 75), c["title"], font=get_font(21, 'bold'), fill=TEXT_LIGHT_MAIN)
-        draw.text((cx + 30, start_y + 110), c["subtitle"], font=get_font(13.5, 'bold'), fill=AIA_RED if i==1 else TEXT_LIGHT_SUB)
+    for (gx, gy), p in zip(coords, problems):
+        draw.rounded_rectangle([gx, gy, gx + gw, gy + gh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
         
-        # Divider line
-        draw.line([(cx + 30, start_y + 140), (cx + cw - 30, start_y + 140)], fill=BORDER_LIGHT, width=1)
+        # Number Badge
+        draw.rounded_rectangle([gx + 25, gy + 22, gx + 60, gy + 57], radius=8, fill=AIA_RED)
+        draw.text((gx + 42, gy + 39), p["num"], font=get_font(18, 'bold'), fill=(255, 255, 255), anchor='mm')
         
-        lines = wrap_text(c["body"], get_font(13.5, 'regular'), cw - 60, draw)
-        ly = start_y + 165
+        draw.text((gx + 75, gy + 32), p["title"], font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
+        
+        # Problem Box (AS-IS)
+        draw.rounded_rectangle([gx + 25, gy + 75, gx + gw - 25, gy + 185], radius=10, fill=(255, 241, 244), outline=BORDER_LIGHT, width=1)
+        draw_pill_badge(draw, left_x=gx + 40, cy=gy + 98, text="AS-IS 문제점 (현 금융사 실태)", font=get_font(10, 'bold'), theme='red', pad_x=8, height=20)
+        lines = wrap_text(p["as_is"], get_font(12, 'regular'), gw - 80, draw)
+        ly = gy + 120
         for line in lines:
-            draw.text((cx + 30, ly), line, font=get_font(13.5, 'regular'), fill=TEXT_LIGHT_MAIN)
-            ly += 22
+            draw.text((gx + 40, ly), line, font=get_font(12, 'regular'), fill=TEXT_LIGHT_MAIN)
+            ly += 19
             
-        # Mini Infographic inside each card
-        if i == 0:
-            draw.rounded_rectangle([cx + 30, start_y + 400, cx + cw - 30, start_y + ch - 30], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-            draw.text((cx + 50, start_y + 425), "고령자 모바일 금융앱 이탈 원인", font=get_font(13, 'bold'), fill=TEXT_LIGHT_MAIN)
-            bars = [("작은 활자 크기 (12pt)", 45, AIA_RED), ("복잡한 메뉴 뎁스", 28, (245, 158, 11)), ("공동인증서/보안장벽", 18, (100, 116, 139)), ("기타 오터치/오작동", 9, (148, 163, 184))]
-            by = start_y + 465
-            for blabel, bval, bcol in bars:
-                draw.text((cx + 50, by), blabel, font=get_font(11.5, 'medium'), fill=TEXT_LIGHT_SUB)
-                draw.rounded_rectangle([cx + 200, by + 3, cx + 200 + bval * 5, by + 16], radius=4, fill=bcol)
-                draw.text((cx + 210 + bval * 5, by), f"{bval}%", font=get_num_font(11, 'bold'), fill=bcol)
-                by += 38
-        elif i == 1:
-            draw.rounded_rectangle([cx + 30, start_y + 400, cx + cw - 30, start_y + ch - 30], radius=12, fill=(255, 241, 244), outline=BORDER_LIGHT, width=1)
-            draw.text((cx + 50, start_y + 425), "AIA+ 고령자 친화 4대 핵심 원칙", font=get_font(13, 'bold'), fill=AIA_RED)
-            principles = [
-                ("1. 가독성 극대화", "18pt 이상 대형 폰트 & AAA 명도 대비"),
-                ("2. 제로-뎁스 접근", "첫 화면에서 1-Tap 즉시 과업 진입"),
-                ("3. 오터치 방지", "최소 48dp 터치 영역 & 56dp 풀와이드"),
-                ("4. 안심 케어", "가상계좌 대체 발급 & 알림톡 브릿지")
-            ]
-            py = start_y + 465
-            for pnum, pdesc in principles:
-                draw.text((cx + 50, py), pnum, font=get_font(12, 'bold'), fill=TEXT_LIGHT_MAIN)
-                draw.text((cx + 50, py + 20), pdesc, font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB)
-                py += 48
-        elif i == 2:
-            draw.rounded_rectangle([cx + 30, start_y + 400, cx + cw - 30, start_y + ch - 30], radius=12, fill=(236, 253, 245), outline=BORDER_LIGHT, width=1)
-            draw.text((cx + 50, start_y + 425), "정량적 개선 검증 결과", font=get_font(13, 'bold'), fill=(5, 150, 105))
-            kpis = [
-                ("과업 완수율", "42% → 90%", "+48%p 상승"),
-                ("소요 시간", "6분 30초 → 3분 10초", "50% 단축"),
-                ("오터치 횟수", "화면당 4.2회 → 0.4회", "90% 감소")
-            ]
-            ky = start_y + 465
-            for ktitle, kval, kdiff in kpis:
-                draw.text((cx + 50, ky), ktitle, font=get_font(12, 'bold'), fill=TEXT_LIGHT_MAIN)
-                draw.text((cx + 150, ky), kval, font=get_num_font(12.5, 'bold'), fill=(5, 150, 105))
-                draw.text((cx + 350, ky), kdiff, font=get_font(11, 'bold'), fill=AIA_RED)
-                ky += 52
-                
+        # Solution Box (TO-BE)
+        draw.rounded_rectangle([gx + 25, gy + 200, gx + gw - 25, gy + 310], radius=10, fill=(236, 253, 245), outline=BORDER_LIGHT, width=1)
+        draw_pill_badge(draw, left_x=gx + 40, cy=gy + 223, text="TO-BE 혁신 설계 (AIA+ 해결책)", font=get_font(10, 'bold'), theme='green', pad_x=8, height=20)
+        lines_to = wrap_text(p["to_be"], get_font(12, 'bold'), gw - 80, draw)
+        ly_to = gy + 245
+        for line in lines_to:
+            draw.text((gx + 40, ly_to), line, font=get_font(12, 'medium'), fill=(5, 150, 105))
+            ly_to += 19
+            
     draw_slide_footer(draw, 2, 12, dark_mode=False)
     out_path = os.path.join(OUT_DIR, "slide_02.png")
     img.save(out_path, quality=95)
@@ -236,7 +215,7 @@ def make_slide_03():
         "RESEARCH & HEURISTIC ANALYSIS", 
         "Research & Heuristic Analysis | ", 
         "고령층 디지털 금융 이용 행태 및 페인포인트 분석", 
-        "정량 데이터 분석과 휴리스틱 평가를 통해 도출된 핵심 사용성 장벽과 개선 우선순위", 
+        "정량 데이터 분석과 금융감독원 가이드라인 진단을 통해 도출된 개선 우선순위", 
         right_badge=("DATA DRIVEN", "red")
     )
     
@@ -251,11 +230,9 @@ def make_slide_03():
     
     # 1. Pie Chart: Age Distribution
     pie_cx, pie_cy, pie_r = lx + 180, ly + 220, 95
-    # Slices: 60-64 (42%), 65-69 (35%), 70+ (23%)
     draw.pieslice([pie_cx - pie_r, pie_cy - pie_r, pie_cx + pie_r, pie_cy + pie_r], start=0, end=151, fill=AIA_RED)
     draw.pieslice([pie_cx - pie_r, pie_cy - pie_r, pie_cx + pie_r, pie_cy + pie_r], start=151, end=277, fill=(59, 130, 246))
     draw.pieslice([pie_cx - pie_r, pie_cy - pie_r, pie_cx + pie_r, pie_cy + pie_r], start=277, end=360, fill=(71, 85, 105))
-    # Donut center
     draw.ellipse([pie_cx - 45, pie_cy - 45, pie_cx + 45, pie_cy + 45], fill=CARD_LIGHT)
     draw.text((pie_cx, pie_cy), "60-70대", font=get_font(11, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mm')
     
@@ -274,10 +251,10 @@ def make_slide_03():
     # 2. Bar Chart: Pain Point Distribution
     draw.text((lx + 30, ly + 375), "모바일 앱 이용 시 5대 핵심 불편사항 (Pain Points)", font=get_font(15, 'bold'), fill=TEXT_LIGHT_MAIN)
     bar_items = [
-        ("작은 글씨와 불명확한 대비", 88, AIA_RED),
-        ("메뉴 찾기 어려움 (복잡한 뎁스)", 74, (245, 158, 11)),
-        ("원치 않는 버튼 오터치 및 오작동", 62, (59, 130, 246)),
-        ("복잡한 본인인증 및 비밀번호 분실", 54, (168, 85, 247)),
+        ("작은 글씨와 불명확한 대비 (1. 배려 부족)", 88, AIA_RED),
+        ("금융사별 용어 혼란 (2. 명칭 통일성 부재)", 74, (245, 158, 11)),
+        ("접근하기 어려운 버튼 위치 (3. 낮은 접근성)", 62, (59, 130, 246)),
+        ("복잡한 본인인증 및 가상계좌 부재", 54, (168, 85, 247)),
         ("진행 상태 확인 불가로 인한 불안감", 41, (100, 116, 139))
     ]
     by = ly + 420
@@ -342,7 +319,6 @@ def make_slide_04():
         right_badge=("IA & USER FLOW", "red")
     )
     
-    # Large Canvas for IA Diagram
     card_x, card_y, card_w, card_h = 100, 220, 1720, 730
     draw.rounded_rectangle([card_x, card_y, card_x + card_w, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
     
@@ -352,7 +328,6 @@ def make_slide_04():
     draw.text((root_x + root_w//2, root_y + 24), "AIA+ 모바일 통합 플랫폼", font=get_font(16, 'bold'), fill=(255, 255, 255), anchor='mm')
     draw.text((root_x + root_w//2, root_y + 48), "단일 앱 내 이원화 모드 지원 (Single Codebase Multi-Theme)", font=get_font(11, 'medium'), fill=AIA_RED_LIGHT, anchor='mm')
     
-    # Fork to 2 Modes: Left = General Mode, Right = Senior Mode
     # Branch line down
     draw.line([(root_x + root_w//2, root_y + root_h), (root_x + root_w//2, 380)], fill=BORDER_LIGHT, width=2)
     draw.line([(380, 380), (1540, 380)], fill=BORDER_LIGHT, width=2)
@@ -376,7 +351,7 @@ def make_slide_04():
     draw_arrow(draw, (s_x, s_y + s_h//2 + 15), (g_x + g_w, g_y + g_h//2 + 15), col=(100, 116, 139), width=2, arrow_size=6)
     draw_pill_badge(draw, cx=(g_x + g_w + s_x)//2, cy=g_y + g_h//2 + 8, text="상단 1-Tap 토글 스위치", font=get_font(10, 'bold'), theme='red', solid=True, pad_x=8, height=20)
     
-    # 5 Sub-Nodes under Senior Mode (Level 2: Core Task Categories)
+    # 5 Sub-Nodes under Senior Mode
     draw.line([(1340, s_y + s_h), (1340, 540)], fill=AIA_RED, width=2)
     draw.line([(960, 540), (1720, 540)], fill=AIA_RED, width=2)
     
@@ -393,14 +368,11 @@ def make_slide_04():
     for idx, (ttitle, titems, tcol) in enumerate(senior_tasks):
         tx = 950 + idx * 158
         ty = 560
-        # Line from branch
         draw.line([(tx + tw//2, 540), (tx + tw//2, ty)], fill=AIA_RED, width=2)
         draw.rounded_rectangle([tx, ty, tx + tw, ty + th], radius=12, fill=(255, 255, 255), outline=tcol, width=2 if idx==1 else 1)
-        # Header pill
         draw.rounded_rectangle([tx + 8, ty + 12, tx + tw - 8, ty + 38], radius=6, fill=tcol)
         draw.text((tx + tw//2, ty + 25), ttitle, font=get_font(10.5, 'bold'), fill=(255, 255, 255), anchor='mm')
         
-        # Items list
         ilines = titems.split('\n')
         iy = ty + 55
         for line in ilines:
@@ -408,7 +380,7 @@ def make_slide_04():
             draw.text((tx + 22, iy), line, font=get_font(10.5, 'regular'), fill=TEXT_LIGHT_MAIN)
             iy += 44
             
-    # General Mode Branch Features (Level 2 Left)
+    # General Mode Branch Features
     draw.line([(380, g_y + g_h), (380, 560)], fill=BORDER_LIGHT, width=2)
     gw_box = 360
     draw.rounded_rectangle([200, 560, 200 + gw_box, 560 + th], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
