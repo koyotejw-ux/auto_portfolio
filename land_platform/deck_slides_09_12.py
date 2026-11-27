@@ -3,51 +3,48 @@ from PIL import Image, ImageDraw
 from deck_common import *
 
 # -------------------------------------------------------------
-# SLIDE 09: CORE STEP 1 · GIS LAND REGULATION ANALYSIS (Browser Mockup + 3 Specs)
+# SLIDE 09: STEP 2 · SMARTFARM FACILITY SIMULATION (Figma Screen 03)
 # -------------------------------------------------------------
 def make_slide_09():
     img = Image.new('RGB', (W, H), BG_LIGHT)
     draw = ImageDraw.Draw(img)
     draw_slide_header(
         draw, 9, 
-        "CORE FEATURE · STEP 1", 
-        "GIS Land Analysis | ", 
-        "STEP 1. 공간 GIS 토지 탐색 및 3초 공적 규제 진단", 
-        "지번 입력 즉시 12대 공공 데이터 연동을 통해 토지이용계획과 법적 인허가 제한 사항을 실시간 판별", 
-        right_badge=("CORE FEATURE 01", "green")
+        "CORE FEATURE · STEP 2", 
+        "Figma UI Architecture | ", 
+        "STEP 2. 스마트 단지 설계 & 온실 모듈 최적 배치 화면 (Figma UI 원본)", 
+        "피그마 공식 화면설계서 UI: 스마트 온실 규격 선택, 차량 교행 6m 도로 구획, 부대시설 배치 및 생산량 시뮬레이션", 
+        right_badge=("FIGMA UI SCREEN", "green")
     )
     
-    lw = 540
+    lw = 460
     lh = 740
     ly = 220
     draw.rounded_rectangle([100, ly, 100 + lw, ly + lh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, left_x=130, cy=ly + 35, text="3-SECOND REGULATION ENGINE", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=24)
-    draw.text((130, ly + 75), "12대 공공 데이터 실시간 파싱", font=get_font(20, 'bold'), fill=TEXT_LIGHT_MAIN)
+    draw_pill_badge(draw, left_x=130, cy=ly + 35, text="STEP 2 · FACILITY DESIGNER", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=24)
+    draw.text((130, ly + 75), "스마트팜 온실 설계 UI", font=get_font(20, 'bold'), fill=TEXT_LIGHT_MAIN)
 
     cards = [
-        ("원터치 지번/주소 통합 검색", "전국 단위 지번 및 도로명 주소를 정밀 인덱싱하여 오탈자 자동 보정 및 인근 필지 동시 추천"),
-        ("12대 공공 규제 실시간 진단", "용도지역, 건폐율/용적률, 접도 의무, 고도제한, 상수원보호구역, 생태자연도 등 규제 일괄 진단"),
-        ("개발 불가 구역 자동 마스킹", "경사도 25도 초과 구역, 보전산지, 맹지 등 개발 리스크 구역을 GIS 지도상에 붉은색 히트맵으로 시각화")
+        ("01. 온실 모듈 규격 최적화", "단동/연동형 비닐온실, 첨단 유리온실, 수직농장 등 작물별 최적 규격을 토지 경계선 내에 자동 정렬"),
+        ("02. 도로망 & 부대시설 연계", "수확물 반출을 위한 6m 내부 관통 도로, 저온저장고, 선별장, ICT 관제센터 등 지원시설 자동 구획"),
+        ("03. 농진청 DB 기반 수확량 산출", "딸기, 토마토 등 고부가가치 작물의 재배 주기와 3개년 경락가를 연동하여 유효 면적당 예상 생산량 도출")
     ]
     cy = ly + 115
     for title, desc in cards:
         draw.rounded_rectangle([125, cy, 100 + lw - 25, cy + 175], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-        draw.text((145, cy + 35), title, font=get_font(16, 'bold'), fill=BRAND_GREEN)
-        lines = wrap_text(desc, get_font(12.5, 'regular'), lw - 70, draw)
-        dy = cy + 75
+        draw.text((145, cy + 35), title, font=get_font(15.5, 'bold'), fill=BRAND_GREEN)
+        lines = wrap_text(desc, get_font(12, 'regular'), lw - 70, draw)
+        dy = cy + 68
         for l in lines:
-            draw.text((145, dy), l, font=get_font(12.5, 'regular'), fill=TEXT_LIGHT_SUB)
+            draw.text((145, dy), l, font=get_font(12, 'regular'), fill=TEXT_LIGHT_SUB)
             dy += 22
         cy += 195
 
-    # Right: Authentic High Resolution Browser Mockup
-    rx = 665
-    rw = 1155
-    s_p = os.path.join(ASSETS_DIR, "screen_02_cadastral_map.png")
-    if not os.path.exists(s_p):
-        s_p = os.path.join(ASSETS_DIR, "screen_02_map_analysis.png")
-        
-    draw_browser_mockup(img, s_p, x=rx, y=ly, w=rw, h=lh, title="FARMINGSYS ENTERPRISE · STEP 1 CADASTRAL & REGULATION ENGINE", url="https://farmingsys.io/workspace/step-01-cadastral")
+    # Right: High-Res Real Desktop Browser Mockup with Step 2 Screen (screen_03_facility_simulation.png)
+    rx = 585
+    rw = 1235
+    s_p = os.path.join(ASSETS_DIR, "screen_03_facility_simulation.png")
+    draw_browser_mockup(img, s_p, x=rx, y=ly, w=rw, h=lh, title="FARMINGSYS ENTERPRISE · STEP 2 FACILITY LAYOUT SIMULATOR", url="https://farmingsys.io/app/step-02-facility")
 
     draw_slide_footer(draw, 9, 12, dark_mode=False)
     out_path = os.path.join(OUT_DIR, "slide_09.png")
@@ -55,51 +52,48 @@ def make_slide_09():
     print(f"Generated: {out_path}")
 
 # -------------------------------------------------------------
-# SLIDE 10: CORE STEP 2 · FACILITY LAYOUT & CROP SIMULATION (Browser Mockup + 3 Specs)
+# SLIDE 10: STEP 3 · ECONOMIC VALUATION & CAPEX MODEL (Figma Screen 04)
 # -------------------------------------------------------------
 def make_slide_10():
     img = Image.new('RGB', (W, H), BG_LIGHT)
     draw = ImageDraw.Draw(img)
     draw_slide_header(
         draw, 10, 
-        "CORE FEATURE · STEP 2", 
-        "Facility & Crop Layout | ", 
-        "STEP 2. 스마트 단지 설계 및 최적 시설·작물 시뮬레이션", 
-        "가용 면적에 최적화된 스마트팜 온실, 진입 도로, 부대시설 자동 배치 및 농진청 DB 기반 수확량 예측", 
-        right_badge=("CORE FEATURE 02", "green")
+        "CORE FEATURE · STEP 3", 
+        "Figma UI Architecture | ", 
+        "STEP 3. 총사업비 산출 & CAPEX/OPEX 경제성 모델링 화면 (Figma UI 원본)", 
+        "피그마 공식 화면설계서 UI: 토지매입비, ICT 온실 시공비, 연간 운영비, 10개년 현금흐름 및 투자 회수기간 자동 도출", 
+        right_badge=("FIGMA UI SCREEN", "green")
     )
     
-    lw = 540
+    lw = 460
     lh = 740
     ly = 220
     draw.rounded_rectangle([100, ly, 100 + lw, ly + lh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, left_x=130, cy=ly + 35, text="FACILITY & CROP MATCHING", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=24)
-    draw.text((130, ly + 75), "단지 설계 및 생산량 시뮬레이션", font=get_font(20, 'bold'), fill=TEXT_LIGHT_MAIN)
+    draw_pill_badge(draw, left_x=130, cy=ly + 35, text="STEP 3 · ECONOMIC MODELING", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=24)
+    draw.text((130, ly + 75), "총사업비 경제성 모델 UI", font=get_font(20, 'bold'), fill=TEXT_LIGHT_MAIN)
 
     cards = [
-        ("스마트 온실 모듈 최적 구획", "단동/연동형 비닐온실, 유리온실, 수직농장 등 작물별 최적 규격을 토지 형상에 맞추어 자동 모듈화"),
-        ("도로 및 부대시설 자동 연계", "차량 교행을 위한 6m 도로 구획, 선별장, 저온저장고, 관리동 설비 배치 면적 자동 연산"),
-        ("농진청 DB 기반 작물 생산성 예측", "딸기, 토마토, 파프리카 등 고부가가치 작물의 재배 주기와 3개년 평균 경락가를 매칭하여 매출 추정")
+        ("01. CAPEX/OPEX 세부 분해표", "토지 매입비, 토목 기초공사비, ICT 스마트 설비비와 연간 인건비, 난방비 등 비용 구조 정밀 분해"),
+        ("02. 10개년 현금흐름 & 회수기간", "감가상각, 정책자금 융자 금리, 세제 혜택을 종합 반영하여 사업 손익분기점(BEP) 및 회수연수 산출"),
+        ("03. 실시간 재무 지표 연동 피드백", "작물 선택이나 온실 면적을 변경할 때마다 IRR(내부수익률)과 NPV(순현재가치)가 지연 없이 재연산")
     ]
     cy = ly + 115
     for title, desc in cards:
         draw.rounded_rectangle([125, cy, 100 + lw - 25, cy + 175], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-        draw.text((145, cy + 35), title, font=get_font(16, 'bold'), fill=BRAND_GREEN)
-        lines = wrap_text(desc, get_font(12.5, 'regular'), lw - 70, draw)
-        dy = cy + 75
+        draw.text((145, cy + 35), title, font=get_font(15.5, 'bold'), fill=BRAND_GREEN)
+        lines = wrap_text(desc, get_font(12, 'regular'), lw - 70, draw)
+        dy = cy + 68
         for l in lines:
-            draw.text((145, dy), l, font=get_font(12.5, 'regular'), fill=TEXT_LIGHT_SUB)
+            draw.text((145, dy), l, font=get_font(12, 'regular'), fill=TEXT_LIGHT_SUB)
             dy += 22
         cy += 195
 
-    # Right: Authentic High Resolution Browser Mockup
-    rx = 665
-    rw = 1155
-    s_p = os.path.join(ASSETS_DIR, "screen_03_facility_simulation.png")
-    if not os.path.exists(s_p):
-        s_p = os.path.join(ASSETS_DIR, "screen_03_facility_layout.png")
-        
-    draw_browser_mockup(img, s_p, x=rx, y=ly, w=rw, h=lh, title="FARMINGSYS ENTERPRISE · STEP 2 FACILITY LAYOUT SIMULATOR", url="https://farmingsys.io/workspace/step-02-facility")
+    # Right: High-Res Real Desktop Browser Mockup with Step 3 Screen (screen_04_economic_modeling.png)
+    rx = 585
+    rw = 1235
+    s_p = os.path.join(ASSETS_DIR, "screen_04_economic_modeling.png")
+    draw_browser_mockup(img, s_p, x=rx, y=ly, w=rw, h=lh, title="FARMINGSYS ENTERPRISE · STEP 3 FINANCIAL VALUATION ENGINE", url="https://farmingsys.io/app/step-03-valuation")
 
     draw_slide_footer(draw, 10, 12, dark_mode=False)
     out_path = os.path.join(OUT_DIR, "slide_10.png")
@@ -107,51 +101,48 @@ def make_slide_10():
     print(f"Generated: {out_path}")
 
 # -------------------------------------------------------------
-# SLIDE 11: CORE STEP 3 · FINANCIAL VALUATION & REPORT (Browser Mockup + 3 Specs)
+# SLIDE 11: STEP 4 · VALUATION REPORT & FINANCING (Figma Screen 05)
 # -------------------------------------------------------------
 def make_slide_11():
     img = Image.new('RGB', (W, H), BG_LIGHT)
     draw = ImageDraw.Draw(img)
     draw_slide_header(
         draw, 11, 
-        "CORE FEATURE · STEP 3", 
-        "Financial Feasibility | ", 
-        "STEP 3. 경제성 타당성 분석 모델 & 종합 보고서 생성", 
-        "총사업비, 시설조성비, 10개년 현금흐름, IRR 산출 및 금융 심사용 20페이지 표준 PDF 보고서 발급", 
-        right_badge=("CORE FEATURE 03", "green")
+        "CORE FEATURE · STEP 4", 
+        "Figma UI Architecture | ", 
+        "STEP 4. 사업 타당성 평가서 & 금융 표준 리포트 발급 화면 (Figma UI 원본)", 
+        "피그마 공식 화면설계서 UI: 지적도 개요, 법적 적합도 요약, 배치 평면도, 재무 전망을 집약한 금융기관 심사용 20p PDF 보고서", 
+        right_badge=("FIGMA UI SCREEN", "green")
     )
     
-    lw = 540
+    lw = 460
     lh = 740
     ly = 220
     draw.rounded_rectangle([100, ly, 100 + lw, ly + lh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, left_x=130, cy=ly + 35, text="FINANCIAL VALUATION MODEL", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=24)
-    draw.text((130, ly + 75), "정량 경제성 평가 & 리포트", font=get_font(20, 'bold'), fill=TEXT_LIGHT_MAIN)
+    draw_pill_badge(draw, left_x=130, cy=ly + 35, text="STEP 4 · REPORT GENERATOR", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=24)
+    draw.text((130, ly + 75), "금융 리포트 발급 UI", font=get_font(20, 'bold'), fill=TEXT_LIGHT_MAIN)
 
     cards = [
-        ("세부 CAPEX / OPEX 산출 명세", "토지 매입비, 토목/건축공사비, ICT 온실 설비비, 연간 인건비 및 난방비 정밀 분해 내역 제공"),
-        ("10개년 현금흐름 & 손익분기점", "감가상각, 법인세, 금융 이자율을 반영한 연차별 순수익 추정과 투자금 회수기간 도출"),
-        ("금융 심사 표준 보고서 PDF 발급", "토지 개요, 규제 진단, 배치도, 재무 예측표를 집약한 20페이지 분량의 심사 보고서 즉시 출력")
+        ("01. 표준 타당성 평가서 생성", "지번 기본정보, 용도지역 규제 분석표, 온실 배치 조감도, 재무성 분석표를 종합 수록한 공식 문서"),
+        ("02. 금융 심사 표준 20p PDF 발급", "농협, 수협, 신보 등 정책금융 대출 심사에 즉시 제출 가능한 공인 포맷의 다면 보고서 원클릭 다운로드"),
+        ("03. 투자자·시공사 매칭 연결", "검토 완료된 프로젝트를 등록하여 전문 스마트팜 시공사 및 정책자금 전문 컨설턴트와의 매칭 기능 제공")
     ]
     cy = ly + 115
     for title, desc in cards:
         draw.rounded_rectangle([125, cy, 100 + lw - 25, cy + 175], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-        draw.text((145, cy + 35), title, font=get_font(16, 'bold'), fill=BRAND_GREEN)
-        lines = wrap_text(desc, get_font(12.5, 'regular'), lw - 70, draw)
-        dy = cy + 75
+        draw.text((145, cy + 35), title, font=get_font(15.5, 'bold'), fill=BRAND_GREEN)
+        lines = wrap_text(desc, get_font(12, 'regular'), lw - 70, draw)
+        dy = cy + 68
         for l in lines:
-            draw.text((145, dy), l, font=get_font(12.5, 'regular'), fill=TEXT_LIGHT_SUB)
+            draw.text((145, dy), l, font=get_font(12, 'regular'), fill=TEXT_LIGHT_SUB)
             dy += 22
         cy += 195
 
-    # Right: Authentic High Resolution Browser Mockup
-    rx = 665
-    rw = 1155
-    s_p = os.path.join(ASSETS_DIR, "screen_04_economic_modeling.png")
-    if not os.path.exists(s_p):
-        s_p = os.path.join(ASSETS_DIR, "screen_06_economic_analysis.png")
-        
-    draw_browser_mockup(img, s_p, x=rx, y=ly, w=rw, h=lh, title="FARMINGSYS ENTERPRISE · STEP 3 FINANCIAL VALUATION & REPORT", url="https://farmingsys.io/workspace/step-03-valuation")
+    # Right: High-Res Real Desktop Browser Mockup with Step 4 Screen (screen_05_valuation_report.png)
+    rx = 585
+    rw = 1235
+    s_p = os.path.join(ASSETS_DIR, "screen_05_valuation_report.png")
+    draw_browser_mockup(img, s_p, x=rx, y=ly, w=rw, h=lh, title="FARMINGSYS ENTERPRISE · STEP 4 VALUATION REPORT EXPORT", url="https://farmingsys.io/app/step-04-report")
 
     draw_slide_footer(draw, 11, 12, dark_mode=False)
     out_path = os.path.join(OUT_DIR, "slide_11.png")
@@ -210,7 +201,6 @@ def make_slide_12():
             draw.text((mx + 25, ly), l, font=get_font(12, 'regular'), fill=TEXT_LIGHT_SUB)
             ly += 20
 
-    # STAR Retrospective Full Card
     r_y = 440
     r_w = 1720
     r_h = 520
