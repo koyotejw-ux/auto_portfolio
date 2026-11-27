@@ -27,10 +27,10 @@ def make_slide_09():
     )
     
     screens = [
-        ("05. 가상계좌 신청", "screen_pay_virtual.png", "입금 전용 가상계좌 발급 및 문자/카톡 전송"),
-        ("06. 대형 PIN 키패드", "screen_login_pin.png", "48px 대형 숫자 키패드로 오터치 원천 차단"),
-        ("07. 전자서명 선택", "screen_sign_select.png", "카카오/토스/PASS 등 4대 간편인증 완비"),
-        ("08. 일반모드 대시보드", "screen_general_main_clean.png", "일반 ↔ 고령자모드 원클릭 스위칭 연동 대시보드")
+        ("05. 본인인증 & 주민번호", "figma_id_verification.png", "주민등록번호 뒤 7자리 간편 입력 및 보안 인증"),
+        ("06. 보험사 다이렉트 선택", "figma_select_insurer.png", "AIA생명 및 주요 제휴 보험사 간편 조회/선택"),
+        ("07. 전자서명 확인/완료", "figma_signature_done.png", "터치 전자서명 날인 및 수령 계좌 1-Tap 확정"),
+        ("08. 대형 PIN 키패드", "screen_login_pin.png", "48px 대형 숫자 키패드로 오터치 방지 간편 인증")
     ]
     
     sw = 395
@@ -87,26 +87,26 @@ def make_slide_10():
         {
             "tag": "STEP 01",
             "title": "청구 서류 준비 안내",
-            "screen": "screen_claim_step1.png",
-            "desc": "진단서/영수증 필수 서류를 대형 아이콘과 큰 글씨로 안내하여 서류 누락 방지"
+            "screen": "figma_claim_step1.png",
+            "desc": "병원비 청구 필수 서류 안내 및 간편 청구 가이드 제공으로 서류 누락 원천 방지"
         },
         {
             "tag": "STEP 02",
-            "title": "영수증/진단서 OCR 촬영",
-            "screen": "screen_claim_step2.png",
-            "desc": "카메라 뷰파인더 모서리 자동인식, 진료비/병원명 자동 파싱으로 수기입력 제로화"
+            "title": "서류 등록 & 사진 촬영",
+            "screen": "figma_claim_step2.png",
+            "desc": "진단서/영수증 글씨 식별 안내, 구겨짐·그림자 자동 보정 및 모바일 사진 업로드"
         },
         {
             "tag": "STEP 03",
-            "title": "사고내용 & 수령계좌",
-            "screen": "screen_claim_step3.png",
-            "desc": "평소 보험료 납부 계좌 자동 세팅 및 1-Tap 수령 계좌 선택으로 오입력 방지"
+            "title": "청구 정보 & 전자서명",
+            "screen": "figma_claim_step3.png",
+            "desc": "지정 수령 계좌(카카오뱅크 등) 자동 세팅 및 원터치 전자서명 날인 지원"
         },
         {
             "tag": "STEP 04",
-            "title": "청구 접수 완료 & 심사",
-            "screen": "screen_claim_step4.png",
-            "desc": "접수 번호 부여, 카카오 알림톡 실시간 전송 및 메인 게이트 접수현황 실시간 연동"
+            "title": "내용 최종확인 및 제출",
+            "screen": "figma_claim_step4.png",
+            "desc": "피보험자·사고내용 최종 확인, 1-Tap 청구서 제출 및 실시간 접수 번호 발급"
         }
     ]
     
