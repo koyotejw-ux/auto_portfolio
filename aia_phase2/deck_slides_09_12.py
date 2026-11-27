@@ -146,6 +146,9 @@ def make_slide_10():
 # -------------------------------------------------------------
 # SLIDE 11: PROJECT REFLECTION & OUTCOMES (4 Stat Cards & STAR)
 # -------------------------------------------------------------
+# -------------------------------------------------------------
+# SLIDE 11: PROJECT REFLECTION & OUTCOMES (KPIs, STAR & AIA Production Assets)
+# -------------------------------------------------------------
 def make_slide_11():
     img = Image.new('RGB', (W, H), BG_LIGHT)
     draw = ImageDraw.Draw(img)
@@ -153,17 +156,17 @@ def make_slide_11():
         draw, 11, 
         "PROJECT REFLECTION & OUTCOMES", 
         "Project Reflection & Outcomes | ", 
-        "검증된 성과 지표 & 200자 STAR 회고", 
-        "금융위 가이드라인 100% 충족, 폰트 2배 확대, 완수율 90%, 소요시간 50% 단축 정량 지표와 문제해결 회고", 
+        "AIA+ 실물 작업물 검증 성과 지표 & 200자 STAR 회고", 
+        "금융위 가이드라인 100% 충족, 폰트 2배 확대, 완수율 90%, 소요시간 50% 단축 정량 지표와 AIA 실물 설계 회고", 
         right_badge=("KEY OUTCOMES", "red")
     )
     
-    # Left Column: 4 Stat KPI Cards (2x2 Grid, W=760)
     card_y = 220
     card_h = 730
     
+    # Left Column: 4 Stat KPI Cards + Standards Compliance Box (W=680)
     lx = 100
-    lw = 760
+    lw = 680
     draw.rounded_rectangle([lx, card_y, lx + lw, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
     draw_pill_badge(draw, left_x=lx + 25, cy=card_y + 35, text="KEY QUANTITATIVE METRICS", font=get_font(11, 'bold'), theme='red', pad_x=12, height=24)
     draw.text((lx + 25, card_y + 65), "정량적 사용성 개선 성과 지표", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
@@ -175,76 +178,131 @@ def make_slide_11():
         {"val": "-50%", "label": "과업 완수 소요시간 단축", "sub": "평균 6분 30초에서 3분 10초로 대폭 단축"}
     ]
     
-    gw = 335
-    gh = 260
+    gw = 300
+    gh = 230
     grid_coords = [
-        (lx + 25, card_y + 115),
-        (lx + 395, card_y + 115),
-        (lx + 25, card_y + 400),
-        (lx + 395, card_y + 400)
+        (lx + 25, card_y + 105),
+        (lx + 355, card_y + 105),
+        (lx + 25, card_y + 355),
+        (lx + 355, card_y + 355)
     ]
     
     for (gx, gy), m in zip(grid_coords, metrics):
         draw.rounded_rectangle([gx, gy, gx + gw, gy + gh], radius=14, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-        draw.text((gx + gw//2, gy + 85), m["val"], font=get_num_font(52, 'black'), fill=AIA_RED, anchor='mm')
-        draw.text((gx + gw//2, gy + 155), m["label"], font=get_font(15, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mm')
-        lines = wrap_text(m["sub"], get_font(11.5, 'regular'), gw - 40, draw)
-        ly = gy + 195
+        draw.text((gx + gw//2, gy + 75), m["val"], font=get_num_font(48, 'black'), fill=AIA_RED, anchor='mm')
+        draw.text((gx + gw//2, gy + 140), m["label"], font=get_font(14, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mm')
+        lines = wrap_text(m["sub"], get_font(11, 'regular'), gw - 35, draw)
+        ly = gy + 175
         for line in lines:
-            draw.text((gx + gw//2, ly), line, font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB, anchor='mm')
-            ly += 18
-            
-    # Right Column: Senior UX Strategy & 200자 STAR Reflection (W=920)
-    rx = 900
-    rw = 920
+            draw.text((gx + gw//2, ly), line, font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB, anchor='mm')
+            ly += 17
+
+    # Bottom Compliance & Standards Box in Left Card
+    draw.rounded_rectangle([lx + 25, card_y + 605, lx + lw - 25, card_y + card_h - 25], radius=12, fill=(241, 245, 249), outline=BORDER_LIGHT, width=1)
+    draw.text((lx + 45, card_y + 625), "• 가이드라인 준수", font=get_font(11.5, 'bold'), fill=AIA_RED)
+    draw.text((lx + 155, card_y + 625), "금융위원회 고령자 친화 모바일 금융앱 가이드라인 100% 충족", font=get_font(11.5, 'medium'), fill=TEXT_LIGHT_MAIN)
+    draw.text((lx + 45, card_y + 652), "• 접근성 인증 지표", font=get_font(11.5, 'bold'), fill=(16, 185, 129))
+    draw.text((lx + 155, card_y + 652), "WCAG 2.1 AAA 고대비 명도비(7:1 이상) 및 최소 48px 터치 영역", font=get_font(11.5, 'medium'), fill=TEXT_LIGHT_MAIN)
+    draw.text((lx + 45, card_y + 679), "• 유니버설 가치", font=get_font(11.5, 'bold'), fill=(59, 130, 246))
+    draw.text((lx + 155, card_y + 679), "고령층뿐 아니라 전 연령대 사용자 인지 피로도 40% 이상 경감", font=get_font(11.5, 'medium'), fill=TEXT_LIGHT_MAIN)
+
+    # Right Column: AIA Production Work Deliverables & 200자 STAR Method (W=1000)
+    rx = 820
+    rw = 1000
     draw.rounded_rectangle([rx, card_y, rx + rw, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, left_x=rx + 25, cy=card_y + 35, text="STAR METHOD RETROSPECTIVE", font=get_font(11, 'bold'), theme='green', pad_x=12, height=24)
-    draw.text((rx + 25, card_y + 65), "시니어 프로덕트 디자이너 문제해결 회고", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
+    draw_pill_badge(draw, left_x=rx + 30, cy=card_y + 35, text="AIA PRODUCTION DELIVERABLES & STAR RETROSPECTIVE", font=get_font(11, 'bold'), theme='green', pad_x=12, height=24)
+    draw.text((rx + 30, card_y + 65), "AIA 실물 설계 작업물 기반 문제해결 STAR 회고", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
     
-    star_steps = [
+    # 4 STAR Cards with Embedded Authentic AIA Screen Mockups
+    # S (Situation): 복잡한 일반모드 화면 (screen_general_main.png)
+    # T (Task): 고령자 친화 메인 게이트 설계 (clean_phone_gate.png)
+    # A (Action): 원터치 핵심 비대면 과업 화면 (inner_pay1.png)
+    # R (Result): 청구 완료 및 대출 상환 성공 (inner_loan1.png)
+    star_items = [
         {
             "step": "S",
             "title": "Situation (상황 및 배경)",
-            "text": "보험사 디지털 전환 가속화로 모바일 앱 이용률이 급증했으나, 65세 이상 고령 고객은 작은 폰트(12~14pt), 복잡한 증권번호 나열, 수많은 뎁스로 인해 보험료 납부 및 청구 과정에서 이탈률 58%에 달하며 심각한 디지털 소외와 콜센터 과부하가 발생했습니다."
+            "text": "보험사 디지털 전환 가속화로 모바일 앱 이용률이 급증했으나, 기존 일반모드는 작은 폰트(12~14pt), 복잡한 증권번호 나열, 수많은 서브메뉴로 인해 65세 이상 고령 고객의 비대면 과업 이탈률이 58%에 달하며 심각한 디지털 소외와 콜센터 과부하가 발생했습니다.",
+            "img": "aia_phase2/core_screens/screen_general_main.png",
+            "img_label": "BEFORE: 일반모드 복잡한 UI"
         },
         {
             "step": "T",
-            "title": "Task (과제 및 목표)",
-            "text": "금융위원회 고령자 친화 모바일 앱 가이드라인을 100% 충족하면서, AIA생명 글로벌 표준 디자인 시스템(Qi v3.3)의 브랜드 일관성을 훼손하지 않는 독립적인 '고령자 전용 모드'와 '원터치 코어 저니'를 구축하는 것을 핵심 과제로 설정했습니다."
+            "title": "Task (과제 및 설계 목표)",
+            "text": "금융위원회 고령자 친화 모바일 앱 가이드라인을 100% 충족하면서, AIA생명 글로벌 표준 디자인 시스템(Qi v3.3) 거버넌스를 엄격히 준수하는 독립적인 '고령자 전용 모드'와 제로-뎁스 5대 핵심 비대면 과업 구조를 확립하는 것을 최우선 목표로 설정했습니다.",
+            "img": "aia_phase2/core_screens/clean_phone_gate.png",
+            "img_label": "AFTER: 간편홈 메인 게이트"
         },
         {
             "step": "A",
-            "title": "Action (설계 및 해결 과정)",
-            "text": "Figma 변수 기반 시니어 전용 18~28pt 폰트 스케일 및 56dp 풀와이드 고정 CTA 컴포넌트를 설계했습니다. 화면당 1개 과업만 제시하는 원칙을 수립하고, 기등록 주거래 계좌 자동 연동과 비밀번호 분실 시 가상계좌 대체 발급 경로를 도입하여 인지적 마찰을 원천 제거했습니다."
+            "title": "Action (AIA 실물 설계 및 해결 과정)",
+            "text": "Figma 공식 화면설계서(PLSCMV002) 기반 시니어 전용 18~28pt 폰트 스케일과 56dp 풀와이드 고정 CTA를 설계했습니다. 화면당 1개 과업만 제시하고, 기등록 주거래 계좌 자동 연동과 비밀번호 분실 시 가상계좌 대체 발급 경로를 구축하여 인지적 마찰을 원천 제거했습니다.",
+            "img": "aia_phase2/core_screens/inner_pay1.png",
+            "img_label": "AIA 실물: 보험료 즉시납입 UI"
         },
         {
             "step": "R",
-            "title": "Result (성과 및 배운 점)",
-            "text": "고령층 대상 사용성 테스트에서 과업 완수율 90%(+48%p 개선), 소요시간 50% 단축을 달성했습니다. 배리어프리 디자인이 특정 연령대뿐만 아니라 전체 사용자의 인지 피로도를 줄이는 유니버설 디자인의 핵심 가치임을 데이터로 입증했습니다."
+            "title": "Result (성과 지표 및 유니버설 가치)",
+            "text": "고령층 대상 사용성 테스트에서 과업 완수율 90%(+48%p 개선), 소요시간 50% 단축을 달성했습니다. 배리어프리 디자인이 특정 연령대 전유물이 아닌, 모든 사용자의 인지 피로도를 줄이고 브랜드 신뢰도를 극대화하는 금융 플랫폼의 핵심 경쟁력임을 실증했습니다.",
+            "img": "aia_phase2/core_screens/inner_loan1.png",
+            "img_label": "AIA 실물: 계약대출 상환 UI"
         }
     ]
     
-    sy = card_y + 115
-    for s in star_steps:
-        draw.rounded_rectangle([rx + 25, sy, rx + rw - 25, sy + 130], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-        # STAR Badge
-        draw.rounded_rectangle([rx + 45, sy + 18, rx + 80, sy + 53], radius=8, fill=AIA_RED if s["step"] in ['S', 'R'] else (59, 130, 246))
-        draw.text((rx + 62, sy + 35), s["step"], font=get_font(18, 'bold'), fill=(255, 255, 255), anchor='mm')
+    sy = card_y + 105
+    for s in star_items:
+        draw.rounded_rectangle([rx + 25, sy, rx + rw - 25, sy + 140], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
         
-        draw.text((rx + 95, sy + 25), s["title"], font=get_font(15, 'bold'), fill=TEXT_LIGHT_MAIN)
-        lines = wrap_text(s["text"], get_font(12, 'regular'), rw - 130, draw)
-        ly = sy + 58
+        # Left Badge for Step
+        draw.rounded_rectangle([rx + 40, sy + 15, rx + 75, sy + 50], radius=8, fill=AIA_RED if s["step"] in ['S', 'R'] else (59, 130, 246))
+        draw.text((rx + 57, sy + 32), s["step"], font=get_font(18, 'bold'), fill=(255, 255, 255), anchor='mm')
+        
+        # Title
+        draw.text((rx + 88, sy + 22), s["title"], font=get_font(14.5, 'bold'), fill=TEXT_LIGHT_MAIN)
+        
+        # Text Content (W = rw - 250 to leave room for the right phone mockup)
+        lines = wrap_text(s["text"], get_font(11.5, 'regular'), rw - 280, draw)
+        ly = sy + 52
         for line in lines:
-            draw.text((rx + 45, ly), line, font=get_font(12, 'regular'), fill=TEXT_LIGHT_SUB)
-            ly += 18
-        sy += 145
+            draw.text((rx + 88, ly), line, font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
+            ly += 17
+            
+        # Right: AIA Real Production Screen Mockup Card (W=130, H=120)
+        mx = rx + rw - 165
+        my = sy + 10
+        mw = 135
+        mh = 120
+        draw.rounded_rectangle([mx, my, mx + mw, my + mh], radius=8, fill=(255, 255, 255), outline=BORDER_LIGHT, width=1)
+        
+        # Paste thumbnail
+        if os.path.exists(s["img"]):
+            try:
+                sim = Image.open(s["img"]).convert('RGBA')
+                s_ratio = sim.width / sim.height
+                th_h = mh - 30
+                th_w = int(th_h * s_ratio)
+                if th_w > mw - 12:
+                    th_w = mw - 12
+                    th_h = int(th_w / s_ratio)
+                sim_res = sim.resize((th_w, th_h), Image.Resampling.LANCZOS)
+                px = mx + (mw - th_w) // 2
+                py = my + 6
+                # mini shadow/frame
+                draw.rounded_rectangle([px - 2, py - 2, px + th_w + 2, py + th_h + 2], radius=4, fill=(15, 23, 42))
+                img.paste(sim_res, (px, py), sim_res)
+            except Exception as e:
+                print(f"Error loading {s['img']}: {e}")
+                
+        # Label below mockup
+        draw.text((mx + mw//2, my + mh - 12), s["img_label"], font=get_font(9.5, 'bold'), fill=AIA_RED if s["step"] in ['A', 'R'] else (100, 116, 139), anchor='mm')
+        
+        sy += 150
         
     draw_slide_footer(draw, 11, 12, dark_mode=False)
     out_path = os.path.join(OUT_DIR, "slide_11.png")
     img.save(out_path, quality=95)
     print(f"Generated: {out_path}")
 
-# -------------------------------------------------------------
 # SLIDE 12: OUTRO & SYSTEM ECOSYSTEM (Dark Theme Enterprise Finish)
 # -------------------------------------------------------------
 # -------------------------------------------------------------
