@@ -3,7 +3,7 @@ from PIL import Image, ImageDraw
 from deck_common import *
 
 # -------------------------------------------------------------
-# SLIDE 09: CORE STEP 1 · GIS LAND REGULATION ANALYSIS
+# SLIDE 09: CORE STEP 1 · GIS LAND REGULATION ANALYSIS (High-Res Cadastral Screen)
 # -------------------------------------------------------------
 def make_slide_09():
     img = Image.new('RGB', (W, H), BG_LIGHT)
@@ -40,11 +40,16 @@ def make_slide_09():
             dy += 22
         cy += 195
 
-    # Right: High Resolution Screen View
+    # Right: Authentic High Resolution Cadastral Screen View
     rx = 665
     rw = 1155
     draw.rounded_rectangle([rx, ly, rx + rw, ly + lh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    s_p = os.path.join(ASSETS_DIR, "screen_02_map_analysis.png")
+    
+    # Priority screen from user's extracted Figma
+    s_p = os.path.join(ASSETS_DIR, "screen_02_cadastral_map.png")
+    if not os.path.exists(s_p):
+        s_p = os.path.join(ASSETS_DIR, "screen_02_map_analysis.png")
+        
     if os.path.exists(s_p):
         s_img = Image.open(s_p).convert('RGBA')
         scale = min((rw - 60) / s_img.width, (lh - 60) / s_img.height)
@@ -59,7 +64,7 @@ def make_slide_09():
     print(f"Generated: {out_path}")
 
 # -------------------------------------------------------------
-# SLIDE 10: CORE STEP 2 · FACILITY LAYOUT & CROP SIMULATION
+# SLIDE 10: CORE STEP 2 · FACILITY LAYOUT & CROP SIMULATION (High-Res Facility Screen)
 # -------------------------------------------------------------
 def make_slide_10():
     img = Image.new('RGB', (W, H), BG_LIGHT)
@@ -96,11 +101,16 @@ def make_slide_10():
             dy += 22
         cy += 195
 
-    # Right: High Resolution Screen View (screen_03_facility_layout.png)
+    # Right: Authentic High Resolution Facility Screen View
     rx = 665
     rw = 1155
     draw.rounded_rectangle([rx, ly, rx + rw, ly + lh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    s_p = os.path.join(ASSETS_DIR, "screen_03_facility_layout.png")
+    
+    # Priority screen from user's extracted Figma
+    s_p = os.path.join(ASSETS_DIR, "screen_03_facility_simulation.png")
+    if not os.path.exists(s_p):
+        s_p = os.path.join(ASSETS_DIR, "screen_03_facility_layout.png")
+        
     if os.path.exists(s_p):
         s_img = Image.open(s_p).convert('RGBA')
         scale = min((rw - 60) / s_img.width, (lh - 60) / s_img.height)
@@ -115,7 +125,7 @@ def make_slide_10():
     print(f"Generated: {out_path}")
 
 # -------------------------------------------------------------
-# SLIDE 11: CORE STEP 3 · FINANCIAL VALUATION & REPORT
+# SLIDE 11: CORE STEP 3 · FINANCIAL VALUATION & REPORT (High-Res Economic/Report Screen)
 # -------------------------------------------------------------
 def make_slide_11():
     img = Image.new('RGB', (W, H), BG_LIGHT)
@@ -152,11 +162,16 @@ def make_slide_11():
             dy += 22
         cy += 195
 
-    # Right: High Resolution Screen View (screen_06_economic_analysis.png)
+    # Right: Authentic High Resolution Economic/Report Screen View
     rx = 665
     rw = 1155
     draw.rounded_rectangle([rx, ly, rx + rw, ly + lh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    s_p = os.path.join(ASSETS_DIR, "screen_06_economic_analysis.png")
+    
+    # Priority screen from user's extracted Figma (screen_04_economic_modeling.png or screen_05_valuation_report.png)
+    s_p = os.path.join(ASSETS_DIR, "screen_04_economic_modeling.png")
+    if not os.path.exists(s_p):
+        s_p = os.path.join(ASSETS_DIR, "screen_06_economic_analysis.png")
+        
     if os.path.exists(s_p):
         s_img = Image.open(s_p).convert('RGBA')
         scale = min((rw - 60) / s_img.width, (lh - 60) / s_img.height)
