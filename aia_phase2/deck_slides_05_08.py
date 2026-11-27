@@ -435,22 +435,22 @@ def make_slide_08():
     screens = [
         (
             "01. 간편홈 게이트 (상단)", 
-            "screen_senior_main_top_gate.png", 
+            "screen_senior_main_part1_gate.png", 
             "• [일반홈/간편홈] 원터치 토글 헤더\n• 당월 미납 보험료 알림 (미납건 즉시 납부)\n• 다이렉트 치아보험 롤링 배너 (1/3)"
         ),
         (
             "02. 계약 스와이프 (중단)", 
-            "screen_senior_main_official.png", 
+            "screen_senior_main_part2_contract.png", 
             "• 계약자/피보험자/수익자 뱃지 분기\n• 무배당 VITALITY 암보험 월 12,870원\n• 좌우 스와이프 다건 조회 (최대 99개)"
         ),
         (
             "03. 5대 코어 퀵액션 그리드", 
-            "screen_general_main.png", 
+            "screen_senior_main_part3_quickactions.png", 
             "• [보험금 청구] 1위 업무 대형 레드 강조\n• 보험료 납입, 자동이체 납입관리\n• 계약조회, 고객 정보변경 1-Tap 분기"
         ),
         (
             "04. 실시간 청구/대출 현황", 
-            "screen_claim_step1.png", 
+            "screen_senior_main_part4_claims.png", 
             "• '보험금 청구 총 2건' 실시간 접수중 뱃지\n• 내 보험 대출 신청 가능 금액 확인\n• 하단 큰글씨 GNB (홈/청구/마이/전체)"
         )
     ]

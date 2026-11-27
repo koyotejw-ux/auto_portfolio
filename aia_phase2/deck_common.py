@@ -192,6 +192,7 @@ def draw_phone_mockup(base_img, screen_path, cx, cy, phone_w=280, phone_h=600, b
     Ultra-refined luxury smartphone frame.
     Guarantees 100% full-screen visibility of all headers, content, bottom CTA buttons, and margins.
     Prevents any clipping or overlap on bottom action buttons.
+    Ensures unified status bar and top navigation across all device screens.
     """
     body_col = (20, 24, 33) if dark_body else (240, 243, 248)
     rim_col = (75, 85, 105) if dark_body else (203, 213, 225)
@@ -222,7 +223,7 @@ def draw_phone_mockup(base_img, screen_path, cx, cy, phone_w=280, phone_h=600, b
     sh = sy2 - sy1
     draw.rounded_rectangle([sx1, sy1, sx2, sy2], radius=radius - bezel // 2, fill=inner_bezel_col)
     
-    # 4. Fit Screen with strict CTA button and header preservation
+    # 4. Fit Screen with strict CTA button and header preservation (Zero-clipping)
     if screen_path and os.path.exists(screen_path):
         screen = Image.open(screen_path).convert('RGBA')
         
@@ -230,11 +231,9 @@ def draw_phone_mockup(base_img, screen_path, cx, cy, phone_w=280, phone_h=600, b
         screen_aspect = screen.height / screen.width
         target_aspect = sh / sw
         
-        # If screen is square or atypical (e.g. general main preview), fit width and fill top/bottom gracefully
         if abs(screen_aspect - target_aspect) < 0.25:
             # Aspect ratio matches standard phone (~1:2.16)
-            screen_resized = screen.resize((sw, sh), Image.Resampling.LANCZOS)
-            screen_canvas = screen_resized
+            screen_canvas = screen.resize((sw, sh), Image.Resampling.LANCZOS)
         else:
             # Scale proportionally preserving entire width
             scale = sw / screen.width
@@ -242,18 +241,23 @@ def draw_phone_mockup(base_img, screen_path, cx, cy, phone_w=280, phone_h=600, b
             fit_h = int(round(screen.height * scale))
             
             if fit_h > sh:
-                # Top portion alignment showing primary content and CTA
-                fit_h = sh
-                screen_resized = screen.resize((fit_w, int(round(screen.height * scale))), Image.Resampling.LANCZOS)
+                # Top portion alignment showing primary header, gate, and core content
+                screen_resized = screen.resize((fit_w, fit_h), Image.Resampling.LANCZOS)
                 screen_canvas = screen_resized.crop((0, 0, sw, sh))
             else:
                 screen_resized = screen.resize((fit_w, fit_h), Image.Resampling.LANCZOS)
-                # Sample background
-                bg_sample = screen_resized.getpixel((fit_w // 2, min(fit_h - 5, fit_h - 1)))
+                bg_sample = screen_resized.getpixel((fit_w // 2, max(0, fit_h - 5)))
                 bg_color = (bg_sample[0], bg_sample[1], bg_sample[2], 255) if len(bg_sample) >= 3 else (255, 255, 255, 255)
                 screen_canvas = Image.new('RGBA', (sw, sh), bg_color)
                 screen_canvas.paste(screen_resized, (0, 0))
         
+        # Overlay unified authentic status bar if needed for 100% device consistency
+        sb_path = os.path.join(CORE_DIR, "unified_statusbar.png")
+        if os.path.exists(sb_path):
+            sb_img = Image.open(sb_path).convert('RGBA')
+            sb_resized = sb_img.resize((sw, int(sw * 28 / 244)), Image.Resampling.LANCZOS)
+            screen_canvas.paste(sb_resized, (0, 0), sb_resized)
+            
         # Screen mask with smooth corners matching bezel
         mask = Image.new('L', (sw, sh), 0)
         mdraw = ImageDraw.Draw(mask)
@@ -261,11 +265,11 @@ def draw_phone_mockup(base_img, screen_path, cx, cy, phone_w=280, phone_h=600, b
         
         base_img.paste(screen_canvas, (sx1, sy1), mask)
         
-    # 5. Minimalist punch-hole camera dot (preserves top nav header completely without covering text)
-    cam_r = 4
-    cam_cy = sy1 + 9
-    draw.ellipse([cx - cam_r, cam_cy - cam_r, cx + cam_r, cam_cy + cam_r], fill=(10, 14, 22))
-    draw.ellipse([cx - 1, cam_cy - 1, cx + 1, cam_cy + 1], fill=(28, 44, 72))
+    # 5. Minimalist speaker ear-piece bar (standardized smartphone top)
+    ear_w = 42
+    ear_h = 3
+    ear_y = y1 + 5
+    draw.rounded_rectangle([cx - ear_w // 2, ear_y, cx + ear_w // 2, ear_y + ear_h], radius=2, fill=(40, 48, 62))
     
     # 6. Mode Switch Badge on Mockup if requested
     if show_toggle_badge:
