@@ -397,7 +397,7 @@ def make_slide_07():
         cp_y += 24
     draw.text((c2_x + 35, cp_y + 8), "※ 색상만으로 정보를 구별하지 않고 텍스트 레이블 병행 표기 원칙", font=get_font(11, 'bold'), fill=AIA_RED)
     
-    # Col 3: Real UI Components & Forms (Clean White Bordered Component Cards)
+    # Col 3: Real UI Components & Forms (Clean Pure-White Figma Authentic Components)
     c3_x = 1180
     c3_w = 640
     draw.rounded_rectangle([c3_x, bot_y, c3_x + c3_w, bot_y + bot_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
@@ -405,54 +405,82 @@ def make_slide_07():
     draw.text((c3_x + 20, bot_y + 55), "공식 UI 컴포넌트 & 48px 터치 폼", font=get_font(16, 'bold'), fill=TEXT_LIGHT_MAIN)
     draw.text((c3_x + 20, bot_y + 78), "피그마 원본 추출: 납부 카드, 출금 계좌 선택, 48px 일자 칩셋", font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB)
     
-    # Grid of clean cropped components on white cards with clean borders
-    # Top-Left: Notice Card
-    notice_p = os.path.join(CORE_DIR, "clean_comp_notice.png")
+    # -------------------------------------------------------------------------
+    # ROW 1 (y = bot_y + 105, H = 180): Notice/Pay Card & 9 Circular Icons
+    # -------------------------------------------------------------------------
+    r1_y = bot_y + 105
+    r1_h = 180
+    
+    # Card 1 (Top-Left): Notice / Payment Card
+    c1_bx = c3_x + 20
+    c1_bw = 380
+    draw.rounded_rectangle([c1_bx, r1_y, c1_bx + c1_bw, r1_y + r1_h], radius=10, fill=(255, 255, 255), outline=BORDER_LIGHT, width=1)
+    notice_p = os.path.join(CORE_DIR, "comp_notice_clean.png")
     if os.path.exists(notice_p):
-        n_img = Image.open(notice_p)
-        nw = 340
-        nh = int(nw * n_img.height / n_img.width)
+        n_img = Image.open(notice_p).convert('RGBA')
+        scale = min((c1_bw - 20) / n_img.width, (r1_h - 16) / n_img.height)
+        nw = int(n_img.width * scale)
+        nh = int(n_img.height * scale)
         n_res = n_img.resize((nw, nh), Image.Resampling.LANCZOS)
-        # draw white card wrapper
-        draw.rounded_rectangle([c3_x + 25, bot_y + 110, c3_x + 25 + nw + 16, bot_y + 110 + nh + 16], radius=10, fill=(255, 255, 255), outline=BORDER_LIGHT, width=1)
-        img.paste(n_res, (c3_x + 33, bot_y + 118))
+        img.paste(n_res, (c1_bx + (c1_bw - nw) // 2, r1_y + (r1_h - nh) // 2), n_res)
         
-    # Top-Right: Icons
-    icons_p = os.path.join(CORE_DIR, "clean_comp_icons.png")
+    # Card 2 (Top-Right): 9 Circular Action Icons
+    c2_bx = c3_x + 415
+    c2_bw = 205
+    draw.rounded_rectangle([c2_bx, r1_y, c2_bx + c2_bw, r1_y + r1_h], radius=10, fill=(255, 255, 255), outline=BORDER_LIGHT, width=1)
+    icons_p = os.path.join(CORE_DIR, "comp_icons_clean.png")
     if os.path.exists(icons_p):
-        ic_img = Image.open(icons_p)
-        iw = 210
-        ih = int(iw * ic_img.height / ic_img.width)
+        ic_img = Image.open(icons_p).convert('RGBA')
+        scale = min((c2_bw - 20) / ic_img.width, (r1_h - 16) / ic_img.height)
+        iw = int(ic_img.width * scale)
+        ih = int(ic_img.height * scale)
         ic_res = ic_img.resize((iw, ih), Image.Resampling.LANCZOS)
-        draw.rounded_rectangle([c3_x + 395, bot_y + 110, c3_x + 395 + iw + 16, bot_y + 110 + ih + 16], radius=10, fill=(255, 255, 255), outline=BORDER_LIGHT, width=1)
-        img.paste(ic_res, (c3_x + 403, bot_y + 118))
+        img.paste(ic_res, (c2_bx + (c2_bw - iw) // 2, r1_y + (r1_h - ih) // 2), ic_res)
         
-    # Bottom-Left: Bank Card
-    bank_p = os.path.join(CORE_DIR, "clean_comp_bank.png")
-    row2_y = bot_y + 310
+    # -------------------------------------------------------------------------
+    # ROW 2 (y = bot_y + 300, H = 245): Contract Card, Bank Select, 48px Chips
+    # -------------------------------------------------------------------------
+    r2_y = bot_y + 300
+    r2_h = 245
+    
+    # Card 3 (Bottom-Left): Contract Information Card
+    c3_bx = c3_x + 20
+    c3_bw = 185
+    draw.rounded_rectangle([c3_bx, r2_y, c3_bx + c3_bw, r2_y + r2_h], radius=10, fill=(255, 255, 255), outline=BORDER_LIGHT, width=1)
+    contract_p = os.path.join(CORE_DIR, "comp_contract_clean.png")
+    if os.path.exists(contract_p):
+        ct_img = Image.open(contract_p).convert('RGBA')
+        scale = min((c3_bw - 16) / ct_img.width, (r2_h - 16) / ct_img.height)
+        cw = int(ct_img.width * scale)
+        ch = int(ct_img.height * scale)
+        ct_res = ct_img.resize((cw, ch), Image.Resampling.LANCZOS)
+        img.paste(ct_res, (c3_bx + (c3_bw - cw) // 2, r2_y + (r2_h - ch) // 2), ct_res)
+        
+    # Card 4 (Bottom-Middle): Bank Account Select Form
+    c4_bx = c3_x + 220
+    c4_bw = 190
+    draw.rounded_rectangle([c4_bx, r2_y, c4_bx + c4_bw, r2_y + r2_h], radius=10, fill=(255, 255, 255), outline=BORDER_LIGHT, width=1)
+    bank_p = os.path.join(CORE_DIR, "comp_bank_clean.png")
     if os.path.exists(bank_p):
-        b_img = Image.open(bank_p)
-        bw = 270
-        bh = int(bw * b_img.height / b_img.width)
-        if bh > 215:
-            bh = 215
-            bw = int(bh * b_img.width / b_img.height)
+        b_img = Image.open(bank_p).convert('RGBA')
+        scale = min((c4_bw - 16) / b_img.width, (r2_h - 16) / b_img.height)
+        bw = int(b_img.width * scale)
+        bh = int(b_img.height * scale)
         b_res = b_img.resize((bw, bh), Image.Resampling.LANCZOS)
-        draw.rounded_rectangle([c3_x + 25, row2_y, c3_x + 25 + bw + 16, row2_y + bh + 16], radius=10, fill=(255, 255, 255), outline=BORDER_LIGHT, width=1)
-        img.paste(b_res, (c3_x + 33, row2_y + 8))
+        img.paste(b_res, (c4_bx + (c4_bw - bw) // 2, r2_y + (r2_h - bh) // 2), b_res)
         
-    # Bottom-Right: Chips Card
-    chips_p = os.path.join(CORE_DIR, "clean_comp_chips.png")
+    # Card 5 (Bottom-Right): 48px Automatic Transfer Date Chips Form
+    c5_bx = c3_x + 425
+    c5_bw = 195
+    draw.rounded_rectangle([c5_bx, r2_y, c5_bx + c5_bw, r2_y + r2_h], radius=10, fill=(255, 255, 255), outline=BORDER_LIGHT, width=1)
+    chips_p = os.path.join(CORE_DIR, "comp_chips_clean.png")
     if os.path.exists(chips_p):
-        ch_img = Image.open(chips_p)
-        cw = 275
-        ch = int(cw * ch_img.height / ch_img.width)
-        if ch > 215:
-            ch = 215
-            cw = int(ch * ch_img.width / ch_img.height)
+        ch_img = Image.open(chips_p).convert('RGBA')
+        scale = min((c5_bw - 16) / ch_img.width, (r2_h - 16) / ch_img.height)
+        cw = int(ch_img.width * scale)
+        ch = int(ch_img.height * scale)
         ch_res = ch_img.resize((cw, ch), Image.Resampling.LANCZOS)
-        draw.rounded_rectangle([c3_x + 330, row2_y, c3_x + 330 + cw + 16, row2_y + ch + 16], radius=10, fill=(255, 255, 255), outline=BORDER_LIGHT, width=1)
-        img.paste(ch_res, (c3_x + 338, row2_y + 8))
+        img.paste(ch_res, (c5_bx + (c5_bw - cw) // 2, r2_y + (r2_h - ch) // 2), ch_res)
         
     draw_slide_footer(draw, 7, 12, dark_mode=False)
     out_path = os.path.join(OUT_DIR, "slide_07.png")
