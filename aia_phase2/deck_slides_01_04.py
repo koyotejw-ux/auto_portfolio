@@ -123,9 +123,7 @@ def make_slide_02():
         right_badge=("EMPIRICAL RESEARCH", "red")
     )
     
-    # ---------------------------------------------------------
-    # TIER 1: 4 Key Problems (Top Horizontal Cards, Y: 215 ~ 440)
-    # ---------------------------------------------------------
+    # TIER 1: 4 Key Problems
     problems = [
         {
             "num": "1",
@@ -155,12 +153,9 @@ def make_slide_02():
     for i, p in enumerate(problems):
         px = 100 + i * (t1_w + 24)
         draw.rounded_rectangle([px, t1_y, px + t1_w, t1_y + t1_h], radius=14, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-        
-        # Number badge
         draw.rounded_rectangle([px + 20, t1_y + 18, px + 50, t1_y + 48], radius=6, fill=AIA_RED)
         draw.text((px + 35, t1_y + 33), p["num"], font=get_font(15, 'bold'), fill=(255, 255, 255), anchor='mm')
         draw.text((px + 62, t1_y + 33), p["title"], font=get_font(15, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
-        
         draw.line([(px + 20, t1_y + 60), (px + t1_w - 20, t1_y + 60)], fill=BORDER_LIGHT, width=1)
         
         lines = wrap_text(p["desc"], get_font(12, 'regular'), t1_w - 40, draw)
@@ -169,14 +164,11 @@ def make_slide_02():
             draw.text((px + 20, ly), line, font=get_font(12, 'regular'), fill=TEXT_LIGHT_SUB)
             ly += 20
             
-    # ---------------------------------------------------------
-    # TIER 2: Guidelines & Heuristics Audit (Middle Row, Y: 455 ~ 665)
-    # ---------------------------------------------------------
+    # TIER 2: Guidelines & Heuristics Audit
     t2_y = 455
     t2_w = 848
     t2_h = 210
     
-    # Left Card: 보험업계 모바일 금융앱 간편모드 지침
     lx = 100
     draw.rounded_rectangle([lx, t2_y, lx + t2_w, t2_y + t2_h], radius=14, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
     draw_pill_badge(draw, left_x=lx + 25, cy=t2_y + 25, text="REGULATORY GUIDELINES", font=get_font(10, 'bold'), theme='blue', pad_x=10, height=20)
@@ -195,7 +187,6 @@ def make_slide_02():
         draw.text((lx + 185, gy), g_desc, font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
         gy += 27
         
-    # Right Card: AIA 휴리스틱 평가항목
     rx = 972
     draw.rounded_rectangle([rx, t2_y, rx + t2_w, t2_y + t2_h], radius=14, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
     draw_pill_badge(draw, left_x=rx + 25, cy=t2_y + 25, text="AIA HEURISTICS AUDIT", font=get_font(10, 'bold'), theme='red', pad_x=10, height=20)
@@ -214,32 +205,23 @@ def make_slide_02():
         draw.text((rx + 245, hy), h_desc, font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
         hy += 27
         
-    # ---------------------------------------------------------
-    # TIER 3: Empirical Charts (Bottom Row, Y: 685 ~ 950)
-    # ---------------------------------------------------------
+    # TIER 3: Empirical Charts
     t3_y = 685
     t3_w = 848
     t3_h = 265
     
-    # Bottom Left: Pie Chart - 보험 앱 사용 불편사항 (UX 논문 고령자 앱 사용 조사)
     draw.rounded_rectangle([lx, t3_y, lx + t3_w, t3_y + t3_h], radius=14, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
     draw.text((lx + 25, t3_y + 20), "보험 앱 사용 불편사항", font=get_font(16, 'bold'), fill=TEXT_LIGHT_MAIN)
     draw.text((lx + t3_w - 25, t3_y + 24), "(출처 : UX 논문 고령자 앱 사용 조사)", font=get_font(11, 'medium'), fill=TEXT_LIGHT_SUB, anchor='ra')
     
-    # Pie chart drawing
     pie_cx, pie_cy, pie_r = lx + 160, t3_y + 145, 95
-    # Slices: 글자가 작아 잘 안 보임(32%), 보험금 청구 경로 어려움(28%), 버튼 터치 실수 많음(22%), 메뉴가 너무 복잡함(18%)
-    # Angles: 32% = 115.2, 28% = 100.8, 22% = 79.2, 18% = 64.8
-    # cumulative: 0 -> 115 -> 216 -> 295 -> 360
-    draw.pieslice([pie_cx - pie_r, pie_cy - pie_r, pie_cx + pie_r, pie_cy + pie_r], start=0, end=115, fill=(239, 68, 68)) # Red
-    draw.pieslice([pie_cx - pie_r, pie_cy - pie_r, pie_cx + pie_r, pie_cy + pie_r], start=115, end=216, fill=(59, 130, 246)) # Blue
-    draw.pieslice([pie_cx - pie_r, pie_cy - pie_r, pie_cx + pie_r, pie_cy + pie_r], start=216, end=295, fill=(14, 165, 233)) # Skyblue
-    draw.pieslice([pie_cx - pie_r, pie_cy - pie_r, pie_cx + pie_r, pie_cy + pie_r], start=295, end=360, fill=(71, 85, 105)) # Slate
-    # Donut Hole
+    draw.pieslice([pie_cx - pie_r, pie_cy - pie_r, pie_cx + pie_r, pie_cy + pie_r], start=0, end=115, fill=(239, 68, 68))
+    draw.pieslice([pie_cx - pie_r, pie_cy - pie_r, pie_cx + pie_r, pie_cy + pie_r], start=115, end=216, fill=(59, 130, 246))
+    draw.pieslice([pie_cx - pie_r, pie_cy - pie_r, pie_cx + pie_r, pie_cy + pie_r], start=216, end=295, fill=(14, 165, 233))
+    draw.pieslice([pie_cx - pie_r, pie_cy - pie_r, pie_cx + pie_r, pie_cy + pie_r], start=295, end=360, fill=(71, 85, 105))
     draw.ellipse([pie_cx - 40, pie_cy - 40, pie_cx + 40, pie_cy + 40], fill=CARD_LIGHT)
     draw.text((pie_cx, pie_cy), "불편요인", font=get_font(11, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mm')
     
-    # Pie Legends
     legends = [
         ("글자가 작아 잘 안 보임", "32%", (239, 68, 68)),
         ("보험금 청구 경로 어려움", "28%", (59, 130, 246)),
@@ -253,7 +235,6 @@ def make_slide_02():
         draw.text((lx + t3_w - 40, leg_y + 2), l_pct, font=get_num_font(14, 'bold'), fill=l_col, anchor='ra')
         leg_y += 42
         
-    # Bottom Right: Bar Chart - 클릭 로그 기반 주요 기능별 클릭 비율(%) (출처: AIA 생명)
     draw.rounded_rectangle([rx, t3_y, rx + t3_w, t3_y + t3_h], radius=14, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
     draw.text((rx + 25, t3_y + 20), "클릭 로그 기반 주요 기능별 클릭 비율(%)", font=get_font(16, 'bold'), fill=TEXT_LIGHT_MAIN)
     draw.text((rx + t3_w - 25, t3_y + 24), "(출처 : AIA 생명 로그 분석)", font=get_font(11, 'medium'), fill=TEXT_LIGHT_SUB, anchor='ra')
@@ -282,7 +263,7 @@ def make_slide_02():
     print(f"Generated: {out_path}")
 
 # -------------------------------------------------------------
-# SLIDE 03: COMPETITOR ANALYSIS (7 Major Insurers Benchmark Matrix)
+# SLIDE 03: COMPETITOR BENCHMARK (Focused Core Matrix & Strategic Insights)
 # -------------------------------------------------------------
 def make_slide_03():
     img = Image.new('RGB', (W, H), BG_LIGHT)
@@ -291,27 +272,31 @@ def make_slide_03():
         draw, 3, 
         "COMPETITOR BENCHMARK ANALYSIS", 
         "Competitor Analysis | ", 
-        "7대 생·손보사 고령자 모드 실물 벤치마크 및 메뉴 매핑 분석", 
-        "업계 명칭, UI 차별성, 색상대비, UX라이팅 실태 비교 및 AIA+와 타사 간 7단계 메뉴 구조 분석", 
-        right_badge=("COMPETITIVE AUDIT", "red")
+        "7대 생·손보사 고령자 모드 핵심 벤치마크 및 전략적 차별화", 
+        "업계 실태 비교 매트릭스(명칭/레이아웃/색상대비/UX라이팅)와 AIA+ Phase 2의 4대 차별화 핵심 전략", 
+        right_badge=("KEY BENCHMARK", "red")
     )
     
-    card_x, card_y, card_w, card_h = 100, 220, 1720, 730
-    draw.rounded_rectangle([card_x, card_y, card_x + card_w, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
+    card_y = 220
+    card_h = 730
     
-    t1_y = card_y + 20
-    draw_pill_badge(draw, left_x=card_x + 25, cy=t1_y + 16, text="TABLE 01. 7대 보험사 고령자 모드 지원 현황 비교", font=get_font(10.5, 'bold'), theme='red', pad_x=10, height=22)
+    # Left Column: Streamlined Core Benchmark Table (W=1040)
+    lx = 100
+    lw = 1040
+    draw.rounded_rectangle([lx, card_y, lx + lw, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
+    draw_pill_badge(draw, left_x=lx + 25, cy=card_y + 35, text="7대 보험사 고령자 모드 지원 현황 핵심 매트릭스", font=get_font(11, 'bold'), theme='red', pad_x=12, height=24)
+    draw.text((lx + 25, card_y + 68), "주요 보험사 간편모드 기능별 지원 수준 비교", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
     
-    cols = ["비교 항목", "A 생명", "B 생명", "C 화재", "D 손해보험", "E 손해보험", "F 화재", "G 라이프", "AIA+ (TO-BE)"]
-    col_w = [180, 160, 160, 160, 170, 170, 160, 160, 200]
-    col_x = [card_x + 25]
+    cols = ["비교 항목", "A 생명", "B 생명", "C 화재", "D 손보", "E 손보", "F 화재", "G 라이프", "AIA+ (TO-BE)"]
+    col_w = [170, 95, 95, 95, 95, 95, 95, 95, 145]
+    col_x = [lx + 25]
     for w in col_w[:-1]:
         col_x.append(col_x[-1] + w)
         
-    th_y = t1_y + 35
-    draw.rounded_rectangle([col_x[0], th_y, col_x[-1] + col_w[-1], th_y + 32], radius=6, fill=(30, 41, 59))
+    th_y = card_y + 115
+    draw.rounded_rectangle([col_x[0], th_y, col_x[-1] + col_w[-1], th_y + 44], radius=8, fill=(30, 41, 59))
     for i, col in enumerate(cols):
-        draw.text((col_x[i] + col_w[i]//2, th_y + 16), col, font=get_font(11, 'bold'), fill=(255, 255, 255) if i<8 else (255, 220, 230), anchor='mm')
+        draw.text((col_x[i] + col_w[i]//2, th_y + 22), col, font=get_font(11.5, 'bold'), fill=(255, 255, 255) if i<8 else (255, 220, 230), anchor='mm')
         
     t1_rows = [
         ("고령자 모드 명칭", "간편홈", "간편모드", "큰글씨", "편한", "간편", "쉬운", "간편홈", "간편홈 (표준화)"),
@@ -319,17 +304,17 @@ def make_slide_03():
         ("전용 레이아웃 분기", "O", "O", "O", "O", "O", "O", "O", "O (독립 화면 분기)"),
         ("전용 텍스트 크기 확대", "O", "△", "O", "O", "O", "O", "O", "O (18~28pt 2배)"),
         ("전용 터치 버튼 확대", "O", "O", "O", "O", "O", "O", "O", "O (56dp 풀와이드)"),
-        ("전용 색상대비 (AAA)", "X", "X", "X", "X", "X", "X", "X", "O (WCAG 7:1 달성)"),
+        ("전용 색상대비 (AAA)", "X", "X", "X", "X", "X", "X", "X", "O (WCAG 7:1)"),
         ("전용 버튼 UX라이팅", "X", "X", "X", "X", "X", "X", "X", "O (쉬운 명확 용어)"),
         ("전용 아이콘 메뉴 레이블", "O", "X", "X", "X", "X", "X", "X", "O (아이콘+텍스트)")
     ]
     
-    r_y = th_y + 34
+    r_y = th_y + 48
     for r_idx, row in enumerate(t1_rows):
         is_highlight = "색상대비" in row[0] or "UX라이팅" in row[0]
         bg_col = (255, 241, 244) if is_highlight else ((255, 255, 255) if r_idx % 2 == 0 else (248, 250, 252))
-        draw.rectangle([col_x[0], r_y, col_x[-1] + col_w[-1], r_y + 24], fill=bg_col)
-        draw.line([(col_x[0], r_y + 24), (col_x[-1] + col_w[-1], r_y + 24)], fill=BORDER_LIGHT, width=1)
+        draw.rectangle([col_x[0], r_y, col_x[-1] + col_w[-1], r_y + 48], fill=bg_col)
+        draw.line([(col_x[0], r_y + 48), (col_x[-1] + col_w[-1], r_y + 48)], fill=BORDER_LIGHT, width=1)
         
         for c_idx, val in enumerate(row):
             txt_col = TEXT_LIGHT_MAIN
@@ -341,56 +326,57 @@ def make_slide_03():
                 txt_col = (217, 119, 6)
             if c_idx == 8:
                 txt_col = AIA_RED
-            draw.text((col_x[c_idx] + col_w[c_idx]//2, r_y + 12), val, font=get_font(10.5, 'bold' if c_idx==8 or is_highlight else 'regular'), fill=txt_col, anchor='mm')
-        r_y += 25
+            draw.text((col_x[c_idx] + col_w[c_idx]//2, r_y + 24), val, font=get_font(11.5, 'bold' if c_idx==8 or is_highlight else 'medium'), fill=txt_col, anchor='mm')
+        r_y += 50
         
-    t2_y = r_y + 15
-    draw_pill_badge(draw, left_x=card_x + 25, cy=t2_y + 14, text="TABLE 02. 금융사별 모바일 간편모드 메뉴 뎁스 및 매핑 실태 분석 (AS-IS vs Competitors)", font=get_font(10.5, 'bold'), theme='blue', pad_x=10, height=22)
+    # Table Summary Note at bottom of left card
+    draw.rounded_rectangle([col_x[0], card_y + card_h - 110, col_x[-1] + col_w[-1], card_y + card_h - 25], radius=10, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+    draw.text((col_x[0] + 20, card_y + card_h - 90), "🔍 벤치마크 진단 결론", font=get_font(12, 'bold'), fill=AIA_RED)
+    draw.text((col_x[0] + 20, card_y + card_h - 65), "타 보험사는 명칭 난립 및 단순 크기 확대에 머물러 실질적 배리어프리(색상대비 AAA, UX라이팅)가 전무함.", font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_MAIN)
+    draw.text((col_x[0] + 20, card_y + card_h - 43), "AIA+는 '단일 앱 내 완전 분기 + WCAG AAA 인증 + 쉬운 우리말 라이팅'으로 업계 최고 수준 사용성을 확립.", font=get_font(11.5, 'bold'), fill=(5, 150, 105))
     
-    t2_cols = ["AIA (AS-IS)", "A 생명", "B 화재", "C 생명", "D 손해보험", "E 손해보험", "F 화재", "G 라이프", "AIA+ (TO-BE)"]
-    t2_col_w = [175, 175, 175, 175, 175, 175, 175, 175, 220]
-    t2_col_x = [card_x + 25]
-    for w in t2_col_w[:-1]:
-        t2_col_x.append(t2_col_x[-1] + w)
-        
-    th2_y = t2_y + 32
-    draw.rounded_rectangle([t2_col_x[0], th2_y, t2_col_x[-1] + t2_col_w[-1], th2_y + 28], radius=6, fill=(51, 65, 85))
-    for i, col in enumerate(t2_cols):
-        draw.text((t2_col_x[i] + t2_col_w[i]//2, th2_y + 14), col, font=get_font(10.5, 'bold'), fill=(255, 255, 255) if i<8 else (255, 220, 230), anchor='mm')
-        
-    menu_rows = [
-        ("큰글씨 전환 (헤더)", "간편홈", "큰글씨 전환", "간편모드 전환", "편한 전환", "간편 전환", "쉬운 전환", "간편홈 전환", "상단 1-Tap 토글"),
-        ("알림 (미납안내)", "챗봇", "전체메뉴", "알림", "자동차", "알림", "알림", "전체메뉴", "개인화 알림 3건"),
-        ("로그인 / 공지사항", "알림", "로그인/내정보", "my (계약조회)", "운전자", "질병/상해 교통사고", "전체", "이벤트", "내보험 계약 스와이프"),
-        ("보험금 청구 (필수)", "메뉴", "보험계약 조회", "보험금 청구", "해외여행", "계약조회", "보험상품 전체보기", "로그인", "보험금 청구 (OCR)"),
-        ("계약 조회 (필수)", "내계약", "보험금 청구", "보험료 납입", "주택종합", "장기보험료 납입", "보험계약 확인", "보험계약조회", "보험료 바로 내기"),
-        ("보험료 납입 (필수)", "보험금 청구", "보험료 납입", "연금/만기/보험금", "원데이 자동차", "보험료납입 내역조회", "자동차보험 계약변경", "보험료납입", "자동이체 / 가상계좌"),
-        ("자동이체 / 대출", "보험료 납입", "보험계약 대출신청", "대출신청", "골프", "자동차 사고접수", "보험료 납입", "보험금청구", "계약대출 / 1:1 상담")
+    # Right Column: 4 Strategic Core Differentiators (W=640)
+    rx = 1180
+    rw = 640
+    draw.rounded_rectangle([rx, card_y, rx + rw, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
+    draw_pill_badge(draw, left_x=rx + 25, cy=card_y + 35, text="CORE DIFFERENTIATORS", font=get_font(11, 'bold'), theme='blue', pad_x=12, height=24)
+    draw.text((rx + 25, card_y + 68), "AIA+만의 4대 핵심 차별화 전략", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
+    
+    strategies = [
+        {
+            "tag": "STRATEGY 01",
+            "title": "명칭 표준화 & 직관적 모드 전환",
+            "desc": "난립하던 '쉬운홈/편한모드' 대신 직관적인 [간편홈] 명칭을 정립하고, 메인 상단 1-Tap 토글 스위치로 진입 장벽을 완전히 허물었습니다."
+        },
+        {
+            "tag": "STRATEGY 02",
+            "title": "업계 최초 WCAG AAA 명도대비 준수",
+            "desc": "타사 전원이 미흡했던 색상 대비를 7:1 이상의 고대비 팔레트(AIA Red & Deep Navy)로 전면 개편하여 시각 저하 고령자의 식별성을 극대화했습니다."
+        },
+        {
+            "tag": "STRATEGY 03",
+            "title": "고령층 친화 쉬운 UX라이팅",
+            "desc": "어려운 한자어 보험 용어 대신 '보험료 바로 내기', '병원비 서류 접수' 등 일상 언어로 100% 전환하여 읽는 즉시 이해하도록 설계했습니다."
+        },
+        {
+            "tag": "STRATEGY 04",
+            "title": "실명 클릭 로그 기반 5대 핵심 메뉴 배치",
+            "desc": "단순 나열이 아닌 실제 클릭 로그 1·2위인 계약조회(37.8%)와 청구(26.8%)를 첫 화면에 즉시 노출하는 제로-뎁스 아키텍처를 완성했습니다."
+        }
     ]
     
-    r2_y = th2_y + 30
-    for r_idx, row in enumerate(menu_rows):
-        is_core = r_idx in [3, 4, 5]
-        bg_col = (255, 241, 244) if is_core else ((255, 255, 255) if r_idx % 2 == 0 else (248, 250, 252))
-        draw.rectangle([t2_col_x[0], r2_y, t2_col_x[-1] + t2_col_w[-1], r2_y + 24], fill=bg_col)
-        draw.line([(t2_col_x[0], r2_y + 24), (t2_col_x[-1] + t2_col_w[-1], r2_y + 24)], fill=BORDER_LIGHT, width=1)
+    sy = card_y + 115
+    for s in strategies:
+        draw.rounded_rectangle([rx + 20, sy, rx + rw - 20, sy + 130], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+        draw_pill_badge(draw, left_x=rx + 35, cy=sy + 22, text=s["tag"], font=get_font(10, 'bold'), theme='red' if '02' in s["tag"] or '04' in s["tag"] else 'blue', pad_x=8, height=20)
+        draw.text((rx + 130, sy + 22), s["title"], font=get_font(14, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
+        lines = wrap_text(s["desc"], get_font(11.5, 'regular'), rw - 70, draw)
+        ly = sy + 48
+        for line in lines:
+            draw.text((rx + 35, ly), line, font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
+            ly += 18
+        sy += 144
         
-        for c_idx, val in enumerate(row):
-            txt_col = TEXT_LIGHT_MAIN
-            if is_core and c_idx in [0, 8]:
-                txt_col = AIA_RED
-            elif is_core:
-                txt_col = (15, 23, 42)
-            if c_idx == 8:
-                txt_col = AIA_RED
-            draw.text((t2_col_x[c_idx] + t2_col_w[c_idx]//2, r2_y + 12), val, font=get_font(10, 'bold' if c_idx==8 or is_core else 'regular'), fill=txt_col, anchor='mm')
-        r2_y += 25
-        
-    sum_y = card_y + card_h - 60
-    draw.rounded_rectangle([card_x + 25, sum_y, card_x + card_w - 25, sum_y + 45], radius=8, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-    draw.text((card_x + 40, sum_y + 22), "💡 벤치마크 핵심 시사점", font=get_font(11.5, 'bold'), fill=AIA_RED, anchor='lm')
-    draw.text((card_x + 190, sum_y + 22), "기존 금융사는 색상대비(WCAG AAA) 및 전용 UX라이팅 미흡. AIA+는 타사 대비 '5대 핵심 업무 1-Tap 집중 + 고대비 전용 테마'로 독보적 사용성 확보.", font=get_font(11, 'regular'), fill=TEXT_LIGHT_MAIN, anchor='lm')
-    
     draw_slide_footer(draw, 3, 12, dark_mode=False)
     out_path = os.path.join(OUT_DIR, "slide_03.png")
     img.save(out_path, quality=95)
