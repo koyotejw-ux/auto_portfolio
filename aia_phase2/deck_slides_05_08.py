@@ -12,7 +12,7 @@ from deck_common import (
 )
 
 # -------------------------------------------------------------
-# SLIDE 05: FLOW CHART (Official Mode Switch Decision Tree)
+# SLIDE 05: FLOW CHART (Native Vector Flow Chart: Mode Switching)
 # -------------------------------------------------------------
 def make_slide_05():
     img = Image.new('RGB', (W, H), BG_LIGHT)
@@ -21,87 +21,170 @@ def make_slide_05():
         draw, 5, 
         "FLOW CHART & DECISION LOGIC", 
         "Flow Chart | ", 
-        "일반모드 ↔ 고령자모드 전환 의사결정 플로우차트", 
-        "화면설계서 원본 로직: 로그인 여부, 기 활성 여부, 최초 진입 여부, 65세 이상 연령 판별 및 전환 동의 5대 분기 트리", 
-        right_badge=("OFFICIAL FIGMA FLOW", "red")
+        "일반모드 ↔ 고령자모드 전환 의사결정 로직 플로우", 
+        "화면설계서 원본 로직: 로그인 여부, 기 활성 여부, 최초 진입, 65세 이상 연령 판별 및 동의 팝업 분기 트리", 
+        right_badge=("SERVICE DECISION LOGIC", "red")
     )
     
-    card_y = 220
-    card_h = 730
+    card_x, card_y, card_w, card_h = 100, 220, 1720, 730
+    draw.rounded_rectangle([card_x, card_y, card_x + card_w, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
     
-    # Left Column: High-Res Official Flow Chart Render (W=1100)
-    lx = 100
-    lw = 1100
-    draw.rounded_rectangle([lx, card_y, lx + lw, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, left_x=lx + 25, cy=card_y + 35, text="MODE SWITCHING FLOW CHART", font=get_font(11, 'bold'), theme='red', pad_x=12, height=24)
-    draw.text((lx + 25, card_y + 65), "모드 전환 실행 및 세션 분기 시스템 로직", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
+    # Header inside canvas
+    draw_pill_badge(draw, left_x=card_x + 30, cy=card_y + 35, text="MODE SWITCHING DECISION TREE", font=get_font(11, 'bold'), theme='red', pad_x=12, height=24)
+    draw.text((card_x + 30, card_y + 68), "일반 / 고령자 모드 전환 실행 시 시스템 분기 및 진입 경로", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
     
-    chart_path = os.path.join(CORE_DIR, "official_flow_chart_cropped.png")
-    if os.path.exists(chart_path):
-        fc_img = Image.open(chart_path).convert('RGB')
-        # Target area: width 1050, height 580
-        # Preserve aspect ratio
-        target_w = 1050
-        target_h = int(fc_img.height * (target_w / fc_img.width))
-        if target_h > 590:
-            target_h = 590
-            target_w = int(fc_img.width * (target_h / fc_img.height))
-        fc_img = fc_img.resize((target_w, target_h), Image.Resampling.LANCZOS)
-        # paste centered in the card
-        paste_x = lx + (lw - target_w) // 2
-        paste_y = card_y + 105 + (590 - target_h) // 2
-        img.paste(fc_img, (paste_x, paste_y))
-        draw.rounded_rectangle([paste_x, paste_y, paste_x + target_w, paste_y + target_h], radius=10, outline=BORDER_LIGHT, width=1)
-        
-    # Right Column: Decision Branch Specs & Heuristic Principles (W=580)
-    rx = 1240
-    rw = 580
-    draw.rounded_rectangle([rx, card_y, rx + rw, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, left_x=rx + 25, cy=card_y + 35, text="BRANCH LOGIC SPECIFICATIONS", font=get_font(11, 'bold'), theme='blue', pad_x=12, height=24)
-    draw.text((rx + 25, card_y + 65), "플로우차트 4대 핵심 분기 조건", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
+    # ---------------------------------------------------------
+    # VECTOR FLOW NODES (Pure vector drawn to perfectly match Behance deck style)
+    # ---------------------------------------------------------
     
-    logic_branches = [
-        {
-            "tag": "CASE 01",
-            "title": "비로그인 상태의 모드 전환",
-            "desc": "메인(홈)에서 전환 실행 시 로그인 여부를 체크(N). 기 고령자모드 활성 여부에 따라 '일반모드 로그인 전 메인' 또는 '고령자모드 로그인 전 메인'으로 즉시 분기합니다."
-        },
-        {
-            "tag": "CASE 02",
-            "title": "로그인 + 고령자모드 기 활성 (Y)",
-            "desc": "이미 고령자모드가 활성화된 회원은 추가 확인 없이 '일반모드 로그인 후 메인(홈)'으로 토글 전환됩니다."
-        },
-        {
-            "tag": "CASE 03",
-            "title": "최초 진입 & 65세 이상 감지",
-            "desc": "최초 진입(N)이거나 미활성 시, 회원 DB의 나이가 65세 이상인 경우 '고령자 모드 전환 동의?' 팝업을 호출하여 동의 시 즉시 고령자모드로 전환합니다."
-        },
-        {
-            "tag": "CASE 04",
-            "title": "전환 미동의 및 일반모드 유지",
-            "desc": "최초 진입이 아니거나 65세 미만, 또는 전환 동의 팝업에서 거절 시 '일반 모드 로그인 후 메인(홈)' 상태를 그대로 유지합니다."
-        }
-    ]
+    # Node 1: Start [메인(홈)]
+    n1_x, n1_y, n1_w, n1_h = 150, 370, 160, 64
+    draw.rounded_rectangle([n1_x, n1_y, n1_x + n1_w, n1_y + n1_h], radius=32, fill=(241, 245, 249), outline=BORDER_LIGHT, width=1)
+    draw.text((n1_x + n1_w//2, n1_y + n1_h//2), "메인(홈)", font=get_font(15, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mm')
     
-    by = card_y + 115
-    for b in logic_branches:
-        draw.rounded_rectangle([rx + 25, by, rx + rw - 25, by + 130], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-        draw_pill_badge(draw, left_x=rx + 40, cy=by + 24, text=b["tag"], font=get_font(10, 'bold'), theme='red' if b["tag"] in ['CASE 01', 'CASE 03'] else 'blue', pad_x=10, height=20)
-        draw.text((rx + 110, by + 24), b["title"], font=get_font(13.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
-        lines = wrap_text(b["desc"], get_font(11.5, 'regular'), rw - 90, draw)
-        ly = by + 50
-        for line in lines:
-            draw.text((rx + 40, ly), line, font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
-            ly += 17
-        by += 144
-        
+    # Arrow to Action Node
+    draw_arrow(draw, (n1_x + n1_w, n1_y + n1_h//2), (n1_x + n1_w + 35, n1_y + n1_h//2), col=(148, 163, 184), width=2, arrow_size=6)
+    
+    # Node 2: Action [일반/고령자 모드 전환 실행]
+    n2_x, n2_y, n2_w, n2_h = 345, 360, 190, 84
+    draw.rounded_rectangle([n2_x, n2_y, n2_x + n2_w, n2_y + n2_h], radius=12, fill=(255, 255, 255), outline=AIA_RED, width=2)
+    draw_pill_badge(draw, cx=n2_x + n2_w//2, cy=n2_y + 18, text="ACTION", font=get_font(9.5, 'bold'), theme='red', pad_x=8, height=18)
+    draw.text((n2_x + n2_w//2, n2_y + 45), "일반 / 고령자", font=get_font(13.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mm')
+    draw.text((n2_x + n2_w//2, n2_y + 65), "모드 전환 실행", font=get_font(13.5, 'bold'), fill=AIA_RED, anchor='mm')
+    
+    # Arrow to Decision 1 [로그인 여부?]
+    draw_arrow(draw, (n2_x + n2_w, n2_y + n2_h//2), (n2_x + n2_w + 40, n2_y + n2_h//2), col=(148, 163, 184), width=2, arrow_size=6)
+    
+    # Decision 1: [로그인 여부?]
+    d1_x, d1_y, d1_w, d1_h = 575, 355, 175, 94
+    draw.rounded_rectangle([d1_x, d1_y, d1_x + d1_w, d1_y + d1_h], radius=14, fill=(240, 246, 255), outline=(59, 130, 246), width=2)
+    draw_pill_badge(draw, cx=d1_x + d1_w//2, cy=d1_y + 20, text="CHECK 01", font=get_font(9.5, 'bold'), theme='blue', pad_x=8, height=18)
+    draw.text((d1_x + d1_w//2, d1_y + 54), "로그인 여부?", font=get_font(15, 'bold'), fill=(29, 78, 216), anchor='mm')
+    
+    # =========================================================
+    # PATH A: 로그인 여부 = NO (비로그인 분기 - 아래쪽)
+    # =========================================================
+    draw.line([(d1_x + d1_w//2, d1_y + d1_h), (d1_x + d1_w//2, 730)], fill=AIA_RED, width=2)
+    draw_arrow(draw, (d1_x + d1_w//2, 730), (575, 730), col=AIA_RED, width=2, arrow_size=6)
+    draw_pill_badge(draw, cx=d1_x + d1_w//2 + 18, cy=d1_y + d1_h + 30, text="N", font=get_font(10, 'bold'), theme='red', pad_x=6, height=18)
+    
+    # Decision 1-N: [고령자 모드 활성 여부?]
+    d1n_x, d1n_y, d1n_w, d1n_h = 490, 685, 190, 90
+    draw.rounded_rectangle([d1n_x, d1n_y, d1n_x + d1n_w, d1n_y + d1n_h], radius=14, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+    draw.text((d1n_x + d1n_w//2, d1n_y + 35), "고령자 모드", font=get_font(13.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mm')
+    draw.text((d1n_x + d1n_w//2, d1n_y + 58), "활성 여부?", font=get_font(13.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mm')
+    
+    # 1-N -> Y: 일반모드 로그인 전 메인(홈) 전환
+    draw_arrow(draw, (d1n_x + d1n_w, d1n_y + d1n_h//2), (d1n_x + d1n_w + 45, d1n_y + d1n_h//2), col=(148, 163, 184), width=2, arrow_size=6)
+    draw.text((d1n_x + d1n_w + 20, d1n_y + d1n_h//2 - 14), "Y", font=get_font(11, 'bold'), fill=(100, 116, 139))
+    
+    out1_x, out1_y, out1_w, out1_h = d1n_x + d1n_w + 45, 700, 240, 60
+    draw.rounded_rectangle([out1_x, out1_y, out1_x + out1_w, out1_y + out1_h], radius=30, fill=(239, 246, 255), outline=(191, 219, 254), width=1)
+    draw.text((out1_x + out1_w//2, out1_y + out1_h//2), "일반 모드 로그인 전 메인 전환", font=get_font(12.5, 'bold'), fill=(29, 78, 216), anchor='mm')
+    
+    # 1-N -> N: 고령자 모드 로그인 전 메인(홈) 전환 (아래)
+    draw.line([(d1n_x + d1n_w//2, d1n_y + d1n_h), (d1n_x + d1n_w//2, 825)], fill=AIA_RED, width=2)
+    draw_arrow(draw, (d1n_x + d1n_w//2, 825), (d1n_x + d1n_w//2, 840), col=AIA_RED, width=2, arrow_size=6)
+    draw.text((d1n_x + d1n_w//2 + 10, d1n_y + d1n_h + 10), "N", font=get_font(11, 'bold'), fill=AIA_RED)
+    
+    out2_x, out2_y, out2_w, out2_h = d1n_x - 30, 840, 250, 60
+    draw.rounded_rectangle([out2_x, out2_y, out2_x + out2_w, out2_y + out2_h], radius=30, fill=(255, 241, 244), outline=AIA_RED, width=2)
+    draw.text((out2_x + out2_w//2, out2_y + out2_h//2), "고령자 모드 로그인 전 메인 전환", font=get_font(12.5, 'bold'), fill=AIA_RED, anchor='mm')
+    
+    # =========================================================
+    # PATH B: 로그인 여부 = YES (로그인 상태 분기 - 오른쪽)
+    # =========================================================
+    draw_arrow(draw, (d1_x + d1_w, d1_y + d1_h//2), (d1_x + d1_w + 45, d1_y + d1_h//2), col=(148, 163, 184), width=2, arrow_size=6)
+    draw.text((d1_x + d1_w + 18, d1_y + d1_h//2 - 14), "Y", font=get_font(11, 'bold'), fill=(100, 116, 139))
+    
+    # Decision 2: [고령자 모드 활성 여부?]
+    d2_x, d2_y, d2_w, d2_h = 795, 355, 175, 94
+    draw.rounded_rectangle([d2_x, d2_y, d2_x + d2_w, d2_y + d2_h], radius=14, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+    draw_pill_badge(draw, cx=d2_x + d2_w//2, cy=d2_y + 20, text="CHECK 02", font=get_font(9.5, 'bold'), theme='gray', pad_x=8, height=18)
+    draw.text((d2_x + d2_w//2, d2_y + 45), "고령자 모드", font=get_font(13.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mm')
+    draw.text((d2_x + d2_w//2, d2_y + 68), "활성 여부?", font=get_font(13.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mm')
+    
+    # Decision 2 -> Y: [일반 모드 로그인 후 메인(홈)으로 전환]
+    draw_arrow(draw, (d2_x + d2_w, d2_y + d2_h//2), (d2_x + d2_w + 45, d2_y + d2_h//2), col=(148, 163, 184), width=2, arrow_size=6)
+    draw.text((d2_x + d2_w + 18, d2_y + d2_h//2 - 14), "Y", font=get_font(11, 'bold'), fill=(100, 116, 139))
+    
+    out3_x, out3_y, out3_w, out3_h = d2_x + d2_w + 45, 372, 250, 60
+    draw.rounded_rectangle([out3_x, out3_y, out3_x + out3_w, out3_y + out3_h], radius=30, fill=(239, 246, 255), outline=(191, 219, 254), width=1)
+    draw.text((out3_x + out3_w//2, out3_y + out3_h//2), "일반 모드 로그인 후 메인 전환", font=get_font(12.5, 'bold'), fill=(29, 78, 216), anchor='mm')
+    
+    # Decision 2 -> N: 아래 [최초 진입 여부?]
+    draw.line([(d2_x + d2_w//2, d2_y + d2_h), (d2_x + d2_w//2, 500)], fill=AIA_RED, width=2)
+    draw_arrow(draw, (d2_x + d2_w//2, 500), (d2_x + d2_w//2, 515), col=AIA_RED, width=2, arrow_size=6)
+    draw.text((d2_x + d2_w//2 + 10, d2_y + d2_h + 12), "N", font=get_font(11, 'bold'), fill=AIA_RED)
+    
+    # Decision 3: [최초 진입 여부?]
+    d3_x, d3_y, d3_w, d3_h = 795, 515, 175, 90
+    draw.rounded_rectangle([d3_x, d3_y, d3_x + d3_w, d3_y + d3_h], radius=14, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+    draw_pill_badge(draw, cx=d3_x + d3_w//2, cy=d3_y + 18, text="CHECK 03", font=get_font(9.5, 'bold'), theme='gray', pad_x=8, height=18)
+    draw.text((d3_x + d3_w//2, d3_y + 52), "최초 진입 여부?", font=get_font(14, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mm')
+    
+    # Decision 3 -> Y: [나이가 65세 이상?]
+    draw_arrow(draw, (d3_x + d3_w, d3_y + d3_h//2), (d3_x + d3_w + 45, d3_y + d3_h//2), col=(148, 163, 184), width=2, arrow_size=6)
+    draw.text((d3_x + d3_w + 18, d3_y + d3_h//2 - 14), "Y", font=get_font(11, 'bold'), fill=(100, 116, 139))
+    
+    # Decision 4: [나이가 65세 이상?]
+    d4_x, d4_y, d4_w, d4_h = 1015, 515, 185, 90
+    draw.rounded_rectangle([d4_x, d4_y, d4_x + d4_w, d4_y + d4_h], radius=14, fill=(255, 241, 244), outline=AIA_RED, width=2)
+    draw_pill_badge(draw, cx=d4_x + d4_w//2, cy=d4_y + 18, text="AGE CHECK", font=get_font(9.5, 'bold'), theme='red', pad_x=8, height=18)
+    draw.text((d4_x + d4_w//2, d4_y + 52), "나이가 65세 이상?", font=get_font(14, 'bold'), fill=AIA_RED, anchor='mm')
+    
+    # Decision 4 -> Y: [고령자 모드 전환 동의?]
+    draw_arrow(draw, (d4_x + d4_w, d4_y + d4_h//2), (d4_x + d4_w + 45, d4_y + d4_h//2), col=AIA_RED, width=2, arrow_size=6)
+    draw.text((d4_x + d4_w + 18, d4_y + d4_h//2 - 14), "Y", font=get_font(11, 'bold'), fill=AIA_RED)
+    
+    # Decision 5: [고령자 모드 전환 동의?]
+    d5_x, d5_y, d5_w, d5_h = 1245, 515, 185, 90
+    draw.rounded_rectangle([d5_x, d5_y, d5_x + d5_w, d5_y + d5_h], radius=14, fill=(236, 253, 245), outline=(16, 185, 129), width=2)
+    draw_pill_badge(draw, cx=d5_x + d5_w//2, cy=d5_y + 18, text="USER CONSENT", font=get_font(9.5, 'bold'), theme='green', pad_x=8, height=18)
+    draw.text((d5_x + d5_w//2, d5_y + 42), "고령자 모드", font=get_font(13.5, 'bold'), fill=(5, 150, 105), anchor='mm')
+    draw.text((d5_x + d5_w//2, d5_y + 64), "전환 동의?", font=get_font(13.5, 'bold'), fill=(5, 150, 105), anchor='mm')
+    
+    # Decision 5 -> Y: [고령자 모드 로그인 후 메인(홈)으로 전환] (GOAL!)
+    draw_arrow(draw, (d5_x + d5_w, d5_y + d5_h//2), (d5_x + d5_w + 45, d5_y + d5_h//2), col=(16, 185, 129), width=2, arrow_size=7)
+    draw.text((d5_x + d5_w + 18, d5_y + d5_h//2 - 14), "Y", font=get_font(11, 'bold'), fill=(16, 185, 129))
+    
+    goal_x, goal_y, goal_w, goal_h = d5_x + d5_w + 45, 525, 270, 70
+    draw.rounded_rectangle([goal_x, goal_y, goal_x + goal_w, goal_y + goal_h], radius=35, fill=(255, 241, 244), outline=AIA_RED, width=2)
+    draw.text((goal_x + goal_w//2, goal_y + 24), "고령자 모드 로그인 후", font=get_font(14, 'bold'), fill=AIA_RED, anchor='mm')
+    draw.text((goal_x + goal_w//2, goal_y + 48), "메인(홈)으로 전환", font=get_font(14, 'bold'), fill=AIA_RED, anchor='mm')
+    
+    # Decision 3 -> N: 바로 고령자 모드 메인 전환으로 루프 (아래로 내려가서 우측 골로 연결)
+    draw.line([(d3_x + d3_w//2, d3_y + d3_h), (d3_x + d3_w//2, 690)], fill=AIA_RED, width=2)
+    draw.line([(d3_x + d3_w//2, 690), (goal_x + goal_w//2, 690)], fill=AIA_RED, width=2)
+    draw_arrow(draw, (goal_x + goal_w//2, 690), (goal_x + goal_w//2, goal_y + goal_h), col=AIA_RED, width=2, arrow_size=6)
+    
+    # Decision 4 -> N (65세 미만): 630 라인 타고 우측 골로 합류
+    draw.line([(d4_x + d4_w//2, d4_y + d4_h), (d4_x + d4_w//2, 630)], fill=AIA_RED, width=2)
+    draw.line([(d4_x + d4_w//2, 630), (goal_x + goal_w//2 - 20, 630)], fill=AIA_RED, width=2)
+    draw.line([(goal_x + goal_w//2 - 20, 630), (goal_x + goal_w//2 - 20, goal_y + goal_h)], fill=AIA_RED, width=2)
+    
+    # Decision 5 -> N (동의 안함): 일반 모드 로그인 후 메인(홈) 유지
+    draw.line([(d5_x + d5_w//2, d5_y + d5_h), (d5_x + d5_w//2, 750)], fill=(100, 116, 139), width=2)
+    draw_arrow(draw, (d5_x + d5_w//2, 750), (d5_x + d5_w//2, 765), col=(100, 116, 139), width=2, arrow_size=6)
+    draw.text((d5_x + d5_w//2 + 10, d5_y + d5_h + 15), "N", font=get_font(11, 'bold'), fill=(100, 116, 139))
+    
+    stay_x, stay_y, stay_w, stay_h = d5_x - 40, 765, 260, 60
+    draw.rounded_rectangle([stay_x, stay_y, stay_x + stay_w, stay_y + stay_h], radius=30, fill=(241, 245, 249), outline=BORDER_LIGHT, width=1)
+    draw.text((stay_x + stay_w//2, stay_y + stay_h//2), "일반 모드 로그인 후 메인 유지", font=get_font(13, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mm')
+    
+    # Bottom Summary Bar
+    sum_y = 860
+    draw.rounded_rectangle([card_x + 30, sum_y, card_x + card_w - 30, sum_y + 65], radius=10, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+    draw.text((card_x + 50, sum_y + 32), "💡 시스템 설계 인사이트", font=get_font(12.5, 'bold'), fill=AIA_RED, anchor='lm')
+    draw.text((card_x + 220, sum_y + 32), "회원 연령(65세) 자동 판별 알고리즘을 도입하되, 강제가 아닌 [사용자 선택권 보장 팝업]을 경유함으로써 디지털 자기결정권 보장", font=get_font(12, 'regular'), fill=TEXT_LIGHT_MAIN, anchor='lm')
+    
     draw_slide_footer(draw, 5, 12, dark_mode=False)
     out_path = os.path.join(OUT_DIR, "slide_05.png")
     img.save(out_path, quality=95)
     print(f"Generated: {out_path}")
 
 # -------------------------------------------------------------
-# SLIDE 06: WIREFRAMES (Official PLSCMV002 Spec Sheet & Gate Wireframe)
+# SLIDE 06: WIREFRAMES (Harmonized Wireframe Mockup & Specs)
 # -------------------------------------------------------------
 def make_slide_06():
     img = Image.new('RGB', (W, H), BG_LIGHT)
