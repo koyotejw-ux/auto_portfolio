@@ -12,7 +12,7 @@ from deck_common import (
 )
 
 # -------------------------------------------------------------
-# SLIDE 01: HERO COVER (AIA+ SENIOR MODE)
+# SLIDE 01: HERO COVER (AIA+ SENIOR MODE - REAL HERO SCREEN)
 # -------------------------------------------------------------
 def make_slide_01():
     img = Image.new('RGB', (W, H), (255, 255, 255))
@@ -60,7 +60,7 @@ def make_slide_01():
         draw.text((sx + 47, sy + 38), s_name, font=get_font(18, 'bold'), fill=(255, 255, 255), anchor='mm')
         draw.text((sx + 47, sy + 62), s_sub, font=get_font(9.5, 'medium'), fill=(255, 255, 255), anchor='mm')
         
-    # Bottom 4 Metric Cards (100% 가이드라인, 2x 폰트, 90% 완수율, 50% 시간단축)
+    # Bottom 4 Metric Cards
     stats = [
         ("100%", "금융위 규제 가이드라인 준수"),
         ("2x", "본문 및 버튼 폰트 크기 확대"),
@@ -80,7 +80,7 @@ def make_slide_01():
             draw.text((cx + 20, ly), line, font=get_font(11.5, 'medium'), fill=TEXT_LIGHT_SUB)
             ly += 16
             
-    # Bottom Specs Bar (Highlighting User Direct Ownership & Architecture)
+    # Bottom Specs Bar
     spec_y = 855
     draw.rounded_rectangle([120, spec_y, 680, spec_y + 115], radius=14, fill=(241, 245, 249), outline=BORDER_LIGHT, width=1)
     specs = [
@@ -93,14 +93,19 @@ def make_slide_01():
         draw.text((140, sy), label, font=get_font(12, 'bold'), fill=AIA_RED)
         draw.text((225, sy), val, font=get_font(12, 'bold' if idx==1 else 'medium'), fill=(15, 23, 42))
         
-    # Right Column: Actual Devices (General Mode vs Senior Mode Dual Main Screens)
+    # Right Column: Actual Devices with Authentic Hero Main Screen
     gen_screen = os.path.join(CORE_DIR, "screen_general_main_clean.png")
     if not os.path.exists(gen_screen):
         gen_screen = os.path.join(CORE_DIR, "screen_general_main.png")
-    sen_screen = os.path.join(CORE_DIR, "screen_senior_main_home.png")
+    
+    # Use authentic high-res senior main hero screen
+    sen_screen = os.path.join(CORE_DIR, "screen_senior_main_hero.png")
+    if not os.path.exists(sen_screen):
+        sen_screen = os.path.join(CORE_DIR, "screen_senior_main_home.png")
+        
     pay_screen = os.path.join(CORE_DIR, "screen_pay_list_senior.png")
     
-    # 3 Devices showing Mode Switching: Left = General Mode, Center = Senior Mode Home, Right = Senior Action
+    # 3 Devices showing Mode Switching: Left = General Mode, Center = Senior Mode Hero Home, Right = Senior Action
     draw_phone_mockup(img, gen_screen, cx=930, cy=565, phone_w=280, phone_h=605, bezel=6, radius=32, show_toggle_badge="[일반모드] 메인화면")
     draw_phone_mockup(img, sen_screen, cx=1260, cy=530, phone_w=335, phone_h=715, bezel=7, radius=36, show_toggle_badge="[고령자모드] 원터치 홈 (총괄설계)")
     draw_phone_mockup(img, pay_screen, cx=1590, cy=565, phone_w=280, phone_h=605, bezel=6, radius=32, show_toggle_badge="[간편납부] 56dp CTA")
@@ -118,262 +123,309 @@ def make_slide_01():
     print(f"Generated: {out_path}")
 
 # -------------------------------------------------------------
-# SLIDE 02: PROBLEM & RESEARCH (Charts & Statistical Data)
+# SLIDE 02: EXECUTIVE SUMMARY (Project Charter & Core Values)
 # -------------------------------------------------------------
 def make_slide_02():
     img = Image.new('RGB', (W, H), BG_LIGHT)
     draw = ImageDraw.Draw(img)
     draw_slide_header(
         draw, 2, 
-        "PROBLEM & RESEARCH", 
-        "Problem & Research | ", 
-        "고령층 디지털 금융 소외와 통계 분석", 
-        "인구 구조 고령화와 모바일 금융앱 이용 장벽에 관한 실증 데이터 조사", 
-        right_badge=("EMPIRICAL RESEARCH", "red")
+        "EXECUTIVE SUMMARY", 
+        "Executive Summary | ", 
+        "AIA+ Phase 2 프로젝트 개요 및 배경", 
+        "초고령사회 진입에 따른 금융 소외 해소 및 비대면 서비스 고도화 추진 전략", 
+        right_badge=("KEY MILESTONE", "red")
     )
     
-    # 2 Big Cards: Left = Pie Chart & Demographics, Right = Bar Chart & Pain Points
-    # Left Card (W=800)
-    lx = 100
-    ly = 220
-    lw = 820
-    lh = 730
-    draw.rounded_rectangle([lx, ly, lx + lw, ly + lh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, left_x=lx + 25, cy=ly + 35, text="AGE DEMOGRAPHICS & MOBILE ADOPTION", font=get_font(11, 'bold'), theme='blue', pad_x=12, height=24)
-    draw.text((lx + 25, ly + 65), "고령자 인구 비율 & 모바일 뱅킹 이용 현황", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
-    
-    # Pie Chart Graphic (Clean vector drawing)
-    cx, cy, cr = lx + 220, ly + 250, 110
-    draw.pieslice([cx - cr, cy - cr, cx + cr, cy + cr], start=0, end=73, fill=(211, 17, 69))       # 65세 이상 20.3%
-    draw.pieslice([cx - cr, cy - cr, cx + cr, cy + cr], start=73, end=190, fill=(59, 130, 246))     # 50-64세 32.5%
-    draw.pieslice([cx - cr, cy - cr, cx + cr, cy + cr], start=190, end=360, fill=(203, 213, 225))   # 50세 미만 47.2%
-    # Donut center
-    draw.ellipse([cx - 50, cy - 50, cx + 50, cy + 50], fill=(255, 255, 255))
-    draw.text((cx, cy), "2025\n20.3%", font=get_num_font(14, 'black'), fill=AIA_RED, anchor='mm')
-    
-    # Pie Legend
-    legends = [
-        ("■ 65세 이상 (초고령 진입)", "20.3%", AIA_RED),
-        ("■ 50-64세 (준고령 은퇴층)", "32.5%", (59, 130, 246)),
-        ("■ 50세 미만 (청장년층)", "47.2%", (148, 163, 184))
-    ]
-    for idx, (ltxt, lval, lcol) in enumerate(legends):
-        ly_leg = ly + 180 + idx * 45
-        draw.text((lx + 400, ly_leg), ltxt, font=get_font(13.5, 'bold'), fill=lcol)
-        draw.text((lx + 680, ly_leg), lval, font=get_num_font(14, 'black'), fill=TEXT_LIGHT_MAIN)
-        
-    # Demographic Insights & Mode Switching Need
-    iy = ly + 400
-    draw.text((lx + 25, iy), "심층 리서치 결과: 일반모드 이용 시 장벽과 모드 전환 필요성", font=get_font(14.5, 'bold'), fill=TEXT_LIGHT_MAIN)
-    pinsights = [
-        ("일반모드 인지 부하 (Depth)", "일반 메인화면은 50여 개 복잡 메뉴와 다단계 탭으로 구성되어 시니어 유입 시 78%가 탐색을 포기하고 이탈함."),
-        ("모드 전환의 시각적 명확성", "상단 원클릭 전환 스위치로 [일반모드 ↔ 고령자모드]를 즉시 오갈 수 있어야 가족 대리 조회 및 본인 직접 처리 간 연속성 유지."),
-        ("실패 불안감 해소와 안심 피드백", "모바일 금융 실패 시 자산 손실 불안을 겪는 6070을 위해 단계별 1-과업 집중 뷰 및 실시간 알림톡 안심 피드백 필수.")
-    ]
-    iy += 32
-    for h_txt, b_txt in pinsights:
-        draw.rounded_rectangle([lx + 25, iy, lx + lw - 25, iy + 74], radius=10, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-        draw.text((lx + 38, iy + 13), h_txt, font=get_font(12, 'bold'), fill=AIA_RED)
-        lines = wrap_text(b_txt, get_font(11.5, 'regular'), lw - 90, draw)
-        ly_p = iy + 35
-        for l in lines:
-            draw.text((lx + 38, ly_p), l, font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_MAIN)
-            ly_p += 16
-        iy += 86
-        
-    # Right Card (W=880): Horizontal Bar Chart & Competitor Inconveniences
-    rx = 940
-    rw = 880
-    draw.rounded_rectangle([rx, ly, rx + rw, ly + lh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, left_x=rx + 25, cy=ly + 35, text="PAIN POINTS & BARRIERS RANKING", font=get_font(11, 'bold'), theme='red', pad_x=12, height=24)
-    draw.text((rx + 25, ly + 65), "고령자 모바일 금융앱 이용 시 주요 불편 사항 (복수응답)", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
-    
-    # Horizontal Bar Chart
-    bars = [
-        ("작은 글씨 크기 & 가독성 저하", 72.4, AIA_RED),
-        ("복잡한 본인 인증 & 로그인 절차", 64.8, (239, 68, 68)),
-        ("원하는 메뉴 찾기 어려움 (깊은 뎁스)", 58.2, (249, 115, 22)),
-        ("어려운 금융 전문 용어 & 설명 부족", 46.5, (59, 130, 246)),
-        ("작은 버튼으로 인한 오터치 발생", 38.9, (107, 114, 128))
+    # 3 Strategic Summary Columns (W=540 each, spacing=30)
+    cards = [
+        {
+            "tag": "BACKGROUND",
+            "title": "초고령사회 진입과 금융 소외",
+            "subtitle": "2025년 65세 이상 인구 20% 돌파",
+            "body": "디지털 금융의 급격한 전환 속에서 작은 폰트(12~14pt), 복잡한 메뉴 뎁스, 보안 인증 장벽으로 인해 고령 고객의 모바일 앱 이탈률이 58%에 달했습니다. 이에 금융위원회는 '고령자 친화적 모바일 금융앱 가이드라인'을 발표하며 배리어프리 개편을 강력히 권고했습니다."
+        },
+        {
+            "tag": "OPPORTUNITY",
+            "title": "AIA+ Phase 2 전략적 과제",
+            "subtitle": "배리어프리 전용 모드 신설",
+            "body": "기존 앱의 복잡성을 완전히 덜어낸 '고령자 전용 원터치 모드'를 신설하고, 보유계약 조회, 보험료 납입, 보험금 청구, 대출신청, 고객센터 연결 등 10대 핵심 비대면 과업을 단일 화면(Zero-Depth)에서 해결할 수 있는 직관적 정보 구조(IA)를 구축했습니다."
+        },
+        {
+            "tag": "IMPACT",
+            "title": "디지털 포용과 비즈니스 성과",
+            "subtitle": "과업 완수율 90% 달성 및 시간 50% 단축",
+            "body": "Figma 변수 기반 시니어 전용 18~28pt 폰트 스케일과 56dp 풀와이드 터치 컴포넌트를 설계하여 오터치를 원천 차단했습니다. 사용성 테스트 결과 고령층 보험료 납부 완수율 90%(+48%p 상승), 소요시간 50% 단축의 정량적 혁신을 달성했습니다."
+        }
     ]
     
-    by = ly + 120
-    for label, pct, bcol in bars:
-        draw.text((rx + 25, by), label, font=get_font(13, 'bold'), fill=TEXT_LIGHT_MAIN)
-        draw.text((rx + rw - 70, by), f"{pct}%", font=get_num_font(13.5, 'black'), fill=bcol)
-        # Bar track
-        draw.rounded_rectangle([rx + 25, by + 24, rx + rw - 30, by + 40], radius=8, fill=(241, 245, 249))
-        bar_w = int((rw - 55) * (pct / 100))
-        draw.rounded_rectangle([rx + 25, by + 24, rx + 25 + bar_w, by + 40], radius=8, fill=bcol)
-        by += 64
-        
-    # Summary Callout Box
-    draw.rounded_rectangle([rx + 25, ly + 460, rx + rw - 25, ly + 700], radius=12, fill=(255, 241, 244), outline=(254, 205, 217), width=1)
-    draw_pill_badge(draw, left_x=rx + 45, cy=ly + 490, text="DESIGN MISSION", font=get_font(11, 'bold'), theme='red', pad_x=12, height=24)
-    draw.text((rx + 45, ly + 520), "AIA+ Phase 2 리뉴얼의 핵심 해결 과제", font=get_font(16, 'bold'), fill=AIA_RED)
-    mission_text = (
-        "1. 18pt 이상의 큰글씨와 WCAG AAA 8.4:1 고대비 컬러를 전면 도입하여 노안 극복\n"
-        "2. 8단계의 복잡한 납부 프로세스를 3-Step으로 압축하고 가상계좌 1-Tap 발급 연동\n"
-        "3. 48x48dp 이상의 인체공학 대형 터치 영역과 하단 고정 CTA 버튼으로 오터치 제로화\n"
-        "4. 난해한 보험 한자어를 일상적 쉬운 언어로 전면 순화하여 인지 부담 최소화"
-    )
-    draw.text((rx + 45, ly + 555), mission_text, font=get_font(13, 'regular'), fill=TEXT_LIGHT_MAIN, spacing=8)
+    cw = 540
+    ch = 730
+    start_x = 100
+    start_y = 220
     
+    for i, c in enumerate(cards):
+        cx = start_x + i * (cw + 30)
+        draw.rounded_rectangle([cx, start_y, cx + cw, start_y + ch], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
+        draw_pill_badge(draw, left_x=cx + 30, cy=start_y + 38, text=c["tag"], font=get_font(11, 'bold'), theme='red' if i==1 else 'gray', pad_x=12, height=24)
+        draw.text((cx + 30, start_y + 75), c["title"], font=get_font(21, 'bold'), fill=TEXT_LIGHT_MAIN)
+        draw.text((cx + 30, start_y + 110), c["subtitle"], font=get_font(13.5, 'bold'), fill=AIA_RED if i==1 else TEXT_LIGHT_SUB)
+        
+        # Divider line
+        draw.line([(cx + 30, start_y + 140), (cx + cw - 30, start_y + 140)], fill=BORDER_LIGHT, width=1)
+        
+        lines = wrap_text(c["body"], get_font(13.5, 'regular'), cw - 60, draw)
+        ly = start_y + 165
+        for line in lines:
+            draw.text((cx + 30, ly), line, font=get_font(13.5, 'regular'), fill=TEXT_LIGHT_MAIN)
+            ly += 22
+            
+        # Mini Infographic inside each card
+        if i == 0:
+            draw.rounded_rectangle([cx + 30, start_y + 400, cx + cw - 30, start_y + ch - 30], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+            draw.text((cx + 50, start_y + 425), "고령자 모바일 금융앱 이탈 원인", font=get_font(13, 'bold'), fill=TEXT_LIGHT_MAIN)
+            bars = [("작은 활자 크기 (12pt)", 45, AIA_RED), ("복잡한 메뉴 뎁스", 28, (245, 158, 11)), ("공동인증서/보안장벽", 18, (100, 116, 139)), ("기타 오터치/오작동", 9, (148, 163, 184))]
+            by = start_y + 465
+            for blabel, bval, bcol in bars:
+                draw.text((cx + 50, by), blabel, font=get_font(11.5, 'medium'), fill=TEXT_LIGHT_SUB)
+                draw.rounded_rectangle([cx + 200, by + 3, cx + 200 + bval * 5, by + 16], radius=4, fill=bcol)
+                draw.text((cx + 210 + bval * 5, by), f"{bval}%", font=get_num_font(11, 'bold'), fill=bcol)
+                by += 38
+        elif i == 1:
+            draw.rounded_rectangle([cx + 30, start_y + 400, cx + cw - 30, start_y + ch - 30], radius=12, fill=(255, 241, 244), outline=BORDER_LIGHT, width=1)
+            draw.text((cx + 50, start_y + 425), "AIA+ 고령자 친화 4대 핵심 원칙", font=get_font(13, 'bold'), fill=AIA_RED)
+            principles = [
+                ("1. 가독성 극대화", "18pt 이상 대형 폰트 & AAA 명도 대비"),
+                ("2. 제로-뎁스 접근", "첫 화면에서 1-Tap 즉시 과업 진입"),
+                ("3. 오터치 방지", "최소 48dp 터치 영역 & 56dp 풀와이드"),
+                ("4. 안심 케어", "가상계좌 대체 발급 & 알림톡 브릿지")
+            ]
+            py = start_y + 465
+            for pnum, pdesc in principles:
+                draw.text((cx + 50, py), pnum, font=get_font(12, 'bold'), fill=TEXT_LIGHT_MAIN)
+                draw.text((cx + 50, py + 20), pdesc, font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB)
+                py += 48
+        elif i == 2:
+            draw.rounded_rectangle([cx + 30, start_y + 400, cx + cw - 30, start_y + ch - 30], radius=12, fill=(236, 253, 245), outline=BORDER_LIGHT, width=1)
+            draw.text((cx + 50, start_y + 425), "정량적 개선 검증 결과", font=get_font(13, 'bold'), fill=(5, 150, 105))
+            kpis = [
+                ("과업 완수율", "42% → 90%", "+48%p 상승"),
+                ("소요 시간", "6분 30초 → 3분 10초", "50% 단축"),
+                ("오터치 횟수", "화면당 4.2회 → 0.4회", "90% 감소")
+            ]
+            ky = start_y + 465
+            for ktitle, kval, kdiff in kpis:
+                draw.text((cx + 50, ky), ktitle, font=get_font(12, 'bold'), fill=TEXT_LIGHT_MAIN)
+                draw.text((cx + 150, ky), kval, font=get_num_font(12.5, 'bold'), fill=(5, 150, 105))
+                draw.text((cx + 350, ky), kdiff, font=get_font(11, 'bold'), fill=AIA_RED)
+                ky += 52
+                
     draw_slide_footer(draw, 2, 12, dark_mode=False)
     out_path = os.path.join(OUT_DIR, "slide_02.png")
     img.save(out_path, quality=95)
     print(f"Generated: {out_path}")
 
 # -------------------------------------------------------------
-# SLIDE 03: COMPETITOR ANALYSIS & BENCHMARKING
+# SLIDE 03: RESEARCH & HEURISTIC ANALYSIS (Pie Charts & Bars)
 # -------------------------------------------------------------
 def make_slide_03():
     img = Image.new('RGB', (W, H), BG_LIGHT)
     draw = ImageDraw.Draw(img)
     draw_slide_header(
         draw, 3, 
-        "COMPETITOR ANALYSIS", 
-        "Competitor Analysis | ", 
-        "국내 주요 보험사 시니어 서비스 비교 분석", 
-        "삼성화재, 교보생명, 현대해상, 한화생명 등 주요 경쟁사 간편모드 기능 및 UX 벤치마킹", 
-        right_badge=("UX BENCHMARKING", "blue")
+        "RESEARCH & HEURISTIC ANALYSIS", 
+        "Research & Heuristic Analysis | ", 
+        "고령층 디지털 금융 이용 행태 및 페인포인트 분석", 
+        "정량 데이터 분석과 휴리스틱 평가를 통해 도출된 핵심 사용성 장벽과 개선 우선순위", 
+        right_badge=("DATA DRIVEN", "red")
     )
     
-    # Large Comparison Table matching Behance
-    table_x = 100
-    table_y = 220
-    table_w = 1720
-    table_h = 730
-    draw.rounded_rectangle([table_x, table_y, table_x + table_w, table_y + table_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
+    # Left Column: Demographics & Problem Definition (W=760)
+    lx = 100
+    ly = 220
+    lw = 760
+    lh = 730
+    draw.rounded_rectangle([lx, ly, lx + lw, ly + lh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
+    draw_pill_badge(draw, left_x=lx + 30, cy=ly + 38, text="USER DEMOGRAPHICS & BEHAVIOR", font=get_font(11, 'bold'), theme='red', pad_x=12, height=24)
+    draw.text((lx + 30, ly + 72), "고령자 모바일 이용 행태 정량 분석", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
     
-    # Table Header Row
-    headers = [
-        ("구분 / 평가 항목", 280),
-        ("AIA생명 AIA+ (개선안)", 360),
-        ("S사 (삼성화재)", 270),
-        ("K사 (교보생명)", 270),
-        ("H사 (현대해상)", 270),
-        ("W사 (한화생명)", 270)
+    # 1. Pie Chart: Age Distribution
+    pie_cx, pie_cy, pie_r = lx + 180, ly + 220, 95
+    # Slices: 60-64 (42%), 65-69 (35%), 70+ (23%)
+    draw.pieslice([pie_cx - pie_r, pie_cy - pie_r, pie_cx + pie_r, pie_cy + pie_r], start=0, end=151, fill=AIA_RED)
+    draw.pieslice([pie_cx - pie_r, pie_cy - pie_r, pie_cx + pie_r, pie_cy + pie_r], start=151, end=277, fill=(59, 130, 246))
+    draw.pieslice([pie_cx - pie_r, pie_cy - pie_r, pie_cx + pie_r, pie_cy + pie_r], start=277, end=360, fill=(71, 85, 105))
+    # Donut center
+    draw.ellipse([pie_cx - 45, pie_cy - 45, pie_cx + 45, pie_cy + 45], fill=CARD_LIGHT)
+    draw.text((pie_cx, pie_cy), "60-70대", font=get_font(11, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mm')
+    
+    # Pie Legend
+    draw.rounded_rectangle([lx + 330, ly + 145, lx + 346, ly + 161], radius=3, fill=AIA_RED)
+    draw.text((lx + 355, ly + 144), "60~64세 (42%) · 모바일 금융 숙련", font=get_font(12, 'bold'), fill=TEXT_LIGHT_MAIN)
+    
+    draw.rounded_rectangle([lx + 330, ly + 195, lx + 346, ly + 211], radius=3, fill=(59, 130, 246))
+    draw.text((lx + 355, ly + 194), "65~69세 (35%) · 가독성/안내 필요", font=get_font(12, 'bold'), fill=TEXT_LIGHT_MAIN)
+    
+    draw.rounded_rectangle([lx + 330, ly + 245, lx + 346, ly + 261], radius=3, fill=(71, 85, 105))
+    draw.text((lx + 355, ly + 244), "70세 이상 (23%) · 대면/전화 의존", font=get_font(12, 'bold'), fill=TEXT_LIGHT_MAIN)
+    
+    draw.line([(lx + 30, ly + 345), (lx + lw - 30, ly + 345)], fill=BORDER_LIGHT, width=1)
+    
+    # 2. Bar Chart: Pain Point Distribution
+    draw.text((lx + 30, ly + 375), "모바일 앱 이용 시 5대 핵심 불편사항 (Pain Points)", font=get_font(15, 'bold'), fill=TEXT_LIGHT_MAIN)
+    bar_items = [
+        ("작은 글씨와 불명확한 대비", 88, AIA_RED),
+        ("메뉴 찾기 어려움 (복잡한 뎁스)", 74, (245, 158, 11)),
+        ("원치 않는 버튼 오터치 및 오작동", 62, (59, 130, 246)),
+        ("복잡한 본인인증 및 비밀번호 분실", 54, (168, 85, 247)),
+        ("진행 상태 확인 불가로 인한 불안감", 41, (100, 116, 139))
     ]
-    
-    hx = table_x
-    for htitle, hw in headers:
-        draw.rounded_rectangle([hx, table_y, hx + hw, table_y + 55], radius=0, fill=(241, 245, 249) if "AIA" not in htitle else (255, 241, 244))
-        draw.line([(hx, table_y), (hx, table_y + table_h)], fill=BORDER_LIGHT, width=1)
-        hcol = AIA_RED if "AIA" in htitle else TEXT_LIGHT_MAIN
-        draw.text((hx + hw // 2, table_y + 27), htitle, font=get_font(13.5, 'bold'), fill=hcol, anchor='mm')
-        hx += hw
-    draw.line([(table_x, table_y + 55), (table_x + table_w, table_y + 55)], fill=BORDER_LIGHT, width=2)
-    
-    # Rows
-    rows = [
-        ("고령자 전용 간편모드 탑재 여부", "● 원터치 전용 홈 완비", "● 간편모드 제공", "▲ 폰트 확대만 지원", "● 간편모드 제공", "▲ 단순 뷰 모드"),
-        ("금융위 가이드라인 충족률", "100% 완전 준수", "85% 부분 준수", "60% 미흡", "80% 부분 준수", "65% 미흡"),
-        ("기본 활자 크기 (본문 기준)", "18pt ~ 24pt (초대형)", "16pt", "14pt", "16pt", "14pt"),
-        ("보험료 납입 프로세스 뎁스", "3-Step 초간편 여정", "5단계 (인증 복잡)", "7단계 (웹뷰 전환)", "5단계", "6단계"),
-        ("가상계좌 1-Tap 즉시 발급", "● 지원 (문자/카톡 발송)", "▲ 신청 후 유선 확인", "X 미지원", "● 지원", "X 미지원"),
-        ("영수증 OCR 자동 스캔 청구", "● 실시간 AI 모서리 인식", "▲ 단순 사진 첨부", "▲ 단순 사진 첨부", "● OCR 적용", "▲ 단순 사진 첨부"),
-        ("하단 고정 풀와이드 CTA 버튼", "● 56dp 엄지터치 고정", "▲ 상단/중간 혼재", "X 스크롤 하단 숨김", "● 하단 고정", "▲ 중간 배치"),
-        ("난해한 보험 한자어 순화", "100% 쉬운 일상어 순화", "일부 순화 (50%)", "레거시 한자어 유지", "일부 순화 (40%)", "레거시 한자어 유지"),
-        ("오프라인 고객센터 연결 지원", "● 전담 상담사 원터치 연결", "▲ ARS 번호 연결", "▲ ARS 번호 연결", "● 상담사 연결", "▲ 일반 ARS")
-    ]
-    
-    row_h = 70
-    for r_idx, r_data in enumerate(rows):
-        ry = table_y + 55 + r_idx * row_h
-        # Alternating background
-        row_bg = (255, 248, 250) if r_idx % 2 == 1 else (255, 255, 255)
-        draw.rectangle([table_x, ry, table_x + table_w, ry + row_h], fill=row_bg)
-        draw.line([(table_x, ry + row_h), (table_x + table_w, ry + row_h)], fill=BORDER_LIGHT, width=1)
+    by = ly + 420
+    for blabel, bval, bcol in bar_items:
+        draw.text((lx + 30, by), blabel, font=get_font(12, 'medium'), fill=TEXT_LIGHT_MAIN)
+        draw.rounded_rectangle([lx + 30, by + 24, lx + 30 + int(bval * 6.5), by + 40], radius=4, fill=bcol)
+        draw.text((lx + 45 + int(bval * 6.5), by + 22), f"{bval}%", font=get_num_font(12, 'bold'), fill=bcol)
+        by += 56
         
-        # Draw columns
-        cx = table_x
-        for c_idx, (htitle, hw) in enumerate(headers):
-            cell_val = r_data[c_idx]
-            # Center or Left align
-            if c_idx == 0:
-                draw.text((cx + 25, ry + row_h // 2), cell_val, font=get_font(13, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
-            elif c_idx == 1:
-                # AIA Column: highlight with red
-                draw.rectangle([cx, ry, cx + hw, ry + row_h], fill=(255, 241, 244, 180))
-                draw.text((cx + hw // 2, ry + row_h // 2), cell_val, font=get_font(13, 'bold'), fill=AIA_RED, anchor='mm')
-            else:
-                draw.text((cx + hw // 2, ry + row_h // 2), cell_val, font=get_font(12.5, 'regular'), fill=TEXT_LIGHT_SUB, anchor='mm')
-            cx += hw
-            
-    # Bottom Summary Chip
-    draw.rounded_rectangle([table_x + 25, table_y + table_h - 45, table_x + table_w - 25, table_y + table_h - 12], radius=8, fill=(241, 245, 249))
-    draw.text((table_x + table_w // 2, table_y + table_h - 28), "💡 벤치마킹 결론: AIA생명은 3-Step 납입, 가상계좌 1-Tap, 18pt 대형 활자, 하단 고정 CTA로 경쟁사 대비 압도적인 고령자 접근성을 확보함", font=get_font(12, 'bold'), fill=AIA_RED, anchor='mm')
+    # Right Column: Heuristic Evaluation & Regulatory Matrix (W=880)
+    rx = 900
+    rw = 880
+    draw.rounded_rectangle([rx, ly, rx + rw, ly + lh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
+    draw_pill_badge(draw, left_x=rx + 30, cy=ly + 38, text="HEURISTIC & REGULATORY AUDIT", font=get_font(11, 'bold'), theme='gray', pad_x=12, height=24)
+    draw.text((rx + 30, ly + 72), "금융위 고령자 모바일앱 가이드라인 진단 매트릭스", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
     
+    # Table Header
+    th_y = ly + 120
+    draw.rounded_rectangle([rx + 30, th_y, rx + rw - 30, th_y + 40], radius=8, fill=(241, 245, 249))
+    draw.text((rx + 50, th_y + 20), "가이드라인 세부 항목", font=get_font(12, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
+    draw.text((rx + 300, th_y + 20), "AS-IS 문제점 (기존)", font=get_font(12, 'bold'), fill=AIA_RED, anchor='lm')
+    draw.text((rx + 570, th_y + 20), "TO-BE 솔루션 (Phase 2)", font=get_font(12, 'bold'), fill=(16, 185, 129), anchor='lm')
+    draw.text((rx + 790, th_y + 20), "준수 상태", font=get_font(12, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
+    
+    audit_rows = [
+        ("화면 구조 단순화", "메뉴 뎁스 4~5단계, 탐색 혼선", "단일 화면 원터치 5대 핵심 메뉴", "100% 충족"),
+        ("글자 크기 확대", "기본 12~14pt, 읽기 어려움", "18pt 이상 대형 폰트 전면 적용", "100% 충족"),
+        ("명도 대비 강화", "명도비 3:1 이하 회색 텍스트", "WCAG AAA 7:1 이상 고대비 준수", "100% 충족"),
+        ("터치 영역 확장", "32dp 소형 아이콘, 오터치 유발", "최소 48dp & 56dp 풀와이드 버튼", "100% 충족"),
+        ("대체 수단 제공", "비밀번호 분실 시 업무 중단", "가상계좌 즉시 발급 대체 경로", "100% 충족"),
+        ("전환 편의성", "고령자 모드 진입 메뉴 숨겨짐", "상단 원터치 [일반/간편] 토글", "100% 충족"),
+        ("심리적 불안 해소", "완료 피드백 부재, 전화 문의", "카카오 알림톡 실시간 연동", "100% 충족")
+    ]
+    
+    row_y = th_y + 50
+    for item, asis, tobe, status in audit_rows:
+        draw.rectangle([rx + 30, row_y, rx + rw - 30, row_y + 58], fill=(255, 248, 250) if "100%" in status and audit_rows.index((item, asis, tobe, status))%2==0 else (255, 255, 255))
+        draw.line([(rx + 30, row_y + 58), (rx + rw - 30, row_y + 58)], fill=BORDER_LIGHT, width=1)
+        draw.text((rx + 50, row_y + 29), item, font=get_font(12.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
+        draw.text((rx + 300, row_y + 29), asis, font=get_font(12, 'regular'), fill=TEXT_LIGHT_SUB, anchor='lm')
+        draw.text((rx + 570, row_y + 29), tobe, font=get_font(12, 'bold'), fill=(5, 150, 105), anchor='lm')
+        draw_pill_badge(draw, cx=rx + 825, cy=row_y + 29, text=status, font=get_font(10.5, 'bold'), theme='green', pad_x=10, height=22)
+        row_y += 60
+        
     draw_slide_footer(draw, 3, 12, dark_mode=False)
     out_path = os.path.join(OUT_DIR, "slide_03.png")
     img.save(out_path, quality=95)
     print(f"Generated: {out_path}")
 
 # -------------------------------------------------------------
-# SLIDE 04: KEY INSIGHTS & STRATEGY (4 Rounded Grey Cards)
+# SLIDE 04: INFORMATION ARCHITECTURE & USER FLOW (IA Tree)
 # -------------------------------------------------------------
 def make_slide_04():
     img = Image.new('RGB', (W, H), BG_LIGHT)
     draw = ImageDraw.Draw(img)
     draw_slide_header(
         draw, 4, 
-        "KEY INSIGHTS", 
-        "Key Insights | ", 
-        "사용자 리서치 기반 4대 디자인 전략 도출", 
-        "조사 및 벤치마킹을 통해 정립한 시니어 금융 UX의 핵심 방향성", 
-        right_badge=("CORE STRATEGY", "purple")
+        "INFORMATION ARCHITECTURE & USER FLOW", 
+        "Information Architecture | ", 
+        "제로-뎁스(Zero-Depth) 정보 구조도 및 사용자 여정", 
+        "일반 모드와 고령자 모드의 상호 연동 체계 및 원터치 5대 핵심 비대면 과업 구조", 
+        right_badge=("IA & USER FLOW", "red")
     )
     
-    # 4 Large Horizontal Cards matching Behance Key Insights section
-    insights = [
-        {
-            "num": "INSIGHT 01",
-            "title": "가독성(Readability) 극대화: 18pt+ 대형 활자 및 고대비 8.4:1 보장",
-            "desc": "노안 및 시력 저하가 발생한 고령 고객이 별도의 돋보기 안경 없이도 계약 정보와 납입 금액을 즉각 판독할 수 있도록 기본 본문 18pt, 핵심 금액 24pt 이상의 대형 활자를 적용하고 WCAG AAA 등급 고대비율을 완벽하게 구현합니다.",
-            "theme": "red"
-        },
-        {
-            "num": "INSIGHT 02",
-            "title": "단순성(Simplicity) 원칙: 복잡한 단계를 3-Step으로 압축한 제로-마찰 여정",
-            "desc": "레거시 앱의 8단계 메뉴 탐색 및 중도 이탈을 방지하기 위해, 홈 화면에서 한 번의 터치로 당월 미납 내역을 확인하고 기등록 계좌 또는 가상계좌를 통해 3단계 이내에 즉시 납부를 완결할 수 있는 초단축 플로우를 구축합니다.",
-            "theme": "blue"
-        },
-        {
-            "num": "INSIGHT 03",
-            "title": "조작성(Usability) 혁신: 48x48dp 이상 인체공학 터치 타겟 & 하단 고정 CTA",
-            "desc": "손떨림 및 관절 유연성 저하로 인한 인접 버튼 오터치 문제를 원천 차단하기 위해 모든 인터랙션 버튼에 48dp 이상의 크기와 16dp의 안전 마진을 부여하고, 엄지손가락 파지 구역인 하단에 56dp 풀와이드 액션 버튼을 영구 고정합니다.",
-            "theme": "green"
-        },
-        {
-            "num": "INSIGHT 04",
-            "title": "안심성(Reassurance) 케어: 쉬운 일상어 순화 및 실시간 문자/알림톡 피드백",
-            "desc": "'실효', '부활', '기납입' 등 난해한 금융 한자어를 '효력 회복하기', '지금까지 낸 돈' 등으로 100% 일상어로 순화하고, 결제 및 신청 완료 즉시 카카오 알림톡으로 확인증을 전송하여 고령층의 심리적 불안감을 해소합니다.",
-            "theme": "amber"
-        }
+    # Large Canvas for IA Diagram
+    card_x, card_y, card_w, card_h = 100, 220, 1720, 730
+    draw.rounded_rectangle([card_x, card_y, card_x + card_w, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
+    
+    # Root Node: AIA+ Single App Entry
+    root_x, root_y, root_w, root_h = 760, 260, 400, 70
+    draw.rounded_rectangle([root_x, root_y, root_x + root_w, root_y + root_h], radius=14, fill=AIA_RED, outline=AIA_RED_BORDER, width=2)
+    draw.text((root_x + root_w//2, root_y + 24), "AIA+ 모바일 통합 플랫폼", font=get_font(16, 'bold'), fill=(255, 255, 255), anchor='mm')
+    draw.text((root_x + root_w//2, root_y + 48), "단일 앱 내 이원화 모드 지원 (Single Codebase Multi-Theme)", font=get_font(11, 'medium'), fill=AIA_RED_LIGHT, anchor='mm')
+    
+    # Fork to 2 Modes: Left = General Mode, Right = Senior Mode
+    # Branch line down
+    draw.line([(root_x + root_w//2, root_y + root_h), (root_x + root_w//2, 380)], fill=BORDER_LIGHT, width=2)
+    draw.line([(380, 380), (1540, 380)], fill=BORDER_LIGHT, width=2)
+    
+    # Mode 1: General Mode Box (Left)
+    g_x, g_y, g_w, g_h = 180, 410, 400, 80
+    draw.rounded_rectangle([g_x, g_y, g_x + g_w, g_y + g_h], radius=12, fill=(241, 245, 249), outline=BORDER_LIGHT, width=1)
+    draw.line([(380, 380), (380, 410)], fill=BORDER_LIGHT, width=2)
+    draw_pill_badge(draw, cx=g_x + g_w//2, cy=g_y + 24, text="DEFAULT MODE", font=get_font(10, 'bold'), theme='gray', pad_x=10, height=20)
+    draw.text((g_x + g_w//2, g_y + 54), "일반 사용자 모드 (전 기능 종합 제공)", font=get_font(14, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mm')
+    
+    # Mode 2: Senior Mode Box (Right - Highlighted)
+    s_x, s_y, s_w, s_h = 940, 410, 800, 80
+    draw.rounded_rectangle([s_x, s_y, s_x + s_w, s_y + s_h], radius=12, fill=(255, 241, 244), outline=AIA_RED, width=2)
+    draw.line([(1340, 380), (1340, 410)], fill=AIA_RED, width=2)
+    draw_pill_badge(draw, cx=s_x + s_w//2, cy=s_y + 24, text="SENIOR ACCESSIBLE MODE (PHASE 2 RENEWAL)", font=get_font(10.5, 'bold'), theme='red', pad_x=14, height=22)
+    draw.text((s_x + s_w//2, s_y + 54), "고령자 친화 모드 (제로-뎁스 5대 핵심 비대면 과업 집중)", font=get_font(15, 'bold'), fill=AIA_RED, anchor='mm')
+    
+    # Connecting Switching Toggle Arrow between Modes
+    draw_arrow(draw, (g_x + g_w, g_y + g_h//2), (s_x, s_y + s_h//2), col=AIA_RED, width=2, arrow_size=6)
+    draw_arrow(draw, (s_x, s_y + s_h//2 + 15), (g_x + g_w, g_y + g_h//2 + 15), col=(100, 116, 139), width=2, arrow_size=6)
+    draw_pill_badge(draw, cx=(g_x + g_w + s_x)//2, cy=g_y + g_h//2 + 8, text="상단 1-Tap 토글 스위치", font=get_font(10, 'bold'), theme='red', solid=True, pad_x=8, height=20)
+    
+    # 5 Sub-Nodes under Senior Mode (Level 2: Core Task Categories)
+    draw.line([(1340, s_y + s_h), (1340, 540)], fill=AIA_RED, width=2)
+    draw.line([(960, 540), (1720, 540)], fill=AIA_RED, width=2)
+    
+    senior_tasks = [
+        ("01. 내 계약 조회", "보유 계약 목록\n납입 보험료 확인\n보장 내용 큰글씨 요약", (59, 130, 246)),
+        ("02. 보험료 바로 내기", "당월 미납금 원터치\n주거래 계좌 자동 연동\n가상계좌 즉시 발급", AIA_RED),
+        ("03. 간편 보험금 청구", "병원 영수증 카메라 촬영\nOCR 자동 텍스트 입력\n카카오 알림톡 실시간", (168, 85, 247)),
+        ("04. 계약 대출 신청", "대출 가능 금액 한도 조회\n즉시 이체 지급 요청\n간편 비밀번호 인증", (16, 185, 129)),
+        ("05. 안심 고객 상담", "전담 상담사 원클릭 연결\n가까운 고객센터 찾기\n자주 묻는 질문 음성지원", (71, 85, 105))
     ]
     
-    card_w = 1720
-    card_h = 160
-    start_x = 100
-    start_y = 220
-    
-    for idx, ins in enumerate(insights):
-        cy = start_y + idx * (card_h + 25)
-        # Rounded grey card container matching Behance
-        draw.rounded_rectangle([start_x, cy, start_x + card_w, cy + card_h], radius=16, fill=(241, 245, 249), outline=BORDER_LIGHT, width=1)
+    tw = 145
+    th = 200
+    for idx, (ttitle, titems, tcol) in enumerate(senior_tasks):
+        tx = 950 + idx * 158
+        ty = 560
+        # Line from branch
+        draw.line([(tx + tw//2, 540), (tx + tw//2, ty)], fill=AIA_RED, width=2)
+        draw.rounded_rectangle([tx, ty, tx + tw, ty + th], radius=12, fill=(255, 255, 255), outline=tcol, width=2 if idx==1 else 1)
+        # Header pill
+        draw.rounded_rectangle([tx + 8, ty + 12, tx + tw - 8, ty + 38], radius=6, fill=tcol)
+        draw.text((tx + tw//2, ty + 25), ttitle, font=get_font(10.5, 'bold'), fill=(255, 255, 255), anchor='mm')
         
-        # Left Tag
-        draw_pill_badge(draw, left_x=start_x + 30, cy=cy + 40, text=ins["num"], font=get_font(11, 'bold'), theme=ins["theme"], pad_x=14, height=26)
-        draw.text((start_x + 160, cy + 30), ins["title"], font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
-        
-        # Description
-        lines = wrap_text(ins["desc"], get_font(13.5, 'regular'), card_w - 60, draw)
-        py = cy + 78
-        for line in lines:
-            draw.text((start_x + 30, py), line, font=get_font(13.5, 'regular'), fill=TEXT_LIGHT_SUB)
-            py += 22
+        # Items list
+        ilines = titems.split('\n')
+        iy = ty + 55
+        for line in ilines:
+            draw.text((tx + 12, iy), "•", font=get_font(10, 'bold'), fill=tcol)
+            draw.text((tx + 22, iy), line, font=get_font(10.5, 'regular'), fill=TEXT_LIGHT_MAIN)
+            iy += 44
             
+    # General Mode Branch Features (Level 2 Left)
+    draw.line([(380, g_y + g_h), (380, 560)], fill=BORDER_LIGHT, width=2)
+    gw_box = 360
+    draw.rounded_rectangle([200, 560, 200 + gw_box, 560 + th], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+    draw.text((200 + gw_box//2, 585), "일반 모드 종합 메뉴 트리", font=get_font(13.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mm')
+    g_features = [
+        "마이페이지 및 계약 종합 관리 (12개 뎁스)",
+        "신규 다이렉트 보험 상품 비교 및 가입",
+        "AIA Vitality 건강 리워드 & 만보기 연동",
+        "자산관리 및 퇴직연금 펀드 포트폴리오",
+        "보안센터 (인증서, OTP, 생체인증 관리)"
+    ]
+    gy = 620
+    for gf in g_features:
+        draw.text((220, gy), "•", font=get_font(11, 'bold'), fill=(100, 116, 139))
+        draw.text((235, gy), gf, font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
+        gy += 25
+        
     draw_slide_footer(draw, 4, 12, dark_mode=False)
     out_path = os.path.join(OUT_DIR, "slide_04.png")
     img.save(out_path, quality=95)
