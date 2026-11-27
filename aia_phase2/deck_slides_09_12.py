@@ -247,29 +247,32 @@ def make_slide_11():
 # -------------------------------------------------------------
 # SLIDE 12: OUTRO & SYSTEM ECOSYSTEM (Dark Theme Enterprise Finish)
 # -------------------------------------------------------------
+# -------------------------------------------------------------
+# SLIDE 12: OUTRO & SYSTEM ECOSYSTEM (Interactive Prototype Showcase)
+# -------------------------------------------------------------
 def make_slide_12():
     img = Image.new('RGB', (W, H), BG_DARK)
     draw = ImageDraw.Draw(img)
     draw_slide_header(
         draw, 12, 
-        "ECOSYSTEM & CONTACT", 
-        "Ecosystem & Contact | ", 
-        "AIA생명 디지털 포트폴리오 에코시스템", 
-        "시니어 배리어프리 혁신이 만든 포용적 금융 플랫폼의 미래", 
-        right_badge=("END OF DECK", "red"),
+        "ECOSYSTEM & INTERACTIVE PROTOTYPE", 
+        "Ecosystem & Prototype | ", 
+        "AIA+ 고령자 친화 인터랙티브 프로토타입 & 에코시스템", 
+        "메인 화면 인터랙션 및 4대 핵심 비대면 과업(보험료 납입, 대출상환, 자동송금, 자동부활) 실시간 화면전환 시뮬레이터", 
+        right_badge=("LIVE PROTOTYPE READY", "red"),
         dark_mode=True
     )
     
-    # Left Card: Summary Pillar (W=820)
     card_y = 220
     card_h = 730
     
+    # Left Card: Summary Pillar & Governance (W=700)
     lx = 100
-    lw = 820
+    lw = 700
     draw.rounded_rectangle([lx, card_y, lx + lw, card_y + card_h], radius=16, fill=CARD_DARK, outline=BORDER_DARK, width=1)
-    draw_pill_badge(draw, left_x=lx + 30, cy=card_y + 40, text="AIA+ ACCESSIBILITY CORE", font=get_font(11, 'bold'), theme='red', pad_x=12, height=24)
-    draw.text((lx + 30, card_y + 75), "더 건강하게, 더 오랫동안, 더 나은 삶", font=get_font(22, 'bold'), fill=TEXT_DARK_MAIN)
-    draw.text((lx + 30, card_y + 115), "Healthier, Longer, Better Lives - Inclusive Mobile Experience", font=get_font(13.5, 'regular'), fill=AIA_RED_LIGHT)
+    draw_pill_badge(draw, left_x=lx + 30, cy=card_y + 40, text="AIA+ ACCESSIBILITY ECOSYSTEM", font=get_font(11, 'bold'), theme='red', pad_x=12, height=24)
+    draw.text((lx + 30, card_y + 75), "더 건강하게, 더 오랫동안, 더 나은 삶", font=get_font(21, 'bold'), fill=TEXT_DARK_MAIN)
+    draw.text((lx + 30, card_y + 115), "Healthier, Longer, Better Lives - Inclusive Mobile Experience", font=get_font(13, 'regular'), fill=AIA_RED_LIGHT)
     
     pillars = [
         ("01", "배리어프리 금융 플랫폼 표준 수립", "대한민국 65세 이상 1,000만 초고령화 사회에 대응하여, 디지털 금융 서비스의 배리어프리 표준 가이드라인을 실제 프로덕트로 완벽히 구현했습니다."),
@@ -277,49 +280,129 @@ def make_slide_12():
         ("03", "데이터 기반의 문제 해결 및 사용자 중심 혁신", "휴리스틱 분석과 정량적 사용성 테스트를 통해 도출된 페인포인트를 56dp 풀와이드 버튼, 가상계좌 대체 경로 등의 실질적 UX 장치로 완벽히 해결했습니다.")
     ]
     
-    py = card_y + 170
+    py = card_y + 160
     for pnum, ptitle, pdesc in pillars:
-        draw.rounded_rectangle([lx + 30, py, lx + lw - 30, py + 145], radius=12, fill=(15, 23, 42), outline=BORDER_DARK, width=1)
-        draw.text((lx + 55, py + 25), pnum, font=get_num_font(22, 'black'), fill=AIA_RED)
-        draw.text((lx + 105, py + 25), ptitle, font=get_font(15, 'bold'), fill=TEXT_DARK_MAIN)
-        lines = wrap_text(pdesc, get_font(12, 'regular'), lw - 140, draw)
-        ly = py + 62
+        draw.rounded_rectangle([lx + 30, py, lx + lw - 30, py + 130], radius=12, fill=(15, 23, 42), outline=BORDER_DARK, width=1)
+        draw.text((lx + 50, py + 22), pnum, font=get_num_font(20, 'black'), fill=AIA_RED)
+        draw.text((lx + 95, py + 22), ptitle, font=get_font(14, 'bold'), fill=TEXT_DARK_MAIN)
+        lines = wrap_text(pdesc, get_font(11.5, 'regular'), lw - 120, draw)
+        ly = py + 55
         for line in lines:
-            draw.text((lx + 55, ly), line, font=get_font(12, 'regular'), fill=TEXT_DARK_SUB)
-            ly += 19
-        py += 165
-        
-    # Right Card: Designer Profile & Verification Contact (W=880)
-    rx = 940
-    rw = 880
+            draw.text((lx + 50, ly), line, font=get_font(11.5, 'regular'), fill=TEXT_DARK_SUB)
+            ly += 18
+        py += 145
+
+    # Bottom Profile Box in Left Card
+    draw.rounded_rectangle([lx + 30, card_y + 580, lx + lw - 30, card_y + card_h - 25], radius=12, fill=(24, 32, 47), outline=BORDER_DARK, width=1)
+    draw.text((lx + 50, card_y + 600), "• Designer", font=get_font(11, 'bold'), fill=AIA_RED_LIGHT)
+    draw.text((lx + 130, card_y + 600), "Senior UI/UX Product Designer (Lead UX Architect)", font=get_font(11, 'regular'), fill=TEXT_DARK_MAIN)
+    draw.text((lx + 50, card_y + 625), "• Standards", font=get_font(11, 'bold'), fill=AIA_RED_LIGHT)
+    draw.text((lx + 130, card_y + 625), "FSC Korea Guidelines 100% · WCAG 2.1 AAA Compliant", font=get_font(11, 'regular'), fill=TEXT_DARK_MAIN)
+    draw.text((lx + 50, card_y + 650), "• Simulator", font=get_font(11, 'bold'), fill=AIA_RED_LIGHT)
+    draw.text((lx + 130, card_y + 650), "Interactive Web Simulator: prototype.html (60fps)", font=get_font(11, 'bold'), fill=(16, 185, 129))
+    draw.text((lx + 50, card_y + 675), "• Copyright", font=get_font(11, 'bold'), fill=AIA_RED_LIGHT)
+    draw.text((lx + 130, card_y + 675), "© 2026 AIA Life Korea. All rights reserved.", font=get_font(11, 'regular'), fill=(148, 163, 184))
+
+    # Right Card: 60fps Interactive Simulator Preview & 4 Service Flows Showcase (W=1000)
+    rx = 820
+    rw = 1000
     draw.rounded_rectangle([rx, card_y, rx + rw, card_y + card_h], radius=16, fill=CARD_DARK, outline=BORDER_DARK, width=1)
-    draw_pill_badge(draw, left_x=rx + 30, cy=card_y + 40, text="DESIGNER PROFILE & PORTFOLIO", font=get_font(11, 'bold'), theme='green', pad_x=12, height=24)
-    draw.text((rx + 30, card_y + 75), "시니어 UI/UX 프로덕트 디자이너", font=get_font(22, 'bold'), fill=TEXT_DARK_MAIN)
-    
-    # Portfolio Metadata Box
-    draw.rounded_rectangle([rx + 30, card_y + 130, rx + rw - 30, card_y + 360], radius=14, fill=(15, 23, 42), outline=BORDER_DARK, width=1)
-    draw.text((rx + 55, card_y + 160), "PROFIT & VALUE DRIVEN DESIGN", font=get_font(12, 'bold'), fill=AIA_RED)
-    draw.text((rx + 55, card_y + 190), "AIA+ Phase 2 고령자 모드 전면 개편 포트폴리오", font=get_font(17, 'bold'), fill=TEXT_DARK_MAIN)
-    
-    infos = [
-        ("Project Role", "Lead Product Designer & Design System Architect"),
-        ("Deliverables", "12-Slide High-Resolution Portfolio, UI Wireframes, Production Specs"),
-        ("Compliance", "Financial Services Commission Accessibility Standards (100% AAA)"),
-        ("System Stack", "Figma Design Tokens, Qi v3.3, Flutter Universal Mobile/Web"),
-        ("Live Preview", "http://localhost:5000/aia_phase2/index.html")
+    draw_pill_badge(draw, left_x=rx + 30, cy=card_y + 40, text="60FPS LIVE INTERACTIVE PROTOTYPE", font=get_font(11, 'bold'), theme='green', pad_x=12, height=24)
+    draw.text((rx + 30, card_y + 75), "메인 핫스팟 링크 기반 4대 핵심 서비스 실시간 화면전환", font=get_font(21, 'bold'), fill=TEXT_DARK_MAIN)
+    draw.text((rx + 30, card_y + 115), "간편홈 메인의 미납 알림 배너, 액션 그리드, 대출 카드를 클릭하면 해당 세부 과업 플로우로 인터랙티브하게 전환됩니다.", font=get_font(12, 'regular'), fill=TEXT_DARK_SUB)
+
+    # 4 Service Flow Cards (2x2 Grid)
+    # 1. 보험료 납입 (inner_pay1)
+    # 2. 보험계약대출 상환 (inner_loan1)
+    # 3. 자동송금 신청 (inner_transfer1)
+    # 4. 자동부활 신청 (inner_revival1)
+    services = [
+        {
+            "tag": "HOTSPOT 01", "name": "보험료 즉시 납입 (2단계)",
+            "route": "메인 미납배너 / [보험료 납입] 클릭",
+            "img": "aia_phase2/core_screens/inner_pay1.png",
+            "desc": "원터치 납입금액 확인 → 기등록 계좌 선택 2단계"
+        },
+        {
+            "tag": "HOTSPOT 02", "name": "보험계약대출 상환 (2단계)",
+            "route": "메인 하단 [보험 대출] 카드 클릭",
+            "img": "aia_phase2/core_screens/inner_loan1.png",
+            "desc": "상환가능 금액 확인 → 대출상환 정보 최종 확인"
+        },
+        {
+            "tag": "HOTSPOT 03", "name": "자동송금 신청/변경 (2단계)",
+            "route": "메인 그리드 [자동이체 납입관리] 클릭",
+            "img": "aia_phase2/core_screens/inner_transfer1.png",
+            "desc": "신청 계약 선택 → 2건 즉시 변경 완료 피드백"
+        },
+        {
+            "tag": "HOTSPOT 04", "name": "자동부활 & 바이탈리티 (2단계)",
+            "route": "메인 우측 슬라이드 / 상단 배너 클릭",
+            "img": "aia_phase2/core_screens/inner_revival1.png",
+            "desc": "실효 계약 원클릭 부활 신청 → 바이탈리티 약관동의"
+        }
     ]
-    iy = card_y + 225
-    for ilabel, ival in infos:
-        draw.text((rx + 55, iy), f"•  {ilabel}:", font=get_font(11.5, 'bold'), fill=(148, 163, 184))
-        draw.text((rx + 220, iy), ival, font=get_font(11.5, 'regular'), fill=TEXT_DARK_MAIN)
-        iy += 24
+
+    gw = 460
+    gh = 215
+    gcoords = [
+        (rx + 30, card_y + 155),
+        (rx + 510, card_y + 155),
+        (rx + 30, card_y + 385),
+        (rx + 510, card_y + 385)
+    ]
+
+    for (gx, gy), s in zip(gcoords, services):
+        draw.rounded_rectangle([gx, gy, gx + gw, gy + gh], radius=12, fill=(15, 23, 42), outline=BORDER_DARK, width=1)
         
-    # Thank You Banner at Bottom
-    draw.rounded_rectangle([rx + 30, card_y + 390, rx + rw - 30, card_y + card_h - 40], radius=14, fill=(211, 17, 69, 40), outline=AIA_RED, width=2)
-    draw.text((rx + rw//2, card_y + 470), "THANK YOU FOR WATCHING", font=get_num_font(28, 'black'), fill=(255, 255, 255), anchor='mm')
-    draw.text((rx + rw//2, card_y + 520), "디지털 격차 없는 따뜻한 금융 경험을 만들어갑니다.", font=get_font(15, 'bold'), fill=AIA_RED_LIGHT, anchor='mm')
-    draw.text((rx + rw//2, card_y + 570), "AIA Life Korea · Inclusive UX Design Strategy · 2026", font=get_font(12, 'medium'), fill=(148, 163, 184), anchor='mm')
-    
+        # Phone Thumbnail Mockup (W=90, H=190)
+        pw = 90
+        ph = 185
+        px = gx + 15
+        py = gy + 15
+        
+        # Inner screen
+        if os.path.exists(s["img"]):
+            try:
+                s_img = Image.open(s["img"]).convert('RGBA')
+                s_ratio = s_img.width / s_img.height
+                th_w = pw - 8
+                th_h = int(th_w / s_ratio)
+                if th_h > ph - 16:
+                    th_h = ph - 16
+                    th_w = int(th_h * s_ratio)
+                s_resized = s_img.resize((th_w, th_h), Image.Resampling.LANCZOS)
+                
+                # Device bezel
+                draw.rounded_rectangle([px, py, px + pw, py + ph], radius=14, fill=(5, 5, 5), outline=(51, 65, 85), width=2)
+                # Paste thumbnail centered
+                paste_x = px + (pw - th_w) // 2
+                paste_y = py + (ph - th_h) // 2
+                img.paste(s_resized, (paste_x, paste_y), s_resized)
+            except Exception as e:
+                print(f"Error loading {s['img']}: {e}")
+        
+        # Text details
+        tx = gx + pw + 30
+        draw.text((tx, gy + 20), s["tag"], font=get_num_font(11, 'bold'), fill=AIA_RED)
+        draw.text((tx, gy + 40), s["name"], font=get_font(14, 'bold'), fill=TEXT_DARK_MAIN)
+        draw.text((tx, gy + 70), f"진입: {s['route']}", font=get_font(11, 'bold'), fill=AIA_RED_LIGHT)
+        
+        lines = wrap_text(s["desc"], get_font(11, 'regular'), gw - pw - 45, draw)
+        dly = gy + 98
+        for l in lines:
+            draw.text((tx, dly), l, font=get_font(11, 'regular'), fill=TEXT_DARK_SUB)
+            dly += 16
+            
+        # Mini CTA Button
+        draw.rounded_rectangle([tx, gy + 155, tx + 180, gy + 190], radius=8, fill=(211, 17, 69, 50), outline=AIA_RED, width=1)
+        draw.text((tx + 90, gy + 172), "실시간 시뮬레이션 연동 ▶", font=get_font(10.5, 'bold'), fill=(255, 255, 255), anchor='mm')
+
+    # Bottom CTA Banner across right card
+    draw.rounded_rectangle([rx + 30, card_y + 615, rx + rw - 30, card_y + card_h - 25], radius=12, fill=(211, 17, 69), outline=None)
+    draw.text((rx + rw//2, card_y + 645), "📱 지금 웹 브라우저에서 60fps 인터랙티브 프로토타입 실행하기", font=get_font(15, 'bold'), fill=(255, 255, 255), anchor='mm')
+    draw.text((rx + rw//2, card_y + 675), "AIA_Phase2/prototype.html  ·  간편홈 메인 핫스팟 클릭 시 4개 과업 즉시 전환 지원", font=get_font(11.5, 'medium'), fill=(254, 205, 211), anchor='mm')
+
     draw_slide_footer(draw, 12, 12, dark_mode=True)
     out_path = os.path.join(OUT_DIR, "slide_12.png")
     img.save(out_path, quality=95)

@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#0F172A">
+  <title>AIA+ SENIOR MODE - 60fps Live Interactive Simulator</title>
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <style>
+    :root {
+      --sat: env(safe-area-inset-top, 0px);
+      --sab: env(safe-area-inset-bottom, 0px);
+      --aia-red: #D31145;
+      --aia-red-dark: #A80E37;
+      --aia-red-glow: rgba(211, 17, 69, 0.35);
+      --bg-dark: #090D16;
+      --bg-surface: #0F172A;
+      --bg-card: #1E293B;
+      --text-main: #FFFFFF;
+      --text-sub: #94A3B8;
+      --border-line: rgba(255, 255, 255, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Top Glassmorphism Navigation Bar */
+    .proto-navbar {
+      height: 64px;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(15, 23, 42, 0.88);
+      border-bottom: 1px solid rgba(211, 17, 69, 0.25);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      z-index: 100;
+      flex-shrink: 0;
+    }
+
+    .proto-nav-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .btn-back-deck {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(211, 17, 69, 0.4);
+      color: #FF80A0;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 7px 15px;
+      border-radius: 9999px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .btn-back-deck:hover {
+      background: rgba(211, 17, 69, 0.2);
+      border-color: var(--aia-red);
+      color: #FFFFFF;
+      transform: translateX(-2px);
+    }
+
+    .proto-brand {
+      font-size: 14px;
+      font-weight: 800;
+      color: #CBD5E1;
+      letter-spacing: -0.01em;
+    }
+
+    .proto-brand strong {
+      color: var(--aia-red);
+    }
+
+    /* Center Flow Switcher Pills */
+    .flow-pill-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 4px 6px;
+      border-radius: 9999px;
+      border: 1px solid rgba(211, 17, 69, 0.35);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .flow-pill-btn {
+      background: transparent;
+      border: none;
+      color: #94A3B8;
+      font-size: 12.5px;
+      font-weight: 700;
+      padding: 7px 16px;
+      border-radius: 9999px;
+      cursor: pointer;
+      transition: all 0.22s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .flow-pill-btn span {
+      display: inline-block;
+      width: 17px;
+      height: 17px;
+      line-height: 17px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      font-size: 10px;
+      text-align: center;
+      color: #CBD5E1;
+    }
+
+    .flow-pill-btn.active {
+      background: var(--aia-red);
+      color: #FFFFFF;
+      box-shadow: 0 0 14px var(--aia-red-glow);
+    }
+
+    .flow-pill-btn.active span {
+      background: #FFFFFF;
+      color: var(--aia-red);
+      font-weight: 900;
+    }
+
+    .flow-pill-btn:hover:not(.active) {
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .proto-nav-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .fps-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: #34D399;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+
+    .fps-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #10B981;
+      box-shadow: 0 0 8px #10B981;
+      animation: pulse-fps 1.6s infinite;
+    }
+
+    @keyframes pulse-fps {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    /* Main Simulator Workspace */
+    .proto-workspace {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 20px;
+      position: relative;
+    }
+
+    .bg-ambient-glow {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(211, 17, 69, 0.18) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+      filter: blur(80px);
+    }
+
+    /* Smartphone Device Frame */
+    .phone-device {
+      width: 393px;
+      height: 852px;
+      background: #000000;
+      border-radius: 54px;
+      box-shadow: 
+        0 0 0 4px #1F293D,
+        0 0 0 6px rgba(211, 17, 69, 0.65),
+        0 30px 80px rgba(0, 0, 0, 0.85),
+        0 0 50px rgba(211, 17, 69, 0.25);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      z-index: 10;
+    }
+
+    /* Speaker Earpiece Notch */
+    .dynamic-island {
+      position: absolute;
+      top: 11px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 32px;
+      background: #000000;
+      border-radius: 20px;
+      z-index: 70;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px;
+      pointer-events: none;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+    }
+
+    .island-cam {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: #0D1629;
+      box-shadow: inset 0 0 2px #000;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .island-sensor {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #080D1A;
+    }
+
+    /* iOS Authentic Status Bar */
+    .iphone-status-bar {
+      height: 48px;
+      width: 100%;
+      padding: 12px 28px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 60;
+      background: transparent;
+      font-size: 14.5px;
+      font-weight: 700;
+      color: #0F172A;
+      letter-spacing: -0.02em;
+      pointer-events: none;
+    }
+
+    .status-bar-dark {
+      color: #FFFFFF !important;
+    }
+
+    /* Screen Viewport */
+    .phone-viewport {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      position: relative;
+      background: #FFFFFF;
+      overflow-y: auto;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
+      padding-top: 48px;
+      padding-bottom: 24px;
+    }
+
+    .phone-viewport::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Flow Stage Views */
+    .flow-stage {
+      display: none;
+      width: 100%;
+      min-height: 100%;
+      animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .flow-stage.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Clickable Screen Image Mockups */
+    .stage-screen-img {
+      width: 100%;
+      height: auto;
+      display: block;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    /* Interactive Overlay Hotspots on Home Dashboard */
+    .hotspot-card {
+      position: absolute;
+      cursor: pointer;
+      border-radius: 12px;
+      background: rgba(211, 17, 69, 0.0);
+      transition: all 0.2s ease;
+      z-index: 50;
+    }
+
+    .hotspot-card:hover {
+      background: rgba(211, 17, 69, 0.12);
+      outline: 2px dashed #D31145;
+    }
+
+    .hotspot-hint-pill {
+      position: absolute;
+      background: #D31145;
+      color: #FFFFFF;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 9999px;
+      box-shadow: 0 2px 8px rgba(211, 17, 69, 0.5);
+      pointer-events: none;
+      animation: bounce-hint 1.8s infinite;
+      white-space: nowrap;
+    }
+
+    @keyframes bounce-hint {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+
+    /* Bottom Home Indicator */
+    .home-bar {
+      position: absolute;
+      bottom: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 134px;
+      height: 5px;
+      background: #0F172A;
+      border-radius: 3px;
+      z-index: 80;
+      pointer-events: none;
+    }
+
+    /* Side Scenario Guide Drawer */
+    .scenario-sidebar {
+      position: absolute;
+      right: 40px;
+      top: 110px;
+      width: 320px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      padding: 24px;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    }
+
+    .scenario-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: #FFFFFF;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .scenario-title::before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--aia-red);
+      box-shadow: 0 0 10px var(--aia-red);
+    }
+
+    .scenario-desc {
+      font-size: 12.5px;
+      color: var(--text-sub);
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    .scenario-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .scenario-btn {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 12px 14px;
+      text-align: left;
+      color: #E2E8F0;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .scenario-btn:hover {
+      background: rgba(211, 17, 69, 0.15);
+      border-color: var(--aia-red);
+      color: #FFFFFF;
+      transform: translateX(4px);
+    }
+
+    .scenario-btn.active {
+      background: linear-gradient(135deg, rgba(211, 17, 69, 0.25) 0%, rgba(168, 14, 55, 0.35) 100%);
+      border-color: var(--aia-red);
+      color: #FFFFFF;
+      font-weight: 800;
+    }
+
+    .scenario-badge {
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 3px 7px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #CBD5E1;
+    }
+
+    .scenario-btn.active .scenario-badge {
+      background: var(--aia-red);
+      color: #FFFFFF;
+    }
+
+    @media (max-width: 1200px) {
+      .scenario-sidebar {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Glassmorphism Navigation Bar -->
+  <header class="proto-navbar">
+    <div class="proto-nav-left">
+      <a href="../index.html" class="btn-back-deck" title="포트폴리오 허브로 이동">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        포트폴리오 허브
+      </a>
+      <a href="index.html" class="btn-back-deck" title="12장 케이스 스터디로 돌아가기">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        12장 케이스스터디
+      </a>
+      <span class="proto-brand"><strong>AIA+</strong> · 시니어 비대면 서비스 인터랙티브 프로토타입</span>
+    </div>
+
+    <!-- Center Flow Switcher Pills (5대 코어 과업) -->
+    <div class="flow-pill-group" role="tablist">
+      <button class="flow-pill-btn active" id="pill-main" onclick="switchStage('main')">
+        <span>01</span> 간편홈 메인
+      </button>
+      <button class="flow-pill-btn" id="pill-pay" onclick="switchStage('pay')">
+        <span>02</span> 보험료 납입
+      </button>
+      <button class="flow-pill-btn" id="pill-loan" onclick="switchStage('loan')">
+        <span>03</span> 계약대출 상환
+      </button>
+      <button class="flow-pill-btn" id="pill-transfer" onclick="switchStage('transfer')">
+        <span>04</span> 자동송금 신청
+      </button>
+      <button class="flow-pill-btn" id="pill-revival" onclick="switchStage('revival')">
+        <span>05</span> 자동부활 신청
+      </button>
+    </div>
+
+    <div class="proto-nav-right">
+      <span class="fps-badge">
+        <span class="fps-dot"></span>
+        60 FPS LIVE SIMULATOR
+      </span>
+    </div>
+  </header>
+
+  <!-- Simulator Main Workspace -->
+  <main class="proto-workspace">
+    <div class="bg-ambient-glow"></div>
+
+    <!-- Smartphone Mockup Device -->
+    <div class="phone-device">
+      <!-- Dynamic Island Notch -->
+      <div class="dynamic-island">
+        <div class="island-sensor"></div>
+        <div class="island-cam"></div>
+      </div>
+
+      <!-- Authentic Status Bar -->
+      <div class="iphone-status-bar" id="status-bar">
+        <span>4:36</span>
+        <div style="display:flex; align-items:center; gap:6px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L12 22l7.03-4.39C20.26 16.07 21 14.12 21 12c0-4.97-4.03-9-9-9z"/></svg>
+          <span style="font-size:12px; font-weight:800;">60%</span>
+        </div>
+      </div>
+
+      <!-- Screen Viewport -->
+      <div class="phone-viewport" id="viewport">
+
+        <!-- 01. 간편홈 메인 화면 (인터랙티브 핫스팟 링크 탑재) -->
+        <div class="flow-stage active" id="stage-main" style="position:relative;">
+          <img src="core_screens/screen_senior_main_official.png" alt="AIA+ 고령자모드 메인 대시보드" class="stage-screen-img" />
+          
+          <!-- Hotspot: 보험료 납입 배너 (상단 미납 알림 클릭 시) -->
+          <div class="hotspot-card" style="top:75px; left:12px; width:220px; height:45px;" onclick="switchStage('pay')" title="당월 미납 보험료 납입하기">
+            <span class="hotspot-hint-pill" style="top:-8px; right:8px;">1-Tap 납입</span>
+          </div>
+
+          <!-- Hotspot: 5대 퀵액션 [보험료 납입] -->
+          <div class="hotspot-card" style="top:475px; left:124px; width:108px; height:60px;" onclick="switchStage('pay')" title="보험료 납입 화면으로 이동">
+          </div>
+
+          <!-- Hotspot: 5대 퀵액션 [자동이체 납입관리] -->
+          <div class="hotspot-card" style="top:540px; left:124px; width:108px; height:60px;" onclick="switchStage('transfer')" title="자동송금 신청 화면으로 이동">
+          </div>
+
+          <!-- Hotspot: 보험 대출 카드 -->
+          <div class="hotspot-card" style="top:920px; left:12px; width:220px; height:65px;" onclick="switchStage('loan')" title="보험계약대출 상환 화면으로 이동">
+            <span class="hotspot-hint-pill" style="top:10px; right:10px;">대출 신청/상환</span>
+          </div>
+        </div>
+
+        <!-- 02. 보험료 납입 2단계 플로우 (첨부 원본 이미지) -->
+        <div class="flow-stage" id="stage-pay">
+          <!-- Step 1: 바로 납입 가능한 보험료 선택 -->
+          <div id="pay-step1" style="display:block;">
+            <img src="core_screens/inner_pay1.png" alt="보험료 납입 1단계: 바로 납입 가능한 보험료 선택" class="stage-screen-img" onclick="goPayStep2()" title="[보험료 납입하기] 터치 시 다음 계좌 선택 단계로 이동합니다" />
+          </div>
+          <!-- Step 2: 납입하실 계좌를 선택해 주세요 -->
+          <div id="pay-step2" style="display:none;">
+            <img src="core_screens/inner_pay2.png" alt="보험료 납입 2단계: 출금 계좌 선택" class="stage-screen-img" onclick="goPayStep1()" title="터치 시 이전 단계로 돌아갑니다" />
+          </div>
+        </div>
+
+        <!-- 03. 보험계약대출 상환 2단계 플로우 (첨부 원본 이미지) -->
+        <div class="flow-stage" id="stage-loan">
+          <!-- Step 1: 상환가능 금액 입력 -->
+          <div id="loan-step1" style="display:block;">
+            <img src="core_screens/inner_loan1.png" alt="보험계약대출 1단계: 상환가능 금액 확인" class="stage-screen-img" onclick="goLoanStep2()" title="[대출상환/이자납입하기] 터치 시 다음 상세 확인 단계로 이동합니다" />
+          </div>
+          <!-- Step 2: 대출상환 정보 확인 -->
+          <div id="loan-step2" style="display:none;">
+            <img src="core_screens/inner_loan2.png" alt="보험계약대출 2단계: 대출상환 정보 확인" class="stage-screen-img" onclick="goLoanStep1()" title="터치 시 이전 단계로 돌아갑니다" />
+          </div>
+        </div>
+
+        <!-- 04. 자동송금 신청 2단계 플로우 (첨부 원본 이미지) -->
+        <div class="flow-stage" id="stage-transfer">
+          <!-- Step 1: 신청/변경할 계약 선택 -->
+          <div id="transfer-step1" style="display:block;">
+            <img src="core_screens/inner_transfer1.png" alt="자동송금계좌신청 1단계: 계약 선택" class="stage-screen-img" onclick="goTransferStep2()" title="[신청하기] 터치 시 신청 완료 화면으로 이동합니다" />
+          </div>
+          <!-- Step 2: 자동송금계좌 신청 완료 -->
+          <div id="transfer-step2" style="display:none;">
+            <img src="core_screens/inner_transfer2.png" alt="자동송금계좌신청 2단계: 신청 완료" class="stage-screen-img" onclick="goTransferStep1()" title="터치 시 이전 단계로 돌아갑니다" />
+          </div>
+        </div>
+
+        <!-- 05. 자동부활 신청 및 바이탈리티 연동 (첨부 원본 이미지) -->
+        <div class="flow-stage" id="stage-revival">
+          <!-- Step 1: 자동부활 신청할 계약 선택 -->
+          <div id="revival-step1" style="display:block;">
+            <img src="core_screens/inner_revival1.png" alt="자동부활 신청: 계약 선택 및 당월보험료 포함" class="stage-screen-img" onclick="goRevivalStep2()" title="터치 시 바이탈리티 약관 동의 화면으로 이동합니다" />
+          </div>
+          <!-- Step 2: 바이탈리티 가입 약관 동의 -->
+          <div id="revival-step2" style="display:none;">
+            <img src="core_screens/inner_vitality1.png" alt="바이탈리티 가입 약관 동의" class="stage-screen-img" onclick="goRevivalStep1()" title="터치 시 이전 단계로 돌아갑니다" />
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Bottom Home Indicator -->
+      <div class="home-bar"></div>
+    </div>
+
+    <!-- Right Side Scenario Guide Drawer -->
+    <aside class="scenario-sidebar">
+      <div class="scenario-title">인터랙션 시나리오 선택</div>
+      <div class="scenario-desc">
+        고령자모드 메인 화면의 <strong>핫스팟 링크</strong>를 누르거나 아래 버튼을 누르면 첨부해주신 <strong>4대 코어 서비스 화면으로 즉시 전환</strong>됩니다.
+      </div>
+
+      <div class="scenario-list">
+        <button class="scenario-btn active" id="side-main" onclick="switchStage('main')">
+          <span>01. 간편홈 메인 대시보드</span>
+          <span class="scenario-badge">HOME</span>
+        </button>
+        <button class="scenario-btn" id="side-pay" onclick="switchStage('pay')">
+          <span>02. 보험료 바로 납입하기</span>
+          <span class="scenario-badge">2 STEP</span>
+        </button>
+        <button class="scenario-btn" id="side-loan" onclick="switchStage('loan')">
+          <span>03. 보험계약대출 상환</span>
+          <span class="scenario-badge">2 STEP</span>
+        </button>
+        <button class="scenario-btn" id="side-transfer" onclick="switchStage('transfer')">
+          <span>04. 자동송금 계좌 신청</span>
+          <span class="scenario-badge">2 STEP</span>
+        </button>
+        <button class="scenario-btn" id="side-revival" onclick="switchStage('revival')">
+          <span>05. 자동부활 & 바이탈리티</span>
+          <span class="scenario-badge">2 STEP</span>
+        </button>
+      </div>
+
+      <div style="margin-top:24px; padding-top:18px; border-top:1px solid rgba(255,255,255,0.1); font-size:12px; color:#64748B; line-height:1.6;">
+        💡 <strong>인터랙션 팁:</strong><br>
+        스마트폰 화면 내부의 <strong>[납입하기], [다음], [신청하기]</strong> 버튼을 직접 터치해도 다음 스텝으로 매끄럽게 화면이 전환됩니다.
+      </div>
+    </aside>
+  </main>
+
+  <script>
+    function switchStage(stageKey) {
+      // Deactivate all stages
+      document.querySelectorAll('.flow-stage').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.flow-pill-btn').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.scenario-btn').forEach(el => el.classList.remove('active'));
+
+      // Activate selected stage
+      const targetStage = document.getElementById('stage-' + stageKey);
+      if (targetStage) targetStage.classList.add('active');
+
+      const targetPill = document.getElementById('pill-' + stageKey);
+      if (targetPill) targetPill.classList.add('active');
+
+      const targetSide = document.getElementById('side-' + stageKey);
+      if (targetSide) targetSide.classList.add('active');
+
+      // Scroll viewport to top
+      document.getElementById('viewport').scrollTop = 0;
+    }
+
+    // Step navigation inside flows
+    function goPayStep2() {
+      document.getElementById('pay-step1').style.display = 'none';
+      document.getElementById('pay-step2').style.display = 'block';
+      document.getElementById('viewport').scrollTop = 0;
+    }
+    function goPayStep1() {
+      document.getElementById('pay-step2').style.display = 'none';
+      document.getElementById('pay-step1').style.display = 'block';
+      document.getElementById('viewport').scrollTop = 0;
+    }
+
+    function goLoanStep2() {
+      document.getElementById('loan-step1').style.display = 'none';
+      document.getElementById('loan-step2').style.display = 'block';
+      document.getElementById('viewport').scrollTop = 0;
+    }
+    function goLoanStep1() {
+      document.getElementById('loan-step2').style.display = 'none';
+      document.getElementById('loan-step1').style.display = 'block';
+      document.getElementById('viewport').scrollTop = 0;
+    }
+
+    function goTransferStep2() {
+      document.getElementById('transfer-step1').style.display = 'none';
+      document.getElementById('transfer-step2').style.display = 'block';
+      document.getElementById('viewport').scrollTop = 0;
+    }
+    function goTransferStep1() {
+      document.getElementById('transfer-step2').style.display = 'none';
+      document.getElementById('transfer-step1').style.display = 'block';
+      document.getElementById('viewport').scrollTop = 0;
+    }
+
+    function goRevivalStep2() {
+      document.getElementById('revival-step1').style.display = 'none';
+      document.getElementById('revival-step2').style.display = 'block';
+      document.getElementById('viewport').scrollTop = 0;
+    }
+    function goRevivalStep1() {
+      document.getElementById('revival-step2').style.display = 'none';
+      document.getElementById('revival-step1').style.display = 'block';
+      document.getElementById('viewport').scrollTop = 0;
+    }
+  </script>
+</body>
+</html>
