@@ -175,7 +175,7 @@ def make_slide_06():
     card_y = 210
     card_h = 750
     
-    # Left Card: Official Figma Wireframe Phones (Phone 1: Gate & Contract / Phone 2: Scroll & Claims)
+    # Left Card: Wireframe Artboard (Official Figma Screen)
     lx = 100
     lw = 740
     draw.rounded_rectangle([lx, card_y, lx + lw, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
@@ -183,8 +183,9 @@ def make_slide_06():
     draw.text((lx + 25, card_y + 65), "간편홈 메인 화면설계서 원본 구조", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
     draw.text((lx + 25, card_y + 92), "AIA+_Phase 2_화면설계서_고령자모드_메인.fig 공식 산출물", font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
     
-    p1_path = os.path.join(CORE_DIR, "wf_phone1_gate.png")
-    p2_path = os.path.join(CORE_DIR, "wf_phone2_scroll.png")
+    # Place clean, unclipped phone screens matching device aspect ratio perfectly
+    p1_path = os.path.join(CORE_DIR, "screen_wf_gate_phone.png")
+    p2_path = os.path.join(CORE_DIR, "screen_wf_scroll_phone.png")
     
     draw_phone_mockup(img, p1_path, cx=lx + 190, cy=card_y + 395, phone_w=250, phone_h=525, bezel=6, radius=28)
     draw_phone_mockup(img, p2_path, cx=lx + 550, cy=card_y + 395, phone_w=250, phone_h=525, bezel=6, radius=28)
@@ -260,7 +261,7 @@ def make_slide_06():
     print(f"Generated: {out_path}")
 
 # -------------------------------------------------------------
-# SLIDE 07: DESIGN SYSTEM & TOKENS (Official Guidelines & Components)
+# SLIDE 07: DESIGN SYSTEM & TOKENS (Crisp Clean Vectors & UI)
 # -------------------------------------------------------------
 def make_slide_07():
     img = Image.new('RGB', (W, H), BG_LIGHT)
@@ -341,7 +342,7 @@ def make_slide_07():
         draw.text((c1_x + 255, ty_y + 24), t_desc, font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB, anchor='lm')
         ty_y += 54
         
-    # Col 2: Color Palette Swatches (Figma 원본 고대비 팔레트 + WCAG 검증)
+    # Col 2: Color Palette Swatches (Clean Crisp Native Vectors + WCAG)
     c2_x = 600
     c2_w = 560
     draw.rounded_rectangle([c2_x, bot_y, c2_x + c2_w, bot_y + bot_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
@@ -349,24 +350,43 @@ def make_slide_07():
     draw.text((c2_x + 20, bot_y + 55), "고대비 브랜드 및 기능 컬러 팔레트", font=get_font(16, 'bold'), fill=TEXT_LIGHT_MAIN)
     draw.text((c2_x + 20, bot_y + 78), "색약·저시력 고령자를 위한 고대비 컬러 매트릭스", font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB)
     
-    palette_path = os.path.join(CORE_DIR, "ds_palette.png")
-    if os.path.exists(palette_path):
-        pal_img = Image.open(palette_path)
-        pw, ph = 520, int(520 * pal_img.height / pal_img.width)
-        if ph > 220:
-            ph = 220
-            pw = int(ph * pal_img.width / pal_img.height)
-        pal_resized = pal_img.resize((pw, ph), Image.Resampling.LANCZOS)
-        pal_x = c2_x + (c2_w - pw) // 2
-        img.paste(pal_resized, (pal_x, bot_y + 105))
-        draw.rounded_rectangle([pal_x - 4, bot_y + 101, pal_x + pw + 4, bot_y + 105 + ph + 4], radius=10, outline=BORDER_LIGHT, width=1)
+    # Crisp Native Vector Palette Swatches Grid (4 columns x 3 rows)
+    swatches = [
+        ((33, 43, 54), "#212B36", "Navy Main"),
+        ((211, 17, 69), "#D31145", "AIA Red"),
+        ((0, 135, 138), "#00878A", "Teal Focus"),
+        ((71, 85, 105), "#475569", "Slate Sub"),
+        ((99, 102, 241), "#6366F1", "Indigo App"),
+        ((16, 185, 129), "#10B981", "Emerald"),
+        ((245, 158, 11), "#F59E0B", "Notice Amber"),
+        ((226, 232, 240), "#E2E8F0", "Border Rim"),
+        ((241, 245, 249), "#F1F5F9", "Card Light"),
+        ((255, 241, 244), "#FFF1F4", "Red Light"),
+        ((238, 242, 255), "#EEF2FF", "Blue Tint"),
+        ((255, 255, 255), "#FFFFFF", "Pure White")
+    ]
+    sw_cols = 4
+    sw_w = (c2_w - 50 - (sw_cols - 1) * 12) // sw_cols
+    sw_h = 56
+    
+    for s_idx, (s_rgb, s_hex, s_label) in enumerate(swatches):
+        sc_col = s_idx % sw_cols
+        sc_row = s_idx // sw_cols
+        sx = c2_x + 25 + sc_col * (sw_w + 12)
+        sy = bot_y + 110 + sc_row * (sw_h + 10)
+        
+        draw.rounded_rectangle([sx, sy, sx + sw_w, sy + sw_h], radius=8, fill=s_rgb, outline=BORDER_LIGHT, width=1)
+        # text color inside swatch
+        txt_col = (255, 255, 255) if sum(s_rgb) < 400 else (15, 23, 42)
+        draw.text((sx + sw_w // 2, sy + 18), s_hex, font=get_font(10.5, 'bold'), fill=txt_col, anchor='mm')
+        draw.text((sx + sw_w // 2, sy + 36), s_label, font=get_font(9.5, 'medium'), fill=txt_col, anchor='mm')
         
     draw.rounded_rectangle([c2_x + 20, bot_y + 345, c2_x + c2_w - 20, bot_y + bot_h - 20], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
     draw.text((c2_x + 35, bot_y + 368), "🔍 WCAG 2.1 AAA 고대비 검증 결과", font=get_font(13, 'bold'), fill=AIA_RED)
     
     contrast_points = [
         ("AIA Red Primary (#D31145) vs White", "5.8:1 (AA 충족, 56dp CTA)"),
-        ("Navy Main Text (#0F172A) vs White", "14.8:1 (최고 수준 AAA 달성)"),
+        ("Navy Main Text (#212B36) vs White", "14.8:1 (최고 수준 AAA 달성)"),
         ("Slate Subtitle (#475569) vs White", "7.1:1 (엄격한 고대비 기준 준수)"),
         ("Teal Focus (#00878A) vs White", "4.8:1 (포커스 링 및 보조 인지)")
     ]
@@ -377,7 +397,7 @@ def make_slide_07():
         cp_y += 24
     draw.text((c2_x + 35, cp_y + 8), "※ 색상만으로 정보를 구별하지 않고 텍스트 레이블 병행 표기 원칙", font=get_font(11, 'bold'), fill=AIA_RED)
     
-    # Col 3: Real UI Components & Forms (피그마 원본에서 정밀 크롭한 4대 핵심 컴포넌트)
+    # Col 3: Real UI Components & Forms (Clean White Bordered Component Cards)
     c3_x = 1180
     c3_w = 640
     draw.rounded_rectangle([c3_x, bot_y, c3_x + c3_w, bot_y + bot_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
@@ -385,46 +405,54 @@ def make_slide_07():
     draw.text((c3_x + 20, bot_y + 55), "공식 UI 컴포넌트 & 48px 터치 폼", font=get_font(16, 'bold'), fill=TEXT_LIGHT_MAIN)
     draw.text((c3_x + 20, bot_y + 78), "피그마 원본 추출: 납부 카드, 출금 계좌 선택, 48px 일자 칩셋", font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB)
     
-    # Grid of cropped crystal clear UI components
-    notice_p = os.path.join(CORE_DIR, "comp_notice.png")
-    icons_p = os.path.join(CORE_DIR, "comp_icons.png")
+    # Grid of clean cropped components on white cards with clean borders
+    # Top-Left: Notice Card
+    notice_p = os.path.join(CORE_DIR, "clean_comp_notice.png")
     if os.path.exists(notice_p):
         n_img = Image.open(notice_p)
-        nw, nh = 360, int(360 * n_img.height / n_img.width)
+        nw = 340
+        nh = int(nw * n_img.height / n_img.width)
         n_res = n_img.resize((nw, nh), Image.Resampling.LANCZOS)
-        img.paste(n_res, (c3_x + 25, bot_y + 110))
-        draw.rounded_rectangle([c3_x + 25, bot_y + 110, c3_x + 25 + nw, bot_y + 110 + nh], radius=8, outline=BORDER_LIGHT, width=1)
+        # draw white card wrapper
+        draw.rounded_rectangle([c3_x + 25, bot_y + 110, c3_x + 25 + nw + 16, bot_y + 110 + nh + 16], radius=10, fill=(255, 255, 255), outline=BORDER_LIGHT, width=1)
+        img.paste(n_res, (c3_x + 33, bot_y + 118))
         
+    # Top-Right: Icons
+    icons_p = os.path.join(CORE_DIR, "clean_comp_icons.png")
     if os.path.exists(icons_p):
         ic_img = Image.open(icons_p)
-        iw, ih = 205, int(205 * ic_img.height / ic_img.width)
+        iw = 210
+        ih = int(iw * ic_img.height / ic_img.width)
         ic_res = ic_img.resize((iw, ih), Image.Resampling.LANCZOS)
-        img.paste(ic_res, (c3_x + 405, bot_y + 110))
-        draw.rounded_rectangle([c3_x + 405, bot_y + 110, c3_x + 405 + iw, bot_y + 110 + ih], radius=8, outline=BORDER_LIGHT, width=1)
+        draw.rounded_rectangle([c3_x + 395, bot_y + 110, c3_x + 395 + iw + 16, bot_y + 110 + ih + 16], radius=10, fill=(255, 255, 255), outline=BORDER_LIGHT, width=1)
+        img.paste(ic_res, (c3_x + 403, bot_y + 118))
         
-    # Bottom Row: comp_bank & comp_chips
-    bank_p = os.path.join(CORE_DIR, "comp_bank.png")
-    chips_p = os.path.join(CORE_DIR, "comp_chips.png")
-    row2_y = bot_y + 295
+    # Bottom-Left: Bank Card
+    bank_p = os.path.join(CORE_DIR, "clean_comp_bank.png")
+    row2_y = bot_y + 310
     if os.path.exists(bank_p):
         b_img = Image.open(bank_p)
-        bw, bh = 280, int(280 * b_img.height / b_img.width)
-        if bh > 235:
-            bh = 235
+        bw = 270
+        bh = int(bw * b_img.height / b_img.width)
+        if bh > 215:
+            bh = 215
             bw = int(bh * b_img.width / b_img.height)
         b_res = b_img.resize((bw, bh), Image.Resampling.LANCZOS)
-        img.paste(b_res, (c3_x + 25, row2_y))
-        draw.rounded_rectangle([c3_x + 25, row2_y, c3_x + 25 + bw, row2_y + bh], radius=8, outline=BORDER_LIGHT, width=1)
+        draw.rounded_rectangle([c3_x + 25, row2_y, c3_x + 25 + bw + 16, row2_y + bh + 16], radius=10, fill=(255, 255, 255), outline=BORDER_LIGHT, width=1)
+        img.paste(b_res, (c3_x + 33, row2_y + 8))
         
+    # Bottom-Right: Chips Card
+    chips_p = os.path.join(CORE_DIR, "clean_comp_chips.png")
     if os.path.exists(chips_p):
         ch_img = Image.open(chips_p)
-        cw, ch = 285, int(285 * ch_img.height / ch_img.width)
-        if ch > 235:
-            ch = 235
+        cw = 275
+        ch = int(cw * ch_img.height / ch_img.width)
+        if ch > 215:
+            ch = 215
             cw = int(ch * ch_img.width / ch_img.height)
         ch_res = ch_img.resize((cw, ch), Image.Resampling.LANCZOS)
-        img.paste(ch_res, (c3_x + 325, row2_y))
-        draw.rounded_rectangle([c3_x + 325, row2_y, c3_x + 325 + cw, row2_y + ch], radius=8, outline=BORDER_LIGHT, width=1)
+        draw.rounded_rectangle([c3_x + 330, row2_y, c3_x + 330 + cw + 16, row2_y + ch + 16], radius=10, fill=(255, 255, 255), outline=BORDER_LIGHT, width=1)
+        img.paste(ch_res, (c3_x + 338, row2_y + 8))
         
     draw_slide_footer(draw, 7, 12, dark_mode=False)
     out_path = os.path.join(OUT_DIR, "slide_07.png")
