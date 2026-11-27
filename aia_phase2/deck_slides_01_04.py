@@ -86,22 +86,18 @@ def make_slide_01():
         draw.text((140, sy), label, font=get_font(12, 'bold'), fill=AIA_RED)
         draw.text((225, sy), val, font=get_font(12, 'bold' if idx==1 else 'medium'), fill=(15, 23, 42))
         
-    gen_screen = os.path.join(CORE_DIR, "screen_general_main_clean.png")
-    if not os.path.exists(gen_screen):
-        gen_screen = os.path.join(CORE_DIR, "screen_general_main.png")
-    sen_screen = os.path.join(CORE_DIR, "screen_senior_main_hero.png")
-    if not os.path.exists(sen_screen):
-        sen_screen = os.path.join(CORE_DIR, "screen_senior_main_home.png")
-    pay_screen = os.path.join(CORE_DIR, "screen_pay_list_senior.png")
+    gen_screen = os.path.join(CORE_DIR, "screen_general_main.png")
+    sen_screen = os.path.join(CORE_DIR, "screen_senior_main_official.png")
+    pay_screen = os.path.join(CORE_DIR, "inner_pay1.png")
     
     draw_phone_mockup(img, gen_screen, cx=930, cy=565, phone_w=280, phone_h=605, bezel=6, radius=32, show_toggle_badge="[일반모드] 메인화면")
-    draw_phone_mockup(img, sen_screen, cx=1260, cy=530, phone_w=335, phone_h=715, bezel=7, radius=36, show_toggle_badge="[고령자모드] 원터치 홈 (총괄설계)")
-    draw_phone_mockup(img, pay_screen, cx=1590, cy=565, phone_w=280, phone_h=605, bezel=6, radius=32, show_toggle_badge="[간편납부] 56dp CTA")
+    draw_phone_mockup(img, sen_screen, cx=1260, cy=530, phone_w=335, phone_h=715, bezel=7, radius=36, show_toggle_badge="[고령자모드] 간편홈 메인 (PLSCMV002)")
+    draw_phone_mockup(img, pay_screen, cx=1590, cy=565, phone_w=280, phone_h=605, bezel=6, radius=32, show_toggle_badge="[핵심서브] 2단계 보험료 납입")
     
     draw_arrow(draw, (1075, 565), (1095, 565), col=AIA_RED, width=3, arrow_size=8)
     draw_pill_badge(draw, cx=1085, cy=535, text="1-Tap 전환", font=get_font(10, 'bold'), theme='red', solid=True, pad_x=8, height=20)
     
-    draw_pill_badge(draw, cx=1260, cy=145, text="고령자 친화 제로-뎁스 원터치 홈 · 직접 기획 및 화면설계", font=get_font(12, 'bold'), theme='red', solid=True, pad_x=16, height=32)
+    draw_pill_badge(draw, cx=1260, cy=145, text="고령자 친화 제로-뎁스 간편홈 · Figma 공식 화면설계 산출물", font=get_font(12, 'bold'), theme='red', solid=True, pad_x=16, height=32)
     
     draw_slide_footer(draw, 1, 12, dark_mode=False)
     out_path = os.path.join(OUT_DIR, "slide_01.png")
