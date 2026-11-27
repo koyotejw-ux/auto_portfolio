@@ -157,21 +157,21 @@ def make_slide_06():
         right_badge=("DETAILED SPECIFICATION", "red")
     )
     
-    # 4 Sequential Wireframes with UX Callout Lines matching Behance
+    # 4 Sequential Wireframes with UX Callout Lines matching Behance and PLSCMV002
     wireframes = [
         {
-            "tag": "WF 01",
-            "title": "원터치 홈 대시보드",
-            "screen": "screen_senior_main_home.png",
+            "tag": "WF 01 (PLSCMV002)",
+            "title": "간편홈 메인 게이트 (Gate)",
+            "screen": "screen_wf_plscmv002.png",
             "annotations": [
-                "① 상단 일반모드 전환 토글 (28dp)",
-                "② 보유 계약 건수 24pt 대형 표시",
-                "③ 당월 미납 보험료 Red 강조 박스",
-                "④ 하단 [보험료 바로 내기] 56dp CTA"
+                "① 헤더: [일반용 | 간편용] 토글 스위치 (4pt+)",
+                "② 개인화 알림: 최대 3건 미납/실효/만기 노출",
+                "③ 내보험 카드: 스와이프 다건 조회 (최대 99개)",
+                "④ 퀵액션 & 청구/대출: 5대 코어 업무 1-Tap 분기"
             ]
         },
         {
-            "tag": "WF 02",
+            "tag": "WF 02 (PLSDPV201)",
             "title": "계약 및 납부액 확인",
             "screen": "screen_pay_list_senior.png",
             "annotations": [
@@ -182,7 +182,7 @@ def make_slide_06():
             ]
         },
         {
-            "tag": "WF 03",
+            "tag": "WF 03 (PLSDPV211)",
             "title": "납부 수단 선택",
             "screen": "screen_pay_input_account.png",
             "annotations": [
@@ -193,7 +193,7 @@ def make_slide_06():
             ]
         },
         {
-            "tag": "WF 04",
+            "tag": "WF 04 (PLSDPV202)",
             "title": "납부 완료 & 케어 안내",
             "screen": "screen_pay_done.png",
             "annotations": [
