@@ -406,48 +406,48 @@ def make_slide_07():
     draw.text((c3_x + 20, bot_y + 73), "피그마 원본 추출: 납부 카드, 출금 계좌 선택, 48px 일자 칩셋", font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB)
     
     # -------------------------------------------------------------------------
-    # ROW 1 (y = bot_y + 96, H = 186): Notice/Pay Card & 9 Circular Icons
+    # ROW 1 (y = bot_y + 92, H = 196): Notice/Pay Cards & 9 Circular Icons
     # -------------------------------------------------------------------------
-    r1_y = bot_y + 96
-    r1_h = 186
+    r1_y = bot_y + 92
+    r1_h = 196
     
     # Card 1 (Top-Left): Notice / Payment Card
-    c1_bx = c3_x + 18
-    c1_bw = 405
+    c1_bx = c3_x + 16
+    c1_bw = 412
     draw.rounded_rectangle([c1_bx, r1_y, c1_bx + c1_bw, r1_y + r1_h], radius=10, fill=(255, 255, 255), outline=BORDER_LIGHT, width=1)
-    notice_p = os.path.join(CORE_DIR, "ds_comp_notice_full.png")
+    notice_p = os.path.join(CORE_DIR, "ds_comp_notice_perfect.png")
     if os.path.exists(notice_p):
         n_img = Image.open(notice_p).convert('RGBA')
-        scale = min((c1_bw - 16) / n_img.width, (r1_h - 16) / n_img.height)
+        scale = min((c1_bw - 20) / n_img.width, (r1_h - 18) / n_img.height)
         nw = int(n_img.width * scale)
         nh = int(n_img.height * scale)
         n_res = n_img.resize((nw, nh), Image.Resampling.LANCZOS)
         img.paste(n_res, (c1_bx + (c1_bw - nw) // 2, r1_y + (r1_h - nh) // 2), n_res)
         
     # Card 2 (Top-Right): 9 Circular Action Icons
-    c2_bx = c3_x + 433
-    c2_bw = 189
+    c2_bx = c3_x + 436
+    c2_bw = 188
     draw.rounded_rectangle([c2_bx, r1_y, c2_bx + c2_bw, r1_y + r1_h], radius=10, fill=(255, 255, 255), outline=BORDER_LIGHT, width=1)
-    icons_p = os.path.join(CORE_DIR, "ds_comp_icons_full.png")
+    icons_p = os.path.join(CORE_DIR, "ds_comp_icons_perfect.png")
     if os.path.exists(icons_p):
         ic_img = Image.open(icons_p).convert('RGBA')
-        scale = min((c2_bw - 16) / ic_img.width, (r1_h - 16) / ic_img.height)
+        scale = min((c2_bw - 20) / ic_img.width, (r1_h - 20) / ic_img.height)
         iw = int(ic_img.width * scale)
         ih = int(ic_img.height * scale)
         ic_res = ic_img.resize((iw, ih), Image.Resampling.LANCZOS)
         img.paste(ic_res, (c2_bx + (c2_bw - iw) // 2, r1_y + (r1_h - ih) // 2), ic_res)
         
     # -------------------------------------------------------------------------
-    # ROW 2 (y = bot_y + 292, H = 255): Contract Card, Bank Select, 48px Chips
+    # ROW 2 (y = bot_y + 298, H = 250): Contract Card, Bank Select, 48px Chips
     # -------------------------------------------------------------------------
-    r2_y = bot_y + 292
-    r2_h = 255
+    r2_y = bot_y + 298
+    r2_h = 250
     
     # Card 3 (Bottom-Left): Contract Information Card
-    c3_bx = c3_x + 18
-    c3_bw = 192
+    c3_bx = c3_x + 16
+    c3_bw = 194
     draw.rounded_rectangle([c3_bx, r2_y, c3_bx + c3_bw, r2_y + r2_h], radius=10, fill=(255, 255, 255), outline=BORDER_LIGHT, width=1)
-    contract_p = os.path.join(CORE_DIR, "ds_comp_contract_full.png")
+    contract_p = os.path.join(CORE_DIR, "ds_comp_contract_perfect.png")
     if os.path.exists(contract_p):
         ct_img = Image.open(contract_p).convert('RGBA')
         scale = min((c3_bw - 16) / ct_img.width, (r2_h - 16) / ct_img.height)
@@ -457,10 +457,10 @@ def make_slide_07():
         img.paste(ct_res, (c3_bx + (c3_bw - cw) // 2, r2_y + (r2_h - ch) // 2), ct_res)
         
     # Card 4 (Bottom-Middle): Bank Account Select Form
-    c4_bx = c3_x + 220
-    c4_bw = 196
+    c4_bx = c3_x + 218
+    c4_bw = 198
     draw.rounded_rectangle([c4_bx, r2_y, c4_bx + c4_bw, r2_y + r2_h], radius=10, fill=(255, 255, 255), outline=BORDER_LIGHT, width=1)
-    bank_p = os.path.join(CORE_DIR, "ds_comp_bank_full.png")
+    bank_p = os.path.join(CORE_DIR, "ds_comp_bank_perfect.png")
     if os.path.exists(bank_p):
         b_img = Image.open(bank_p).convert('RGBA')
         scale = min((c4_bw - 16) / b_img.width, (r2_h - 16) / b_img.height)
@@ -470,10 +470,10 @@ def make_slide_07():
         img.paste(b_res, (c4_bx + (c4_bw - bw) // 2, r2_y + (r2_h - bh) // 2), b_res)
         
     # Card 5 (Bottom-Right): 48px Automatic Transfer Date Chips Form
-    c5_bx = c3_x + 426
-    c5_bw = 196
+    c5_bx = c3_x + 424
+    c5_bw = 200
     draw.rounded_rectangle([c5_bx, r2_y, c5_bx + c5_bw, r2_y + r2_h], radius=10, fill=(255, 255, 255), outline=BORDER_LIGHT, width=1)
-    chips_p = os.path.join(CORE_DIR, "ds_comp_chips_full.png")
+    chips_p = os.path.join(CORE_DIR, "ds_comp_chips_perfect.png")
     if os.path.exists(chips_p):
         ch_img = Image.open(chips_p).convert('RGBA')
         scale = min((c5_bw - 16) / ch_img.width, (r2_h - 16) / ch_img.height)
