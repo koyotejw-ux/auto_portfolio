@@ -112,6 +112,22 @@ def draw_pill_badge(draw, cx=None, cy=0, text="", font=None, theme='green', dark
     draw.text(((x1 + x2) // 2, cy), text, font=font, fill=th['text'], anchor='mm')
     return bw
 
+def draw_arrow(draw, p1, p2, col=BRAND_GREEN, width=2, arrow_size=6):
+    x1, y1 = p1
+    x2, y2 = p2
+    draw.line([(x1, y1), (x2, y2)], fill=col, width=width)
+    if x1 == x2:
+        if y2 > y1:
+            draw.polygon([(x2 - arrow_size, y2 - arrow_size * 1.5), (x2 + arrow_size, y2 - arrow_size * 1.5), (x2, y2)], fill=col)
+        else:
+            draw.polygon([(x2 - arrow_size, y2 + arrow_size * 1.5), (x2 + arrow_size, y2 + arrow_size * 1.5), (x2, y2)], fill=col)
+    elif y1 == y2:
+        if x2 > x1:
+            draw.polygon([(x2 - arrow_size * 1.5, y2 - arrow_size), (x2 - arrow_size * 1.5, y2 + arrow_size), (x2, y2)], fill=col)
+        else:
+            draw.polygon([(x2 + arrow_size * 1.5, y2 - arrow_size), (x2 + arrow_size * 1.5, y2 + arrow_size), (x2, y2)], fill=col)
+
+
 def draw_slide_header(draw, slide_num, category_kr, title_bold, title_accent, subtitle_kr, right_badge=None, dark_mode=False):
     line_col = (40, 50, 68) if dark_mode else (226, 232, 240)
     draw.line([(100, 48), (1820, 48)], fill=line_col, width=1)
