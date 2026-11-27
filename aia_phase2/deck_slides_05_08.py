@@ -397,46 +397,57 @@ def make_slide_07():
         cp_y += 24
     draw.text((c2_x + 35, cp_y + 8), "※ 색상만으로 정보를 구별하지 않고 텍스트 레이블 병행 표기 원칙", font=get_font(11, 'bold'), fill=AIA_RED)
     
-    # Col 3: Real UI Components & Forms (Clean Pure-White Standalone UI Components - 100% Unclipped)
+    # Col 3: Real UI Components & Forms (Clean Pure-White Standalone UI Components - 3x2 Symmetrical Grid)
     c3_x = 1180
     c3_w = 640
     draw.rounded_rectangle([c3_x, bot_y, c3_x + c3_w, bot_y + bot_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
     draw_pill_badge(draw, left_x=c3_x + 20, cy=bot_y + 26, text="FIGMA UI COMPONENTS", font=get_font(10.5, 'bold'), theme='green', pad_x=10, height=22)
     draw.text((c3_x + 20, bot_y + 50), "공식 UI 컴포넌트 & 48px 터치 폼", font=get_font(16, 'bold'), fill=TEXT_LIGHT_MAIN)
-    draw.text((c3_x + 20, bot_y + 73), "피그마 원본 추출: 납부 카드, 출금 계좌 선택, 48px 일자 칩셋", font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB)
+    draw.text((c3_x + 20, bot_y + 73), "피그마 원본 추출: 납부 카드, 외화 안내, 9대 아이콘, 계약 정보, 계좌 선택, 48px 일자 칩셋", font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB)
     
     # -------------------------------------------------------------------------
-    # ROW 1 (y = bot_y + 92, H = 200): Notice Card & 9 Circular Action Icons
+    # ROW 1 (y = bot_y + 92, H = 200): 3 Cards (보험료 납부 정보, 외화보험료 납부 안내, 9대 원형 아이콘)
     # -------------------------------------------------------------------------
     r1_y = bot_y + 92
     r1_h = 200
     
-    # Card 1 (Top-Left): 56dp CTA Action Button & Notice Card
-    c1_bx = c3_x + 16
-    c1_bw = 360
-    draw.rounded_rectangle([c1_bx, r1_y, c1_bx + c1_bw, r1_y + r1_h], radius=12, fill=(255, 255, 255), outline=BORDER_LIGHT, width=1)
-    # Component Tag
-    draw.text((c1_bx + 14, r1_y + 12), "56dp CTA 버튼 & 외화보험료 납부 안내", font=get_font(11, 'bold'), fill=TEXT_LIGHT_MAIN)
-    notice_p = os.path.join(CORE_DIR, "comp_notice_pure.png")
+    # Card 1a (Top-Left): 보험료 납부 정보 카드 & 56dp CTA
+    c1a_bx = c3_x + 16
+    c1a_bw = 196
+    draw.rounded_rectangle([c1a_bx, r1_y, c1a_bx + c1a_bw, r1_y + r1_h], radius=12, fill=(255, 255, 255), outline=BORDER_LIGHT, width=1)
+    draw.text((c1a_bx + 12, r1_y + 12), "보험료 납부 정보 폼", font=get_font(10.5, 'bold'), fill=TEXT_LIGHT_MAIN)
+    pay_p = os.path.join(CORE_DIR, "pure_card1_pay.png")
+    if os.path.exists(pay_p):
+        p_img = Image.open(pay_p).convert('RGBA')
+        scale = min((c1a_bw - 20) / p_img.width, (r1_h - 38) / p_img.height)
+        pw = int(p_img.width * scale)
+        ph = int(p_img.height * scale)
+        p_res = p_img.resize((pw, ph), Image.Resampling.LANCZOS)
+        img.paste(p_res, (c1a_bx + (c1a_bw - pw) // 2, r1_y + 30 + (r1_h - 32 - ph) // 2), p_res)
+        
+    # Card 1b (Top-Middle): 외화보험료 납부 안내 카드 & 56dp CTA
+    c1b_bx = c3_x + 222
+    c1b_bw = 196
+    draw.rounded_rectangle([c1b_bx, r1_y, c1b_bx + c1b_bw, r1_y + r1_h], radius=12, fill=(255, 255, 255), outline=BORDER_LIGHT, width=1)
+    draw.text((c1b_bx + 12, r1_y + 12), "외화보험료 납부 안내", font=get_font(10.5, 'bold'), fill=TEXT_LIGHT_MAIN)
+    notice_p = os.path.join(CORE_DIR, "pure_card2_notice.png")
     if os.path.exists(notice_p):
         n_img = Image.open(notice_p).convert('RGBA')
-        # Proportional scale with padding
-        scale = min((c1_bw - 28) / n_img.width, (r1_h - 40) / n_img.height)
+        scale = min((c1b_bw - 20) / n_img.width, (r1_h - 38) / n_img.height)
         nw = int(n_img.width * scale)
         nh = int(n_img.height * scale)
         n_res = n_img.resize((nw, nh), Image.Resampling.LANCZOS)
-        img.paste(n_res, (c1_bx + (c1_bw - nw) // 2, r1_y + 30 + (r1_h - 32 - nh) // 2), n_res)
+        img.paste(n_res, (c1b_bx + (c1b_bw - nw) // 2, r1_y + 30 + (r1_h - 32 - nh) // 2), n_res)
         
     # Card 2 (Top-Right): 9 Circular Action Icons Matrix
-    c2_bx = c3_x + 390
-    c2_bw = 234
+    c2_bx = c3_x + 428
+    c2_bw = 196
     draw.rounded_rectangle([c2_bx, r1_y, c2_bx + c2_bw, r1_y + r1_h], radius=12, fill=(255, 255, 255), outline=BORDER_LIGHT, width=1)
-    # Component Tag
-    draw.text((c2_bx + 14, r1_y + 12), "9대 원형 액션 아이콘 매트릭스", font=get_font(11, 'bold'), fill=TEXT_LIGHT_MAIN)
+    draw.text((c2_bx + 12, r1_y + 12), "9대 원형 아이콘 매트릭스", font=get_font(10.5, 'bold'), fill=TEXT_LIGHT_MAIN)
     icons_p = os.path.join(CORE_DIR, "comp_icons_pure.png")
     if os.path.exists(icons_p):
         ic_img = Image.open(icons_p).convert('RGBA')
-        scale = min((c2_bw - 28) / ic_img.width, (r1_h - 40) / ic_img.height)
+        scale = min((c2_bw - 20) / ic_img.width, (r1_h - 38) / ic_img.height)
         iw = int(ic_img.width * scale)
         ih = int(ic_img.height * scale)
         ic_res = ic_img.resize((iw, ih), Image.Resampling.LANCZOS)
@@ -450,7 +461,7 @@ def make_slide_07():
     
     # Card 3 (Bottom-Left): Senior Contract Information Card
     c3_bx = c3_x + 16
-    c3_bw = 194
+    c3_bw = 196
     draw.rounded_rectangle([c3_bx, r2_y, c3_bx + c3_bw, r2_y + r2_h], radius=12, fill=(255, 255, 255), outline=BORDER_LIGHT, width=1)
     draw.text((c3_bx + 12, r2_y + 12), "시니어 계약 정보 인풋 카드", font=get_font(10.5, 'bold'), fill=TEXT_LIGHT_MAIN)
     contract_p = os.path.join(CORE_DIR, "comp_contract_pure.png")
@@ -463,8 +474,8 @@ def make_slide_07():
         img.paste(ct_res, (c3_bx + (c3_bw - cw) // 2, r2_y + 30 + (r2_h - 32 - ch) // 2), ct_res)
         
     # Card 4 (Bottom-Middle): Bank Account Select Form
-    c4_bx = c3_x + 224
-    c4_bw = 194
+    c4_bx = c3_x + 222
+    c4_bw = 196
     draw.rounded_rectangle([c4_bx, r2_y, c4_bx + c4_bw, r2_y + r2_h], radius=12, fill=(255, 255, 255), outline=BORDER_LIGHT, width=1)
     draw.text((c4_bx + 12, r2_y + 12), "출금 계좌 선택 리스트 폼", font=get_font(10.5, 'bold'), fill=TEXT_LIGHT_MAIN)
     bank_p = os.path.join(CORE_DIR, "comp_bank_pure.png")
@@ -477,8 +488,8 @@ def make_slide_07():
         img.paste(b_res, (c4_bx + (c4_bw - bw) // 2, r2_y + 30 + (r2_h - 32 - bh) // 2), b_res)
         
     # Card 5 (Bottom-Right): 48px Automatic Transfer Date Chips Form
-    c5_bx = c3_x + 432
-    c5_bw = 192
+    c5_bx = c3_x + 428
+    c5_bw = 196
     draw.rounded_rectangle([c5_bx, r2_y, c5_bx + c5_bw, r2_y + r2_h], radius=12, fill=(255, 255, 255), outline=BORDER_LIGHT, width=1)
     draw.text((c5_bx + 12, r2_y + 12), "48px 터치 일자 칩셋 폼", font=get_font(10.5, 'bold'), fill=TEXT_LIGHT_MAIN)
     chips_p = os.path.join(CORE_DIR, "comp_chips_pure.png")
