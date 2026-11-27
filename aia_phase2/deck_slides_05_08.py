@@ -167,7 +167,7 @@ def make_slide_06():
         draw, 6, 
         "WIREFRAMES & DETAILED SPECS", 
         "Wireframes | ", 
-        "화면설계서_고령자모드_메인 (PLSCMV002 Gate)", 
+        "고령자모드 메인 화면설계서 (PLSCMV002 Gate)", 
         "Figma 공식 화면설계서 원본 기반: 간편홈 모드 전환, 개인화 알림(최대3건), 계약 스와이프, 청구/대출 5대 영역 Description", 
         right_badge=("OFFICIAL FIGMA SPEC", "red")
     )
@@ -175,39 +175,29 @@ def make_slide_06():
     card_y = 210
     card_h = 750
     
-    # Left Card: Wireframe Artboard (Official Figma Screen)
+    # Left Card: Official Figma Wireframe Phones (Phone 1: Gate & Contract / Phone 2: Scroll & Claims)
     lx = 100
-    lw = 680
+    lw = 740
     draw.rounded_rectangle([lx, card_y, lx + lw, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, left_x=lx + 25, cy=card_y + 35, text="PLSCMV002 · FIGMA WIREFRAME ARTBOARD", font=get_font(11, 'bold'), theme='red', pad_x=12, height=24)
+    draw_pill_badge(draw, left_x=lx + 25, cy=card_y + 35, text="PLSCMV002 · OFFICIAL FIGMA WIREFRAME", font=get_font(11, 'bold'), theme='red', pad_x=12, height=24)
     draw.text((lx + 25, card_y + 65), "간편홈 메인 화면설계서 원본 구조", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
     draw.text((lx + 25, card_y + 92), "AIA+_Phase 2_화면설계서_고령자모드_메인.fig 공식 산출물", font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
     
-    # Place Official Figma Artboard Image
-    wf_artboard_path = os.path.join(CORE_DIR, "wf_senior_main_official_artboard.png")
-    if os.path.exists(wf_artboard_path):
-        wf_art_img = Image.open(wf_artboard_path)
-        # Calculate fit within width ~620, height ~580
-        target_w = 400
-        aspect = wf_art_img.height / wf_art_img.width
-        target_h = int(target_w * aspect)
-        if target_h > 580:
-            target_h = 580
-            target_w = int(target_h / aspect)
-        wf_art_resized = wf_art_img.resize((target_w, target_h), Image.Resampling.LANCZOS)
-        
-        # Draw frame around it
-        cx = lx + lw // 2
-        cy = card_y + 120 + (card_h - 140) // 2
-        top_left_x = cx - target_w // 2
-        top_left_y = cy - target_h // 2
-        
-        draw.rounded_rectangle([top_left_x - 6, top_left_y - 6, top_left_x + target_w + 6, top_left_y + target_h + 6], radius=12, fill=(245, 247, 250), outline=BORDER_LIGHT, width=1)
-        img.paste(wf_art_resized, (top_left_x, top_left_y))
+    p1_path = os.path.join(CORE_DIR, "wf_phone1_gate.png")
+    p2_path = os.path.join(CORE_DIR, "wf_phone2_scroll.png")
+    
+    draw_phone_mockup(img, p1_path, cx=lx + 190, cy=card_y + 395, phone_w=250, phone_h=525, bezel=6, radius=28)
+    draw_phone_mockup(img, p2_path, cx=lx + 550, cy=card_y + 395, phone_w=250, phone_h=525, bezel=6, radius=28)
+    
+    draw.text((lx + 190, card_y + 685), "① 메인 게이트 (Gate)", font=get_font(13.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mt')
+    draw.text((lx + 190, card_y + 708), "토글, 알림(3건), 계약 스와이프", font=get_font(11, 'medium'), fill=TEXT_LIGHT_SUB, anchor='mt')
+    
+    draw.text((lx + 550, card_y + 685), "② 하단 스크롤 (Scroll)", font=get_font(13.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mt')
+    draw.text((lx + 550, card_y + 708), "청구 접수 현황, 보험 대출, GNB", font=get_font(11, 'medium'), fill=TEXT_LIGHT_SUB, anchor='mt')
     
     # Right Card: Description Specs Table
-    rx = 810
-    rw = 1010
+    rx = 870
+    rw = 950
     draw.rounded_rectangle([rx, card_y, rx + rw, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
     draw_pill_badge(draw, left_x=rx + 25, cy=card_y + 35, text="OFFICIAL UI SPECIFICATION TABLE", font=get_font(11, 'bold'), theme='blue', pad_x=12, height=24)
     draw.text((rx + 25, card_y + 65), "화면설계서 공식 상세 명세 (Description)", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
@@ -270,7 +260,7 @@ def make_slide_06():
     print(f"Generated: {out_path}")
 
 # -------------------------------------------------------------
-# SLIDE 07: DESIGN SYSTEM (Tokens Table, Swatches & Components)
+# SLIDE 07: DESIGN SYSTEM & TOKENS (Official Guidelines & Components)
 # -------------------------------------------------------------
 def make_slide_07():
     img = Image.new('RGB', (W, H), BG_LIGHT)
@@ -333,25 +323,25 @@ def make_slide_07():
     draw.text((c1_x + 20, bot_y + 78), "고령자 시각 피로도 최소화를 위한 계층화 텍스트 시스템", font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB)
     
     typo_items = [
-        ("헤드라인 1", "32pt Bold", "주요 타이틀 및 전환 알림", 32),
-        ("헤드라인 2", "28pt Bold", "섹션 헤더 및 주요 카드 타이틀", 28),
-        ("헤드라인 3", "24pt Bold", "모달 팝업 및 서브 섹션", 24),
-        ("헤드라인 4", "20pt Bold", "계약 정보 및 중요 금액 표시", 20),
-        ("헤드라인 5", "18pt SemiBold", "코어 퀵액션 메뉴 레이블", 18),
-        ("헤드라인 6", "16pt SemiBold", "리스트 타이틀 및 안내 강조", 16),
-        ("본문 1 (Body 1)", "16pt Regular", "상세 안내문 및 설명 텍스트", 16),
-        ("본문 2 (Body 2)", "14pt Regular", "부가 캡션 및 부가 메타 정보", 14),
+        ("헤드라인 1", "32pt Bold", "주요 타이틀 및 전환 알림"),
+        ("헤드라인 2", "28pt Bold", "섹션 헤더 및 주요 카드 타이틀"),
+        ("헤드라인 3", "24pt Bold", "모달 팝업 및 서브 섹션"),
+        ("헤드라인 4", "20pt Bold", "계약 정보 및 중요 금액 표시"),
+        ("헤드라인 5", "18pt SemiBold", "코어 퀵액션 메뉴 레이블"),
+        ("헤드라인 6", "16pt SemiBold", "리스트 타이틀 및 안내 강조"),
+        ("본문 1 (Body 1)", "16pt Regular", "상세 안내문 및 설명 텍스트"),
+        ("본문 2 (Body 2)", "14pt Regular", "부가 캡션 및 부가 메타 정보"),
     ]
     
     ty_y = bot_y + 105
-    for t_name, t_sz, t_desc, _ in typo_items:
+    for t_name, t_sz, t_desc in typo_items:
         draw.rounded_rectangle([c1_x + 18, ty_y, c1_x + c1_w - 18, ty_y + 48], radius=8, fill=(250, 252, 255), outline=BORDER_LIGHT, width=1)
         draw.text((c1_x + 30, ty_y + 24), t_name, font=get_font(12.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
         draw_pill_badge(draw, left_x=c1_x + 160, cy=ty_y + 24, text=t_sz, font=get_font(10.5, 'bold'), theme='gray', pad_x=8, height=20)
         draw.text((c1_x + 255, ty_y + 24), t_desc, font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB, anchor='lm')
         ty_y += 54
         
-    # Col 2: Color Palette Swatches (Figma 원본 고대비 팔레트 반영)
+    # Col 2: Color Palette Swatches (Figma 원본 고대비 팔레트 + WCAG 검증)
     c2_x = 600
     c2_w = 560
     draw.rounded_rectangle([c2_x, bot_y, c2_x + c2_w, bot_y + bot_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
@@ -362,7 +352,6 @@ def make_slide_07():
     palette_path = os.path.join(CORE_DIR, "ds_palette.png")
     if os.path.exists(palette_path):
         pal_img = Image.open(palette_path)
-        # resize nicely to width 520
         pw, ph = 520, int(520 * pal_img.height / pal_img.width)
         if ph > 220:
             ph = 220
@@ -372,7 +361,6 @@ def make_slide_07():
         img.paste(pal_resized, (pal_x, bot_y + 105))
         draw.rounded_rectangle([pal_x - 4, bot_y + 101, pal_x + pw + 4, bot_y + 105 + ph + 4], radius=10, outline=BORDER_LIGHT, width=1)
         
-    # Contrast Audit Card in Col 2
     draw.rounded_rectangle([c2_x + 20, bot_y + 345, c2_x + c2_w - 20, bot_y + bot_h - 20], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
     draw.text((c2_x + 35, bot_y + 368), "🔍 WCAG 2.1 AAA 고대비 검증 결과", font=get_font(13, 'bold'), fill=AIA_RED)
     
@@ -389,36 +377,60 @@ def make_slide_07():
         cp_y += 24
     draw.text((c2_x + 35, cp_y + 8), "※ 색상만으로 정보를 구별하지 않고 텍스트 레이블 병행 표기 원칙", font=get_font(11, 'bold'), fill=AIA_RED)
     
-    # Col 3: Real UI Components & Forms (버튼, 입력 필드, 납부 안내 카드, 칩 선택)
+    # Col 3: Real UI Components & Forms (피그마 원본에서 정밀 크롭한 4대 핵심 컴포넌트)
     c3_x = 1180
     c3_w = 640
     draw.rounded_rectangle([c3_x, bot_y, c3_x + c3_w, bot_y + bot_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, left_x=c3_x + 20, cy=bot_y + 30, text="UI COMPONENTS & INPUT FORMS", font=get_font(10.5, 'bold'), theme='green', pad_x=10, height=22)
+    draw_pill_badge(draw, left_x=c3_x + 20, cy=bot_y + 30, text="FIGMA UI COMPONENTS", font=get_font(10.5, 'bold'), theme='green', pad_x=10, height=22)
     draw.text((c3_x + 20, bot_y + 55), "공식 UI 컴포넌트 & 48px 터치 폼", font=get_font(16, 'bold'), fill=TEXT_LIGHT_MAIN)
-    draw.text((c3_x + 20, bot_y + 78), "보험료 납부 안내, 다이렉트 폼, 자동이체 일자 선택 칩셋", font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB)
+    draw.text((c3_x + 20, bot_y + 78), "피그마 원본 추출: 납부 카드, 출금 계좌 선택, 48px 일자 칩셋", font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB)
     
-    comps_path = os.path.join(CORE_DIR, "ds_ui_components.png")
-    if os.path.exists(comps_path):
-        comp_img = Image.open(comps_path)
-        cw = 600
-        ch = int(cw * comp_img.height / comp_img.width)
-        if ch > 440:
-            ch = 440
-            cw = int(ch * comp_img.width / comp_img.height)
-        comp_resized = comp_img.resize((cw, ch), Image.Resampling.LANCZOS)
-        comp_x = c3_x + (c3_w - cw) // 2
-        comp_y = bot_y + 105
-        img.paste(comp_resized, (comp_x, comp_y))
-        draw.rounded_rectangle([comp_x - 4, comp_y - 4, comp_x + cw + 4, comp_y + ch + 4], radius=10, outline=BORDER_LIGHT, width=1)
+    # Grid of cropped crystal clear UI components
+    notice_p = os.path.join(CORE_DIR, "comp_notice.png")
+    icons_p = os.path.join(CORE_DIR, "comp_icons.png")
+    if os.path.exists(notice_p):
+        n_img = Image.open(notice_p)
+        nw, nh = 360, int(360 * n_img.height / n_img.width)
+        n_res = n_img.resize((nw, nh), Image.Resampling.LANCZOS)
+        img.paste(n_res, (c3_x + 25, bot_y + 110))
+        draw.rounded_rectangle([c3_x + 25, bot_y + 110, c3_x + 25 + nw, bot_y + 110 + nh], radius=8, outline=BORDER_LIGHT, width=1)
+        
+    if os.path.exists(icons_p):
+        ic_img = Image.open(icons_p)
+        iw, ih = 205, int(205 * ic_img.height / ic_img.width)
+        ic_res = ic_img.resize((iw, ih), Image.Resampling.LANCZOS)
+        img.paste(ic_res, (c3_x + 405, bot_y + 110))
+        draw.rounded_rectangle([c3_x + 405, bot_y + 110, c3_x + 405 + iw, bot_y + 110 + ih], radius=8, outline=BORDER_LIGHT, width=1)
+        
+    # Bottom Row: comp_bank & comp_chips
+    bank_p = os.path.join(CORE_DIR, "comp_bank.png")
+    chips_p = os.path.join(CORE_DIR, "comp_chips.png")
+    row2_y = bot_y + 295
+    if os.path.exists(bank_p):
+        b_img = Image.open(bank_p)
+        bw, bh = 280, int(280 * b_img.height / b_img.width)
+        if bh > 235:
+            bh = 235
+            bw = int(bh * b_img.width / b_img.height)
+        b_res = b_img.resize((bw, bh), Image.Resampling.LANCZOS)
+        img.paste(b_res, (c3_x + 25, row2_y))
+        draw.rounded_rectangle([c3_x + 25, row2_y, c3_x + 25 + bw, row2_y + bh], radius=8, outline=BORDER_LIGHT, width=1)
+        
+    if os.path.exists(chips_p):
+        ch_img = Image.open(chips_p)
+        cw, ch = 285, int(285 * ch_img.height / ch_img.width)
+        if ch > 235:
+            ch = 235
+            cw = int(ch * ch_img.width / ch_img.height)
+        ch_res = ch_img.resize((cw, ch), Image.Resampling.LANCZOS)
+        img.paste(ch_res, (c3_x + 325, row2_y))
+        draw.rounded_rectangle([c3_x + 325, row2_y, c3_x + 325 + cw, row2_y + ch], radius=8, outline=BORDER_LIGHT, width=1)
         
     draw_slide_footer(draw, 7, 12, dark_mode=False)
     out_path = os.path.join(OUT_DIR, "slide_07.png")
     img.save(out_path, quality=95)
     print(f"Generated: {out_path}")
 
-# -------------------------------------------------------------
-# SLIDE 08: UI SCREENS - SENIOR MODE MAIN DASHBOARD (EXACT SPECS)
-# -------------------------------------------------------------
 def make_slide_08():
     img = Image.new('RGB', (W, H), BG_LIGHT)
     draw = ImageDraw.Draw(img)
