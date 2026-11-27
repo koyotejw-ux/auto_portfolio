@@ -279,96 +279,137 @@ def make_slide_07():
         draw, 7, 
         "DESIGN SYSTEM & TOKENS", 
         "Design System | ", 
-        "AIA 글로벌 표준 Qi 디자인 시스템 v3.3", 
-        "디자인 토큰 규격 테이블, 브랜드 컬러 팔레트, 56dp 고령자 입력 컴포넌트 표준", 
-        right_badge=("QI DESIGN TOKENS", "red")
+        "AIA 고령자 맞춤 디자인 시스템 (Design System Standards)", 
+        "공식 디자인 시스템 원본 기반: 텍스트(+4pt), 버튼(48px), 고대비 컬러, 단순화 아이콘 및 실제 UI 컴포넌트", 
+        right_badge=("OFFICIAL DESIGN SYSTEM", "red")
     )
     
-    lx = 100
-    ly = 220
-    lw = 540
-    lh = 730
-    draw.rounded_rectangle([lx, ly, lx + lw, ly + lh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, left_x=lx + 25, cy=ly + 35, text="QI TOKEN SPECIFICATION TABLE", font=get_font(11, 'bold'), theme='red', pad_x=12, height=24)
-    draw.text((lx + 25, ly + 65), "디자인 토큰 분류 & 플랫폼 표준", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
+    # -------------------------------------------------------------
+    # TOP SECTION: 4 Core Standard Definition Cards (항목 / 기준 정의 / 적용 목적)
+    # -------------------------------------------------------------
+    top_y = 205
+    top_h = 175
+    top_w = 1720
+    top_x = 100
     
-    th_y = ly + 110
-    draw.rounded_rectangle([lx + 20, th_y, lx + lw - 20, th_y + 36], radius=6, fill=(241, 245, 249))
-    draw.text((lx + 35, th_y + 18), "토큰 분류", font=get_font(11.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
-    draw.text((lx + 155, th_y + 18), "고령자 규격", font=get_font(11.5, 'bold'), fill=AIA_RED, anchor='lm')
-    draw.text((lx + 285, th_y + 18), "일반 규격", font=get_font(11.5, 'bold'), fill=TEXT_LIGHT_SUB, anchor='lm')
-    draw.text((lx + 405, th_y + 18), "WCAG 준수", font=get_font(11.5, 'bold'), fill=(16, 185, 129), anchor='lm')
+    draw.rounded_rectangle([top_x, top_y, top_x + top_w, top_y + top_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
+    draw_pill_badge(draw, left_x=top_x + 25, cy=top_y + 26, text="DESIGN SYSTEM GUIDELINES", font=get_font(10.5, 'bold'), theme='red', pad_x=10, height=22)
+    draw.text((top_x + 225, top_y + 16), "고령자 친화 인터페이스 4대 표준 정의 및 적용 목적", font=get_font(15, 'bold'), fill=TEXT_LIGHT_MAIN)
     
-    token_rows = [
-        ("Display 폰트", "28pt Bold", "24pt Bold", "AAA (9.2:1)"),
-        ("본문 Title", "20pt Bold", "16pt SemiBold", "AAA (8.6:1)"),
-        ("기본 본문 Body", "18pt SemiBold", "14pt Regular", "AAA (8.4:1)"),
-        ("보조 캡션", "15pt Medium", "12pt Regular", "AA (6.8:1)"),
-        ("최소 터치 영역", "48 x 48 dp", "36 x 36 dp", "규제 100%"),
-        ("하단 고정 CTA", "56dp 풀와이드", "48dp 기본", "Thumb Zone"),
-        ("버튼 코너 라운딩", "Radius 8dp", "Radius 6dp", "인체공학"),
-        ("컨테이너 보더", "2px 솔리드 라인", "1px 라인", "선명 분리")
+    ds_principles = [
+        ("텍스트 (Typography)", "기존 대비 +4pt 이상", "가독성 확보 및 피로도 감소", "본문 18pt 이상, 헤드라인 1~6 및 본문 1~2 계층화 체계"),
+        ("버튼 (Touch Target)", "최소 터치 영역 48px", "터치 정확도 향상 및 구분성 확보", "56dp 풀와이드 메인 CTA 및 충분한 탭 영역 확보"),
+        ("컬러 (Color Contrast)", "고대비 조합 (High Contrast)", "색약 및 고령자 인지 대응", "배경 대비 7:1 이상의 WCAG AAA 고대비 엄격 준수"),
+        ("아이콘 (Iconography)", "단순화 의미 + 라벨 병기", "직관적 인지 고려 UI 형성", "아이콘 단독 노출 지양, 명확한 한글 텍스트 라벨 결합")
     ]
     
-    try_pos = th_y + 44
-    for t_cat, t_sen, t_gen, t_wcag in token_rows:
-        draw.rectangle([lx + 20, try_pos, lx + lw - 20, try_pos + 42], fill=(255, 248, 250) if "Body" in t_cat or "CTA" in t_cat else (255, 255, 255))
-        draw.line([(lx + 20, try_pos + 42), (lx + lw - 20, try_pos + 42)], fill=BORDER_LIGHT, width=1)
-        draw.text((lx + 35, try_pos + 21), t_cat, font=get_font(12, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
-        draw.text((lx + 155, try_pos + 21), t_sen, font=get_font(12, 'bold'), fill=AIA_RED, anchor='lm')
-        draw.text((lx + 285, try_pos + 21), t_gen, font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB, anchor='lm')
-        draw.text((lx + 405, try_pos + 21), t_wcag, font=get_font(11.5, 'bold'), fill=(5, 150, 105), anchor='lm')
-        try_pos += 44
+    card_cols = 4
+    col_w = (top_w - 40 - (card_cols - 1) * 16) // card_cols
+    col_x = top_x + 20
+    
+    for title, standard, purpose, sub in ds_principles:
+        draw.rounded_rectangle([col_x, top_y + 48, col_x + col_w, top_y + top_h - 14], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+        draw.rounded_rectangle([col_x, top_y + 48, col_x + col_w, top_y + 80], radius=12, fill=(241, 245, 249))
+        draw.rectangle([col_x, top_y + 68, col_x + col_w, top_y + 80], fill=(241, 245, 249))
+        draw.text((col_x + 14, top_y + 64), title, font=get_font(12, 'bold'), fill=AIA_RED, anchor='lm')
         
-    draw.rounded_rectangle([lx + 20, ly + lh - 110, lx + lw - 20, ly + lh - 25], radius=10, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-    draw.text((lx + 35, ly + lh - 95), "💡 디자인 토큰 개발 연동 표준", font=get_font(12, 'bold'), fill=AIA_RED)
-    draw.text((lx + 35, ly + lh - 70), "Figma Tokens -> JSON Schema -> Flutter AppTheme 자동 동기화", font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_MAIN)
-    draw.text((lx + 35, ly + lh - 48), "단일 소스 기반으로 다크/라이트 테마 및 시니어 스케일 100% 매핑", font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB)
+        draw.text((col_x + 14, top_y + 96), "기준: " + standard, font=get_font(12.5, 'bold'), fill=TEXT_LIGHT_MAIN)
+        draw.text((col_x + 14, top_y + 118), "목적: " + purpose, font=get_font(11.5, 'bold'), fill=(16, 185, 129))
+        draw.text((col_x + 14, top_y + 138), sub, font=get_font(10.5, 'regular'), fill=TEXT_LIGHT_SUB)
+        col_x += col_w + 16
+        
+    # -------------------------------------------------------------
+    # BOTTOM SECTION: 3 Columns (Typography / Palette & System / UI Components)
+    # -------------------------------------------------------------
+    bot_y = 395
+    bot_h = 565
     
-    mx = 670
-    mw = 520
-    draw.rounded_rectangle([mx, ly, mx + mw, ly + lh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, left_x=mx + 25, cy=ly + 35, text="QI COLOR MATRIX & CONTRAST", font=get_font(11, 'bold'), theme='red', pad_x=12, height=24)
-    draw.text((mx + 25, ly + 65), "고대비 컬러 팔레트 & 시각 보조", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
+    # Col 1: Typography Scale (한국어 헤드라인 1~6, 본문 1~2)
+    c1_x = 100
+    c1_w = 480
+    draw.rounded_rectangle([c1_x, bot_y, c1_x + c1_w, bot_y + bot_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
+    draw_pill_badge(draw, left_x=c1_x + 20, cy=bot_y + 30, text="TYPOGRAPHY SCALE", font=get_font(10.5, 'bold'), theme='blue', pad_x=10, height=22)
+    draw.text((c1_x + 20, bot_y + 55), "한국어 폰트 스케일 계층 구조", font=get_font(16, 'bold'), fill=TEXT_LIGHT_MAIN)
+    draw.text((c1_x + 20, bot_y + 78), "고령자 시각 피로도 최소화를 위한 계층화 텍스트 시스템", font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB)
     
-    swatches = [
-        ("AIA Red Primary", (211, 17, 69), "#D31145", "브랜드 주 색상, 56dp CTA 버튼, 주요 뱃지"),
-        ("AIA Red Dark", (168, 14, 55), "#A80E37", "버튼 활성/눌림 상태 및 고대비 텍스트"),
-        ("AIA Red Light", (255, 241, 244), "#FFF1F4", "경고 및 미납 알림 하이라이트 배경"),
-        ("Text Main Navy", (15, 23, 42), "#0F172A", "고령자 본문 고대비 텍스트 (9.2:1 명도비)"),
-        ("Text Subtitle Slate", (71, 85, 105), "#475569", "보조 설명 및 부가 레이블 (6.8:1)"),
-        ("Success Emerald", (16, 185, 129), "#10B981", "완료 피드백, 자동이체 정상 등록 뱃지"),
-        ("Notice Amber", (245, 158, 11), "#F59E0B", "미납 도래 3일 전 주의 환기 알림")
+    typo_items = [
+        ("헤드라인 1", "32pt Bold", "주요 타이틀 및 전환 알림", 32),
+        ("헤드라인 2", "28pt Bold", "섹션 헤더 및 주요 카드 타이틀", 28),
+        ("헤드라인 3", "24pt Bold", "모달 팝업 및 서브 섹션", 24),
+        ("헤드라인 4", "20pt Bold", "계약 정보 및 중요 금액 표시", 20),
+        ("헤드라인 5", "18pt SemiBold", "코어 퀵액션 메뉴 레이블", 18),
+        ("헤드라인 6", "16pt SemiBold", "리스트 타이틀 및 안내 강조", 16),
+        ("본문 1 (Body 1)", "16pt Regular", "상세 안내문 및 설명 텍스트", 16),
+        ("본문 2 (Body 2)", "14pt Regular", "부가 캡션 및 부가 메타 정보", 14),
     ]
     
-    sw_y = ly + 115
-    for s_name, s_rgb, s_hex, s_desc in swatches:
-        draw.rounded_rectangle([mx + 25, sw_y, mx + 75, sw_y + 46], radius=8, fill=s_rgb, outline=BORDER_LIGHT, width=1)
-        draw.text((mx + 90, sw_y + 12), s_name, font=get_font(13.5, 'bold'), fill=TEXT_LIGHT_MAIN)
-        draw.text((mx + 250, sw_y + 14), s_hex, font=get_font(11.5, 'bold'), fill=AIA_RED)
-        draw.text((mx + 90, sw_y + 32), s_desc, font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB)
-        sw_y += 62
+    ty_y = bot_y + 105
+    for t_name, t_sz, t_desc, _ in typo_items:
+        draw.rounded_rectangle([c1_x + 18, ty_y, c1_x + c1_w - 18, ty_y + 48], radius=8, fill=(250, 252, 255), outline=BORDER_LIGHT, width=1)
+        draw.text((c1_x + 30, ty_y + 24), t_name, font=get_font(12.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
+        draw_pill_badge(draw, left_x=c1_x + 160, cy=ty_y + 24, text=t_sz, font=get_font(10.5, 'bold'), theme='gray', pad_x=8, height=20)
+        draw.text((c1_x + 255, ty_y + 24), t_desc, font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB, anchor='lm')
+        ty_y += 54
         
-    draw.rounded_rectangle([mx + 25, ly + lh - 180, mx + mw - 25, ly + lh - 25], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-    draw.text((mx + 40, ly + lh - 165), "🔍 WCAG 2.1 AAA 명도 대비 검증 결과", font=get_font(12.5, 'bold'), fill=AIA_RED)
-    draw.text((mx + 40, ly + lh - 138), "• #D31145 vs #FFFFFF : 5.8:1 (AA 기준 상회)", font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_MAIN)
-    draw.text((mx + 40, ly + lh - 116), "• #0F172A vs #FFFFFF : 14.8:1 (최고 수준 AAA)", font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_MAIN)
-    draw.text((mx + 40, ly + lh - 94), "• #10B981 vs #FFFFFF : 4.6:1 (식별성 충족)", font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_MAIN)
-    draw.text((mx + 40, ly + lh - 72), "• 배경색과 본문 간 최소 7:1 이상의 고대비 엄격 준수", font=get_font(11.5, 'bold'), fill=(16, 185, 129))
+    # Col 2: Color Palette Swatches (Figma 원본 고대비 팔레트 반영)
+    c2_x = 600
+    c2_w = 560
+    draw.rounded_rectangle([c2_x, bot_y, c2_x + c2_w, bot_y + bot_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
+    draw_pill_badge(draw, left_x=c2_x + 20, cy=bot_y + 30, text="COLOR PALETTE & CONTRAST", font=get_font(10.5, 'bold'), theme='red', pad_x=10, height=22)
+    draw.text((c2_x + 20, bot_y + 55), "고대비 브랜드 및 기능 컬러 팔레트", font=get_font(16, 'bold'), fill=TEXT_LIGHT_MAIN)
+    draw.text((c2_x + 20, bot_y + 78), "색약·저시력 고령자를 위한 고대비 컬러 매트릭스", font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB)
     
-    rx = 1220
-    rw = 600
-    draw.rounded_rectangle([rx, ly, rx + rw, ly + lh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, left_x=rx + 25, cy=ly + 35, text="REAL QI ASSET SHOWCASE", font=get_font(11, 'bold'), theme='green', pad_x=12, height=24)
-    draw.text((rx + 25, ly + 65), "실제 Qi 버튼 및 폼 컴포넌트", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
+    palette_path = os.path.join(CORE_DIR, "ds_palette.png")
+    if os.path.exists(palette_path):
+        pal_img = Image.open(palette_path)
+        # resize nicely to width 520
+        pw, ph = 520, int(520 * pal_img.height / pal_img.width)
+        if ph > 220:
+            ph = 220
+            pw = int(ph * pal_img.width / pal_img.height)
+        pal_resized = pal_img.resize((pw, ph), Image.Resampling.LANCZOS)
+        pal_x = c2_x + (c2_w - pw) // 2
+        img.paste(pal_resized, (pal_x, bot_y + 105))
+        draw.rounded_rectangle([pal_x - 4, bot_y + 101, pal_x + pw + 4, bot_y + 105 + ph + 4], radius=10, outline=BORDER_LIGHT, width=1)
+        
+    # Contrast Audit Card in Col 2
+    draw.rounded_rectangle([c2_x + 20, bot_y + 345, c2_x + c2_w - 20, bot_y + bot_h - 20], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+    draw.text((c2_x + 35, bot_y + 368), "🔍 WCAG 2.1 AAA 고대비 검증 결과", font=get_font(13, 'bold'), fill=AIA_RED)
     
-    qi_comp_path = os.path.join(QI_DIR, "qi_button_sheet.png")
-    if os.path.exists(qi_comp_path):
-        c_img = Image.open(qi_comp_path).convert('RGB')
-        c_w, c_h = 550, 580
-        c_img = c_img.resize((c_w, c_h), Image.Resampling.LANCZOS)
-        img.paste(c_img, (rx + 25, ly + 115))
-        draw.rounded_rectangle([rx + 25, ly + 115, rx + 25 + c_w, ly + 115 + c_h], radius=10, outline=BORDER_LIGHT, width=1)
+    contrast_points = [
+        ("AIA Red Primary (#D31145) vs White", "5.8:1 (AA 충족, 56dp CTA)"),
+        ("Navy Main Text (#0F172A) vs White", "14.8:1 (최고 수준 AAA 달성)"),
+        ("Slate Subtitle (#475569) vs White", "7.1:1 (엄격한 고대비 기준 준수)"),
+        ("Teal Focus (#00878A) vs White", "4.8:1 (포커스 링 및 보조 인지)")
+    ]
+    cp_y = bot_y + 398
+    for label, res in contrast_points:
+        draw.text((c2_x + 35, cp_y), "• " + label + " :", font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_MAIN)
+        draw.text((c2_x + 325, cp_y), res, font=get_font(11.5, 'bold'), fill=(16, 185, 129))
+        cp_y += 24
+    draw.text((c2_x + 35, cp_y + 8), "※ 색상만으로 정보를 구별하지 않고 텍스트 레이블 병행 표기 원칙", font=get_font(11, 'bold'), fill=AIA_RED)
+    
+    # Col 3: Real UI Components & Forms (버튼, 입력 필드, 납부 안내 카드, 칩 선택)
+    c3_x = 1180
+    c3_w = 640
+    draw.rounded_rectangle([c3_x, bot_y, c3_x + c3_w, bot_y + bot_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
+    draw_pill_badge(draw, left_x=c3_x + 20, cy=bot_y + 30, text="UI COMPONENTS & INPUT FORMS", font=get_font(10.5, 'bold'), theme='green', pad_x=10, height=22)
+    draw.text((c3_x + 20, bot_y + 55), "공식 UI 컴포넌트 & 48px 터치 폼", font=get_font(16, 'bold'), fill=TEXT_LIGHT_MAIN)
+    draw.text((c3_x + 20, bot_y + 78), "보험료 납부 안내, 다이렉트 폼, 자동이체 일자 선택 칩셋", font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB)
+    
+    comps_path = os.path.join(CORE_DIR, "ds_ui_components.png")
+    if os.path.exists(comps_path):
+        comp_img = Image.open(comps_path)
+        cw = 600
+        ch = int(cw * comp_img.height / comp_img.width)
+        if ch > 440:
+            ch = 440
+            cw = int(ch * comp_img.width / comp_img.height)
+        comp_resized = comp_img.resize((cw, ch), Image.Resampling.LANCZOS)
+        comp_x = c3_x + (c3_w - cw) // 2
+        comp_y = bot_y + 105
+        img.paste(comp_resized, (comp_x, comp_y))
+        draw.rounded_rectangle([comp_x - 4, comp_y - 4, comp_x + cw + 4, comp_y + ch + 4], radius=10, outline=BORDER_LIGHT, width=1)
         
     draw_slide_footer(draw, 7, 12, dark_mode=False)
     out_path = os.path.join(OUT_DIR, "slide_07.png")
