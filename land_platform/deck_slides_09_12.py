@@ -184,7 +184,7 @@ def make_slide_10():
     print(f"Generated: {out_path}")
 
 # -------------------------------------------------------------
-# SLIDE 11: CORE FEATURE · STEP 4 · VALUATION REPORT (Figma sec_08 & sec_09)
+# SLIDE 11: CORE FEATURE · STEP 4 · COST COMPARISON & VALUATION (Figma Step 6)
 # -------------------------------------------------------------
 def make_slide_11():
     img = Image.new('RGB', (W, H), BG_LIGHT)
@@ -193,57 +193,80 @@ def make_slide_11():
         draw, 11, 
         "CORE FEATURE · STEP 4", 
         "Simulation Step 4 | ", 
-        "STEP 4. 가공유통시설 설계 & 종합 리포트 발급 화면 (Figma UI 원본)", 
-        "피그마 공식 화면설계서 UI 2단계: [1] 가공유통시설(sec_08) - APC 유통센터 & 복합화  |  [2] 분석 보고서 제공(sec_09) - 금융 심사용 20p PDF 발급", 
-        right_badge=("SIMULATOR STEP 4", "green")
+        "STEP 4. 조성비 비교/확정 & 타당성 보고서 화면 (Figma UI 실물)", 
+        "피그마 공식 UI 원본: [1] 데스크톱 현재 진행 vs 대상지 최적 자동설정 3분할 비교 대조 화면(1024x647)  |  [2] 모바일 기반공사비·건축공사비 합산 236억 확정 UI", 
+        right_badge=("OFFICIAL FIGMA UI", "green")
     )
     
-    lw = 450
-    lh = 740
-    ly = 220
-    draw.rounded_rectangle([100, ly, 100 + lw, ly + lh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, left_x=130, cy=ly + 35, text="STEP 4 · REPORT & LOGISTICS", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=24)
-    draw.text((130, ly + 72), "가공유통 & 금융 리포트 UI", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
-    draw.text((130, ly + 96), "피그마 원본 2대 사업화 완결 서브스텝 연동", font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
+    card_y = 215
+    card_h = 745
+    
+    # 3-Zone Architecture matching Slides 07, 09, 10:
+    # Zone 1 (Left Card, w=450, x=100): Core Specs & Decision Logic
+    # Zone 2 (Middle Card, w=880, x=560): Desktop Web Browser Mockup (피그마 원본 STEP 6 조성비 비교/확정 화면)
+    # Zone 3 (Right Card, w=340, x=1480): Mobile Phone Mockup (피그마 원본 모바일 STEP 6 화면)
+    
+    # =========================================================================
+    # ZONE 1: LEFT SPECS CARD (w=450, x=100)
+    # =========================================================================
+    lx, lw = 100, 450
+    draw.rounded_rectangle([lx, card_y, lx + lw, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
+    draw_pill_badge(draw, left_x=lx + 25, cy=card_y + 35, text="STEP 4 · COST COMPARISON & REPORT", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=24)
+    draw.text((lx + 25, card_y + 68), "조성비 비교/확정 & 리포트 UI", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
+    draw.text((lx + 25, card_y + 92), "현재 진행 정보 vs 대상지 자동 설정 실시간 대조 검증", font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
 
-    cards = [
-        ("01. 농산물 가공유통시설 설계 (sec_08)", "스마트 APC 농산물 유통센터, 저온 물류창고, 체험형 복합공간을 부지 내 최적 배치하여 부가가치 창출"),
-        ("02. 금융 심사 표준 20p PDF 발급 (sec_09)", "농협, 수협, 신용보증기금 등 정책금융 대출 심사에 즉시 제출 가능한 공인 포맷의 다면 보고서 원클릭 다운로드"),
-        ("03. 투자자·시공사 매칭 연결 (sec_09)", "검토 완료된 프로젝트를 플랫폼 내 인증 스마트팜 전문 시공사 및 정책자금 전문 컨설턴트와 다이렉트 매칭 지원")
+    step4_specs = [
+        ("01. 현재 진행 vs 자동 설정 비교", "기본공사비, 건축공사비, 예비비 항목별 사용자의 현재 입력값과 대상지 최적화 자동 권장값을 나란히 대조하여 과오납 검증"),
+        ("02. 총 236억 조성비 정밀 확정", "총 23,625,342,362원의 기반시설 및 건축공사비 산출 기준(LH 표준건축비)을 투명하게 공개하여 투자 집행 리스크 원천 차단"),
+        ("03. 금융 심사 표준 20p PDF 발급", "조성비 확정 즉시 농협, 수협, 신용보증기금 등 정책금융 대출 심사에 즉시 제출 가능한 공인 포맷의 다면 보고서 원클릭 다운로드")
     ]
-    cy = ly + 120
-    for title, desc in cards:
-        draw.rounded_rectangle([125, cy, 100 + lw - 25, cy + 130], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-        draw.text((145, cy + 22), title, font=get_font(13.5, 'bold'), fill=BRAND_GREEN)
-        lines = wrap_text(desc, get_font(11.5, 'regular'), lw - 70, draw)
-        dy = cy + 48
+    cy = card_y + 118
+    for title, desc in step4_specs:
+        draw.rounded_rectangle([lx + 25, cy, lx + lw - 25, cy + 130], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+        draw.text((lx + 40, cy + 22), title, font=get_font(13.5, 'bold'), fill=BRAND_GREEN)
+        lines = wrap_text(desc, get_font(11, 'regular'), lw - 70, draw)
+        dy = cy + 46
         for l in lines:
-            draw.text((145, dy), l, font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
+            draw.text((lx + 40, dy), l, font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB)
             dy += 18
-        cy += 145
+        cy += 144
 
     # Bottom Key Metric Callout in Left Card
-    draw.rounded_rectangle([125, ly + 575, 100 + lw - 25, ly + 715], radius=12, fill=(236, 253, 245), outline=(167, 243, 208), width=1)
-    draw.text((145, ly + 596), "💡 STEP 4 핵심 설계 전략 및 가치", font=get_font(13, 'bold'), fill=BRAND_DARK)
-    val_desc = "단순 화면 조회를 넘어 '실제 자금 조달과 시공 계약'이라는 최종 현실 목표를 달성할 수 있도록, 금융 기관이 요구하는 공인 양식에 맞춘 20페이지 보고서를 원클릭 자동 생성하도록 완결성을 부여했습니다."
-    lines_val = wrap_text(val_desc, get_font(11, 'regular'), lw - 70, draw)
-    vy = ly + 620
+    draw.rounded_rectangle([lx + 25, card_y + 565, lx + lw - 25, card_y + 715], radius=12, fill=(236, 253, 245), outline=(167, 243, 208), width=1)
+    draw.text((lx + 40, card_y + 586), "💡 STEP 4 핵심 설계 전략 및 가치", font=get_font(12.5, 'bold'), fill=BRAND_DARK)
+    val_desc = "사용자가 직관적으로 현재 입력치와 최적 추천치를 비교할 수 있는 듀얼 테이블 UI를 제공함으로써, 수십억 단위 공사비 산출의 신뢰성을 극대화하고 최종 사업 인허가 및 금융 승인까지 원스톱으로 연결합니다."
+    lines_val = wrap_text(val_desc, get_font(10.5, 'regular'), lw - 70, draw)
+    vy = card_y + 610
     for l in lines_val:
-        draw.text((145, vy), l, font=get_font(11, 'regular'), fill=TEXT_LIGHT_MAIN)
+        draw.text((lx + 40, vy), l, font=get_font(10.5, 'regular'), fill=TEXT_LIGHT_MAIN)
         vy += 17
 
-    # Right: Dual Desktop Browser Mockups (Top: sec_08 가공유통시설 / Bottom: sec_09 분석 보고서)
-    rx = 575
-    rw = 1245
-    box_h = 355
+    # =========================================================================
+    # ZONE 2: DESKTOP WEB BROWSER MOCKUP (w=880, x=560)
+    # =========================================================================
+    mx, mw = 560, 880
+    draw.rounded_rectangle([mx, card_y, mx + mw, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
+    draw_pill_badge(draw, left_x=mx + 25, cy=card_y + 35, text="DESKTOP VIEW (1920px)", font=get_font(10.5, 'bold'), theme='blue', pad_x=12, height=24)
+    draw.text((mx + 215, card_y + 35), "피그마 공식 데스크톱 화면 (STEP 6 조성비 비교/확정 듀얼 대조 UI)", font=get_font(13, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
     
-    # Top Screen: sec_08 (가공유통시설)
-    s1_p = os.path.join(ASSETS_DIR, "figma_screen_sec_08.png")
-    draw_browser_mockup(img, s1_p, x=rx, y=ly, w=rw, h=box_h, title="STEP 4-1 · AGRO-LOGISTICS FACILITY DESIGN (sec_08)", url="https://farmingsys.io/app/step-04-logistics")
+    desk_asset = os.path.join(ASSETS_DIR, "figma_step6_cost_comparison_desktop.png")
+    desk_im = Image.open(desk_asset)
+    desk_vp_w = mw - 40 - 4
+    desk_vp_h = int(desk_vp_w * (desk_im.height / desk_im.width))
+    desk_total_h = 36 + 2 + desk_vp_h
+    desk_y = card_y + 75 + (card_h - 95 - desk_total_h) // 2
+    draw_browser_mockup(img, desk_asset, x=mx + 20, y=desk_y, w=mw - 40, h=desk_total_h, title="FARMINGSYS ENTERPRISE · STEP 6 COST COMPARISON & VALUATION (DESKTOP)", url="https://farmingsys.io/app/step-06-cost-comparison")
+
+    # =========================================================================
+    # ZONE 3: MOBILE PHONE MOCKUP (w=340, x=1480)
+    # =========================================================================
+    rx, rw = 1480, 340
+    draw.rounded_rectangle([rx, card_y, rx + rw, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
+    draw_pill_badge(draw, left_x=rx + 25, cy=card_y + 35, text="MOBILE VIEW (390px)", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=24)
+    draw.text((rx + 195, card_y + 35), "조성비 확정 모바일 UI", font=get_font(13, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
     
-    # Bottom Screen: sec_09 (분석 보고서 제공)
-    s2_p = os.path.join(ASSETS_DIR, "figma_screen_sec_09.png")
-    draw_browser_mockup(img, s2_p, x=rx, y=ly + box_h + 30, w=rw, h=box_h, title="STEP 4-2 · VALUATION REPORT & FINANCING (sec_09)", url="https://farmingsys.io/app/step-04-report")
+    mob_asset = os.path.join(ASSETS_DIR, "figma_step6_cost_comparison_mobile.png")
+    draw_phone_mockup(img, mob_asset, cx=rx + rw//2, cy=card_y + 75 + (card_h - 95)//2, target_h=640, bezel=7, radius=28)
 
     draw_slide_footer(draw, 11, 12, dark_mode=False)
     out_path = os.path.join(OUT_DIR, "slide_11.png")
