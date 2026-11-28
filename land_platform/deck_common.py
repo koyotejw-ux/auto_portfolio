@@ -163,9 +163,24 @@ def draw_slide_footer(draw, slide_num, total_slides=12, dark_mode=False):
     page_str = f"PAGE {slide_num:02d} / {total_slides:02d}"
     draw.text((1820, 1018), page_str, font=get_num_font(11.5, 'black'), fill=page_col, anchor='rt')
 
-def draw_phone_mockup(base_img, screen_path, cx, cy, phone_w=315, phone_h=640, bezel=7, radius=28):
+def draw_phone_mockup(base_img, screen_path, cx, cy, target_h=640, bezel=7, radius=28):
     if not os.path.exists(screen_path):
         return
+    
+    s_img = Image.open(screen_path).convert('RGBA')
+    img_aspect = s_img.width / s_img.height  # 460 / 1024 = 0.4492
+    
+    # Status Bar & Home Bar heights
+    sb_h = 30
+    home_h = 14
+    
+    # Available viewport height for the image while maintaining exact 1:1 original aspect ratio
+    vp_h = target_h - (bezel * 2 + sb_h + home_h)
+    vp_w = int(vp_h * img_aspect)
+    
+    # Outer phone dimensions dynamically wrapping the image with zero distortion and zero letterbox
+    phone_w = vp_w + bezel * 2
+    phone_h = target_h
     
     draw = ImageDraw.Draw(base_img)
     x1 = cx - phone_w // 2
@@ -179,61 +194,63 @@ def draw_phone_mockup(base_img, screen_path, cx, cy, phone_w=315, phone_h=640, b
     draw.rounded_rectangle([x1 + bezel, y1 + bezel, x2 - bezel, y2 - bezel], radius=radius - 3, fill=(255, 255, 255))
     
     # Status Bar Area (Height: 30px)
-    sb_h = 30
     sb_y = y1 + bezel
     
     # Status Bar: Time (9:41) on Left
-    draw.text((x1 + bezel + 22, sb_y + 16), "9:41", font=get_font(11, 'bold'), fill=(15, 23, 42), anchor='lm')
+    draw.text((x1 + bezel + 18, sb_y + 16), "9:41", font=get_font(10.5, 'bold'), fill=(15, 23, 42), anchor='lm')
     
     # Status Bar: Dynamic Island in Center
-    draw.rounded_rectangle([cx - 28, sb_y + 6, cx + 28, sb_y + 20], radius=7, fill=(15, 23, 42))
+    draw.rounded_rectangle([cx - 26, sb_y + 6, cx + 26, sb_y + 20], radius=7, fill=(15, 23, 42))
     
     # Status Bar: Icons on Right (Cellular Signal, Wifi, Battery)
-    r_icon_x = x2 - bezel - 20
+    r_icon_x = x2 - bezel - 16
     # Battery Outline
-    draw.rounded_rectangle([r_icon_x - 22, sb_y + 9, r_icon_x, sb_y + 21], radius=3, fill=(255, 255, 255), outline=(15, 23, 42), width=1)
+    draw.rounded_rectangle([r_icon_x - 20, sb_y + 9, r_icon_x, sb_y + 21], radius=3, fill=(255, 255, 255), outline=(15, 23, 42), width=1)
     # Battery Fill
-    draw.rounded_rectangle([r_icon_x - 20, sb_y + 11, r_icon_x - 4, sb_y + 19], radius=2, fill=(15, 23, 42))
+    draw.rounded_rectangle([r_icon_x - 18, sb_y + 11, r_icon_x - 3, sb_y + 19], radius=2, fill=(15, 23, 42))
     # Battery Tip
     draw.line([(r_icon_x + 1, sb_y + 12), (r_icon_x + 1, sb_y + 18)], fill=(15, 23, 42), width=1)
     # Wifi Icon Bars
-    draw.arc([r_icon_x - 38, sb_y + 7, r_icon_x - 26, sb_y + 19], start=210, end=330, fill=(15, 23, 42), width=2)
-    draw.arc([r_icon_x - 35, sb_y + 11, r_icon_x - 29, sb_y + 19], start=210, end=330, fill=(15, 23, 42), width=2)
-    draw.ellipse([r_icon_x - 33, sb_y + 17, r_icon_x - 31, sb_y + 19], fill=(15, 23, 42))
+    draw.arc([r_icon_x - 36, sb_y + 7, r_icon_x - 24, sb_y + 19], start=210, end=330, fill=(15, 23, 42), width=2)
+    draw.arc([r_icon_x - 33, sb_y + 11, r_icon_x - 27, sb_y + 19], start=210, end=330, fill=(15, 23, 42), width=2)
+    draw.ellipse([r_icon_x - 31, sb_y + 17, r_icon_x - 29, sb_y + 19], fill=(15, 23, 42))
     # Cellular Signal Bars
     for bi, bh in enumerate([4, 6, 8, 10]):
-        bx = r_icon_x - 54 + bi * 3
+        bx = r_icon_x - 50 + bi * 3
         draw.line([(bx, sb_y + 20 - bh), (bx, sb_y + 20)], fill=(15, 23, 42), width=2)
 
     # Home Indicator Bar at the bottom
-    home_y = y2 - bezel - 8
-    draw.rounded_rectangle([cx - 45, home_y, cx + 45, home_y + 4], radius=2, fill=(15, 23, 42))
+    home_y = y2 - bezel - 9
+    draw.rounded_rectangle([cx - 40, home_y, cx + 40, home_y + 4], radius=2, fill=(15, 23, 42))
 
-    # Inner Content Viewport Screen below Status Bar
-    s_img = Image.open(screen_path).convert('RGBA')
-    vp_w = phone_w - bezel * 2
-    vp_h = phone_h - bezel * 2 - sb_h - 12  # leave space for status bar and home indicator
-    
-    # Fill full width edge-to-edge without left/right empty margins (좌우 여백 완전 제거)
-    sn_w = vp_w
-    sn_h = min(vp_h, int(s_img.height * (vp_w / s_img.width)))
-    s_res = s_img.resize((sn_w, sn_h), Image.Resampling.LANCZOS)
+    # Inner Content Viewport Screen below Status Bar (Exact original 1:1 aspect ratio)
+    s_res = s_img.resize((vp_w, vp_h), Image.Resampling.LANCZOS)
     
     # Place screen image starting exactly right below status bar, flush to left & right edges
     px = x1 + bezel
     py = sb_y + sb_h
     base_img.paste(s_res, (px, py), s_res)
 
-def draw_browser_mockup(base_img, screen_path, x, y, w, h, title="FARMINGSYS ENTERPRISE · GIS CLOUD", url="https://farmingsys.io/workspace/land-analysis", fit_height=False):
+def draw_browser_mockup(base_img, screen_path, x, y, w, h=None, target_w=None, title="FARMINGSYS ENTERPRISE · GIS CLOUD", url="https://farmingsys.io/workspace/land-analysis"):
     draw = ImageDraw.Draw(base_img)
     header_h = 36
     
-    # If fit_height is requested or if height is adjusted to eliminate letterbox:
-    actual_h = h
-    if fit_height and os.path.exists(screen_path):
-        s_test = Image.open(screen_path)
-        vp_w = w - 4
-        actual_h = header_h + 2 + int(vp_w * (s_test.height / s_test.width))
+    # Maintain exact 1:1 original aspect ratio without distortion or letterboxing
+    if not os.path.exists(screen_path):
+        draw.text((x + w//2, y + 100), "Mockup Screen Asset", font=get_font(14, 'bold'), fill=(148, 163, 184), anchor='mm')
+        return h or 300
+    
+    s_img = Image.open(screen_path).convert('RGBA')
+    img_aspect = s_img.height / s_img.width  # e.g. 609 / 1024 = 0.5947
+    
+    vp_w = w - 4
+    if h is not None:
+        # If fixed height provided, check if we should strictly follow image aspect ratio
+        vp_h = int(vp_w * img_aspect)
+        actual_h = header_h + 2 + vp_h
+    else:
+        vp_h = int(vp_w * img_aspect)
+        actual_h = header_h + 2 + vp_h
 
     # Browser window container shadow/outline
     draw.rounded_rectangle([x, y, x + w, y + actual_h], radius=12, fill=(15, 23, 42), outline=(51, 65, 85), width=1)
@@ -253,20 +270,12 @@ def draw_browser_mockup(base_img, screen_path, x, y, w, h, title="FARMINGSYS ENT
     # Title in center
     draw.text((x + w - 20, btn_y), title, font=get_font(10.5, 'bold'), fill=(100, 116, 139), anchor='rm')
     
-    # Inner viewport screen (fits exactly with zero top/bottom empty margins)
-    if os.path.exists(screen_path):
-        s_img = Image.open(screen_path).convert('RGBA')
-        vp_w = w - 4
-        vp_h = actual_h - header_h - 2
-        
-        # Exact fit resizing to fill the viewport without vertical letterbox
-        s_res = s_img.resize((vp_w, vp_h), Image.Resampling.LANCZOS)
-        
-        px = x + 2
-        py = y + header_h + 1
-        base_img.paste(s_res, (px, py), s_res)
-    else:
-        draw.text((x + w//2, y + actual_h//2), "Mockup Screen Asset", font=get_font(14, 'bold'), fill=(148, 163, 184), anchor='mm')
+    # Inner viewport screen resized with 100% original aspect ratio (zero distortion, zero letterbox)
+    s_res = s_img.resize((vp_w, vp_h), Image.Resampling.LANCZOS)
+    
+    px = x + 2
+    py = y + header_h + 1
+    base_img.paste(s_res, (px, py), s_res)
     
     return actual_h
 

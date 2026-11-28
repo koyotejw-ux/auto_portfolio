@@ -339,9 +339,9 @@ def make_slide_07():
         vy += 17
 
     # =========================================================================
-    # ZONE 2: DESKTOP WEB BROWSER MOCKUP (w=850, x=575)
+    # ZONE 2: DESKTOP WEB BROWSER MOCKUP (w=880, x=560)
     # =========================================================================
-    mx, mw = 575, 850
+    mx, mw = 560, 880
     draw.rounded_rectangle([mx, card_y, mx + mw, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
     draw_pill_badge(draw, left_x=mx + 25, cy=card_y + 35, text="DESKTOP VIEW (1920px)", font=get_font(10.5, 'bold'), theme='blue', pad_x=12, height=24)
     draw.text((mx + 215, card_y + 35), "피그마 공식 데스크톱 화면 (STEP 2 토지분석 듀얼 뷰)", font=get_font(13, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
@@ -350,7 +350,6 @@ def make_slide_07():
     if not os.path.exists(desk_asset):
         desk_asset = os.path.join(ASSETS_DIR, "figma_screen_sec_03.png")
     
-    # Calculate exact mockup dimensions so that viewport matches image ratio with zero top/bottom margin
     desk_im = Image.open(desk_asset)
     desk_vp_w = mw - 40 - 4
     desk_vp_h = int(desk_vp_w * (desk_im.height / desk_im.width))
@@ -359,15 +358,15 @@ def make_slide_07():
     draw_browser_mockup(img, desk_asset, x=mx + 20, y=desk_y, w=mw - 40, h=desk_total_h, title="FARMINGSYS ENTERPRISE · STEP 2 LAND ANALYSIS (DESKTOP)", url="https://farmingsys.io/app/step-02-land-analysis")
 
     # =========================================================================
-    # ZONE 3: MOBILE PHONE MOCKUP (w=370, x=1450)
+    # ZONE 3: MOBILE PHONE MOCKUP (w=340, x=1480)
     # =========================================================================
-    rx, rw = 1450, 370
+    rx, rw = 1480, 340
     draw.rounded_rectangle([rx, card_y, rx + rw, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
     draw_pill_badge(draw, left_x=rx + 25, cy=card_y + 35, text="MOBILE VIEW (390px)", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=24)
     draw.text((rx + 195, card_y + 35), "모바일 적응형 UI", font=get_font(13, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
     
     mob_asset = os.path.join(ASSETS_DIR, "figma_step2_land_analysis_mobile.png")
-    draw_phone_mockup(img, mob_asset, cx=rx + rw//2, cy=card_y + 75 + (card_h - 95)//2, phone_w=310, phone_h=635, bezel=7, radius=28)
+    draw_phone_mockup(img, mob_asset, cx=rx + rw//2, cy=card_y + 75 + (card_h - 95)//2, target_h=640, bezel=7, radius=28)
 
     draw_slide_footer(draw, 7, 12, dark_mode=False)
     out_path = os.path.join(OUT_DIR, "slide_07.png")
