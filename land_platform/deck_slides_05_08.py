@@ -280,112 +280,94 @@ def make_slide_06():
     print(f"Generated: {out_path}")
 
 # -------------------------------------------------------------
-# SLIDE 07: RESPONSIVE ECOSYSTEM & PROTOTYPING (Landing Page & Mobile GIS Flow)
+# SLIDE 07: CORE FEATURE · STEP 1 · LAND SELECTION & REGULATORY ANALYSIS
 # -------------------------------------------------------------
 def make_slide_07():
     img = Image.new('RGB', (W, H), BG_LIGHT)
     draw = ImageDraw.Draw(img)
     draw_slide_header(
         draw, 7, 
-        "RESPONSIVE PROTOTYPING", 
-        "Responsive & Prototyping | ", 
-        "반응형 랜딩페이지 & 모바일 3단계 지도 레이어 상태 전환 흐름", 
-        "Desktop 1920px 패럴랙스 랜딩, Tablet 1024px 지도 워크스페이스, Mobile 390px 3단계 레이어 프로토타이핑(지적도→일반지도→스카이뷰)", 
-        right_badge=("OFFICIAL FIGMA PROTOTYPE", "green")
+        "CORE FEATURE · STEP 1", 
+        "Simulation Step 1 | ", 
+        "STEP 1. 대상지 지번 검색 · 토지 인허가 3초 자동 진단 & 3단계 지도 레이어 전환", 
+        "피그마 공식 UI 원본: 12대 공공 GIS 데이터 연동, 용도지역/건폐율/경사도/접도 규제 진단, 지적도→일반지도→스카이뷰 인터랙션", 
+        right_badge=("SIMULATOR STEP 1", "green")
     )
     
     card_y = 215
     card_h = 745
     
     # 2-Section Structure:
-    # Left Card (w=540, x=100): Responsive Landing Page & Multi-Device Breakpoints Architecture
-    # Right Card (w=1150, x=670): Authentic 3-Phone Interactive Prototyping Flow (지적도 -> 일반지도 -> 스카이뷰)
+    # Left Card (w=480, x=100): Step 1 Core UX Highlights & Decision Logic
+    # Right Card (w=1210, x=610): Dual UI Showcase - Web Desktop Browser (sec_03) + Mobile 3-Phone Prototyping
     
     # =========================================================================
-    # LEFT CARD: RESPONSIVE LANDING PAGE & BREAKPOINTS ARCHITECTURE (w=540, x=100)
+    # LEFT CARD: STEP 1 CORE HIGHLIGHTS & REGULATORY ENGINE (w=480, x=100)
     # =========================================================================
-    lx, lw = 100, 540
+    lx, lw = 100, 480
     draw.rounded_rectangle([lx, card_y, lx + lw, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, left_x=lx + 25, cy=card_y + 35, text="RESPONSIVE ARCHITECTURE", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=24)
-    draw.text((lx + 25, card_y + 68), "반응형 랜딩 & 멀티 디바이스 규격", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
-    draw.text((lx + 25, card_y + 94), "Desktop 1920 · Tablet 1024 · Mobile 390 적응형 레이아웃", font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
+    draw_pill_badge(draw, left_x=lx + 25, cy=card_y + 35, text="STEP 1 · LAND ANALYSIS", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=24)
+    draw.text((lx + 25, card_y + 68), "대상지 선택 & 규제 진단 UI", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
+    draw.text((lx + 25, card_y + 94), "지번 입력 즉시 100+ 공적 규제 실시간 자동 판정", font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
     
-    # Breakpoint Specs (3 Tiers)
-    breakpoints = [
-        {
-            "device": "Desktop Web (1920px)",
-            "badge": "1920 · FULL",
-            "theme": "green",
-            "desc": "패럴랙스 비주얼 스크롤링, 4열 카드 그리드, 좌측 420px 분석 패널과 우측 1500px 고해상도 GIS 맵 듀얼 뷰"
-        },
-        {
-            "device": "Tablet / iPad (1024px)",
-            "badge": "1024 · FLUID",
-            "theme": "blue",
-            "desc": "터치 인터랙션 최적화, 접이식 플로팅 드로어 패널, 핀치 줌 제스처 및 분할 화면 스케일링"
-        },
-        {
-            "device": "Mobile Phone (390px)",
-            "badge": "390 · STACK",
-            "theme": "gray",
-            "desc": "1열 수직 스택, 하단 드래그 바텀시트, 원클릭 플로팅 레이어 전환 탭(지적도/일반/위성) 제공"
-        }
+    step1_specs = [
+        ("01. 실시간 공공 GIS 데이터 연동", "토지이음, 국토교통부 지적도, 수치표고모델(DEM) 12대 API를 병렬 호출하여 지번·경계선·지목 즉시 파싱"),
+        ("02. 3초 인허가 & 조례 룰셋 자동 진단", "용도지역(농림/관리/도시), 건폐율·용적률, 개발행위허가 기준(경사도 15도 이하, 도로 접도 4m) 적합/조건부/불가 3색 판정"),
+        ("03. 3단계 지도 레이어 모드 전환", "지적도(공적 경계 확인), 일반지도(도심 인프라 및 진입도로), 스카이뷰(실제 농지 현황 및 임목) 원클릭 교차 검증")
     ]
     
-    by = card_y + 120
-    for bp in breakpoints:
-        draw.rounded_rectangle([lx + 25, by, lx + lw - 25, by + 102], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-        draw.text((lx + 40, by + 18), bp["device"], font=get_font(13.5, 'bold'), fill=TEXT_LIGHT_MAIN)
-        draw_pill_badge(draw, left_x=lx + lw - 135, cy=by + 24, text=bp["badge"], font=get_font(9.5, 'bold'), theme=bp["theme"], pad_x=8, height=20)
-        lines = wrap_text(bp["desc"], get_font(11, 'regular'), lw - 75, draw)
-        ly = by + 42
+    sy = card_y + 125
+    for s_title, s_desc in step1_specs:
+        draw.rounded_rectangle([lx + 25, sy, lx + lw - 25, sy + 130], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+        draw.text((lx + 40, sy + 24), s_title, font=get_font(14, 'bold'), fill=BRAND_GREEN)
+        lines = wrap_text(s_desc, get_font(11.5, 'regular'), lw - 70, draw)
+        dy = sy + 50
         for l in lines:
-            draw.text((lx + 40, ly), l, font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB)
-            ly += 18
-        by += 114
+            draw.text((lx + 40, dy), l, font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
+            dy += 18
+        sy += 145
 
-    # Landing Page Core Narrative Card (Bottom half of Left)
-    draw.rounded_rectangle([lx + 25, card_y + 480, lx + lw - 25, card_y + 715], radius=12, fill=(240, 253, 244), outline=(187, 247, 208), width=1)
-    draw_pill_badge(draw, left_x=lx + 40, cy=card_y + 505, text="LANDING PAGE HIGHLIGHTS", font=get_font(10, 'bold'), theme='green', pad_x=10, height=20)
-    draw.text((lx + 40, card_y + 534), "공식 랜딩페이지 5단계 전환 퍼널", font=get_font(14, 'bold'), fill=BRAND_DARK)
-    
-    landing_steps = [
-        "1. 헤로 섹션: 패럴랙스 항공뷰 & '스마트팜 토지개발이 쉬워진다' CTA",
-        "2. 문제제기: 비전문가의 인허가 난항 및 2주 소요 현실 직시",
-        "3. 4단계 시뮬레이션 미리보기: 대상지-규제-배치-금융 리포트 체험",
-        "4. 신뢰 지표 & 후기: 실시간 분석 건수, 파트너 금융기관 로고",
-        "5. 원클릭 전환: 즉시 내 토지 지번 입력 및 맞춤 상담 신청"
-    ]
-    ls_y = card_y + 558
-    for ls in landing_steps:
-        draw.text((lx + 40, ls_y), ls, font=get_font(10.5, 'regular'), fill=TEXT_LIGHT_MAIN)
-        ls_y += 28
+    # Bottom Key Metric Callout in Left Card
+    draw.rounded_rectangle([lx + 25, card_y + 575, lx + lw - 25, card_y + 715], radius=12, fill=(236, 253, 245), outline=(167, 243, 208), width=1)
+    draw.text((lx + 40, card_y + 596), "💡 STEP 1 사용자 가치 및 UX 성과", font=get_font(13, 'bold'), fill=BRAND_DARK)
+    val_desc = "과거 토지주가 군청·등기소에 직접 방문해 2주간 서류를 검토하던 복잡한 과정을 '지번 1회 입력 ➔ 3초 자동 판정'으로 압축하여 정보 탐색 소요 시간을 90% 이상 획기적으로 절감했습니다."
+    lines_val = wrap_text(val_desc, get_font(11, 'regular'), lw - 70, draw)
+    vy = card_y + 620
+    for l in lines_val:
+        draw.text((lx + 40, vy), l, font=get_font(11, 'regular'), fill=TEXT_LIGHT_MAIN)
+        vy += 17
 
     # =========================================================================
-    # RIGHT CARD: AUTHENTIC 3-PHONE INTERACTIVE GIS FLOW (w=1150, x=670)
+    # RIGHT CARD: DUAL SCREEN UI (Web Browser Mockup + 3-Phone Prototyping)
     # =========================================================================
-    rx, rw = 670, 1150
+    rx, rw = 610, 1210
     draw.rounded_rectangle([rx, card_y, rx + rw, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, left_x=rx + 30, cy=card_y + 35, text="AUTHENTIC FIGMA PROTOTYPE UI", font=get_font(10.5, 'bold'), theme='blue', pad_x=12, height=24)
-    draw.text((rx + 285, card_y + 35), "피그마 원본 인터랙티브 프로토타입: 모바일 3단계 지도 레이어 전환 흐름", font=get_font(13.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
+    draw_pill_badge(draw, left_x=rx + 30, cy=card_y + 35, text="AUTHENTIC FIGMA STEP 1 SCREENS", font=get_font(10.5, 'bold'), theme='blue', pad_x=12, height=24)
+    draw.text((rx + 310, card_y + 35), "피그마 공식 UI: 웹 데스크톱 인허가 분석창 & 모바일 3단계 지도 레이어 전환", font=get_font(13, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
     
-    # Bottom callout in Right Card
-    draw.rounded_rectangle([rx + 30, card_y + card_h - 75, rx + rw - 30, card_y + card_h - 20], radius=10, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-    draw.text((rx + 45, card_y + card_h - 58), "💡 상태 전환 인터랙션 설계:", font=get_font(11.5, 'bold'), fill=BRAND_DARK)
-    flow_desc = "우측 상단 플로팅 메뉴에서 [지적도 / 일반지도 / 스카이뷰] 원클릭 시 맵 타일이 300ms 페이드 전환되며, 하단 선택 필지 데이터는 고정 유지됩니다."
-    draw.text((rx + 225, card_y + card_h - 58), flow_desc, font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB)
+    # Top Half of Right: Desktop Web Browser Mockup (sec_03: 토지 인허가 분석)
+    web_y = card_y + 65
+    web_h = 345
+    s_web = os.path.join(ASSETS_DIR, "figma_screen_sec_03.png")
+    if not os.path.exists(s_web):
+        s_web = os.path.join(ASSETS_DIR, "screen_02_cadastral_map.png")
+    draw_browser_mockup(img, s_web, x=rx + 25, y=web_y, w=rw - 50, h=web_h, title="FARMINGSYS ENTERPRISE · STEP 1 LAND REGULATORY ANALYZER", url="https://farmingsys.io/app/step-01-land")
 
+    # Bottom Half of Right: Mobile 3-Phone Prototyping Asset
+    bot_y = web_y + web_h + 15
+    bot_h = card_h - web_h - 90
+    draw.rounded_rectangle([rx + 25, bot_y, rx + rw - 25, bot_y + bot_h], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+    
     three_phones_asset = os.path.join(ASSETS_DIR, "figma_3phones_layer_states.png")
     if os.path.exists(three_phones_asset):
         p_img = Image.open(three_phones_asset).convert('RGBA')
-        scale = min((rw - 60) / p_img.width, (card_h - 165) / p_img.height)
+        scale = min((rw - 70) / p_img.width, (bot_h - 16) / p_img.height)
         nw = int(p_img.width * scale)
         nh = int(p_img.height * scale)
         p_res = p_img.resize((nw, nh), Image.Resampling.LANCZOS)
         
-        # Center in right card above bottom callout
-        px = rx + (rw - nw) // 2
-        py = card_y + 75 + (card_h - 165 - nh) // 2
+        px = rx + 25 + (rw - 50 - nw) // 2
+        py = bot_y + (bot_h - nh) // 2
         img.paste(p_res, (px, py), p_res)
 
     draw_slide_footer(draw, 7, 12, dark_mode=False)

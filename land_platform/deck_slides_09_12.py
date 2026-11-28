@@ -3,7 +3,7 @@ from PIL import Image, ImageDraw
 from deck_common import *
 
 # -------------------------------------------------------------
-# SLIDE 09: STEP 2 · SMARTFARM FACILITY SIMULATION (Figma Screen sec_04)
+# SLIDE 09: CORE FEATURE · STEP 2 · SMARTFARM FACILITY SIMULATION (Figma Screen sec_04)
 # -------------------------------------------------------------
 def make_slide_09():
     img = Image.new('RGB', (W, H), BG_LIGHT)
@@ -11,10 +11,10 @@ def make_slide_09():
     draw_slide_header(
         draw, 9, 
         "CORE FEATURE · STEP 2", 
-        "Figma UI Architecture | ", 
+        "Simulation Step 2 | ", 
         "STEP 2. 스마트 단지 설계 & 온실 모듈 최적 배치 화면 (Figma UI 원본)", 
-        "피그마 공식 화면설계서 UI: 스마트 온실 규격 선택, 차량 교행 6m 도로 구획, 부대시설 배치 및 생산량 시뮬레이션", 
-        right_badge=("OFFICIAL FIGMA SCREEN", "green")
+        "피그마 공식 화면설계서 UI: 온실 규격 선택, 6m 내부 관통 도로 구획, 부대시설 배치 및 생산량 시뮬레이션", 
+        right_badge=("SIMULATOR STEP 2", "green")
     )
     
     lw = 460
@@ -22,23 +22,34 @@ def make_slide_09():
     ly = 220
     draw.rounded_rectangle([100, ly, 100 + lw, ly + lh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
     draw_pill_badge(draw, left_x=130, cy=ly + 35, text="STEP 2 · FACILITY DESIGNER", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=24)
-    draw.text((130, ly + 75), "스마트 단지 설계 UI", font=get_font(20, 'bold'), fill=TEXT_LIGHT_MAIN)
+    draw.text((130, ly + 72), "스마트 단지 설계 UI", font=get_font(20, 'bold'), fill=TEXT_LIGHT_MAIN)
+    draw.text((130, ly + 96), "토지 경계 내 온실 모듈 & 부대시설 자동 구획", font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
 
     cards = [
-        ("01. 온실 모듈 규격 최적화", "단동/연동형 비닐온실, 첨단 유리온실, 수직농장 등 작물별 최적 규격을 토지 경계선 내에 자동 정렬"),
-        ("02. 도로망 & 부대시설 연계", "수확물 반출을 위한 6m 내부 관통 도로, 저온저장고, 선별장, ICT 관제센터 등 지원시설 자동 구획"),
-        ("03. 농진청 DB 기반 수확량 산출", "딸기, 토마토 등 고부가가치 작물의 재배 주기와 3개년 경락가를 연동하여 유효 면적당 예상 생산량 도출")
+        ("01. 온실 모듈 규격 최적화", "단동/연동형 비닐온실, 첨단 유리온실, 수직농장 등 작물별 최적 규격을 토지 경계선 내에 오차 5% 이내로 자동 정렬"),
+        ("02. 도로망 & 부대시설 연계", "수확물 대형 트럭 반출을 위한 6m 내부 관통 도로망, 저온저장고, 선별장, ICT 관제센터 등 지원시설 자동 배치"),
+        ("03. 농진청 DB 기반 수확량 산출", "딸기, 파프리카, 토마토 등 고부가가치 작물의 재배 주기와 3개년 가락시장 경락가를 연동해 연간 예상 생산량 즉시 도출")
     ]
-    cy = ly + 115
+    cy = ly + 120
     for title, desc in cards:
-        draw.rounded_rectangle([125, cy, 100 + lw - 25, cy + 175], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-        draw.text((145, cy + 35), title, font=get_font(15.5, 'bold'), fill=BRAND_GREEN)
-        lines = wrap_text(desc, get_font(12, 'regular'), lw - 70, draw)
-        dy = cy + 68
+        draw.rounded_rectangle([125, cy, 100 + lw - 25, cy + 130], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+        draw.text((145, cy + 22), title, font=get_font(14, 'bold'), fill=BRAND_GREEN)
+        lines = wrap_text(desc, get_font(11.5, 'regular'), lw - 70, draw)
+        dy = cy + 48
         for l in lines:
-            draw.text((145, dy), l, font=get_font(12, 'regular'), fill=TEXT_LIGHT_SUB)
-            dy += 22
-        cy += 195
+            draw.text((145, dy), l, font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
+            dy += 18
+        cy += 145
+
+    # Bottom Key Metric Callout in Left Card
+    draw.rounded_rectangle([125, ly + 575, 100 + lw - 25, ly + 715], radius=12, fill=(236, 253, 245), outline=(167, 243, 208), width=1)
+    draw.text((145, ly + 596), "💡 STEP 2 핵심 설계 전략 및 가치", font=get_font(13, 'bold'), fill=BRAND_DARK)
+    val_desc = "복잡한 CAD나 3D 그래픽 툴 숙련 없이도, 일반 농민이 클릭 한 번으로 유효 부지 면적 대비 최고 수익률을 내는 최적 온실 배치를 완성할 수 있도록 공간 알고리즘을 단순화했습니다."
+    lines_val = wrap_text(val_desc, get_font(11, 'regular'), lw - 70, draw)
+    vy = ly + 620
+    for l in lines_val:
+        draw.text((145, vy), l, font=get_font(11, 'regular'), fill=TEXT_LIGHT_MAIN)
+        vy += 17
 
     # Right: High-Res Real Desktop Browser Mockup with Authentic Figma Screen sec_04
     rx = 585
@@ -54,7 +65,7 @@ def make_slide_09():
     print(f"Generated: {out_path}")
 
 # -------------------------------------------------------------
-# SLIDE 10: STEP 3 · ECONOMIC VALUATION & CAPEX MODEL (Figma Screen sec_06/07)
+# SLIDE 10: CORE FEATURE · STEP 3 · ECONOMIC VALUATION & CAPEX MODEL (Figma Screen sec_06)
 # -------------------------------------------------------------
 def make_slide_10():
     img = Image.new('RGB', (W, H), BG_LIGHT)
@@ -62,10 +73,10 @@ def make_slide_10():
     draw_slide_header(
         draw, 10, 
         "CORE FEATURE · STEP 3", 
-        "Figma UI Architecture | ", 
+        "Simulation Step 3 | ", 
         "STEP 3. 총사업비 산출 & CAPEX/OPEX 경제성 모델링 화면 (Figma UI 원본)", 
         "피그마 공식 화면설계서 UI: 토지매입비, ICT 온실 시공비, 연간 운영비, 10개년 현금흐름 및 투자 회수기간 자동 도출", 
-        right_badge=("OFFICIAL FIGMA SCREEN", "green")
+        right_badge=("SIMULATOR STEP 3", "green")
     )
     
     lw = 460
@@ -73,23 +84,34 @@ def make_slide_10():
     ly = 220
     draw.rounded_rectangle([100, ly, 100 + lw, ly + lh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
     draw_pill_badge(draw, left_x=130, cy=ly + 35, text="STEP 3 · ECONOMIC MODELING", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=24)
-    draw.text((130, ly + 75), "총사업비 경제성 모델 UI", font=get_font(20, 'bold'), fill=TEXT_LIGHT_MAIN)
+    draw.text((130, ly + 72), "총사업비 경제성 모델 UI", font=get_font(20, 'bold'), fill=TEXT_LIGHT_MAIN)
+    draw.text((130, ly + 96), "정량적 재무 지표 및 투자 타당성 실시간 연산", font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
 
     cards = [
-        ("01. CAPEX/OPEX 세부 분해표", "토지 매입비, 토목 기초공사비, ICT 스마트 설비비와 연간 인건비, 난방비 등 비용 구조 정밀 분해"),
-        ("02. 10개년 현금흐름 & 회수기간", "감가상각, 정책자금 융자 금리, 세제 혜택을 종합 반영하여 사업 손익분기점(BEP) 및 회수연수 산출"),
-        ("03. 실시간 재무 지표 연동 피드백", "작물 선택이나 온실 면적을 변경할 때마다 IRR(내부수익률)과 NPV(순현재가치)가 지연 없이 재연산")
+        ("01. CAPEX/OPEX 세부 분해표", "토지 매입비, 토목 기초공사비, ICT 스마트 온실 설비비(CAPEX)와 연간 인건비, 냉난방비, 종묘비(OPEX)를 투명하게 분해"),
+        ("02. 10개년 현금흐름 & 회수기간", "시설 감가상각비, 정부 정책자금 융자 금리(2.0%), 법인세 혜택을 종합 반영하여 사업 손익분기점(BEP) 및 회수연수 산출"),
+        ("03. 실시간 재무 지표 연동 피드백", "작물 선택이나 재배 면적을 변경할 때마다 IRR(내부수익률 12.8%+)과 NPV(순현재가치)가 지연 없이 재연산되어 의사결정 지원")
     ]
-    cy = ly + 115
+    cy = ly + 120
     for title, desc in cards:
-        draw.rounded_rectangle([125, cy, 100 + lw - 25, cy + 175], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-        draw.text((145, cy + 35), title, font=get_font(15.5, 'bold'), fill=BRAND_GREEN)
-        lines = wrap_text(desc, get_font(12, 'regular'), lw - 70, draw)
-        dy = cy + 68
+        draw.rounded_rectangle([125, cy, 100 + lw - 25, cy + 130], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+        draw.text((145, cy + 22), title, font=get_font(14, 'bold'), fill=BRAND_GREEN)
+        lines = wrap_text(desc, get_font(11.5, 'regular'), lw - 70, draw)
+        dy = cy + 48
         for l in lines:
-            draw.text((145, dy), l, font=get_font(12, 'regular'), fill=TEXT_LIGHT_SUB)
-            dy += 22
-        cy += 195
+            draw.text((145, dy), l, font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
+            dy += 18
+        cy += 145
+
+    # Bottom Key Metric Callout in Left Card
+    draw.rounded_rectangle([125, ly + 575, 100 + lw - 25, ly + 715], radius=12, fill=(236, 253, 245), outline=(167, 243, 208), width=1)
+    draw.text((145, ly + 596), "💡 STEP 3 핵심 설계 전략 및 가치", font=get_font(13, 'bold'), fill=BRAND_DARK)
+    val_desc = "단순한 토지 가격 비교를 넘어, 10년간 실제 발생할 운영비용과 매출을 금융 공학 모델로 분석하여 무리한 대출로 인한 부실 위험을 원천 차단하고 투자 성공 확률을 극대화했습니다."
+    lines_val = wrap_text(val_desc, get_font(11, 'regular'), lw - 70, draw)
+    vy = ly + 620
+    for l in lines_val:
+        draw.text((145, vy), l, font=get_font(11, 'regular'), fill=TEXT_LIGHT_MAIN)
+        vy += 17
 
     # Right: High-Res Real Desktop Browser Mockup with Authentic Figma Screen sec_06
     rx = 585
@@ -105,7 +127,7 @@ def make_slide_10():
     print(f"Generated: {out_path}")
 
 # -------------------------------------------------------------
-# SLIDE 11: STEP 4 · VALUATION REPORT & FINANCING (Figma Screen sec_08/09)
+# SLIDE 11: CORE FEATURE · STEP 4 · VALUATION REPORT & FINANCING (Figma Screen sec_08)
 # -------------------------------------------------------------
 def make_slide_11():
     img = Image.new('RGB', (W, H), BG_LIGHT)
@@ -113,10 +135,10 @@ def make_slide_11():
     draw_slide_header(
         draw, 11, 
         "CORE FEATURE · STEP 4", 
-        "Figma UI Architecture | ", 
+        "Simulation Step 4 | ", 
         "STEP 4. 사업 타당성 평가서 & 금융 표준 리포트 발급 화면 (Figma UI 원본)", 
         "피그마 공식 화면설계서 UI: 지적도 개요, 법적 적합도 요약, 배치 평면도, 재무 전망을 집약한 금융기관 심사용 20p PDF 보고서", 
-        right_badge=("OFFICIAL FIGMA SCREEN", "green")
+        right_badge=("SIMULATOR STEP 4", "green")
     )
     
     lw = 460
@@ -124,23 +146,34 @@ def make_slide_11():
     ly = 220
     draw.rounded_rectangle([100, ly, 100 + lw, ly + lh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
     draw_pill_badge(draw, left_x=130, cy=ly + 35, text="STEP 4 · REPORT GENERATOR", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=24)
-    draw.text((130, ly + 75), "금융 리포트 발급 UI", font=get_font(20, 'bold'), fill=TEXT_LIGHT_MAIN)
+    draw.text((130, ly + 72), "금융 리포트 발급 UI", font=get_font(20, 'bold'), fill=TEXT_LIGHT_MAIN)
+    draw.text((130, ly + 96), "정책금융 심사 제출용 표준 타당성 보고서", font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
 
     cards = [
-        ("01. 표준 타당성 평가서 생성", "지번 기본정보, 용도지역 규제 분석표, 온실 배치 조감도, 재무성 분석표를 종합 수록한 공식 문서"),
-        ("02. 금융 심사 표준 20p PDF 발급", "농협, 수협, 신보 등 정책금융 대출 심사에 즉시 제출 가능한 공인 포맷의 다면 보고서 원클릭 다운로드"),
-        ("03. 투자자·시공사 매칭 연결", "검토 완료된 프로젝트를 등록하여 전문 스마트팜 시공사 및 정책자금 전문 컨설턴트와의 매칭 기능 제공")
+        ("01. 표준 타당성 평가서 생성", "지번 기본정보, 용도지역 규제 분석표, 온실 배치 조감도, 재무성 분석표를 종합 수록한 은행 심사용 공인 보고서"),
+        ("02. 금융 심사 표준 20p PDF 발급", "농협, 수협, 신용보증기금 등 정책금융 대출 심사에 즉시 제출 가능한 공인 포맷의 다면 보고서 원클릭 다운로드"),
+        ("03. 투자자·시공사 매칭 연결", "검토 완료된 프로젝트를 플랫폼 내 인증 스마트팜 전문 시공사 및 정책자금 전문 컨설턴트와 다이렉트 매칭 지원")
     ]
-    cy = ly + 115
+    cy = ly + 120
     for title, desc in cards:
-        draw.rounded_rectangle([125, cy, 100 + lw - 25, cy + 175], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-        draw.text((145, cy + 35), title, font=get_font(15.5, 'bold'), fill=BRAND_GREEN)
-        lines = wrap_text(desc, get_font(12, 'regular'), lw - 70, draw)
-        dy = cy + 68
+        draw.rounded_rectangle([125, cy, 100 + lw - 25, cy + 130], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+        draw.text((145, cy + 22), title, font=get_font(14, 'bold'), fill=BRAND_GREEN)
+        lines = wrap_text(desc, get_font(11.5, 'regular'), lw - 70, draw)
+        dy = cy + 48
         for l in lines:
-            draw.text((145, dy), l, font=get_font(12, 'regular'), fill=TEXT_LIGHT_SUB)
-            dy += 22
-        cy += 195
+            draw.text((145, dy), l, font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
+            dy += 18
+        cy += 145
+
+    # Bottom Key Metric Callout in Left Card
+    draw.rounded_rectangle([125, ly + 575, 100 + lw - 25, ly + 715], radius=12, fill=(236, 253, 245), outline=(167, 243, 208), width=1)
+    draw.text((145, ly + 596), "💡 STEP 4 핵심 설계 전략 및 가치", font=get_font(13, 'bold'), fill=BRAND_DARK)
+    val_desc = "단순 화면 조회를 넘어 '실제 자금 조달과 시공 계약'이라는 최종 현실 목표를 달성할 수 있도록, 금융 기관이 요구하는 공인 양식에 맞춘 20페이지 보고서를 원클릭 자동 생성하도록 완결성을 부여했습니다."
+    lines_val = wrap_text(val_desc, get_font(11, 'regular'), lw - 70, draw)
+    vy = ly + 620
+    for l in lines_val:
+        draw.text((145, vy), l, font=get_font(11, 'regular'), fill=TEXT_LIGHT_MAIN)
+        vy += 17
 
     # Right: High-Res Real Desktop Browser Mockup with Authentic Figma Screen sec_08
     rx = 585
