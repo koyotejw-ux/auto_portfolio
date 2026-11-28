@@ -72,13 +72,35 @@ def make_slide_01():
         draw.text((lx + 115, my), v, font=get_font(12, 'medium'), fill=TEXT_LIGHT_MAIN)
         my += 44
 
-    # Right: High-Res Real Desktop Browser Mockup (x=830, y=120, w=990, h=825)
-    hero_screen = os.path.join(ASSETS_DIR, "screen_hero_dashboard_3128.png")
-    if not os.path.exists(hero_screen):
-        hero_screen = os.path.join(ASSETS_DIR, "screen_01_landing.png")
-    draw_browser_mockup(img, hero_screen, x=830, y=120, w=990, h=825, title="FARMINGSYS ENTERPRISE · CORE WORKSPACE", url="https://farmingsys.io/app/dashboard")
+    # Right: High-Res Real Tablet & Mobile 3D Podium Mockup Composition
+    hero_asset = os.path.join(ASSETS_DIR, "figma_hero_mockup_composition.png")
+    if os.path.exists(hero_asset):
+        hero_im = Image.open(hero_asset).convert('RGBA')
+        
+        # Calculate optimal size maintaining exact 1024:738 ratio with zero distortion
+        target_w = 1010
+        target_h = int(target_w * (hero_im.height / hero_im.width))
+        
+        # Center vertically in the hero right zone (y=120 to 950)
+        hero_x = 830
+        hero_y = 120 + (830 - target_h) // 2
+        
+        # Subtle soft ambient glow card container behind podium
+        card_w = target_w + 30
+        card_h = target_h + 30
+        draw.rounded_rectangle([hero_x - 15, hero_y - 15, hero_x - 15 + card_w, hero_y - 15 + card_h], radius=24, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+        
+        # Top Badge on Mockup Container
+        draw_pill_badge(draw, left_x=hero_x + 10, cy=hero_y + 15, text="RESPONSIVE PLATFORM ECOSYSTEM", font=get_font(10, 'bold'), theme='green', pad_x=10, height=22)
+        draw.text((hero_x + 230, hero_y + 15), "태블릿 웹 & 모바일 동시 시뮬레이션 실물 (Figma 3D Mockup)", font=get_font(12, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
 
-    draw_slide_footer(draw, 1, 12, dark_mode=False)
+        resized_hero = hero_im.resize((target_w, target_h), Image.Resampling.LANCZOS)
+        img.paste(resized_hero, (hero_x, hero_y + 15), resized_hero)
+    else:
+        hero_screen = os.path.join(ASSETS_DIR, "screen_hero_dashboard_3128.png")
+        draw_browser_mockup(img, hero_screen, x=830, y=120, w=990, h=825, title="FARMINGSYS ENTERPRISE · CORE WORKSPACE", url="https://farmingsys.io/app/dashboard")
+
+    draw_slide_footer(draw, 1, 13, dark_mode=False)
     out_path = os.path.join(OUT_DIR, "slide_01.png")
     img.save(out_path, quality=95)
     print(f"Generated: {out_path}")
