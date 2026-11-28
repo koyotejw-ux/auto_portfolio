@@ -280,19 +280,109 @@ def make_slide_11():
     
     draw_browser_mockup(img, rep_asset, x=rep_x, y=rep_y, w=tot_rep_w, h=target_rep_h, title="SIMULATION VALUATION REPORT (FULL)", url="https://farmingsys.io/report/valuation-summary.pdf")
 
-    draw_slide_footer(draw, 11, 12, dark_mode=False)
+    draw_slide_footer(draw, 11, 13, dark_mode=False)
     out_path = os.path.join(OUT_DIR, "slide_11.png")
     img.save(out_path, quality=95)
     print(f"Generated: {out_path}")
 
 # -------------------------------------------------------------
-# SLIDE 12: OUTCOMES & RETROSPECTIVE (AIA+ Style Full Retrospective)
+# SLIDE 12: CORE FEATURE · SIMULATION ARCHIVE & HISTORY (Figma UI 실물)
 # -------------------------------------------------------------
 def make_slide_12():
     img = Image.new('RGB', (W, H), BG_LIGHT)
     draw = ImageDraw.Draw(img)
     draw_slide_header(
         draw, 12, 
+        "SIMULATION ARCHIVE", 
+        "Simulation History | ", 
+        "시뮬레이션 내역 조회 데스크톱 및 모바일 화면 (Figma UI 실물)", 
+        "피그마 공식 UI 원본: [1] 데스크톱 시뮬레이션명·장소·면적·작물·조성비·NPV·IRR·회수기간 데이터 그리드(1024x576)  |  [2] 모바일 내역 카드 뷰", 
+        right_badge=("OFFICIAL FIGMA UI", "green")
+    )
+    
+    card_y = 215
+    card_h = 745
+    
+    # 3-Zone Architecture:
+    # Zone 1 (Left Card, w=440, x=80): Core Specs & Project Archive Management
+    # Zone 2 (Middle Card, w=840, x=540): Desktop Simulation History Data Grid (1024x576)
+    # Zone 3 (Right Card, w=440, x=1400): Mobile Simulation History Card View (420x1024)
+    
+    # =========================================================================
+    # ZONE 1: LEFT SPECS CARD (w=440, x=80)
+    # =========================================================================
+    lx, lw = 80, 440
+    draw.rounded_rectangle([lx, card_y, lx + lw, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
+    draw_pill_badge(draw, left_x=lx + 25, cy=card_y + 35, text="SIMULATION ARCHIVE & AUDIT", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=24)
+    draw.text((lx + 25, card_y + 68), "시뮬레이션 내역 관리 UI", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
+    draw.text((lx + 25, card_y + 92), "진행 프로젝트 전수 보관 & 다면 재무 지표 즉시 비교", font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB)
+
+    specs = [
+        ("01. 다차원 재무 지표 한눈에 비교", "시뮬레이션명, 장소, 총면적(790㎡), 품목(딸기·버터헤드), 총 조성비(2.89억), NPV, IRR, 투자회수기간(3년)을 단일 테이블에서 대조"),
+        ("02. 실시간 검색 & 스마트 페이징", "지번, 대상지명, 작물명 키워드 검색 인풋 및 10개 단위 페이지네이션을 지원하여 수백 건의 시뮬레이션 이력 초고속 탐색"),
+        ("03. 모바일 최적화 반응형 카드 리스트", "모바일 화면에서는 복잡한 8컬럼 테이블을 세로형 요약 카드로 재구성하여 현장 실사 중에도 스마트폰으로 이전 분석 데이터 원터치 열람")
+    ]
+    cy = card_y + 118
+    for title, desc in specs:
+        draw.rounded_rectangle([lx + 25, cy, lx + lw - 25, cy + 130], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+        draw.text((lx + 40, cy + 22), title, font=get_font(13.5, 'bold'), fill=BRAND_GREEN)
+        lines = wrap_text(desc, get_font(11, 'regular'), lw - 70, draw)
+        dy = cy + 46
+        for l in lines:
+            draw.text((lx + 40, dy), l, font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB)
+            dy += 18
+        cy += 144
+
+    # Bottom Key Metric Callout in Left Card
+    draw.rounded_rectangle([lx + 25, card_y + 565, lx + lw - 25, card_y + 715], radius=12, fill=(236, 253, 245), outline=(167, 243, 208), width=1)
+    draw.text((lx + 40, card_y + 586), "💡 지속적 프로젝트 자산화 가치", font=get_font(12.5, 'bold'), fill=BRAND_DARK)
+    val_desc = "단발성 시뮬레이션으로 끝나지 않고, 토지 매수 및 개발 조건 변경 시 과거 분석 프로젝트를 즉시 재호출·수정하여 다자간(토지주-시공사-금융기관) 의사결정 속도를 극대화합니다."
+    lines_val = wrap_text(val_desc, get_font(10.5, 'regular'), lw - 70, draw)
+    vy = card_y + 610
+    for l in lines_val:
+        draw.text((lx + 40, vy), l, font=get_font(10.5, 'regular'), fill=TEXT_LIGHT_MAIN)
+        vy += 17
+
+    # =========================================================================
+    # ZONE 2: DESKTOP SIMULATION HISTORY BROWSER (w=840, x=540)
+    # =========================================================================
+    m1_x, m1_w = 540, 840
+    draw.rounded_rectangle([m1_x, card_y, m1_x + m1_w, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
+    draw_pill_badge(draw, left_x=m1_x + 25, cy=card_y + 35, text="DESKTOP VIEW (1920px)", font=get_font(10.5, 'bold'), theme='blue', pad_x=12, height=24)
+    draw.text((m1_x + 215, card_y + 35), "피그마 공식 데스크톱 화면 (시뮬레이션 내역 조회 데이터 그리드)", font=get_font(13, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
+    
+    asset1 = os.path.join(ASSETS_DIR, "figma_simulation_history_desktop.png")
+    im1 = Image.open(asset1)
+    vp1_w = m1_w - 40 - 4
+    vp1_h = int(vp1_w * (im1.height / im1.width))
+    tot1_h = 36 + 2 + vp1_h
+    b1_y = card_y + 75 + (card_h - 95 - tot1_h) // 2
+    draw_browser_mockup(img, asset1, x=m1_x + 20, y=b1_y, w=m1_w - 40, h=tot1_h, title="FARMINGSYS ENTERPRISE · SIMULATION HISTORY & ARCHIVE (DESKTOP)", url="https://farmingsys.io/app/simulation-history")
+
+    # =========================================================================
+    # ZONE 3: MOBILE SIMULATION HISTORY PHONE MOCKUP (w=440, x=1400)
+    # =========================================================================
+    m2_x, m2_w = 1400, 440
+    draw.rounded_rectangle([m2_x, card_y, m2_x + m2_w, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
+    draw_pill_badge(draw, left_x=m2_x + 25, cy=card_y + 35, text="MOBILE VIEW (390px)", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=24)
+    draw.text((m2_x + 195, card_y + 35), "시뮬레이션 내역 모바일 UI", font=get_font(13, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
+    
+    mob_asset = os.path.join(ASSETS_DIR, "figma_simulation_history_mobile.png")
+    draw_phone_mockup(img, mob_asset, cx=m2_x + m2_w//2, cy=card_y + 75 + (card_h - 95)//2, target_h=640, bezel=7, radius=28)
+
+    draw_slide_footer(draw, 12, 13, dark_mode=False)
+    out_path = os.path.join(OUT_DIR, "slide_12.png")
+    img.save(out_path, quality=95)
+    print(f"Generated: {out_path}")
+
+# -------------------------------------------------------------
+# SLIDE 13: OUTCOMES & RETROSPECTIVE (AIA+ Style Full Retrospective)
+# -------------------------------------------------------------
+def make_slide_13():
+    img = Image.new('RGB', (W, H), BG_LIGHT)
+    draw = ImageDraw.Draw(img)
+    draw_slide_header(
+        draw, 13, 
         "OUTCOMES & RETROSPECTIVE", 
         "Project Retrospective | ", 
         "토지개발 플랫폼 성과 지표 및 STAR 기법 회고", 
@@ -361,8 +451,8 @@ def make_slide_12():
             ly += 22
         sy += 88
 
-    draw_slide_footer(draw, 12, 12, dark_mode=False)
-    out_path = os.path.join(OUT_DIR, "slide_12.png")
+    draw_slide_footer(draw, 13, 13, dark_mode=False)
+    out_path = os.path.join(OUT_DIR, "slide_13.png")
     img.save(out_path, quality=95)
     print(f"Generated: {out_path}")
 
