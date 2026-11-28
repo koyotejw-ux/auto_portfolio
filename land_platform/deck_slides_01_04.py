@@ -29,20 +29,19 @@ def make_slide_01():
     draw.text((1820 - w_meta, 68), meta_txt, font=get_font(13.5, 'medium'), fill=(100, 116, 139))
     
     # 4. Category Label
-    draw.text((100, 142), "SMARTFARM CENTER · RESPONSIVE WEB", font=get_font(14, 'bold'), fill=BRAND_GREEN)
+    draw.text((100, 136), "SMARTFARM CENTER · RESPONSIVE WEB", font=get_font(13.5, 'bold'), fill=BRAND_GREEN)
     
-    # 5. Big Clean Headline (Exact Title from User)
-    title_p1 = "토지를 분석하다, "
-    title_p2 = "토지개발분석플랫폼"
-    w_p1 = draw.textlength(title_p1, font=get_font(52, 'black'))
-    draw.text((100, 174), title_p1, font=get_font(52, 'black'), fill=(15, 23, 42))
-    draw.text((100 + w_p1, 174), title_p2, font=get_font(52, 'black'), fill=BRAND_GREEN)
+    # 5. Big Clean Headline (Exact Title from User, 2 Stacked Lines to Prevent Collision)
+    # Line 1: '토지를 분석하다,' in Dark Slate
+    # Line 2: '토지개발분석플랫폼' in Brand Green Black
+    draw.text((100, 166), "토지를 분석하다,", font=get_font(38, 'bold'), fill=(15, 23, 42))
+    draw.text((100, 214), "토지개발분석플랫폼", font=get_font(52, 'black'), fill=BRAND_GREEN)
     
-    # 6. Clean UX Subtitle (2 balanced lines)
+    # 6. Clean UX Subtitle (2 balanced lines, cleanly distanced)
     sub1 = "수많은 공적 장부와 복잡한 인허가 법률에 가로막혀 있던 토지개발의 진입 장벽을 완전히 허물고,"
     sub2 = "지번 입력 한 번으로 대상지 규제 판정, 스마트팜 시설배치, 공사비 적산 및 타당성 보고서를 원클릭 도출합니다."
-    draw.text((100, 252), sub1, font=get_font(16, 'regular'), fill=(71, 85, 105))
-    draw.text((100, 278), sub2, font=get_font(16, 'semibold'), fill=(30, 41, 59))
+    draw.text((100, 282), sub1, font=get_font(15, 'regular'), fill=(71, 85, 105))
+    draw.text((100, 308), sub2, font=get_font(15, 'semibold'), fill=(30, 41, 59))
     
     # 7. OPEN STORYLINE: 4 Key Strengths (Clean, open layout with zero enclosing heavy boxes)
     strengths = [
@@ -57,9 +56,9 @@ def make_slide_01():
     ]
     
     max_badge_w = max(draw.textlength(tag, font=get_font(10, 'bold')) + 16 for _, tag, _, _, _ in strengths)
-    title_x = int(round(144 + max_badge_w + 24))
+    title_x = int(round(144 + max_badge_w + 20))
     
-    k_y = 345
+    k_y = 368
     for idx, (num, tag, title_ko, sub_en, desc) in enumerate(strengths):
         # Open number pill
         draw.rounded_rectangle([100, k_y + 2, 136, k_y + 28], radius=6, fill=(241, 245, 249), outline=(203, 213, 225), width=1)
@@ -71,10 +70,10 @@ def make_slide_01():
         draw.text((title_x, k_y + 4), title_ko, font=get_font(15, 'bold'), fill=(15, 23, 42))
         
         w_title = draw.textlength(title_ko, font=get_font(15, 'bold'))
-        draw.text((title_x + w_title + 12, k_y + 6), f"·  {sub_en}", font=get_font(12, 'medium'), fill=(100, 116, 139))
+        draw.text((title_x + w_title + 10, k_y + 6), f"·  {sub_en}", font=get_font(12, 'medium'), fill=(100, 116, 139))
         
-        # Description lines
-        lines = wrap_text(desc, get_font(12, 'regular'), 740, draw)
+        # Description lines (strictly within 720px width to avoid any touch with right mockup)
+        lines = wrap_text(desc, get_font(12, 'regular'), 720, draw)
         desc_y = k_y + 36
         for l in lines[:2]:
             draw.text((144, desc_y), l, font=get_font(12, 'regular'), fill=(71, 85, 105))
@@ -82,29 +81,32 @@ def make_slide_01():
             
         # Subtle hairline divider
         if idx < 3:
-            draw.line([(100, k_y + 90), (900, k_y + 90)], fill=(226, 232, 240), width=1)
+            draw.line([(100, k_y + 88), (880, k_y + 88)], fill=(226, 232, 240), width=1)
             
-        k_y += 112
+        k_y += 106
 
     # 8. Right Side: Flagship 3D Tablet + Mobile Mockup (Hero Podium)
     mockup_path = os.path.join(ASSETS_DIR, "figma_hero_podium_mockup.png")
     if os.path.exists(mockup_path):
         m_img = Image.open(mockup_path).convert('RGBA')
-        target_w = 880
+        target_w = 820
         aspect = m_img.height / m_img.width
         target_h = int(target_w * aspect)
         m_resized = m_img.resize((target_w, target_h), Image.Resampling.LANCZOS)
         
-        # Soft shadow behind mockup
-        mask = m_resized.split()[3]
-        sh_img = Image.new('RGBA', (m_resized.width + 100, m_resized.height + 100), (0, 0, 0, 0))
-        black = Image.new('RGBA', m_resized.size, (0, 0, 0, 65))
-        sh_img.paste(black, (50, 60), mask)
-        sh_img = sh_img.filter(ImageFilter.GaussianBlur(36))
+        # Position right side: px = 970, py = 205 (bottom will be 205 + 591 = 796, cleanly above bar_y = 842)
+        px = 970
+        py = 205
         
-        px = 960
-        py = 145 + (680 - target_h) // 2
-        base.paste(sh_img, (px - 50, py - 40), sh_img)
+        # Soft clean shadow strictly conforming to the alpha mask and kept above bar_y
+        m_alpha = m_resized.split()[3]
+        sh_img = Image.new('RGBA', (m_resized.width + 80, m_resized.height + 80), (0, 0, 0, 0))
+        sh_color = Image.new('RGBA', m_resized.size, (15, 23, 42, 45))
+        sh_img.paste(sh_color, (40, 48), m_alpha)
+        sh_img = sh_img.filter(ImageFilter.GaussianBlur(28))
+        
+        base.paste(sh_img, (px - 40, py - 32), sh_img)
+        # Direct alpha composite paste - no white box artifact
         base.paste(m_resized, (px, py), m_resized)
         
     draw = ImageDraw.Draw(base)
