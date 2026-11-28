@@ -3,114 +3,6 @@ from PIL import Image, ImageDraw
 from deck_common import *
 
 # -------------------------------------------------------------
-# SLIDE 07: WIREFRAME & GIS INTERACTION (Figma Step 1 Cadastral Map Screen Focus)
-# -------------------------------------------------------------
-def make_slide_07():
-    img = Image.new('RGB', (W, H), BG_LIGHT)
-    draw = ImageDraw.Draw(img)
-    draw_slide_header(
-        draw, 7, 
-        "WIREFRAME & GIS UX", 
-        "Figma UI Architecture | ", 
-        "STEP 1. 공간 GIS 토지 탐색 & 필지 규제 분석 화면 (Figma UI 원본)", 
-        "피그마 공식 화면설계서 UI: 지번 검색, 지적도 경계선 시각화, 좌측 420px 컨트롤 패널 및 실시간 규제 검증", 
-        right_badge=("FIGMA UI SCREEN", "green")
-    )
-    
-    lw = 460
-    lh = 740
-    ly = 220
-    draw.rounded_rectangle([100, ly, 100 + lw, ly + lh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, left_x=130, cy=ly + 35, text="STEP 1 · FIGMA UI SPECS", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=24)
-    draw.text((130, ly + 75), "토지 탐색 UI 인터랙션", font=get_font(20, 'bold'), fill=TEXT_LIGHT_MAIN)
-
-    specs = [
-        ("01. 지번 검색 & 자동 완성", "전국 단위 지번/도로명 주소 입력 시 인근 필지 경계선 및 지목(전·답·임야)을 실시간 매칭하는 검색바 UI"),
-        ("02. 지적도 & 용도지역 레이어", "국토계획법 용도지역(농림/관리/도시)을 컬러 오버레이로 시각화하고 필지 경계선 및 접도 도로 너비 표시"),
-        ("03. 3초 인허가 판정 카드", "건폐율/용적률 조례 대조, 경사도 15도 이하 적합 여부를 녹색/황색/적색 3색 뱃지로 즉각 피드백")
-    ]
-    sy = ly + 115
-    for title, desc in specs:
-        draw.rounded_rectangle([125, sy, 100 + lw - 25, sy + 175], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-        draw.text((145, sy + 35), title, font=get_font(15.5, 'bold'), fill=BRAND_GREEN)
-        lines = wrap_text(desc, get_font(12, 'regular'), lw - 70, draw)
-        dy = sy + 68
-        for l in lines:
-            draw.text((145, dy), l, font=get_font(12, 'regular'), fill=TEXT_LIGHT_SUB)
-            dy += 22
-        sy += 195
-
-    # Right: High-Res Real Desktop Browser Mockup with Step 1 Screen (screen_02_cadastral_map.png)
-    rx = 585
-    rw = 1235
-    s_p = os.path.join(ASSETS_DIR, "screen_02_cadastral_map.png")
-    draw_browser_mockup(img, s_p, x=rx, y=ly, w=rw, h=lh, title="FARMINGSYS ENTERPRISE · STEP 1 CADASTRAL GIS WORKSPACE", url="https://farmingsys.io/app/step-01-cadastral")
-
-    draw_slide_footer(draw, 7, 12, dark_mode=False)
-    out_path = os.path.join(OUT_DIR, "slide_07.png")
-    img.save(out_path, quality=95)
-    print(f"Generated: {out_path}")
-
-# -------------------------------------------------------------
-# SLIDE 08: DESIGN SYSTEM & ATOMIC TOKENS (AIA+ Style Standards)
-# -------------------------------------------------------------
-def make_slide_08():
-    img = Image.new('RGB', (W, H), BG_LIGHT)
-    draw = ImageDraw.Draw(img)
-    draw_slide_header(
-        draw, 8, 
-        "DESIGN SYSTEM & TOKENS", 
-        "Design System | ", 
-        "토지개발 플랫폼 디자인 시스템 및 아토믹 토큰 (Atomic Tokens)", 
-        "Agri-Tech 친환경 컬러 토큰, Pretendard 타이포그래피 스케일, 48dp 터치 타겟, WCAG AAA 7:1 고대비 표준", 
-        right_badge=("DESIGN SYSTEM STANDARDS", "green")
-    )
-    
-    lw = 540
-    lh = 740
-    ly = 220
-    draw.rounded_rectangle([100, ly, 100 + lw, ly + lh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, left_x=130, cy=ly + 35, text="TYPOGRAPHY & ACCESSIBILITY", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=24)
-    draw.text((130, ly + 75), "타이포그래피 및 접근성 표준", font=get_font(20, 'bold'), fill=TEXT_LIGHT_MAIN)
-
-    ds_rules = [
-        ("Pretendard 본문 가독성", "현장 모바일 및 야외 태블릿 환경을 고려하여 기본 본문 16pt 이상, 장평 98%, 자간 -0.02em 적용"),
-        ("WCAG AAA 고대비 검증", "야외 직사광선 환경에서도 지목/규제 텍스트가 식별되도록 배경 대비 7:1 이상의 고대비 팔레트 엄격 준수"),
-        ("48dp 최소 터치 영역", "소농 및 고령 토지주를 위해 지도 위 필지 선택 핀 및 하단 CTA 버튼에 최소 48dp 터치 타깃 보장")
-    ]
-    dy = ly + 115
-    for title, desc in ds_rules:
-        draw.rounded_rectangle([125, dy, 100 + lw - 25, dy + 175], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-        draw.text((145, dy + 35), title, font=get_font(16, 'bold'), fill=BRAND_GREEN)
-        lines = wrap_text(desc, get_font(12.5, 'regular'), lw - 70, draw)
-        ldy = dy + 68
-        for l in lines:
-            draw.text((145, ldy), l, font=get_font(12.5, 'regular'), fill=TEXT_LIGHT_SUB)
-            ldy += 22
-        dy += 195
-
-    # Right: Authentic Design Tokens Graphic
-    rx = 665
-    rw = 1155
-    draw.rounded_rectangle([rx, ly, rx + rw, ly + lh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, left_x=rx + 30, cy=ly + 35, text="ATOMIC DESIGN TOKENS MATRIX", font=get_font(10.5, 'bold'), theme='blue', pad_x=12, height=24)
-    draw.text((rx + 285, ly + 35), "색상 팔레트, 아이콘 그리드, 버튼 컴포넌트 토큰 세트", font=get_font(13.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
-
-    dt_path = os.path.join(ASSETS_DIR, "part_design_tokens.png")
-    if os.path.exists(dt_path):
-        dt_img = Image.open(dt_path).convert('RGBA')
-        scale = min((rw - 60) / dt_img.width, (lh - 90) / dt_img.height)
-        dw = int(dt_img.width * scale)
-        dh = int(dt_img.height * scale)
-        d_res = dt_img.resize((dw, dh), Image.Resampling.LANCZOS)
-        img.paste(d_res, (rx + (rw - dw) // 2, ly + 70 + (lh - 90 - dh) // 2), d_res)
-
-    draw_slide_footer(draw, 8, 12, dark_mode=False)
-    out_path = os.path.join(OUT_DIR, "slide_08.png")
-    img.save(out_path, quality=95)
-    print(f"Generated: {out_path}")
-
-# -------------------------------------------------------------
 # SLIDE 05: INFORMATION ARCHITECTURE (Native Vector Tree)
 # -------------------------------------------------------------
 def make_slide_05():
@@ -384,6 +276,165 @@ def make_slide_06():
 
     draw_slide_footer(draw, 6, 12, dark_mode=False)
     out_path = os.path.join(OUT_DIR, "slide_06.png")
+    img.save(out_path, quality=95)
+    print(f"Generated: {out_path}")
+
+# -------------------------------------------------------------
+# SLIDE 07: PROTOTYPING SCREENS (Mobile & Tablet Multi-Device Flow from Figma)
+# -------------------------------------------------------------
+def make_slide_07():
+    img = Image.new('RGB', (W, H), BG_LIGHT)
+    draw = ImageDraw.Draw(img)
+    draw_slide_header(
+        draw, 7, 
+        "PROTOTYPING SCREENS", 
+        "Prototyping Screens | ", 
+        "멀티 디바이스 반응형 화면 및 대상지 선택 모바일 상태 전환 흐름", 
+        "피그마 원본 프로토타이핑: 모바일 현장 뷰, 태블릿 인터랙티브 GIS 캔버스, 시뮬레이션 시작 전 대상지 선택 3단계 상태 변경", 
+        right_badge=("RESPONSIVE PROTOTYPING", "green")
+    )
+    
+    card_y = 215
+    card_h = 745
+    
+    # Left Card: Tablet & Mobile Responsive Canvas (w=900)
+    lx = 100
+    lw = 845
+    draw.rounded_rectangle([lx, card_y, lx + lw, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
+    draw_pill_badge(draw, left_x=lx + 25, cy=card_y + 35, text="CROSS-PLATFORM INTERFACE", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=24)
+    draw.text((lx + 25, card_y + 68), "반응형 태블릿 & 모바일 현장 인터페이스", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
+    draw.text((lx + 25, card_y + 94), "현장 실사 및 태블릿 조작을 위한 고해상도 GIS 뷰포트", font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
+    
+    # Tablet browser mockup on top-left
+    tablet_img = os.path.join(ASSETS_DIR, "screen_tablet_interactive.png")
+    if not os.path.exists(tablet_img):
+        tablet_img = os.path.join(ASSETS_DIR, "screen_gis_3d_satellite.png")
+    draw_browser_mockup(img, tablet_img, x=lx + 25, y=card_y + 125, w=530, h=330, title="TABLET VIEW (16:10)", url="https://farmingsys.io/tablet")
+    
+    # Mobile phone mockup beside tablet
+    mobile_1 = os.path.join(ASSETS_DIR, "fig_mobile_highres", "mobile_85a8d4cb.png")
+    draw_phone_mockup(img, mobile_1, cx=lx + 695, cy=card_y + 290, phone_w=195, phone_h=370, bezel=5, radius=20)
+    draw.text((lx + 695, card_y + 490), "현장 모바일 GIS 뷰", font=get_font(12, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mm')
+    draw.text((lx + 695, card_y + 510), "GPS 기반 내 위치 필지 즉시 조회", font=get_font(10.5, 'regular'), fill=TEXT_LIGHT_SUB, anchor='mm')
+    
+    # Specs under tablet
+    draw.rounded_rectangle([lx + 25, card_y + 475, lx + 555, card_y + 715], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+    t_specs = [
+        ("• 터치 인체공학 그리드", "야외 현장에서 장갑 착용 시에도 오터치 없는 48dp+ 탭 타깃"),
+        ("• 실시간 GPS 지적 정합", "위치 좌표 기반 현장 필지 경계선 및 경사도 3D 자동 렌더링"),
+        ("• 오프라인 캐시 모드", "네트워크 취약 지역에서도 사전 동기화된 지적도 데이터 유지")
+    ]
+    tsy = card_y + 500
+    for st, sd in t_specs:
+        draw.text((lx + 45, tsy), st, font=get_font(13, 'bold'), fill=BRAND_GREEN)
+        draw.text((lx + 45, tsy + 24), sd, font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
+        tsy += 68
+
+    # Right Card: 3 Mobile Screens (시뮬레이션 시작 전 대상지 선택 및 상태 변경 흐름) (w=845)
+    rx = 975
+    rw = 845
+    draw.rounded_rectangle([rx, card_y, rx + rw, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
+    draw_pill_badge(draw, left_x=rx + 25, cy=card_y + 35, text="MOBILE WORKFLOW PROTOTYPE", font=get_font(10.5, 'bold'), theme='blue', pad_x=12, height=24)
+    draw.text((rx + 25, card_y + 68), "대상지 선택 및 3단계 상태 변경 흐름 (피그마 원본)", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
+    draw.text((rx + 25, card_y + 94), "지번 검색 → 필지 경계선 선택 → 3초 분석 완료 상태 인터랙션", font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
+    
+    m_screens = [
+        ("mobile_898d6b63.png", "1. 대상지 탐색", "지번 검색 및 후보 필지 터치"),
+        ("mobile_18e703c3.png", "2. 필지 선택 활성", "경계선 강조 및 면적 요약 카드"),
+        ("mobile_693e6516.png", "3. 규제 분석 완료", "적합성 판정 및 시뮬레이션 시작")
+    ]
+    
+    m_gap = 265
+    for idx, (m_fn, m_title, m_sub) in enumerate(m_screens):
+        m_p = os.path.join(ASSETS_DIR, "fig_mobile_highres", m_fn)
+        mcx = rx + 145 + idx * m_gap
+        mcy = card_y + 355
+        draw_phone_mockup(img, m_p, cx=mcx, cy=mcy, phone_w=215, phone_h=435, bezel=6, radius=22)
+        
+        # Step label below phone
+        draw.rounded_rectangle([mcx - 90, card_y + 595, mcx + 90, card_y + 625], radius=6, fill=(236, 253, 245) if idx==2 else (241, 245, 249))
+        draw.text((mcx, card_y + 610), m_title, font=get_font(12, 'bold'), fill=BRAND_DARK if idx==2 else TEXT_LIGHT_MAIN, anchor='mm')
+        draw.text((mcx, card_y + 638), m_sub, font=get_font(10.5, 'regular'), fill=TEXT_LIGHT_SUB, anchor='mm')
+        
+        # Arrow between phones
+        if idx < 2:
+            draw_arrow(draw, (mcx + 115, mcy), (mcx + 145, mcy), col=BRAND_GREEN, width=2, arrow_size=6)
+            
+    # Bottom callout in Right card
+    draw.rounded_rectangle([rx + 25, card_y + 665, rx + rw - 25, card_y + 715], radius=10, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+    draw.text((rx + 45, card_y + 690), "💡 인터랙션 핵심: 별도 화면 이동 없이 바텀시트 슬라이드 업으로 3단계 상태를 1-Screen 내에서 완결", font=get_font(12, 'bold'), fill=BRAND_DARK, anchor='lm')
+
+    draw_slide_footer(draw, 7, 12, dark_mode=False)
+    out_path = os.path.join(OUT_DIR, "slide_07.png")
+    img.save(out_path, quality=95)
+    print(f"Generated: {out_path}")
+
+# -------------------------------------------------------------
+# SLIDE 08: DESIGN SYSTEM (Figma Typography Scale + Tokens Matrix 1:1 Matching)
+# -------------------------------------------------------------
+def make_slide_08():
+    img = Image.new('RGB', (W, H), BG_LIGHT)
+    draw = ImageDraw.Draw(img)
+    draw_slide_header(
+        draw, 8, 
+        "DESIGN SYSTEM & TOKENS", 
+        "Design System | ", 
+        "피그마 공식 디자인 시스템: 타이포그래피 계층 & 아토믹 토큰 매트릭스", 
+        "피그마 원본 그대로: Pretendard 12단계 텍스트 스케일, Agri-Tech 컬러 팔레트, 아이콘 그리드, Spacing & Radius 토큰", 
+        right_badge=("OFFICIAL DESIGN SYSTEM", "green")
+    )
+    
+    card_y = 215
+    card_h = 745
+    
+    # Left Card: Pretendard Typography Hierarchy (Exact from User Figma) (w=680)
+    lx = 100
+    lw = 680
+    draw.rounded_rectangle([lx, card_y, lx + lw, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
+    draw_pill_badge(draw, left_x=lx + 25, cy=card_y + 35, text="TYPOGRAPHY HIERARCHY", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=24)
+    draw.text((lx + 25, card_y + 68), "Pretendard 폰트 시스템 (12단계 스케일)", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
+    draw.text((lx + 25, card_y + 94), "피그마 원본 디자인 시스템 헤드라인/서브/본문 계층 규격", font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
+    
+    typo_specs = [
+        ("Pretendard Bold 헤드라인 48", "48px / Bold", "메인 대시보드 및 핵심 지표 대형 타이틀", 18),
+        ("Pretendard Bold 서브헤드 40", "40px / Bold", "섹션 헤더 및 주요 모듈 타이틀", 16),
+        ("Pretendard Bold 서브헤드 32", "32px / Bold", "카드 타이틀 및 단계별 워크플로우 명칭", 15),
+        ("Pretendard Bold 서브헤드 28", "28px / Bold", "모달 팝업 및 대화상자 헤더", 14),
+        ("Pretendard Bold 서브헤드 20", "20px / Bold", "테이블 헤더 및 컴포넌트 라벨 타이틀", 13),
+        ("Pretendard Medium 본문 18", "18px / Medium", "주요 설명문 및 가이드 본문 텍스트", 12.5),
+        ("Pretendard Medium 본문 16", "16px / Medium", "기본 입력 폼 필드 및 리스트 본문", 12),
+        ("Pretendard Regular 본문 14", "14px / Regular", "상세 보조 설명 및 부가 데이터 텍스트", 11.5),
+        ("Pretendard Regular 본문 12", "12px / Regular", "캡션, 상태 라벨 및 타임스탬프", 11)
+    ]
+    
+    ty = card_y + 125
+    for t_name, t_size, t_usage, font_sz in typo_specs:
+        draw.rounded_rectangle([lx + 25, ty, lx + lw - 25, ty + 58], radius=8, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+        draw.text((lx + 40, ty + 18), t_name, font=get_font(font_sz, 'bold'), fill=TEXT_LIGHT_MAIN)
+        draw_pill_badge(draw, left_x=lx + lw - 140, cy=ty + 29, text=t_size, font=get_font(10, 'bold'), theme='gray', pad_x=8, height=20)
+        draw.text((lx + 40, ty + 38), t_usage, font=get_font(10.5, 'regular'), fill=TEXT_LIGHT_SUB)
+        ty += 66
+
+    # Right Card: Authentic Tokens Matrix (Colors, Icons, Spacing, Radius) (w=1010)
+    rx = 810
+    rw = 1010
+    draw.rounded_rectangle([rx, card_y, rx + rw, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
+    draw_pill_badge(draw, left_x=rx + 25, cy=card_y + 35, text="ATOMIC DESIGN TOKENS", font=get_font(10.5, 'bold'), theme='blue', pad_x=12, height=24)
+    draw.text((rx + 25, card_y + 68), "컬러 팔레트 · 아이콘 그리드 · Spacing & Radius 토큰", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
+    draw.text((rx + 25, card_y + 94), "피그마 디자인 시스템 원본 아토믹 토큰 세트", font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
+    
+    # Embedding the high-res part_design_tokens.png directly in the right card container
+    dt_path = os.path.join(ASSETS_DIR, "part_design_tokens.png")
+    if os.path.exists(dt_path):
+        dt_img = Image.open(dt_path).convert('RGBA')
+        scale = min((rw - 60) / dt_img.width, (card_h - 145) / dt_img.height)
+        dw = int(dt_img.width * scale)
+        dh = int(dt_img.height * scale)
+        d_res = dt_img.resize((dw, dh), Image.Resampling.LANCZOS)
+        img.paste(d_res, (rx + (rw - dw) // 2, card_y + 125 + (card_h - 145 - dh) // 2), d_res)
+
+    draw_slide_footer(draw, 8, 12, dark_mode=False)
+    out_path = os.path.join(OUT_DIR, "slide_08.png")
     img.save(out_path, quality=95)
     print(f"Generated: {out_path}")
 

@@ -163,7 +163,38 @@ def draw_slide_footer(draw, slide_num, total_slides=12, dark_mode=False):
     page_str = f"PAGE {slide_num:02d} / {total_slides:02d}"
     draw.text((1820, 1018), page_str, font=get_num_font(11.5, 'black'), fill=page_col, anchor='rt')
 
+def draw_phone_mockup(base_img, screen_path, cx, cy, phone_w=240, phone_h=490, bezel=6, radius=24):
+    if not os.path.exists(screen_path):
+        return
+    s_img = Image.open(screen_path).convert('RGBA')
+    nw = phone_w - bezel * 2
+    nh = phone_h - bezel * 2
+    scale = min(nw / s_img.width, nh / s_img.height)
+    sn_w = int(s_img.width * scale)
+    sn_h = int(s_img.height * scale)
+    s_res = s_img.resize((sn_w, sn_h), Image.Resampling.LANCZOS)
+    
+    draw = ImageDraw.Draw(base_img)
+    x1 = cx - phone_w // 2
+    y1 = cy - phone_h // 2
+    x2 = cx + phone_w // 2
+    y2 = cy + phone_h // 2
+    
+    # Outer dark bezel
+    draw.rounded_rectangle([x1, y1, x2, y2], radius=radius, fill=(15, 23, 42), outline=(51, 65, 85), width=2)
+    # Screen inner background
+    draw.rounded_rectangle([x1 + bezel, y1 + bezel, x2 - bezel, y2 - bezel], radius=radius - 2, fill=(255, 255, 255))
+    
+    # Paste centered screen image
+    px = cx - sn_w // 2
+    py = cy - sn_h // 2
+    base_img.paste(s_res, (px, py), s_res)
+    
+    # Dynamic island / camera notch pill
+    draw.rounded_rectangle([cx - 24, y1 + bezel + 4, cx + 24, y1 + bezel + 16], radius=6, fill=(15, 23, 42))
+
 def draw_browser_mockup(base_img, screen_path, x, y, w, h, title="FARMINGSYS ENTERPRISE · GIS CLOUD", url="https://farmingsys.io/workspace/land-analysis"):
+
     draw = ImageDraw.Draw(base_img)
     # Browser window container shadow/outline
     header_h = 36
