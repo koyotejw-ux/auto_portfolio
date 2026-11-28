@@ -280,7 +280,7 @@ def make_slide_06():
     print(f"Generated: {out_path}")
 
 # -------------------------------------------------------------
-# SLIDE 07: CORE FEATURE · STEP 1 · LAND SELECTION & REGULATORY ANALYSIS
+# SLIDE 07: CORE FEATURE · STEP 1 · LAND ANALYSIS & FEASIBILITY REPORT
 # -------------------------------------------------------------
 def make_slide_07():
     img = Image.new('RGB', (W, H), BG_LIGHT)
@@ -289,32 +289,32 @@ def make_slide_07():
         draw, 7, 
         "CORE FEATURE · STEP 1", 
         "Simulation Step 1 | ", 
-        "STEP 1. 대상지 선택 및 토지분석 데스크톱 & 모바일 화면 (Figma UI 실물)", 
-        "피그마 공식 UI 원본: [1] 데스크톱 스플릿 뷰(좌측 인허가·지목·제외면적 분석표 + 우측 맵)  |  [2] 모바일 적응형 바텀시트 UI", 
-        right_badge=("OFFICIAL FIGMA UI", "green")
+        "STEP 1. 대상지 분석 및 토지 분석 보고서 데스크톱 & 모바일 화면 (Figma UI 실물)", 
+        "피그마 공식 UI 원본: [1] 데스크톱 토지 분석 보고서(위치·면적·토지분석종합·가용선별)  |  [2] 모바일 원클릭 토지 분석 보고서 뷰어", 
+        right_badge=("OFFICIAL FIGMA REPORT UI", "green")
     )
     
     card_y = 215
     card_h = 745
     
     # 3-Zone Layout:
-    # Zone 1 (Left Card, w=450, x=100): Core Specs & Decision Logic (기본정보, 지목현황, 제외면적, 인허가)
-    # Zone 2 (Middle Card, w=840, x=580): Desktop Web Browser Mockup (피그마 원본 데스크톱 화면)
-    # Zone 3 (Right Card, w=400, x=1450): Mobile Phone Mockup (피그마 원본 모바일 토지분석 화면)
+    # Zone 1 (Left Card, w=440, x=80): Core Specs & Land Analysis Decision Logic
+    # Zone 2 (Middle Card, w=840, x=540): Desktop Land Analysis Report Mockup (821x1024)
+    # Zone 3 (Right Card, w=440, x=1400): Mobile Land Analysis Report Mockup (216x1024)
     
     # =========================================================================
-    # ZONE 1: LEFT SPECS CARD (w=450, x=100)
+    # ZONE 1: LEFT SPECS CARD (w=440, x=80)
     # =========================================================================
-    lx, lw = 100, 450
+    lx, lw = 80, 440
     draw.rounded_rectangle([lx, card_y, lx + lw, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, left_x=lx + 25, cy=card_y + 35, text="STEP 1 · LAND ANALYSIS", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=24)
-    draw.text((lx + 25, card_y + 68), "토지분석 UI 핵심 로직", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
-    draw.text((lx + 25, card_y + 92), "지번 입력 즉시 다차원 공적 규제 실시간 파싱", font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
+    draw_pill_badge(draw, left_x=lx + 25, cy=card_y + 35, text="STEP 1 · LAND ANALYSIS REPORT", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=24)
+    draw.text((lx + 25, card_y + 68), "토지 분석 보고서 UI 로직", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
+    draw.text((lx + 25, card_y + 92), "지번 입력 즉시 고정밀 공적 장부 & 가용부지 실시간 판정", font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB)
     
     step1_specs = [
-        ("01. 4대 분석 탭 네비게이션", "기본정보, 자연환경분석, 토지건물분석, 도시계획분석을 상단 탭으로 구성해 단계별 데이터 탐색 피로도 해소"),
-        ("02. 지목·소유·공시지가 필터", "지목현황(대 171.9㎡, 82.5%), 소유현황, 소재지현황, 공시지가를 칩 버튼으로 즉시 스위칭하여 검증"),
-        ("03. 용도지역 제외면적 필터링", "제2종일반주거지역(621,321㎡) 등 개발 불가/조건부 구역을 체크박스 및 컬러 배지로 필터링하여 인허가 리스크 사전 차단")
+        ("01. 위치 및 면적 고해상도 지적도", "경기도 고양시 덕양구 대상지 위성/지적도 오버레이를 통해 총 면적(750㎡) 및 경계선을 직관적으로 시각화"),
+        ("02. 6대 토지 분석 종합 테이블", "기본정보, 토지정보, 토지이용, 건축물정보, 자연환경분석(경사도·표고), 도시계획분석(제2종일반주거지역)을 원페이지로 집약"),
+        ("03. 가용 vs 비가용 대상지 선별", "개발 인허가 불가 구역을 제외한 순수 사용 가능 대상지(750㎡)를 정밀 필터링하여 초기 매입 및 사업 착수 리스크 100% 차단")
     ]
     
     sy = card_y + 118
@@ -330,8 +330,8 @@ def make_slide_07():
 
     # Bottom Key Metric Callout in Left Card
     draw.rounded_rectangle([lx + 25, card_y + 565, lx + lw - 25, card_y + 715], radius=12, fill=(236, 253, 245), outline=(167, 243, 208), width=1)
-    draw.text((lx + 40, card_y + 586), "💡 반응형 UX 인터랙션 설계", font=get_font(12.5, 'bold'), fill=BRAND_DARK)
-    val_desc = "데스크톱은 '좌측 380px 분석 시트 + 우측 1500px 인터랙티브 맵'의 듀얼 스플릿 뷰를 제공하며, 모바일은 상단 지도와 하단 드래그 바텀시트가 유기적으로 연동되어 동일한 정보를 손쉽게 탐색할 수 있습니다."
+    draw.text((lx + 40, card_y + 586), "💡 공공 데이터 집약 설계 가치", font=get_font(12.5, 'bold'), fill=BRAND_DARK)
+    val_desc = "수십 장의 토지대장, 건축물대장, 토지이용계획확인원을 열람할 필요 없이, 플랫폼 자체 AI 분석 엔진이 단 3초 만에 표준 '토지 분석 보고서'로 자동 정제하여 의사결정 속도를 획기적으로 개선합니다."
     lines_val = wrap_text(val_desc, get_font(10.5, 'regular'), lw - 70, draw)
     vy = card_y + 610
     for l in lines_val:
@@ -339,33 +339,37 @@ def make_slide_07():
         vy += 17
 
     # =========================================================================
-    # ZONE 2: DESKTOP WEB BROWSER MOCKUP (w=880, x=560)
+    # ZONE 2: DESKTOP LAND ANALYSIS REPORT MOCKUP (w=840, x=540)
     # =========================================================================
-    mx, mw = 560, 880
+    mx, mw = 540, 840
     draw.rounded_rectangle([mx, card_y, mx + mw, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, left_x=mx + 25, cy=card_y + 35, text="DESKTOP VIEW (1920px)", font=get_font(10.5, 'bold'), theme='blue', pad_x=12, height=24)
-    draw.text((mx + 215, card_y + 35), "피그마 공식 데스크톱 화면 (STEP 2 토지분석 듀얼 뷰)", font=get_font(13, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
+    draw_pill_badge(draw, left_x=mx + 25, cy=card_y + 35, text="DESKTOP REPORT VIEW", font=get_font(10.5, 'bold'), theme='blue', pad_x=12, height=24)
+    draw.text((mx + 215, card_y + 35), "피그마 공식 데스크톱 화면 (토지 분석 보고서 실물)", font=get_font(13, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
     
-    desk_asset = os.path.join(ASSETS_DIR, "figma_step2_land_analysis_desktop.png")
-    if not os.path.exists(desk_asset):
-        desk_asset = os.path.join(ASSETS_DIR, "figma_screen_sec_03.png")
-    
+    desk_asset = os.path.join(ASSETS_DIR, "figma_step2_land_analysis_report_desktop.jpg")
     desk_im = Image.open(desk_asset)
-    desk_vp_w = mw - 40 - 4
-    desk_vp_h = int(desk_vp_w * (desk_im.height / desk_im.width))
-    desk_total_h = 36 + 2 + desk_vp_h
-    desk_y = card_y + 75 + (card_h - 95 - desk_total_h) // 2
-    draw_browser_mockup(img, desk_asset, x=mx + 20, y=desk_y, w=mw - 40, h=desk_total_h, title="FARMINGSYS ENTERPRISE · STEP 2 LAND ANALYSIS (DESKTOP)", url="https://farmingsys.io/app/step-02-land-analysis")
+    
+    # Calculate zero-distortion dimensions for desktop report mockup
+    target_d_h = 640
+    d_vp_h = target_d_h - 36 - 2
+    d_vp_w = int(d_vp_h * (desk_im.width / desk_im.height))
+    tot_d_w = d_vp_w + 4
+    
+    d_cx = mx + mw // 2
+    d_x = d_cx - tot_d_w // 2
+    d_y = card_y + 75 + (card_h - 95 - target_d_h) // 2
+    
+    draw_browser_mockup(img, desk_asset, x=d_x, y=d_y, w=tot_d_w, h=target_d_h, title="LAND ANALYSIS REPORT (DESKTOP)", url="https://farmingsys.io/report/land-analysis-summary")
 
     # =========================================================================
-    # ZONE 3: MOBILE PHONE MOCKUP (w=340, x=1480)
+    # ZONE 3: MOBILE LAND ANALYSIS REPORT MOCKUP (w=440, x=1400)
     # =========================================================================
-    rx, rw = 1480, 340
+    rx, rw = 1400, 440
     draw.rounded_rectangle([rx, card_y, rx + rw, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, left_x=rx + 25, cy=card_y + 35, text="MOBILE VIEW (390px)", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=24)
-    draw.text((rx + 195, card_y + 35), "모바일 적응형 UI", font=get_font(13, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
+    draw_pill_badge(draw, left_x=rx + 25, cy=card_y + 35, text="MOBILE REPORT VIEW", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=24)
+    draw.text((rx + 205, card_y + 35), "토지 분석 보고서 모바일 UI", font=get_font(13, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
     
-    mob_asset = os.path.join(ASSETS_DIR, "figma_step2_land_analysis_mobile.png")
+    mob_asset = os.path.join(ASSETS_DIR, "figma_step2_land_analysis_report_mobile.jpg")
     draw_phone_mockup(img, mob_asset, cx=rx + rw//2, cy=card_y + 75 + (card_h - 95)//2, target_h=640, bezel=7, radius=28)
 
     draw_slide_footer(draw, 7, 12, dark_mode=False)
