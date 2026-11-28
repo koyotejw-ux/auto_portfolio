@@ -280,76 +280,112 @@ def make_slide_06():
     print(f"Generated: {out_path}")
 
 # -------------------------------------------------------------
-# SLIDE 07: PROTOTYPING SCREENS (Exact Figma 3-Phone Layer States + Flow)
+# SLIDE 07: RESPONSIVE ECOSYSTEM & PROTOTYPING (Landing Page & Mobile GIS Flow)
 # -------------------------------------------------------------
 def make_slide_07():
     img = Image.new('RGB', (W, H), BG_LIGHT)
     draw = ImageDraw.Draw(img)
     draw_slide_header(
         draw, 7, 
-        "PROTOTYPING SCREENS", 
-        "Prototyping Screens | ", 
-        "시뮬레이션 시작 전 대상지 선택 및 3단계 지도 레이어 상태 전환 흐름", 
-        "피그마 공식 UI 원본: 지적도 적용 상태 → 일반지도 적용 상태 → 스카이뷰(위성) 적용 상태 인터랙션", 
+        "RESPONSIVE PROTOTYPING", 
+        "Responsive & Prototyping | ", 
+        "반응형 랜딩페이지 & 모바일 3단계 지도 레이어 상태 전환 흐름", 
+        "Desktop 1920px 패럴랙스 랜딩, Tablet 1024px 지도 워크스페이스, Mobile 390px 3단계 레이어 프로토타이핑(지적도→일반지도→스카이뷰)", 
         right_badge=("OFFICIAL FIGMA PROTOTYPE", "green")
     )
     
     card_y = 215
     card_h = 745
     
-    # Left Card: Core Description & State Change Specs (w=480)
-    lx = 100
-    lw = 480
-    draw.rounded_rectangle([lx, card_y, lx + lw, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, left_x=lx + 25, cy=card_y + 35, text="GIS LAYER SWITCHING LOGIC", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=24)
-    draw.text((lx + 25, card_y + 68), "대상지 선택 & 레이어 전환", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
-    draw.text((lx + 25, card_y + 94), "사용자 관점의 3단계 지도 모드 인터랙션", font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
+    # 2-Section Structure:
+    # Left Card (w=540, x=100): Responsive Landing Page & Multi-Device Breakpoints Architecture
+    # Right Card (w=1150, x=670): Authentic 3-Phone Interactive Prototyping Flow (지적도 -> 일반지도 -> 스카이뷰)
     
-    step_descriptions = [
-        ("01. 지적도 적용 상태", "토지이용계획과 공적 지번 경계선을 파악하는 기본 뷰. 필지 번호와 경계 구분이 가장 명확하여 대상지 위치 특정에 최적화."),
-        ("02. 일반지도 적용 상태", "주변 도로망, 인접 건물, 아파트 단지 등 도심 인프라와의 접근성 및 진입 도로 여건을 직관적으로 확인하는 로드맵 뷰."),
-        ("03. 스카이뷰(위성) 적용 상태", "고해상도 항공 위성 사진을 통해 실제 농지 현황, 임목 상태, 고도 및 주변 녹지 완충 구역을 사실적으로 검증.")
+    # =========================================================================
+    # LEFT CARD: RESPONSIVE LANDING PAGE & BREAKPOINTS ARCHITECTURE (w=540, x=100)
+    # =========================================================================
+    lx, lw = 100, 540
+    draw.rounded_rectangle([lx, card_y, lx + lw, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
+    draw_pill_badge(draw, left_x=lx + 25, cy=card_y + 35, text="RESPONSIVE ARCHITECTURE", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=24)
+    draw.text((lx + 25, card_y + 68), "반응형 랜딩 & 멀티 디바이스 규격", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
+    draw.text((lx + 25, card_y + 94), "Desktop 1920 · Tablet 1024 · Mobile 390 적응형 레이아웃", font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
+    
+    # Breakpoint Specs (3 Tiers)
+    breakpoints = [
+        {
+            "device": "Desktop Web (1920px)",
+            "badge": "1920 · FULL",
+            "theme": "green",
+            "desc": "패럴랙스 비주얼 스크롤링, 4열 카드 그리드, 좌측 420px 분석 패널과 우측 1500px 고해상도 GIS 맵 듀얼 뷰"
+        },
+        {
+            "device": "Tablet / iPad (1024px)",
+            "badge": "1024 · FLUID",
+            "theme": "blue",
+            "desc": "터치 인터랙션 최적화, 접이식 플로팅 드로어 패널, 핀치 줌 제스처 및 분할 화면 스케일링"
+        },
+        {
+            "device": "Mobile Phone (390px)",
+            "badge": "390 · STACK",
+            "theme": "gray",
+            "desc": "1열 수직 스택, 하단 드래그 바텀시트, 원클릭 플로팅 레이어 전환 탭(지적도/일반/위성) 제공"
+        }
     ]
     
-    s_y = card_y + 125
-    for s_title, s_desc in step_descriptions:
-        draw.rounded_rectangle([lx + 25, s_y, lx + lw - 25, s_y + 130], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-        draw.text((lx + 40, s_y + 24), s_title, font=get_font(14.5, 'bold'), fill=BRAND_GREEN)
-        lines = wrap_text(s_desc, get_font(11.5, 'regular'), lw - 70, draw)
-        d_y = s_y + 50
+    by = card_y + 120
+    for bp in breakpoints:
+        draw.rounded_rectangle([lx + 25, by, lx + lw - 25, by + 102], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+        draw.text((lx + 40, by + 18), bp["device"], font=get_font(13.5, 'bold'), fill=TEXT_LIGHT_MAIN)
+        draw_pill_badge(draw, left_x=lx + lw - 135, cy=by + 24, text=bp["badge"], font=get_font(9.5, 'bold'), theme=bp["theme"], pad_x=8, height=20)
+        lines = wrap_text(bp["desc"], get_font(11, 'regular'), lw - 75, draw)
+        ly = by + 42
         for l in lines:
-            draw.text((lx + 40, d_y), l, font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
-            d_y += 18
-        s_y += 145
-        
-    # Bottom Key Insight Box in Left Card
-    draw.rounded_rectangle([lx + 25, card_y + 580, lx + lw - 25, card_y + 715], radius=12, fill=(236, 253, 245), outline=(167, 243, 208), width=1)
-    draw.text((lx + 40, card_y + 602), "💡 UI/UX 인터랙션 설계 핵심", font=get_font(13, 'bold'), fill=BRAND_DARK)
-    insight_desc = "우측 상단 플로팅 메뉴에서 [지적도 / 일반지도 / 스카이뷰]를 원클릭 탭 시, 맵 캔버스가 부드럽게 크로스페이드되며 하단 바텀시트의 [선택된 대상지] 정보는 그대로 유지되도록 설계하여 탐색 피로도를 0%로 줄였습니다."
-    lines_ins = wrap_text(insight_desc, get_font(11, 'regular'), lw - 70, draw)
-    iy = card_y + 626
-    for l in lines_ins:
-        draw.text((lx + 40, iy), l, font=get_font(11, 'regular'), fill=TEXT_LIGHT_MAIN)
-        iy += 17
+            draw.text((lx + 40, ly), l, font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB)
+            ly += 18
+        by += 114
 
-    # Right Card: The Exact 3-Phone UI Flow Asset from Figma (w=1210)
-    rx = 610
-    rw = 1210
+    # Landing Page Core Narrative Card (Bottom half of Left)
+    draw.rounded_rectangle([lx + 25, card_y + 480, lx + lw - 25, card_y + 715], radius=12, fill=(240, 253, 244), outline=(187, 247, 208), width=1)
+    draw_pill_badge(draw, left_x=lx + 40, cy=card_y + 505, text="LANDING PAGE HIGHLIGHTS", font=get_font(10, 'bold'), theme='green', pad_x=10, height=20)
+    draw.text((lx + 40, card_y + 534), "공식 랜딩페이지 5단계 전환 퍼널", font=get_font(14, 'bold'), fill=BRAND_DARK)
+    
+    landing_steps = [
+        "1. 헤로 섹션: 패럴랙스 항공뷰 & '스마트팜 토지개발이 쉬워진다' CTA",
+        "2. 문제제기: 비전문가의 인허가 난항 및 2주 소요 현실 직시",
+        "3. 4단계 시뮬레이션 미리보기: 대상지-규제-배치-금융 리포트 체험",
+        "4. 신뢰 지표 & 후기: 실시간 분석 건수, 파트너 금융기관 로고",
+        "5. 원클릭 전환: 즉시 내 토지 지번 입력 및 맞춤 상담 신청"
+    ]
+    ls_y = card_y + 558
+    for ls in landing_steps:
+        draw.text((lx + 40, ls_y), ls, font=get_font(10.5, 'regular'), fill=TEXT_LIGHT_MAIN)
+        ls_y += 28
+
+    # =========================================================================
+    # RIGHT CARD: AUTHENTIC 3-PHONE INTERACTIVE GIS FLOW (w=1150, x=670)
+    # =========================================================================
+    rx, rw = 670, 1150
     draw.rounded_rectangle([rx, card_y, rx + rw, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
     draw_pill_badge(draw, left_x=rx + 30, cy=card_y + 35, text="AUTHENTIC FIGMA PROTOTYPE UI", font=get_font(10.5, 'bold'), theme='blue', pad_x=12, height=24)
-    draw.text((rx + 285, card_y + 35), "피그마 원본 인터랙티브 프로토타입 캔버스 (지적도 → 일반지도 → 스카이뷰)", font=get_font(13.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
+    draw.text((rx + 285, card_y + 35), "피그마 원본 인터랙티브 프로토타입: 모바일 3단계 지도 레이어 전환 흐름", font=get_font(13.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
     
+    # Bottom callout in Right Card
+    draw.rounded_rectangle([rx + 30, card_y + card_h - 75, rx + rw - 30, card_y + card_h - 20], radius=10, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+    draw.text((rx + 45, card_y + card_h - 58), "💡 상태 전환 인터랙션 설계:", font=get_font(11.5, 'bold'), fill=BRAND_DARK)
+    flow_desc = "우측 상단 플로팅 메뉴에서 [지적도 / 일반지도 / 스카이뷰] 원클릭 시 맵 타일이 300ms 페이드 전환되며, 하단 선택 필지 데이터는 고정 유지됩니다."
+    draw.text((rx + 225, card_y + card_h - 58), flow_desc, font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB)
+
     three_phones_asset = os.path.join(ASSETS_DIR, "figma_3phones_layer_states.png")
     if os.path.exists(three_phones_asset):
         p_img = Image.open(three_phones_asset).convert('RGBA')
-        scale = min((rw - 60) / p_img.width, (card_h - 100) / p_img.height)
+        scale = min((rw - 60) / p_img.width, (card_h - 165) / p_img.height)
         nw = int(p_img.width * scale)
         nh = int(p_img.height * scale)
         p_res = p_img.resize((nw, nh), Image.Resampling.LANCZOS)
         
-        # Center in right card
+        # Center in right card above bottom callout
         px = rx + (rw - nw) // 2
-        py = card_y + 75 + (card_h - 90 - nh) // 2
+        py = card_y + 75 + (card_h - 165 - nh) // 2
         img.paste(p_res, (px, py), p_res)
 
     draw_slide_footer(draw, 7, 12, dark_mode=False)
