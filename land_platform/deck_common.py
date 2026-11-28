@@ -262,13 +262,15 @@ def draw_browser_mockup(base_img, screen_path, x, y, w, h=None, target_w=None, t
     draw.ellipse([x + 48, btn_y - 5, x + 58, btn_y + 5], fill=(16, 185, 129))
     
     # URL address bar
-    url_box_w = min(420, w - 240)
-    url_x = x + 75
-    draw.rounded_rectangle([url_x, y + 7, url_x + url_box_w, y + header_h - 7], radius=6, fill=(30, 41, 59), outline=(51, 65, 85), width=1)
-    draw.text((url_x + 10, btn_y), "🔒 " + url, font=get_font(10, 'medium'), fill=(148, 163, 184), anchor='lm')
+    url_box_w = max(60, min(420, w - 240)) if (w - 240) > 60 else max(40, w - 90)
+    url_x = x + 75 if (w - 240) > 60 else x + 70
+    if url_box_w > 30 and (x + w) > (url_x + url_box_w):
+        draw.rounded_rectangle([url_x, y + 7, url_x + url_box_w, y + header_h - 7], radius=6, fill=(30, 41, 59), outline=(51, 65, 85), width=1)
+        draw.text((url_x + 8, btn_y), "🔒 " + url, font=get_font(9.5, 'medium'), fill=(148, 163, 184), anchor='lm')
     
-    # Title in center
-    draw.text((x + w - 20, btn_y), title, font=get_font(10.5, 'bold'), fill=(100, 116, 139), anchor='rm')
+    # Title in right if space permits
+    if w >= 400:
+        draw.text((x + w - 20, btn_y), title, font=get_font(10.5, 'bold'), fill=(100, 116, 139), anchor='rm')
     
     # Inner viewport screen resized with 100% original aspect ratio (zero distortion, zero letterbox)
     s_res = s_img.resize((vp_w, vp_h), Image.Resampling.LANCZOS)

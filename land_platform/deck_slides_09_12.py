@@ -184,7 +184,7 @@ def make_slide_10():
     print(f"Generated: {out_path}")
 
 # -------------------------------------------------------------
-# SLIDE 11: CORE FEATURE · STEP 4 · REVENUE & OPEX MODELING (Figma Step 7 Full)
+# SLIDE 11: CORE FEATURE · STEP 4 · REVENUE & SIMULATION REPORT (Figma Step 7 & Report)
 # -------------------------------------------------------------
 def make_slide_11():
     img = Image.new('RGB', (W, H), BG_LIGHT)
@@ -193,8 +193,8 @@ def make_slide_11():
         draw, 11, 
         "CORE FEATURE · STEP 4", 
         "Simulation Step 4 | ", 
-        "STEP 4. 스마트팜 매출 설계 및 운영비(OPEX)·판관비 산출 (Figma UI 실물)", 
-        "피그마 공식 UI 원본 2종: [1] 작물별 매출 설계(KAMIS 도매시세·품목비율·수확량)  |  [2] 운영비/판관비(중간재비·판관비·인건비 최저시급 연동)", 
+        "STEP 4. 운영비(OPEX)·판관비 설계 및 최종 시뮬레이션 분석 보고서 (Figma UI 실물)", 
+        "피그마 공식 UI 원본 2종: [1] 데스크톱 중간재비·판관비·인건비 최저시급 연동 화면(1024x576)  |  [2] 최종 시뮬레이션 분석 보고서 풀페이지 뷰어(379x1024)", 
         right_badge=("OFFICIAL FIGMA UI 2-PART", "green")
     )
     
@@ -202,23 +202,23 @@ def make_slide_11():
     card_h = 745
     
     # 3-Zone Architecture:
-    # Zone 1 (Left Card, w=440, x=80): Core Specs & Revenue/OPEX Decision Logic
-    # Zone 2 (Middle Card, w=650, x=540): Desktop Browser [Part 1] 작물별 매출 설계 (1024x576)
-    # Zone 3 (Right Card, w=650, x=1210): Desktop Browser [Part 2] 운영비·판관비·인건비 설계 (1024x576)
+    # Zone 1 (Left Card, w=440, x=80): Core Specs & Feasibility Report Decision Logic
+    # Zone 2 (Middle Card, w=840, x=540): Desktop Browser STEP 7 중간재비·판관비·인건비 설정 (1024x576)
+    # Zone 3 (Right Card, w=440, x=1400): Final Simulation Analysis Report Full-Page Mockup (379x1024)
     
     # =========================================================================
     # ZONE 1: LEFT SPECS CARD (w=440, x=80)
     # =========================================================================
     lx, lw = 80, 440
     draw.rounded_rectangle([lx, card_y, lx + lw, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, left_x=lx + 25, cy=card_y + 35, text="STEP 4 · REVENUE & OPEX ENGINE", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=24)
-    draw.text((lx + 25, card_y + 68), "매출 설계 & 운영비 모델 UI", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
-    draw.text((lx + 25, card_y + 92), "KAMIS 공공 도매 시세 & 국가 최저시급 연동 경제성 진단", font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB)
+    draw_pill_badge(draw, left_x=lx + 25, cy=card_y + 35, text="STEP 4 · OPEX & FINAL REPORT", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=24)
+    draw.text((lx + 25, card_y + 68), "운영비 설계 & 종합 리포트 UI", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
+    draw.text((lx + 25, card_y + 92), "최저시급 인건비 연동 & 금융 심사용 다면 보고서 완성", font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB)
 
     step4_specs = [
-        ("01. 온실별 품목 비율 & KAMIS 시세 연동", "스마트팜 비닐온실(51.25㎡) 단위 딸기·토마토 비율(50:50) 분할 및 aT KAMIS 공공 도매 시세 DB 기반 초기 판매가(10,000원) 실시간 연동"),
-        ("02. ㎡당 수확량 & 복리 증가율 시뮬레이션", "재배면적(25.25㎡) 기준 연간 수확량, 환경제어 수확량 증가율(47%), 출하 판매가 증가율(47%)을 정밀 반영한 연매출 추산 모델"),
-        ("03. 중간재비·판관비·인건비 일괄 산출", "총 236억 규모 사업의 비료·농약 중간재비, 가로등·우수공 판관비, 국가 최저시급 기준 투입인원(47명) 인건비를 표준값 토글로 즉시 산출")
+        ("01. 중간재비 & 판관비 표준값 토글", "비료, 농약 등 중간재비와 우수공·가로등공 판관비 항목별 단위비용(원/㎡)을 표준값 원클릭 토글로 자동 보정 및 총 236억 검증"),
+        ("02. 국가 최저시급 연동 운영비 산출", "가공유통시설 투입인원(47명) 및 1인 연봉을 국가 최저시급 기준 공공 DB와 연동하여 실제 운영 단계의 고정비 투명성 확보"),
+        ("03. 원클릭 시뮬레이션 분석 보고서", "토지 지적도, 법률 규제, 연차별 현금흐름(IRR/ROI), 시설배치 조감도가 망라된 금융 표준 분석 보고서 실시간 발급")
     ]
     cy = card_y + 118
     for title, desc in step4_specs:
@@ -234,7 +234,7 @@ def make_slide_11():
     # Bottom Key Metric Callout in Left Card
     draw.rounded_rectangle([lx + 25, card_y + 565, lx + lw - 25, card_y + 715], radius=12, fill=(236, 253, 245), outline=(167, 243, 208), width=1)
     draw.text((lx + 40, card_y + 586), "💡 STEP 4 핵심 설계 전략 및 가치", font=get_font(12.5, 'bold'), fill=BRAND_DARK)
-    val_desc = "생산자 직거래 및 도매시장 시세 변동 리스크를 방어하기 위해 공공 KAMIS 실시간 단가와 자체 검증 수확량 알고리즘을 결합하여, 농가 및 기관 투자자가 100% 신뢰할 수 있는 10개년 추정 현금흐름(Cash Flow)을 산출합니다."
+    val_desc = "단순한 계산기를 넘어 국가 공공 데이터 기반의 정밀 적산과 실제 대출 심사용 '시뮬레이션 분석 보고서'를 단일 파이프라인으로 연결하여, 사업 기획부터 금융 승인까지의 리드타임을 90% 이상 단축했습니다."
     lines_val = wrap_text(val_desc, get_font(10.5, 'regular'), lw - 70, draw)
     vy = card_y + 610
     for l in lines_val:
@@ -242,60 +242,43 @@ def make_slide_11():
         vy += 17
 
     # =========================================================================
-    # ZONE 2: DESKTOP BROWSER [PART 1] 작물별 매출 설계 (w=650, x=540)
+    # ZONE 2: DESKTOP BROWSER [STEP 7] 중간재비 & 운영비/판관비 (w=840, x=540)
     # =========================================================================
-    m1_x, m1_w = 540, 650
+    m1_x, m1_w = 540, 840
     draw.rounded_rectangle([m1_x, card_y, m1_x + m1_w, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, left_x=m1_x + 25, cy=card_y + 35, text="PART 1 · CROP REVENUE", font=get_font(10.5, 'bold'), theme='blue', pad_x=12, height=24)
-    draw.text((m1_x + 205, card_y + 35), "작물별 매출 설계 & 수확량 모델 (Figma UI)", font=get_font(13, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
+    draw_pill_badge(draw, left_x=m1_x + 25, cy=card_y + 35, text="DESKTOP VIEW (1920px)", font=get_font(10.5, 'bold'), theme='blue', pad_x=12, height=24)
+    draw.text((m1_x + 215, card_y + 35), "피그마 공식 데스크톱 화면 (STEP 7 중간재비·판관비·운영비 설정)", font=get_font(13, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
     
-    asset1 = os.path.join(ASSETS_DIR, "figma_step7_revenue_part1_desktop.png")
+    asset1 = os.path.join(ASSETS_DIR, "figma_step7_revenue_part2_desktop.png")
     im1 = Image.open(asset1)
     vp1_w = m1_w - 40 - 4
     vp1_h = int(vp1_w * (im1.height / im1.width))
     tot1_h = 36 + 2 + vp1_h
-    b1_y = card_y + 75
-    draw_browser_mockup(img, asset1, x=m1_x + 20, y=b1_y, w=m1_w - 40, h=tot1_h, title="STEP 7-1 · CROP REVENUE SIMULATOR (1024x576)", url="https://farmingsys.io/app/step-07-revenue")
-    
-    # Part 1 Feature Highlights Card below mockup
-    f1_y = b1_y + tot1_h + 20
-    f1_h = card_y + card_h - f1_y - 20
-    draw.rounded_rectangle([m1_x + 20, f1_y, m1_x + m1_w - 20, f1_y + f1_h], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-    draw.text((m1_x + 35, f1_y + 20), "📊 스마트팜 온실 품목 & 시세 연동 핵심 요소", font=get_font(12.5, 'bold'), fill=BRAND_DARK)
-    p1_desc = "• 비닐온실(51.25㎡) 2개동 대상 딸기·토마토 재배비율(50%) 및 도넛 차트 실시간 렌더링\n• KAMIS 농산물유통정보 공공 API 실시간 단가(10,000원) 연동 및 작물가공비 자동 계산\n• 스마트팜 수확량 증가율 47% 복리 반영을 통한 정밀 예상 매출액 도출"
-    lines_p1 = p1_desc.split('\n')
-    py1 = f1_y + 48
-    for lp in lines_p1:
-        draw.text((m1_x + 35, py1), lp, font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB)
-        py1 += 22
+    b1_y = card_y + 75 + (card_h - 95 - tot1_h) // 2
+    draw_browser_mockup(img, asset1, x=m1_x + 20, y=b1_y, w=m1_w - 40, h=tot1_h, title="FARMINGSYS ENTERPRISE · STEP 7 OPEX & OPERATING COST ENGINE", url="https://farmingsys.io/app/step-07-opex")
 
     # =========================================================================
-    # ZONE 3: DESKTOP BROWSER [PART 2] 중간재비 & 운영비/판관비 (w=650, x=1210)
+    # ZONE 3: FINAL SIMULATION REPORT FULL-PAGE VIEWER (w=440, x=1400)
     # =========================================================================
-    m2_x, m2_w = 1210, 650
+    m2_x, m2_w = 1400, 440
     draw.rounded_rectangle([m2_x, card_y, m2_x + m2_w, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, left_x=m2_x + 25, cy=card_y + 35, text="PART 2 · OPEX & LABOR", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=24)
-    draw.text((m2_x + 195, card_y + 35), "중간재비·판관비·운영비 설정 (Figma UI)", font=get_font(13, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
+    draw_pill_badge(draw, left_x=m2_x + 25, cy=card_y + 35, text="FINAL REPORT VIEW", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=24)
+    draw.text((m2_x + 195, card_y + 35), "시뮬레이션 분석 보고서 (Figma 실물)", font=get_font(13, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
     
-    asset2 = os.path.join(ASSETS_DIR, "figma_step7_revenue_part2_operating_cost_desktop.png")
-    im2 = Image.open(asset2)
-    vp2_w = m2_w - 40 - 4
-    vp2_h = int(vp2_w * (im2.height / im2.width))
-    tot2_h = 36 + 2 + vp2_h
-    b2_y = card_y + 75
-    draw_browser_mockup(img, asset2, x=m2_x + 20, y=b2_y, w=m2_w - 40, h=tot2_h, title="STEP 7-2 · OPEX & LABOR COST ENGINE (1024x576)", url="https://farmingsys.io/app/step-07-opex")
-
-    # Part 2 Feature Highlights Card below mockup
-    f2_y = b2_y + tot2_h + 20
-    f2_h = card_y + card_h - f2_y - 20
-    draw.rounded_rectangle([m2_x + 20, f2_y, m2_x + m2_w - 20, f2_y + f2_h], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-    draw.text((m2_x + 35, f2_y + 20), "💼 운영비·판관비 & 가공유통시설 투입인원", font=get_font(12.5, 'bold'), fill=BRAND_DARK)
-    p2_desc = "• 중간재비 설정: 항목별 단위공사비(원/㎡) 및 표준값 적용 원클릭 토글 (총 236억 합산)\n• 일반/판관비 설정: 우수공, 가로등공 항목별 표준값 연동 및 실시간 비용 검증\n• 가공유통시설 운영비: 국가 최저시급 연동 투입인원(47명) 및 1인 연봉 자동 갱신 지원"
-    lines_p2 = p2_desc.split('\n')
-    py2 = f2_y + 48
-    for lp in lines_p2:
-        draw.text((m2_x + 35, py2), lp, font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB)
-        py2 += 22
+    rep_asset = os.path.join(ASSETS_DIR, "figma_step8_simulation_report_full.jpg")
+    rep_im = Image.open(rep_asset)
+    
+    # Calculate zero-distortion dimensions for the full report page viewer
+    target_rep_h = 640
+    rep_vp_h = target_rep_h - 36 - 2
+    rep_vp_w = int(rep_vp_h * (rep_im.width / rep_im.height))
+    tot_rep_w = rep_vp_w + 4
+    
+    rep_cx = m2_x + m2_w // 2
+    rep_x = rep_cx - tot_rep_w // 2
+    rep_y = card_y + 75 + (card_h - 95 - target_rep_h) // 2
+    
+    draw_browser_mockup(img, rep_asset, x=rep_x, y=rep_y, w=tot_rep_w, h=target_rep_h, title="SIMULATION VALUATION REPORT (FULL)", url="https://farmingsys.io/report/valuation-summary.pdf")
 
     draw_slide_footer(draw, 11, 12, dark_mode=False)
     out_path = os.path.join(OUT_DIR, "slide_11.png")
