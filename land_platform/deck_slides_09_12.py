@@ -94,7 +94,7 @@ def make_slide_09():
     print(f"Generated: {out_path}")
 
 # -------------------------------------------------------------
-# SLIDE 10: CORE FEATURE · STEP 3 · ECONOMIC VALUATION (Figma sec_06 & sec_07)
+# SLIDE 10: CORE FEATURE · STEP 3 · CONSTRUCTION COST & FINANCIAL MODELING
 # -------------------------------------------------------------
 def make_slide_10():
     img = Image.new('RGB', (W, H), BG_LIGHT)
@@ -103,57 +103,80 @@ def make_slide_10():
         draw, 10, 
         "CORE FEATURE · STEP 3", 
         "Simulation Step 3 | ", 
-        "STEP 3. 조성비 산출 & 경제성 분석 모델링 화면 (Figma UI 원본)", 
-        "피그마 공식 화면설계서 UI 2단계: [1] 조성비 산출(sec_06) - 공사비/설비비 CAPEX  |  [2] 경제성 분석(sec_07) - 10개년 현금흐름 & 회수기간", 
-        right_badge=("SIMULATOR STEP 3", "green")
+        "STEP 3. 조성비 설계 데스크톱 및 모바일 화면 (Figma UI 실물)", 
+        "피그마 공식 UI 원본: [1] 데스크톱 기본시설·조사설계·시설조성비 4분할 테이블(1024x722)  |  [2] 모바일 표준값 적용 토글 & 전용면적별 조성비 산출 UI", 
+        right_badge=("OFFICIAL FIGMA UI", "green")
     )
     
-    lw = 450
-    lh = 740
-    ly = 220
-    draw.rounded_rectangle([100, ly, 100 + lw, ly + lh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, left_x=130, cy=ly + 35, text="STEP 3 · FINANCIAL ENGINE", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=24)
-    draw.text((130, ly + 72), "조성비 & 경제성 모델 UI", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
-    draw.text((130, ly + 96), "피그마 원본 2대 재무 타당성 서브스텝 연동", font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
+    card_y = 215
+    card_h = 745
+    
+    # 3-Zone Architecture matching Slide 07 & Slide 09:
+    # Zone 1 (Left Card, w=450, x=100): Core Specs & Decision Logic
+    # Zone 2 (Middle Card, w=880, x=560): Desktop Web Browser Mockup (피그마 원본 조성비 설계 화면)
+    # Zone 3 (Right Card, w=340, x=1480): Mobile Phone Mockup (피그마 원본 모바일 조성비 설계 화면)
+    
+    # =========================================================================
+    # ZONE 1: LEFT SPECS CARD (w=450, x=100)
+    # =========================================================================
+    lx, lw = 100, 450
+    draw.rounded_rectangle([lx, card_y, lx + lw, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
+    draw_pill_badge(draw, left_x=lx + 25, cy=card_y + 35, text="STEP 3 · CONSTRUCTION COST", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=24)
+    draw.text((lx + 25, card_y + 68), "조성비 설계 & CAPEX 모델 UI", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
+    draw.text((lx + 25, card_y + 92), "한국토지주택공사(LH) 표준건축비 연동 공사비 산출", font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
 
-    cards = [
-        ("01. CAPEX/OPEX 세부 분해표 (sec_06)", "토지 매입비, 토목 기초공사비, ICT 스마트 온실 설비비(CAPEX)와 연간 인건비, 냉난방비, 종묘비(OPEX)를 투명하게 분해"),
-        ("02. 10개년 현금흐름 & 회수기간 (sec_07)", "시설 감가상각비, 정부 정책자금 융자 금리(2.0%), 법인세 혜택을 종합 반영하여 사업 손익분기점(BEP) 및 회수연수 산출"),
-        ("03. 실시간 재무 지표 연동 피드백 (sec_07)", "작물 선택이나 재배 면적을 변경할 때마다 IRR(내부수익률 12.8%+)과 NPV(순현재가치)가 지연 없이 재연산되어 의사결정 지원")
+    step3_specs = [
+        ("01. 표준건축비 연동 자동 산출", "한국토지주택공사(LH) 표준건축비 DB와 연동하여 기본공사비, 건축공사비, 우수공, 가로등공을 원클릭으로 자동 계산"),
+        ("02. 전항목 표준값 원클릭 토글", "체크박스 선택 및 [전항목 표준값 사용] 원클릭 토글을 통해 비전문가도 복잡한 내역 입력 없이 예상 조성비(총 23.6억) 즉시 산출"),
+        ("03. 조사설계비 & 세부항목 커스텀", "토목/지질 조사설계비, 부대비, 시설조성비 항목을 자유롭게 추가(+항목 추가하기) 및 단위공사비(원/㎡) 수동 보정 지원")
     ]
-    cy = ly + 120
-    for title, desc in cards:
-        draw.rounded_rectangle([125, cy, 100 + lw - 25, cy + 130], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-        draw.text((145, cy + 22), title, font=get_font(13.5, 'bold'), fill=BRAND_GREEN)
-        lines = wrap_text(desc, get_font(11.5, 'regular'), lw - 70, draw)
-        dy = cy + 48
+    cy = card_y + 118
+    for title, desc in step3_specs:
+        draw.rounded_rectangle([lx + 25, cy, lx + lw - 25, cy + 130], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+        draw.text((lx + 40, cy + 22), title, font=get_font(13.5, 'bold'), fill=BRAND_GREEN)
+        lines = wrap_text(desc, get_font(11, 'regular'), lw - 70, draw)
+        dy = cy + 46
         for l in lines:
-            draw.text((145, dy), l, font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
+            draw.text((lx + 40, dy), l, font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB)
             dy += 18
-        cy += 145
+        cy += 144
 
     # Bottom Key Metric Callout in Left Card
-    draw.rounded_rectangle([125, ly + 575, 100 + lw - 25, ly + 715], radius=12, fill=(236, 253, 245), outline=(167, 243, 208), width=1)
-    draw.text((145, ly + 596), "💡 STEP 3 핵심 설계 전략 및 가치", font=get_font(13, 'bold'), fill=BRAND_DARK)
-    val_desc = "단순한 토지 가격 비교를 넘어, 10년간 실제 발생할 운영비용과 매출을 금융 공학 모델로 분석하여 무리한 대출로 인한 부실 위험을 원천 차단하고 투자 성공 확률을 극대화했습니다."
-    lines_val = wrap_text(val_desc, get_font(11, 'regular'), lw - 70, draw)
-    vy = ly + 620
+    draw.rounded_rectangle([lx + 25, card_y + 565, lx + lw - 25, card_y + 715], radius=12, fill=(236, 253, 245), outline=(167, 243, 208), width=1)
+    draw.text((lx + 40, card_y + 586), "💡 STEP 3 핵심 설계 전략 및 가치", font=get_font(12.5, 'bold'), fill=BRAND_DARK)
+    val_desc = "수백 페이지에 달하는 복잡한 적산 내역서를 웹과 모바일에서 'LH 표준 단가 기반 4개 블록 테이블'로 압축하여, 시공 견적 조율 시 발생하는 비용 거품과 정보 비대칭을 100% 해소했습니다."
+    lines_val = wrap_text(val_desc, get_font(10.5, 'regular'), lw - 70, draw)
+    vy = card_y + 610
     for l in lines_val:
-        draw.text((145, vy), l, font=get_font(11, 'regular'), fill=TEXT_LIGHT_MAIN)
+        draw.text((lx + 40, vy), l, font=get_font(10.5, 'regular'), fill=TEXT_LIGHT_MAIN)
         vy += 17
 
-    # Right: Dual Desktop Browser Mockups (Top: sec_06 조성비 산출 / Bottom: sec_07 경제성 분석)
-    rx = 575
-    rw = 1245
-    box_h = 355
+    # =========================================================================
+    # ZONE 2: DESKTOP WEB BROWSER MOCKUP (w=880, x=560)
+    # =========================================================================
+    mx, mw = 560, 880
+    draw.rounded_rectangle([mx, card_y, mx + mw, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
+    draw_pill_badge(draw, left_x=mx + 25, cy=card_y + 35, text="DESKTOP VIEW (1920px)", font=get_font(10.5, 'bold'), theme='blue', pad_x=12, height=24)
+    draw.text((mx + 215, card_y + 35), "피그마 공식 데스크톱 화면 (STEP 5 조성비 설계 4분할 테이블)", font=get_font(13, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
     
-    # Top Screen: sec_06 (조성비 산출)
-    s1_p = os.path.join(ASSETS_DIR, "figma_screen_sec_06.png")
-    draw_browser_mockup(img, s1_p, x=rx, y=ly, w=rw, h=box_h, title="STEP 3-1 · CAPEX CONSTRUCTION COST (sec_06)", url="https://farmingsys.io/app/step-03-capex")
+    desk_asset = os.path.join(ASSETS_DIR, "figma_step5_construction_cost_desktop.png")
+    desk_im = Image.open(desk_asset)
+    desk_vp_w = mw - 40 - 4
+    desk_vp_h = int(desk_vp_w * (desk_im.height / desk_im.width))
+    desk_total_h = 36 + 2 + desk_vp_h
+    desk_y = card_y + 75 + (card_h - 95 - desk_total_h) // 2
+    draw_browser_mockup(img, desk_asset, x=mx + 20, y=desk_y, w=mw - 40, h=desk_total_h, title="FARMINGSYS ENTERPRISE · STEP 5 CONSTRUCTION COST ENGINE (DESKTOP)", url="https://farmingsys.io/app/step-05-construction-cost")
+
+    # =========================================================================
+    # ZONE 3: MOBILE PHONE MOCKUP (w=340, x=1480)
+    # =========================================================================
+    rx, rw = 1480, 340
+    draw.rounded_rectangle([rx, card_y, rx + rw, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
+    draw_pill_badge(draw, left_x=rx + 25, cy=card_y + 35, text="MOBILE VIEW (390px)", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=24)
+    draw.text((rx + 195, card_y + 35), "조성비 설계 모바일 UI", font=get_font(13, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
     
-    # Bottom Screen: sec_07 (경제성 분석)
-    s2_p = os.path.join(ASSETS_DIR, "figma_screen_sec_07.png")
-    draw_browser_mockup(img, s2_p, x=rx, y=ly + box_h + 30, w=rw, h=box_h, title="STEP 3-2 · FINANCIAL VALUATION & CASH FLOW (sec_07)", url="https://farmingsys.io/app/step-03-cashflow")
+    mob_asset = os.path.join(ASSETS_DIR, "figma_step5_construction_cost_mobile.png")
+    draw_phone_mockup(img, mob_asset, cx=rx + rw//2, cy=card_y + 75 + (card_h - 95)//2, target_h=640, bezel=7, radius=28)
 
     draw_slide_footer(draw, 10, 12, dark_mode=False)
     out_path = os.path.join(OUT_DIR, "slide_10.png")
