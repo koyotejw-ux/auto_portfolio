@@ -280,7 +280,7 @@ def make_slide_06():
     print(f"Generated: {out_path}")
 
 # -------------------------------------------------------------
-# SLIDE 07: PROTOTYPING SCREENS (Mobile & Tablet Multi-Device Flow from Figma)
+# SLIDE 07: PROTOTYPING SCREENS (Exact Figma 3-Phone Layer States + Flow)
 # -------------------------------------------------------------
 def make_slide_07():
     img = Image.new('RGB', (W, H), BG_LIGHT)
@@ -289,80 +289,68 @@ def make_slide_07():
         draw, 7, 
         "PROTOTYPING SCREENS", 
         "Prototyping Screens | ", 
-        "멀티 디바이스 반응형 화면 및 대상지 선택 모바일 상태 전환 흐름", 
-        "피그마 원본 프로토타이핑: 모바일 현장 뷰, 태블릿 인터랙티브 GIS 캔버스, 시뮬레이션 시작 전 대상지 선택 3단계 상태 변경", 
-        right_badge=("RESPONSIVE PROTOTYPING", "green")
+        "시뮬레이션 시작 전 대상지 선택 및 3단계 지도 레이어 상태 전환 흐름", 
+        "피그마 공식 UI 원본: 지적도 적용 상태 → 일반지도 적용 상태 → 스카이뷰(위성) 적용 상태 인터랙션", 
+        right_badge=("OFFICIAL FIGMA PROTOTYPE", "green")
     )
     
     card_y = 215
     card_h = 745
     
-    # Left Card: Tablet & Mobile Responsive Canvas (w=900)
+    # Left Card: Core Description & State Change Specs (w=480)
     lx = 100
-    lw = 845
+    lw = 480
     draw.rounded_rectangle([lx, card_y, lx + lw, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, left_x=lx + 25, cy=card_y + 35, text="CROSS-PLATFORM INTERFACE", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=24)
-    draw.text((lx + 25, card_y + 68), "반응형 태블릿 & 모바일 현장 인터페이스", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
-    draw.text((lx + 25, card_y + 94), "현장 실사 및 태블릿 조작을 위한 고해상도 GIS 뷰포트", font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
+    draw_pill_badge(draw, left_x=lx + 25, cy=card_y + 35, text="GIS LAYER SWITCHING LOGIC", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=24)
+    draw.text((lx + 25, card_y + 68), "대상지 선택 & 레이어 전환", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
+    draw.text((lx + 25, card_y + 94), "사용자 관점의 3단계 지도 모드 인터랙션", font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
     
-    # Tablet browser mockup on top-left
-    tablet_img = os.path.join(ASSETS_DIR, "screen_tablet_interactive.png")
-    if not os.path.exists(tablet_img):
-        tablet_img = os.path.join(ASSETS_DIR, "screen_gis_3d_satellite.png")
-    draw_browser_mockup(img, tablet_img, x=lx + 25, y=card_y + 125, w=530, h=330, title="TABLET VIEW (16:10)", url="https://farmingsys.io/tablet")
-    
-    # Mobile phone mockup beside tablet
-    mobile_1 = os.path.join(ASSETS_DIR, "fig_mobile_highres", "mobile_85a8d4cb.png")
-    draw_phone_mockup(img, mobile_1, cx=lx + 695, cy=card_y + 290, phone_w=195, phone_h=370, bezel=5, radius=20)
-    draw.text((lx + 695, card_y + 490), "현장 모바일 GIS 뷰", font=get_font(12, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mm')
-    draw.text((lx + 695, card_y + 510), "GPS 기반 내 위치 필지 즉시 조회", font=get_font(10.5, 'regular'), fill=TEXT_LIGHT_SUB, anchor='mm')
-    
-    # Specs under tablet
-    draw.rounded_rectangle([lx + 25, card_y + 475, lx + 555, card_y + 715], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-    t_specs = [
-        ("• 터치 인체공학 그리드", "야외 현장에서 장갑 착용 시에도 오터치 없는 48dp+ 탭 타깃"),
-        ("• 실시간 GPS 지적 정합", "위치 좌표 기반 현장 필지 경계선 및 경사도 3D 자동 렌더링"),
-        ("• 오프라인 캐시 모드", "네트워크 취약 지역에서도 사전 동기화된 지적도 데이터 유지")
+    step_descriptions = [
+        ("01. 지적도 적용 상태", "토지이용계획과 공적 지번 경계선을 파악하는 기본 뷰. 필지 번호와 경계 구분이 가장 명확하여 대상지 위치 특정에 최적화."),
+        ("02. 일반지도 적용 상태", "주변 도로망, 인접 건물, 아파트 단지 등 도심 인프라와의 접근성 및 진입 도로 여건을 직관적으로 확인하는 로드맵 뷰."),
+        ("03. 스카이뷰(위성) 적용 상태", "고해상도 항공 위성 사진을 통해 실제 농지 현황, 임목 상태, 고도 및 주변 녹지 완충 구역을 사실적으로 검증.")
     ]
-    tsy = card_y + 500
-    for st, sd in t_specs:
-        draw.text((lx + 45, tsy), st, font=get_font(13, 'bold'), fill=BRAND_GREEN)
-        draw.text((lx + 45, tsy + 24), sd, font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
-        tsy += 68
+    
+    s_y = card_y + 125
+    for s_title, s_desc in step_descriptions:
+        draw.rounded_rectangle([lx + 25, s_y, lx + lw - 25, s_y + 130], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+        draw.text((lx + 40, s_y + 24), s_title, font=get_font(14.5, 'bold'), fill=BRAND_GREEN)
+        lines = wrap_text(s_desc, get_font(11.5, 'regular'), lw - 70, draw)
+        d_y = s_y + 50
+        for l in lines:
+            draw.text((lx + 40, d_y), l, font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
+            d_y += 18
+        s_y += 145
+        
+    # Bottom Key Insight Box in Left Card
+    draw.rounded_rectangle([lx + 25, card_y + 580, lx + lw - 25, card_y + 715], radius=12, fill=(236, 253, 245), outline=(167, 243, 208), width=1)
+    draw.text((lx + 40, card_y + 602), "💡 UI/UX 인터랙션 설계 핵심", font=get_font(13, 'bold'), fill=BRAND_DARK)
+    insight_desc = "우측 상단 플로팅 메뉴에서 [지적도 / 일반지도 / 스카이뷰]를 원클릭 탭 시, 맵 캔버스가 부드럽게 크로스페이드되며 하단 바텀시트의 [선택된 대상지] 정보는 그대로 유지되도록 설계하여 탐색 피로도를 0%로 줄였습니다."
+    lines_ins = wrap_text(insight_desc, get_font(11, 'regular'), lw - 70, draw)
+    iy = card_y + 626
+    for l in lines_ins:
+        draw.text((lx + 40, iy), l, font=get_font(11, 'regular'), fill=TEXT_LIGHT_MAIN)
+        iy += 17
 
-    # Right Card: 3 Mobile Screens (시뮬레이션 시작 전 대상지 선택 및 상태 변경 흐름) (w=845)
-    rx = 975
-    rw = 845
+    # Right Card: The Exact 3-Phone UI Flow Asset from Figma (w=1210)
+    rx = 610
+    rw = 1210
     draw.rounded_rectangle([rx, card_y, rx + rw, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, left_x=rx + 25, cy=card_y + 35, text="MOBILE WORKFLOW PROTOTYPE", font=get_font(10.5, 'bold'), theme='blue', pad_x=12, height=24)
-    draw.text((rx + 25, card_y + 68), "대상지 선택 및 3단계 상태 변경 흐름 (피그마 원본)", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
-    draw.text((rx + 25, card_y + 94), "지번 검색 → 필지 경계선 선택 → 3초 분석 완료 상태 인터랙션", font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
+    draw_pill_badge(draw, left_x=rx + 30, cy=card_y + 35, text="AUTHENTIC FIGMA PROTOTYPE UI", font=get_font(10.5, 'bold'), theme='blue', pad_x=12, height=24)
+    draw.text((rx + 285, card_y + 35), "피그마 원본 인터랙티브 프로토타입 캔버스 (지적도 → 일반지도 → 스카이뷰)", font=get_font(13.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
     
-    m_screens = [
-        ("mobile_898d6b63.png", "1. 대상지 탐색", "지번 검색 및 후보 필지 터치"),
-        ("mobile_18e703c3.png", "2. 필지 선택 활성", "경계선 강조 및 면적 요약 카드"),
-        ("mobile_693e6516.png", "3. 규제 분석 완료", "적합성 판정 및 시뮬레이션 시작")
-    ]
-    
-    m_gap = 265
-    for idx, (m_fn, m_title, m_sub) in enumerate(m_screens):
-        m_p = os.path.join(ASSETS_DIR, "fig_mobile_highres", m_fn)
-        mcx = rx + 145 + idx * m_gap
-        mcy = card_y + 355
-        draw_phone_mockup(img, m_p, cx=mcx, cy=mcy, phone_w=215, phone_h=435, bezel=6, radius=22)
+    three_phones_asset = os.path.join(ASSETS_DIR, "figma_3phones_layer_states.png")
+    if os.path.exists(three_phones_asset):
+        p_img = Image.open(three_phones_asset).convert('RGBA')
+        scale = min((rw - 60) / p_img.width, (card_h - 100) / p_img.height)
+        nw = int(p_img.width * scale)
+        nh = int(p_img.height * scale)
+        p_res = p_img.resize((nw, nh), Image.Resampling.LANCZOS)
         
-        # Step label below phone
-        draw.rounded_rectangle([mcx - 90, card_y + 595, mcx + 90, card_y + 625], radius=6, fill=(236, 253, 245) if idx==2 else (241, 245, 249))
-        draw.text((mcx, card_y + 610), m_title, font=get_font(12, 'bold'), fill=BRAND_DARK if idx==2 else TEXT_LIGHT_MAIN, anchor='mm')
-        draw.text((mcx, card_y + 638), m_sub, font=get_font(10.5, 'regular'), fill=TEXT_LIGHT_SUB, anchor='mm')
-        
-        # Arrow between phones
-        if idx < 2:
-            draw_arrow(draw, (mcx + 115, mcy), (mcx + 145, mcy), col=BRAND_GREEN, width=2, arrow_size=6)
-            
-    # Bottom callout in Right card
-    draw.rounded_rectangle([rx + 25, card_y + 665, rx + rw - 25, card_y + 715], radius=10, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-    draw.text((rx + 45, card_y + 690), "💡 인터랙션 핵심: 별도 화면 이동 없이 바텀시트 슬라이드 업으로 3단계 상태를 1-Screen 내에서 완결", font=get_font(12, 'bold'), fill=BRAND_DARK, anchor='lm')
+        # Center in right card
+        px = rx + (rw - nw) // 2
+        py = card_y + 75 + (card_h - 90 - nh) // 2
+        img.paste(p_res, (px, py), p_res)
 
     draw_slide_footer(draw, 7, 12, dark_mode=False)
     out_path = os.path.join(OUT_DIR, "slide_07.png")
@@ -387,7 +375,7 @@ def make_slide_08():
     card_y = 215
     card_h = 745
     
-    # Left Card: Pretendard Typography Hierarchy (Exact from User Figma) (w=680)
+    # Left Card: Pretendard Typography Hierarchy (w=680)
     lx = 100
     lw = 680
     draw.rounded_rectangle([lx, card_y, lx + lw, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
@@ -423,7 +411,6 @@ def make_slide_08():
     draw.text((rx + 25, card_y + 68), "컬러 팔레트 · 아이콘 그리드 · Spacing & Radius 토큰", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
     draw.text((rx + 25, card_y + 94), "피그마 디자인 시스템 원본 아토믹 토큰 세트", font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
     
-    # Embedding the high-res part_design_tokens.png directly in the right card container
     dt_path = os.path.join(ASSETS_DIR, "part_design_tokens.png")
     if os.path.exists(dt_path):
         dt_img = Image.open(dt_path).convert('RGBA')
