@@ -29,19 +29,19 @@ def make_slide_01():
     draw.text((1820 - w_meta, 68), meta_txt, font=get_font(13.5, 'medium'), fill=(100, 116, 139))
     
     # 4. Category Label
-    draw.text((100, 136), "SMARTFARM CENTER · RESPONSIVE WEB", font=get_font(13.5, 'bold'), fill=BRAND_GREEN)
+    draw.text((100, 134), "SMARTFARM CENTER · RESPONSIVE WEB", font=get_font(13.5, 'bold'), fill=BRAND_GREEN)
     
-    # 5. Big Clean Headline (Exact Title from User, 2 Stacked Lines to Prevent Collision)
+    # 5. Editorial Headline (Balanced 2-line layout with perfect leading & zero mockup collision)
     # Line 1: '토지를 분석하다,' in Dark Slate
     # Line 2: '토지개발분석플랫폼' in Brand Green Black
-    draw.text((100, 166), "토지를 분석하다,", font=get_font(38, 'bold'), fill=(15, 23, 42))
-    draw.text((100, 214), "토지개발분석플랫폼", font=get_font(52, 'black'), fill=BRAND_GREEN)
+    draw.text((100, 162), "토지를 분석하다,", font=get_font(32, 'bold'), fill=(15, 23, 42))
+    draw.text((100, 208), "토지개발분석플랫폼", font=get_font(46, 'black'), fill=BRAND_GREEN)
     
-    # 6. Clean UX Subtitle (2 balanced lines, cleanly distanced)
-    sub1 = "수많은 공적 장부와 복잡한 인허가 법률에 가로막혀 있던 토지개발의 진입 장벽을 완전히 허물고,"
-    sub2 = "지번 입력 한 번으로 대상지 규제 판정, 스마트팜 시설배치, 공사비 적산 및 타당성 보고서를 원클릭 도출합니다."
-    draw.text((100, 282), sub1, font=get_font(15, 'regular'), fill=(71, 85, 105))
-    draw.text((100, 308), sub2, font=get_font(15, 'semibold'), fill=(30, 41, 59))
+    # 6. Clean UX Subtitle (2 balanced lines, strictly wrapped within 700px)
+    sub1 = "수많은 공적 장부와 복잡한 인허가 규제에 가로막혀 있던 토지개발의 진입 장벽을 허물고,"
+    sub2 = "지번 입력 한 번으로 규제 판정, 스마트팜 시설배치, 공사비 적산 및 타당성을 원클릭 도출합니다."
+    draw.text((100, 276), sub1, font=get_font(14, 'regular'), fill=(71, 85, 105))
+    draw.text((100, 300), sub2, font=get_font(14, 'semibold'), fill=(30, 41, 59))
     
     # 7. OPEN STORYLINE: 4 Key Strengths (Clean, open layout with zero enclosing heavy boxes)
     strengths = [
@@ -56,9 +56,9 @@ def make_slide_01():
     ]
     
     max_badge_w = max(draw.textlength(tag, font=get_font(10, 'bold')) + 16 for _, tag, _, _, _ in strengths)
-    title_x = int(round(144 + max_badge_w + 20))
+    title_x = int(round(144 + max_badge_w + 18))
     
-    k_y = 368
+    k_y = 356
     for idx, (num, tag, title_ko, sub_en, desc) in enumerate(strengths):
         # Open number pill
         draw.rounded_rectangle([100, k_y + 2, 136, k_y + 28], radius=6, fill=(241, 245, 249), outline=(203, 213, 225), width=1)
@@ -67,36 +67,36 @@ def make_slide_01():
         # Tag & Title & EN Subtitle
         draw_pill_badge(draw, left_x=144, cy=k_y + 15, text=tag, font=get_font(10, 'bold'), theme='green', pad_x=8, height=22)
         
-        draw.text((title_x, k_y + 4), title_ko, font=get_font(15, 'bold'), fill=(15, 23, 42))
+        draw.text((title_x, k_y + 4), title_ko, font=get_font(14.5, 'bold'), fill=(15, 23, 42))
         
-        w_title = draw.textlength(title_ko, font=get_font(15, 'bold'))
-        draw.text((title_x + w_title + 10, k_y + 6), f"·  {sub_en}", font=get_font(12, 'medium'), fill=(100, 116, 139))
+        w_title = draw.textlength(title_ko, font=get_font(14.5, 'bold'))
+        draw.text((title_x + w_title + 10, k_y + 6), f"·  {sub_en}", font=get_font(11.5, 'medium'), fill=(100, 116, 139))
         
-        # Description lines (strictly within 720px width to avoid any touch with right mockup)
-        lines = wrap_text(desc, get_font(12, 'regular'), 720, draw)
-        desc_y = k_y + 36
+        # Description lines (strictly within 700px width to avoid any touch with right mockup)
+        lines = wrap_text(desc, get_font(12, 'regular'), 700, draw)
+        desc_y = k_y + 35
         for l in lines[:2]:
             draw.text((144, desc_y), l, font=get_font(12, 'regular'), fill=(71, 85, 105))
-            desc_y += 20
+            desc_y += 19
             
         # Subtle hairline divider
         if idx < 3:
-            draw.line([(100, k_y + 88), (880, k_y + 88)], fill=(226, 232, 240), width=1)
+            draw.line([(100, k_y + 86), (880, k_y + 86)], fill=(226, 232, 240), width=1)
             
-        k_y += 106
+        k_y += 105
 
     # 8. Right Side: Flagship 3D Tablet + Mobile Mockup (Hero Podium)
     mockup_path = os.path.join(ASSETS_DIR, "figma_hero_podium_mockup.png")
     if os.path.exists(mockup_path):
         m_img = Image.open(mockup_path).convert('RGBA')
-        target_w = 820
+        target_w = 840
         aspect = m_img.height / m_img.width
         target_h = int(target_w * aspect)
         m_resized = m_img.resize((target_w, target_h), Image.Resampling.LANCZOS)
         
-        # Position right side: px = 970, py = 205 (bottom will be 205 + 591 = 796, cleanly above bar_y = 842)
-        px = 970
-        py = 205
+        # Position right side: px = 950, py = 195 (bottom will be 195 + 581 = 776, cleanly 66px above bar_y = 842)
+        px = 950
+        py = 195
         
         # Soft clean shadow strictly conforming to the alpha mask and kept above bar_y
         m_alpha = m_resized.split()[3]

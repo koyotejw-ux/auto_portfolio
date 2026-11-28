@@ -285,7 +285,7 @@ def make_slide_07():
     draw_pill_badge(draw, left_x=mx + 25, cy=card_y + 35, text="DESKTOP VIEW (1920px)", font=get_font(10.5, 'bold'), theme='blue', pad_x=12, height=24)
     draw.text((mx + 215, card_y + 35), "피그마 공식 데스크톱 화면 (토지 분석 보고서 뷰어)", font=get_font(13, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
     
-    desk_asset = os.path.join(ASSETS_DIR, "figma_step1_land_report_desktop.jpg")
+    desk_asset = os.path.join(ASSETS_DIR, "figma_step2_land_analysis_report_desktop.jpg")
     desk_im = Image.open(desk_asset)
     target_desk_h = 640
     desk_vp_h = target_desk_h - 36 - 2
@@ -302,7 +302,7 @@ def make_slide_07():
     draw_pill_badge(draw, left_x=rx + 25, cy=card_y + 35, text="MOBILE VIEW", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=24)
     draw.text((rx + 145, card_y + 35), "피그마 공식 모바일 화면", font=get_font(13, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
     
-    mob_asset = os.path.join(ASSETS_DIR, "figma_step1_land_report_mobile.jpg")
+    mob_asset = os.path.join(ASSETS_DIR, "figma_step2_land_analysis_report_mobile.jpg")
     mob_im = Image.open(mob_asset)
     target_mob_h = 640
     mob_vp_h = target_mob_h - 36 - 2
