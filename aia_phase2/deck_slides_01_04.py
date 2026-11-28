@@ -174,38 +174,43 @@ def make_slide_01():
 
         k_y += 114
 
-    # Right Side: Clean Upright Side-by-Side Dual-Device Showcase (Zero Perspective Distortion)
+    # Right Side: Layered Upright Dual-Device Showcase (Foreground Hero + Recessed Rear Companion)
     sen_screen = os.path.join(CORE_DIR, "screen_senior_main_official.png")
     pay_screen = os.path.join(CORE_DIR, "screen_pay_list_senior.png")
 
     phone_sen = _build_upright_phone_asset(sen_screen, phone_w=540, phone_h=1140)
     phone_pay = _build_upright_phone_asset(pay_screen, phone_w=540, phone_h=1140)
 
-    # Identical crisp upright dimensions with subtle architectural vertical stagger
-    p_w, p_h = 310, 654
-    sen_x, sen_y = 1046, 134
-    pay_x, pay_y = 1412, 162
+    # Foreground Hero (100% scale, upright) + Background Companion (~92% scale, vertically centered & tucked behind right edge)
+    sen_w, sen_h = 320, 676
+    sen_x, sen_y = 1108, 128
+
+    pay_w, pay_h = 294, 620
+    pay_x, pay_y = 1384, 156  # Vertically centered with foreground hero; 44px layered overlap
 
     # 1. Subtle grounded floor contact shadows
     floor_sh = Image.new('RGBA', (W, H), (0, 0, 0, 0))
     fdraw = ImageDraw.Draw(floor_sh)
-    fdraw.ellipse([sen_x - 16, sen_y + p_h - 18, sen_x + p_w + 16, sen_y + p_h + 22], fill=(15, 23, 42, 32))
-    fdraw.ellipse([pay_x - 16, pay_y + p_h - 18, pay_x + p_w + 16, pay_y + p_h + 22], fill=(15, 23, 42, 28))
+    fdraw.ellipse([pay_x - 10, pay_y + pay_h - 16, pay_x + pay_w + 18, pay_y + pay_h + 20], fill=(15, 23, 42, 22))
+    fdraw.ellipse([sen_x - 18, sen_y + sen_h - 18, sen_x + sen_w + 18, sen_y + sen_h + 22], fill=(15, 23, 42, 36))
     floor_sh = floor_sh.filter(ImageFilter.GaussianBlur(18))
     base = Image.alpha_composite(base, floor_sh)
 
-    # 2. Paste both upright flagship smartphones with clean diffused ambient shadows
-    for dev_img, dx_pos, dy_pos, sh_alpha in [
-        (phone_pay, pay_x, pay_y, 40),
-        (phone_sen, sen_x, sen_y, 48),
-    ]:
-        resized = dev_img.resize((p_w, p_h), Image.Resampling.LANCZOS)
-        sh = Image.new('RGBA', (W, H), (0, 0, 0, 0))
-        sh_fill = Image.new('RGBA', (p_w, p_h), (15, 23, 42, sh_alpha))
-        sh.paste(sh_fill, (dx_pos + 14, dy_pos + 24), resized.split()[3])
-        sh = sh.filter(ImageFilter.GaussianBlur(24))
-        base = Image.alpha_composite(base, sh)
-        base.paste(resized, (dx_pos, dy_pos), resized)
+    # 2. Rear Companion Phone (drawn first so Foreground Hero cleanly overlaps it)
+    pay_resized = phone_pay.resize((pay_w, pay_h), Image.Resampling.LANCZOS)
+    sh_pay = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+    sh_pay.paste(Image.new('RGBA', (pay_w, pay_h), (15, 23, 42, 32)), (pay_x + 14, pay_y + 20), pay_resized.split()[3])
+    sh_pay = sh_pay.filter(ImageFilter.GaussianBlur(22))
+    base = Image.alpha_composite(base, sh_pay)
+    base.paste(pay_resized, (pay_x, pay_y), pay_resized)
+
+    # 3. Foreground Hero Phone (drawn on top with elevation shadow cast across rear phone)
+    sen_resized = phone_sen.resize((sen_w, sen_h), Image.Resampling.LANCZOS)
+    sh_sen = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+    sh_sen.paste(Image.new('RGBA', (sen_w, sen_h), (15, 23, 42, 58)), (sen_x + 18, sen_y + 24), sen_resized.split()[3])
+    sh_sen = sh_sen.filter(ImageFilter.GaussianBlur(26))
+    base = Image.alpha_composite(base, sh_sen)
+    base.paste(sen_resized, (sen_x, sen_y), sen_resized)
 
     draw = ImageDraw.Draw(base)
 
