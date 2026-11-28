@@ -594,11 +594,13 @@ def make_slide_04():
             draw.text((tx + 24, iy), line, font=get_font(10.5, 'bold' if is_stat else 'regular'), fill=AIA_RED if is_stat else TEXT_LIGHT_MAIN)
             iy += 40
             
-    # Bottom Architecture Summary Note
-    draw.rounded_rectangle([lx + 40, card_y + card_h - 105, lx + lw - 40, card_y + card_h - 25], radius=10, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-    draw.text((lx + 60, card_y + card_h - 85), "💡 제로-뎁스(Zero-Depth) 아키텍처 구축 논리", font=get_font(12, 'bold'), fill=AIA_RED)
-    draw.text((lx + 60, card_y + card_h - 60), "실제 고령 고객의 전체 모바일 트래픽 89%를 차지하는 4대 업무를 메인 첫 화면에 전면 배치하여,", font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_MAIN)
-    draw.text((lx + 60, card_y + card_h - 40), "메뉴를 찾아 헤매는 인지 피로도를 원천 차단하고 1-Tap 즉시 과업 완수를 달성했습니다.", font=get_font(11.5, 'bold'), fill=(5, 150, 105))
+    # Bottom Architecture Summary Note (balanced top/bottom padding)
+    note_top = card_y + card_h - 124
+    note_bot = card_y + card_h - 24
+    draw.rounded_rectangle([lx + 40, note_top, lx + lw - 40, note_bot], radius=10, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+    draw.text((lx + 60, note_top + 18), "제로-뎁스(Zero-Depth) 아키텍처 구축 논리", font=get_font(12, 'bold'), fill=AIA_RED)
+    draw.text((lx + 60, note_top + 44), "실제 고령 고객의 전체 모바일 트래픽 89%를 차지하는 4대 업무를 메인 첫 화면에 전면 배치하여,", font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_MAIN)
+    draw.text((lx + 60, note_top + 66), "메뉴를 찾아 헤매는 인지 피로도를 원천 차단하고 1-Tap 즉시 과업 완수를 달성했습니다.", font=get_font(11.5, 'bold'), fill=(5, 150, 105))
     
     # Right Column: 4 Core Design Principles (W=640)
     rx = 1180
@@ -631,15 +633,18 @@ def make_slide_04():
     ]
     
     py = card_y + 115
+    p_tag_font = get_font(10, 'bold')
+    max_ptag_w = max(draw.textbbox((0, 0), p["tag"], font=p_tag_font)[2] - draw.textbbox((0, 0), p["tag"], font=p_tag_font)[0] + 16 for p in principles)
+    p_title_x = int(round(rx + 35 + max_ptag_w + 16))
     for p in principles:
         draw.rounded_rectangle([rx + 20, py, rx + rw - 20, py + 130], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-        draw_pill_badge(draw, left_x=rx + 35, cy=py + 22, text=p["tag"], font=get_font(10, 'bold'), theme='red' if '01' in p["tag"] or '03' in p["tag"] else 'blue', pad_x=8, height=20)
-        draw.text((rx + 135, py + 22), p["title"], font=get_font(14, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
+        draw_pill_badge(draw, left_x=rx + 35, cy=py + 24, text=p["tag"], font=p_tag_font, theme='red' if '01' in p["tag"] or '03' in p["tag"] else 'blue', pad_x=8, height=22)
+        draw.text((p_title_x, py + 24), p["title"], font=get_font(14, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
         lines = wrap_text(p["desc"], get_font(11.5, 'regular'), rw - 70, draw)
-        ly = py + 48
+        ly = py + 52
         for line in lines:
             draw.text((rx + 35, ly), line, font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
-            ly += 18
+            ly += 19
         py += 144
         
     draw_slide_footer(draw, 4, 12, dark_mode=False)

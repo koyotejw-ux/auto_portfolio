@@ -148,7 +148,7 @@ def make_slide_05():
     
     sum_y = 855
     draw.rounded_rectangle([card_x + 30, sum_y, card_x + card_w - 30, sum_y + 70], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-    draw.text((card_x + 50, sum_y + 24), "💡 시스템 설계 인사이트 및 사용자 자기결정권 보장", font=get_font(13, 'bold'), fill=AIA_RED)
+    draw.text((card_x + 50, sum_y + 24), "시스템 설계 인사이트 및 사용자 자기결정권 보장", font=get_font(13, 'bold'), fill=AIA_RED)
     sum_desc = "회원 연령(65세) 자동 판별 알고리즘을 도입하되, 강제가 아닌 [사용자 선택권 보장 팝업]을 경유하도록 설계하여 디지털 소외감 방지 및 자기결정권을 완벽 보장합니다."
     draw.text((card_x + 50, sum_y + 46), sum_desc, font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_MAIN)
     
@@ -382,7 +382,7 @@ def make_slide_07():
         draw.text((sx + sw_w // 2, sy + 36), s_label, font=get_font(9.5, 'medium'), fill=txt_col, anchor='mm')
         
     draw.rounded_rectangle([c2_x + 20, bot_y + 345, c2_x + c2_w - 20, bot_y + bot_h - 20], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-    draw.text((c2_x + 35, bot_y + 368), "🔍 WCAG 2.1 AAA 고대비 검증 결과", font=get_font(13, 'bold'), fill=AIA_RED)
+    draw.text((c2_x + 35, bot_y + 368), "WCAG 2.1 AAA 고대비 검증 결과", font=get_font(13, 'bold'), fill=AIA_RED)
     
     contrast_points = [
         ("AIA Red Primary (#D31145) vs White", "5.8:1 (AA 충족, 56dp CTA)"),

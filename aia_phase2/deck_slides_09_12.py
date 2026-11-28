@@ -458,7 +458,7 @@ def make_slide_12():
 
     # Bottom CTA Banner across right card
     draw.rounded_rectangle([rx + 30, card_y + 615, rx + rw - 30, card_y + card_h - 25], radius=12, fill=(211, 17, 69), outline=None)
-    draw.text((rx + rw//2, card_y + 645), "📱 지금 웹 브라우저에서 60fps 인터랙티브 프로토타입 실행하기", font=get_font(15, 'bold'), fill=(255, 255, 255), anchor='mm')
+    draw.text((rx + rw//2, card_y + 645), "지금 웹 브라우저에서 60fps 인터랙티브 프로토타입 실행하기", font=get_font(15, 'bold'), fill=(255, 255, 255), anchor='mm')
     draw.text((rx + rw//2, card_y + 675), "AIA_Phase2/prototype.html  ·  간편홈 메인 핫스팟 클릭 시 4개 과업 즉시 전환 지원", font=get_font(11.5, 'medium'), fill=(254, 205, 211), anchor='mm')
 
     draw_slide_footer(draw, 12, 12, dark_mode=True)
