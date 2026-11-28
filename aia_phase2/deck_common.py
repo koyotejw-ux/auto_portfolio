@@ -164,11 +164,21 @@ def draw_slide_header(draw, slide_num, category_kr, title_bold, title_accent, su
         draw_pill_badge(draw, cx=1700, cy=78, text=txt, font=get_font(10.5, 'bold'), theme=theme, solid=True, dark_mode=dark_mode, pad_x=14, height=28)
         
     font_title = get_font(33, 'bold')
-    w_bold = draw.textlength(title_bold, font=font_title)
     text_main_col = TEXT_DARK_MAIN if dark_mode else TEXT_LIGHT_MAIN
     text_accent_col = (255, 90, 130) if dark_mode else AIA_RED
-    draw.text((100, 118), title_bold, font=font_title, fill=text_main_col)
-    draw.text((100 + w_bold, 118), title_accent, font=font_title, fill=text_accent_col)
+
+    if "|" in title_bold:
+        left_part = title_bold.split("|")[0].rstrip()
+        w_left = draw.textlength(left_part, font=font_title)
+        draw.text((100, 118), left_part, font=font_title, fill=text_main_col)
+        sep_x = int(round(100 + w_left + 16))
+        sep_col = (71, 85, 105) if dark_mode else (203, 213, 225)
+        draw.line([(sep_x, 124), (sep_x, 150)], fill=sep_col, width=2)
+        draw.text((sep_x + 16, 118), title_accent, font=font_title, fill=text_accent_col)
+    else:
+        w_bold = draw.textlength(title_bold, font=font_title)
+        draw.text((100, 118), title_bold, font=font_title, fill=text_main_col)
+        draw.text((100 + w_bold, 118), title_accent, font=font_title, fill=text_accent_col)
     
     sub_col = TEXT_DARK_SUB if dark_mode else TEXT_LIGHT_SUB
     draw.text((100, 166), subtitle_kr, font=get_font(14.5, 'regular'), fill=sub_col)
