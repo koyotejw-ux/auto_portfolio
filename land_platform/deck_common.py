@@ -226,17 +226,40 @@ def draw_phone_mockup(base_img, screen_path, cx, cy, target_h=640, bezel=7, radi
     home_y = y2 - bezel - 9
     draw.rounded_rectangle([cx - 40, home_y, cx + 40, home_y + 4], radius=2, fill=(15, 23, 42))
 
-    # Inner Content Viewport Screen below Status Bar (Zero distortion: width-fit + clean top-crop for tall pages)
+    # Inner Content Viewport Screen below Status Bar (Zero distortion + Sticky Bottom CTA alignment)
     px = x1 + bezel
     py = sb_y + sb_h
     if fixed_aspect is not None:
+        import numpy as np
         scaled_h = max(1, int(round(s_img.height * (vp_w / s_img.width))))
         s_scaled = s_img.resize((vp_w, scaled_h), Image.Resampling.LANCZOS)
-        if scaled_h >= vp_h:
-            s_res = s_scaled.crop((0, 0, vp_w, vp_h))
-        else:
+        
+        # Auto-detect green bottom CTA bar in bottom 22% of scaled screen
+        arr_rgb = np.array(s_scaled.convert('RGB'))
+        search_y0 = int(scaled_h * 0.78)
+        bot_slice = arr_rgb[search_y0:, :, :]
+        green_mask = (bot_slice[:, :, 1] > 150) & (bot_slice[:, :, 0] < 80) & (bot_slice[:, :, 2] < 130)
+        ys = np.where(green_mask.sum(axis=1) > vp_w * 0.2)[0]
+        
+        if len(ys) > 0:
+            cta_y1 = max(0, search_y0 + int(ys[0]) - 8)
+            cta_strip = s_scaled.crop((0, cta_y1, vp_w, scaled_h))
+            cta_h = cta_strip.height
+            body_avail_h = max(1, vp_h - cta_h)
+            
             s_res = Image.new('RGBA', (vp_w, vp_h), (255, 255, 255, 255))
-            s_res.paste(s_scaled, (0, 0), s_scaled)
+            body_copy_h = min(cta_y1, body_avail_h)
+            if body_copy_h > 0:
+                body_crop = s_scaled.crop((0, 0, vp_w, body_copy_h))
+                s_res.paste(body_crop, (0, 0), body_crop)
+            # Pin the real bottom CTA bar flush to the exact same bottom Y across all phones
+            s_res.paste(cta_strip, (0, vp_h - cta_h), cta_strip)
+        else:
+            if scaled_h >= vp_h:
+                s_res = s_scaled.crop((0, 0, vp_w, vp_h))
+            else:
+                s_res = Image.new('RGBA', (vp_w, vp_h), (255, 255, 255, 255))
+                s_res.paste(s_scaled, (0, 0), s_scaled)
     else:
         s_res = s_img.resize((vp_w, vp_h), Image.Resampling.LANCZOS)
     
