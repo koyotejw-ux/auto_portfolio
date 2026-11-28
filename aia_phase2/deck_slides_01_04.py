@@ -1,5 +1,6 @@
 import os
 import math
+import numpy as np
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 from deck_common import (
     W, H, BASE_DIR, CORE_DIR, QI_DIR, OUT_DIR,
@@ -11,97 +12,223 @@ from deck_common import (
     draw_slide_header, draw_slide_footer, draw_phone_mockup
 )
 
+def _find_perspective_coeffs(source_coords, target_coords):
+    matrix = []
+    for (x_t, y_t), (x_s, y_s) in zip(target_coords, source_coords):
+        matrix.append([x_t, y_t, 1, 0, 0, 0, -x_s * x_t, -x_s * y_t])
+        matrix.append([0, 0, 0, x_t, y_t, 1, -y_s * x_t, -y_s * y_t])
+    A = np.matrix(matrix, dtype=float)
+    B = np.array(source_coords).reshape(8)
+    res = np.dot(np.linalg.inv(A.T * A) * A.T, B)
+    return np.array(res).reshape(8)
+
+def _build_upright_phone_asset(screen_path, phone_w=540, phone_h=1140, bezel=18, radius=68):
+    """Builds a crisp upright flagship smartphone RGBA image from a raw screen image."""
+    phone = Image.new('RGBA', (phone_w, phone_h), (0, 0, 0, 0))
+    pdraw = ImageDraw.Draw(phone)
+    # Outer metallic rim + dark chassis
+    pdraw.rounded_rectangle([0, 0, phone_w - 1, phone_h - 1], radius=radius, fill=(22, 26, 34, 255), outline=(90, 100, 118, 255), width=3)
+    pdraw.rounded_rectangle([4, 4, phone_w - 5, phone_h - 5], radius=radius - 3, fill=(14, 17, 23, 255))
+
+    sw = phone_w - bezel * 2
+    sh = phone_h - bezel * 2
+    screen = Image.open(screen_path).convert('RGBA')
+    scale = sw / screen.width
+    fit_h = int(round(screen.height * scale))
+    screen_resized = screen.resize((sw, fit_h), Image.Resampling.LANCZOS)
+    if fit_h >= sh:
+        screen_canvas = screen_resized.crop((0, 0, sw, sh))
+    else:
+        bg_sample = screen_resized.getpixel((sw // 2, max(0, fit_h - 4)))
+        bg_col = (bg_sample[0], bg_sample[1], bg_sample[2], 255)
+        screen_canvas = Image.new('RGBA', (sw, sh), bg_col)
+        screen_canvas.paste(screen_resized, (0, 0))
+
+    sb_path = os.path.join(CORE_DIR, "unified_statusbar.png")
+    if os.path.exists(sb_path):
+        sb_img = Image.open(sb_path).convert('RGBA')
+        sb_resized = sb_img.resize((sw, int(sw * 28 / 244)), Image.Resampling.LANCZOS)
+        screen_canvas.paste(sb_resized, (0, 0), sb_resized)
+
+    mask = Image.new('L', (sw, sh), 0)
+    mdraw = ImageDraw.Draw(mask)
+    mdraw.rounded_rectangle([0, 0, sw - 1, sh - 1], radius=radius - bezel + 4, fill=255)
+    phone.paste(screen_canvas, (bezel, bezel), mask)
+
+    # Subtle punch-hole camera dot & top speaker slit
+    pdraw = ImageDraw.Draw(phone)
+    pdraw.rounded_rectangle([phone_w // 2 - 42, 8, phone_w // 2 + 42, 13], radius=3, fill=(48, 56, 70, 255))
+    return phone
+
+def _render_3d_phone_layer(phone_img, target_front, depth_steps=16, dx=14, dy=10, shadow_offset=(32, 46), shadow_alpha=46):
+    """Applies 3D perspective transform with metallic chassis extrusion and soft drop shadow."""
+    pw, ph = phone_img.size
+    src_corners = [(0, 0), (pw, 0), (pw, ph), (0, ph)]
+    dev_mask = phone_img.split()[3]
+
+    chassis_canvas = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+    for step in range(depth_steps, 0, -1):
+        ratio = step / float(depth_steps)
+        shade = int(26 + (1.0 - ratio) * 48)
+        step_corners = [
+            (int(target_front[0][0] + dx * ratio), int(target_front[0][1] + dy * ratio)),
+            (int(target_front[1][0] + dx * ratio), int(target_front[1][1] + dy * ratio)),
+            (int(target_front[2][0] + dx * ratio), int(target_front[2][1] + dy * ratio)),
+            (int(target_front[3][0] + dx * ratio), int(target_front[3][1] + dy * ratio)),
+        ]
+        step_coeffs = _find_perspective_coeffs(src_corners, step_corners)
+        step_mask = dev_mask.transform((W, H), Image.Transform.PERSPECTIVE, step_coeffs, Image.Resampling.BICUBIC)
+        col_img = Image.new('RGBA', (W, H), (shade, shade + 2, shade + 6, 255))
+        chassis_canvas.paste(col_img, (0, 0), step_mask)
+
+    front_coeffs = _find_perspective_coeffs(src_corners, target_front)
+    front_surface = phone_img.transform((W, H), Image.Transform.PERSPECTIVE, front_coeffs, Image.Resampling.BICUBIC)
+
+    complete_3d = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+    complete_3d.paste(chassis_canvas, (0, 0), chassis_canvas)
+    complete_3d.paste(front_surface, (0, 0), front_surface)
+
+    mask_3d = complete_3d.split()[3]
+    sh_canvas = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+    sh_ambient = Image.new('RGBA', (W, H), (15, 23, 42, shadow_alpha))
+    sh_canvas.paste(sh_ambient, shadow_offset, mask_3d)
+    sh_canvas = sh_canvas.filter(ImageFilter.GaussianBlur(30))
+    return sh_canvas, complete_3d
+
 # -------------------------------------------------------------
-# SLIDE 01: HERO COVER (AIA+ SENIOR MODE - REAL HERO SCREEN)
+# SLIDE 01: HERO COVER (Check&Pay Editorial Layout - AIA Red Theme)
 # -------------------------------------------------------------
 def make_slide_01():
-    img = Image.new('RGB', (W, H), (255, 255, 255))
-    draw = ImageDraw.Draw(img)
-    
+    base = Image.new('RGBA', (W, H), (252, 251, 253, 255))
+
+    # 1. Subtle Ambient Radial Glow (AIA Red + Soft Rose)
     glow = Image.new('RGBA', (W, H), (0, 0, 0, 0))
-    gdraw = ImageDraw.Draw(glow)
-    gdraw.ellipse([800, 100, 1800, 1000], fill=(211, 17, 69, 14))
-    glow = glow.filter(ImageFilter.GaussianBlur(100))
-    img.paste(glow, (0, 0), glow)
-    
-    draw = ImageDraw.Draw(img)
-    
-    draw_pill_badge(draw, left_x=120, cy=105, text="AIA LIFE · SENIOR ACCESSIBILITY INNOVATION", font=get_font(11, 'bold'), theme='red', pad_x=14, height=28)
-    draw_pill_badge(draw, left_x=440, cy=105, text="Qi DESIGN SYSTEM v3.3", font=get_font(11, 'bold'), theme='gray', pad_x=12, height=28)
-    
-    draw.text((120, 155), "AIA+", font=get_font(60, 'black'), fill=(15, 23, 42))
-    draw.text((275, 155), "SENIOR MODE", font=get_font(60, 'black'), fill=AIA_RED)
-    draw.text((120, 235), "고령자 친화 배리어프리 금융 UX & 10대 비대면 서비스 리뉴얼", font=get_font(26, 'bold'), fill=(51, 65, 85))
-    
-    desc_kr = (
-        "금융위원회 '고령자 친화적 모바일 금융앱 가이드라인' 100% 완벽 준수\n"
-        "6070 액티브 시니어를 위한 제로-뎁스(Zero-Depth) 직관 탐색 아키텍처와\n"
-        "Qi 글로벌 디자인 시스템 v3.3 기반의 단일 소스 멀티 테마 프로덕트 디자인"
-    )
-    draw.text((120, 295), desc_kr, font=get_font(15.5, 'regular'), fill=(100, 116, 139), spacing=8)
-    
-    draw.text((120, 400), "AIA+ 고령자 모드 5대 핵심 서비스 (Overview)", font=get_font(16, 'bold'), fill=(15, 23, 42))
-    spheres = [
-        ("조회", "계약/납입액 확인", (59, 130, 246)),
-        ("납입", "보험료 바로 내기", AIA_RED),
-        ("청구", "병원비 서류 접수", (168, 85, 247)),
-        ("대출", "환급금 계약대출", (16, 185, 129)),
-        ("상담", "큰글씨 고객센터", (71, 85, 105))
+    g_draw = ImageDraw.Draw(glow)
+    g_draw.ellipse([820, 90, 1860, 860], fill=(211, 17, 69, 16))
+    g_draw.ellipse([1120, 200, 1800, 800], fill=(244, 63, 94, 12))
+    glow = glow.filter(ImageFilter.GaussianBlur(130))
+    base = Image.alpha_composite(base, glow)
+
+    draw = ImageDraw.Draw(base)
+
+    # Hairline Top Boundary
+    draw.line([(100, 52), (1820, 52)], fill=(226, 232, 240), width=1)
+
+    # Top Kicker & Right Metadata
+    draw_pill_badge(draw, left_x=100, cy=76, text="AIA+ PHASE 2 CASE STUDY", font=get_font(11.5, 'bold'), theme='red', pad_x=12, height=28)
+
+    meta_txt = "서비스 기획 · UI/UX 디자인 · 배리어프리 금융 · Qi Design System v3.3"
+    w_meta = draw.textlength(meta_txt, font=get_font(13.5, 'medium'))
+    draw.text((1820 - w_meta, 68), meta_txt, font=get_font(13.5, 'medium'), fill=(100, 116, 139))
+
+    # Category Label
+    draw.text((100, 146), "AIA생명 · AIA+ SENIOR MODE", font=get_font(14, 'bold'), fill=AIA_RED)
+
+    # Big Clean Headline
+    title_p1 = "큰글씨 직관 탐색, "
+    title_p2 = "완벽한 시니어 금융."
+    w_p1 = draw.textlength(title_p1, font=get_font(56, 'black'))
+    draw.text((100, 178), title_p1, font=get_font(56, 'black'), fill=(15, 23, 42))
+    draw.text((100 + w_p1, 178), title_p2, font=get_font(56, 'black'), fill=AIA_RED)
+
+    # Clean UX Subtitle (2 balanced lines)
+    sub1 = "금융위원회 '고령자 친화적 모바일 금융앱 가이드라인' 100% 준수와 제로-뎁스(Zero-Depth) 탐색 구조로,"
+    sub2 = "6070 액티브 시니어의 10대 비대면 보험 업무를 누구나 쉽고 안전하게 완결하는 배리어프리 금융 UX"
+    draw.text((100, 260), sub1, font=get_font(16.5, 'regular'), fill=(71, 85, 105))
+    draw.text((100, 288), sub2, font=get_font(16.5, 'semibold'), fill=(30, 41, 59))
+
+    # OPEN STORYLINE: 4 Key Strengths (Exact Check&Pay Rhythm)
+    strengths = [
+        ("01", "규제 100% 준수", "고령자 친화 배리어프리 UX", "금융위 가이드라인 완벽 충족",
+         "기본 본문 2배 확대와 AAA급 고대비 컬러 시스템을 적용해 6070 시니어의 가독성과 오터치 방지 접근성을 극대화했습니다."),
+        ("02", "제로-뎁스 탐색", "1-Tap 모드 전환 & 간편홈", "일반모드 ↔ 고령자모드 즉시 스위칭",
+         "복잡한 메뉴 탐색 없이 상단 토글 1회로 간편홈에 진입하고, 5대 핵심 업무(조회·납입·청구·대출·상담)를 첫 화면에 배치했습니다."),
+        ("03", "10대 비대면 혁신", "보험료 납입·청구 2단계 단축", "비대면 업무 소요 시간 50% 절감",
+         "보험금 서류 접수와 미납 보험료 납입 등 고령층 이탈이 잦던 핵심 플로우를 단계별 명확한 가이드와 큰 CTA로 재설계했습니다."),
+        ("04", "글로벌 디자인", "Qi 디자인 시스템 v3.3 통합", "단일 소스 멀티 테마 아키텍처",
+         "AIA 글로벌 Qi v3.3 토큰 체계 위에 시니어 전용 타이포·컴포넌트 규격을 확장하여 일반·고령자 모드 간 일관된 브랜드 경험을 구현했습니다.")
     ]
-    for idx, (s_name, s_sub, s_col) in enumerate(spheres):
-        sx = 120 + idx * 125
-        sy = 450
-        draw.ellipse([sx, sy, sx + 95, sy + 95], fill=s_col)
-        draw.text((sx + 47, sy + 38), s_name, font=get_font(18, 'bold'), fill=(255, 255, 255), anchor='mm')
-        draw.text((sx + 47, sy + 62), s_sub, font=get_font(9.5, 'medium'), fill=(255, 255, 255), anchor='mm')
-        
-    stats = [
-        ("100%", "금융위 규제 가이드라인 준수"),
-        ("2x", "본문 및 버튼 폰트 크기 확대"),
-        ("90%", "시니어 코어 과업 완수율 달성"),
-        ("50%", "비대면 업무 소요 시간 단축")
-    ]
-    card_y = 610
-    for idx, (val, label) in enumerate(stats):
-        cx = 120 + (idx % 2) * 280
-        cy = card_y + (idx // 2) * 110
-        cw, ch = 265, 95
-        draw.rounded_rectangle([cx, cy, cx + cw, cy + ch], radius=14, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-        draw.text((cx + 20, cy + 20), val, font=get_num_font(32, 'black'), fill=AIA_RED if idx==0 else (15, 23, 42))
-        lines = wrap_text(label, get_font(11.5, 'medium'), cw - 40, draw)
-        ly = cy + 56
-        for line in lines:
-            draw.text((cx + 20, ly), line, font=get_font(11.5, 'medium'), fill=TEXT_LIGHT_SUB)
-            ly += 16
-            
-    spec_y = 855
-    draw.rounded_rectangle([120, spec_y, 680, spec_y + 115], radius=14, fill=(241, 245, 249), outline=BORDER_LIGHT, width=1)
-    specs = [
-        ("프로젝트", "AIA생명 AIA+ Phase 2 고령자 모드 & 비대면 서비스 리뉴얼"),
-        ("수행 역할", "메인화면(일반/고령자) & 전체 서비스 아키텍처/화면설계 100% 단독 총괄"),
-        ("핵심 혁신", "일반모드 ↔ 고령자모드 원클릭 스위칭 & 금융위 가이드라인 완전 준수")
-    ]
-    for idx, (label, val) in enumerate(specs):
-        sy = spec_y + 15 + idx * 31
-        draw.text((140, sy), label, font=get_font(12, 'bold'), fill=AIA_RED)
-        draw.text((225, sy), val, font=get_font(12, 'bold' if idx==1 else 'medium'), fill=(15, 23, 42))
-        
-    gen_screen = os.path.join(CORE_DIR, "screen_general_main.png")
+
+    max_badge_w = max(draw.textlength(tag, font=get_font(10, 'bold')) + 16 for _, tag, _, _, _ in strengths)
+    title_x = int(round(144 + max_badge_w + 24))
+
+    k_y = 358
+    for idx, (num, tag, title_ko, sub_en, desc) in enumerate(strengths):
+        draw.rounded_rectangle([100, k_y + 2, 136, k_y + 28], radius=6, fill=(255, 241, 244), outline=(254, 205, 217), width=1)
+        draw.text((118, k_y + 15), num, font=get_font(11, 'bold'), fill=AIA_RED, anchor='mm')
+
+        draw_pill_badge(draw, left_x=144, cy=k_y + 15, text=tag, font=get_font(10, 'bold'), theme='red', pad_x=8, height=22)
+        draw.text((title_x, k_y + 4), title_ko, font=get_font(15.5, 'bold'), fill=(15, 23, 42))
+
+        w_title = draw.textlength(title_ko, font=get_font(15.5, 'bold'))
+        draw.text((title_x + w_title + 12, k_y + 6), f"·  {sub_en}", font=get_font(12, 'medium'), fill=(100, 116, 139))
+
+        lines = wrap_text(desc, get_font(12, 'regular'), 756, draw)
+        desc_y = k_y + 36
+        for l in lines[:2]:
+            draw.text((144, desc_y), l, font=get_font(12, 'regular'), fill=(71, 85, 105))
+            desc_y += 20
+
+        if idx < 3:
+            draw.line([(100, k_y + 92), (900, k_y + 92)], fill=(226, 232, 240), width=1)
+
+        k_y += 114
+
+    # Right Side: Dual 3D Perspective Flagship Smartphones (Senior Main Home + 2-Step Payment)
     sen_screen = os.path.join(CORE_DIR, "screen_senior_main_official.png")
-    pay_screen = os.path.join(CORE_DIR, "inner_pay1.png")
-    
-    draw_phone_mockup(img, gen_screen, cx=930, cy=565, phone_w=280, phone_h=605, bezel=6, radius=32, show_toggle_badge="[일반모드] 메인화면")
-    draw_phone_mockup(img, sen_screen, cx=1260, cy=530, phone_w=335, phone_h=715, bezel=7, radius=36, show_toggle_badge="[고령자모드] 간편홈 메인 (PLSCMV002)")
-    draw_phone_mockup(img, pay_screen, cx=1590, cy=565, phone_w=280, phone_h=605, bezel=6, radius=32, show_toggle_badge="[핵심서브] 2단계 보험료 납입")
-    
-    draw_arrow(draw, (1075, 565), (1095, 565), col=AIA_RED, width=3, arrow_size=8)
-    draw_pill_badge(draw, cx=1085, cy=535, text="1-Tap 전환", font=get_font(10, 'bold'), theme='red', solid=True, pad_x=8, height=20)
-    
-    draw_pill_badge(draw, cx=1260, cy=145, text="고령자 친화 제로-뎁스 간편홈 · Figma 공식 화면설계 산출물", font=get_font(12, 'bold'), theme='red', solid=True, pad_x=16, height=32)
-    
+    pay_screen = os.path.join(CORE_DIR, "screen_pay_list_senior.png")
+
+    phone_sen = _build_upright_phone_asset(sen_screen, phone_w=540, phone_h=1140)
+    phone_pay = _build_upright_phone_asset(pay_screen, phone_w=540, phone_h=1140)
+
+    # Secondary recessed 3D phone on the far right (2-Step Payment)
+    target_pay = [
+        (1475, 215), # TL
+        (1715, 192), # TR
+        (1570, 770), # BR
+        (1310, 718)  # BL
+    ]
+    sh_pay, dev_pay = _render_3d_phone_layer(phone_pay, target_pay, depth_steps=14, dx=12, dy=9, shadow_offset=(26, 40), shadow_alpha=36)
+    base = Image.alpha_composite(base, sh_pay)
+    base = Image.alpha_composite(base, dev_pay)
+
+    # Hero foreground 3D phone (Senior Main Home)
+    target_sen = [
+        (1140, 158), # TL
+        (1418, 132), # TR
+        (1245, 782), # BR
+        (932, 720)   # BL
+    ]
+    sh_sen, dev_sen = _render_3d_phone_layer(phone_sen, target_sen, depth_steps=16, dx=14, dy=10, shadow_offset=(35, 50), shadow_alpha=48)
+    base = Image.alpha_composite(base, sh_sen)
+    base = Image.alpha_composite(base, dev_sen)
+
+    draw = ImageDraw.Draw(base)
+
+    # Bottom 4-Column Specification Strip (Exact Check&Pay Grid: x=100..1820, y=840..956)
+    bar_y = 840
+    bar_h = 116
+    draw.rounded_rectangle([100, bar_y, 1820, bar_y + bar_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
+
+    col_w = 1720 // 4
+    specs = [
+        ("담당 역할", "서비스 기획 100% · UI/UX 총괄", "메인(일반/고령자) & 전체 아키텍처·화면설계 단독 리딩"),
+        ("규제 및 성과", "금융위 가이드라인 100% 준수", "본문 2배 확대 · 과업 완수율 90% · 업무 시간 50% 단축"),
+        ("디자인 시스템", "Qi 글로벌 디자인 시스템 v3.3", "AIA 레드(#D31145) · 고대비 AAA · 단일 소스 멀티 테마"),
+        ("핵심 범위", "고령자 간편홈 & 10대 비대면 서비스", "조회·납입·청구·대출·상담 제로-뎁스(Zero-Depth) 개편")
+    ]
+
+    for i, (cat, val_bold, val_desc) in enumerate(specs):
+        cx = 100 + i * col_w
+        if i > 0:
+            draw.line([(cx, bar_y + 18), (cx, bar_y + bar_h - 18)], fill=(226, 232, 240), width=1)
+        draw.text((cx + 28, bar_y + 18), cat, font=get_font(11, 'bold'), fill=AIA_RED)
+        draw.text((cx + 28, bar_y + 42), val_bold, font=get_font(14.5, 'bold'), fill=(15, 23, 42))
+        draw.text((cx + 28, bar_y + 70), val_desc, font=get_font(11, 'regular'), fill=(100, 116, 139))
+
     draw_slide_footer(draw, 1, 12, dark_mode=False)
     out_path = os.path.join(OUT_DIR, "slide_01.png")
-    img.save(out_path, quality=95)
+    base.convert('RGB').save(out_path, quality=95)
     print(f"Generated: {out_path}")
 
 # -------------------------------------------------------------
