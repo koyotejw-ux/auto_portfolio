@@ -174,46 +174,38 @@ def make_slide_01():
 
         k_y += 114
 
-    # Right Side: Grounded Editorial Dual-Device Showcase
-    # (Crisp upright hero phone + gently angled recessed 3D companion phone for visual rhythm & stability)
+    # Right Side: Clean Upright Side-by-Side Dual-Device Showcase (Zero Perspective Distortion)
     sen_screen = os.path.join(CORE_DIR, "screen_senior_main_official.png")
     pay_screen = os.path.join(CORE_DIR, "screen_pay_list_senior.png")
 
     phone_sen = _build_upright_phone_asset(sen_screen, phone_w=540, phone_h=1140)
     phone_pay = _build_upright_phone_asset(pay_screen, phone_w=540, phone_h=1140)
 
-    # 1. Subtle grounded floor contact shadow unifying both devices
+    # Identical crisp upright dimensions with subtle architectural vertical stagger
+    p_w, p_h = 310, 654
+    sen_x, sen_y = 1046, 134
+    pay_x, pay_y = 1412, 162
+
+    # 1. Subtle grounded floor contact shadows
     floor_sh = Image.new('RGBA', (W, H), (0, 0, 0, 0))
     fdraw = ImageDraw.Draw(floor_sh)
-    fdraw.ellipse([1045, 776, 1415, 816], fill=(15, 23, 42, 34))
-    fdraw.ellipse([1365, 758, 1690, 796], fill=(15, 23, 42, 24))
+    fdraw.ellipse([sen_x - 16, sen_y + p_h - 18, sen_x + p_w + 16, sen_y + p_h + 22], fill=(15, 23, 42, 32))
+    fdraw.ellipse([pay_x - 16, pay_y + p_h - 18, pay_x + p_w + 16, pay_y + p_h + 22], fill=(15, 23, 42, 28))
     floor_sh = floor_sh.filter(ImageFilter.GaussianBlur(18))
     base = Image.alpha_composite(base, floor_sh)
 
-    # 2. Secondary Companion 3D Phone (Right-rear, gently angled +6.5 deg with soft depth recession)
-    target_pay = [
-        (1448, 196), # TL
-        (1716, 228), # TR
-        (1646, 772), # BR
-        (1382, 754)  # BL
-    ]
-    sh_pay, dev_pay = _render_3d_phone_layer(phone_pay, target_pay, depth_steps=14, dx=11, dy=7, shadow_offset=(22, 34), shadow_alpha=34)
-    base = Image.alpha_composite(base, sh_pay)
-    base = Image.alpha_composite(base, dev_pay)
-
-    # 3. Hero Foreground Phone (Rock-solid upright 0-deg flagship centerpiece, razor sharp)
-    hero_w, hero_h = 314, 662
-    hero_x, hero_y = 1072, 136
-    hero_resized = phone_sen.resize((hero_w, hero_h), Image.Resampling.LANCZOS)
-
-    sh_hero = Image.new('RGBA', (W, H), (0, 0, 0, 0))
-    sh_hero_mask = hero_resized.split()[3]
-    sh_hero_fill = Image.new('RGBA', (hero_w, hero_h), (15, 23, 42, 52))
-    sh_hero.paste(sh_hero_fill, (hero_x + 18, hero_y + 28), sh_hero_mask)
-    sh_hero = sh_hero.filter(ImageFilter.GaussianBlur(26))
-
-    base = Image.alpha_composite(base, sh_hero)
-    base.paste(hero_resized, (hero_x, hero_y), hero_resized)
+    # 2. Paste both upright flagship smartphones with clean diffused ambient shadows
+    for dev_img, dx_pos, dy_pos, sh_alpha in [
+        (phone_pay, pay_x, pay_y, 40),
+        (phone_sen, sen_x, sen_y, 48),
+    ]:
+        resized = dev_img.resize((p_w, p_h), Image.Resampling.LANCZOS)
+        sh = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+        sh_fill = Image.new('RGBA', (p_w, p_h), (15, 23, 42, sh_alpha))
+        sh.paste(sh_fill, (dx_pos + 14, dy_pos + 24), resized.split()[3])
+        sh = sh.filter(ImageFilter.GaussianBlur(24))
+        base = Image.alpha_composite(base, sh)
+        base.paste(resized, (dx_pos, dy_pos), resized)
 
     draw = ImageDraw.Draw(base)
 
