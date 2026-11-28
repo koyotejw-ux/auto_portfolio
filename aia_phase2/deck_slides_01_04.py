@@ -174,34 +174,46 @@ def make_slide_01():
 
         k_y += 114
 
-    # Right Side: Dual 3D Perspective Flagship Smartphones (Senior Main Home + 2-Step Payment)
+    # Right Side: Grounded Editorial Dual-Device Showcase
+    # (Crisp upright hero phone + gently angled recessed 3D companion phone for visual rhythm & stability)
     sen_screen = os.path.join(CORE_DIR, "screen_senior_main_official.png")
     pay_screen = os.path.join(CORE_DIR, "screen_pay_list_senior.png")
 
     phone_sen = _build_upright_phone_asset(sen_screen, phone_w=540, phone_h=1140)
     phone_pay = _build_upright_phone_asset(pay_screen, phone_w=540, phone_h=1140)
 
-    # Secondary recessed 3D phone on the far right (2-Step Payment)
+    # 1. Subtle grounded floor contact shadow unifying both devices
+    floor_sh = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+    fdraw = ImageDraw.Draw(floor_sh)
+    fdraw.ellipse([1045, 776, 1415, 816], fill=(15, 23, 42, 34))
+    fdraw.ellipse([1365, 758, 1690, 796], fill=(15, 23, 42, 24))
+    floor_sh = floor_sh.filter(ImageFilter.GaussianBlur(18))
+    base = Image.alpha_composite(base, floor_sh)
+
+    # 2. Secondary Companion 3D Phone (Right-rear, gently angled +6.5 deg with soft depth recession)
     target_pay = [
-        (1475, 215), # TL
-        (1715, 192), # TR
-        (1570, 770), # BR
-        (1310, 718)  # BL
+        (1448, 196), # TL
+        (1716, 228), # TR
+        (1646, 772), # BR
+        (1382, 754)  # BL
     ]
-    sh_pay, dev_pay = _render_3d_phone_layer(phone_pay, target_pay, depth_steps=14, dx=12, dy=9, shadow_offset=(26, 40), shadow_alpha=36)
+    sh_pay, dev_pay = _render_3d_phone_layer(phone_pay, target_pay, depth_steps=14, dx=11, dy=7, shadow_offset=(22, 34), shadow_alpha=34)
     base = Image.alpha_composite(base, sh_pay)
     base = Image.alpha_composite(base, dev_pay)
 
-    # Hero foreground 3D phone (Senior Main Home)
-    target_sen = [
-        (1140, 158), # TL
-        (1418, 132), # TR
-        (1245, 782), # BR
-        (932, 720)   # BL
-    ]
-    sh_sen, dev_sen = _render_3d_phone_layer(phone_sen, target_sen, depth_steps=16, dx=14, dy=10, shadow_offset=(35, 50), shadow_alpha=48)
-    base = Image.alpha_composite(base, sh_sen)
-    base = Image.alpha_composite(base, dev_sen)
+    # 3. Hero Foreground Phone (Rock-solid upright 0-deg flagship centerpiece, razor sharp)
+    hero_w, hero_h = 314, 662
+    hero_x, hero_y = 1072, 136
+    hero_resized = phone_sen.resize((hero_w, hero_h), Image.Resampling.LANCZOS)
+
+    sh_hero = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+    sh_hero_mask = hero_resized.split()[3]
+    sh_hero_fill = Image.new('RGBA', (hero_w, hero_h), (15, 23, 42, 52))
+    sh_hero.paste(sh_hero_fill, (hero_x + 18, hero_y + 28), sh_hero_mask)
+    sh_hero = sh_hero.filter(ImageFilter.GaussianBlur(26))
+
+    base = Image.alpha_composite(base, sh_hero)
+    base.paste(hero_resized, (hero_x, hero_y), hero_resized)
 
     draw = ImageDraw.Draw(base)
 
