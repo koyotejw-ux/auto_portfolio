@@ -9,90 +9,84 @@ def make_slide_01():
     img = Image.new('RGB', (W, H), BG_LIGHT)
     draw = ImageDraw.Draw(img)
     
-    # Header tag
-    draw_pill_badge(draw, left_x=100, cy=85, text="DUAL PRODUCT: RESPONSIVE LANDING & GIS SIMULATION SAAS", font=get_font(11, 'bold'), theme='green', pad_x=12, height=26)
+    # Clean, Spacious Header Tag
+    draw_pill_badge(draw, left_x=100, cy=85, text="DUAL PRODUCT: RESPONSIVE LANDING & GIS SIMULATION SAAS", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=26)
     draw.text((545, 85), "FARMINGSYS ENTERPRISE PLATFORM", font=get_font(12, 'bold'), fill=BRAND_GREEN, anchor='lm')
     
-    # Left Hero Text Content (w=700)
+    # Left Hero Text Content (w=680) - Strong Typography Hierarchy
     lx = 100
-    draw.text((lx, 126), "FARMINGSYS", font=get_font(48, 'black'), fill=(15, 23, 42))
-    draw.text((lx + 315, 126), "LAND PLATFORM", font=get_font(48, 'black'), fill=BRAND_GREEN)
-    draw.text((lx, 192), "반응형 랜딩페이지 & 4단계 토지개발 타당성 시뮬레이터", font=get_font(21, 'bold'), fill=(51, 65, 85))
+    draw.text((lx, 130), "FARMINGSYS", font=get_font(46, 'black'), fill=(15, 23, 42))
+    draw.text((lx + 305, 130), "LAND PLATFORM", font=get_font(46, 'black'), fill=BRAND_GREEN)
+    draw.text((lx, 196), "반응형 랜딩페이지 & 4단계 토지개발 타당성 시뮬레이터", font=get_font(20, 'bold'), fill=(51, 65, 85))
     
     desc_kr = (
-        "토지 소유주 유입 및 서비스 가치 전달을 위한 '인터랙티브 패럴랙스 랜딩페이지'와\n"
+        "토지 소유주 유입 및 서비스 가치 전달을 위한 '인터랙티브 랜딩페이지'와\n"
         "12대 공공 데이터 기반의 '4단계 엔드투엔드 토지개발 타당성 시뮬레이션 SaaS'를\n"
         "동시에 구축하여, 탐색-분석-설계-금융보고서 발급까지 일관된 반응형 경험을 완성했습니다."
     )
-    draw.text((lx, 246), desc_kr, font=get_font(13.5, 'regular'), fill=(100, 116, 139), spacing=6)
+    draw.text((lx, 248), desc_kr, font=get_font(13.5, 'regular'), fill=(100, 116, 139), spacing=6)
     
-    # 4 Quantitative Impact Cards (Clean Modern Grid)
+    # 4 Quantitative Impact Cards - Spacious 2x2 Grid (y=345, h=195)
     stats = [
-        ("100+", "분석 가능 토지 규제 조건", "국토계획법, 산지관리법 등 공적 규제 3초 자동 판정"),
+        ("100+", "분석 가능 토지 규제 조건", "국토계획법 등 100여 개 공적 규제 3초 자동 판정"),
         ("90%", "분석 소요 시간 단축", "기존 14일 수작업 조사를 원터치 실시간 진단으로 단축"),
         ("3~5s", "원터치 시뮬레이션 도출", "지번 입력 즉시 최적 단지 구획 및 시설 조성비 산출"),
         ("40%", "의사결정 정확도 향상", "공공 지적도 및 경제성 모델링 기반 사전 리스크 차단")
     ]
-    card_y = 350
+    card_y = 345
     for idx, (val, label, sub) in enumerate(stats):
         cx = lx + (idx % 2) * 350
-        cy = card_y + (idx // 2) * 110
-        cw, ch = 330, 96
+        cy = card_y + (idx // 2) * 105
+        cw, ch = 330, 92
         draw.rounded_rectangle([cx, cy, cx + cw, cy + ch], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-        draw.text((cx + 18, cy + 16), val, font=get_num_font(26, 'black'), fill=BRAND_GREEN if idx==0 else (15, 23, 42))
-        draw.text((cx + 18, cy + 52), label, font=get_font(12, 'bold'), fill=TEXT_LIGHT_MAIN)
-        draw.text((cx + 18, cy + 72), sub, font=get_font(10.5, 'regular'), fill=TEXT_LIGHT_SUB)
+        draw.text((cx + 20, cy + 16), val, font=get_num_font(26, 'black'), fill=BRAND_GREEN if idx==0 else (15, 23, 42))
+        draw.text((cx + 20, cy + 50), label, font=get_font(12.5, 'bold'), fill=TEXT_LIGHT_MAIN)
+        draw.text((cx + 20, cy + 70), sub, font=get_font(10.5, 'regular'), fill=TEXT_LIGHT_SUB)
 
-    # 2 Product Cores: Landing Page & Multi-Step Simulator
-    draw.text((lx, 590), "2대 프로덕트 코어 (Dual Product Cores)", font=get_font(15, 'bold'), fill=(15, 23, 42))
+    # 2 Product Cores: Landing Page & Multi-Step Simulator (y=575)
+    draw.text((lx, 575), "2대 핵심 프로덕트 아키텍처 (Dual Cores)", font=get_font(15, 'bold'), fill=(15, 23, 42))
     
     # Box 1: Landing Page
-    draw.rounded_rectangle([lx, 620, lx + 340, 715], radius=10, fill=(240, 253, 244), outline=(187, 247, 208), width=1)
-    draw_pill_badge(draw, left_x=lx + 15, cy=638, text="CORE 01 · 랜딩페이지", font=get_font(9.5, 'bold'), theme='green', pad_x=8, height=18)
-    draw.text((lx + 15, 664), "패럴랙스 스크롤 & 전환 중심 브랜딩", font=get_font(12.5, 'bold'), fill=BRAND_DARK)
-    draw.text((lx + 15, 686), "문제제기-솔루션-단계별 체험-고객후기-상담 CTA", font=get_font(10.5, 'regular'), fill=TEXT_LIGHT_SUB)
+    draw.rounded_rectangle([lx, 605, lx + 340, 715], radius=12, fill=(240, 253, 244), outline=(187, 247, 208), width=1)
+    draw_pill_badge(draw, left_x=lx + 18, cy=626, text="CORE 01 · 랜딩페이지", font=get_font(10, 'bold'), theme='green', pad_x=8, height=20)
+    draw.text((lx + 18, 655), "패럴랙스 스크롤 & 전환 중심 브랜딩", font=get_font(13, 'bold'), fill=BRAND_DARK)
+    draw.text((lx + 18, 680), "문제제기 ➔ 솔루션 ➔ 체험 ➔ 후기 ➔ 상담 CTA", font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB)
 
     # Box 2: Multi-step Simulator
-    draw.rounded_rectangle([lx + 360, 620, lx + 700, 715], radius=10, fill=(238, 242, 255), outline=(199, 210, 254), width=1)
-    draw_pill_badge(draw, left_x=lx + 375, cy=638, text="CORE 02 · 4-STEP 시뮬레이터", font=get_font(9.5, 'bold'), theme='blue', pad_x=8, height=18)
-    draw.text((lx + 375, 664), "GIS 공간 분석 & 자동 사업타당성 엔진", font=get_font(12.5, 'bold'), fill=(30, 58, 138))
-    draw.text((lx + 375, 686), "대상지선택 ➔ 규제진단 ➔ 온실배치 ➔ 금융보고서", font=get_font(10.5, 'regular'), fill=TEXT_LIGHT_SUB)
+    draw.rounded_rectangle([lx + 360, 605, lx + 700, 715], radius=12, fill=(238, 242, 255), outline=(199, 210, 254), width=1)
+    draw_pill_badge(draw, left_x=lx + 378, cy=626, text="CORE 02 · 시뮬레이터", font=get_font(10, 'bold'), theme='blue', pad_x=8, height=20)
+    draw.text((lx + 378, 655), "GIS 공간 분석 & 자동 사업타당성 엔진", font=get_font(13, 'bold'), fill=(30, 58, 138))
+    draw.text((lx + 378, 680), "대상지선택 ➔ 규제진단 ➔ 온실배치 ➔ 금융보고서", font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB)
 
-    # Project Meta Info Box
-    draw.rounded_rectangle([lx, 735, lx + 700, 945], radius=12, fill=(241, 245, 249), outline=BORDER_LIGHT, width=1)
+    # Project Meta Info Box (Clean 4-Row Grid)
+    draw.rounded_rectangle([lx, 735, lx + 700, 955], radius=14, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
     metas = [
-        ("프로젝트", "토지개발사업 분석 플랫폼 (반응형 랜딩 & 엔터프라이즈 SaaS)"),
+        ("프로젝트", "토지개발사업 분석 플랫폼 (반응형 랜딩페이지 및 엔터프라이즈 SaaS)"),
         ("수행 역할", "B2B UX/UI 아키텍처, 인터랙션 설계 및 디자인 시스템 총괄 (100%)"),
         ("반응형 환경", "Desktop (1920px), Tablet (1024px), Mobile (390px) 멀티 브레이크포인트"),
-        ("핵심 차별점", "12대 공공 데이터 실시간 파싱 & 3초 인허가/경제성 모델링 자동화")
+        ("핵심 차별점", "12대 공공 데이터 실시간 파싱 및 3초 인허가/경제성 모델링 자동화")
     ]
-    my = 755
+    my = 758
     for k, v in metas:
-        draw.text((lx + 20, my), k, font=get_font(12, 'bold'), fill=BRAND_GREEN)
+        draw.text((lx + 24, my), k, font=get_font(12, 'bold'), fill=BRAND_GREEN)
         draw.text((lx + 115, my), v, font=get_font(12, 'medium'), fill=TEXT_LIGHT_MAIN)
-        my += 44
+        my += 48
 
     # Right: High-Res Real Tablet & Mobile 3D Podium Mockup Composition
     hero_asset = os.path.join(ASSETS_DIR, "figma_hero_mockup_composition.png")
     if os.path.exists(hero_asset):
         hero_im = Image.open(hero_asset).convert('RGBA')
         
-        # Calculate optimal size maintaining exact 1024:738 ratio with zero distortion
-        target_w = 1010
+        # Exact aspect ratio fit in right zone
+        target_w = 980
         target_h = int(target_w * (hero_im.height / hero_im.width))
+        hero_x = 840
+        hero_y = 120 + (840 - target_h) // 2
         
-        # Center vertically in the hero right zone (y=120 to 950)
-        hero_x = 830
-        hero_y = 120 + (830 - target_h) // 2
-        
-        # Subtle soft ambient glow card container behind podium
-        card_w = target_w + 30
-        card_h = target_h + 30
-        draw.rounded_rectangle([hero_x - 15, hero_y - 15, hero_x - 15 + card_w, hero_y - 15 + card_h], radius=24, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-        
-        # Top Badge on Mockup Container
-        draw_pill_badge(draw, left_x=hero_x + 10, cy=hero_y + 15, text="RESPONSIVE PLATFORM ECOSYSTEM", font=get_font(10, 'bold'), theme='green', pad_x=10, height=22)
-        draw.text((hero_x + 230, hero_y + 15), "태블릿 웹 & 모바일 동시 시뮬레이션 실물 (Figma 3D Mockup)", font=get_font(12, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
+        # Premium Frameless Clean Mounting with Soft Glass Backdrop
+        draw.rounded_rectangle([hero_x - 10, hero_y - 10, hero_x + target_w + 10, hero_y + target_h + 10], radius=24, fill=(255, 255, 255), outline=BORDER_LIGHT, width=1)
+        draw_pill_badge(draw, left_x=hero_x + 15, cy=hero_y + 15, text="RESPONSIVE PLATFORM ECOSYSTEM", font=get_font(10, 'bold'), theme='green', pad_x=10, height=22)
+        draw.text((hero_x + 235, hero_y + 15), "태블릿 웹 & 모바일 동시 시뮬레이션 실물 (Figma 3D Mockup)", font=get_font(12, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
 
         resized_hero = hero_im.resize((target_w, target_h), Image.Resampling.LANCZOS)
         img.paste(resized_hero, (hero_x, hero_y + 15), resized_hero)

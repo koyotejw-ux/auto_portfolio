@@ -380,101 +380,85 @@ def make_slide_07():
 # -------------------------------------------------------------
 # SLIDE 08: DESIGN SYSTEM (Figma Typography Scale + Tokens Matrix 1:1 Matching)
 # -------------------------------------------------------------
+# -------------------------------------------------------------
+# SLIDE 08: DESIGN SYSTEM (Figma Typography Scale + Tokens Matrix 1:1 Matching)
+# -------------------------------------------------------------
 def make_slide_08():
     img = Image.new('RGB', (W, H), BG_LIGHT)
     draw = ImageDraw.Draw(img)
     draw_slide_header(
         draw, 8, 
-        "DESIGN SYSTEM & ATOMIC TOKENS", 
+        "DESIGN SYSTEM · ATOMIC TOKENS", 
         "Design System | ", 
-        "피그마 공식 디자인 시스템: 타이포그래피 계층 & 아토믹 토큰 매트릭스", 
-        "Figma 토큰 1:1 규격화: Pretendard 12단계 텍스트 스케일, 15색 아토믹 컬러 팔레트, 32종 아이콘 그리드, Spacing/Radius/Elevation 시스템", 
+        "피그마 공식 디자인 시스템: 타이포그래피 계층 및 아토믹 토큰 매트릭스", 
+        "Figma 토큰 1:1 규격화: Pretendard 6대 핵심 텍스트 스케일, 10색 아토믹 컬러 팔레트, 16종 대표 벡터 아이콘, 8-pt 그리드 시스템", 
         right_badge=("OFFICIAL FIGMA DESIGN SYSTEM", "green")
     )
     
     card_y = 215
     card_h = 745
     
-    # 3-Column Balanced High-Density Architecture
-    # Col 1: Typography Scale & Text Styles (w=520, x=100)
-    # Col 2: Color Palette Matrix (15 Swatches) + Iconography System (32 Icons) (w=600, x=640)
-    # Col 3: Spacing, Radius, Elevation & Component State Tokens (w=560, x=1260)
+    # 3-Column Clean Spacious Architecture:
+    # Col 1: Typography System (w=520, x=100) - 6 Essential Hierarchy Levels (Headline down to Caption)
+    # Col 2: Color Palette & Core Iconography (w=600, x=640) - 10 Essential Swatches + 16 Primary Icons
+    # Col 3: Spacing, Radius & Interactive Component States (w=560, x=1260) - 8-pt Grid & Component States
     
     # =========================================================================
-    # COLUMN 1: TYPOGRAPHY HIERARCHY (w=520, x=100)
+    # COLUMN 1: TYPOGRAPHY SYSTEM (w=520, x=100)
     # =========================================================================
     c1_x, c1_w = 100, 520
     draw.rounded_rectangle([c1_x, card_y, c1_x + c1_w, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
     draw_pill_badge(draw, left_x=c1_x + 25, cy=card_y + 35, text="TYPOGRAPHY SYSTEM", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=24)
-    draw.text((c1_x + 25, card_y + 68), "Pretendard 폰트 시스템", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
-    draw.text((c1_x + 25, card_y + 92), "피그마 원본 12단계 계층 규격 (Bold / Medium / Regular)", font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
+    draw.text((c1_x + 25, card_y + 68), "Pretendard 타이포그래피 스케일", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
+    draw.text((c1_x + 25, card_y + 92), "피그마 원본 6대 핵심 텍스트 위계 (Bold / Medium / Regular)", font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
     
+    # 6 Curated High-Impact Typography Levels with ample vertical padding (no crowding!)
     typo_specs = [
-        ("Pretendard Bold 헤드라인 48", "48px / Bold", "메인 대시보드 및 핵심 통계 지표 대형 타이틀", 17),
-        ("Pretendard Bold 서브헤드 40", "40px / Bold", "주요 섹션 헤더 및 화면 전환 모듈 대표 명칭", 15.5),
-        ("Pretendard Bold 헤드라인 32", "32px / Bold", "카드 타이틀 및 단계별 워크플로우 명칭", 14.5),
-        ("Pretendard Bold 서브헤드 28", "28px / Bold", "모달 팝업 헤더 및 주요 분석 단계 라벨", 13.5),
-        ("Pretendard Bold 서브헤드 20", "20px / Bold", "테이블 헤더, 탭 메뉴 및 위젯 그룹 타이틀", 13),
-        ("Pretendard Medium 본문 18", "18px / Medium", "강조 본문 문장 및 주요 필지 안내 가이드", 12.5),
-        ("Pretendard Medium 본문 16", "16px / Medium", "기본 입력 폼 필드, 셀렉트박스 및 리스트 텍스트", 12),
-        ("Pretendard Medium 본문 14", "14px / Medium", "테이블 데이터 행 및 부가 설명 인라인 텍스트", 11.5),
-        ("Pretendard Medium 본문 12", "12px / Medium", "배지 라벨, 버튼 보조 설명 및 차트 축 텍스트", 11),
-        ("Pretendard Regular 본문 14", "14px / Regular", "상세 법적 가이드, 조례 해석 설명문", 11.5),
-        ("Pretendard Regular 본문 12", "12px / Regular", "주석, 참고 데이터 및 툴팁 텍스트", 11),
-        ("Pretendard Regular 캡션 11", "11px / Regular", "타임스탬프, 저작권, 출처 표기 (KCI/공공포털)", 10.5)
+        ("Headline 48", "48px / Bold", "Pretendard Bold", "메인 대시보드 타이틀 및 핵심 통계 지표 대형 숫자", 20, BRAND_GREEN),
+        ("Headline 32", "32px / Bold", "Pretendard Bold", "카드 섹션 타이틀 및 시뮬레이션 단계별 명칭", 17, BRAND_DARK),
+        ("Subhead 20", "20px / Bold", "Pretendard Bold", "테이블 헤더, 탭 메뉴 및 위젯 그룹 타이틀", 14.5, TEXT_LIGHT_MAIN),
+        ("Body 16", "16px / Medium", "Pretendard Medium", "기본 입력 폼 필드, 셀렉트박스 및 메인 리스트 텍스트", 13, TEXT_LIGHT_MAIN),
+        ("Body 14", "14px / Regular", "Pretendard Regular", "테이블 데이터 행, 세부 규제 설명 및 조례 가이드", 12, TEXT_LIGHT_SUB),
+        ("Caption 12", "12px / Regular", "Pretendard Regular", "배지 라벨, 메타데이터 타임스탬프 및 툴팁 출처 표기", 11, (148, 163, 184))
     ]
     
-    ty_start = card_y + 118
-    row_h = 49
-    for i, (t_name, t_size, t_usage, font_sz) in enumerate(typo_specs):
+    ty_start = card_y + 124
+    row_h = 96
+    for i, (t_name, t_size, t_family, t_usage, font_sz, bar_col) in enumerate(typo_specs):
         r_y = ty_start + i * row_h
         bg_col = (255, 255, 255) if i % 2 == 0 else (248, 250, 252)
-        draw.rounded_rectangle([c1_x + 20, r_y, c1_x + c1_w - 20, r_y + 44], radius=8, fill=bg_col, outline=BORDER_LIGHT, width=1)
-        
-        # Sample indicator bar
-        bar_col = BRAND_GREEN if "Bold" in t_name else (BRAND_TEAL if "Medium" in t_name else (148, 163, 184))
-        draw.rounded_rectangle([c1_x + 24, r_y + 8, c1_x + 28, r_y + 36], radius=2, fill=bar_col)
-        
-        draw.text((c1_x + 36, r_y + 14), t_name, font=get_font(font_sz, 'bold' if 'Bold' in t_name else ('medium' if 'Medium' in t_name else 'regular')), fill=TEXT_LIGHT_MAIN)
-        draw_pill_badge(draw, left_x=c1_x + c1_w - 125, cy=r_y + 22, text=t_size, font=get_font(9.5, 'bold'), theme='gray', pad_x=8, height=18)
-        draw.text((c1_x + 36, r_y + 29), t_usage, font=get_font(10, 'regular'), fill=TEXT_LIGHT_SUB)
+        draw.rounded_rectangle([c1_x + 20, r_y, c1_x + c1_w - 20, r_y + 86], radius=10, fill=bg_col, outline=BORDER_LIGHT, width=1)
+        draw.rounded_rectangle([c1_x + 28, r_y + 14, c1_x + 32, r_y + 72], radius=2, fill=bar_col)
+        draw.text((c1_x + 42, r_y + 16), t_name, font=get_font(font_sz, 'bold' if 'Bold' in t_family else 'medium'), fill=TEXT_LIGHT_MAIN)
+        draw_pill_badge(draw, left_x=c1_x + c1_w - 130, cy=r_y + 24, text=t_size, font=get_font(9.5, 'bold'), theme='gray', pad_x=8, height=18)
+        draw.text((c1_x + 42, r_y + 44), f"Font: {t_family}", font=get_font(10.5, 'medium'), fill=BRAND_TEAL)
+        draw.text((c1_x + 42, r_y + 62), t_usage, font=get_font(10.5, 'regular'), fill=TEXT_LIGHT_SUB)
 
     # =========================================================================
-    # COLUMN 2: COLOR MATRIX + ICONOGRAPHY SYSTEM (w=600, x=640)
+    # COLUMN 2: COLOR PALETTE & CORE ICONOGRAPHY (w=600, x=640)
     # =========================================================================
     c2_x, c2_w = 640, 600
     draw.rounded_rectangle([c2_x, card_y, c2_x + c2_w, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
     draw_pill_badge(draw, left_x=c2_x + 25, cy=card_y + 35, text="COLOR & ICONOGRAPHY TOKENS", font=get_font(10.5, 'bold'), theme='blue', pad_x=12, height=24)
-    draw.text((c2_x + 25, card_y + 68), "컬러 팔레트 & 24px 아이콘 세트", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
+    draw.text((c2_x + 25, card_y + 68), "컬러 팔레트 및 24px 벡터 아이콘", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
     draw.text((c2_x + 25, card_y + 92), "Agri-Tech 브랜드 아이덴티티 및 직관적 시각 언어 규격", font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
     
-    # 1. Color Palette (15 Swatches in 3 rows x 5 cols)
     color_tokens = [
-        # Row 1: Brand & Dark
-        {"name": "Primary-500", "code": "#16C666", "rgb": (22, 198, 102), "role": "메인 브랜드 컬러"},
-        {"name": "Primary-300", "code": "#38E085", "rgb": (56, 224, 133), "role": "포커스/인터랙션"},
-        {"name": "Secondary", "code": "#14B8A6", "rgb": (20, 184, 166), "role": "GIS/시뮬레이션"},
-        {"name": "Black", "code": "#000000", "rgb": (0, 0, 0), "role": "순수 블랙"},
-        {"name": "Neutral-900", "code": "#1E293B", "rgb": (30, 41, 59), "role": "헤드라인/대비 텍스트"},
-        
-        # Row 2: Grayscale Neutrals
-        {"name": "Neutral-700", "code": "#334155", "rgb": (51, 65, 85), "role": "서브헤드/아이콘"},
-        {"name": "Neutral-600", "code": "#475569", "rgb": (71, 85, 105), "role": "본문 메인 텍스트"},
-        {"name": "Neutral-500", "code": "#64748B", "rgb": (100, 116, 139), "role": "캡션/플레이스홀더"},
-        {"name": "Neutral-400", "code": "#94A3B8", "rgb": (148, 163, 184), "role": "비활성/보조 테두리"},
-        {"name": "Neutral-300", "code": "#CBD5E1", "rgb": (203, 213, 225), "role": "디바이더/카드 테두리"},
-        
-        # Row 3: Light Backgrounds & Semantics
-        {"name": "Neutral-200", "code": "#E2E8F0", "rgb": (226, 232, 240), "role": "인풋/버튼 배경"},
-        {"name": "Neutral-100", "code": "#F1F5F9", "rgb": (241, 245, 249), "role": "컨테이너 배경"},
-        {"name": "White", "code": "#FFFFFF", "rgb": (255, 255, 255), "role": "기본 캔버스 카드"},
-        {"name": "Error-500", "code": "#EF4444", "rgb": (239, 68, 68), "role": "인허가 불가/경고"},
-        {"name": "Warning-500", "code": "#F59E0B", "rgb": (245, 158, 11), "role": "조건부 허가/유의"}
+        {"name": "Primary-500", "code": "#16C666", "rgb": (22, 198, 102)},
+        {"name": "Primary-300", "code": "#38E085", "rgb": (56, 224, 133)},
+        {"name": "Secondary", "code": "#14B8A6", "rgb": (20, 184, 166)},
+        {"name": "Neutral-900", "code": "#1E293B", "rgb": (30, 41, 59)},
+        {"name": "Neutral-700", "code": "#334155", "rgb": (51, 65, 85)},
+        {"name": "Neutral-400", "code": "#94A3B8", "rgb": (148, 163, 184)},
+        {"name": "Neutral-100", "code": "#F1F5F9", "rgb": (241, 245, 249)},
+        {"name": "White", "code": "#FFFFFF", "rgb": (255, 255, 255)},
+        {"name": "Error-500", "code": "#EF4444", "rgb": (239, 68, 68)},
+        {"name": "Warning-500", "code": "#F59E0B", "rgb": (245, 158, 11)}
     ]
     
-    pal_y = card_y + 120
+    pal_y = card_y + 124
     sw_w = 104
-    sw_h = 76
+    sw_h = 92
     gap_x = 10
     gap_y = 12
     
@@ -483,151 +467,113 @@ def make_slide_08():
         col = idx % 5
         bx = c2_x + 20 + col * (sw_w + gap_x)
         by = pal_y + row * (sw_h + gap_y)
-        
-        # Swatch Box
         draw.rounded_rectangle([bx, by, bx + sw_w, by + sw_h], radius=10, fill=(255, 255, 255), outline=BORDER_LIGHT, width=1)
-        # Color bar
         c_outline = (203, 213, 225) if c["name"] == "White" else None
-        draw.rounded_rectangle([bx + 6, by + 6, bx + sw_w - 6, by + 34], radius=6, fill=c["rgb"], outline=c_outline, width=1)
-        # Token Name & Hex Code
-        draw.text((bx + 8, by + 42), c["name"], font=get_font(10.5, 'bold'), fill=TEXT_LIGHT_MAIN)
-        draw.text((bx + 8, by + 58), c["code"], font=get_font(9.5, 'medium'), fill=TEXT_LIGHT_SUB)
+        draw.rounded_rectangle([bx + 8, by + 8, bx + sw_w - 8, by + 42], radius=6, fill=c["rgb"], outline=c_outline, width=1)
+        draw.text((bx + 8, by + 50), c["name"], font=get_font(10.5, 'bold'), fill=TEXT_LIGHT_MAIN)
+        draw.text((bx + 8, by + 68), c["code"], font=get_font(9.5, 'medium'), fill=TEXT_LIGHT_SUB)
         
-    # Divider between Colors and Icons
-    mid_div_y = pal_y + 3 * (sw_h + gap_y) + 12
+    mid_div_y = pal_y + 2 * (sw_h + gap_y) + 24
     draw.line([(c2_x + 20, mid_div_y), (c2_x + c2_w - 20, mid_div_y)], fill=BORDER_LIGHT, width=1)
     
-    # 2. System Iconography Section
-    icon_hdr_y = mid_div_y + 16
-    draw_pill_badge(draw, left_x=c2_x + 20, cy=icon_hdr_y + 10, text="FIGMA 24px SYSTEM ICONOGRAPHY", font=get_font(10, 'bold'), theme='gray', pad_x=10, height=20)
-    draw.text((c2_x + 215, icon_hdr_y + 10), "32종 피그마 벡터 심볼 (지도 탐색 · 분석 · 필터 · 제어)", font=get_font(12, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
+    icon_hdr_y = mid_div_y + 20
+    draw_pill_badge(draw, left_x=c2_x + 20, cy=icon_hdr_y + 10, text="FIGMA 24px VECTOR ICONS", font=get_font(10, 'bold'), theme='gray', pad_x=10, height=20)
+    draw.text((c2_x + 205, icon_hdr_y + 10), "16종 핵심 시스템 벡터 심볼 (지도 탐색·분석·필터·제어)", font=get_font(12, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
     
-    # 32 System Icons representation (4 rows x 8 cols)
     icon_list = [
-        "새로고침", "더보기", "상향이동", "필터정렬", "닫기/삭제", "빌딩/건축", "토지경계", "레이어설정",
-        "인허가지표", "지적도추출", "일반지도", "위성스카이", "홈대시보드", "내보내기", "다운로드", "데이터분석",
-        "보안인증", "검색/조회", "고객지원", "접기/펼치기", "승인/체크", "경고안내", "위치마커", "시간기록",
-        "구글로그인", "카카오연동", "드롭다운", "선택체크", "화면보기", "숨김처리", "줌인(확대)", "줌아웃(축소)"
+        "새로고침", "필터정렬", "토지경계", "레이어", "지적도", "위성스카이", "데이터분석", "보고서출력",
+        "보안인증", "검색조회", "승인체크", "경고안내", "위치마커", "시간기록", "확대줌인", "축소줌아웃"
     ]
     
-    ic_start_y = icon_hdr_y + 30
+    ic_start_y = icon_hdr_y + 36
     ic_box_w = 64
-    ic_box_h = 50
+    ic_box_h = 76
     ic_gap_x = 7
-    ic_gap_y = 8
+    ic_gap_y = 12
     
     for idx, ic_name in enumerate(icon_list):
         i_row = idx // 8
         i_col = idx % 8
         ix = c2_x + 20 + i_col * (ic_box_w + ic_gap_x)
         iy = ic_start_y + i_row * (ic_box_h + ic_gap_y)
-        
         draw.rounded_rectangle([ix, iy, ix + ic_box_w, iy + ic_box_h], radius=8, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-        # Small icon symbol circle
-        sym_col = BRAND_GREEN if idx in [0, 6, 7, 10, 11, 20] else (BRAND_TEAL if idx in [5, 12, 15, 22] else (100, 116, 139))
-        draw.ellipse([ix + ic_box_w//2 - 9, iy + 8, ix + ic_box_w//2 + 9, iy + 26], fill=(255, 255, 255), outline=sym_col, width=1)
-        # Dot inside
-        draw.ellipse([ix + ic_box_w//2 - 2, iy + 15, ix + ic_box_w//2 + 2, iy + 19], fill=sym_col)
-        # Label
-        draw.text((ix + ic_box_w//2, iy + 36), ic_name, font=get_font(9, 'medium'), fill=TEXT_LIGHT_SUB, anchor='mm')
+        sym_col = BRAND_GREEN if idx in [0, 2, 4, 7, 10] else (BRAND_TEAL if idx in [3, 6, 12] else (100, 116, 139))
+        draw.ellipse([ix + ic_box_w//2 - 12, iy + 14, ix + ic_box_w//2 + 12, iy + 38], fill=(255, 255, 255), outline=sym_col, width=1)
+        draw.ellipse([ix + ic_box_w//2 - 3, iy + 23, ix + ic_box_w//2 + 3, iy + 29], fill=sym_col)
+        draw.text((ix + ic_box_w//2, iy + 54), ic_name, font=get_font(10, 'medium'), fill=TEXT_LIGHT_MAIN, anchor='mm')
 
     # =========================================================================
-    # COLUMN 3: SPACING, RADIUS, ELEVATION & COMPONENT STATES (w=560, x=1260)
+    # COLUMN 3: SPACING, RADIUS & COMPONENT STATES (w=560, x=1260)
     # =========================================================================
     c3_x, c3_w = 1260, 560
     draw.rounded_rectangle([c3_x, card_y, c3_x + c3_w, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
     draw_pill_badge(draw, left_x=c3_x + 25, cy=card_y + 35, text="ATOMIC METRICS & COMPONENTS", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=24)
-    draw.text((c3_x + 25, card_y + 68), "규격 단위 & 컴포넌트 토큰", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
-    draw.text((c3_x + 25, card_y + 92), "8-pt 그리드 Spacing, Radius, Stroke 및 컴포넌트 상태", font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
+    draw.text((c3_x + 25, card_y + 68), "규격 단위 및 컴포넌트 토큰", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
+    draw.text((c3_x + 25, card_y + 92), "8-pt 그리드 Spacing, Radius 및 인터랙티브 상태 규격", font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
     
-    # 1. Spacing & Radius Table (Dual Column Grid)
-    t_y = card_y + 120
-    
-    # Left Sub-table: Spacing Tokens (w=245)
+    t_y = card_y + 124
     sp_x, sp_w = c3_x + 20, 245
-    draw.rounded_rectangle([sp_x, t_y, sp_x + sp_w, t_y + 265], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, left_x=sp_x + 14, cy=t_y + 18, text="SPACING SCALE (8-PT)", font=get_font(9.5, 'bold'), theme='gray', pad_x=8, height=18)
+    draw.rounded_rectangle([sp_x, t_y, sp_x + sp_w, t_y + 270], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+    draw_pill_badge(draw, left_x=sp_x + 14, cy=t_y + 20, text="SPACING SCALE (8-PT)", font=get_font(9.5, 'bold'), theme='gray', pad_x=8, height=18)
     
     spacings = [
         ("Spacing / 4", "4px", "초밀착 인라인 여백"),
         ("Spacing / 8", "8px", "컴포넌트 내부 패딩 (S)"),
-        ("Spacing / 12", "12px", "폼 요소 내부 여백"),
         ("Spacing / 16", "16px", "기본 카드/모듈 패딩 (M)"),
         ("Spacing / 24", "24px", "카드 간격 / 컴포넌트 갭"),
         ("Spacing / 32", "32px", "섹션 그룹 간격 (L)"),
-        ("Spacing / 40", "40px", "대형 모듈 외부 여백 (XL)")
+        ("Spacing / 48", "48px", "대형 모듈 외부 여백 (XL)")
     ]
-    sy_cur = t_y + 38
+    sy_cur = t_y + 42
     for s_label, s_val, s_desc in spacings:
-        draw.text((sp_x + 14, sy_cur + 8), s_label, font=get_font(11, 'bold'), fill=TEXT_LIGHT_MAIN)
-        draw_pill_badge(draw, left_x=sp_x + sp_w - 55, cy=sy_cur + 13, text=s_val, font=get_font(9.5, 'bold'), theme='blue', pad_x=6, height=16)
+        draw.text((sp_x + 14, sy_cur + 6), s_label, font=get_font(11, 'bold'), fill=TEXT_LIGHT_MAIN)
+        draw_pill_badge(draw, left_x=sp_x + sp_w - 55, cy=sy_cur + 11, text=s_val, font=get_font(9.5, 'bold'), theme='blue', pad_x=6, height=16)
         draw.text((sp_x + 14, sy_cur + 21), s_desc, font=get_font(9.5, 'regular'), fill=TEXT_LIGHT_SUB)
-        draw.line([(sp_x + 14, sy_cur + 32), (sp_x + sp_w - 14, sy_cur + 32)], fill=(226, 232, 240), width=1)
-        sy_cur += 32
+        draw.line([(sp_x + 14, sy_cur + 34), (sp_x + sp_w - 14, sy_cur + 34)], fill=(226, 232, 240), width=1)
+        sy_cur += 36
         
-    # Right Sub-table: Radius & Stroke Tokens (w=255)
     rad_x, rad_w = c3_x + 285, 255
-    draw.rounded_rectangle([rad_x, t_y, rad_x + rad_w, t_y + 265], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, left_x=rad_x + 14, cy=t_y + 18, text="RADIUS & STROKE TOKENS", font=get_font(9.5, 'bold'), theme='green', pad_x=8, height=18)
+    draw.rounded_rectangle([rad_x, t_y, rad_x + rad_w, t_y + 270], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+    draw_pill_badge(draw, left_x=rad_x + 14, cy=t_y + 20, text="RADIUS & STROKE TOKENS", font=get_font(9.5, 'bold'), theme='green', pad_x=8, height=18)
     
     geom_tokens = [
-        ("Radius / Small", "4px", "태그/체크박스/뱃지 모서리"),
-        ("Radius / Medium", "8px", "버튼/인풋 필드/셀렉트박스"),
-        ("Radius / Large", "16px", "카드 컨테이너/모달 팝업"),
-        ("Radius / Circle", "999px", "원형 아바타/알약형 뱃지"),
-        ("Stroke / Light", "0.5px", "보조 디바이더/차트 그리드"),
-        ("Stroke / Default", "1.0px", "기본 카드 테두리/인풋 아웃라인"),
-        ("Stroke / Strong", "2.0px", "포커스/활성 선택 상태 테두리")
+        ("Radius / Small", "4px", "태그/체크박스/뱃지"),
+        ("Radius / Medium", "8px", "버튼/인풋/셀렉트박스"),
+        ("Radius / Large", "16px", "카드 컨테이너/모달"),
+        ("Radius / Circle", "999px", "원형 아바타/알약형"),
+        ("Stroke / Default", "1.0px", "기본 카드 테두리"),
+        ("Stroke / Strong", "2.0px", "포커스/활성 테두리")
     ]
-    gy_cur = t_y + 38
+    gy_cur = t_y + 42
     for g_label, g_val, g_desc in geom_tokens:
-        draw.text((rad_x + 14, gy_cur + 8), g_label, font=get_font(11, 'bold'), fill=TEXT_LIGHT_MAIN)
-        draw_pill_badge(draw, left_x=rad_x + rad_w - 60, cy=gy_cur + 13, text=g_val, font=get_font(9.5, 'bold'), theme='green', pad_x=6, height=16)
+        draw.text((rad_x + 14, gy_cur + 6), g_label, font=get_font(11, 'bold'), fill=TEXT_LIGHT_MAIN)
+        draw_pill_badge(draw, left_x=rad_x + rad_w - 60, cy=gy_cur + 11, text=g_val, font=get_font(9.5, 'bold'), theme='green', pad_x=6, height=16)
         draw.text((rad_x + 14, gy_cur + 21), g_desc, font=get_font(9.5, 'regular'), fill=TEXT_LIGHT_SUB)
-        draw.line([(rad_x + 14, gy_cur + 32), (rad_x + rad_w - 14, gy_cur + 32)], fill=(226, 232, 240), width=1)
-        gy_cur += 32
+        draw.line([(rad_x + 14, gy_cur + 34), (rad_x + rad_w - 14, gy_cur + 34)], fill=(226, 232, 240), width=1)
+        gy_cur += 36
 
-    # 2. Interactive Component States Showcase (Bottom Panel of Col 3)
-    comp_y = t_y + 280
-    draw.rounded_rectangle([c3_x + 20, comp_y, c3_x + c3_w - 20, card_y + card_h - 25], radius=14, fill=(240, 253, 244), outline=(187, 247, 208), width=1)
-    draw_pill_badge(draw, left_x=c3_x + 35, cy=comp_y + 22, text="UI COMPONENT STATES SPEC", font=get_font(10, 'bold'), theme='green', pad_x=10, height=20)
-    draw.text((c3_x + 215, comp_y + 22), "실제 앱 화면 적용 인터랙티브 상태 규격", font=get_font(12, 'bold'), fill=BRAND_DARK, anchor='lm')
+    comp_y = t_y + 295
+    comp_h = card_y + card_h - comp_y - 20
+    draw.rounded_rectangle([c3_x + 20, comp_y, c3_x + c3_w - 20, comp_y + comp_h], radius=14, fill=(240, 253, 244), outline=(187, 247, 208), width=1)
+    draw_pill_badge(draw, left_x=c3_x + 35, cy=comp_y + 24, text="UI COMPONENT STATES SPEC", font=get_font(10, 'bold'), theme='green', pad_x=10, height=20)
+    draw.text((c3_x + 225, comp_y + 24), "실제 앱 화면 적용 인터랙티브 상태 규격", font=get_font(12, 'bold'), fill=BRAND_DARK, anchor='lm')
     
-    # 4 Interactive Examples: Primary Button, Input Field, Badge State, Selection Card
-    # Example 1: Button States
-    ex1_y = comp_y + 44
-    draw.text((c3_x + 35, ex1_y + 12), "1. 버튼 인터랙션", font=get_font(11.5, 'bold'), fill=TEXT_LIGHT_MAIN)
-    # Default State
-    draw.rounded_rectangle([c3_x + 145, ex1_y, c3_x + 260, ex1_y + 28], radius=8, fill=BRAND_GREEN)
-    draw.text((c3_x + 202, ex1_y + 14), "분석 시작하기", font=get_font(11, 'bold'), fill=(255, 255, 255), anchor='mm')
-    draw.text((c3_x + 202, ex1_y + 34), "Default", font=get_font(9, 'medium'), fill=TEXT_LIGHT_SUB, anchor='mm')
-    # Hover State
-    draw.rounded_rectangle([c3_x + 275, ex1_y, c3_x + 390, ex1_y + 28], radius=8, fill=BRAND_DARK)
-    draw.text((c3_x + 332, ex1_y + 14), "분석 시작하기", font=get_font(11, 'bold'), fill=(255, 255, 255), anchor='mm')
-    draw.text((c3_x + 332, ex1_y + 34), "Hover/Active", font=get_font(9, 'medium'), fill=TEXT_LIGHT_SUB, anchor='mm')
-    # Disabled State
-    draw.rounded_rectangle([c3_x + 405, ex1_y, c3_x + 520, ex1_y + 28], radius=8, fill=(226, 232, 240))
-    draw.text((c3_x + 462, ex1_y + 14), "선택 대기중", font=get_font(11, 'bold'), fill=(148, 163, 184), anchor='mm')
-    draw.text((c3_x + 462, ex1_y + 34), "Disabled", font=get_font(9, 'medium'), fill=TEXT_LIGHT_SUB, anchor='mm')
-    
-    # Example 2: Input Field & Badges
-    ex2_y = ex1_y + 52
-    draw.text((c3_x + 35, ex2_y + 12), "2. 필지 진단 뱃지", font=get_font(11.5, 'bold'), fill=TEXT_LIGHT_MAIN)
-    # Pass Badge
-    draw_pill_badge(draw, left_x=c3_x + 145, cy=ex2_y + 14, text="적합 · 개발가능", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=26)
-    # Warning Badge
-    draw_pill_badge(draw, left_x=c3_x + 275, cy=ex2_y + 14, text="조건부 · 심의필요", font=get_font(10.5, 'bold'), theme='yellow', pad_x=12, height=26)
-    # Error Badge
-    draw_pill_badge(draw, left_x=c3_x + 405, cy=ex2_y + 14, text="불가 · 보전관리지역", font=get_font(10.5, 'bold'), theme='red', pad_x=12, height=26)
-    
-    # Example 3: Elevation & Shadow System Summary
-    ex3_y = ex2_y + 48
-    draw.rounded_rectangle([c3_x + 35, ex3_y, c3_x + c3_w - 35, ex3_y + 52], radius=10, fill=(255, 255, 255), outline=BORDER_LIGHT, width=1)
-    draw.text((c3_x + 50, ex3_y + 16), "💡 4-Tier Elevation System (그림자 계층 규격)", font=get_font(11.5, 'bold'), fill=BRAND_DARK)
-    elev_desc = "Elevation-01(카드 Y:2 B:4), Elevation-02(드롭다운 Y:4 B:12), Elevation-03(모달 Y:10 B:24), Elevation-04(플로팅 FAB Y:16 B:32 15% Green Blur)"
-    draw.text((c3_x + 50, ex3_y + 34), elev_desc, font=get_font(10, 'regular'), fill=TEXT_LIGHT_SUB)
+    ex1_y = comp_y + 54
+    draw.text((c3_x + 35, ex1_y + 14), "버튼 상태", font=get_font(12, 'bold'), fill=TEXT_LIGHT_MAIN)
+    draw.rounded_rectangle([c3_x + 120, ex1_y, c3_x + 235, ex1_y + 32], radius=8, fill=BRAND_GREEN)
+    draw.text((c3_x + 177, ex1_y + 16), "분석 시작 (Default)", font=get_font(10.5, 'bold'), fill=(255, 255, 255), anchor='mm')
+    draw.rounded_rectangle([c3_x + 250, ex1_y, c3_x + 365, ex1_y + 32], radius=8, fill=BRAND_DARK)
+    draw.text((c3_x + 307, ex1_y + 16), "분석 시작 (Hover)", font=get_font(10.5, 'bold'), fill=(255, 255, 255), anchor='mm')
+    draw.rounded_rectangle([c3_x + 380, ex1_y, c3_x + 495, ex1_y + 32], radius=8, fill=(226, 232, 240))
+    draw.text((c3_x + 437, ex1_y + 16), "선택 대기 (Disabled)", font=get_font(10.5, 'bold'), fill=(148, 163, 184), anchor='mm')
 
-    draw_slide_footer(draw, 8, 12, dark_mode=False)
+    ex2_y = ex1_y + 54
+    draw.text((c3_x + 35, ex2_y + 14), "인허가 뱃지", font=get_font(12, 'bold'), fill=TEXT_LIGHT_MAIN)
+    draw_pill_badge(draw, left_x=c3_x + 120, cy=ex2_y + 16, text="적합 · 개발가능", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=28)
+    draw_pill_badge(draw, left_x=c3_x + 250, cy=ex2_y + 16, text="조건부 · 심의필요", font=get_font(10.5, 'bold'), theme='yellow', pad_x=12, height=28)
+    draw_pill_badge(draw, left_x=c3_x + 380, cy=ex2_y + 16, text="불가 · 보전관리지역", font=get_font(10.5, 'bold'), theme='red', pad_x=12, height=28)
+
+    draw_slide_footer(draw, 8, 13, dark_mode=False)
     out_path = os.path.join(OUT_DIR, "slide_08.png")
     img.save(out_path, quality=95)
     print(f"Generated: {out_path}")
