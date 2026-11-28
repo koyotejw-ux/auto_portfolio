@@ -62,26 +62,30 @@ def make_slide_09():
     ]
     
     sy = card_y + 64
+    stage_h = 128
+    stage_gap = 14
     for stit, sdesc, scol, sbg in stages:
-        draw.rounded_rectangle([lx + 24, sy, lx + lw - 24, sy + 128], radius=12, fill=sbg, outline=scol, width=1)
-        draw.text((lx + 40, sy + 16), stit, font=get_font(13.5, 'bold'), fill=scol)
+        draw.rounded_rectangle([lx + 24, sy, lx + lw - 24, sy + stage_h], radius=12, fill=sbg, outline=scol, width=1)
+        draw.text((lx + 40, sy + 18), stit, font=get_font(13.5, 'bold'), fill=scol)
         lines = wrap_text_by_words(sdesc, get_font(12, 'regular'), lw - 80, draw)
-        ly = sy + 44
+        ly = sy + 48
         for l in lines:
             draw.text((lx + 40, ly), l, font=get_font(12, 'regular'), fill=(51, 65, 85))
-            ly += 21
-        sy += 140
+            ly += 22
+        sy += stage_h + stage_gap
         
-    # Bottom Inversion Stat Box inside Left Card
-    draw.rounded_rectangle([lx + 24, card_y + card_h - 190, lx + lw - 24, card_y + card_h - 24], radius=12, fill=(240, 246, 255), outline=(191, 219, 254), width=1)
-    draw_pill_badge(draw, left_x=lx + 40, cy=card_y + card_h - 162, text="원클릭 청구", font=get_font(9, 'bold'), theme='blue', pad_x=8, height=20)
-    draw.text((lx + 150, card_y + card_h - 172), "원클릭 모바일 청구서 즉시 전송", font=get_font(14, 'bold'), fill=(0, 82, 255))
+    # Bottom Inversion Stat Box inside Left Card (maintaining uniform 14px gap below Stage 3)
+    box4_y = sy
+    box4_bottom = card_y + card_h - 24
+    draw.rounded_rectangle([lx + 24, box4_y, lx + lw - 24, box4_bottom], radius=12, fill=(240, 246, 255), outline=(191, 219, 254), width=1)
+    draw_pill_badge(draw, left_x=lx + 40, cy=box4_y + 32, text="원클릭 청구", font=get_font(9, 'bold'), theme='blue', pad_x=8, height=22)
+    draw.text((lx + 144, box4_y + 32), "원클릭 모바일 청구서 즉시 전송", font=get_font(14, 'bold'), fill=(0, 82, 255), anchor='lm')
     b_desc = "원생명, 수강과목, 청구금액, 입금 계좌번호가 정중한 서식에 자동 치환되어 카카오톡/문자로 1초 만에 전송됩니다."
     b_lines = wrap_text_by_words(b_desc, get_font(11.5, 'regular'), lw - 80, draw)
-    by = card_y + card_h - 138
+    by = box4_y + 62
     for bl in b_lines:
         draw.text((lx + 40, by), bl, font=get_font(11.5, 'regular'), fill=(71, 85, 105))
-        by += 19
+        by += 21
 
     # Center Phone Mockup (Mockup 02 Ledger)
     m2 = Image.open(f"{MOCKUP_DIR}/mockup_02_ledger.png").convert('RGBA')
