@@ -34,8 +34,8 @@ def make_slide_09():
     
     mob_s4 = os.path.join(ASSETS_DIR, "figma_step4_smartfarm_mobile.png")
     mob_s5 = os.path.join(ASSETS_DIR, "figma_step5_construction_cost_mobile.png")
-    draw_phone_mockup(img, mob_s4, cx=p1_cx, cy=p_cy, target_h=490, bezel=6, radius=24)
-    draw_phone_mockup(img, mob_s5, cx=p2_cx, cy=p_cy, target_h=490, bezel=6, radius=24)
+    draw_phone_mockup(img, mob_s4, cx=p1_cx, cy=p_cy, target_h=490, bezel=6, radius=24, fixed_aspect=0.465)
+    draw_phone_mockup(img, mob_s5, cx=p2_cx, cy=p_cy, target_h=490, bezel=6, radius=24, fixed_aspect=0.465)
     
     # Step Arrow between 2 phones
     draw_arrow(draw, (lx + 268, p_cy), (lx + 306, p_cy), col=BRAND_GREEN, width=3, arrow_size=6)
@@ -204,7 +204,7 @@ def make_slide_11():
     for idx, (pill_txt, cap_txt, asset_fn, theme) in enumerate(gallery_items):
         cx = 100 + idx * slot_w + slot_w // 2
         asset_p = os.path.join(ASSETS_DIR, asset_fn)
-        draw_phone_mockup(img, asset_p, cx=cx, cy=phone_cy, target_h=phone_h, bezel=6, radius=24)
+        draw_phone_mockup(img, asset_p, cx=cx, cy=phone_cy, target_h=phone_h, bezel=6, radius=24, fixed_aspect=0.465)
         
         # Pill label + 2-line caption underneath
         pill_y = phone_cy + phone_h // 2 + 34

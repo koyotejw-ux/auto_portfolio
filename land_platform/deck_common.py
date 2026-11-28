@@ -166,22 +166,22 @@ def draw_slide_footer(draw, slide_num, total_slides=12, dark_mode=False):
     page_str = f"PAGE {slide_num:02d} / {total_slides:02d}"
     draw.text((1820, 1018), page_str, font=get_num_font(11.5, 'black'), fill=page_col, anchor='rt')
 
-def draw_phone_mockup(base_img, screen_path, cx, cy, target_h=640, bezel=7, radius=28):
+def draw_phone_mockup(base_img, screen_path, cx, cy, target_h=640, bezel=7, radius=28, fixed_aspect=None):
     if not os.path.exists(screen_path):
         return
     
     s_img = Image.open(screen_path).convert('RGBA')
-    img_aspect = s_img.width / s_img.height  # 460 / 1024 = 0.4492
+    img_aspect = s_img.width / s_img.height
     
     # Status Bar & Home Bar heights
     sb_h = 30
     home_h = 14
     
-    # Available viewport height for the image while maintaining exact 1:1 original aspect ratio
+    # Available viewport height
     vp_h = target_h - (bezel * 2 + sb_h + home_h)
-    vp_w = int(vp_h * img_aspect)
+    vp_w = int(vp_h * (fixed_aspect if fixed_aspect is not None else img_aspect))
     
-    # Outer phone dimensions dynamically wrapping the image with zero distortion and zero letterbox
+    # Outer phone dimensions
     phone_w = vp_w + bezel * 2
     phone_h = target_h
     
@@ -226,12 +226,20 @@ def draw_phone_mockup(base_img, screen_path, cx, cy, target_h=640, bezel=7, radi
     home_y = y2 - bezel - 9
     draw.rounded_rectangle([cx - 40, home_y, cx + 40, home_y + 4], radius=2, fill=(15, 23, 42))
 
-    # Inner Content Viewport Screen below Status Bar (Exact original 1:1 aspect ratio)
-    s_res = s_img.resize((vp_w, vp_h), Image.Resampling.LANCZOS)
-    
-    # Place screen image starting exactly right below status bar, flush to left & right edges
+    # Inner Content Viewport Screen below Status Bar (Zero distortion: width-fit + clean top-crop for tall pages)
     px = x1 + bezel
     py = sb_y + sb_h
+    if fixed_aspect is not None:
+        scaled_h = max(1, int(round(s_img.height * (vp_w / s_img.width))))
+        s_scaled = s_img.resize((vp_w, scaled_h), Image.Resampling.LANCZOS)
+        if scaled_h >= vp_h:
+            s_res = s_scaled.crop((0, 0, vp_w, vp_h))
+        else:
+            s_res = Image.new('RGBA', (vp_w, vp_h), (255, 255, 255, 255))
+            s_res.paste(s_scaled, (0, 0), s_scaled)
+    else:
+        s_res = s_img.resize((vp_w, vp_h), Image.Resampling.LANCZOS)
+    
     base_img.paste(s_res, (px, py), s_res)
 
 def draw_browser_mockup(base_img, screen_path, x, y, w, h=None, target_w=None, title="FARMINGSYS ENTERPRISE", url="https://farmingsys.io/app"):
