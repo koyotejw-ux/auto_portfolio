@@ -124,164 +124,214 @@ def make_slide_05():
 # -------------------------------------------------------------
 # SLIDE 06: USER FLOW & DECISION LOGIC (Flawless Native Vector Flow Chart)
 # -------------------------------------------------------------
+# -------------------------------------------------------------
+# SLIDE 06: RESPONSIVE WIREFRAME ARCHITECTURE (Native Vector Wireframes)
+# -------------------------------------------------------------
 def make_slide_06():
     img = Image.new('RGB', (W, H), BG_LIGHT)
     draw = ImageDraw.Draw(img)
     draw_slide_header(
         draw, 6, 
-        "USER FLOW & DECISION LOGIC", 
-        "User Flow & Logic | ", 
-        "원스톱 토지개발 시뮬레이션 유저 플로우 및 의사결정 분기 로직", 
-        "메인(홈) → 지번 검색 → 12대 공공 API 분석 → 개발 적합 판별 분기 → 시설 배치 → 재무 평가 → 리포트 생성", 
-        right_badge=("SERVICE FLOW CHART", "green")
+        "RESPONSIVE WIREFRAME SYSTEM", 
+        "Wireframe Architecture | ", 
+        "반응형 랜딩페이지 및 코어 GIS 시뮬레이터 와이어프레임 설계", 
+        "프로덕트 2대 핵심 경험: [1] 고객 유입용 패럴랙스 랜딩페이지  |  [2] B2B 듀얼 스플릿 GIS 시뮬레이터 워크스페이스 구조", 
+        right_badge=("PREDICTIVE WIREFRAME", "green")
     )
     
-    card_x, card_y, card_w, card_h = 100, 210, 1720, 750
-    draw.rounded_rectangle([card_x, card_y, card_x + card_w, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
+    card_y = 215
+    card_h = 745
     
-    draw_pill_badge(draw, left_x=card_x + 30, cy=card_y + 32, text="END-TO-END DECISION TREE & FLOW CHART", font=get_font(11, 'bold'), theme='green', pad_x=12, height=24)
-    draw.text((card_x + 30, card_y + 60), "토지개발 플랫폼 핵심 사용자 흐름 및 시스템 조건 분기 로직 (완전판)", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
+    # 2-Column High-Fidelity Vector Wireframe Architecture
+    # Left Card (w=830, x=100): Responsive Landing Page Wireframe
+    # Right Card (w=830, x=990): Enterprise GIS Simulator Workspace Wireframe
     
-    n1_x, n1_y, n1_w, n1_h = card_x + 30, card_y + 110, 140, 60
-    draw.rounded_rectangle([n1_x, n1_y, n1_x + n1_w, n1_y + n1_h], radius=30, fill=(241, 245, 249), outline=BORDER_LIGHT, width=1)
-    draw.text((n1_x + n1_w//2, n1_y + n1_h//2), "메인(홈)", font=get_font(15, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mm')
+    # =========================================================================
+    # COLUMN 1: RESPONSIVE LANDING PAGE WIREFRAME (w=830, x=100)
+    # =========================================================================
+    c1_x, c1_w = 100, 830
+    draw.rounded_rectangle([c1_x, card_y, c1_x + c1_w, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
+    draw_pill_badge(draw, left_x=c1_x + 25, cy=card_y + 35, text="WIREFRAME 01 · LANDING PAGE", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=24)
+    draw.text((c1_x + 25, card_y + 68), "반응형 랜딩페이지 와이어프레임", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
+    draw.text((c1_x + 25, card_y + 92), "가치 제안 ➔ 3단계 핵심 기능 체험 ➔ 고객 전환(CTA) 최적화 구조", font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
     
-    draw_arrow(draw, (n1_x + n1_w, n1_y + n1_h//2), (n1_x + n1_w + 35, n1_y + n1_h//2), col=(148, 163, 184), width=2, arrow_size=6)
+    # Mockup Viewport Container
+    vp1_x = c1_x + 25
+    vp1_y = card_y + 120
+    vp1_w = c1_w - 50
+    vp1_h = card_h - 145
+    draw.rounded_rectangle([vp1_x, vp1_y, vp1_x + vp1_w, vp1_y + vp1_h], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
     
-    n2_x, n2_y, n2_w, n2_h = n1_x + n1_w + 35, card_y + 100, 170, 80
-    draw.rounded_rectangle([n2_x, n2_y, n2_x + n2_w, n2_y + n2_h], radius=12, fill=(255, 255, 255), outline=BRAND_GREEN, width=2)
-    draw_pill_badge(draw, cx=n2_x + n2_w//2, cy=n2_y + 16, text="INPUT ACTION", font=get_font(9.5, 'bold'), theme='green', pad_x=8, height=18)
-    draw.text((n2_x + n2_w//2, n2_y + 42), "대상지 지번 검색", font=get_font(13.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mm')
-    draw.text((n2_x + n2_w//2, n2_y + 62), "또는 지도 클릭 선택", font=get_font(11.5, 'medium'), fill=BRAND_DARK, anchor='mm')
+    # Wireframe GNB Bar
+    gnb_h = 42
+    draw.rounded_rectangle([vp1_x, vp1_y, vp1_x + vp1_w, vp1_y + gnb_h], radius=12, fill=(255, 255, 255), outline=BORDER_LIGHT, width=1)
+    draw.rectangle([vp1_x + 20, vp1_y + 14, vp1_x + 100, vp1_y + 28], fill=BRAND_GREEN)
+    draw.text((vp1_x + 24, vp1_y + 15), "FARMINGSYS", font=get_font(10, 'bold'), fill=(255, 255, 255))
     
-    draw_arrow(draw, (n2_x + n2_w, n2_y + n2_h//2), (n2_x + n2_w + 35, n2_y + n2_h//2), col=(148, 163, 184), width=2, arrow_size=6)
-    
-    d1_x, d1_y, d1_w, d1_h = n2_x + n2_w + 35, card_y + 95, 175, 90
-    draw.rounded_rectangle([d1_x, d1_y, d1_x + d1_w, d1_y + d1_h], radius=14, fill=(240, 246, 255), outline=(59, 130, 246), width=2)
-    draw_pill_badge(draw, cx=d1_x + d1_w//2, cy=d1_y + 18, text="CHECK 01 · GIS API", font=get_font(9.5, 'bold'), theme='blue', pad_x=8, height=18)
-    draw.text((d1_x + d1_w//2, d1_y + 42), "공공 데이터", font=get_font(13, 'bold'), fill=(29, 78, 216), anchor='mm')
-    draw.text((d1_x + d1_w//2, d1_y + 64), "파싱 성공?", font=get_font(13, 'bold'), fill=(29, 78, 216), anchor='mm')
-    
-    draw.line([(d1_x + d1_w//2, d1_y + d1_h), (d1_x + d1_w//2, card_y + 245)], fill=(225, 29, 72), width=2)
-    draw_arrow(draw, (d1_x + d1_w//2, card_y + 245), (d1_x + d1_w//2, card_y + 260), col=(225, 29, 72), width=2, arrow_size=6)
-    draw_pill_badge(draw, cx=d1_x + d1_w//2 + 18, cy=d1_y + d1_h + 15, text="N", font=get_font(9.5, 'bold'), theme='red', pad_x=6, height=16)
-    
-    fb1_x, fb1_y, fb1_w, fb1_h = d1_x - 15, card_y + 260, 205, 60
-    draw.rounded_rectangle([fb1_x, fb1_y, fb1_x + fb1_w, fb1_y + fb1_h], radius=12, fill=(255, 241, 242), outline=(254, 205, 211), width=2)
-    draw.text((fb1_x + fb1_w//2, fb1_y + 20), "지적도 캐시 데이터 전환", font=get_font(12, 'bold'), fill=(225, 29, 72), anchor='mm')
-    draw.text((fb1_x + fb1_w//2, fb1_y + 40), "수동 지번/면적 입력 팝업", font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB, anchor='mm')
-    
-    draw_arrow(draw, (d1_x + d1_w, d1_y + d1_h//2), (d1_x + d1_w + 40, d1_y + d1_h//2), col=(148, 163, 184), width=2, arrow_size=6)
-    draw.text((d1_x + d1_w + 16, d1_y + d1_h//2 - 14), "Y", font=get_font(11, 'bold'), fill=(100, 116, 139))
-    
-    d2_x, d2_y, d2_w, d2_h = d1_x + d1_w + 40, card_y + 95, 180, 90
-    draw.rounded_rectangle([d2_x, d2_y, d2_x + d2_w, d2_y + d2_h], radius=14, fill=(236, 253, 245), outline=BRAND_GREEN, width=2)
-    draw_pill_badge(draw, cx=d2_x + d2_w//2, cy=d2_y + 18, text="CHECK 02 · 규제 적합", font=get_font(9.5, 'bold'), theme='green', pad_x=8, height=18)
-    draw.text((d2_x + d2_w//2, d2_y + 42), "개발 적합 토지?", font=get_font(13.5, 'bold'), fill=BRAND_DARK, anchor='mm')
-    draw.text((d2_x + d2_w//2, d2_y + 64), "(용도지역/접도/경사)", font=get_font(11, 'medium'), fill=BRAND_GREEN, anchor='mm')
-    
-    draw.line([(d2_x + d2_w//2, d2_y + d2_h), (d2_x + d2_w//2, card_y + 245)], fill=(225, 29, 72), width=2)
-    draw_arrow(draw, (d2_x + d2_w//2, card_y + 245), (d2_x + d2_w//2, card_y + 260), col=(225, 29, 72), width=2, arrow_size=6)
-    draw_pill_badge(draw, cx=d2_x + d2_w//2 + 18, cy=d2_y + d2_h + 15, text="N", font=get_font(9.5, 'bold'), theme='red', pad_x=6, height=16)
-    
-    fb2_x, fb2_y, fb2_w, fb2_h = d2_x - 15, card_y + 260, 210, 60
-    draw.rounded_rectangle([fb2_x, fb2_y, fb2_x + fb2_w, fb2_y + fb2_h], radius=12, fill=(255, 241, 242), outline=(254, 205, 211), width=2)
-    draw.text((fb2_x + fb2_w//2, fb2_y + 20), "인허가 저촉 사유 안내", font=get_font(12, 'bold'), fill=(225, 29, 72), anchor='mm')
-    draw.text((fb2_x + fb2_w//2, fb2_y + 40), "대체 작물/완충 솔루션 제시", font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB, anchor='mm')
-    
-    draw_arrow(draw, (d2_x + d2_w, d2_y + d2_h//2), (d2_x + d2_w + 40, d2_y + d2_h//2), col=(148, 163, 184), width=2, arrow_size=6)
-    draw.text((d2_x + d2_w + 16, d2_y + d2_h//2 - 14), "Y", font=get_font(11, 'bold'), fill=(100, 116, 139))
-    
-    n4_x, n4_y, n4_w, n4_h = d2_x + d2_w + 40, card_y + 100, 190, 80
-    draw.rounded_rectangle([n4_x, n4_y, n4_x + n4_w, n4_y + n4_h], radius=12, fill=(255, 255, 255), outline=BRAND_TEAL, width=2)
-    draw_pill_badge(draw, cx=n4_x + n4_w//2, cy=n4_y + 16, text="SIMULATOR", font=get_font(9.5, 'bold'), theme='blue', pad_x=8, height=18)
-    draw.text((n4_x + n4_w//2, n4_y + 42), "스마트팜 단지 배치", font=get_font(13.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mm')
-    draw.text((n4_x + n4_w//2, n4_y + 62), "온실/부대시설/작물 연동", font=get_font(11, 'medium'), fill=BRAND_TEAL, anchor='mm')
-    
-    draw_arrow(draw, (n4_x + n4_w, n4_y + n4_h//2), (n4_x + n4_w + 40, n4_y + n4_h//2), col=(148, 163, 184), width=2, arrow_size=6)
-    
-    d3_x, d3_y, d3_w, d3_h = n4_x + n4_w + 40, card_y + 95, 180, 90
-    draw.rounded_rectangle([d3_x, d3_y, d3_x + d3_w, d3_y + d3_h], radius=14, fill=(248, 250, 252), outline=BORDER_LIGHT, width=2)
-    draw_pill_badge(draw, cx=d3_x + d3_w//2, cy=d3_y + 18, text="CHECK 03 · 리포트", font=get_font(9.5, 'bold'), theme='gray', pad_x=8, height=18)
-    draw.text((d3_x + d3_w//2, d3_y + 42), "상세 금융 리포트", font=get_font(13, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mm')
-    draw.text((d3_x + d3_w//2, d3_y + 64), "발급 요청?", font=get_font(13, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mm')
-    
-    draw.line([(d3_x + d3_w//2, d3_y + d3_h), (d3_x + d3_w//2, card_y + 245)], fill=(100, 116, 139), width=2)
-    draw_arrow(draw, (d3_x + d3_w//2, card_y + 245), (d3_x + d3_w//2, card_y + 260), col=(100, 116, 139), width=2, arrow_size=6)
-    draw.text((d3_x + d3_w//2 + 10, d3_y + d3_h + 12), "N", font=get_font(11, 'bold'), fill=(100, 116, 139))
-    
-    out1_x, out1_y, out1_w, out1_h = d3_x - 15, card_y + 260, 210, 60
-    draw.rounded_rectangle([out1_x, out1_y, out1_x + out1_w, out1_y + out1_h], radius=28, fill=(241, 245, 249), outline=BORDER_LIGHT, width=1)
-    draw.text((out1_x + out1_w//2, out1_y + out1_h//2), "기본 요약 웹 대시보드 열람", font=get_font(12, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mm')
-    
-    draw_arrow(draw, (d3_x + d3_w, d3_y + d3_h//2), (d3_x + d3_w + 40, d3_y + d3_h//2), col=BRAND_GREEN, width=2, arrow_size=7)
-    draw.text((d3_x + d3_w + 16, d3_y + d3_h//2 - 14), "Y", font=get_font(11, 'bold'), fill=BRAND_GREEN)
-    
-    goal_x, goal_y, goal_w, goal_h = d3_x + d3_w + 40, card_y + 100, 240, 80
-    draw.rounded_rectangle([goal_x, goal_y, goal_x + goal_w, goal_y + goal_h], radius=16, fill=(236, 253, 245), outline=BRAND_GREEN, width=2)
-    draw_pill_badge(draw, cx=goal_x + goal_w//2, cy=goal_y + 18, text="FINAL GOAL", font=get_font(9.5, 'bold'), theme='green', pad_x=8, height=18)
-    draw.text((goal_x + goal_w//2, goal_y + 44), "종합 타당성 리포트 발급", font=get_font(14, 'bold'), fill=BRAND_DARK, anchor='mm')
-    draw.text((goal_x + goal_w//2, goal_y + 64), "20p PDF 및 금융기관 제출용", font=get_font(11.5, 'medium'), fill=BRAND_GREEN, anchor='mm')
-
-    bot_y = card_y + 360
-    draw.line([(card_x + 30, bot_y - 20), (card_x + card_w - 30, bot_y - 20)], fill=BORDER_LIGHT, width=1)
-    
-    draw_pill_badge(draw, left_x=card_x + 30, cy=bot_y + 5, text="CORE DECISION NODES SPECIFICATION", font=get_font(10.5, 'bold'), theme='blue', pad_x=10, height=22)
-    draw.text((card_x + 320, bot_y + 5), "개발/시스템 연동을 위한 4대 의사결정 노드 상세 정의 및 예외 처리 정책", font=get_font(14, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
-    
-    nodes_detail = [
-        {
-            "num": "1",
-            "title": "공공 GIS API 실시간 연동 및 Fallback",
-            "tag": "API & 캐싱",
-            "desc": "토지이음, 국토교통부 지적도, 수치표고모델(DEM) 12대 공공 API를 비동기 병렬 호출합니다. 3초 이상 응답 지연 시 최근 30일 이내 동기화된 지적 캐시 데이터로 자동 전환하여 서비스 중단 방지."
-        },
-        {
-            "num": "2",
-            "title": "3초 법적 인허가 및 조례 룰셋 자동 진단",
-            "tag": "규제 엔진",
-            "desc": "선택 필지의 용도지역(농림/관리/도시), 건폐율/용적률, 개발행위허가 기준(경사도 15도 이하, 도로 접도 4m 이상)을 지자체 조례 엔진과 대조하여 적합(녹색)/조건부(황색)/불가(적색) 3색 뱃지로 즉시 판정."
-        },
-        {
-            "num": "3",
-            "title": "스마트팜 모듈 최적 배치 & 작물 연동",
-            "tag": "공간 시뮬레이션",
-            "desc": "비전문가를 위해 연동형 온실 규격을 토지 경계선 내에 자동 최적 정렬합니다. 딸기, 토마토 등 선택 작물별 표준 생산 주기와 단가 DB를 연계하여 유효 재배 면적 및 예상 생산량을 오차 5% 이내로 시뮬레이션."
-        },
-        {
-            "num": "4",
-            "title": "CAPEX/OPEX 경제성 산출 & 금융 표준 리포트",
-            "tag": "금융 모델링",
-            "desc": "토지 매입비, 온실 시공비, 시설비(CAPEX)와 운영비/인건비(OPEX)를 10개년 현금흐름으로 분석합니다. 순현재가치(NPV) 및 내부수익률(IRR)을 자동 도출하여 농협 등 금융기관 대출 심사용 20p 표준 PDF를 원클릭 발급."
-        }
-    ]
-    
-    card_cols = 4
-    col_w = (card_w - 60 - (card_cols - 1) * 20) // card_cols
-    cy_p = bot_y + 35
-    for i, nd in enumerate(nodes_detail):
-        cx_p = card_x + 30 + i * (col_w + 20)
-        draw.rounded_rectangle([cx_p, cy_p, cx_p + col_w, cy_p + 310], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-        draw.rounded_rectangle([cx_p + 16, cy_p + 16, cx_p + 42, cy_p + 42], radius=6, fill=BRAND_GREEN)
-        draw.text((cx_p + 29, cy_p + 29), nd["num"], font=get_font(13, 'bold'), fill=(255, 255, 255), anchor='mm')
-        draw_pill_badge(draw, left_x=cx_p + col_w - 95, cy=cy_p + 29, text=nd["tag"], font=get_font(9.5, 'bold'), theme='gray', pad_x=8, height=20)
-        draw.text((cx_p + 16, cy_p + 58), nd["title"], font=get_font(13.5, 'bold'), fill=TEXT_LIGHT_MAIN)
-        draw.line([(cx_p + 16, cy_p + 82), (cx_p + col_w - 16, cy_p + 82)], fill=BORDER_LIGHT, width=1)
+    menu_items = ["서비스 소개", "시뮬레이터", "사용자 통계", "요금 안내"]
+    mx_cur = vp1_x + 130
+    for m in menu_items:
+        draw.text((mx_cur, vp1_y + 21), m, font=get_font(10.5, 'medium'), fill=TEXT_LIGHT_SUB, anchor='lm')
+        mx_cur += 85
         
-        lines = wrap_text(nd["desc"], get_font(11.5, 'regular'), col_w - 32, draw)
-        ly_p = cy_p + 95
+    draw.rounded_rectangle([vp1_x + vp1_w - 110, vp1_y + 10, vp1_x + vp1_w - 20, vp1_y + 32], radius=6, fill=BRAND_GREEN)
+    draw.text((vp1_x + vp1_w - 65, vp1_y + 21), "무료 시작하기", font=get_font(10, 'bold'), fill=(255, 255, 255), anchor='mm')
+    
+    # Wireframe Hero Block (y = vp1_y + 48)
+    h_y = vp1_y + 50
+    h_h = 195
+    draw.rounded_rectangle([vp1_x + 12, h_y, vp1_x + vp1_w - 12, h_y + h_h], radius=10, fill=(236, 253, 245), outline=(167, 243, 208), width=1)
+    
+    # Hero Texts
+    draw.text((vp1_x + 30, h_y + 30), "고객의 토지개발 사업에 동행하다", font=get_font(21, 'bold'), fill=BRAND_DARK)
+    draw.text((vp1_x + 30, h_y + 60), "12대 공공 GIS 데이터와 스마트팜 시뮬레이션으로", font=get_font(12, 'medium'), fill=TEXT_LIGHT_SUB)
+    draw.text((vp1_x + 30, h_y + 78), "복잡한 인허가 및 공사비를 3초 만에 원스톱 자동 분석", font=get_font(12, 'medium'), fill=TEXT_LIGHT_SUB)
+    
+    # Hero CTA Button
+    draw.rounded_rectangle([vp1_x + 30, h_y + 115, vp1_x + 190, h_y + 155], radius=8, fill=BRAND_GREEN)
+    draw.text((vp1_x + 110, h_y + 135), "시뮬레이터 시작하기 →", font=get_font(11.5, 'bold'), fill=(255, 255, 255), anchor='mm')
+    
+    # Hero Right Interactive Search Wireframe Box
+    s_box_x = vp1_x + vp1_w - 320
+    s_box_y = h_y + 20
+    draw.rounded_rectangle([s_box_x, s_box_y, s_box_x + 300, s_box_y + 155], radius=8, fill=(255, 255, 255), outline=BORDER_LIGHT, width=1)
+    draw.text((s_box_x + 16, s_box_y + 18), "📍 지번 또는 도로명 검색", font=get_font(11, 'bold'), fill=TEXT_LIGHT_MAIN)
+    draw.rounded_rectangle([s_box_x + 16, s_box_y + 40, s_box_x + 284, s_box_y + 72], radius=6, fill=(241, 245, 249), outline=BORDER_LIGHT, width=1)
+    draw.text((s_box_x + 26, s_box_y + 56), "예: 서울시 마포구 신수동 250-27", font=get_font(10, 'regular'), fill=(148, 163, 184), anchor='lm')
+    draw.rounded_rectangle([s_box_x + 16, s_box_y + 85, s_box_x + 284, s_box_y + 140], radius=6, fill=(236, 253, 245))
+    draw.text((s_box_x + 26, s_box_y + 102), "✓ 12개 공공 인허가 조례 즉시 매칭", font=get_font(10, 'bold'), fill=BRAND_DARK)
+    draw.text((s_box_x + 26, s_box_y + 122), "✓ 예상 조성비 및 수확량 시뮬레이션", font=get_font(10, 'bold'), fill=BRAND_GREEN)
+    
+    # Wireframe 3 Features Grid (y = h_y + h_h + 16)
+    f_y = h_y + h_h + 16
+    f_w = (vp1_w - 48) // 3
+    features = [
+        ("01. 토지분석", "지적도·지목·용도지역 100여 개 규제 자동 판정", BRAND_GREEN),
+        ("02. 시설배치", "온실·APC물류센터 경계선 내 최적 구획", BRAND_TEAL),
+        ("03. 금융보고서", "236억 공사비 산출 및 대출 심사용 20p PDF", (30, 58, 138))
+    ]
+    for i, (f_title, f_desc, f_col) in enumerate(features):
+        fx = vp1_x + 12 + i * (f_w + 12)
+        draw.rounded_rectangle([fx, f_y, fx + f_w, f_y + 130], radius=10, fill=(255, 255, 255), outline=BORDER_LIGHT, width=1)
+        draw.rounded_rectangle([fx + 16, f_y + 16, fx + 44, f_y + 44], radius=6, fill=f_col)
+        draw.text((fx + 30, f_y + 30), f"{i+1}", font=get_font(12, 'bold'), fill=(255, 255, 255), anchor='mm')
+        draw.text((fx + 52, f_y + 30), f_title, font=get_font(13.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
+        lines = wrap_text(f_desc, get_font(11, 'regular'), f_w - 32, draw)
+        ly = f_y + 58
         for l in lines:
-            draw.text((cx_p + 16, ly_p), l, font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
-            ly_p += 18
+            draw.text((fx + 16, ly), l, font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB)
+            ly += 18
+            
+    # Bottom Callout in Col 1
+    b_y = f_y + 144
+    draw.rounded_rectangle([vp1_x + 12, b_y, vp1_x + vp1_w - 12, vp1_y + vp1_h - 12], radius=10, fill=(241, 245, 249), outline=BORDER_LIGHT, width=1)
+    draw.text((vp1_x + 28, b_y + 18), "💡 랜딩페이지 UX 전략: 진입 장벽 제거와 즉각적 데이터 가치 증명", font=get_font(11.5, 'bold'), fill=BRAND_DARK)
+    draw.text((vp1_x + 28, b_y + 38), "비전문가 토지 소유주가 첫 화면에서 지번만 입력해도 자신의 토지 가치와 규제 적합도를 3초 만에 체감하게 유도", font=get_font(10.5, 'regular'), fill=TEXT_LIGHT_SUB)
+
+    # =========================================================================
+    # COLUMN 2: ENTERPRISE GIS SIMULATOR WORKSPACE WIREFRAME (w=830, x=990)
+    # =========================================================================
+    c2_x, c2_w = 990, 830
+    draw.rounded_rectangle([c2_x, card_y, c2_x + c2_w, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
+    draw_pill_badge(draw, left_x=c2_x + 25, cy=card_y + 35, text="WIREFRAME 02 · SIMULATOR SAAS", font=get_font(10.5, 'bold'), theme='blue', pad_x=12, height=24)
+    draw.text((c2_x + 25, card_y + 68), "코어 GIS 시뮬레이터 와이어프레임", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
+    draw.text((c2_x + 25, card_y + 92), "좌측 380px 컨트롤 패널 + 우측 인터랙티브 GIS 캔버스의 듀얼 스플릿 뷰", font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
+    
+    # Mockup Viewport Container
+    vp2_x = c2_x + 25
+    vp2_y = card_y + 120
+    vp2_w = c2_w - 50
+    vp2_h = card_h - 145
+    draw.rounded_rectangle([vp2_x, vp2_y, vp2_x + vp2_w, vp2_y + vp2_h], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+    
+    # SaaS Stepper Header (y = vp2_y)
+    draw.rounded_rectangle([vp2_x, vp2_y, vp2_x + vp2_w, vp2_y + gnb_h], radius=12, fill=(255, 255, 255), outline=BORDER_LIGHT, width=1)
+    draw.text((vp2_x + 20, vp2_y + 21), "STEP 2. 토지분석", font=get_font(12, 'bold'), fill=BRAND_DARK, anchor='lm')
+    draw_pill_badge(draw, left_x=vp2_x + 130, cy=vp2_y + 21, text="STEP 선택", font=get_font(9.5, 'bold'), theme='gray', pad_x=8, height=18)
+    
+    # Stepper Indicators on Right of Header
+    steps = ["1.대상지선택", "2.토지분석", "3.시설배치", "4.조성비/매출"]
+    sx_cur = vp2_x + 250
+    for s_idx, st in enumerate(steps):
+        is_active = (s_idx == 1)
+        col = BRAND_GREEN if is_active else (148, 163, 184)
+        draw.text((sx_cur, vp2_y + 21), st, font=get_font(10.5, 'bold' if is_active else 'regular'), fill=col, anchor='lm')
+        sx_cur += 110
+        if s_idx < 3:
+            draw.text((sx_cur - 25, vp2_y + 21), "➔", font=get_font(9, 'regular'), fill=(203, 213, 225), anchor='lm')
+
+    draw.rounded_rectangle([vp2_x + vp2_w - 95, vp2_y + 10, vp2_x + vp2_w - 20, vp2_y + 32], radius=6, fill=(15, 23, 42))
+    draw.text((vp2_x + vp2_w - 57, vp2_y + 21), "새로시작", font=get_font(10, 'bold'), fill=(255, 255, 255), anchor='mm')
+    
+    # Dual Split Workspace Layout: Left Panel (w=300) + Right Map (w=460)
+    split_y = vp2_y + gnb_h + 10
+    split_h = vp2_h - gnb_h - 20
+    
+    # Left Control Panel Wireframe (w=310)
+    lp_w = 310
+    draw.rounded_rectangle([vp2_x + 10, split_y, vp2_x + 10 + lp_w, split_y + split_h], radius=8, fill=(255, 255, 255), outline=BORDER_LIGHT, width=1)
+    
+    # 4 Analysis Tabs
+    tabs = ["기본정보", "자연환경", "토지건물", "도시계획"]
+    tw = lp_w // 4
+    for t_idx, t_name in enumerate(tabs):
+        tx = vp2_x + 10 + t_idx * tw
+        is_t_active = (t_idx == 0)
+        draw.text((tx + tw//2, split_y + 18), t_name, font=get_font(10.5, 'bold' if is_t_active else 'regular'), fill=BRAND_GREEN if is_t_active else TEXT_LIGHT_SUB, anchor='mm')
+        if is_t_active:
+            draw.rectangle([tx + 4, split_y + 30, tx + tw - 4, split_y + 32], fill=BRAND_GREEN)
+            
+    # Chips Row
+    chips = ["지목현황", "소유현황", "공시지가"]
+    cx_cur = vp2_x + 22
+    for c_idx, ch in enumerate(chips):
+        draw_pill_badge(draw, left_x=cx_cur, cy=split_y + 52, text=ch, font=get_font(9.5, 'bold'), theme='green' if c_idx==0 else 'gray', pad_x=8, height=20)
+        cx_cur += 75
+        
+    # Table Wireframe Rows
+    draw.rounded_rectangle([vp2_x + 20, split_y + 75, vp2_x + 10 + lp_w - 10, split_y + 175], radius=6, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+    draw.text((vp2_x + 30, split_y + 92), "구분: 대 (171.9㎡ / 82.5%)", font=get_font(11, 'bold'), fill=TEXT_LIGHT_MAIN)
+    draw.text((vp2_x + 30, split_y + 114), "소유: 개인 (100% 단독 소유)", font=get_font(10.5, 'regular'), fill=TEXT_LIGHT_SUB)
+    draw.text((vp2_x + 30, split_y + 134), "공시지가: 4,857,000원/㎡", font=get_font(10.5, 'regular'), fill=TEXT_LIGHT_SUB)
+    draw.text((vp2_x + 30, split_y + 154), "용도지역: 제2종일반주거지역", font=get_font(10.5, 'regular'), fill=BRAND_GREEN)
+    
+    # Secondary Box (제외면적 필터)
+    draw.rounded_rectangle([vp2_x + 20, split_y + 190, vp2_x + 10 + lp_w - 10, split_y + 280], radius=6, fill=(255, 241, 242), outline=(254, 205, 211), width=1)
+    draw.text((vp2_x + 30, split_y + 208), "⚠️ 인허가 제외면적 필터링", font=get_font(11, 'bold'), fill=(225, 29, 72))
+    draw.text((vp2_x + 30, split_y + 230), "• 건축 한계선 이격거리: 0㎡", font=get_font(10, 'regular'), fill=TEXT_LIGHT_SUB)
+    draw.text((vp2_x + 30, split_y + 248), "• 실제 개발 가용면적: 750㎡ (100%)", font=get_font(10, 'bold'), fill=BRAND_DARK)
+    
+    # Left Bottom Actions
+    draw.rounded_rectangle([vp2_x + 20, split_y + split_h - 45, vp2_x + 110, split_y + split_h - 15], radius=6, fill=(241, 245, 249))
+    draw.text((vp2_x + 65, split_y + split_h - 30), "이전", font=get_font(11, 'bold'), fill=TEXT_LIGHT_SUB, anchor='mm')
+    draw.rounded_rectangle([vp2_x + 120, split_y + split_h - 45, vp2_x + 10 + lp_w - 10, split_y + split_h - 15], radius=6, fill=BRAND_GREEN)
+    draw.text((vp2_x + 205, split_y + split_h - 30), "다음 단계 (시설배치) ➔", font=get_font(11, 'bold'), fill=(255, 255, 255), anchor='mm')
+    
+    # Right GIS Canvas Wireframe (w=440)
+    rp_x = vp2_x + 10 + lp_w + 10
+    rp_w = vp2_w - lp_w - 30
+    draw.rounded_rectangle([rp_x, split_y, rp_x + rp_w, split_y + split_h], radius=8, fill=(226, 232, 240), outline=BORDER_LIGHT, width=1)
+    
+    # Map Layer Buttons
+    draw.rounded_rectangle([rp_x + rp_w - 130, split_y + 12, rp_x + rp_w - 12, split_y + 40], radius=6, fill=(255, 255, 255), outline=BORDER_LIGHT, width=1)
+    draw.text((rp_x + rp_w - 71, split_y + 26), "지적도 | 일반 | 위성", font=get_font(9.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mm')
+    
+    # Map Polygon Outline Vector Simulation
+    poly = [(rp_x + 100, split_y + 80), (rp_x + 280, split_y + 60), (rp_x + 340, split_y + 200), (rp_x + 260, split_y + 280), (rp_x + 80, split_y + 220)]
+    draw.polygon(poly, fill=(209, 250, 229), outline=BRAND_GREEN)
+    draw.text((rp_x + 210, split_y + 160), "대상지 750㎡", font=get_font(13, 'bold'), fill=BRAND_DARK, anchor='mm')
+    draw.text((rp_x + 210, split_y + 182), "가용률 100%", font=get_font(10.5, 'bold'), fill=BRAND_GREEN, anchor='mm')
+    
+    # Map Floating Zoom Controls
+    draw.rounded_rectangle([rp_x + rp_w - 40, split_y + split_h - 85, rp_x + rp_w - 12, split_y + split_h - 15], radius=6, fill=(255, 255, 255), outline=BORDER_LIGHT, width=1)
+    draw.text((rp_x + rp_w - 26, split_y + split_h - 68), "+", font=get_font(14, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mm')
+    draw.line([(rp_x + rp_w - 35, split_y + split_h - 50), (rp_x + rp_w - 17, split_y + split_h - 50)], fill=BORDER_LIGHT, width=1)
+    draw.text((rp_x + rp_w - 26, split_y + split_h - 32), "-", font=get_font(14, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mm')
 
     draw_slide_footer(draw, 6, 12, dark_mode=False)
     out_path = os.path.join(OUT_DIR, "slide_06.png")
     img.save(out_path, quality=95)
     print(f"Generated: {out_path}")
-
-# -------------------------------------------------------------
-# SLIDE 07: CORE FEATURE · STEP 1 · LAND ANALYSIS & FEASIBILITY REPORT
-# -------------------------------------------------------------
 def make_slide_07():
     img = Image.new('RGB', (W, H), BG_LIGHT)
     draw = ImageDraw.Draw(img)

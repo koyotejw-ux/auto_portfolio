@@ -280,7 +280,7 @@ def make_slide_11():
     
     draw_browser_mockup(img, rep_asset, x=rep_x, y=rep_y, w=tot_rep_w, h=target_rep_h, title="SIMULATION VALUATION REPORT (FULL)", url="https://farmingsys.io/report/valuation-summary.pdf")
 
-    draw_slide_footer(draw, 11, 13, dark_mode=False)
+    draw_slide_footer(draw, 11, 12, dark_mode=False)
     out_path = os.path.join(OUT_DIR, "slide_11.png")
     img.save(out_path, quality=95)
     print(f"Generated: {out_path}")
@@ -288,176 +288,124 @@ def make_slide_11():
 # -------------------------------------------------------------
 # SLIDE 12: CORE FEATURE · SIMULATION ARCHIVE & HISTORY (Figma UI 실물)
 # -------------------------------------------------------------
+# -------------------------------------------------------------
+# SLIDE 12: SIMULATION ARCHIVE & PROJECT RETROSPECTIVE (AIA+ Style STAR)
+# -------------------------------------------------------------
 def make_slide_12():
     img = Image.new('RGB', (W, H), BG_LIGHT)
     draw = ImageDraw.Draw(img)
     draw_slide_header(
         draw, 12, 
-        "SIMULATION ARCHIVE", 
-        "Simulation History | ", 
-        "시뮬레이션 내역 조회 데스크톱 및 모바일 화면 (Figma UI 실물)", 
-        "피그마 공식 UI 원본: [1] 데스크톱 시뮬레이션명·장소·면적·작물·조성비·NPV·IRR·회수기간 데이터 그리드(1024x576)  |  [2] 모바일 내역 카드 뷰", 
-        right_badge=("OFFICIAL FIGMA UI", "green")
+        "ARCHIVE & RETROSPECTIVE", 
+        "Project Retrospective | ", 
+        "시뮬레이션 내역 관리 실물 화면 및 STAR 기법 성과 회고", 
+        "피그마 공식 시뮬레이션 내역 조회(데스크톱 그리드 + 모바일 카드) 실물 탑재 및 인허가 90% 단축 시니어 UX 전략 기술 회고", 
+        right_badge=("PROJECT RETROSPECTIVE", "green")
     )
     
-    card_y = 215
-    card_h = 745
-    
-    # 3-Zone Architecture:
-    # Zone 1 (Left Card, w=440, x=80): Core Specs & Project Archive Management
-    # Zone 2 (Middle Card, w=840, x=540): Desktop Simulation History Data Grid (1024x576)
-    # Zone 3 (Right Card, w=440, x=1400): Mobile Simulation History Card View (420x1024)
+    # 2-Tier Architecture:
+    # Tier 1 (Top Half, y=215, h=395): Figma Simulation History & Archive UI (Desktop w=1080 + Mobile w=600)
+    # Tier 2 (Bottom Half, y=625, h=335): 4 Quantitative Metrics + STAR Senior UX Retrospective
     
     # =========================================================================
-    # ZONE 1: LEFT SPECS CARD (w=440, x=80)
+    # TIER 1: SIMULATION ARCHIVE & HISTORY (TOP HALF, y=215, h=395)
     # =========================================================================
-    lx, lw = 80, 440
-    draw.rounded_rectangle([lx, card_y, lx + lw, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, left_x=lx + 25, cy=card_y + 35, text="SIMULATION ARCHIVE & AUDIT", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=24)
-    draw.text((lx + 25, card_y + 68), "시뮬레이션 내역 관리 UI", font=get_font(18, 'bold'), fill=TEXT_LIGHT_MAIN)
-    draw.text((lx + 25, card_y + 92), "진행 프로젝트 전수 보관 & 다면 재무 지표 즉시 비교", font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB)
-
-    specs = [
-        ("01. 다차원 재무 지표 한눈에 비교", "시뮬레이션명, 장소, 총면적(790㎡), 품목(딸기·버터헤드), 총 조성비(2.89억), NPV, IRR, 투자회수기간(3년)을 단일 테이블에서 대조"),
-        ("02. 실시간 검색 & 스마트 페이징", "지번, 대상지명, 작물명 키워드 검색 인풋 및 10개 단위 페이지네이션을 지원하여 수백 건의 시뮬레이션 이력 초고속 탐색"),
-        ("03. 모바일 최적화 반응형 카드 리스트", "모바일 화면에서는 복잡한 8컬럼 테이블을 세로형 요약 카드로 재구성하여 현장 실사 중에도 스마트폰으로 이전 분석 데이터 원터치 열람")
-    ]
-    cy = card_y + 118
-    for title, desc in specs:
-        draw.rounded_rectangle([lx + 25, cy, lx + lw - 25, cy + 130], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-        draw.text((lx + 40, cy + 22), title, font=get_font(13.5, 'bold'), fill=BRAND_GREEN)
-        lines = wrap_text(desc, get_font(11, 'regular'), lw - 70, draw)
-        dy = cy + 46
-        for l in lines:
-            draw.text((lx + 40, dy), l, font=get_font(11, 'regular'), fill=TEXT_LIGHT_SUB)
-            dy += 18
-        cy += 144
-
-    # Bottom Key Metric Callout in Left Card
-    draw.rounded_rectangle([lx + 25, card_y + 565, lx + lw - 25, card_y + 715], radius=12, fill=(236, 253, 245), outline=(167, 243, 208), width=1)
-    draw.text((lx + 40, card_y + 586), "💡 지속적 프로젝트 자산화 가치", font=get_font(12.5, 'bold'), fill=BRAND_DARK)
-    val_desc = "단발성 시뮬레이션으로 끝나지 않고, 토지 매수 및 개발 조건 변경 시 과거 분석 프로젝트를 즉시 재호출·수정하여 다자간(토지주-시공사-금융기관) 의사결정 속도를 극대화합니다."
-    lines_val = wrap_text(val_desc, get_font(10.5, 'regular'), lw - 70, draw)
-    vy = card_y + 610
-    for l in lines_val:
-        draw.text((lx + 40, vy), l, font=get_font(10.5, 'regular'), fill=TEXT_LIGHT_MAIN)
-        vy += 17
-
-    # =========================================================================
-    # ZONE 2: DESKTOP SIMULATION HISTORY BROWSER (w=840, x=540)
-    # =========================================================================
-    m1_x, m1_w = 540, 840
-    draw.rounded_rectangle([m1_x, card_y, m1_x + m1_w, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, left_x=m1_x + 25, cy=card_y + 35, text="DESKTOP VIEW (1920px)", font=get_font(10.5, 'bold'), theme='blue', pad_x=12, height=24)
-    draw.text((m1_x + 215, card_y + 35), "피그마 공식 데스크톱 화면 (시뮬레이션 내역 조회 데이터 그리드)", font=get_font(13, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
+    t1_y = 215
+    t1_h = 395
     
-    asset1 = os.path.join(ASSETS_DIR, "figma_simulation_history_desktop.png")
-    im1 = Image.open(asset1)
-    vp1_w = m1_w - 40 - 4
-    vp1_h = int(vp1_w * (im1.height / im1.width))
-    tot1_h = 36 + 2 + vp1_h
-    b1_y = card_y + 75 + (card_h - 95 - tot1_h) // 2
-    draw_browser_mockup(img, asset1, x=m1_x + 20, y=b1_y, w=m1_w - 40, h=tot1_h, title="FARMINGSYS ENTERPRISE · SIMULATION HISTORY & ARCHIVE (DESKTOP)", url="https://farmingsys.io/app/simulation-history")
-
-    # =========================================================================
-    # ZONE 3: MOBILE SIMULATION HISTORY PHONE MOCKUP (w=440, x=1400)
-    # =========================================================================
-    m2_x, m2_w = 1400, 440
-    draw.rounded_rectangle([m2_x, card_y, m2_x + m2_w, card_y + card_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-    draw_pill_badge(draw, left_x=m2_x + 25, cy=card_y + 35, text="MOBILE VIEW (390px)", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=24)
-    draw.text((m2_x + 195, card_y + 35), "시뮬레이션 내역 모바일 UI", font=get_font(13, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
+    # Left Box: Desktop Data Grid Mockup (w=1120, x=100)
+    d_x, d_w = 100, 1120
+    draw.rounded_rectangle([d_x, t1_y, d_x + d_w, t1_y + t1_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
+    draw_pill_badge(draw, left_x=d_x + 25, cy=t1_y + 30, text="SIMULATION ARCHIVE · DESKTOP GRID", font=get_font(10, 'bold'), theme='blue', pad_x=10, height=22)
+    draw.text((d_x + 285, t1_y + 30), "시뮬레이션 내역 조회 데이터 그리드 (Figma 실물)", font=get_font(12.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
     
+    desk_asset = os.path.join(ASSETS_DIR, "figma_simulation_history_desktop.png")
+    desk_im = Image.open(desk_asset)
+    desk_vp_w = d_w - 40 - 4
+    desk_vp_h = int(desk_vp_w * (desk_im.height / desk_im.width))
+    desk_tot_h = 36 + 2 + desk_vp_h
+    desk_y = t1_y + 55
+    draw_browser_mockup(img, desk_asset, x=d_x + 20, y=desk_y, w=d_w - 40, h=desk_tot_h, title="FARMINGSYS ENTERPRISE · SIMULATION HISTORY & ARCHIVE (1024x576)", url="https://farmingsys.io/app/simulation-history")
+    
+    # Right Box: Mobile History Card Mockup + Key Highlights (w=580, x=1240)
+    m_x, m_w = 1240, 580
+    draw.rounded_rectangle([m_x, t1_y, m_x + m_w, t1_y + t1_h], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
+    draw_pill_badge(draw, left_x=m_x + 25, cy=t1_y + 30, text="MOBILE VIEW", font=get_font(10, 'bold'), theme='green', pad_x=10, height=22)
+    draw.text((m_x + 145, t1_y + 30), "모바일 내역 카드 뷰 (Figma 실물)", font=get_font(12.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
+    
+    # Phone mockup positioned inside right box
     mob_asset = os.path.join(ASSETS_DIR, "figma_simulation_history_mobile.png")
-    draw_phone_mockup(img, mob_asset, cx=m2_x + m2_w//2, cy=card_y + 75 + (card_h - 95)//2, target_h=640, bezel=7, radius=28)
+    draw_phone_mockup(img, mob_asset, cx=m_x + 120, cy=t1_y + 225, target_h=320, bezel=5, radius=18)
+    
+    # Side Specs in Right Box
+    sp_x = m_x + 230
+    sp_w = m_w - 250
+    specs_h = [
+        ("01. 다면 재무 지표 즉시 대조", "총면적(790㎡), 품목(딸기·버터헤드), 총 조성비(2.89억), 회수기간(3년) 단일 행 대조"),
+        ("02. 실시간 검색 & 스마트 페이징", "지번·작물명 키워드 검색 인풋 및 10개 단위 페이지네이션"),
+        ("03. 프로젝트 지속적 자산화", "토지 매수 조건 변경 시 이전 시뮬레이션을 즉시 재호출·수정 지원")
+    ]
+    sy_cur = t1_y + 70
+    for s_title, s_desc in specs_h:
+        draw.rounded_rectangle([sp_x, sy_cur, sp_x + sp_w, sy_cur + 92], radius=10, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+        draw.text((sp_x + 14, sy_cur + 16), s_title, font=get_font(11.5, 'bold'), fill=BRAND_GREEN)
+        lines = wrap_text(s_desc, get_font(10.5, 'regular'), sp_w - 28, draw)
+        ly = sy_cur + 38
+        for l in lines:
+            draw.text((sp_x + 14, ly), l, font=get_font(10.5, 'regular'), fill=TEXT_LIGHT_SUB)
+            ly += 16
+        sy_cur += 102
 
-    draw_slide_footer(draw, 12, 13, dark_mode=False)
+    # =========================================================================
+    # TIER 2: OUTCOMES & STAR RETROSPECTIVE (BOTTOM HALF, y=625, h=335)
+    # =========================================================================
+    t2_y = 625
+    t2_h = 335
+    
+    # 4 Quantitative Metrics along top of Tier 2
+    metrics = [
+        ("100+", "분석 가능 토지 규제 조건", "국토계획법 등 100여 개 공공 규제 자동 매칭"),
+        ("90%", "분석 소요 시간 단축", "기존 14일 수작업 조사를 3~5초로 단축"),
+        ("3~5s", "원터치 시뮬레이션 도출", "지번 입력 즉시 시설 구획 및 공사비 산출"),
+        ("40%", "의사결정 정확도 향상", "정량 데이터 기반 사전 투자 리스크 차단")
+    ]
+    mw = 310
+    for idx, (m_val, m_title, m_desc) in enumerate(metrics):
+        mx = 100 + idx * (mw + 20)
+        draw.rounded_rectangle([mx, t2_y, mx + mw, t2_y + 85], radius=12, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
+        draw.text((mx + 18, t2_y + 14), m_val, font=get_num_font(26, 'black'), fill=BRAND_GREEN if idx==0 else (15, 23, 42))
+        draw.text((mx + 18, t2_y + 48), m_title, font=get_font(12, 'bold'), fill=TEXT_LIGHT_MAIN)
+        draw.text((mx + 18, t2_y + 66), m_desc, font=get_font(9.5, 'regular'), fill=TEXT_LIGHT_SUB)
+
+    # STAR Method Senior UX Retrospective Box (y = t2_y + 100, h = 230)
+    star_y = t2_y + 100
+    star_w = 1720
+    star_h = 235
+    draw.rounded_rectangle([100, star_y, 100 + star_w, star_y + star_h], radius=14, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+    
+    draw_pill_badge(draw, left_x=125, cy=star_y + 24, text="SENIOR UX STRATEGY RETROSPECTIVE (STAR)", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=22)
+    draw.text((125, star_y + 54), "공간 GIS와 금융 데이터가 융합된 복잡계를 직관적 디지털 경험으로 전환한 여정", font=get_font(16, 'bold'), fill=TEXT_LIGHT_MAIN)
+    
+    star_items = [
+        ("Situation (상황)", "공간 지적도, 수많은 지자체 조례, 복잡한 인허가 법률, 대규모 자금 조달이 얽혀 있어 정보 비대칭이 극심하고 비전문가 토지주의 진입 장벽이 높았습니다."),
+        ("Task (과제)", "복잡한 법률·규제 데이터를 학습 없이 이해할 수 있는 단일 워크플로우를 구축하고, 대상지 선택부터 경제성 타당성 보고서 출력까지 원스톱으로 지원해야 했습니다."),
+        ("Action (실행)", "좌측 컨트롤 패널과 우측 인터랙티브 GIS의 듀얼 스플릿 뷰를 설계하고, 12대 공공 데이터를 3단계 계층으로 정제하여 개발 불가 구역을 명확히 시각화했습니다."),
+        ("Result (성과)", "기존 2주 소요되던 토지 타당성 분석 기간을 3~5초로 90% 단축했으며, 토지주-개발사-투자사 간 신뢰 기반 협업 플랫폼을 성공적으로 완성했습니다.")
+    ]
+    
+    # 4 Columns for STAR
+    sc_w = (star_w - 60 - 3 * 20) // 4
+    for s_idx, (s_tag, s_text) in enumerate(star_items):
+        sc_x = 125 + s_idx * (sc_w + 20)
+        draw.rounded_rectangle([sc_x, star_y + 75, sc_x + sc_w, star_y + star_h - 18], radius=10, fill=(255, 255, 255), outline=BORDER_LIGHT, width=1)
+        draw.text((sc_x + 14, star_y + 90), s_tag, font=get_font(12, 'bold'), fill=BRAND_GREEN)
+        lines = wrap_text(s_text, get_font(10.5, 'regular'), sc_w - 28, draw)
+        ly = star_y + 115
+        for l in lines:
+            draw.text((sc_x + 14, ly), l, font=get_font(10.5, 'regular'), fill=TEXT_LIGHT_SUB)
+            ly += 16
+
+    draw_slide_footer(draw, 12, 12, dark_mode=False)
     out_path = os.path.join(OUT_DIR, "slide_12.png")
     img.save(out_path, quality=95)
     print(f"Generated: {out_path}")
-
-# -------------------------------------------------------------
-# SLIDE 13: OUTCOMES & RETROSPECTIVE (AIA+ Style Full Retrospective)
-# -------------------------------------------------------------
-def make_slide_13():
-    img = Image.new('RGB', (W, H), BG_LIGHT)
-    draw = ImageDraw.Draw(img)
-    draw_slide_header(
-        draw, 13, 
-        "OUTCOMES & RETROSPECTIVE", 
-        "Project Retrospective | ", 
-        "토지개발 플랫폼 성과 지표 및 STAR 기법 회고", 
-        "인허가 분석 시간 90% 단축과 100+ 규제 자동 매칭 달성, 200자 이상 시니어 UX 전략 기술 회고", 
-        right_badge=("PROJECT OUTCOMES", "green")
-    )
-    
-    metrics = [
-        {
-            "val": "100+",
-            "title": "분석 가능 토지 규제 조건",
-            "desc": "국토계획법, 산지관리법, 농지법 등 100여 개 공공 인허가 조건 및 행위 제한 자동 매칭"
-        },
-        {
-            "val": "90%",
-            "title": "분석 소요 시간 단축",
-            "desc": "기존 2주(14일) 이상 소요되던 복잡한 현장·서류 검토를 3~5초 내 실시간 자동 진단"
-        },
-        {
-            "val": "3~5s",
-            "title": "원터치 시뮬레이션 도출",
-            "desc": "지번 입력 즉시 최적 단지 구획, 스마트팜 모듈 및 시설 조성비 산출 자동화 완성"
-        },
-        {
-            "val": "40%",
-            "title": "의사결정 정확도 향상",
-            "desc": "정량적 데이터와 공공 지적도 기반의 타당성 검토를 통해 사업 투자 리스크 사전 차단"
-        }
-    ]
-    
-    m_y = 220
-    m_w = 412
-    m_h = 190
-    for i, m in enumerate(metrics):
-        mx = 100 + i * (m_w + 24)
-        draw.rounded_rectangle([mx, m_y, mx + m_w, m_y + m_h], radius=14, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
-        draw.text((mx + 25, m_y + 25), m["val"], font=get_num_font(34, 'black'), fill=BRAND_GREEN)
-        draw.text((mx + 25, m_y + 75), m["title"], font=get_font(16, 'bold'), fill=TEXT_LIGHT_MAIN)
-        lines = wrap_text(m["desc"], get_font(12, 'regular'), m_w - 50, draw)
-        ly = m_y + 110
-        for l in lines:
-            draw.text((mx + 25, ly), l, font=get_font(12, 'regular'), fill=TEXT_LIGHT_SUB)
-            ly += 20
-
-    r_y = 440
-    r_w = 1720
-    r_h = 520
-    draw.rounded_rectangle([100, r_y, 100 + r_w, r_y + r_h], radius=16, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-    
-    draw_pill_badge(draw, left_x=135, cy=r_y + 40, text="SENIOR UX STRATEGY RETROSPECTIVE (STAR)", font=get_font(11, 'bold'), theme='green', pad_x=14, height=28)
-    draw.text((135, r_y + 90), "공간 GIS와 금융 데이터가 융합된 복잡계를 직관적 디지털 경험으로 전환한 여정", font=get_font(23, 'bold'), fill=TEXT_LIGHT_MAIN)
-    
-    star_items = [
-        ("Situation (상황 및 배경)", "토지개발은 공간 지적도, 수많은 지자체 조례, 복잡한 인허가 법률, 대규모 자금 조달이 얽혀 있어 정보 비대칭이 극심하고, 비전문가인 토지 소유주가 사업성을 검토하기에는 진입 장벽이 매우 높은 고위험 시장이었습니다."),
-        ("Task (해결 과제 및 목표)", "복잡한 법률·규제 데이터를 사용자가 학습하지 않고도 직관적으로 이해할 수 있는 단일 워크플로우를 구축하고, 대상지 선택부터 시설 배치, 작물별 수확량 예측, 경제성 타당성 보고서 출력까지 원스톱으로 지원하는 B2B 플랫폼 아키텍처를 완성해야 했습니다."),
-        ("Action (실행 전략 및 디자인 결정)", "좌측 420px 워크플로우 패널과 우측 인터랙티브 GIS 캔버스의 듀얼 스플릿 뷰를 설계하여 조작 편의성을 극대화했습니다. 12대 공공 데이터를 3단계 계층 구조로 정제하고, 개발 불가 구역을 붉은색 히트맵으로 시각화하여 리스크 인지율을 100% 확보했습니다. 또한 고대비 에머랄드 그린(#00C65F) 디자인 시스템을 구축하여 복잡한 재무 지표를 한눈에 파악하도록 최적화했습니다."),
-        ("Result & Learning (성과 및 회고)", "기존 2주 이상 소요되던 토지 타당성 분석 기간을 3~5초로 90% 이상 단축했으며, 토지주-개발사-투자사 간 신뢰 기반의 협업 허브를 구축했습니다. 방대한 전문 도메인 지식을 프로덕트 디자이너의 직관적 UX 아키텍처로 체계화함으로써 비즈니스 가치를 극대화한 프로젝트였습니다.")
-    ]
-    sy = r_y + 140
-    for tag, text in star_items:
-        draw.text((135, sy), tag, font=get_font(14, 'bold'), fill=BRAND_GREEN)
-        lines = wrap_text(text, get_font(13, 'regular'), r_w - 70, draw)
-        ly = sy + 25
-        for l in lines:
-            draw.text((135, ly), l, font=get_font(13, 'regular'), fill=TEXT_LIGHT_MAIN)
-            ly += 22
-        sy += 88
-
-    draw_slide_footer(draw, 13, 13, dark_mode=False)
-    out_path = os.path.join(OUT_DIR, "slide_13.png")
-    img.save(out_path, quality=95)
-    print(f"Generated: {out_path}")
-
-if __name__ == '__main__':
-    make_slide_09()
-    make_slide_10()
-    make_slide_11()
-    make_slide_12()
