@@ -19,7 +19,7 @@ BORDER_LIGHT = (226, 232, 240)
 TEXT_MAIN = (15, 23, 42)
 TEXT_SUB = (100, 116, 139)
 
-TOTAL_SLIDES = 10
+TOTAL_SLIDES = 14
 
 def get_font(size, weight='bold'):
     candidates = {
@@ -882,7 +882,316 @@ def make_slide_08():
     print("Generated slide_08.png")
 
 # -------------------------------------------------------------
-# SLIDE 09: DESIGN SYSTEM & UNIVERSAL UX TOKENS
+# SLIDE 09: LAUNCHER BOOT-TO-APP FLOW (7 Authentic Wallpad Screens)
+# -------------------------------------------------------------
+def make_slide_09_launcher_flow():
+    img = Image.new('RGB', (W, H), BG_LIGHT)
+    draw = ImageDraw.Draw(img)
+    draw_header(
+        draw, 9, "LAUNCHER EXECUTION FLOW",
+        "Initial Launcher Flow | ", "OS 부팅부터 런처 · 앱 서랍 · 화상 통화까지 7단계 실물 실행 플로우",
+        "전원 인가 후 HT 부팅 로고 → 초기 데이터 로딩 → 홈 런처 → 카테고리/전체 앱 서랍 → 앱 실행 스플래시 → 실시간 통화 UI",
+        right_badge=("7-SCREEN LIVE FLOW", "red")
+    )
+
+    def paste_screen(fn, x, y, w):
+        p = os.path.join(ASSETS_DIR, fn)
+        im = Image.open(p).convert('RGBA')
+        h = int(round(w * (im.height / im.width)))
+        res = im.resize((w, h), Image.Resampling.LANCZOS)
+        img.paste(res, (x, y), res)
+        return h
+
+    def draw_flow_arrow(x1, y, x2):
+        draw.line([(x1, y), (x2, y)], fill=HT_RED, width=3)
+        draw.polygon([(x2 - 8, y - 6), (x2 - 8, y + 6), (x2, y)], fill=HT_RED)
+
+    # TOP ROW: 4 Screens (01 Booting -> 02 Loading -> 03 Home Launcher -> 04 Category Drawer)
+    sw = 392
+    gap = 50
+    top_y = 228
+    top_items = [
+        ("01. OS 부팅 (Booting)", "HT 브랜드 로고 스플래시", "ui_01_booting.png", "red"),
+        ("02. 초기 데이터 로딩", "날씨·EMS 서버 동기화 스피너", "ui_02_loading.png", "dark"),
+        ("03. 홈 런처 (Home)", "위젯 대시보드 & 실시간 알림(1)", "ui_03_home_launcher.png", "red"),
+        ("04. 카테고리 앱 뷰", "소통·제어·정보 3행 분류", "ui_04_category_drawer.png", "blue")
+    ]
+    sh_top = 0
+    for idx, (pill_t, cap_t, fn, th) in enumerate(top_items):
+        sx = 100 + idx * (sw + gap)
+        sh_top = paste_screen(fn, sx, top_y, sw)
+        draw_pill(draw, cx=sx + sw // 2, cy=top_y + sh_top + 24, text=pill_t, font=get_font(10.5, 'bold'), theme=th, solid=(idx in [0, 2]), pad_x=12, height=24)
+        draw.text((sx + sw // 2, top_y + sh_top + 48), cap_t, font=get_font(11, 'medium'), fill=TEXT_SUB, anchor='mm')
+        if idx < 3:
+            draw_flow_arrow(sx + sw + 10, top_y + sh_top // 2, sx + sw + gap - 10)
+
+    # Subtle divider between Row 1 and Row 2
+    mid_y = top_y + sh_top + 74
+    draw.line([(100, mid_y), (1820, mid_y)], fill=BORDER_LIGHT, width=1)
+
+    # BOTTOM ROW: 3 Screens (05 Full App Drawer -> 06 App Splash -> 07 Live Call UI) + Right Summary Card
+    bot_y = mid_y + 24
+    bot_items = [
+        ("05. 전체 앱 서랍 (24종)", "컬러 코딩 전체 IoT 앱 그리드", "ui_05_app_drawer_all.png", "teal"),
+        ("06. 앱 실행 스플래시", "도메인 컬러 기반 즉각 전환 피드백", "ui_06_app_splash.png", "blue"),
+        ("07. 실시간 통화 · 문열기", "고화질 영상 · 대형 CTA · 볼륨 슬라이더", "ui_07_call_ui.png", "red")
+    ]
+    sh_bot = 0
+    for idx, (pill_t, cap_t, fn, th) in enumerate(bot_items):
+        sx = 100 + idx * (sw + gap)
+        sh_bot = paste_screen(fn, sx, bot_y, sw)
+        draw_pill(draw, cx=sx + sw // 2, cy=bot_y + sh_bot + 24, text=pill_t, font=get_font(10.5, 'bold'), theme=th, solid=(idx == 2), pad_x=12, height=24)
+        draw.text((sx + sw // 2, bot_y + sh_bot + 48), cap_t, font=get_font(11, 'medium'), fill=TEXT_SUB, anchor='mm')
+        if idx < 2:
+            draw_flow_arrow(sx + sw + 10, bot_y + sh_bot // 2, sx + sw + gap - 10)
+
+    # Bottom-Right Architecture Summary Card (aligned with 4th column of Top Row)
+    cx4 = 100 + 3 * (sw + gap)
+    draw.rounded_rectangle([cx4, bot_y, cx4 + sw, bot_y + sh_bot + 60], radius=16, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+    draw_pill(draw, left_x=cx4 + 22, cy=bot_y + 30, text="UX CONTINUITY", font=get_font(10, 'bold'), theme='red', pad_x=10, height=22)
+    draw.text((cx4 + 22, bot_y + 58), "끊김 없는 OS 부팅~실행 경험", font=get_font(15, 'bold'), fill=TEXT_MAIN)
+    pts = [
+        ("로딩 피드백", "초기 동기화 중에도 퀵 아이콘을 선노출해 대기 체감 시간 최소화"),
+        ("색상 코드 일관성", "소통(블루)·제어(오렌지)·정보(틸) 3색 체계를 서랍~스플래시~서브앱까지 유지"),
+        ("직관적 통화 UI", "대형 문열기·통화종료 CTA와 우측 볼륨바로 시니어 오작동 방지")
+    ]
+    py = bot_y + 96
+    for pt, pd in pts:
+        draw.rounded_rectangle([cx4 + 20, py, cx4 + sw - 20, py + 62], radius=10, fill=(255, 255, 255), outline=BORDER_LIGHT, width=1)
+        draw.text((cx4 + 34, py + 14), pt, font=get_font(11.5, 'bold'), fill=HT_RED)
+        lines = wrap_text(pd, get_font(10, 'regular'), sw - 68, draw)
+        dy = py + 34
+        for l in lines[:2]:
+            draw.text((cx4 + 34, dy), l, font=get_font(10, 'regular'), fill=TEXT_SUB)
+            dy += 15
+        py += 70
+
+    draw_footer(draw, 9)
+    img.save(os.path.join(OUT_DIR, "slide_09.png"), quality=95)
+    print("Generated slide_09.png")
+
+# -------------------------------------------------------------
+# SLIDE 10: SYSTEM COMMON BAR & BACKGROUND CHANGE
+# -------------------------------------------------------------
+def make_slide_10_systembar_bg():
+    img = Image.new('RGB', (W, H), BG_LIGHT)
+    draw = ImageDraw.Draw(img)
+    draw_header(
+        draw, 10, "SYSTEM BAR & PERSONALIZATION",
+        "System Common Bar & Background | ", "전 화면 공통 시스템바 · 실시간 알림 및 배경화면 커스텀",
+        "어느 화면에서나 즉시 제어 가능한 공통 네비게이션·알림·디바이스 상태바와 사용자 취향에 맞춘 배경화면 전환 기능",
+        right_badge=("OS SYSTEM UX", "red")
+    )
+
+    cy, ch = 215, 745
+    # LEFT ZONE: SYSTEM COMMON BAR (x=100, w=880)
+    lx, lw = 100, 880
+    draw.rounded_rectangle([lx, cy, lx + lw, cy + ch], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
+    bw_l = draw_pill(draw, left_x=lx + 26, cy=cy + 34, text="SYSTEM COMMON BAR", font=get_font(10, 'bold'), theme='red', pad_x=10, height=24)
+    draw.text((lx + 26 + bw_l + 12, cy + 34), "네비게이션 · 통합 알림 히스토리 · 누수 경고 팝업 · 디바이스 상태", font=get_font(12.5, 'bold'), fill=TEXT_MAIN, anchor='lm')
+
+    sb_src = Image.open(os.path.join(ASSETS_DIR, "ui_08_system_common_bar.png")).convert('RGBA')
+    sw0, sh0 = sb_src.size  # 586 x 1024
+
+    # 1) Top Bar 4-State Diagram crop (y=108..212)
+    bar_crop = sb_src.crop((120, 108, 520, 212))
+    bw1 = lw - 52
+    bh1 = int(round(bw1 * (bar_crop.height / bar_crop.width)))
+    if bh1 > 195:
+        bh1 = 195
+        bw1 = int(round(bh1 * (bar_crop.width / bar_crop.height)))
+    bar_res = bar_crop.resize((bw1, bh1), Image.Resampling.LANCZOS)
+    img.paste(bar_res, (lx + (lw - bw1) // 2, cy + 62), bar_res)
+
+    # 2) Two real Notification screens side-by-side (Notification History & Leak Popup)
+    # History tablet: y=355..575, Popup tablet: y=602..825
+    hist_crop = sb_src.crop((115, 355, 470, 575))
+    pop_crop = sb_src.crop((115, 602, 470, 825))
+    tw_s = 398
+    th_s = int(round(tw_s * (hist_crop.height / hist_crop.width)))
+    sy2 = cy + 278
+    img.paste(hist_crop.resize((tw_s, th_s), Image.Resampling.LANCZOS), (lx + 28, sy2))
+    img.paste(pop_crop.resize((tw_s, th_s), Image.Resampling.LANCZOS), (lx + 28 + tw_s + 28, sy2))
+
+    draw_pill(draw, cx=lx + 28 + tw_s // 2, cy=sy2 + th_s + 22, text="알림 히스토리 드로어 (전기차·우편·수도)", font=get_font(10, 'bold'), theme='blue', pad_x=10, height=22)
+    draw_pill(draw, cx=lx + 28 + tw_s + 28 + tw_s // 2, cy=sy2 + th_s + 22, text="긴급 안전 알림 팝업 (누수 감지 경고)", font=get_font(10, 'bold'), theme='red', pad_x=10, height=22)
+
+    # 3) Bottom Device State Strip (crop icon bar cleanly + render razor-sharp labels)
+    dev_crop = sb_src.crop((128, 922, 458, 944))
+    dw3 = lw - 64
+    dh3 = 46
+    dy3 = cy + ch - 84
+    draw.text((lx + 28, dy3 - 26), "DEVICE STATE · 카메라 & 네트워크 실시간 6종 상태 표시", font=get_font(10.5, 'bold'), fill=TEXT_SUB)
+    img.paste(dev_crop.resize((dw3, dh3), Image.Resampling.LANCZOS), (lx + 32, dy3))
+    dev_labels = ["카메라 에러", "카메라 켜짐", "카메라 꺼짐", "네트워크 에러", "네트워크 켜짐", "네트워크 꺼짐"]
+    dl_w = dw3 // 6
+    for di, dl in enumerate(dev_labels):
+        draw.text((lx + 32 + di * dl_w + dl_w // 2, dy3 + dh3 + 16), dl, font=get_font(10, 'bold'), fill=TEXT_MAIN, anchor='mm')
+
+    # RIGHT ZONE: BACKGROUND CHANGE (x=1000, w=820)
+    rx, rw = 1000, 820
+    draw.rounded_rectangle([rx, cy, rx + rw, cy + ch], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
+    bw_r = draw_pill(draw, left_x=rx + 26, cy=cy + 34, text="BACKGROUND CHANGE", font=get_font(10, 'bold'), theme='blue', pad_x=10, height=24)
+    draw.text((rx + 26 + bw_r + 12, cy + 34), "사용자 취향에 맞춘 3종 커스텀 테마 배경화면 전환", font=get_font(12.5, 'bold'), fill=TEXT_MAIN, anchor='lm')
+
+    bg_src = Image.open(os.path.join(ASSETS_DIR, "ui_09_background_change.jpg")).convert('RGBA')
+    # Crop the 3 background change screens area (y=195..985)
+    bg_crop = bg_src.crop((0, 195, bg_src.width, 985))
+    inner_w, inner_h = rw - 52, 540
+    scale = min(inner_w / bg_crop.width, inner_h / bg_crop.height)
+    bw_bg, bh_bg = int(bg_crop.width * scale), int(bg_crop.height * scale)
+    img.paste(bg_crop.resize((bw_bg, bh_bg), Image.Resampling.LANCZOS), (rx + (rw - bw_bg) // 2, cy + 72))
+
+    # Bottom explanation bar inside Right Zone
+    draw.rounded_rectangle([rx + 26, cy + ch - 112, rx + rw - 26, cy + ch - 24], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+    draw_pill(draw, left_x=rx + 42, cy=cy + ch - 84, text="PERSONALIZATION UX", font=get_font(9.5, 'bold'), theme='dark', pad_x=10, height=22)
+    bg_desc = "동일한 위젯·아이콘 레이아웃을 유지하면서도 다크 미니멀, 소프트 파스텔, 비비드 그라데이션 등 인테리어 분위기에 맞춰 배경화면을 자유롭게 변경할 수 있도록 설계했습니다."
+    lines = wrap_text(bg_desc, get_font(11.5, 'regular'), rw - 84, draw)
+    dy = cy + ch - 62
+    for l in lines[:2]:
+        draw.text((rx + 42, dy), l, font=get_font(11.5, 'regular'), fill=(51, 65, 85))
+        dy += 20
+
+    draw_footer(draw, 10)
+    img.save(os.path.join(OUT_DIR, "slide_10.png"), quality=95)
+    print("Generated slide_10.png")
+
+# -------------------------------------------------------------
+# SLIDE 11: APP CONNECTION & FUNCTIONS SCREEN SHOWCASE
+# -------------------------------------------------------------
+def make_slide_11_app_functions():
+    img = Image.new('RGB', (W, H), BG_LIGHT)
+    draw = ImageDraw.Draw(img)
+    draw_header(
+        draw, 11, "APP CONNECTION & FUNCTIONS",
+        "APP Connection & Functions | ", "이마주 2.0 · IoT 모바일 앱 양방향 연동 및 전체 상용 기능 화면",
+        "월패드 마이홈 계정을 중심으로 모바일 앱과 실시간 동기화되며, 소통·제어·정보 3대 도메인 컬러로 전체 기능 화면을 표준화했습니다.",
+        right_badge=("ECOSYSTEM & UI GALLERY", "red")
+    )
+
+    cy, ch = 215, 745
+    # LEFT ZONE: APP CONNECTION (x=100, w=760)
+    lx, lw = 100, 760
+    draw.rounded_rectangle([lx, cy, lx + lw, cy + ch], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
+    bw_l = draw_pill(draw, left_x=lx + 26, cy=cy + 34, text="APP CONNECTION", font=get_font(10, 'bold'), theme='red', pad_x=10, height=24)
+    draw.text((lx + 26 + bw_l + 12, cy + 34), "월패드 마이홈 ↔ 이마주 2.0 & IoT 앱 계정 연동", font=get_font(12.5, 'bold'), fill=TEXT_MAIN, anchor='lm')
+
+    ac_src = Image.open(os.path.join(ASSETS_DIR, "ui_10_app_connection.png")).convert('RGBA')
+    ac_crop = ac_src.crop((30, 102, ac_src.width - 20, 960))
+    aw_max, ah_max = lw - 52, ch - 165
+    sc = min(aw_max / ac_crop.width, ah_max / ac_crop.height)
+    tw_a, th_a = int(ac_crop.width * sc), int(ac_crop.height * sc)
+    img.paste(ac_crop.resize((tw_a, th_a), Image.Resampling.LANCZOS), (lx + (lw - tw_a) // 2, cy + 64), ac_crop.resize((tw_a, th_a), Image.Resampling.LANCZOS))
+
+    draw.rounded_rectangle([lx + 26, cy + ch - 84, lx + lw - 26, cy + ch - 22], radius=12, fill=(255, 241, 244), outline=(254, 205, 211), width=1)
+    draw.text((lx + lw // 2, cy + ch - 53), "회원가입 → 월패드 마이홈 로그인 → 이마주 2.0 & IoT 모바일 앱 원격 제어 실시간 동기화", font=get_font(11.5, 'bold'), fill=HT_DARK, anchor='mm')
+
+    # RIGHT ZONE: FUNCTIONS SCREEN (3 COLOR-CODED DOMAIN STRIPS) (x=885, w=935)
+    rx, rw = 885, 935
+    draw.rounded_rectangle([rx, cy, rx + rw, cy + ch], radius=16, fill=(15, 23, 42), outline=(51, 65, 85), width=1)
+    bw_r = draw_pill(draw, left_x=rx + 26, cy=cy + 34, text="FUNCTIONS SCREEN", font=get_font(10, 'bold'), theme='red', solid=True, pad_x=10, height=24)
+    draw.text((rx + 26 + bw_r + 12, cy + 34), "소통(Blue) · 제어(Orange) · 정보(Teal) 전체 상용 기능 화면", font=get_font(13, 'bold'), fill=(248, 250, 252), anchor='lm')
+
+    fn_src = Image.open(os.path.join(ASSETS_DIR, "ui_11_functions_screen.jpg")).convert('RGB')
+    # Split tall showcase cleanly into 3 domain panels side-by-side!
+    strips = [
+        ("01. 소통 (Communication)", "세대현관·공동현관·통화·메모", (0, 50, fn_src.width, 315), (99, 102, 241)),
+        ("02. 제어 (Home Control)", "조명·환기·난방·대기전력·설정", (0, 318, fn_src.width, 655), (249, 115, 22)),
+        ("03. 정보 (Smart Info)", "에너지 통계·방문·택배·생활정보", (0, 658, fn_src.width, 1015), (20, 184, 166))
+    ]
+    cw_s = (rw - 52 - 32) // 3
+    for idx, (st, sd, box, col) in enumerate(strips):
+        sx = rx + 26 + idx * (cw_s + 16)
+        sy = cy + 72
+        crop = fn_src.crop(box)
+        target_h = 540
+        res = crop.resize((cw_s, target_h), Image.Resampling.LANCZOS)
+        mask = Image.new('L', (cw_s, target_h), 0)
+        ImageDraw.Draw(mask).rounded_rectangle([0, 0, cw_s, target_h], radius=12, fill=255)
+        img.paste(res, (sx, sy), mask)
+        draw.rounded_rectangle([sx, sy, sx + cw_s, sy + target_h], radius=12, outline=col, width=2)
+
+        # Domain caption underneath
+        draw.rounded_rectangle([sx, sy + target_h + 16, sx + cw_s, cy + ch - 22], radius=10, fill=(30, 41, 59), outline=(51, 65, 85), width=1)
+        draw.rounded_rectangle([sx + 14, sy + target_h + 30, sx + 22, sy + target_h + 52], radius=4, fill=col)
+        draw.text((sx + 32, sy + target_h + 41), st, font=get_font(12, 'bold'), fill=(255, 255, 255), anchor='lm')
+        draw.text((sx + 14, sy + target_h + 68), sd, font=get_font(10.5, 'regular'), fill=(148, 163, 184), anchor='lm')
+
+    draw_footer(draw, 11)
+    img.save(os.path.join(OUT_DIR, "slide_11.png"), quality=95)
+    print("Generated slide_11.png")
+
+# -------------------------------------------------------------
+# SLIDE 12: TEAM PROJECT · UPGRADE LAUNCHER (6 CUSTOM THEMES)
+# -------------------------------------------------------------
+def make_slide_12_upgrade_launcher():
+    img = Image.new('RGB', (W, H), BG_LIGHT)
+    draw = ImageDraw.Draw(img)
+    draw_header(
+        draw, 12, "TEAM PROJECT · UPGRADE LAUNCHER",
+        "Upgrade Launcher | ", "위젯부터 테마까지 사용자 커스텀 가능한 차세대 런처 고도화",
+        "다양한 입주민 니즈를 반영하기 위해 사용자·관리자 설정 IA, 커스터마이징 와이어프레임 및 6종 맞춤형 런처 테마를 제안했습니다.",
+        right_badge=("6-THEME CUSTOMIZER", "red")
+    )
+
+    cy, ch = 215, 745
+    up_src = Image.open(os.path.join(ASSETS_DIR, "ui_12_upgrade_launcher.jpg")).convert('RGB')
+    uw0, uh0 = up_src.size  # 568 x 1024
+
+    # LEFT ZONE: IA & SETTINGS WIREFRAME + STRATEGY (x=100, w=720)
+    lx, lw = 100, 720
+    draw.rounded_rectangle([lx, cy, lx + lw, cy + ch], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
+    bw_l = draw_pill(draw, left_x=lx + 26, cy=cy + 34, text="CUSTOMIZATION ARCHITECTURE", font=get_font(10, 'bold'), theme='dark', pad_x=10, height=24)
+    draw.text((lx + 26 + bw_l + 12, cy + 34), "사용자·관리자 설정 IA 및 테마·위젯 커스텀 와이어프레임", font=get_font(12, 'bold'), fill=TEXT_MAIN, anchor='lm')
+
+    # Crop IA + Wireframe (y=130..505)
+    ia_wf = up_src.crop((18, 130, uw0 - 18, 505))
+    tw_i = lw - 52
+    th_i = int(round(tw_i * (ia_wf.height / ia_wf.width)))
+    if th_i > 440:
+        th_i = 440
+        tw_i = int(round(th_i * (ia_wf.width / ia_wf.height)))
+    img.paste(ia_wf.resize((tw_i, th_i), Image.Resampling.LANCZOS), (lx + (lw - tw_i) // 2, cy + 68))
+
+    # Bottom 2-Col Upgrade Strategy Specs
+    sp_y = cy + 68 + th_i + 24
+    sp_h = cy + ch - sp_y - 24
+    scw = (lw - 52 - 16) // 2
+    up_specs = [
+        ("사용자 설정 (User)", "배경화면·앱모드·위젯(날씨/EMS)·테마·애니메이션까지 입주민이 직접 조합하는 모듈형 커스텀 런처"),
+        ("관리자 설정 (Admin)", "건설사·단지별 브랜드 아이덴티티에 맞춰 기본 배치 및 프리셋 테마를 원격 일괄 배포하는 관리자 모드")
+    ]
+    for idx, (ut, ud) in enumerate(up_specs):
+        ux = lx + 26 + idx * (scw + 16)
+        draw.rounded_rectangle([ux, sp_y, ux + scw, sp_y + sp_h], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+        draw.text((ux + 18, sp_y + 20), ut, font=get_font(13, 'bold'), fill=HT_RED if idx == 0 else HT_BLUE)
+        lines = wrap_text(ud, get_font(11, 'regular'), scw - 36, draw)
+        dy = sp_y + 48
+        for l in lines[:4]:
+            draw.text((ux + 18, dy), l, font=get_font(11, 'regular'), fill=TEXT_SUB)
+            dy += 19
+
+    # RIGHT ZONE: 6-THEME CUSTOM LAUNCHER SHOWCASE (x=845, w=975)
+    rx, rw = 845, 975
+    draw.rounded_rectangle([rx, cy, rx + rw, cy + ch], radius=16, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+    bw_r = draw_pill(draw, left_x=rx + 26, cy=cy + 34, text="6-THEME LAUNCHER GALLERY", font=get_font(10, 'bold'), theme='red', solid=True, pad_x=10, height=24)
+    draw.text((rx + 26 + bw_r + 12, cy + 34), "다크 미니멀 · 비비드 · 네이비 대시보드 · 라이트 일러스트 등 6종 테마 제안", font=get_font(12.5, 'bold'), fill=TEXT_MAIN, anchor='lm')
+
+    # Crop the 6 launcher mockups grid (y=515..985)
+    themes_crop = up_src.crop((24, 515, uw0 - 24, 985))
+    inner_w, inner_h = rw - 52, ch - 110
+    sc2 = min(inner_w / themes_crop.width, inner_h / themes_crop.height)
+    tw_t, th_t = int(themes_crop.width * sc2), int(themes_crop.height * sc2)
+    px_t = rx + (rw - tw_t) // 2
+    py_t = cy + 72 + (inner_h - th_t) // 2
+    img.paste(themes_crop.resize((tw_t, th_t), Image.Resampling.LANCZOS), (px_t, py_t))
+
+    draw_footer(draw, 12)
+    img.save(os.path.join(OUT_DIR, "slide_12.png"), quality=95)
+    print("Generated slide_12.png")
+
+# -------------------------------------------------------------
+# SLIDE 13: DESIGN SYSTEM & UNIVERSAL UX TOKENS
 # -------------------------------------------------------------
 def _draw_smarthome_icon(draw, cx, cy, kind, col):
     if kind == 'door':
@@ -912,11 +1221,11 @@ def _draw_smarthome_icon(draw, cx, cy, kind, col):
         draw.rounded_rectangle([cx - 10, cy - 6, cx + 6, cy + 5], radius=2, outline=col, width=2)
         draw.polygon([(cx + 6, cy - 3), (cx + 11, cy - 6), (cx + 11, cy + 4), (cx + 6, cy + 1)], outline=col, width=2)
 
-def make_slide_09():
+def make_slide_13():
     img = Image.new('RGB', (W, H), BG_LIGHT)
     draw = ImageDraw.Draw(img)
     draw_header(
-        draw, 9, "DESIGN SYSTEM · UNIVERSAL UX",
+        draw, 13, "DESIGN SYSTEM · UNIVERSAL UX",
         "Design System | ", "3세대 가족의 원거리 가독성을 보장하는 월패드 디자인 시스템",
         "어두운 거실·밝은 낮 환경 모두에서 시니어부터 청년까지 오작동 없이 제어하는 고대비 다크 서피스 및 아토믹 UI 토큰",
         right_badge=("HT CUSTOM UI KIT", "red")
@@ -1050,18 +1359,18 @@ def make_slide_09():
         draw.text((c3_x + 40, erg_y + 62), ed, font=get_font(10.5, 'regular'), fill=TEXT_SUB)
         erg_y += 104
 
-    draw_footer(draw, 9)
-    img.save(os.path.join(OUT_DIR, "slide_09.png"), quality=95)
-    print("Generated slide_09.png")
+    draw_footer(draw, 13)
+    img.save(os.path.join(OUT_DIR, "slide_13.png"), quality=95)
+    print("Generated slide_13.png")
 
 # -------------------------------------------------------------
-# SLIDE 10: BUSINESS IMPACT & STAR RETROSPECTIVE
+# SLIDE 14: BUSINESS IMPACT & STAR RETROSPECTIVE
 # -------------------------------------------------------------
-def make_slide_10():
+def make_slide_14():
     img = Image.new('RGB', (W, H), BG_LIGHT)
     draw = ImageDraw.Draw(img)
     draw_header(
-        draw, 10, "OUTCOMES & RETROSPECTIVE",
+        draw, 14, "OUTCOMES & RETROSPECTIVE",
         "Outcomes & STAR | ", "차세대 Android 월패드 라인업 안착 및 시니어 UX 회고",
         "기존 리눅스 월패드 대비 UX 혁신 성과(Before/After), 1군 건설사 적용 성과 지표 및 STAR 기법 기술 회고",
         right_badge=("PROJECT OUTCOMES", "red")
@@ -1137,14 +1446,16 @@ def make_slide_10():
             draw.text((sx + 18, ly), l, font=get_font(11, 'regular'), fill=TEXT_SUB)
             ly += 21
 
-    draw_footer(draw, 10)
-    img.save(os.path.join(OUT_DIR, "slide_10.png"), quality=95)
-    print("Generated slide_10.png")
+    draw_footer(draw, 14)
+    img.save(os.path.join(OUT_DIR, "slide_14.png"), quality=95)
+    print("Generated slide_14.png")
 
 if __name__ == '__main__':
     for fn in [
         make_slide_01, make_slide_02, make_slide_03, make_slide_04, make_slide_05,
-        make_slide_06, make_slide_07, make_slide_08, make_slide_09, make_slide_10
+        make_slide_06, make_slide_07, make_slide_08, make_slide_09_launcher_flow,
+        make_slide_10_systembar_bg, make_slide_11_app_functions, make_slide_12_upgrade_launcher,
+        make_slide_13, make_slide_14
     ]:
         fn()
     pdf_path = os.path.join(BASE_DIR, "HT_Android_Custom_Wallpad_Portfolio.pdf")
