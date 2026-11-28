@@ -3,7 +3,7 @@ from PIL import Image, ImageDraw
 from deck_common import *
 
 # -------------------------------------------------------------
-# SLIDE 09: STEP 2 · SMARTFARM FACILITY SIMULATION (Figma Screen 03)
+# SLIDE 09: STEP 2 · SMARTFARM FACILITY SIMULATION (Figma Screen sec_04)
 # -------------------------------------------------------------
 def make_slide_09():
     img = Image.new('RGB', (W, H), BG_LIGHT)
@@ -14,7 +14,7 @@ def make_slide_09():
         "Figma UI Architecture | ", 
         "STEP 2. 스마트 단지 설계 & 온실 모듈 최적 배치 화면 (Figma UI 원본)", 
         "피그마 공식 화면설계서 UI: 스마트 온실 규격 선택, 차량 교행 6m 도로 구획, 부대시설 배치 및 생산량 시뮬레이션", 
-        right_badge=("FIGMA UI SCREEN", "green")
+        right_badge=("OFFICIAL FIGMA SCREEN", "green")
     )
     
     lw = 460
@@ -22,7 +22,7 @@ def make_slide_09():
     ly = 220
     draw.rounded_rectangle([100, ly, 100 + lw, ly + lh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
     draw_pill_badge(draw, left_x=130, cy=ly + 35, text="STEP 2 · FACILITY DESIGNER", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=24)
-    draw.text((130, ly + 75), "스마트팜 온실 설계 UI", font=get_font(20, 'bold'), fill=TEXT_LIGHT_MAIN)
+    draw.text((130, ly + 75), "스마트 단지 설계 UI", font=get_font(20, 'bold'), fill=TEXT_LIGHT_MAIN)
 
     cards = [
         ("01. 온실 모듈 규격 최적화", "단동/연동형 비닐온실, 첨단 유리온실, 수직농장 등 작물별 최적 규격을 토지 경계선 내에 자동 정렬"),
@@ -40,10 +40,12 @@ def make_slide_09():
             dy += 22
         cy += 195
 
-    # Right: High-Res Real Desktop Browser Mockup with Step 2 Screen (screen_03_facility_simulation.png)
+    # Right: High-Res Real Desktop Browser Mockup with Authentic Figma Screen sec_04
     rx = 585
     rw = 1235
-    s_p = os.path.join(ASSETS_DIR, "screen_03_facility_simulation.png")
+    s_p = os.path.join(ASSETS_DIR, "figma_screen_sec_04.png")
+    if not os.path.exists(s_p):
+        s_p = os.path.join(ASSETS_DIR, "screen_03_facility_simulation.png")
     draw_browser_mockup(img, s_p, x=rx, y=ly, w=rw, h=lh, title="FARMINGSYS ENTERPRISE · STEP 2 FACILITY LAYOUT SIMULATOR", url="https://farmingsys.io/app/step-02-facility")
 
     draw_slide_footer(draw, 9, 12, dark_mode=False)
@@ -52,7 +54,7 @@ def make_slide_09():
     print(f"Generated: {out_path}")
 
 # -------------------------------------------------------------
-# SLIDE 10: STEP 3 · ECONOMIC VALUATION & CAPEX MODEL (Figma Screen 04)
+# SLIDE 10: STEP 3 · ECONOMIC VALUATION & CAPEX MODEL (Figma Screen sec_06/07)
 # -------------------------------------------------------------
 def make_slide_10():
     img = Image.new('RGB', (W, H), BG_LIGHT)
@@ -63,7 +65,7 @@ def make_slide_10():
         "Figma UI Architecture | ", 
         "STEP 3. 총사업비 산출 & CAPEX/OPEX 경제성 모델링 화면 (Figma UI 원본)", 
         "피그마 공식 화면설계서 UI: 토지매입비, ICT 온실 시공비, 연간 운영비, 10개년 현금흐름 및 투자 회수기간 자동 도출", 
-        right_badge=("FIGMA UI SCREEN", "green")
+        right_badge=("OFFICIAL FIGMA SCREEN", "green")
     )
     
     lw = 460
@@ -89,10 +91,12 @@ def make_slide_10():
             dy += 22
         cy += 195
 
-    # Right: High-Res Real Desktop Browser Mockup with Step 3 Screen (screen_04_economic_modeling.png)
+    # Right: High-Res Real Desktop Browser Mockup with Authentic Figma Screen sec_06
     rx = 585
     rw = 1235
-    s_p = os.path.join(ASSETS_DIR, "screen_04_economic_modeling.png")
+    s_p = os.path.join(ASSETS_DIR, "figma_screen_sec_06.png")
+    if not os.path.exists(s_p):
+        s_p = os.path.join(ASSETS_DIR, "screen_04_economic_modeling.png")
     draw_browser_mockup(img, s_p, x=rx, y=ly, w=rw, h=lh, title="FARMINGSYS ENTERPRISE · STEP 3 FINANCIAL VALUATION ENGINE", url="https://farmingsys.io/app/step-03-valuation")
 
     draw_slide_footer(draw, 10, 12, dark_mode=False)
@@ -101,7 +105,7 @@ def make_slide_10():
     print(f"Generated: {out_path}")
 
 # -------------------------------------------------------------
-# SLIDE 11: STEP 4 · VALUATION REPORT & FINANCING (Figma Screen 05)
+# SLIDE 11: STEP 4 · VALUATION REPORT & FINANCING (Figma Screen sec_08/09)
 # -------------------------------------------------------------
 def make_slide_11():
     img = Image.new('RGB', (W, H), BG_LIGHT)
@@ -112,7 +116,7 @@ def make_slide_11():
         "Figma UI Architecture | ", 
         "STEP 4. 사업 타당성 평가서 & 금융 표준 리포트 발급 화면 (Figma UI 원본)", 
         "피그마 공식 화면설계서 UI: 지적도 개요, 법적 적합도 요약, 배치 평면도, 재무 전망을 집약한 금융기관 심사용 20p PDF 보고서", 
-        right_badge=("FIGMA UI SCREEN", "green")
+        right_badge=("OFFICIAL FIGMA SCREEN", "green")
     )
     
     lw = 460
@@ -138,10 +142,12 @@ def make_slide_11():
             dy += 22
         cy += 195
 
-    # Right: High-Res Real Desktop Browser Mockup with Step 4 Screen (screen_05_valuation_report.png)
+    # Right: High-Res Real Desktop Browser Mockup with Authentic Figma Screen sec_08
     rx = 585
     rw = 1235
-    s_p = os.path.join(ASSETS_DIR, "screen_05_valuation_report.png")
+    s_p = os.path.join(ASSETS_DIR, "figma_screen_sec_08.png")
+    if not os.path.exists(s_p):
+        s_p = os.path.join(ASSETS_DIR, "screen_05_valuation_report.png")
     draw_browser_mockup(img, s_p, x=rx, y=ly, w=rw, h=lh, title="FARMINGSYS ENTERPRISE · STEP 4 VALUATION REPORT EXPORT", url="https://farmingsys.io/app/step-04-report")
 
     draw_slide_footer(draw, 11, 12, dark_mode=False)
