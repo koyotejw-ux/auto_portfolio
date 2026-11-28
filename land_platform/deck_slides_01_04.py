@@ -246,7 +246,8 @@ def make_slide_02():
         leg_y += 82
 
     draw.rounded_rectangle([rx + 25, t2_y + 455, rx + t2_w - 25, t2_y + 500], radius=8, fill=(236, 253, 245), outline=(167, 243, 208), width=1)
-    draw.text((rx + 40, t2_y + 477), "💡 리서치 결론: 분절된 4대 핵심 과정을 단일 SaaS 파이프라인으로 통합하는 것이 최우선 과제", font=get_font(12, 'bold'), fill=BRAND_DARK, anchor='lm')
+    bw_ins = draw_pill_badge(draw, left_x=rx + 38, cy=t2_y + 477, text="INSIGHT", font=get_font(9.5, 'bold'), theme='green', solid=True, pad_x=8, height=20)
+    draw.text((rx + 38 + bw_ins + 12, t2_y + 477), "리서치 결론: 분절된 4대 핵심 과정을 단일 SaaS 파이프라인으로 통합하는 것이 최우선 과제", font=get_font(11.5, 'bold'), fill=BRAND_DARK, anchor='lm')
 
     draw_slide_footer(draw, 2, 12, dark_mode=False)
     out_path = os.path.join(OUT_DIR, "slide_02.png")
@@ -282,7 +283,8 @@ def make_slide_03():
     
     draw.line([(c1_x + 30, cy + 165), (c1_x + card_w - 30, cy + 165)], fill=BORDER_LIGHT, width=1)
     
-    draw.text((c1_x + 30, cy + 195), "⚠️ 핵심 불편 사항 (Pain Points)", font=get_font(16, 'bold'), fill=(225, 29, 72))
+    draw.rounded_rectangle([c1_x + 30, cy + 195, c1_x + 36, cy + 217], radius=3, fill=(225, 29, 72))
+    draw.text((c1_x + 46, cy + 206), "핵심 불편 사항 (Pain Points)", font=get_font(15.5, 'bold'), fill=(225, 29, 72), anchor='lm')
     pains_1 = [
         ("고비용 컨설팅 의존", "개발 가능 여부 확인을 위해 외부 컨설팅에 의존하나 비용이 비싸고 회신이 느림"),
         ("수작업 공적장부 취합", "토지이용계획원, 지적도 등 정보를 기관별로 일일이 검색하고 수작업 정리하는 비효율"),
@@ -291,11 +293,13 @@ def make_slide_03():
     py = cy + 230
     for p_title, p_desc in pains_1:
         draw.rounded_rectangle([c1_x + 30, py, c1_x + card_w - 30, py + 62], radius=10, fill=(255, 241, 242), outline=(254, 205, 211), width=1)
-        draw.text((c1_x + 45, py + 18), "• " + p_title, font=get_font(13, 'bold'), fill=(159, 18, 57))
-        draw.text((c1_x + 45, py + 38), p_desc, font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_MAIN)
+        draw.ellipse([c1_x + 44, py + 17, c1_x + 51, py + 24], fill=(225, 29, 72))
+        draw.text((c1_x + 59, py + 20), p_title, font=get_font(13, 'bold'), fill=(159, 18, 57), anchor='lm')
+        draw.text((c1_x + 44, py + 40), p_desc, font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_MAIN)
         py += 72
         
-    draw.text((c1_x + 30, cy + 470), "💡 핵심 요구 가치 (User Needs)", font=get_font(16, 'bold'), fill=BRAND_GREEN)
+    draw.rounded_rectangle([c1_x + 30, cy + 470, c1_x + 36, cy + 492], radius=3, fill=BRAND_GREEN)
+    draw.text((c1_x + 46, cy + 481), "핵심 요구 가치 (User Needs)", font=get_font(15.5, 'bold'), fill=BRAND_GREEN, anchor='lm')
     needs_1 = [
         ("원스톱 지번 규제 분석", "지번 검색 한 번으로 복잡한 공적 규제와 인허가 가능 여부를 지도 위에 시각화"),
         ("자동 투자 타당성 도출", "토지 개발 적합도와 예상 수익률, 투자 회수 기간을 시스템이 원클릭 자동 산출"),
@@ -304,8 +308,9 @@ def make_slide_03():
     ny = cy + 505
     for n_title, n_desc in needs_1:
         draw.rounded_rectangle([c1_x + 30, ny, c1_x + card_w - 30, ny + 62], radius=10, fill=(240, 253, 244), outline=(187, 247, 208), width=1)
-        draw.text((c1_x + 45, ny + 18), "✔ " + n_title, font=get_font(13, 'bold'), fill=(6, 95, 70))
-        draw.text((c1_x + 45, ny + 38), n_desc, font=get_font(11.5, 'medium'), fill=TEXT_LIGHT_MAIN)
+        draw.ellipse([c1_x + 44, ny + 17, c1_x + 51, ny + 24], fill=BRAND_GREEN)
+        draw.text((c1_x + 59, ny + 20), n_title, font=get_font(13, 'bold'), fill=(6, 95, 70), anchor='lm')
+        draw.text((c1_x + 44, ny + 40), n_desc, font=get_font(11.5, 'medium'), fill=TEXT_LIGHT_MAIN)
         ny += 72
 
     # Persona 2: 박예진
@@ -318,7 +323,8 @@ def make_slide_03():
     
     draw.line([(c2_x + 30, cy + 165), (c2_x + card_w - 30, cy + 165)], fill=BORDER_LIGHT, width=1)
     
-    draw.text((c2_x + 30, cy + 195), "⚠️ 핵심 불편 사항 (Pain Points)", font=get_font(16, 'bold'), fill=(225, 29, 72))
+    draw.rounded_rectangle([c2_x + 30, cy + 195, c2_x + 36, cy + 217], radius=3, fill=(225, 29, 72))
+    draw.text((c2_x + 46, cy + 206), "핵심 불편 사항 (Pain Points)", font=get_font(15.5, 'bold'), fill=(225, 29, 72), anchor='lm')
     pains_2 = [
         ("입지 변수 파악 난항", "경사도, 진입로 너비, 용도지역 등 땅 선택 기초 단계부터 고려할 변수가 너무 많음"),
         ("전문 CAD 툴의 높은 장벽", "건축 설계 프로그램의 난이도가 높아 원하는 시설 배치를 시각적으로 검토 불가"),
@@ -327,11 +333,13 @@ def make_slide_03():
     py = cy + 230
     for p_title, p_desc in pains_2:
         draw.rounded_rectangle([c2_x + 30, py, c2_x + card_w - 30, py + 62], radius=10, fill=(255, 241, 242), outline=(254, 205, 211), width=1)
-        draw.text((c2_x + 45, py + 18), "• " + p_title, font=get_font(13, 'bold'), fill=(159, 18, 57))
-        draw.text((c2_x + 45, py + 38), p_desc, font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_MAIN)
+        draw.ellipse([c2_x + 44, py + 17, c2_x + 51, py + 24], fill=(225, 29, 72))
+        draw.text((c2_x + 59, py + 20), p_title, font=get_font(13, 'bold'), fill=(159, 18, 57), anchor='lm')
+        draw.text((c2_x + 44, py + 40), p_desc, font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_MAIN)
         py += 72
         
-    draw.text((c2_x + 30, cy + 470), "💡 핵심 요구 가치 (User Needs)", font=get_font(16, 'bold'), fill=(37, 99, 235))
+    draw.rounded_rectangle([c2_x + 30, cy + 470, c2_x + 36, cy + 492], radius=3, fill=(37, 99, 235))
+    draw.text((c2_x + 46, cy + 481), "핵심 요구 가치 (User Needs)", font=get_font(15.5, 'bold'), fill=(37, 99, 235), anchor='lm')
     needs_2 = [
         ("직관적 GIS 시설 배치", "웹 화면에서 지도 위 온실 규격과 시설을 드래그하여 최적으로 배치하는 툴"),
         ("작물 데이터베이스 연동", "딸기, 토마토 등 고부가가치 작물별 수확량과 표준 단가를 반영한 수익 시뮬레이션"),
@@ -340,8 +348,9 @@ def make_slide_03():
     ny = cy + 505
     for n_title, n_desc in needs_2:
         draw.rounded_rectangle([c2_x + 30, ny, c2_x + card_w - 30, ny + 62], radius=10, fill=(239, 246, 255), outline=(191, 219, 254), width=1)
-        draw.text((c2_x + 45, ny + 18), "✔ " + n_title, font=get_font(13, 'bold'), fill=(30, 64, 175))
-        draw.text((c2_x + 45, ny + 38), n_desc, font=get_font(11.5, 'medium'), fill=TEXT_LIGHT_MAIN)
+        draw.ellipse([c2_x + 44, ny + 17, c2_x + 51, ny + 24], fill=(37, 99, 235))
+        draw.text((c2_x + 59, ny + 20), n_title, font=get_font(13, 'bold'), fill=(30, 64, 175), anchor='lm')
+        draw.text((c2_x + 44, ny + 40), n_desc, font=get_font(11.5, 'medium'), fill=TEXT_LIGHT_MAIN)
         ny += 72
 
     draw_slide_footer(draw, 3, 12, dark_mode=False)
@@ -369,25 +378,25 @@ def make_slide_04():
     ly = 220
     draw.rounded_rectangle([100, ly, 100 + lw, ly + lh], radius=16, fill=CARD_LIGHT, outline=BORDER_LIGHT, width=1)
     
-    draw_pill_badge(draw, left_x=130, cy=ly + 32, text="6-STEP END-TO-END JOURNEY MAP", font=get_font(10.5, 'bold'), theme='green', pad_x=12, height=24)
-    draw.text((365, ly + 32), "사용자 관점의 단계별 행동, Pain Point 및 전환 기회(Opportunity)", font=get_font(13.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
+    bw_j = draw_pill_badge(draw, left_x=124, cy=ly + 32, text="6-STEP END-TO-END JOURNEY MAP", font=get_font(10, 'bold'), theme='green', pad_x=12, height=24)
+    draw.text((124 + bw_j + 14, ly + 32), "사용자 관점의 단계별 행동, Pain Point 및 전환 기회(Opportunity)", font=get_font(13, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
     
     cols = ["구분", "01. 인식", "02. 정보 탐색", "03. 토지 선택", "04. 규제 확인", "05. 설계 시도", "06. 타당성 평가"]
-    col_widths = [100, 155, 155, 155, 155, 155, 155]
+    col_widths = [110, 144, 144, 144, 144, 144, 144]
     
-    gx = 125
-    gy = ly + 65
+    gx = 124
+    gy = ly + 66
     
     cur_x = gx
     for idx, (c_name, c_w) in enumerate(zip(cols, col_widths)):
         fill_col = BRAND_GREEN if idx > 0 else (241, 245, 249)
-        draw.rounded_rectangle([cur_x, gy, cur_x + c_w, gy + 36], radius=6, fill=fill_col)
+        draw.rounded_rectangle([cur_x, gy, cur_x + c_w, gy + 38], radius=6, fill=fill_col)
         t_col = (255, 255, 255) if idx > 0 else TEXT_LIGHT_MAIN
-        draw.text((cur_x + c_w//2, gy + 18), c_name, font=get_font(12, 'bold'), fill=t_col, anchor='mm')
-        cur_x += c_w + 5
+        draw.text((cur_x + c_w//2, gy + 19), c_name, font=get_font(11.5, 'bold'), fill=t_col, anchor='mm')
+        cur_x += c_w + 6
         
     journey_rows = [
-        ("행동 (Action)", [
+        ("행동\n(Action)", [
             "귀농·귀촌 기사 검색",
             "부동산·공공포털 탐색",
             "후보 지번 현장 방문",
@@ -395,7 +404,7 @@ def make_slide_04():
             "스마트팜 배치 구상",
             "견적서 및 보고서 작성"
         ], (255, 255, 255)),
-        ("불편 (Pain Point)", [
+        ("불편\n(Pain Point)", [
             "정보가 제각각이라 혼란",
             "플랫폼 분산으로 비교 난항",
             "경사도·진입로 파악 곤란",
@@ -403,7 +412,7 @@ def make_slide_04():
             "CAD 툴 다루기 어려움",
             "컨설팅 비용과 불투명성"
         ], (255, 241, 242)),
-        ("요구 (Needs)", [
+        ("요구\n(Needs)", [
             "맞춤형 기초 가이드라인",
             "한눈에 보는 통합 정보",
             "기초 조건 자동 분석",
@@ -411,7 +420,7 @@ def make_slide_04():
             "쉬운 시뮬레이션 인터페이스",
             "원클릭 사업성 분석 보고서"
         ], (240, 253, 244)),
-        ("기회 (Opportunity)", [
+        ("기회\n(Opportunity)", [
             "온보딩 맞춤 설문 제공",
             "지도 기반 통합 뷰 제공",
             "개발 적합도 자동 진단",
@@ -421,24 +430,26 @@ def make_slide_04():
         ], (239, 246, 255))
     ]
     
-    r_y = gy + 42
-    r_h = 118
+    r_y = gy + 46
+    r_h = 144
     for r_label, r_vals, r_bg in journey_rows:
         draw.rounded_rectangle([gx, r_y, gx + col_widths[0], r_y + r_h], radius=6, fill=(241, 245, 249), outline=BORDER_LIGHT, width=1)
         r_title_col = (225, 29, 72) if "Pain" in r_label else (BRAND_DARK if "Needs" in r_label else (BRAND_TEAL if "기회" in r_label else TEXT_LIGHT_MAIN))
-        draw.text((gx + col_widths[0]//2, r_y + r_h//2), r_label, font=get_font(11, 'bold'), fill=r_title_col, anchor='mm')
+        lbl_lines = r_label.split('\n')
+        draw.text((gx + col_widths[0]//2, r_y + r_h//2 - 11), lbl_lines[0], font=get_font(12, 'bold'), fill=r_title_col, anchor='mm')
+        draw.text((gx + col_widths[0]//2, r_y + r_h//2 + 11), lbl_lines[1], font=get_font(10, 'medium'), fill=r_title_col, anchor='mm')
         
-        cur_x = gx + col_widths[0] + 5
+        cur_x = gx + col_widths[0] + 6
         for v_idx, val_text in enumerate(r_vals):
             c_w = col_widths[v_idx + 1]
             draw.rounded_rectangle([cur_x, r_y, cur_x + c_w, r_y + r_h], radius=6, fill=r_bg, outline=BORDER_LIGHT, width=1)
-            lines = wrap_text(val_text, get_font(10.5, 'regular'), c_w - 14, draw)
-            vy = r_y + (r_h - len(lines)*16)//2
+            lines = wrap_text(val_text, get_font(10.5, 'regular'), c_w - 18, draw)
+            vy = r_y + (r_h - len(lines)*18)//2 + 9
             for l in lines:
                 draw.text((cur_x + c_w//2, vy), l, font=get_font(10.5, 'regular'), fill=TEXT_LIGHT_MAIN, anchor='mm')
-                vy += 16
-            cur_x += c_w + 5
-        r_y += r_h + 6
+                vy += 18
+            cur_x += c_w + 6
+        r_y += r_h + 8
 
     # Right: 4 Key Strategic Insights (Clear, Generous Padding)
     rx = 1185

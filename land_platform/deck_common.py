@@ -234,53 +234,61 @@ def draw_phone_mockup(base_img, screen_path, cx, cy, target_h=640, bezel=7, radi
     py = sb_y + sb_h
     base_img.paste(s_res, (px, py), s_res)
 
-def draw_browser_mockup(base_img, screen_path, x, y, w, h=None, target_w=None, title="FARMINGSYS ENTERPRISE · GIS CLOUD", url="https://farmingsys.io/workspace/land-analysis"):
+def draw_browser_mockup(base_img, screen_path, x, y, w, h=None, target_w=None, title="FARMINGSYS ENTERPRISE", url="https://farmingsys.io/app"):
     draw = ImageDraw.Draw(base_img)
-    header_h = 36
+    header_h = 34
     
-    # Maintain exact 1:1 original aspect ratio without distortion or letterboxing
     if not os.path.exists(screen_path):
         draw.text((x + w//2, y + 100), "Mockup Screen Asset", font=get_font(14, 'bold'), fill=(148, 163, 184), anchor='mm')
         return h or 300
     
     s_img = Image.open(screen_path).convert('RGBA')
-    img_aspect = s_img.height / s_img.width  # e.g. 609 / 1024 = 0.5947
+    img_aspect = s_img.height / s_img.width
     
     vp_w = w - 4
-    if h is not None:
-        # If fixed height provided, check if we should strictly follow image aspect ratio
-        vp_h = int(vp_w * img_aspect)
-        actual_h = header_h + 2 + vp_h
-    else:
-        vp_h = int(vp_w * img_aspect)
-        actual_h = header_h + 2 + vp_h
+    vp_h = int(vp_w * img_aspect)
+    if h is not None and (header_h + 2 + vp_h) > h:
+        # Fit strictly inside max height h while preserving 1:1 aspect ratio
+        vp_h = max(40, h - header_h - 4)
+        vp_w = int(vp_h / img_aspect)
+        w = vp_w + 4
+    actual_h = header_h + 2 + vp_h
 
-    # Browser window container shadow/outline
+    # Browser window container
     draw.rounded_rectangle([x, y, x + w, y + actual_h], radius=12, fill=(15, 23, 42), outline=(51, 65, 85), width=1)
     
     # Window traffic light buttons
     btn_y = y + header_h // 2
-    draw.ellipse([x + 16, btn_y - 5, x + 26, btn_y + 5], fill=(239, 68, 68))
-    draw.ellipse([x + 32, btn_y - 5, x + 42, btn_y + 5], fill=(245, 158, 11))
-    draw.ellipse([x + 48, btn_y - 5, x + 58, btn_y + 5], fill=(16, 185, 129))
+    draw.ellipse([x + 14, btn_y - 4, x + 22, btn_y + 4], fill=(239, 68, 68))
+    draw.ellipse([x + 28, btn_y - 4, x + 36, btn_y + 4], fill=(245, 158, 11))
+    draw.ellipse([x + 42, btn_y - 4, x + 50, btn_y + 4], fill=(16, 185, 129))
     
-    # URL address bar
-    url_box_w = max(60, min(420, w - 240)) if (w - 240) > 60 else max(40, w - 90)
-    url_x = x + 75 if (w - 240) > 60 else x + 70
-    if url_box_w > 30 and (x + w) > (url_x + url_box_w):
-        draw.rounded_rectangle([url_x, y + 7, url_x + url_box_w, y + header_h - 7], radius=6, fill=(30, 41, 59), outline=(51, 65, 85), width=1)
-        draw.text((url_x + 8, btn_y), "🔒 " + url, font=get_font(9.5, 'medium'), fill=(148, 163, 184), anchor='lm')
+    # URL address bar (cleanly bounded, zero tofu icon, zero title collision)
+    f_url = get_font(9, 'medium')
+    f_ttl = get_font(9.5, 'bold')
+    show_title = w >= 540 and bool(title)
+    ttl_w = int(draw.textlength(title, font=f_ttl)) + 24 if show_title else 0
+    url_x = x + 64
+    url_max_w = w - 76 - ttl_w
+    if url_max_w >= 80:
+        url_box_w = min(360, url_max_w)
+        draw.rounded_rectangle([url_x, y + 6, url_x + url_box_w, y + header_h - 6], radius=6, fill=(30, 41, 59), outline=(51, 65, 85), width=1)
+        # Small green secure dot
+        draw.ellipse([url_x + 9, btn_y - 3, url_x + 15, btn_y + 3], fill=(16, 185, 129))
+        disp_url = url
+        while len(disp_url) > 8 and draw.textlength(disp_url, font=f_url) > (url_box_w - 28):
+            disp_url = disp_url[:-4] + "..."
+        draw.text((url_x + 21, btn_y), disp_url, font=f_url, fill=(148, 163, 184), anchor='lm')
     
-    # Title in right if space permits
-    if w >= 400:
-        draw.text((x + w - 20, btn_y), title, font=get_font(10.5, 'bold'), fill=(100, 116, 139), anchor='rm')
+    if show_title:
+        draw.text((x + w - 16, btn_y), title, font=f_ttl, fill=(100, 116, 139), anchor='rm')
     
-    # Inner viewport screen resized with 100% original aspect ratio (zero distortion, zero letterbox)
+    # Inner viewport screen resized with 100% original aspect ratio
     s_res = s_img.resize((vp_w, vp_h), Image.Resampling.LANCZOS)
-    
     px = x + 2
     py = y + header_h + 1
     base_img.paste(s_res, (px, py), s_res)
+    return actual_h
     
     return actual_h
 
