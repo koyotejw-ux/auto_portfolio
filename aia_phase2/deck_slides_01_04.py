@@ -457,10 +457,12 @@ def make_slide_03():
             draw.text((col_x[c_idx] + col_w[c_idx]//2, r_y + 24), val, font=get_font(11.5, 'bold' if c_idx==8 or is_highlight else 'medium'), fill=txt_col, anchor='mm')
         r_y += 50
         
-    draw.rounded_rectangle([col_x[0], card_y + card_h - 110, col_x[-1] + col_w[-1], card_y + card_h - 25], radius=10, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-    draw.text((col_x[0] + 20, card_y + card_h - 90), "KEY INSIGHT  ·  벤치마크 진단 결론", font=get_font(12, 'bold'), fill=AIA_RED)
-    draw.text((col_x[0] + 20, card_y + card_h - 65), "타 보험사는 명칭 난립 및 단순 크기 확대에 머물러 실질적 배리어프리(색상대비 AAA, UX라이팅)가 전무함.", font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_MAIN)
-    draw.text((col_x[0] + 20, card_y + card_h - 43), "AIA+는 '단일 앱 내 완전 분기 + WCAG AAA 인증 + 쉬운 우리말 라이팅'으로 업계 최고 수준 사용성을 확립.", font=get_font(11.5, 'bold'), fill=(5, 150, 105))
+    note_top = card_y + card_h - 124
+    note_bot = card_y + card_h - 24
+    draw.rounded_rectangle([col_x[0], note_top, col_x[-1] + col_w[-1], note_bot], radius=10, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+    draw.text((col_x[0] + 20, note_top + 18), "KEY INSIGHT  ·  벤치마크 진단 결론", font=get_font(12, 'bold'), fill=AIA_RED)
+    draw.text((col_x[0] + 20, note_top + 44), "타 보험사는 명칭 난립 및 단순 크기 확대에 머물러 실질적 배리어프리(색상대비 AAA, UX라이팅)가 전무함.", font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_MAIN)
+    draw.text((col_x[0] + 20, note_top + 66), "AIA+는 '단일 앱 내 완전 분기 + WCAG AAA 인증 + 쉬운 우리말 라이팅'으로 업계 최고 수준 사용성을 확립.", font=get_font(11.5, 'bold'), fill=(5, 150, 105))
     
     rx = 1180
     rw = 640
