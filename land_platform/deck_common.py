@@ -163,16 +163,9 @@ def draw_slide_footer(draw, slide_num, total_slides=12, dark_mode=False):
     page_str = f"PAGE {slide_num:02d} / {total_slides:02d}"
     draw.text((1820, 1018), page_str, font=get_num_font(11.5, 'black'), fill=page_col, anchor='rt')
 
-def draw_phone_mockup(base_img, screen_path, cx, cy, phone_w=240, phone_h=490, bezel=6, radius=24):
+def draw_phone_mockup(base_img, screen_path, cx, cy, phone_w=315, phone_h=640, bezel=7, radius=28):
     if not os.path.exists(screen_path):
         return
-    s_img = Image.open(screen_path).convert('RGBA')
-    nw = phone_w - bezel * 2
-    nh = phone_h - bezel * 2
-    scale = min(nw / s_img.width, nh / s_img.height)
-    sn_w = int(s_img.width * scale)
-    sn_h = int(s_img.height * scale)
-    s_res = s_img.resize((sn_w, sn_h), Image.Resampling.LANCZOS)
     
     draw = ImageDraw.Draw(base_img)
     x1 = cx - phone_w // 2
@@ -183,22 +176,67 @@ def draw_phone_mockup(base_img, screen_path, cx, cy, phone_w=240, phone_h=490, b
     # Outer dark bezel
     draw.rounded_rectangle([x1, y1, x2, y2], radius=radius, fill=(15, 23, 42), outline=(51, 65, 85), width=2)
     # Screen inner background
-    draw.rounded_rectangle([x1 + bezel, y1 + bezel, x2 - bezel, y2 - bezel], radius=radius - 2, fill=(255, 255, 255))
+    draw.rounded_rectangle([x1 + bezel, y1 + bezel, x2 - bezel, y2 - bezel], radius=radius - 3, fill=(255, 255, 255))
     
-    # Paste centered screen image
+    # Status Bar Area (Height: 30px)
+    sb_h = 30
+    sb_y = y1 + bezel
+    
+    # Status Bar: Time (9:41) on Left
+    draw.text((x1 + bezel + 22, sb_y + 16), "9:41", font=get_font(11, 'bold'), fill=(15, 23, 42), anchor='lm')
+    
+    # Status Bar: Dynamic Island in Center
+    draw.rounded_rectangle([cx - 28, sb_y + 6, cx + 28, sb_y + 20], radius=7, fill=(15, 23, 42))
+    
+    # Status Bar: Icons on Right (Cellular Signal, Wifi, Battery)
+    r_icon_x = x2 - bezel - 20
+    # Battery Outline
+    draw.rounded_rectangle([r_icon_x - 22, sb_y + 9, r_icon_x, sb_y + 21], radius=3, fill=(255, 255, 255), outline=(15, 23, 42), width=1)
+    # Battery Fill
+    draw.rounded_rectangle([r_icon_x - 20, sb_y + 11, r_icon_x - 4, sb_y + 19], radius=2, fill=(15, 23, 42))
+    # Battery Tip
+    draw.line([(r_icon_x + 1, sb_y + 12), (r_icon_x + 1, sb_y + 18)], fill=(15, 23, 42), width=1)
+    # Wifi Icon Bars
+    draw.arc([r_icon_x - 38, sb_y + 7, r_icon_x - 26, sb_y + 19], start=210, end=330, fill=(15, 23, 42), width=2)
+    draw.arc([r_icon_x - 35, sb_y + 11, r_icon_x - 29, sb_y + 19], start=210, end=330, fill=(15, 23, 42), width=2)
+    draw.ellipse([r_icon_x - 33, sb_y + 17, r_icon_x - 31, sb_y + 19], fill=(15, 23, 42))
+    # Cellular Signal Bars
+    for bi, bh in enumerate([4, 6, 8, 10]):
+        bx = r_icon_x - 54 + bi * 3
+        draw.line([(bx, sb_y + 20 - bh), (bx, sb_y + 20)], fill=(15, 23, 42), width=2)
+
+    # Home Indicator Bar at the bottom
+    home_y = y2 - bezel - 8
+    draw.rounded_rectangle([cx - 45, home_y, cx + 45, home_y + 4], radius=2, fill=(15, 23, 42))
+
+    # Inner Content Viewport Screen below Status Bar
+    s_img = Image.open(screen_path).convert('RGBA')
+    vp_w = phone_w - bezel * 2
+    vp_h = phone_h - bezel * 2 - sb_h - 12  # leave space for status bar and home indicator
+    
+    scale = min(vp_w / s_img.width, vp_h / s_img.height)
+    sn_w = int(s_img.width * scale)
+    sn_h = int(s_img.height * scale)
+    s_res = s_img.resize((sn_w, sn_h), Image.Resampling.LANCZOS)
+    
+    # Place screen image starting exactly right below status bar
     px = cx - sn_w // 2
-    py = cy - sn_h // 2
+    py = sb_y + sb_h + (vp_h - sn_h) // 2
     base_img.paste(s_res, (px, py), s_res)
-    
-    # Dynamic island / camera notch pill
-    draw.rounded_rectangle([cx - 24, y1 + bezel + 4, cx + 24, y1 + bezel + 16], radius=6, fill=(15, 23, 42))
 
-def draw_browser_mockup(base_img, screen_path, x, y, w, h, title="FARMINGSYS ENTERPRISE · GIS CLOUD", url="https://farmingsys.io/workspace/land-analysis"):
-
+def draw_browser_mockup(base_img, screen_path, x, y, w, h, title="FARMINGSYS ENTERPRISE · GIS CLOUD", url="https://farmingsys.io/workspace/land-analysis", fit_height=False):
     draw = ImageDraw.Draw(base_img)
-    # Browser window container shadow/outline
     header_h = 36
-    draw.rounded_rectangle([x, y, x + w, y + h], radius=12, fill=(15, 23, 42), outline=(51, 65, 85), width=1)
+    
+    # If fit_height is requested or if height is adjusted to eliminate letterbox:
+    actual_h = h
+    if fit_height and os.path.exists(screen_path):
+        s_test = Image.open(screen_path)
+        vp_w = w - 4
+        actual_h = header_h + 2 + int(vp_w * (s_test.height / s_test.width))
+
+    # Browser window container shadow/outline
+    draw.rounded_rectangle([x, y, x + w, y + actual_h], radius=12, fill=(15, 23, 42), outline=(51, 65, 85), width=1)
     
     # Window traffic light buttons
     btn_y = y + header_h // 2
@@ -215,20 +253,20 @@ def draw_browser_mockup(base_img, screen_path, x, y, w, h, title="FARMINGSYS ENT
     # Title in center
     draw.text((x + w - 20, btn_y), title, font=get_font(10.5, 'bold'), fill=(100, 116, 139), anchor='rm')
     
-    # Inner viewport screen
+    # Inner viewport screen (fits exactly with zero top/bottom empty margins)
     if os.path.exists(screen_path):
         s_img = Image.open(screen_path).convert('RGBA')
         vp_w = w - 4
-        vp_h = h - header_h - 2
-        scale = min(vp_w / s_img.width, vp_h / s_img.height)
-        nw = int(s_img.width * scale)
-        nh = int(s_img.height * scale)
-        s_res = s_img.resize((nw, nh), Image.Resampling.LANCZOS)
+        vp_h = actual_h - header_h - 2
         
-        # Center in viewport
-        px = x + 2 + (vp_w - nw) // 2
-        py = y + header_h + (vp_h - nh) // 2
+        # Exact fit resizing to fill the viewport without vertical letterbox
+        s_res = s_img.resize((vp_w, vp_h), Image.Resampling.LANCZOS)
+        
+        px = x + 2
+        py = y + header_h + 1
         base_img.paste(s_res, (px, py), s_res)
     else:
-        draw.text((x + w//2, y + h//2), "Mockup Screen Asset", font=get_font(14, 'bold'), fill=(148, 163, 184), anchor='mm')
+        draw.text((x + w//2, y + actual_h//2), "Mockup Screen Asset", font=get_font(14, 'bold'), fill=(148, 163, 184), anchor='mm')
+    
+    return actual_h
 
