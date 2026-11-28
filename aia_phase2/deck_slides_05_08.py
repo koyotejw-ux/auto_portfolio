@@ -54,28 +54,30 @@ def make_slide_05():
     draw_pill_badge(draw, cx=d1_x + d1_w//2, cy=d1_y + 18, text="CHECK 01", font=get_font(9.5, 'bold'), theme='blue', pad_x=8, height=18)
     draw.text((d1_x + d1_w//2, d1_y + 52), "로그인 여부?", font=get_font(14.5, 'bold'), fill=(29, 78, 216), anchor='mm')
     
-    # PATH A: 비로그인 분기
-    draw.line([(d1_x + d1_w//2, d1_y + d1_h), (d1_x + d1_w//2, 630)], fill=AIA_RED, width=2)
-    draw_arrow(draw, (d1_x + d1_w//2, 630), (520, 630), col=AIA_RED, width=2, arrow_size=6)
-    draw_pill_badge(draw, cx=d1_x + d1_w//2 + 18, cy=d1_y + d1_h + 25, text="N", font=get_font(10, 'bold'), theme='red', pad_x=6, height=18)
-    
-    d1n_x, d1n_y, d1n_w, d1n_h = 440, 590, 175, 80
+    # PATH A: 비로그인 분기 (centered directly under CHECK 01 with generous clearance)
+    d1_cx = d1_x + d1_w // 2
+    d1n_w, d1n_h = 175, 80
+    d1n_x, d1n_y = d1_cx - d1n_w // 2, 642
+
+    draw_arrow(draw, (d1_cx, d1_y + d1_h), (d1_cx, d1n_y - 4), col=AIA_RED, width=2, arrow_size=6)
+    draw_pill_badge(draw, cx=d1_cx + 22, cy=d1_y + d1_h + 26, text="N", font=get_font(10, 'bold'), theme='red', pad_x=6, height=18)
+
     draw.rounded_rectangle([d1n_x, d1n_y, d1n_x + d1n_w, d1n_y + d1n_h], radius=14, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
     draw.text((d1n_x + d1n_w//2, d1n_y + 30), "고령자 모드", font=get_font(13, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mm')
     draw.text((d1n_x + d1n_w//2, d1n_y + 52), "활성 여부?", font=get_font(13, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mm')
-    
-    draw_arrow(draw, (d1n_x + d1n_w, d1n_y + d1n_h//2), (d1n_x + d1n_w + 35, d1n_y + d1n_h//2), col=(148, 163, 184), width=2, arrow_size=6)
-    draw.text((d1n_x + d1n_w + 14, d1n_y + d1n_h//2 - 14), "Y", font=get_font(11, 'bold'), fill=(100, 116, 139))
-    
-    out1_x, out1_y, out1_w, out1_h = d1n_x + d1n_w + 35, 602, 230, 56
+
+    draw_arrow(draw, (d1n_x + d1n_w + 2, d1n_y + d1n_h//2), (d1n_x + d1n_w + 42, d1n_y + d1n_h//2), col=(148, 163, 184), width=2, arrow_size=6)
+    draw.text((d1n_x + d1n_w + 18, d1n_y + d1n_h//2 - 16), "Y", font=get_font(11, 'bold'), fill=(100, 116, 139))
+
+    out1_x, out1_y, out1_w, out1_h = d1n_x + d1n_w + 46, d1n_y + 12, 230, 56
     draw.rounded_rectangle([out1_x, out1_y, out1_x + out1_w, out1_y + out1_h], radius=28, fill=(239, 246, 255), outline=(191, 219, 254), width=1)
     draw.text((out1_x + out1_w//2, out1_y + out1_h//2), "일반 모드 로그인 전 메인 전환", font=get_font(12, 'bold'), fill=(29, 78, 216), anchor='mm')
-    
-    draw.line([(d1n_x + d1n_w//2, d1n_y + d1n_h), (d1n_x + d1n_w//2, 715)], fill=AIA_RED, width=2)
-    draw_arrow(draw, (d1n_x + d1n_w//2, 715), (d1n_x + d1n_w//2, 730), col=AIA_RED, width=2, arrow_size=6)
-    draw.text((d1n_x + d1n_w//2 + 10, d1n_y + d1n_h + 10), "N", font=get_font(11, 'bold'), fill=AIA_RED)
-    
-    out2_x, out2_y, out2_w, out2_h = d1n_x - 30, 730, 240, 56
+
+    out2_w, out2_h = 240, 56
+    out2_x, out2_y = d1_cx - out2_w // 2, 764
+    draw_arrow(draw, (d1_cx, d1n_y + d1n_h + 2), (d1_cx, out2_y - 4), col=AIA_RED, width=2, arrow_size=6)
+    draw.text((d1_cx + 12, d1n_y + d1n_h + 14), "N", font=get_font(11, 'bold'), fill=AIA_RED)
+
     draw.rounded_rectangle([out2_x, out2_y, out2_x + out2_w, out2_y + out2_h], radius=28, fill=(255, 241, 244), outline=AIA_RED, width=2)
     draw.text((out2_x + out2_w//2, out2_y + out2_h//2), "고령자 모드 로그인 전 메인 전환", font=get_font(12, 'bold'), fill=AIA_RED, anchor='mm')
     
@@ -130,27 +132,37 @@ def make_slide_05():
     draw.text((goal_x + goal_w//2, goal_y + 23), "고령자 모드 로그인 후", font=get_font(13.5, 'bold'), fill=AIA_RED, anchor='mm')
     draw.text((goal_x + goal_w//2, goal_y + 46), "메인(홈)으로 전환", font=get_font(13.5, 'bold'), fill=AIA_RED, anchor='mm')
     
-    draw.line([(d3_x + d3_w//2, d3_y + d3_h), (d3_x + d3_w//2, 600)], fill=AIA_RED, width=2)
-    draw.line([(d3_x + d3_w//2, 600), (goal_x + goal_w//2, 600)], fill=AIA_RED, width=2)
-    draw_arrow(draw, (goal_x + goal_w//2, 600), (goal_x + goal_w//2, goal_y + goal_h), col=AIA_RED, width=2, arrow_size=6)
-    
-    draw.line([(d4_x + d4_w//2, d4_y + d4_h), (d4_x + d4_w//2, 560)], fill=AIA_RED, width=2)
-    draw.line([(d4_x + d4_w//2, 560), (goal_x + goal_w//2 - 25, 560)], fill=AIA_RED, width=2)
-    draw.line([(goal_x + goal_w//2 - 25, 560), (goal_x + goal_w//2 - 25, goal_y + goal_h)], fill=AIA_RED, width=2)
-    
-    draw.line([(d5_x + d5_w//2, d5_y + d5_h), (d5_x + d5_w//2, 660)], fill=(100, 116, 139), width=2)
-    draw_arrow(draw, (d5_x + d5_w//2, 660), (d5_x + d5_w//2, 675), col=(100, 116, 139), width=2, arrow_size=6)
-    draw.text((d5_x + d5_w//2 + 10, d5_y + d5_h + 12), "N", font=get_font(11, 'bold'), fill=(100, 116, 139))
-    
-    stay_x, stay_y, stay_w, stay_h = d5_x - 35, 675, 245, 56
+    # Return flow lines with clean vertical spacing away from all nodes
+    ret1_y = 572
+    ret2_y = 604
+
+    # CHECK 03 (N) -> Goal
+    draw.line([(d3_x + d3_w//2, d3_y + d3_h + 2), (d3_x + d3_w//2, ret2_y)], fill=AIA_RED, width=2)
+    draw.line([(d3_x + d3_w//2, ret2_y), (goal_x + goal_w//2 + 16, ret2_y)], fill=AIA_RED, width=2)
+    draw_arrow(draw, (goal_x + goal_w//2 + 16, ret2_y), (goal_x + goal_w//2 + 16, goal_y + goal_h + 4), col=AIA_RED, width=2, arrow_size=6)
+    draw.text((d3_x + d3_w//2 + 10, d3_y + d3_h + 12), "N", font=get_font(11, 'bold'), fill=AIA_RED)
+
+    # AGE CHECK (N) -> Goal
+    draw.line([(d4_x + d4_w//2, d4_y + d4_h + 2), (d4_x + d4_w//2, ret1_y)], fill=AIA_RED, width=2)
+    draw.line([(d4_x + d4_w//2, ret1_y), (goal_x + goal_w//2 - 22, ret1_y)], fill=AIA_RED, width=2)
+    draw_arrow(draw, (goal_x + goal_w//2 - 22, ret1_y), (goal_x + goal_w//2 - 22, goal_y + goal_h + 4), col=AIA_RED, width=2, arrow_size=6)
+    draw.text((d4_x + d4_w//2 + 10, d4_y + d4_h + 10), "N", font=get_font(11, 'bold'), fill=AIA_RED)
+
+    # USER CONSENT (N) -> Stay in general mode (cleanly below return lines)
+    stay_x, stay_y, stay_w, stay_h = d5_x - 35, 678, 245, 56
+    draw_arrow(draw, (d5_x + d5_w//2, d5_y + d5_h + 2), (d5_x + d5_w//2, stay_y - 4), col=(100, 116, 139), width=2, arrow_size=6)
+    draw.text((d5_x + d5_w//2 + 10, ret2_y + 18), "N", font=get_font(11, 'bold'), fill=(100, 116, 139))
+
     draw.rounded_rectangle([stay_x, stay_y, stay_x + stay_w, stay_y + stay_h], radius=28, fill=(241, 245, 249), outline=BORDER_LIGHT, width=1)
     draw.text((stay_x + stay_w//2, stay_y + stay_h//2), "일반 모드 로그인 후 메인 유지", font=get_font(12.5, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='mm')
-    
-    sum_y = 855
-    draw.rounded_rectangle([card_x + 30, sum_y, card_x + card_w - 30, sum_y + 70], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-    draw.text((card_x + 50, sum_y + 24), "시스템 설계 인사이트 및 사용자 자기결정권 보장", font=get_font(13, 'bold'), fill=AIA_RED)
+
+    # Bottom Summary Box with balanced top/bottom padding
+    sum_y = 852
+    sum_h = 84
+    draw.rounded_rectangle([card_x + 30, sum_y, card_x + card_w - 30, sum_y + sum_h], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
+    draw.text((card_x + 50, sum_y + 20), "시스템 설계 인사이트 및 사용자 자기결정권 보장", font=get_font(13, 'bold'), fill=AIA_RED)
     sum_desc = "회원 연령(65세) 자동 판별 알고리즘을 도입하되, 강제가 아닌 [사용자 선택권 보장 팝업]을 경유하도록 설계하여 디지털 소외감 방지 및 자기결정권을 완벽 보장합니다."
-    draw.text((card_x + 50, sum_y + 46), sum_desc, font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_MAIN)
+    draw.text((card_x + 50, sum_y + 48), sum_desc, font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_MAIN)
     
     draw_slide_footer(draw, 5, 12, dark_mode=False)
     out_path = os.path.join(OUT_DIR, "slide_05.png")
