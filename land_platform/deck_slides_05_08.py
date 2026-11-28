@@ -427,7 +427,7 @@ def make_slide_08():
     draw.rounded_rectangle([icon_card_x, icon_card_y, icon_card_x + icon_card_w, icon_card_y + icon_card_h], radius=12, fill=(255, 255, 255), outline=BORDER_LIGHT, width=1)
     
     # Paste authentic rendered SVG icon matrix
-    icon_mat_path = os.path.join(ASSETS_DIR, "figma_icons_matrix_cropped.png")
+    icon_mat_path = os.path.join(ASSETS_DIR, "figma_icons_matrix_card.png")
     if os.path.exists(icon_mat_path):
         mat_im = Image.open(icon_mat_path)
         inner_w = icon_card_w - 24
