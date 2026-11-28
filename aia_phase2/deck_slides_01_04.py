@@ -458,7 +458,7 @@ def make_slide_03():
         r_y += 50
         
     draw.rounded_rectangle([col_x[0], card_y + card_h - 110, col_x[-1] + col_w[-1], card_y + card_h - 25], radius=10, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-    draw.text((col_x[0] + 20, card_y + card_h - 90), "🔍 벤치마크 진단 결론", font=get_font(12, 'bold'), fill=AIA_RED)
+    draw.text((col_x[0] + 20, card_y + card_h - 90), "KEY INSIGHT  ·  벤치마크 진단 결론", font=get_font(12, 'bold'), fill=AIA_RED)
     draw.text((col_x[0] + 20, card_y + card_h - 65), "타 보험사는 명칭 난립 및 단순 크기 확대에 머물러 실질적 배리어프리(색상대비 AAA, UX라이팅)가 전무함.", font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_MAIN)
     draw.text((col_x[0] + 20, card_y + card_h - 43), "AIA+는 '단일 앱 내 완전 분기 + WCAG AAA 인증 + 쉬운 우리말 라이팅'으로 업계 최고 수준 사용성을 확립.", font=get_font(11.5, 'bold'), fill=(5, 150, 105))
     
@@ -492,15 +492,18 @@ def make_slide_03():
     ]
     
     sy = card_y + 115
+    tag_font = get_font(10, 'bold')
+    max_tag_w = max(draw.textbbox((0, 0), s["tag"], font=tag_font)[2] - draw.textbbox((0, 0), s["tag"], font=tag_font)[0] + 16 for s in strategies)
+    title_x = int(round(rx + 35 + max_tag_w + 16))
     for s in strategies:
         draw.rounded_rectangle([rx + 20, sy, rx + rw - 20, sy + 130], radius=12, fill=(248, 250, 252), outline=BORDER_LIGHT, width=1)
-        draw_pill_badge(draw, left_x=rx + 35, cy=sy + 22, text=s["tag"], font=get_font(10, 'bold'), theme='red' if '02' in s["tag"] or '04' in s["tag"] else 'blue', pad_x=8, height=20)
-        draw.text((rx + 130, sy + 22), s["title"], font=get_font(14, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
+        draw_pill_badge(draw, left_x=rx + 35, cy=sy + 24, text=s["tag"], font=tag_font, theme='red' if '02' in s["tag"] or '04' in s["tag"] else 'blue', pad_x=8, height=22)
+        draw.text((title_x, sy + 24), s["title"], font=get_font(14, 'bold'), fill=TEXT_LIGHT_MAIN, anchor='lm')
         lines = wrap_text(s["desc"], get_font(11.5, 'regular'), rw - 70, draw)
-        ly = sy + 48
+        ly = sy + 52
         for line in lines:
             draw.text((rx + 35, ly), line, font=get_font(11.5, 'regular'), fill=TEXT_LIGHT_SUB)
-            ly += 18
+            ly += 19
         sy += 144
         
     draw_slide_footer(draw, 3, 12, dark_mode=False)
