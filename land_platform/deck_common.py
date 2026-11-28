@@ -214,14 +214,14 @@ def draw_phone_mockup(base_img, screen_path, cx, cy, phone_w=315, phone_h=640, b
     vp_w = phone_w - bezel * 2
     vp_h = phone_h - bezel * 2 - sb_h - 12  # leave space for status bar and home indicator
     
-    scale = min(vp_w / s_img.width, vp_h / s_img.height)
-    sn_w = int(s_img.width * scale)
-    sn_h = int(s_img.height * scale)
+    # Fill full width edge-to-edge without left/right empty margins (좌우 여백 완전 제거)
+    sn_w = vp_w
+    sn_h = min(vp_h, int(s_img.height * (vp_w / s_img.width)))
     s_res = s_img.resize((sn_w, sn_h), Image.Resampling.LANCZOS)
     
-    # Place screen image starting exactly right below status bar
-    px = cx - sn_w // 2
-    py = sb_y + sb_h + (vp_h - sn_h) // 2
+    # Place screen image starting exactly right below status bar, flush to left & right edges
+    px = x1 + bezel
+    py = sb_y + sb_h
     base_img.paste(s_res, (px, py), s_res)
 
 def draw_browser_mockup(base_img, screen_path, x, y, w, h, title="FARMINGSYS ENTERPRISE · GIS CLOUD", url="https://farmingsys.io/workspace/land-analysis", fit_height=False):
