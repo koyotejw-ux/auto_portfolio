@@ -154,10 +154,13 @@ def draw_slide_footer(draw, slide_num, total_slides=12, dark_mode=False):
     draw.line([(100, 995), (1820, 995)], fill=line_col, width=1)
     
     brand_col = BRAND_LIGHT if dark_mode else BRAND_GREEN
-    draw.text((100, 1018), "FARMINGSYS · B2B PROPTECH", font=get_font(11.5, 'bold'), fill=brand_col)
+    f_brand = get_font(11.5, 'bold')
+    brand_txt = "FARMINGSYS · B2B PROPTECH"
+    draw.text((100, 1018), brand_txt, font=f_brand, fill=brand_col)
+    w_brand = draw.textlength(brand_txt, font=f_brand)
     meta_col = (100, 116, 139) if dark_mode else (148, 163, 184)
-    draw.text((310, 1018), "·   공간 GIS 빅데이터 & 토지개발 사업 타당성 분석 플랫폼", font=get_font(11, 'medium'), fill=meta_col)
-    draw.text((960, 1018), "12대 공공 데이터 실시간 파싱  ·  스마트 시설배치 & 정량 경제성 분석 시뮬레이션", font=get_font(10.5, 'medium'), fill=meta_col, anchor='mt')
+    draw.text((100 + w_brand + 16, 1018), "·   공간 GIS 빅데이터 & 토지개발 사업 타당성 분석 플랫폼", font=get_font(11, 'medium'), fill=meta_col)
+    draw.text((1040, 1018), "12대 공공 데이터 실시간 파싱  ·  스마트 시설배치 & 정량 경제성 분석 시뮬레이션", font=get_font(10.5, 'medium'), fill=meta_col, anchor='mt')
     
     page_col = (148, 163, 184) if dark_mode else (100, 116, 139)
     page_str = f"PAGE {slide_num:02d} / {total_slides:02d}"

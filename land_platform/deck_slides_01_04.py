@@ -25,65 +25,64 @@ def make_slide_01():
     draw_pill_badge(draw, left_x=100, cy=76, text="2025 PORTFOLIO CASE STUDY", font=get_font(11.5, 'bold'), theme='green', pad_x=12, height=28)
     
     meta_txt = "WEB (Responsive)  ·  2025.01 - 2025.02  ·  참여율 100%  ·  UX 리서치 · UI 설계 · GUI 디자인"
-    w_meta = draw.textlength(meta_txt, font=get_font(13.5, 'medium'))
-    draw.text((1820 - w_meta, 68), meta_txt, font=get_font(13.5, 'medium'), fill=(100, 116, 139))
+    draw.text((1820, 76), meta_txt, font=get_font(13, 'medium'), fill=(100, 116, 139), anchor='rm')
     
     # 4. Category Label
-    draw.text((100, 134), "SMARTFARM CENTER · RESPONSIVE WEB", font=get_font(13.5, 'bold'), fill=BRAND_GREEN)
+    draw.text((100, 132), "SMARTFARM CENTER · RESPONSIVE WEB", font=get_font(12.5, 'bold'), fill=BRAND_GREEN)
     
-    # 5. Editorial Headline (Balanced 2-line layout with perfect leading & zero mockup collision)
-    # Line 1: '토지를 분석하다,' in Dark Slate
-    # Line 2: '토지개발분석플랫폼' in Brand Green Black
+    # 5. Editorial Headline (Balanced 2-line layout with clean leading & zero mockup collision)
     draw.text((100, 162), "토지를 분석하다,", font=get_font(32, 'bold'), fill=(15, 23, 42))
-    draw.text((100, 208), "토지개발분석플랫폼", font=get_font(46, 'black'), fill=BRAND_GREEN)
+    draw.text((100, 218), "토지개발분석플랫폼", font=get_font(46, 'black'), fill=BRAND_GREEN)
     
-    # 6. Clean UX Subtitle (2 balanced lines, strictly wrapped within 700px)
+    # 6. Clean UX Subtitle (2 balanced lines, generous breathing room below title)
     sub1 = "수많은 공적 장부와 복잡한 인허가 규제에 가로막혀 있던 토지개발의 진입 장벽을 허물고,"
     sub2 = "지번 입력 한 번으로 규제 판정, 스마트팜 시설배치, 공사비 적산 및 타당성을 원클릭 도출합니다."
-    draw.text((100, 276), sub1, font=get_font(14, 'regular'), fill=(71, 85, 105))
-    draw.text((100, 300), sub2, font=get_font(14, 'semibold'), fill=(30, 41, 59))
+    draw.text((100, 304), sub1, font=get_font(13.5, 'regular'), fill=(71, 85, 105))
+    draw.text((100, 330), sub2, font=get_font(13.5, 'semibold'), fill=(30, 41, 59))
     
-    # 7. OPEN STORYLINE: 4 Key Strengths (Clean, open layout with zero enclosing heavy boxes)
+    # 7. OPEN STORYLINE: 4 Key Strengths (Uniform 1-line rhythm, pixel-aligned headers, zero overflow)
     strengths = [
         ("01", "정보 통합", "3초 규제 판정 및 지적도 통합", "GIS & Legal Analysis Engine",
-         "연속지적도와 국토계획법 등 100여 개 공공 규제를 지도 위에 오버레이하여 개발 가능 여부를 3초 만에 판별합니다."),
+         "연속지적도와 국토계획법 등 100여 개 공공 규제를 오버레이해 개발 가능 여부를 3초 만에 판별합니다."),
         ("02", "스마트팜 설계", "온실 모듈 원클릭 자동 배치", "Intelligent Facility Layout",
-         "전문 CAD 도면 없이도 비닐·유리온실과 에너지 부대시설을 부지 형상에 맞추어 최적 정렬하고 유효 생산 면적을 계산합니다."),
+         "CAD 없이도 비닐·유리온실과 에너지 부대시설을 부지 형상에 맞춰 자동 배치하고 유효 면적을 산출합니다."),
         ("03", "실시간 적산", "LH 표준건축비 연동 재무 모델", "Automated CapEx/OpEx Estimation",
-         "토목·건축·설비비와 최저시급 연동 운영비를 실시간 자동 산출하여 예산 초과 리스크와 금융 심사 지연을 방지합니다."),
+         "토목·건축·설비비와 최저시급 연동 운영비를 실시간 자동 산출해 예산 초과 및 금융 심사 지연을 방지합니다."),
         ("04", "타당성 보고서", "금융 표준 분석 보고서 원클릭 발급", "Institutional-Grade Valuation PDF",
-         "지번 현황, 시설 조감도, 10개년 현금흐름(IRR/ROI)이 담긴 정형화된 보고서를 PDF로 즉시 발급해 사업화를 가속합니다.")
+         "지번 현황, 시설 조감도, 10개년 현금흐름(IRR/ROI)이 담긴 금융 표준 보고서를 PDF로 즉시 발급합니다.")
     ]
     
     max_badge_w = max(draw.textlength(tag, font=get_font(10, 'bold')) + 16 for _, tag, _, _, _ in strengths)
     title_x = int(round(144 + max_badge_w + 18))
     
-    k_y = 356
+    k_y = 392
     for idx, (num, tag, title_ko, sub_en, desc) in enumerate(strengths):
+        row_cy = k_y + 14
         # Open number pill
-        draw.rounded_rectangle([100, k_y + 2, 136, k_y + 28], radius=6, fill=(241, 245, 249), outline=(203, 213, 225), width=1)
-        draw.text((118, k_y + 15), num, font=get_font(11, 'bold'), fill=BRAND_GREEN, anchor='mm')
+        draw.rounded_rectangle([100, k_y + 1, 134, k_y + 27], radius=6, fill=(241, 245, 249), outline=(203, 213, 225), width=1)
+        draw.text((117, row_cy), num, font=get_font(11, 'bold'), fill=BRAND_GREEN, anchor='mm')
         
-        # Tag & Title & EN Subtitle
-        draw_pill_badge(draw, left_x=144, cy=k_y + 15, text=tag, font=get_font(10, 'bold'), theme='green', pad_x=8, height=22)
+        # Tag & Title & EN Subtitle (all vertically centered on row_cy)
+        draw_pill_badge(draw, left_x=144, cy=row_cy, text=tag, font=get_font(10, 'bold'), theme='green', pad_x=8, height=24)
         
-        draw.text((title_x, k_y + 4), title_ko, font=get_font(14.5, 'bold'), fill=(15, 23, 42))
+        f_tko = get_font(14, 'bold')
+        draw.text((title_x, row_cy), title_ko, font=f_tko, fill=(15, 23, 42), anchor='lm')
         
-        w_title = draw.textlength(title_ko, font=get_font(14.5, 'bold'))
-        draw.text((title_x + w_title + 10, k_y + 6), f"·  {sub_en}", font=get_font(11.5, 'medium'), fill=(100, 116, 139))
+        w_title = draw.textlength(title_ko, font=f_tko)
+        draw.text((title_x + w_title + 10, row_cy), f"·  {sub_en}", font=get_font(11, 'medium'), fill=(100, 116, 139), anchor='lm')
         
-        # Description lines (strictly within 700px width to avoid any touch with right mockup)
-        lines = wrap_text(desc, get_font(12, 'regular'), 700, draw)
-        desc_y = k_y + 35
+        # Uniform 1-line description (strictly within 736px -> right edge <= 880px)
+        lines = wrap_text(desc, get_font(11.5, 'regular'), 736, draw)
+        desc_y = k_y + 40
         for l in lines[:2]:
-            draw.text((144, desc_y), l, font=get_font(12, 'regular'), fill=(71, 85, 105))
-            desc_y += 19
+            draw.text((144, desc_y), l, font=get_font(11.5, 'regular'), fill=(71, 85, 105))
+            desc_y += 20
             
-        # Subtle hairline divider
+        # Subtle hairline divider (symmetrical 20px above/below)
         if idx < 3:
-            draw.line([(100, k_y + 86), (880, k_y + 86)], fill=(226, 232, 240), width=1)
+            draw.line([(100, k_y + 76), (880, k_y + 76)], fill=(226, 232, 240), width=1)
             
-        k_y += 105
+        k_y += 96
 
     # 8. Right Side: Flagship 3D Tablet + Mobile Mockup (Hero Podium)
     mockup_path = os.path.join(ASSETS_DIR, "figma_hero_podium_mockup.png")
@@ -94,14 +93,14 @@ def make_slide_01():
         target_h = int(target_w * aspect)
         m_resized = m_img.resize((target_w, target_h), Image.Resampling.LANCZOS)
         
-        # Position right side: px = 950, py = 195 (bottom will be 195 + 581 = 776, cleanly 66px above bar_y = 842)
+        # Position right side: px = 950, py = 178 (bottom = 759, cleanly 65px above bar_y = 824)
         px = 950
-        py = 195
+        py = 178
         
         # Soft clean shadow strictly conforming to the alpha mask and kept above bar_y
         m_alpha = m_resized.split()[3]
         sh_img = Image.new('RGBA', (m_resized.width + 80, m_resized.height + 80), (0, 0, 0, 0))
-        sh_color = Image.new('RGBA', m_resized.size, (15, 23, 42, 45))
+        sh_color = Image.new('RGBA', m_resized.size, (15, 23, 42, 42))
         sh_img.paste(sh_color, (40, 48), m_alpha)
         sh_img = sh_img.filter(ImageFilter.GaussianBlur(28))
         
@@ -111,27 +110,33 @@ def make_slide_01():
         
     draw = ImageDraw.Draw(base)
 
-    # 9. Bottom 4-Column Specification Strip (Spanning x=100 to 1820, y=842 to 956)
-    bar_y = 842
-    bar_h = 114
+    # 9. Bottom 4-Column Specification Strip (Spanning x=100 to 1820, y=836 to 954)
+    bar_y = 836
+    bar_h = 118
     draw.rounded_rectangle([100, bar_y, 1820, bar_y + bar_h], radius=16, fill=(255, 255, 255), outline=(226, 232, 240), width=1)
     
     col_w = 1720 // 4
     specs = [
-        ("PROJECT ROLE", "UX 리서치 · UI 설계 · GUI 디자인 100%", "사용자 리서치 · 페르소나/여정맵 · IA 설계 · 와이어프레임 · 피그마 GUI 총괄"),
-        ("PERIOD & TIMELINE", "2025.01 - 2025.02 (2개월 완결)", "토지개발 타당성 분석 코어 기능 기획, 데스크톱 및 모바일 반응형 디자인 완성"),
-        ("DESIGN SYSTEM", "Agri-Tech Trust 디자인 시스템", "Pretendard 12단계 텍스트 스케일 · 10색 아토믹 컬러 팔레트 · 8-pt 그리드 시스템"),
-        ("PLATFORM SCOPE", "Web (Desktop & Mobile 반응형)", "B2B 데스크톱 12-Col 대화면 분석 뷰어 및 모바일 4-Col 현장 실사용 최적화")
+        ("PROJECT ROLE", "UX 리서치 · UI 설계 · GUI 디자인 100%", "리서치 · 페르소나/여정맵 · IA · 와이어프레임 · GUI 총괄"),
+        ("PERIOD & TIMELINE", "2025.01 - 2025.02 (2개월 완결)", "토지개발 타당성 분석 기획, 데스크톱·모바일 반응형 완성"),
+        ("DESIGN SYSTEM", "Agri-Tech Trust 디자인 시스템", "Pretendard 12단계 스케일 · 10색 컬러 · 8-pt 그리드"),
+        ("PLATFORM SCOPE", "Web (Desktop & Mobile 반응형)", "데스크톱 12-Col 분석 뷰어 및 모바일 4-Col 현장 최적화")
     ]
     
     for i, (cat, val_bold, val_desc) in enumerate(specs):
         cx = 100 + i * col_w
         if i > 0:
-            draw.line([(cx, bar_y + 18), (cx, bar_y + bar_h - 18)], fill=(226, 232, 240), width=1)
+            draw.line([(cx, bar_y + 20), (cx, bar_y + bar_h - 20)], fill=(226, 232, 240), width=1)
         
-        draw.text((cx + 28, bar_y + 18), cat, font=get_font(11, 'bold'), fill=BRAND_GREEN)
-        draw.text((cx + 28, bar_y + 42), val_bold, font=get_font(14, 'bold'), fill=(15, 23, 42))
-        draw.text((cx + 28, bar_y + 68), val_desc, font=get_font(11, 'regular'), fill=(100, 116, 139))
+        draw.text((cx + 28, bar_y + 20), cat, font=get_font(10.5, 'bold'), fill=BRAND_GREEN)
+        draw.text((cx + 28, bar_y + 45), val_bold, font=get_font(13.5, 'bold'), fill=(15, 23, 42))
+        
+        f_desc = get_font(10.5, 'regular')
+        desc_lines = wrap_text(val_desc, f_desc, col_w - 56, draw)
+        dy = bar_y + 76
+        for dl in desc_lines[:2]:
+            draw.text((cx + 28, dy), dl, font=f_desc, fill=(100, 116, 139))
+            dy += 18
 
     draw_slide_footer(draw, 1, 12, dark_mode=False)
     
